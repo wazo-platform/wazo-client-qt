@@ -92,4 +92,13 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         bool m_callrecord;
 };
 
+namespace phone {
+
+/*! \brief Find a phone for a given phone identity
+ * \param identity The phone's protocol/id
+ * \return the PhoneInfo or NULL */
+const PhoneInfo * findByIdentity(const QString & identity);
+
+} // namespace phone
+
 #endif

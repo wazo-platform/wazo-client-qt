@@ -1,10 +1,42 @@
+/* XiVO Client
+ * Copyright (C) 2011, Proformatique
+ *
+ * This file is part of XiVO Client.
+ *
+ * XiVO Client is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version, with a Section 7 Additional
+ * Permission as follows:
+ *   This notice constitutes a grant of such permission as is necessary
+ *   to combine or link this software, or a modified version of it, with
+ *   the OpenSSL project's "OpenSSL" library, or a derivative work of it,
+ *   and to copy, modify, and distribute the resulting work. This is an
+ *   extension of the special permission given by Trolltech to link the
+ *   Qt code with the OpenSSL library (see
+ *   <http://doc.trolltech.com/4.4/gpl.html>). The OpenSSL library is
+ *   licensed under a dual license: the OpenSSL License and the original
+ *   SSLeay license.
+ *
+ * XiVO Client is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "aastrasipnotify.h"
+
 #include <QString>
 #include <QVariantMap>
 #include <QDomDocument>
 #include <QDomText>
 #include <QDebug>
+#include <QStringList>
 
-#include "aastrasipnotify.h"
+namespace aastra_notify {
 
 // XML
 #define AASTRA_IP_PHONE_EXECUTE "AastraIPPhoneExecute"
@@ -46,11 +78,11 @@
 // Options
 #define INTERRUPT "interruptCall"
 
-QVariantMap getBaseCommand(QString channel, QString content);
-void setEmptyExecuteDoc(QDomDocument &doc);
-void addExecuteElement(QDomDocument &doc, QString uri);
+QVariantMap getBaseCommand(const QString & channel, const QString & content);
+void setEmptyExecuteDoc(QDomDocument & doc);
+void addExecuteElement(QDomDocument & doc, const QString & uri);
 
-QVariantMap getAastraSipNotify(const QList<QString> & commands, const QString & channel)
+QVariantMap Build(const QList<QString> & commands, const QString & channel)
 {
     QDomDocument content;
     setEmptyExecuteDoc(content);
@@ -61,16 +93,16 @@ QVariantMap getAastraSipNotify(const QList<QString> & commands, const QString & 
     return ipbxcommand;
 }
 
-QVariantMap getAastraKeyNotify(AastraKey type, QString channel, int num1, int num2)
+QVariantMap GetKey(AastraKey type, const QString & channel, int num1, int num2)
 {
     QDomDocument content;
     setEmptyExecuteDoc(content);
-    addExecuteElement(content, getKeyUri(type, num1, num2));
+    addExecuteElement(content, GetKeyUri(type, num1, num2));
     QVariantMap ipbxcommand = getBaseCommand(channel, content.toString());
     return ipbxcommand;
 }
 
-QVariantMap getAastraDial(QString number, QString channel, bool interrupt)
+QVariantMap GetDial(const QString & number, const QString & channel, bool interrupt)
 {
     QDomDocument content;
     setEmptyExecuteDoc(content);
@@ -86,12 +118,12 @@ QVariantMap getAastraDial(QString number, QString channel, bool interrupt)
     return getBaseCommand(channel, content.toString());
 }
 
-QVariantMap getBaseCommand(QString channel, QString content)
+QVariantMap getBaseCommand(const QString & channel, const QString & content)
 {
     QVariantMap variables;
     variables["Event"] = "aastra-xml";
     variables["Content-type"] = "application/xml";
-    variables["Content"] = "Content=" + content.replace("\n", "");
+    variables["Content"] = "Content=" + QString(content).replace("\n", "");
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "sipnotify";
     ipbxcommand["variables"] = variables;
@@ -99,7 +131,7 @@ QVariantMap getBaseCommand(QString channel, QString content)
     return ipbxcommand;
 }
 
-QString getKeyUri(AastraKey key, int num1, int num2)
+QString GetKeyUri(AastraKey key, int num1, int num2)
 {
     switch (key) {
     case CALLERS:
@@ -166,13 +198,13 @@ QString getKeyUri(AastraKey key, int num1, int num2)
     }
 }
 
-void setEmptyExecuteDoc(QDomDocument &doc)
+void setEmptyExecuteDoc(QDomDocument & doc)
 {
     QDomElement elem = doc.createElement(AASTRA_IP_PHONE_EXECUTE);
     doc.appendChild(elem);
 }
 
-void addExecuteElement(QDomDocument &doc, QString uri)
+void addExecuteElement(QDomDocument & doc, const QString & uri)
 {
     QDomElement root = doc.documentElement();
     QDomElement e = doc.createElement(AASTRA_EXECUTE_ITEM);
@@ -180,3 +212,15 @@ void addExecuteElement(QDomDocument &doc, QString uri)
     root.appendChild(e);
 }
 
+/*! \brief Appends a sequence of digit uri to a command list */
+void AppendNumber(const QString & number, QStringList & commands)
+{
+    for (int i = 0; i < number.size(); ++i) {
+        const QChar & c = number[i];
+        if (c.isDigit()) {
+            commands.append(GetKeyUri(KEYPAD, c.digitValue()));
+        }
+    }
+}
+
+} // namespace aastra_notify

@@ -38,15 +38,7 @@
 ParkingInfo::ParkingInfo(const QString & ipbxid, const QString & id)
   :XInfo(ipbxid, id)
 {
-    // qDebug() << Q_FUNC_INFO << QString("%1/%2").arg(ipbxid).arg(id);
 }
-
-// ParkingInfo::ParkingInfo(const ParkingInfo &other)
-//   :XInfo(other.ipbxid(), other.id())
-// {
-//     m_timeout = other.m_timeout;
-//     m_parkingtime = other.m_parkingtime;
-// }
 
 int ParkingInfo::countParked() const
 {
@@ -80,13 +72,28 @@ bool ParkingInfo::updateConfig(const QVariantMap & prop)
     return haschanged;
 }
 
+/*! \brief Check if a channel is parked in this parking */
+bool ParkingInfo::parkedHere(const QString & cxid) const
+{
+    foreach (const QString & key, m_parking_bays.keys()) {
+        if (cxid.contains(m_parking_bays[key].toMap()
+                          .value("parked").toString())) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool ParkingInfo::updateStatus(const QVariantMap & prop)
 {
-    // qDebug() << Q_FUNC_INFO << prop;
     bool haschanged = false;
     foreach (const QString id, prop.keys()) {
-        if (! m_parking_bays.contains(id) ||
-            m_parking_bays[id].toMap() != prop[id].toMap()) {
+        if (prop[id].toMap().size() == 0) {
+            if (m_parking_bays.contains(id)) {
+                m_parking_bays.remove(id);
+                haschanged = true;
+            }
+        } else {
             m_parking_bays[id] = prop[id];
             haschanged = true;
         }

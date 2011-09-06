@@ -27,28 +27,28 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TRANSFEREDWIDGET_H__
-#define __TRANSFEREDWIDGET_H__
+#ifndef _HOLDEDWIDGET_H_
+#define _HOLDEDWIDGET_H_
 
 #include "pendingwidget.h"
 
-class TransferedWidget: public PendingWidget
+class HoldedWidget: public PendingWidget
 {
 
 Q_OBJECT
 
 public:
-    TransferedWidget(const QString &, const QString &, QWidget *);
-    void update();
+    HoldedWidget(const QString &, int, QWidget *);
     bool toRemove() const;
+    void update();
 public slots:
     void doPickup();
 signals:
-    void pickup(const QString &);
+    void pickup(int);
 protected:
     void buildui();
 private:
-    QString m_called_num;
+    int m_line;
 };
 
-#endif // __TRANSFEREDWIDGET_H__
+#endif /* _HOLDEDWIDGET_H_ */

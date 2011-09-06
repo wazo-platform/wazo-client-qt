@@ -1,126 +1,108 @@
-#include <QDebug>
+/* XiVO Client
+ * Copyright (C) 2011, Proformatique
+ *
+ * This file is part of XiVO Client.
+ *
+ * XiVO Client is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version, with a Section 7 Additional
+ * Permission as follows:
+ *   This notice constitutes a grant of such permission as is necessary
+ *   to combine or link this software, or a modified version of it, with
+ *   the OpenSSL project's "OpenSSL" library, or a derivative work of it,
+ *   and to copy, modify, and distribute the resulting work. This is an
+ *   extension of the special permission given by Trolltech to link the
+ *   Qt code with the OpenSSL library (see
+ *   <http://doc.trolltech.com/4.4/gpl.html>). The OpenSSL library is
+ *   licensed under a dual license: the OpenSSL License and the original
+ *   SSLeay license.
+ *
+ * XiVO Client is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#include "aastrasipnotify.h"
-#include "phoneinfo.h"
-#include "userinfo.h"
-#include "popcaastra.h"
 #include "transferedwidget.h"
 
-class QHBoxLayout;
+#include "baseengine.h"
+#include "phoneinfo.h"
 
-TransferedWidget::TransferedWidget(QString number, const QString & tname,
-        const QString & tnum, QWidget * parent):
-    QWidget(parent),
-    m_number(number)
+#include <QDebug>
+
+TransferedWidget::TransferedWidget(const QString & phonexid,
+                                   const QString & number,
+                                   QWidget * parent)
+    : PendingWidget(phonexid, parent), m_called_num(number)
 {
-    //qDebug() << Q_FUNC_INFO;
-
-    m_time_transfer = b_engine->timeServer();
-    m_readyToBeRemoved = false;
-
-    m_layout = new QHBoxLayout(this);
-    m_lbl_status = new QLabel(this);
-    m_layout->addWidget(m_lbl_status);
-    m_lbl_transfered_name = new QLabel(this);
-    m_layout->addWidget(m_lbl_transfered_name);
-    m_lbl_transfered_number = new QLabel(this);
-    m_layout->addWidget(m_lbl_transfered_number);
-    m_lbl_called_name = new QLabel(this);
-    m_layout->addWidget(m_lbl_called_name);
-    m_lbl_called_number = new QLabel(this);
-    m_layout->addWidget(m_lbl_called_number);
-    m_lbl_time = new QLabel(this);
-    m_layout->addWidget(m_lbl_time);
-
-    m_lbl_transfered_name->setText(tname);
-    m_lbl_transfered_number->setText(tnum);
-
-    m_interceptAction = new QAction(tr("&Intercepet"), this);
-    m_interceptAction->setStatusTip(tr("Intercept a transfered call"));
-    connect(m_interceptAction, SIGNAL(triggered()),
-            this, SLOT(doIntercept()));
-
-    setXphoneId();
-    updateWidget();
 }
 
-/*! \brief returns the exten number that this called is being transfered to */
-const QString & TransferedWidget::number() const
+void TransferedWidget::buildui()
 {
-    return m_number;
+    this->PendingWidget::buildui(true);
+    connect(this, SIGNAL(pickup(const QString &)),
+            parent(), SLOT(doIntercept(const QString &)));
 }
 
-/*! \brief refresh widgets */
-void TransferedWidget::updateWidget()
+void TransferedWidget::update()
 {
-    //qDebug() << Q_FUNC_INFO;
-
-    const PhoneInfo * called = b_engine->phone(m_called_phone_id);
-    if (called == NULL) return;
-
-    if (b_engine->getOptionsPhoneStatus().contains(called->hintstatus())) {
-        if (called->hintstatus() == "0" && !(m_hintstatus.isEmpty() || m_hintstatus == "0")) {
-            m_readyToBeRemoved = true;
-        }
-        m_hintstatus = called->hintstatus();
-        QVariantMap s = b_engine->getOptionsPhoneStatus().value(m_hintstatus).toMap();
-        QString string = s.value("longname").toString();
-        m_lbl_status->setText(
-            b_engine->getOptionsPhoneStatus().value(m_hintstatus).toMap()
-                .value("longname").toString());
-    } else {
-        m_lbl_status->setText(tr("Unknown"));
+    if (! layout()) {
+        buildui();
     }
 
-    m_lbl_called_name->setText(tr("Unknown"));
-    foreach (QString user, b_engine->iterover("users").keys()) {
-        QStringList phonelist = b_engine->user(user)->phonelist();
-        foreach (QString p, phonelist) {
-            if (b_engine->phone(p)->number() == m_number) {
-                m_lbl_called_name->setText(b_engine->user(user)->fullname());
+    static QString base = QString("%0 %1 %2 %3 %4");
+    static QString message = tr("transfered to");
+    if (const PhoneInfo * p = b_engine->phone(phonexid())) {
+        const QStringList & channels = p->xchannels();
+        if (channels.size() > 0) {
+            const QString & chanxid = channels.last();
+            const ChannelInfo * c = b_engine->channel(chanxid);
+            QString status_string;
+            if (b_engine->getOptionsPhoneStatus().contains(p->hintstatus())) {
+                status_string = (b_engine->getOptionsPhoneStatus()
+                                 .value(p->hintstatus()).toMap()
+                                 .value("longname").toString());
             }
-        }
-    }
-    m_lbl_called_number->setText(m_number);
-    m_lbl_time->setText(b_engine->timeElapsed(m_time_transfer));
-}
-
-/*! \brief set m_called_phone_id */
-void TransferedWidget::setXphoneId()
-{
-    //qDebug() << Q_FUNC_INFO;
-    foreach (QString xphoneid, b_engine->iterover("phones").keys()) {
-        const PhoneInfo * phone = b_engine->phone(xphoneid);
-        if (phone->number() == m_number) {
-            m_called_phone_id = xphoneid;
-            return;
+            QString s = (QString(base)
+                         .arg(c->thisdisplay())
+                         .arg(message)
+                         .arg(c->peerdisplay())
+                         .arg(status_string)
+                         .arg(started_since()));
+            set_string(s);
         }
     }
 }
 
-/*! \brief check if the widget is ready to be removed */
-bool TransferedWidget::readyToBeRemoved() const
+bool TransferedWidget::toRemove() const
 {
-    //qDebug() << Q_FUNC_INFO;
-    return m_readyToBeRemoved;
+    const PhoneInfo * p = b_engine->phone(phonexid());
+    if (! p || ! p->xchannels().size()) return true;
+    const QString & chanxid = p->xchannels().last();
+
+    // Matches my phone's id if it's too early to have the called's info
+    const QStringList & my_identities = 
+        b_engine->user(b_engine->getFullId())->identitylist();
+    const ChannelInfo * c = b_engine->channel(chanxid);
+    bool match = false;
+    foreach (const QString & identity, my_identities) {
+        if (c->talkingto_id().contains(identity)) {
+            match = true;
+            break;
+        }
+    }
+    if (match) return false;
+
+    if (c->commstatus() != "calling") return true;
+    return false;
 }
 
-/*! \brief cancel a blind transfer and retrieves the call */
-void TransferedWidget::doIntercept()
+void TransferedWidget::doPickup()
 {
-    //qDebug() << Q_FUNC_INFO;
-    emit intercept(m_number);
-}
-
-void TransferedWidget::contextMenuEvent(QContextMenuEvent *event)
-{
-    //qDebug() << Q_FUNC_INFO;
-    QMenu contextMenu;
-    contextMenu.addAction(m_interceptAction);
-    contextMenu.exec(event->globalPos());
-}
-
-TransferedWidget::~TransferedWidget()
-{
-    // qDebug() << Q_FUNC_INFO;
+    emit pickup(m_called_num);
+    emit remove_me(id());
 }

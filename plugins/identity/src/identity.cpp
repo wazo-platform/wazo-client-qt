@@ -116,34 +116,25 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     setGuiOptions();
 
-    // connect signals/slots
-    connect(b_engine, SIGNAL(updatePresence()),
-            this, SLOT(updatePresence()));
-
     connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
             this, SLOT(setOpt(const QString &, bool)));
     connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
             this, SLOT(setForward(const QString &, const QVariant &)));
-
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
-
     connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
             m_agent, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             m_agent, SLOT(updateAgentStatus(const QString &)));
-
     connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
             m_voicemail, SLOT(updateVoiceMailConfig(const QString &)));
     connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
             m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));
-
-    b_engine->setAvailState("available", true);
-    updatePresence();
+    connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresence()));
 }
 
 void IdentityDisplay::setupIcons()
@@ -182,8 +173,8 @@ void IdentityDisplay::setGuiOptions()
  */
 void IdentityDisplay::updatePresence()
 {
-    // qDebug() << Q_FUNC_INFO << b_engine->getConfig("checked_function.presence").toBool();
-    QString presence = b_engine->getAvailState();
+    if (! m_ui) return;
+    QString presence = m_ui->availstate();
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
 
     m_presencevalue->hide();
@@ -337,14 +328,15 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     m_agent->setAgentId(m_ui->xagentid());
 }
 
+/*!
+ * Update the availability dropdown list when our status is updated
+ * \param xuserid The updated user's XiVO id
+ */
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
-    if (m_ui == NULL)
-        return;
-    // qDebug() << Q_FUNC_INFO << xuserid;
-    const UserInfo * userinfo = b_engine->user(xuserid);
-    if (userinfo == NULL)
-        return;
+    if (m_ui && m_ui->xid() == xuserid) {
+        updatePresence();
+    }
 }
 
 void IdentityDisplay::idxChanged(int newidx)

@@ -77,7 +77,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         bool m_ismonitored;
         bool m_isspied;
         bool m_isholded;
-        bool m_isparked;
         // XXX atxfer currently in progress ?
         // XXX time informations
 };

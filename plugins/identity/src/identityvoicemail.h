@@ -56,11 +56,14 @@ class IdentityVoiceMail : public QWidget
     public slots:
         void updateVoiceMailConfig(const QString &);
         void updateVoiceMailStatus(const QString &);
+    protected:
+        void queryVM();
     private slots:
         void callVoiceMail();
 
     private:
         QString m_xvoicemailid;
+        bool m_initialized;
         const VoiceMailInfo * m_voicemailinfo;
 
         QGridLayout * m_layout;       //!< layout

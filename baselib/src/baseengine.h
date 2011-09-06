@@ -495,7 +495,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QString m_appliname;            //!< Application name to be displayed
         QString m_sessionid;            //!< Session id obtained after a successful login
-        QString m_forced_state;         //!< Forced state sent by the server
 
         // Status variables
         EngineState m_state;            //!< State of the engine (Logged/Not Logged)

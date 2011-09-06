@@ -66,17 +66,27 @@ void ParkingWidget::refresh()
         const QHash<QString, QVariant> & parking_bays = p->parkingBays();
         foreach (const QString key, parking_bays.keys()) {
             const QVariantMap & values = parking_bays[key].toMap();
-            QString parker = "Unknown";
-            QString time = b_engine->timeElapsed(values["parktime"].toDouble());
-            QString xcid = QString("%1/%2").arg(p->ipbxid()).arg(values["parker"].toString());
+            const QString & parker_channel = values["parker"].toString();
+            const UserInfo * parker_ui = b_engine->getUserForXChannelId(QString("%0/%1").arg(p->ipbxid()).arg(parker_channel));
+            QString parker;
+            if (parker_ui) { // Blind transfer to the parking
+                parker = parker_ui ? parker_ui->fullname() : QString();
+            } else { // Attended transfer to the parking
+                const QString & device_identity = parker_channel.split("-")[0];
+                foreach (const XInfo * p, b_engine->iterover("phone")) {
+                    if ((static_cast<const PhoneInfo *>(p))->identity() == device_identity) {
+                        foreach (const XInfo * u, b_engine->iterover("user")) {
+                            if ((static_cast<const UserInfo *>(u))->phonelist().contains(p->xid())) {
+                                parker = (static_cast<const UserInfo *>(u))->fullname();
+                            }
+                        }
+                    }
+                }
+            }
             QString exten = values["exten"].toString();
             if (! exten.isEmpty()) {
-                const ChannelInfo * c = b_engine->channel(xcid);
-                if (c && ! (c->peerdisplay().isEmpty())) {
-                    parker = c->peerdisplay();
-                }
                 QStringList l = QStringList() << exten
-                                              << time
+                                              << b_engine->timeElapsed(values["parktime"].toDouble())
                                               << values["cid_name"].toString()
                                               << parker;
                 int row = findRow(exten);
@@ -159,11 +169,14 @@ void ParkingWidget::addRow(const QStringList & list)
  */
 void ParkingWidget::setRow(int row, const QStringList & l)
 {
-    // qDebug() << Q_FUNC_INFO << row << l;
     int col = 0;
     foreach (const QString val, l) {
-        QTableWidgetItem * item = new QTableWidgetItem(val);
-        m_table->setItem(row, col++, item);
+        if (! val.isEmpty()) {
+            QTableWidgetItem * item = new QTableWidgetItem(val);
+            m_table->setItem(row, col++, item);
+        } else {
+            ++col;
+        }
     }
 }
 

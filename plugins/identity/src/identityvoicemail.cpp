@@ -41,7 +41,7 @@
 /*! \brief Constructor
  */
 IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
-    : QWidget(parent)
+    : QWidget(parent), m_initialized(false)
 {
     m_layout = new QGridLayout( this );
 
@@ -92,6 +92,19 @@ void IdentityVoiceMail::callVoiceMail()
     b_engine->actionCall("originate", "user:special:me", "user:special:myvoicemail");
 }
 
+/*! \brief Send an event to get complete voicemail status */
+void IdentityVoiceMail::queryVM()
+{
+    if (! m_initialized && m_voicemailinfo) {
+        QVariantMap command;
+        command["command"] = "mailboxcount";
+        command["mailbox"] = m_voicemailinfo->mailbox();
+        command["context"] = m_voicemailinfo->context();
+        b_engine->ipbxCommand(command);
+        m_initialized = true;
+    }
+}
+
 void IdentityVoiceMail::updateVoiceMailConfig(const QString & xvoicemailid)
 {
     if (xvoicemailid != m_xvoicemailid)
@@ -99,6 +112,7 @@ void IdentityVoiceMail::updateVoiceMailConfig(const QString & xvoicemailid)
     m_voicemailinfo = b_engine->voicemail(xvoicemailid);
     if (m_voicemailinfo == NULL)
         return;
+    queryVM();
     m_name->setText(tr("VoiceMailBox %1").arg(m_voicemailinfo->mailbox()));
 }
 

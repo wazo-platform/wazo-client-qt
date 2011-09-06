@@ -27,18 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TRANSFEREDWIDGET_H__
-#define __TRANSFEREDWIDGET_H__
+#ifndef _PARKEDWIDGET_H_
+#define _PARKEDWIDGET_H_
 
 #include "pendingwidget.h"
 
-class TransferedWidget: public PendingWidget
+class ParkedWidget: public PendingWidget
 {
 
 Q_OBJECT
 
 public:
-    TransferedWidget(const QString &, const QString &, QWidget *);
+    ParkedWidget(const QString &, const QString &, QWidget *);
     void update();
     bool toRemove() const;
 public slots:
@@ -47,8 +47,10 @@ signals:
     void pickup(const QString &);
 protected:
     void buildui();
+    QString & get_bay();
 private:
-    QString m_called_num;
+    QString m_parking_id; //!< The parking's XiVO id
+    QString m_parking_bay;
 };
 
-#endif // __TRANSFEREDWIDGET_H__
+#endif /* _PARKEDWIDGET_H_ */

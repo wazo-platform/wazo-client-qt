@@ -90,6 +90,9 @@ MainWidget::MainWidget()
             Qt::QueuedConnection);
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(confUpdated()));
+    connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresence()));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
 
     bool enableclipboard =  b_engine->getConfig("enableclipboard").toBool();
     if (enableclipboard) {
@@ -369,17 +372,72 @@ void MainWidget::createActions()
     // Availability actions :
     m_availgrp = new QActionGroup(this);
     m_availgrp->setExclusive(true);
-
-    connect(b_engine, SIGNAL(changesAvailChecks()),
-            this, SLOT(checksAvailState()));
-
-    checksAvailState();
 }
 
+/*!
+ * Change the selected state in the availability menu
+ *
+ * If this method is called without while the connections between the
+ * m_avact[state] and b_engine are up, this will also update the state
+ * on the server
+ */
 void MainWidget::checksAvailState()
 {
-    if (m_avact.contains(b_engine->getAvailState())) {
-        m_avact[b_engine->getAvailState()]->setChecked(true);
+    if (const UserInfo * u = b_engine->getXivoClientUser()) {
+        const QString & state = u->availstate();
+        if (! state.isEmpty() && m_avact.contains(state)) {
+            m_avact[state]->setChecked(true);
+            setEnabledMenus(state);
+        }
+    }
+}
+
+/*!
+ * Enable or disable menu item according to the state
+ * \param state The new state
+ */
+void MainWidget::setEnabledMenus(const QString & state)
+{
+    const QVariantMap & states = b_engine->getOptionsUserStatus();
+    if (states.contains(state)) {
+        const QStringList & allowed = states.value(state).toMap()
+            .value("allowed").toStringList();
+        foreach (const QString & presence, m_avact.keys()) {
+            bool enabled = allowed.contains(presence);
+            m_avact[presence]->setCheckable(enabled);
+            m_avact[presence]->setEnabled(enabled);
+        }
+    }
+}
+
+/*!
+ * Update the presence of the current user
+ * \param userxid The user's XiVO id
+ */
+void MainWidget::updateUserStatus(const QString & userxid)
+{
+    if (b_engine->getFullId() == userxid) {
+        const UserInfo * u = b_engine->getXivoClientUser();
+        if (u && b_engine->getOptionsUserStatus().size()) {
+            syncPresence();
+        }
+    }
+}
+
+/*!
+ * Disconnect signals for the availability menu and select the current state
+ */
+void MainWidget::syncPresence()
+{
+    if (const UserInfo * u = b_engine->getXivoClientUser()) {
+        const QString & state = u->availstate();
+        if (m_avact.contains(state)) {
+            disconnect(m_avact[state], SIGNAL(triggered()),
+                       b_engine, SLOT(setAvailability()));
+            checksAvailState();
+            connect(m_avact[state], SIGNAL(triggered()),
+                    b_engine, SLOT(setAvailability()));
+        }
     }
 }
 
@@ -586,32 +644,25 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
     }
 }
 
+/*!
+ * Fills the list of available availability states and select the current state
+ */
 void MainWidget::updatePresence()
 {
-    QString presence = b_engine->getAvailState();
-    QVariantMap presencemap = b_engine->getOptionsUserStatus();
-    // qDebug() << Q_FUNC_INFO << presence << presencemap;
-
-    if (presencemap.contains(presence)) {
-        QVariantMap details = presencemap.value(presence).toMap();
-        QStringList allowedlist = details.value("allowed").toStringList();
-        foreach (QString presencestate, presencemap.keys()) {
-            QVariantMap pdetails = presencemap.value(presencestate).toMap();
-            QString longname = pdetails.value("longname").toString();
+    const QVariantMap & presencemap = b_engine->getOptionsUserStatus();
+    foreach (const QString & presencestate, presencemap.keys()) {
+        const QVariantMap & pdetails = presencemap.value(presencestate).toMap();
+        const QString & longname = pdetails.value("longname").toString();
             if (! m_avact.contains(presencestate)) {
-                qDebug() << Q_FUNC_INFO << presence << presencestate;
                 m_avact[presencestate] = new QAction(longname, this);
                 m_avact[presencestate]->setProperty("availstate", presencestate);
-                bool isenabled = allowedlist.contains(presencestate);
-                m_avact[presencestate]->setCheckable(isenabled);
-                m_avact[presencestate]->setEnabled(isenabled);
                 connect(m_avact[presencestate], SIGNAL(triggered()),
                         b_engine, SLOT(setAvailability()));
                 m_availgrp->addAction(m_avact[presencestate]);
             }
         }
         m_avail->addActions(m_availgrp->actions());
-    }
+    syncPresence();
 }
 
 void MainWidget::clearPresence()
@@ -646,8 +697,6 @@ void MainWidget::engineStarted()
         .arg(XIVOVER)
         .arg(b_engine->getCapaApplication());
 
-    connect(b_engine, SIGNAL(updatePresence()),
-            this, SLOT(updatePresence()));
     updateAppliName();
     hideLogin();
 

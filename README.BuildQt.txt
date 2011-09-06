@@ -7,6 +7,7 @@
 ./configure \
 -static -release -fast -no-qt3support \
 -no-phonon -no-webkit -no-sql-sqlite \
+-no-nas-sound \
 -prefix ${PWD}
 
 
@@ -15,6 +16,7 @@
 configure.exe \
 -static -release -fast -no-qt3support \
 -no-phonon -no-webkit -no-sql-sqlite \
+-no-nas-sound \
 -openssl-linked \
 -L C:/${OPENSSL_PATH}/openssl-0.9.8g \
 -I C:/${OPENSSL_PATH}/openssl-0.9.8g/include \
@@ -27,6 +29,7 @@ OPENSSL_LIBS= "OPENSSL_LIBS=-lcrypto -lssl" \
 ./configure \
 -static -release -fast -no-qt3support \
 -no-phonon -no-webkit -no-sql-sqlite \
+-no-nas-sound \
 -universal \
 -prefix ${PWD}
 

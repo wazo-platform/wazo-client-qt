@@ -27,28 +27,48 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TRANSFEREDWIDGET_H__
-#define __TRANSFEREDWIDGET_H__
-
 #include "pendingwidget.h"
 
-class TransferedWidget: public PendingWidget
+#include <QDebug>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+
+#include <limits>
+
+#include "baseengine.h"
+
+unsigned int PendingWidget::counted = 0;
+
+PendingWidget::PendingWidget(const QString & phonexid, QWidget * parent)
+    :QWidget(parent), m_id(PendingWidget::counted++), m_phonexid(phonexid),
+     m_time_transfer(b_engine->timeServer()), m_layout(0), m_lbl_string(0)
 {
+    if (PendingWidget::counted == UINT_MAX) {
+        PendingWidget::counted = 0;
+    }
+}
 
-Q_OBJECT
+void PendingWidget::buildui(bool enable_pick)
+{
+    m_layout = new QHBoxLayout(this);
+    m_lbl_string = new QLabel(this);
+    m_layout->addWidget(m_lbl_string);
+    if (enable_pick) {
+        m_btn_pickup = new QPushButton(tr("Pick up"), this);
+        m_layout->addWidget(m_btn_pickup);
+        connect(m_btn_pickup, SIGNAL(clicked()), this, SLOT(doPickup()));
+    }
+    connect(this, SIGNAL(remove_me(unsigned int)),
+            parent(), SLOT(remove_pending(unsigned int)));
+}
 
-public:
-    TransferedWidget(const QString &, const QString &, QWidget *);
-    void update();
-    bool toRemove() const;
-public slots:
-    void doPickup();
-signals:
-    void pickup(const QString &);
-protected:
-    void buildui();
-private:
-    QString m_called_num;
-};
+void PendingWidget::set_string(const QString & s)
+{
+    m_lbl_string->setText(s);
+}
 
-#endif // __TRANSFEREDWIDGET_H__
+QString PendingWidget::started_since() const
+{
+    return b_engine->timeElapsed(m_time_transfer);
+}

@@ -75,6 +75,7 @@ class MainWidget : public QMainWindow
         void updatePresence();
         void showMessageBox(const QString &);
         void showWidgetOnTop(QWidget *);
+        void updateUserStatus(const QString &);
     signals:
         void functionKeyPressed(int);
     protected:
@@ -85,6 +86,8 @@ class MainWidget : public QMainWindow
 
         void addPanel(const QString &, const QString &, QWidget *);
         void removePanel(const QString &, QWidget *);
+        void syncPresence();
+        void setEnabledMenus(const QString & state);
     private:
         void createActions();  //!< Create Actions (for menus)
         void createMenus();  //!< Create Menus

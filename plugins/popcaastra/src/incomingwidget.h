@@ -1,16 +1,39 @@
+/* XiVO Client
+ * Copyright (C) 2011, Proformatique
+ *
+ * This file is part of XiVO Client.
+ *
+ * XiVO Client is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version, with a Section 7 Additional
+ * Permission as follows:
+ *   This notice constitutes a grant of such permission as is necessary
+ *   to combine or link this software, or a modified version of it, with
+ *   the OpenSSL project's "OpenSSL" library, or a derivative work of it,
+ *   and to copy, modify, and distribute the resulting work. This is an
+ *   extension of the special permission given by Trolltech to link the
+ *   Qt code with the OpenSSL library (see
+ *   <http://doc.trolltech.com/4.4/gpl.html>). The OpenSSL library is
+ *   licensed under a dual license: the OpenSSL License and the original
+ *   SSLeay license.
+ *
+ * XiVO Client is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef __INCOMINGWIDGET_H__
 #define __INCOMINGWIDGET_H__
 
-#include <QWidget>
-
-class QHBoxLayout;
-class QLabel;
-class QMouseEvent;
-class QObject;
-class QPushButton;
-class QSize;
+#include "pendingwidget.h"
 
 class UserInfo;
+class QPushButton;
 
 /*! \brief A widget to display relevant information about an incoming call
  *
@@ -18,82 +41,30 @@ class UserInfo;
  *  phone. The widget will display some information about this call and allow
  *  the user to interact with the call with a set of buttons.
  */
-class IncomingWidget : public QWidget
+class IncomingWidget: public PendingWidget
 {
     Q_OBJECT
 
-    public:
-        /*! \brief The IncomingWidget constructor
-         *  \param line The line on the phone (L1, L2, etc)
-         *  \param xchan The Xivo channel of this call
-         *  \param parent The parent widget
-         */
-        IncomingWidget(int line_num, const QString & xchan, QWidget * parent);
-        ~IncomingWidget();
-        /*! \brief Get the phone's line number for this call */
-        int line() const { return m_line; }
-        QString toString() const;
-        /*! \brief Update and refresh the widget */
-        void updateWidget();
-        const QString xChannelId() const { return m_xchannel; }
-    public slots:
-        void doAttendedTransfer();
-        void doBlindTransfer();
-        void doConf();
-        void doHangUp();    //!< Hang up the line
-        void doHold();
-        void doParkCall();  //!< Park the call
-    protected:
-        /*! \brief Build the layout of the widget */
-        void buildLayout();
-        void mousePressEvent(QMouseEvent *);
-        /*! \brief Refresh the UI to reflect a change in the data */
-        void refreshUI();
-        void timerEvent(QTimerEvent *);
-        /*! \brief Updates the widgets informations from a channel id
-         *  \param xcid Channel key */
-        void updateFromChannelInfo();
-    private:
-        void updateCallTimeLabel();
-        /*! \brief Register signals and slots */
-        void setSignalsSlots();
-    signals:
-        void doAttendedTransfer(int);
-        /*! \brief Send a blind transfer signal
-         *
-         * Send a request to the Aastra POPC xlet asking for a blind transfer
-         * \param Peer's device technology/id (SIP/abc)
-         * \param number The phone's line number
-         * \param name The peer's name
-         * \param number The peer's number
-         */
-        void doBlindTransfer(const QString &, int, const QString &, const QString &);
-        void doConf(int, const QString &);       //!< Transfer this line
-        void doHangUp(int);     //!< hang up a line
-        void doHold(int);
-        void doParkCall(int, const QString &);
-        void selectLine(int);
-    private:
-        int m_line;                 //!< The phone's line number
-        QString m_xchannel;
-        QString m_peer_name;
-        QString m_peer_number;
-        const UserInfo * m_peer;
-        QHBoxLayout * m_layout;
-        QLabel * m_lbl_line;
-        QLabel * m_lbl_name;
-        QLabel * m_lbl_exten;
-        QLabel * m_lbl_time;
-        bool m_parkedCall;
-        bool m_holdedCall;
-        double m_start;
-        QPushButton * m_btn_hangup;
-        QPushButton * m_btn_hold;
-        QPushButton * m_btn_park;
-        QPushButton * m_btn_atxfer;
-        QPushButton * m_btn_xfer;
-        QPushButton * m_btn_conf;
-        QSize * m_small_button_sz;  // Default size for the buttons
+public:
+    IncomingWidget(int line, const QString &,
+                   const QString &, QWidget *);
+    void update();
+    bool toRemove() const;
+    int line() const { return m_line; };
+public slots:
+    void doIgnore();
+    void doPickup();
+protected:
+    void buildui();
+signals:
+    void pickup(int);
+    void ignore(int);
+    void remove_me(int);
+private:
+    int m_line;
+    QString m_channel_xid;
+    QPushButton * m_btn_ignore;
+    QPushButton * m_btn_answer;
 };
 
 #endif
