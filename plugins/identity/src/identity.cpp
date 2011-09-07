@@ -91,7 +91,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(m_agent, SIGNAL(setSystrayIcon(const QString &)),
             this, SIGNAL(setSystrayIcon(const QString &)));
     m_agent->setContentsMargins(5, 0, 5, 0);
-    // m_agent->hide();
+    m_agent->hide();
 
     m_voicemail = new IdentityVoiceMail(this);
     m_voicemail->hide();
@@ -323,6 +323,8 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         }
     }
 
+    if (! m_ui->agentid().isEmpty())
+        m_agent->show();
     m_agent->setAgentId(m_ui->xagentid());
 }
 
