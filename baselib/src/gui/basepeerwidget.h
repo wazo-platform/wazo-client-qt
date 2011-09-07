@@ -75,9 +75,24 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         void dragMoveEvent(QDragMoveEvent *);
         void dropEvent(QDropEvent *);
         bool event(QEvent *);
+        QString xletName() const;
+        // Menu helper functions
+        bool isme() const;
+        void updateMenuSelf(QMenu *, QContextMenuEvent *);
+        void updateMenuPeer(QMenu *, QContextMenuEvent *);
+        void updateMenuSwitchboard(QMenu *);
+        void addChitChatMenu(QMenu *);
+        void addDialMenu(QMenu *);
+        void addEditMenu(QMenu *);
+        void addHangupMenu(QMenu *);
+        void addInterceptMenu(QMenu *);
+        void addMeetmeMenu(QMenu *);
+        void addParkingMenu(QMenu *);
+        void addSwitchboardMenu(QMenu *);
+        void addTxferMenu(QMenu *, bool);
+        void addTxferVmMenu(QMenu *);
     private:
         QList<const ChannelInfo *> loopOverChannels(const UserInfo *);
-
     signals:
         void removeFromPanel(); //! hide the widget from the containing window
         void selectedNumber(const QStringList &);

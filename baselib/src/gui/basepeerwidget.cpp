@@ -106,13 +106,12 @@ void BasePeerWidget::reloadSavedName()
  */
 void BasePeerWidget::dial()
 {
-    // qDebug() << Q_FUNC_INFO << m_ui_remote->xid() << sender();
-    if (m_ui_remote) {
-        b_engine->actionCall("dial",
-                             "dummy",
-                             QString("user:%1").arg(m_ui_remote->xid()));
+    QString number = sender()->property("number").toString();
+    qDebug() << Q_FUNC_INFO << number;
+    if (! number.isEmpty()) {
+        b_engine->actionDialNumber(number);
     } else {
-        b_engine->actionDialNumber(m_number);
+        qDebug() << Q_FUNC_INFO << "No number to dial";
     }
 }
 
@@ -128,7 +127,9 @@ void BasePeerWidget::peerdial()
     if (m_ui_remote) {
         b_engine->actionCall("originate",
                              QString("user:%1").arg(m_ui_remote->xid()),
-                             "ext:" + sender()->property("number").toString());
+                             QString("exten:%0/%1")
+                             .arg(m_ui_remote->ipbxid())
+                             .arg(sender()->property("number").toString()));
     } else {
         b_engine->actionCall("originate",
                              "ext:" + m_number,
@@ -158,8 +159,8 @@ void BasePeerWidget::intercept()
     if (m_ui_remote) {
         QString xchannel = sender()->property("xchannel").toString();
         b_engine->actionCall("intercept",
-                             "user:special:me",
-                             QString("chan:%1").arg(xchannel));
+                             QString("user:%0").arg(b_engine->getFullId()),
+                             QString("chan:%0").arg(xchannel));
     }
 }
 
@@ -171,11 +172,9 @@ void BasePeerWidget::transfer()
 {
     QString xchannel = sender()->property("xchannel").toString();
     QString src = QString("chan:%1").arg(xchannel);
-    QString dst;
-    if (m_ui_remote)
-        dst = QString("user:%1").arg(m_ui_remote->xid());
-    else
-        dst = QString("ext:%1").arg(m_number);
+    QString dst = QString("exten:%0/%1")
+        .arg(m_ui_remote->ipbxid())
+        .arg(sender()->property("number").toString());
     b_engine->actionCall("transfer", src, dst);
 }
 
@@ -185,11 +184,10 @@ void BasePeerWidget::itransfer()
 {
     QString xchannel = sender()->property("xchannel").toString();
     QString src = QString("chan:%1").arg(xchannel);
-    QString dst;
-    if (m_ui_remote)
-        dst = QString("user:%1").arg(m_ui_remote->xid());
-    else
-        dst = QString("ext:%1").arg(m_number);
+    QString dst_number = sender()->property("number").toString();
+    const QString ipbx = (m_ui_remote ? m_ui_remote->ipbxid()
+                          : m_ui_local->ipbxid());
+    QString dst = QString("exten:%0/%1").arg(ipbx).arg(dst_number);
     b_engine->actionCall("atxfer", src, dst);
 }
 
@@ -366,266 +364,336 @@ QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * use
     return channels;
 }
 
+/*!
+ * Check if this peer is the current user
+ */
+bool BasePeerWidget::isme() const
+{
+    return m_ui_local && m_ui_remote && m_ui_local == m_ui_remote;
+}
+
+/*!
+ * Add items to the contextual menu for self click
+ * \param menu The contextual menu to modify
+ * \param event The click event that was received
+ */
+void BasePeerWidget::updateMenuSelf(QMenu * menu, QContextMenuEvent * event)
+{
+    addHangupMenu(menu);
+}
+
+/*!
+ * Add items to the contextual menu for clicked peers
+ * \param menu The contextual menu to modify
+ * \param event The click event that was received
+ */
+void BasePeerWidget::updateMenuPeer(QMenu * menu, QContextMenuEvent * event)
+{
+    qDebug() << Q_FUNC_INFO;
+    addDialMenu(menu);
+    addChitChatMenu(menu);
+    addInterceptMenu(menu);
+    addMeetmeMenu(menu);
+    addTxferMenu(menu, true);
+    addTxferMenu(menu, false);
+}
+
+void BasePeerWidget::updateMenuSwitchboard(QMenu * menu)
+{
+    menu->addSeparator();
+    menu->addAction(m_removeAction);
+    menu->addAction(m_renameAction);
+}
+
+/*!
+ * Add a dial entry to the contextual menu
+ *
+ * Will also check if the user has a mobile number to add the call mobile action
+ *
+ * \param menu The contextual menu to modify
+ */
+void BasePeerWidget::addDialMenu(QMenu * menu)
+{
+    if (m_ui_remote->phonelist().size() > 1) {
+        if (QMenu * submenu = new QMenu(tr("&Call"), menu)) {
+            foreach (const QString & phonexid, m_ui_remote->phonelist()) {
+                if (const PhoneInfo * p = b_engine->phone(phonexid)) {
+                    if (QAction * action = new QAction(p->number(), this)) {
+                        action->setProperty("number", p->number());
+                        connect(action, SIGNAL(triggered()), this, SLOT(dial()));
+                        submenu->addAction(action);
+                    }
+                }
+            }
+            menu->addMenu(submenu);
+        }
+    } else  if (QAction * action = new QAction(tr("&Call"), this)) {
+        if (const PhoneInfo * p = b_engine->phone(m_ui_remote->phonelist().value(0))) {
+            action->setProperty("number", p->number());
+            connect(action, SIGNAL(triggered()), this, SLOT(dial()));
+            menu->addAction(action);
+        }
+    }
+
+    if (! m_ui_remote->mobileNumber().isEmpty()) {
+        if (QAction * call_mobile = new QAction(tr("Call &mobile"), this)) {
+            call_mobile->setProperty("number", m_ui_remote->mobileNumber());
+            connect(call_mobile, SIGNAL(triggered()), this, SLOT(dial()));
+            menu->addAction(call_mobile);
+        }
+    }
+}
+
+/*!
+ * Add a chat entry to the contextual menu
+ * \param menu The menu to modify
+ */
+void BasePeerWidget::addChitChatMenu(QMenu * menu)
+{
+    bool valid_state = (b_engine->getOptionsUserStatus().contains(
+                            m_ui_remote->availstate()));
+    if (! m_ui_remote->ctilogin().isEmpty() && valid_state) {
+        menu->addAction(m_chitchatAction);
+    }
+}
+
+/*!
+ * Add an edit entry to the contextual menu
+ */
+void BasePeerWidget::addEditMenu(QMenu * menu)
+{
+    if (m_editable) {
+        menu->addAction(tr("&Edit"), this, SLOT(edit()));
+    }
+}
+
+/*!
+ * Add an hang up action to the contextual menu
+ */
+void BasePeerWidget::addHangupMenu(QMenu * menu)
+{
+    static QStringList can_hangup = QStringList()
+        << CHAN_STATUS_LINKED_CALLER
+        << CHAN_STATUS_LINKED_CALLED;
+    const QStringList & channels = m_ui_local->xchannels();
+    foreach (const QString & channelxid, channels) {
+        if (const ChannelInfo * c = b_engine->channel(channelxid)) {
+            if (can_hangup.contains(c->commstatus())
+                || c->talkingto_kind().contains("meetme")) {
+                QAction * action = new QAction("&Hangup", this);
+                action->setProperty("xchannel", c->xid());
+                menu->addAction(action);
+                connect(action, SIGNAL(triggered()), this, SLOT(hangup()));
+            }
+        }
+    }
+}
+
+/*!
+ * Add an intercept entry in the contextual menu
+ */
+void BasePeerWidget::addInterceptMenu(QMenu * menu)
+{
+    if (! b_engine->getCapasIpbxCommands().contains("intercept")) {
+        return;
+    }
+    foreach (const QString & channelxid, m_ui_remote->xchannels()) {
+        if (const ChannelInfo * c = b_engine->channel(channelxid)) {
+            if (c->commstatus() == CHAN_STATUS_RINGING) {
+                QAction * action = new QAction(tr("&Intercept"), this);
+                action->setProperty("xchannel",
+                                    (QString("%0/%1")
+                                     .arg(c->ipbxid())
+                                     .arg(c->talkingto_id())));
+                connect(action, SIGNAL(triggered()), this, SLOT(intercept()));
+                menu->addAction(action);
+            }
+        }
+    }
+}
+
+/*!
+ * Add an invite to meetme menu
+ *
+ * If the current user is part of a conference, he can invite other peers
+ */
+void BasePeerWidget::addMeetmeMenu(QMenu * menu)
+{
+    const QStringList & my_channels = m_ui_local->xchannels();
+    foreach (const QString & meetmexid, b_engine->iterover("meetmes").keys()) {
+        if (const MeetmeInfo * m = b_engine->meetme(meetmexid)) {
+            foreach (const QString & key, m->channels().keys()) {
+                if (my_channels.contains(QString("%0/%1")
+                                         .arg(m->ipbxid()).arg(key))) {
+                    QAction * action = new QAction(tr("Invite in meetme room %0")
+                                                   .arg(m->name()), this);
+                    action->setProperty("number", m->number());
+                    connect(action, SIGNAL(triggered()), this, SLOT(peerdial()));
+                    menu->addAction(action);
+                }
+            }
+        }
+    }
+}
+
+/*!
+ * Add a parking action to the contextual menu
+ *
+ * A call can be parked if it's our correspondant only
+ */
+void BasePeerWidget::addParkingMenu(QMenu * menu)
+{
+    static QStringList can_park = QStringList()
+        << CHAN_STATUS_RINGING
+        << CHAN_STATUS_LINKED_CALLED
+        << CHAN_STATUS_LINKED_CALLER;
+
+    bool park = false;
+    const QStringList & channels = m_ui_local->xchannels();
+    QString string;
+    if (isme()) {
+        foreach (const QString & channelxid, channels) {
+            if (const ChannelInfo * c = b_engine->channel(channelxid)) {
+                if (can_park.contains(c->commstatus())) {
+                    string = tr("&Park correspondant");
+                    park = true;
+                    break;
+                }
+            }
+        }
+    } else if (m_ui_remote->isTalkingTo(m_ui_local->xid())) {
+        string = tr("&Park");
+        park = true;
+    }
+
+    if (park) {
+        QMenu * parkMenu = new QMenu(string, menu);
+        foreach (XInfo * x, b_engine->iterover("parkinglots")) {
+            ParkingInfo * p = static_cast<ParkingInfo *>(x);
+            QAction * action = new QAction(p->name(), this);
+            action->setProperty("id", p->xid());
+            if (const ChannelInfo * c = b_engine->channel(channels.value(0))) {
+                QString peers_chan = QString("%1/%2")
+                    .arg(b_engine->ipbxid()).arg(c->talkingto_id());
+                action->setProperty("xchannel", peers_chan);
+                connect (action, SIGNAL(triggered()), this, SLOT(parkcall()));
+                parkMenu->addAction(action);
+            }
+        }
+        menu->addMenu(parkMenu);
+    }
+}
+
+/*!
+ * Add switchboard entries to the contextual menu
+ */
+void BasePeerWidget::addSwitchboardMenu(QMenu * menu)
+{
+    if (xletName() == QString("XletSwitchBoard")) {
+        updateMenuSwitchboard(menu);
+    }
+}
+
+/*!
+ * Add a transfer entry to the contextual menu
+ *
+ * This entry is shown when the user has an active line
+ *
+ * \param menu The menu to modify
+ * \param blind True for blind transfer, false for attended transfer
+ */
+void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
+{
+    if (! m_ui_local->xchannels().size()) return;
+    if (m_ui_remote->isTalkingTo(m_ui_local->xid())) return;
+    QString string = blind ? tr("Direct &Transfer") : tr("&Indirect Transfer");
+
+    QStringList numbers;
+    foreach (const QString phonexid, m_ui_remote->phonelist()) {
+        if (const PhoneInfo * p = b_engine->phone(phonexid)) {
+            numbers << p->number();
+        }
+    }
+    if (! m_ui_remote->mobileNumber().isEmpty()) {
+        numbers << m_ui_remote->mobileNumber();
+    }
+
+    foreach (const QString & chanxid, m_ui_local->xchannels()) {
+        if (const ChannelInfo * c = b_engine->channel(chanxid)) {
+            if ((c->commstatus() == CHAN_STATUS_LINKED_CALLER ||
+                 c->commstatus() == CHAN_STATUS_LINKED_CALLED)
+                && ! c->talkingto_kind().contains("meetme")) {
+                QMenu * submenu = 0;
+                if (numbers.size() > 1) {
+                    submenu = new QMenu(string, menu);
+                    menu->addMenu(submenu);
+                } else {
+                    submenu = menu;
+                }
+                foreach (const QString & number, numbers) {
+                    if (QAction * action = new QAction(numbers.size() == 1 ? string : number, this)) {
+                        action->setProperty("number", number);
+                        if (blind) {
+                            action->setProperty("xchannel", QString("%0/%1").arg(c->ipbxid()).arg(c->talkingto_id()));
+                            connect(action, SIGNAL(triggered()),
+                                    this, SLOT(transfer()));
+                        } else  {
+                            action->setProperty("xchannel", c->xid());
+                            connect(action, SIGNAL(triggered()),
+                                    this, SLOT(itransfer()));
+                        }
+                        submenu->addAction(action);
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*!
+ * Add a menu entry to transfer to voicemail
+ */
+void BasePeerWidget::addTxferVmMenu(QMenu * menu)
+{
+    if (! m_ui_remote->voicemailid().isEmpty()) {
+        foreach (const QString channelxid, m_ui_local->xchannels()) {
+            if (const ChannelInfo * c = b_engine->channel(channelxid)) {
+                if (! c->talkingto_kind().contains("meetme")) {
+                    if (QAction * action = new QAction(
+                            tr("Transfer to &voice mail"), this)) {
+                        QString chan_to_transfer = QString("%0/%1")
+                            .arg(c->ipbxid()).arg(c->talkingto_id());
+                        action->setProperty("xchannel", chan_to_transfer);
+                        connect(action, SIGNAL(triggered()),
+                                this, SLOT(vmtransfer()));
+                        menu->addAction(action);
+                    }
+                }
+            }
+        }
+    }
+}
+
 /*! \brief open a context menu
  */
 void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    if (m_ui_remote == NULL)
-        return;
-    if (m_ui_local == NULL)
-        return;
-    bool isitme = false;
-    if (m_ui_local == m_ui_remote)
-        isitme = true;
+    if (! m_ui_local || ! m_ui_remote) return;
 
-    QList<const ChannelInfo *> qlci_local = loopOverChannels(m_ui_local);
-    QList<const ChannelInfo *> qlci_remote = loopOverChannels(m_ui_remote);
-    // qDebug() << Q_FUNC_INFO << b_engine->getCapasIpbxCommands()
-    // << qlci_local.count() << qlci_remote.count() << isitme;
-
-    // Construct and display the context menu
     QMenu contextMenu(this);
-    QAction * action;
-    QMenu *interceptMenu = NULL;
-    QMenu *hangupMenu = NULL;
-    QMenu *transferMenu = NULL;
-    QMenu *itransferMenu = NULL;
-    QMenu *vmtransferMenu = NULL;
-    QMenu *parkMenu = NULL;
-
-    if (parentWidget()->metaObject()->className() == QString("XletSwitchBoard")) {
-        contextMenu.addAction(m_removeAction);
-        contextMenu.addAction(m_renameAction);
-        contextMenu.addSeparator();
+    if (isme()) {
+        updateMenuSelf(&contextMenu, event);
+    } else {
+        updateMenuPeer(&contextMenu, event);
     }
+    addParkingMenu(&contextMenu);
+    addEditMenu(&contextMenu);
+    addSwitchboardMenu(&contextMenu);
+    addTxferVmMenu(&contextMenu);
 
-    // allow to dial everyone except me !
-    if (! isitme) {
-        action = new QAction("",this);
-        action->setStatusTip(tr("Call this peer"));
-
-        if (metaObject()->className() == QString("PeerWidget")) {
-            if (static_cast<PeerWidget*>(this)->pOverMobileLbl(event->pos())) {
-                action->setText(tr("&Call mobile"));
-                connect(action, SIGNAL(triggered()),
-                        this, SLOT(dialMobilePhone()));
-            }
-        }
-        if (action->text() == "") {
-            action->setText(tr("&Call"));
-            connect(action, SIGNAL(triggered()),
-                    this, SLOT(dial()));
-        }
-        contextMenu.addAction(action);
-    }
-    if (m_editable) {
-        contextMenu.addAction(tr("&Edit"), this, SLOT(edit()));
-    }
-
-    if ((!m_ui_remote->ctilogin().isEmpty()) &&
-        (b_engine->enabledFunction("chitchat"))) {
-        if (b_engine->getFullId() != m_ui_remote->xid()) {
-            contextMenu.addAction(m_chitchatAction);
-        }
-    }
-
-    struct {
-        static void aQActionMenu(QMenu *parent,
-                                 const QString &text,
-                                 const QString &statusTip,
-                                 const QVariant &thisXChannel,
-                                 QObject *on,
-                                 const char *ASLOT)
-        {
-            QAction *action = new QAction(parent);
-
-            action->setText(text);
-            action->setStatusTip(statusTip);
-            action->setProperty("xchannel", thisXChannel);
-            QObject::connect(action, SIGNAL(triggered()),
-                             on, ASLOT);
-            parent->addAction(action);
-        }
-    } build;
-
-    //qDebug() << m_ui_remote->phonelist();
-    // TODO : upgrade this when several phones per user will be supported
-    // or at least check it's working as expected
-
-    foreach(const ChannelInfo * channelinfo, qlci_local) {
-        const QString status = channelinfo->commstatus();
-        const QString text = channelinfo->peerdisplay();
-        const QString xchannel = channelinfo->xid();
-
-        /* hanging up others communication doesn't make much sense
-         * excepting in test environment or in special cases. */
-        if (isitme) {
-            if ((status == CHAN_STATUS_LINKED_CALLER) ||
-                (status == CHAN_STATUS_LINKED_CALLED)) {
-
-                if (!hangupMenu && (qlci_local.count() > 1))
-                    hangupMenu = new QMenu(tr("&Hangup"), &contextMenu);
-
-                build.aQActionMenu((hangupMenu) ? hangupMenu : &contextMenu,
-                                   qlci_local.count() > 1 ? text : tr("&Hangup"),
-                                   tr("Hangup this communication"),
-                                   xchannel,
-                                   this, SLOT(hangup()));
-            }
-            /* Parking doesn't make much sense here : people usually park their
-             * correspondants, not someone random on the switchboard */
-            if ((status == CHAN_STATUS_RINGING) ||
-                (status == CHAN_STATUS_LINKED_CALLER) ||
-                (status == CHAN_STATUS_LINKED_CALLED)) {
-
-                if (qlci_local.count() > 0) {
-                    if (! parkMenu) {
-                        parkMenu = new QMenu(tr("&Park"), &contextMenu);
-                    }
-                    foreach (XInfo * x, b_engine->iterover("parkinglots")) {
-                        ParkingInfo * p = static_cast<ParkingInfo *>(x);
-                        QAction * action = new QAction(p->name(), this);
-                        action->setProperty("id", p->xid());
-                        const ChannelInfo * c = qlci_local.value(0);
-                        if (c) {
-                          QString peers_chan = QString("%1/%2")
-                              .arg(b_engine->ipbxid()).arg(c->talkingto_id());
-                          action->setProperty("xchannel", peers_chan);
-                          connect (action, SIGNAL(triggered()), this, SLOT(parkcall()));
-                          parkMenu->addAction(action);
-                        }
-                    }
-                }
-            }
-        } else {
-            if ( ((status == CHAN_STATUS_RINGING) ||
-                  (status == CHAN_STATUS_LINKED_CALLER) ||
-                  (status == CHAN_STATUS_LINKED_CALLED)) &&
-                 (! channelinfo->isparked()) &&
-                 b_engine->getCapasIpbxCommands().contains("intercept")) {
-
-                if (!interceptMenu && (qlci_local.count() > 1))
-                    interceptMenu = new QMenu(tr("&Intercept"), &contextMenu);
-
-                build.aQActionMenu((interceptMenu)?interceptMenu:&contextMenu,
-                                   qlci_local.count() > 1 ? text : tr("&Intercept"),
-                                   tr("Intercept this communication"),
-                                   xchannel,
-                                   this, SLOT(intercept()));
-            }
-        }
-    }
-
-    // get "my" currently open channels
-    //qDebug() << m_ui_remote->xid() << ui;
-    if (! isitme) {
-        foreach(const ChannelInfo * channelinfo, qlci_local) {
-            const QString status = channelinfo->commstatus();
-            const QString text = channelinfo->peerdisplay();
-            const QString xchannel = channelinfo->xid();
-
-            if (channelinfo->talkingto_kind() == QString("<meetme>")) {
-                QAction *meetmeAction = new QAction(tr("Invite in meetme room %1")
-                                                    .arg(channelinfo->talkingto_id()),
-                                                    & contextMenu);
-                meetmeAction->setProperty("number", channelinfo->talkingto_id());
-                connect(meetmeAction, SIGNAL(triggered()),
-                        this, SLOT(peerdial()));
-                contextMenu.addAction(meetmeAction);
-            } else {
-                if (!transferMenu && (qlci_local.count() > 1))
-                    transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
-                QAction *transferAction;
-                if (transferMenu) {
-                    transferAction = new QAction(text, transferMenu);
-                    transferAction->setStatusTip(tr("Transfer this communication"));
-                } else {
-                    transferAction = new QAction(tr("Direct &Transfer"), &contextMenu);
-                    transferAction->setStatusTip(tr("Transfer to this person"));
-                }
-                QString channel_xid = (QString("%0/%1").arg(channelinfo->ipbxid())
-                                       .arg(channelinfo->talkingto_id()));
-                transferAction->setProperty("xchannel", channel_xid);
-                connect(transferAction, SIGNAL(triggered()),
-                        this, SLOT(transfer()));
-                if (transferMenu) {
-                    transferMenu->addAction(transferAction);
-                } else {
-                    contextMenu.addAction(transferAction);
-                }
-            }
-
-            if (channelinfo->talkingto_kind() != QString("<meetme>")) {
-                if (!itransferMenu && qlci_local.count() > 1) {
-                    itransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
-                }
-                QAction * itransferAction;
-                QAction * itransferCancelAction;
-                if (itransferMenu) {
-                    itransferAction = new QAction(text, itransferMenu);
-                    itransferAction->setStatusTip(tr("Transfer this communication"));
-                    itransferCancelAction = new QAction(text + " " + tr("(Cancel)"),
-                                                        itransferMenu);
-                    itransferCancelAction->setStatusTip(tr("Cancel the Transfer"));
-                } else {
-                    itransferAction = new QAction(tr("&Indirect Transfer"), &contextMenu);
-                    itransferAction->setStatusTip(tr("Transfer to this person"));
-                    itransferCancelAction = new QAction(tr("&Cancel the Transfer"), &contextMenu);
-                    itransferCancelAction->setStatusTip(tr("Cancel the Transfer"));
-                }
-                itransferAction->setProperty("xchannel", xchannel);
-                itransferCancelAction->setProperty("xchannel", xchannel);
-
-                connect(itransferAction, SIGNAL(triggered()),
-                        this, SLOT(itransfer()));
-                connect(itransferCancelAction, SIGNAL(triggered()),
-                        this, SLOT(itransfercancel()));
-
-                if (itransferMenu) {
-                    itransferMenu->addAction(itransferAction);
-                    itransferMenu->addAction(itransferCancelAction);
-                } else {
-                    contextMenu.addAction(itransferAction);
-                    contextMenu.addAction(itransferCancelAction);
-                }
-            }
-            if (m_ui_remote && channelinfo->talkingto_kind() != QString("<meetme>")) {
-                // TODO : check if this really has a Voice Mail
-                if (!vmtransferMenu && (qlci_local.count() > 1))
-                    vmtransferMenu = new QMenu(tr("Transfer to &voice mail"), &contextMenu);
-                QAction *vmtransferAction;
-                if (vmtransferMenu) {
-                    vmtransferAction = new QAction(text, vmtransferMenu);
-                    vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
-                } else {
-                    vmtransferAction = new QAction(tr("Transfer to &voice mail"), &contextMenu);
-                    vmtransferAction->setStatusTip(tr("Transfer to voice mail"));
-                }
-                vmtransferAction->setProperty("xchannel", xchannel);
-                connect(vmtransferAction, SIGNAL(triggered()),
-                        this, SLOT(vmtransfer()));
-                if (vmtransferMenu) {
-                    vmtransferMenu->addAction(vmtransferAction);
-                } else {
-                    contextMenu.addAction(vmtransferAction);
-                }
-            }
-        }
-    }
-
-    // adding submenus to context menu
-    foreach (QMenu *menu, ((QList <QMenu*>()) << interceptMenu
-                           << hangupMenu
-                           << parkMenu
-                           << transferMenu
-                           << itransferMenu
-                           << vmtransferMenu)) {
-        if (menu)
-            contextMenu.addMenu(menu);
-    }
-
-    if (!contextMenu.isEmpty())
+    if (! contextMenu.isEmpty()) {
         contextMenu.exec(event->globalPos());
+    }
 }
 
 /*!
@@ -786,4 +854,12 @@ bool BasePeerWidget::event(QEvent *e)
     }
 
     return QWidget::event(e);
+}
+
+/*!
+ * Returns the name of the parent Xlet
+ */
+QString BasePeerWidget::xletName() const
+{
+    return parentWidget()->metaObject()->className();
 }

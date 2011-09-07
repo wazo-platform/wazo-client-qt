@@ -91,7 +91,8 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         // helper methods
         QString findNumberForXChannel(const QString &) const;
-
+        QStringList xchannels() const;
+        bool isTalkingTo(const QString &) const;
     private:
         QString m_company;  //!< user company
         QString m_ctilogin;  //!< user login on cti

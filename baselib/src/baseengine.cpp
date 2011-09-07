@@ -1638,6 +1638,9 @@ void BaseEngine::actionCall(const QString & action,
     } else if (action == "refuse") {
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
+    } else if (action == "intercept") {
+        ipbxcommand["tointercept"] = dst;
+        ipbxcommand["catcher"] = src;
     }
 
     ipbxCommand(ipbxcommand);

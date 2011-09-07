@@ -167,3 +167,39 @@ QString UserInfo::toString() const
 
     return str;
 }
+
+/*!
+ * Retrieves a list of channels for this user
+ */
+QStringList UserInfo::xchannels() const
+{
+    QStringList channels;
+    foreach (const QString & phonexid, phonelist()) {
+        if (const PhoneInfo * p = b_engine->phone(phonexid)) {
+            foreach (const QString & channelxid, p->xchannels()) {
+                channels << channelxid;
+            }
+        }
+    }
+    return channels;
+}
+
+/*!
+ * Check if we are talking to another user
+ * \param rhs Other user
+ */
+bool UserInfo::isTalkingTo(const QString & rhs) const
+{
+    if (const UserInfo * u = b_engine->user(rhs)) {
+        const QStringList & peers_channel = u->xchannels();
+        foreach (const QString & channelxid, peers_channel) {
+            if (const ChannelInfo * c = b_engine->channel(channelxid)) {
+                QString identity = c->talkingto_id().split("-").value(0);
+                if (identitylist().contains(identity)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
