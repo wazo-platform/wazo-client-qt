@@ -89,8 +89,9 @@ void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
  */
 void IdentityVoiceMail::callVoiceMail()
 {
-    b_engine->actionCall("dial", "",
-                         QString("voicemail:%1").arg(m_voicemailinfo->xid()));
+    if (m_voicemailinfo)
+        b_engine->actionCall("dial", "",
+                             QString("voicemail:%1").arg(m_voicemailinfo->xid()));
 }
 
 /*! \brief Send an event to get complete voicemail status */
