@@ -1037,6 +1037,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus")
         m_config.merge(capas.value("preferences").toMap());
+        m_config["services"] = capas.value("services");
         //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
 
         /*!
