@@ -133,6 +133,10 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
             m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresence()));
+
+    // Enable/disable presence combobox if presence function has changed in config
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(updatePresence()));
 }
 
 void IdentityDisplay::setupIcons()
@@ -179,6 +183,7 @@ void IdentityDisplay::updatePresence()
 
     bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
     if (! presenceEnabled)
+        //! \todo make the server send this user's presence as disconnected
         return;
 
     disconnect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
@@ -189,6 +194,7 @@ void IdentityDisplay::updatePresence()
     if (presencemap.contains(presence)) {
         QVariantMap details = presencemap.value(presence).toMap();
         QStringList allowedlist = details.value("allowed").toStringList();
+        qDebug() << allowedlist ;
         int idx = 0;
         foreach (QString presencestate, allowedlist) {
             QVariantMap pdetails = presencemap.value(presencestate).toMap();
