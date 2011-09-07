@@ -65,8 +65,11 @@ MainWidget::MainWidget()
     m_status->setPixmap(m_pixmap_disconnected);
 
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
-    if (displayprofile)
-        statusBar()->addPermanentWidget(m_profilename);
+    statusBar()->addPermanentWidget(m_profilename);
+    if (m_profilename && displayprofile)
+        m_profilename->show();
+    else
+        m_profilename->hide();
     statusBar()->addPermanentWidget(m_status);
 
     setWindowTitle(QString("XiVO %1").arg(m_appliname));
@@ -540,6 +543,8 @@ void MainWidget::confUpdated()
     m_qlab3->setText(m_config["agentphonenumber"].toString());
     m_kpass->setChecked(m_config["keeppass"].toBool());
     m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
+    bool displayprofile = b_engine->getConfig("displayprofile").toBool();
+    m_profilename->setVisible(displayprofile);
     
     // No need to call loginKindChanged because
     // if the index is the same, no need to do anything

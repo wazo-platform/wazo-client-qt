@@ -398,7 +398,7 @@ void ConfigWidget::_insert_guisetting_tab()
     
     m_displayprofile = new QCheckBox(tr("Display the configuration profile")) ;
     m_displayprofile->setChecked(m_config["displayprofile"].toBool());
-    layout4->addRow(new WarningWidget(m_displayprofile));
+    layout4->addRow(m_displayprofile);
     
     m_activate_on_tel = new QCheckBox(tr("Activate the window when calling from external application")) ;
     m_activate_on_tel->setChecked(m_config["activate_on_tel"].toBool());
@@ -653,7 +653,7 @@ WarningWidget::WarningWidget(QWidget * widget = NULL, QString tooltip) : QWidget
     
     layout = new QHBoxLayout();
     layout->setMargin(0);
-    layout->setSpacing(0);
+    layout->setSpacing(5);
     layout->setAlignment(Qt::AlignLeft);
     setLayout(layout);
     
