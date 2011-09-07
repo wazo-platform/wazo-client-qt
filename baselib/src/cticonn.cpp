@@ -80,7 +80,7 @@ void CtiConn::ctiSocketError(QAbstractSocket::SocketError socketError)
 void CtiConn::ctiSocketClosedByRemote()
 {
     qDebug() << Q_FUNC_INFO;
-    b_engine->emitTextMessage(tr("Connection lost with XiVO CTI server"));
+    b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
     b_engine->startTryAgainTimer();
     b_engine->popupError("socket_error_remotehostclosed");
 

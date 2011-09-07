@@ -57,6 +57,7 @@ class DialPanel : public XLet
 
     public:
         DialPanel(QWidget *parent=0);
+        ~DialPanel();
 
     protected:
         void dragEnterEvent(QDragEnterEvent *);
@@ -71,6 +72,10 @@ class DialPanel : public XLet
         void textEdited(const QString &);   //!< text has changed
 
     private:
+        void loadHistory();
+        void saveHistory();
+        void addHistory(const QString &);
+
         QLabel *m_lbl;             //!< label
         QComboBox *m_input;        //!< input widget
 };

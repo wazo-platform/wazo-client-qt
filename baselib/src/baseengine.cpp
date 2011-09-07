@@ -45,7 +45,6 @@
 #include <QTranslator>
 #include <QUrl>
 #include <QLibraryInfo>
-#include <QSettings>
 #include <QSslError>
 #include <QSslSocket>
 #include <QUdpSocket>
@@ -171,7 +170,7 @@ QSettings* BaseEngine::getSettings()
 }
 
 /*!
- * Load Settings from the registery/configuration file
+ * Load Settings from the registry/configuration file
  * Use default values when settings are not found.
  */
 void BaseEngine::loadSettings()
@@ -196,17 +195,10 @@ void BaseEngine::loadSettings()
     if (m_config["logtofile"].toBool()) {
         openLogFile ();
     }
-    m_config["mainwingeometry"] = m_settings->value("display/mainwingeometry").toByteArray();
-    m_config["lastfocusedtab"] = m_settings->value("display/lastfocusedtab").toInt();
-    m_config["mainwindowstate"] = m_settings->value("display/mainwindowstate").toByteArray();
-    m_config["configtab"] = m_settings->value("display/configtab", 0).toInt();
     
     m_config["profilename"] = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + m_config["profilename"].toString();
     
-    m_config["faxhistory.geometry"] = m_settings->value("faxhistory/geometry").toByteArray();
-    m_config["faxhistory.hidenumber"] = (m_settings->value("faxhistory/hidenumber", 0).toUInt() == Qt::Checked);
-
     QString settingsversion = m_settings->value("version/xivo", __xivo_version__).toString();
 
     // this is used to make a migration from 1.0 to 1.1
@@ -218,6 +210,7 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup(m_profilename_read);
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
+        m_config["cti_port_encrypted"]    = m_settings->value("serverport_encrypted", 5013).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
@@ -235,6 +228,10 @@ void BaseEngine::loadSettings()
         m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 20*1000).toUInt();
         m_availstate = m_settings->value("availstate", "available").toString();
         m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
+        m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 0).toInt();
+        
+        m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
+        m_config["doubleclick.switchboard"] = m_settings->value("doubleclick.switchboard", "call").toString();
 
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
@@ -284,6 +281,8 @@ void BaseEngine::loadSettings()
 
 /*!
  * Save Settings to the registery/configuration file
+ *
+ * \todo automatize saving of m_config values
  */
 void BaseEngine::saveSettings()
 {
@@ -301,17 +300,11 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
-    m_settings->setValue("display/mainwingeometry", m_config["mainwingeometry"].toByteArray());
-    m_settings->setValue("display/lastfocusedtab", m_config["lastfocusedtab"].toInt());
-    m_settings->setValue("display/mainwindowstate", m_config["mainwindowstate"].toByteArray());
-    m_settings->setValue("display/configtab", m_config["configtab"].toInt());
     
-    m_settings->setValue("faxhistory/hidenumber", m_config["faxhistory.hidenumber"].toBool() ? Qt::Checked : Qt::Unchecked);
-    m_settings->setValue("faxhistory/geometry", m_config["faxhistory.geometry"].toByteArray());
-
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
         m_settings->setValue("serverport", m_config["cti_port"].toUInt());
+        m_settings->setValue("serverport_encrypted", m_config["cti_port_encrypted"].toUInt());
         m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
         m_settings->setValue("userid", m_config["userloginsimple"].toString());
         m_settings->setValue("useridopt", m_config["userloginopt"].toString());
@@ -327,6 +320,10 @@ void BaseEngine::saveSettings()
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
         m_settings->setValue("availstate", m_availstate);
         m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
+        m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
+        
+        m_settings->setValue("doubleclick.searchpanel", m_config["doubleclick.searchpanel"].toString());
+        m_settings->setValue("doubleclick.switchboard", m_config["doubleclick.switchboard"].toString());
 
         if (m_config["keeppass"].toBool())
             m_settings->setValue("password", m_config["password"].toString());
@@ -344,7 +341,22 @@ void BaseEngine::saveSettings()
             m_settings->setValue(function, m_config["checked_function." + function].toBool());
     m_settings->endGroup();
 
-    emit settingChanged(getGuiOptions("client_gui"));
+    emit settingsChanged();
+}
+
+QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const
+{
+    m_settings->beginGroup(m_profilename_read);
+        QVariant ret = m_settings->value(key, bydefault);
+    m_settings->endGroup();
+    return ret;
+}
+
+void BaseEngine::setProfileSetting(const QString & key, const QVariant & value)
+{
+    m_settings->beginGroup(m_profilename_write);
+        m_settings->setValue(key, value);
+    m_settings->endGroup();
 }
 
 void BaseEngine::setCheckedFunction(const QString & function, bool b)
@@ -416,7 +428,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << m_config["cti_port"].toUInt() << m_config["cti_encrypt"].toBool() << m_config.getSubSet("checked_function");
+    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << port_to_use() << m_config["cti_encrypt"].toBool() << m_config.getSubSet("checked_function");
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -525,7 +537,7 @@ void BaseEngine::connectSocket()
 {
     if (m_config["userloginsimple"].toString().length()) {
         if (m_config["cti_encrypt"].toBool())
-            m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
+            m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(), m_config["cti_port_encrypted"].toUInt());
         else
             m_ctiserversocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
     }
@@ -567,31 +579,6 @@ const QStringList & BaseEngine::getCapasIpbxCommands() const
     return m_capas_ipbxcommands;
 }
 
-QVariantMap BaseEngine::getGuiOptions(const QString & arg) const
-{
-    if (arg == "client_gui") {
-        return m_config.getSubSet("guioptions", BaseConfig::Unmasked);
-    } else if (arg == "merged_gui") {
-        return m_config.getSubSet("guioptions");
-    } else {
-        return m_config.getSubSet("guioptions." + arg);
-    }
-}
-
-void BaseEngine::setGuiOption(const QString &arg, const QVariant &opt)
-{
-    if (arg == "client_gui") {
-        m_config.merge(opt.toMap(), "guioptions");
-    } else {
-        m_config.merge(opt.toMap(), "guioptions." + arg);
-    }
-
-    /*!
-     * \todo Can we get saveSettings out of this function? Because we should call it explicitly in ConfigWidget::saveAndClose().
-     */
-    saveSettings();
-}
-
 const QString & BaseEngine::getCapaApplication() const
 {
     return m_appliname;
@@ -605,7 +592,7 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
     // qDebug() << Q_FUNC_INFO << "from" << m_availstate << "to" << newstate << comesFromServer;
     if (m_availstate != newstate) {
         m_availstate = newstate;
-        emit changesAvailChecks();
+            emit changesAvailChecks();
         if (! comesFromServer) {
             changeState();
         }
@@ -838,123 +825,123 @@ void BaseEngine::parseCommand(const QString &line)
         // ack from the keepalive and availstate commands previously sent
         return;
 
-        if (thisclass == "callcampaign") {
-            emit requestFileListResult(datamap.value("payload"));
-        } else if (thisclass == "sheet") {
-            // TODO : use id better than just channel name
-            // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
-            QString channel = datamap.value("channel").toString();
-            if (function == "getownership") {
-                emit gotSheetOwnership(channel);
-            } else if (function == "loseownership") {
-                emit lostSheetOwnership(channel);
-            } else if (function == "entryadded") {
-                emit sheetEntryAdded(channel, datamap.value("entry").toMap());
-            }
+    if (thisclass == "callcampaign") {
+        emit requestFileListResult(datamap.value("payload"));
+    } else if (thisclass == "sheet") {
+        // TODO : use id better than just channel name
+        // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
+        QString channel = datamap.value("channel").toString();
+        if (function == "getownership") {
+            emit gotSheetOwnership(channel);
+        } else if (function == "loseownership") {
+            emit lostSheetOwnership(channel);
+        } else if (function == "entryadded") {
+            emit sheetEntryAdded(channel, datamap.value("entry").toMap());
+        }
 
-            if (datamap.contains("payload")) {
-                QString payload;
-                QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toAscii());
-                if (datamap.value("compressed").toBool())
-                    payload = QString::fromUtf8(qUncompress(qba));
-                else
-                    payload = QString::fromUtf8(qba);
-                // will eventually call the XML parser
-                emit displayFiche(payload, false, channel);
-                if (datamap.contains("entries")) {
-                    QVariantList entries = datamap.value("entries").toList();
-                    foreach (QVariant entry, entries) {
-                        emit sheetEntryAdded(channel, entry.toMap());
-                    }
+        if (datamap.contains("payload")) {
+            QString payload;
+            QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toAscii());
+            if (datamap.value("compressed").toBool())
+                payload = QString::fromUtf8(qUncompress(qba));
+            else
+                payload = QString::fromUtf8(qba);
+            // will eventually call the XML parser
+            emit displayFiche(payload, false, channel);
+            if (datamap.contains("entries")) {
+                QVariantList entries = datamap.value("entries").toList();
+                foreach (QVariant entry, entries) {
+                    emit sheetEntryAdded(channel, entry.toMap());
                 }
             }
+        }
 
-        } else if (thisclass == "getlist") {
-            configsLists(thisclass, function, datamap);
-        } else if (thisclass == "agentrecord") {
-            emit statusRecord(datamap.value("ipbxid").toString(),
-                              datamap.value("agentid").toString(),
-                              datamap.value("status").toString());
+    } else if (thisclass == "getlist") {
+        configsLists(thisclass, function, datamap);
+    } else if (thisclass == "agentrecord") {
+        emit statusRecord(datamap.value("ipbxid").toString(),
+                          datamap.value("agentid").toString(),
+                          datamap.value("status").toString());
 
-        } else if (thisclass == "agentlisten") {
-            emit statusListen(datamap.value("ipbxid").toString(),
-                              datamap.value("agentid").toString(),
-                              datamap.value("status").toString());
-        } else if (thisclass == "serverdown") {
-            qDebug() << Q_FUNC_INFO << thisclass << datamap.value("mode").toString();
+    } else if (thisclass == "agentlisten") {
+        emit statusListen(datamap.value("ipbxid").toString(),
+                          datamap.value("agentid").toString(),
+                          datamap.value("status").toString());
+    } else if (thisclass == "serverdown") {
+        qDebug() << Q_FUNC_INFO << thisclass << datamap.value("mode").toString();
 
-        } else if (thisclass == "disconn") {
-            qDebug() << Q_FUNC_INFO << thisclass;
+    } else if (thisclass == "disconn") {
+        qDebug() << Q_FUNC_INFO << thisclass;
 
-        } else if (thisclass == "directory") {
-            emit directoryResponse(datamap.value("headers").toStringList(),
-                                   datamap.value("resultlist").toStringList());
+    } else if (thisclass == "directory") {
+        emit directoryResponse(datamap.value("headers").toStringList(),
+                               datamap.value("resultlist").toStringList());
 
-        } else if (thisclass == "faxsend") {
-            //m_filedir = datamap.value("tdirection").toString();
-            if (datamap.contains("step"))
-                qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
-            else {
-                m_fileid = datamap.value("fileid").toString();
-                m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
-            }
+    } else if (thisclass == "faxsend") {
+        //m_filedir = datamap.value("tdirection").toString();
+        if (datamap.contains("step"))
+            qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
+        else {
+            m_fileid = datamap.value("fileid").toString();
+            m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), port_to_use());
+        }
 
-        } else if (thisclass == "filetransfer") {
-            qint64 written = m_filetransfersocket->write(m_filedata + "\n");
-            qDebug() << Q_FUNC_INFO << written << datamap;
-            m_filetransfersocket->flush();
-            m_filetransfersocket->disconnectFromHost();
-            m_filedata.clear();
+    } else if (thisclass == "filetransfer") {
+        qint64 written = m_filetransfersocket->write(m_filedata + "\n");
+        qDebug() << Q_FUNC_INFO << written << datamap;
+        m_filetransfersocket->flush();
+        m_filetransfersocket->disconnectFromHost();
+        m_filedata.clear();
 
-        } else if (thisclass == "faxprogress") {
-            emit ackFax(datamap.value("status").toString(), datamap.value("reason").toString());
+    } else if (thisclass == "faxprogress") {
+        emit ackFax(datamap.value("status").toString(), datamap.value("reason").toString());
 
-        } else if (thisclass == "filelist") {
-            emit serverFileList(datamap.value("filelist").toStringList());
+    } else if (thisclass == "filelist") {
+        emit serverFileList(datamap.value("filelist").toStringList());
 
-        } else if (thisclass == "presence") {
-            QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
-            if (m_anylist.value("users").contains(id)) {
-                QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
-                QString stateid = state.value("stateid").toString();
-                QVariantMap changeme = m_config["guioptions.presence.autochangestate"].toMap();
-                if (changeme.count() && (id == m_xuserid)) {
-                    if (changeme.contains(stateid)) {
-                        QVariantMap changemeconf = changeme[stateid].toMap();
-                        m_timerid_changestate = startTimer(changemeconf.value("delaymsec").toInt());
-                        m_changestate_newstate = changemeconf.value("newstate").toString();
-                        m_changestate_oldstate = stateid;
-                    }
-                }
-                UserInfo * ui = (UserInfo *) m_anylist.value("users").value(id);
-                ui->setAvailState(stateid);
-                if (id == m_xuserid) {
-                    setAvailState(stateid, true);
-                    emit updatePresence();
+    } else if (thisclass == "presence") {
+        QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
+        if (m_anylist.value("users").contains(id)) {
+            QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
+            QString stateid = state.value("stateid").toString();
+            QVariantMap changeme = m_config["guioptions.presence.autochangestate"].toMap();
+            if (changeme.count() && (id == m_xuserid)) {
+                if (changeme.contains(stateid)) {
+                    QVariantMap changemeconf = changeme[stateid].toMap();
+                    m_timerid_changestate = startTimer(changemeconf.value("delaymsec").toInt());
+                    m_changestate_newstate = changemeconf.value("newstate").toString();
+                    m_changestate_oldstate = stateid;
                 }
             }
+            UserInfo * ui = (UserInfo *) m_anylist.value("users").value(id);
+            ui->setAvailState(stateid);
+            if (id == m_xuserid) {
+                setAvailState(stateid, true);
+                emit updatePresence();
+            }
+        }
 
-        } else if (thisclass == "featuresget") {
-            QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
-            resetFeatures();
-            foreach (QString featurekey, featuresget_map.keys()) {
-                initFeatureFields(featurekey);
-            }
-            emit emitTextMessage(tr("Received Services Data"));
-        } else if (thisclass == "featuresput") {
-            QVariantMap featuresput_map = datamap.value("payload").toMap();
-            if (m_monitored_xuserid == datamap.value("userid").toString()) {
-                if (featuresput_map.isEmpty()) {
-                    emit featurePutIsKO();
-                    emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
-                } else {
-                    emit featurePutIsOK();
-                    foreach (QString featurekey, featuresput_map.keys()) {
-                        initFeatureFields(featurekey);
-                    }
-                    emit emitTextMessage("");
+    } else if (thisclass == "featuresget") {
+        QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
+        resetFeatures();
+        foreach (QString featurekey, featuresget_map.keys()) {
+            initFeatureFields(featurekey);
+        }
+        emit emitTextMessage(tr("Received Services Data"));
+    } else if (thisclass == "featuresput") {
+        QVariantMap featuresput_map = datamap.value("payload").toMap();
+        if (m_monitored_xuserid == datamap.value("userid").toString()) {
+            if (featuresput_map.isEmpty()) {
+                emit featurePutIsKO();
+                emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
+            } else {
+                emit featurePutIsOK();
+                foreach (QString featurekey, featuresput_map.keys()) {
+                    initFeatureFields(featurekey);
                 }
+                emit emitTextMessage("");
             }
+        }
 
 //         } else if (thisclass == "features") {
 //             if (function == "update") {
@@ -964,160 +951,162 @@ void BaseEngine::parseCommand(const QString &line)
 //                         initFeatureFields(featurekey);
 //             }
 
-        } else if (thisclass == "login_id") {
-            if (datamap.contains("error_string")) {
-                stopConnection();
-                clearInternalData();
-                setState(ENotLogged);
-                popupError(datamap.value("error_string").toString());
-            } else {
-                m_sessionid = datamap.value("sessionid").toString();
-                QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_config["password"].toString());
-                QCryptographicHash hidepass(QCryptographicHash::Sha1);
-                QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
-                QVariantMap command;
-                command["class"] = "login_pass";
-                command["hashedpassword"] = QString(res);
-                sendJsonCommand(command);
-            }
-
-        } else if (thisclass == "login_pass") {
-            if (datamap.contains("error_string")) {
-                stopConnection();
-                clearInternalData();
-                setState(ENotLogged);
-                popupError(datamap.value("error_string").toString());
-            } else {
-                QStringList capas = datamap.value("capalist").toStringList();
-                QVariantMap command;
-                command["class"] = "login_capas";
-                if (capas.size() == 1)
-                    command["capaid"] = capas[0];
-                else if (capas.size() == 0) {
-                    command["capaid"] = "";
-                } else {
-                    if (m_config["userloginopt"].toString().size() > 0) {
-                        if (capas.contains(m_config["userloginopt"].toString()))
-                            command["capaid"] = m_config["userloginopt"].toString();
-                        else
-                            command["capaid"] = capas[0];
-                    } else
-                        command["capaid"] = capas[0];
-                }
-
-                switch(m_config["guioptions.loginkind"].toInt()) {
-                case 0:
-                    command["loginkind"] = "user";
-                    break;
-                case 2:
-                    command["agentlogin"] = "now";
-                case 1:
-                    command["loginkind"] = "agent";
-                    command["agentphonenumber"] = m_config["agentphonenumber"].toString();
-                    break;
-                }
-
-                if (m_config["checked_function.presence"].toBool())
-                    command["state"] = m_availstate;
-                else
-                    command["state"] = __nopresence__;
-                /*!
-                 * \todo To be deleted, when the server will accept it
-                 */
-                command["lastconnwins"] = false;
-                sendJsonCommand(command);
-            }
-
-        } else if (thisclass == "login_capas") {
-            // qDebug() << "login_capas_ok" << datamap;
-            m_ipbxid = datamap.value("ipbxid").toString();
-            m_userid = datamap.value("userid").toString();
-            m_xuserid = QString("%1/%2").arg(m_ipbxid).arg(m_userid);
-
-            m_appliname = datamap.value("appliname").toString();
-            m_capaxlets = datamap.value("capaxlets").toList();
-
-            QVariantMap capas = datamap.value("capas").toMap();
-            m_options_userstatus = capas.value("userstatus").toMap();
-            m_options_phonestatus = capas.value("phonestatus").toMap();
-            m_options_channelstatus = capas.value("channelstatus").toMap();
-            m_options_agentstatus = capas.value("agentstatus").toMap();
-            m_capas_regcommands = capas.value("regcommands").toStringList();
-            m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
-            m_capafuncs = capas.value("functions").toStringList();
-
-            // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus")
-            m_config.merge(capas.value("preferences").toMap());
-            //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
-
-            /*!
-             * \todo To be simplified
-             */
-            QVariantMap tmp;
-            QStringList todisp;
-            m_config["checked_function.switchboard"] = true;
-            foreach (QString function, m_capafuncs)
-                if (m_config.contains("checked_function." + function)
-                    && m_config["checked_function." + function].toBool())
-                        todisp.append(function);
-            tmp["functions"] = todisp;
-            m_config["guioptions.server_funcs"] = tmp;
-
-            //qDebug() << "clientXlets" << XletList;
-            qDebug() << "\n";
-            qDebug() << "capaxlets" << m_capaxlets;
-            qDebug() << "capafuncs" << m_capafuncs;
-            qDebug() << "appliname" << m_appliname;
-            qDebug() << "\n";
-
-            QString urltolaunch = m_config["guioptions.loginwindow.url"].toString();
-            if (! urltolaunch.isEmpty()) {
-                urltolaunch.replace("{xc-username}", m_config["userloginsimple"].toString());
-                urltolaunch.replace("{xc-password}", m_config["password"].toString());
-                this->urlAuto(urltolaunch);
-            }
-
-            // XXXX m_capafuncs => config file
-            // m_enabled_function's purposes are :
-            // - to keep track of the user's true rights
-            foreach (QString function, CheckFunctions)
-                if (m_capafuncs.contains(function))
-                    m_enabled_function[function] = true;
-                else
-                    m_enabled_function[function] = false;
-
-            // if no capa ?
-            // stopConnection();
-            // clearInternalData();
-            // setState(ENotLogged);
-            // popupError("no_capability");
-
-            fetchIPBXList();
-            setState(ELogged); // calls logged()
-            m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
-            m_attempt_loggedin = true;
-
-        } else if (thisclass == "disconnect") {
-            qDebug() << thisclass << datamap;
-            QString type = datamap.value("type").toString();
+    } else if (thisclass == "login_id") {
+        if (datamap.contains("error_string")) {
             stopConnection();
             clearInternalData();
             setState(ENotLogged);
-            if (type=="force") {
-                m_forced_to_disconnect = true; // disable autoreconnect
-                popupError("forcedisconnected");
-            } else {
-                popupError("disconnected");
-            }
-        } else if (thisclass == "ipbxcommand") {
-        } else if (thisclass == "getipbxlist") {
-            m_ipbxlist = datamap.value("ipbxlist").toStringList();
-            fetchLists();
-
+            popupError(datamap.value("error_string").toString());
         } else {
-            if (replyid.isEmpty())
-                qDebug() << Q_FUNC_INFO << "unknown server command class" << thisclass << datamap;
+            m_sessionid = datamap.value("sessionid").toString();
+            QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_config["password"].toString());
+            QCryptographicHash hidepass(QCryptographicHash::Sha1);
+            QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
+            QVariantMap command;
+            command["class"] = "login_pass";
+            command["hashedpassword"] = QString(res);
+            sendJsonCommand(command);
         }
+
+    } else if (thisclass == "login_pass") {
+        if (datamap.contains("error_string")) {
+            stopConnection();
+            clearInternalData();
+            setState(ENotLogged);
+            popupError(datamap.value("error_string").toString());
+        } else {
+            QStringList capas = datamap.value("capalist").toStringList();
+            QVariantMap command;
+            command["class"] = "login_capas";
+            if (capas.size() == 1)
+                command["capaid"] = capas[0];
+            else if (capas.size() == 0) {
+                command["capaid"] = "";
+            } else {
+                if (m_config["userloginopt"].toString().size() > 0) {
+                    if (capas.contains(m_config["userloginopt"].toString()))
+                        command["capaid"] = m_config["userloginopt"].toString();
+                    else
+                        command["capaid"] = capas[0];
+                } else
+                    command["capaid"] = capas[0];
+            }
+
+            switch(m_config["guioptions.loginkind"].toInt()) {
+            case 0:
+                command["loginkind"] = "user";
+                break;
+            case 2:
+                command["agentlogin"] = "now";
+            case 1:
+                command["loginkind"] = "agent";
+                command["agentphonenumber"] = m_config["agentphonenumber"].toString();
+                break;
+            }
+
+            if (m_config["checked_function.presence"].toBool())
+                command["state"] = m_availstate;
+            else
+                command["state"] = __nopresence__;
+
+            /*!
+             * \todo To be deleted, when the server will accept it
+             */
+            command["lastconnwins"] = false;
+
+            sendJsonCommand(command);
+        }
+
+    } else if (thisclass == "login_capas") {
+        // qDebug() << "login_capas_ok" << datamap;
+        m_ipbxid = datamap.value("ipbxid").toString();
+        m_userid = datamap.value("userid").toString();
+        m_xuserid = QString("%1/%2").arg(m_ipbxid).arg(m_userid);
+
+        m_appliname = datamap.value("appliname").toString();
+        m_capaxlets = datamap.value("capaxlets").toList();
+
+        QVariantMap capas = datamap.value("capas").toMap();
+        m_options_userstatus = capas.value("userstatus").toMap();
+        m_options_phonestatus = capas.value("phonestatus").toMap();
+        m_options_channelstatus = capas.value("channelstatus").toMap();
+        m_options_agentstatus = capas.value("agentstatus").toMap();
+        m_capas_regcommands = capas.value("regcommands").toStringList();
+        m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
+        m_capafuncs = capas.value("functions").toStringList();
+
+        // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus")
+        m_config.merge(capas.value("preferences").toMap());
+        //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
+
+        /*!
+         * \todo To be simplified
+         */
+        QVariantMap tmp;
+        QStringList todisp;
+        m_config["checked_function.switchboard"] = true;
+        foreach (QString function, m_capafuncs)
+            if (m_config.contains("checked_function." + function)
+                && m_config["checked_function." + function].toBool())
+                    todisp.append(function);
+        tmp["functions"] = todisp;
+        m_config["guioptions.server_funcs"] = tmp;
+
+        //qDebug() << "clientXlets" << XletList;
+        qDebug() << "\n";
+        qDebug() << "capaxlets" << m_capaxlets;
+        qDebug() << "capafuncs" << m_capafuncs;
+        qDebug() << "appliname" << m_appliname;
+        qDebug() << "\n";
+
+        QString urltolaunch = m_config["guioptions.loginwindow.url"].toString();
+        if (! urltolaunch.isEmpty()) {
+            urltolaunch.replace("{xc-username}", m_config["userloginsimple"].toString());
+            urltolaunch.replace("{xc-password}", m_config["password"].toString());
+            this->urlAuto(urltolaunch);
+        }
+
+        // XXXX m_capafuncs => config file
+        // m_enabled_function's purposes are :
+        // - to keep track of the user's true rights
+        foreach (QString function, CheckFunctions)
+            if (m_capafuncs.contains(function))
+                m_enabled_function[function] = true;
+            else
+                m_enabled_function[function] = false;
+
+        // if no capa ?
+        // stopConnection();
+        // clearInternalData();
+        // setState(ENotLogged);
+        // popupError("no_capability");
+
+        fetchIPBXList();
+        setState(ELogged); // calls logged()
+        m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
+        m_attempt_loggedin = true;
+
+    } else if (thisclass == "disconnect") {
+        qDebug() << thisclass << datamap;
+        QString type = datamap.value("type").toString();
+        stopConnection();
+        clearInternalData();
+        setState(ENotLogged);
+        if (type=="force") {
+            m_forced_to_disconnect = true; // disable autoreconnect
+            popupError("forcedisconnected");
+        } else {
+            popupError("disconnected");
+        }
+    } else if (thisclass == "ipbxcommand") {
+    } else if (thisclass == "getipbxlist") {
+        m_ipbxlist = datamap.value("ipbxlist").toStringList();
+        fetchLists();
+
+    } else {
+        if (replyid.isEmpty())
+            qDebug() << Q_FUNC_INFO << "unknown server command class" << thisclass << datamap;
+    }
 }
 
 void BaseEngine::configsLists(const QString & thisclass, const QString & function,
@@ -1412,7 +1401,7 @@ void BaseEngine::popupError(const QString & errorid)
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
             .arg(m_config["userloginsimple"].toString()).arg(m_config["company"].toString())
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
     } else if (errorid.startsWith("capaid_undefined:")) {
@@ -1422,7 +1411,7 @@ void BaseEngine::popupError(const QString & errorid)
     // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
         errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
 
     // socket errors - while attempting to connect
     } else if (errorid.toLower() == "socket_error_hostnotfound") {
@@ -1435,7 +1424,7 @@ void BaseEngine::popupError(const QString & errorid)
     } else if (errorid.toLower() == "socket_error_connectionrefused") {
         errormsg = tr("There seems to be a machine running on this IP address %1, "
                       "and either no CTI server is running, or your port %2 is wrong.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "socket_error_network") {
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
                       "- no external route defined to access this IP address (~ no timeout)\n"
@@ -1445,26 +1434,26 @@ void BaseEngine::popupError(const QString & errorid)
     } else if (errorid.toLower() == "socket_error_sslhandshake") {
         errormsg = tr("It seems that the server with IP address %1 does not accept encryption on "
                       "its port %2. Please change either your port or your encryption setting.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "socket_error_unknown") {
         errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(ipinfo[1]).arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(ipinfo[1]).arg(m_config["cti_address"].toString()).arg(port_to_use());
 
     // socket errors - once connected
     } else if (errorid.toLower() == "socket_error_remotehostclosed") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
 
     } else if (errorid.toLower() == "server_stopped") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.toLower() == "server_reloaded") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
-            .arg(m_config["cti_address"].toString()).arg(m_config["cti_port"].toUInt());
+            .arg(m_config["cti_address"].toString()).arg(port_to_use());
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
@@ -1698,24 +1687,40 @@ QVariantMap BaseEngine::getConfig() const
 /*!
  * \return the setting indexed by the parameter
  */
-QVariant BaseEngine::getConfig(const QString &setting) const
+QVariant BaseEngine::getConfig(const QString & setting) const
 {
     return m_config[setting];
 }
 
-void BaseEngine::setConfig(QVariantMap qvm)
+// qvm may not contain every key, only the ones that need to be modified
+void BaseEngine::setConfig(const QVariantMap & qvm)
 {
-    if (m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt()) {
-        if (m_timerid_tryreconnect > 0) {
-            killTimer(m_timerid_tryreconnect);
-            m_timerid_tryreconnect = startTimer(qvm["trytoreconnectinterval"].toUInt());
-        }
-    }
+    bool reload_tryagain = qvm.contains("trytoreconnectinterval") &&
+                           m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
+    bool reload_keepalive = qvm.contains("keepaliveinterval") &&
+                            m_config["keepaliveinterval"].toUInt() != qvm["keepaliveinterval"].toUInt();
+    bool change_translation = qvm.contains("forcelocale") &&
+                            m_config["forcelocale"].toUInt() != qvm["forcelocale"].toUInt();
+
     m_config.merge(qvm);
     
-    setUserLogin (qvm["userlogin"].toString());
-    changeTranslation();
+    if (reload_tryagain) {
+        stopTryAgainTimer();
+        startTryAgainTimer();
+    }
+    if (reload_keepalive) {
+        stopKeepAliveTimer();
+        m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
+    }
     
+    setUserLogin(m_config["userlogin"].toString());
+    
+    if (change_translation)
+        changeTranslation();
+    
+    // Update presence combobox in XLet identity
+    emit updatePresence();
+
     // qDebug() << m_config.toString();
     
     saveSettings();
@@ -1747,12 +1752,13 @@ void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
     }
 }
 
-/*!
- * \todo Historysize only useful for history plugin. To be replaced by getConfig("historysize")
- */
-uint BaseEngine::historySize() const
+uint BaseEngine::port_to_use() const
 {
-    return m_config["historysize"].toInt();
+    if (! m_config["cti_encrypt"].toBool()) {
+        return m_config["cti_port"].toUInt();
+    } else {
+        return m_config["cti_port_encrypted"].toUInt();
+    }
 }
 
 void BaseEngine::initFeatureFields(const QString & field)
@@ -1929,23 +1935,6 @@ void BaseEngine::fetchLists()
         ipbxcommand["agentids"] = "agent:special:me";
         ipbxcommand["agentphonenumber"] = m_config["agentphonenumber"].toString();
         ipbxCommand(ipbxcommand);
-    }
-}
-
-/*!
- * Setter for the m_keepaliveinterval property.
- * if the value is changed, existing timer is restarted.
- *
- * \sa keepaliveinterval
- */
-void BaseEngine::setKeepaliveinterval(uint i)
-{
-    if (i != m_config["keepaliveinterval"].toUInt()) {
-        m_config["keepaliveinterval"] = i;
-        if (m_timerid_keepalive > 0) {
-            killTimer(m_timerid_keepalive);
-            m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
-        }
     }
 }
 

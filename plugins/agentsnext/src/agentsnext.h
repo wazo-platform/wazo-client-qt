@@ -57,7 +57,7 @@ class XletAgentsNext : public XLet
         void loadQueueGroups();
 
     public slots:
-        void setGuiOptions(const QVariantMap &);
+        void fetchConfig();
         void newAgentList(const QStringList &);
         void newQueueList(const QStringList &);
         void setQueueOrder(const QVariant &);

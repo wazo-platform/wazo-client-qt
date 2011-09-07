@@ -87,6 +87,7 @@ QSize PeersLayout::size() const
  */
 void PeersLayout::addWidget(QWidget *w, QPoint pos)
 {
+    // qDebug() << Q_FUNC_INFO;
     addChildWidget(w);
     QWidgetItem * wi = new QWidgetItem(w);
     // wi->setAlignment(Qt::AlignCenter);

@@ -101,10 +101,10 @@ static bool findPluginDir()
     pluginDirFound = false;
 #ifndef Q_WS_MAC
     if (pluginDir.cd("plugins")) {
-        // if there is a plugins dir next to where, the application remain
+        // if there is a plugins dir next to where the application remain
         pluginDirFound = true;
     } else {
-        if (pluginDir.cd("/usr/share/xivoclient/plugins")) {
+        if (pluginDir.cd(PLUGINDIR)) { // PLUGINDIR defined in xivoclient.pro
             //  the xivo_client might be installed properly for all the user on an unix box
             pluginDirFound = true;
         } else {
@@ -115,7 +115,7 @@ static bool findPluginDir()
     QString pluginDirPath = qApp->applicationDirPath() + "/../Resources/plugins";
     pluginDirFound = pluginDir.cd(pluginDirPath);
     if (!pluginDirFound) {
-        qDebug() << Q_FUNC_INFO << "cannot find plugins directory (tryed: " << pluginDirPath << ")";
+        qDebug() << Q_FUNC_INFO << "cannot find plugins directory (tried: " << pluginDirPath << ")";
     }
 #endif
 
@@ -132,49 +132,49 @@ static bool findPluginDir()
  *  \return a pointer to the XLet or NULL if it was not found
  */
 namespace XLetFactory {
-XLet* spawn(const QString &id, QWidget *parent)
-{
-    if (initied == false) {
-        init();
-        findPluginDir();
-    }
+    XLet* spawn(const QString &id, QWidget *parent)
+    {
+        if (initied == false) {
+            init();
+            findPluginDir();
+        }
 
-    XLet *xlet = NULL;
+        XLet *xlet = NULL;
 
-    newXLetProto construct = xletList.value(id);
+        newXLetProto construct = xletList.value(id);
 
-    if (construct) {
-        xlet = construct(parent);
-    } else {
-        QString fileName =
+        if (construct) {
+            xlet = construct(parent);
+        } else {
+            QString fileName =
 #ifdef Q_WS_WIN
-        id + "plugin.dll";
+            id + "plugin.dll";
 #endif
 #ifdef Q_WS_X11
-        "lib" + id + "plugin.so";
+            "lib" + id + "plugin.so";
 #endif
 #ifdef Q_WS_MAC
-        "lib" + id + "plugin.dylib";
+            "lib" + id + "plugin.dylib";
 #endif
 
-        qDebug() << Q_FUNC_INFO << "Trying to load plugin" << fileName;
-        qDebug() << Q_FUNC_INFO << "location" << pluginDir.absoluteFilePath(fileName);
-        QPluginLoader loader(pluginDir.absoluteFilePath(fileName));
-        QObject *plugin = loader.instance();
+            qDebug() << Q_FUNC_INFO << "Trying to load plugin" << fileName;
+            qDebug() << Q_FUNC_INFO << "location" << pluginDir.absoluteFilePath(fileName);
+            QPluginLoader loader(pluginDir.absoluteFilePath(fileName));
+            QObject *plugin = loader.instance();
 
-        if (plugin) {
-            XLetInterface *xleti = qobject_cast<XLetInterface *>(plugin);
-            if (xleti) {
-                xlet = xleti->newXLetInstance(parent);
+            if (plugin) {
+                XLetInterface *xleti = qobject_cast<XLetInterface *>(plugin);
+                if (xleti) {
+                    xlet = xleti->newXLetInstance(parent);
+                } else {
+                    qDebug() << Q_FUNC_INFO << "failed to cast plugin loaded to XLetInterface";
+                }
             } else {
-                qDebug() << Q_FUNC_INFO << "failed to cast plugin loaded to XLetInterface";
+                qDebug() << Q_FUNC_INFO << "failed to load plugin :"<< loader.errorString();
             }
-        } else {
-            qDebug() << Q_FUNC_INFO << "failed to load plugin :"<< loader.errorString();
         }
-    }
 
-    return xlet;
-}
+        return xlet;
+    }
 }
 

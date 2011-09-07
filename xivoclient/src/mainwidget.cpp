@@ -59,12 +59,13 @@ MainWidget::MainWidget()
 {
     b_engine->setParent(this); // take ownership of the engine object
     
-    m_config = b_engine->getConfig();
+    fetchConfig();
     
     m_appliname = tr("Client %1").arg(XIVOVER);
     m_status->setPixmap(m_pixmap_disconnected);
 
-    if (m_config["displayprofile"].toBool())
+    bool displayprofile = b_engine->getConfig("displayprofile").toBool();
+    if (displayprofile)
         statusBar()->addPermanentWidget(m_profilename);
     statusBar()->addPermanentWidget(m_status);
 
@@ -87,13 +88,13 @@ MainWidget::MainWidget()
     connect(b_engine, SIGNAL(emitMessageBox(const QString &)),
             this, SLOT(showMessageBox(const QString &)),
             Qt::QueuedConnection);
-    connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
+    connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(confUpdated()));
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresence()));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
 
-    bool enableclipboard = m_config["enableclipboard"].toBool();
+    bool enableclipboard =  b_engine->getConfig("enableclipboard").toBool();
     if (enableclipboard) {
         m_clipboard = QApplication::clipboard();
         connect(m_clipboard, SIGNAL(selectionChanged()),
@@ -104,7 +105,8 @@ MainWidget::MainWidget()
     }
 
     resize(500, 440);
-    restoreGeometry(m_config["mainwingeometry"].toByteArray());
+    QSettings *qsettings = b_engine->getSettings();
+    restoreGeometry(qsettings->value("display/mainwingeometry").toByteArray());
 
     b_engine->logAction("application started on " + b_engine->osname());
 
@@ -118,7 +120,9 @@ MainWidget::MainWidget()
 
     makeLoginWidget();
     showLogin();
-    if ((m_withsystray && (b_engine->getConfig("systrayed").toBool() == false)) || (! m_withsystray)) {
+    
+    bool systrayed = b_engine->getConfig("systrayed").toBool();
+    if ((m_withsystray && ( systrayed == false)) || (! m_withsystray)) {
         show();
     }
     setFocusPolicy(Qt::StrongFocus);
@@ -130,7 +134,7 @@ MainWidget::MainWidget()
  */
 MainWidget::~MainWidget()
 {
-    savePositions();
+    b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
     b_engine->logAction("application quit");
 }
 
@@ -229,7 +233,7 @@ void MainWidget::setAppearance(const QVariantList & dockoptions)
 {
     foreach (QVariant dproperties, dockoptions) {
         QStringList dopt = dproperties.toStringList();
-        if (dopt.size() > 1) {
+        if (dopt.size() > 0) {
             QString wname = dopt[0];
             if ((wname == "customerinfo") && (! b_engine->checkedFunction(wname)))
                 continue;
@@ -288,7 +292,8 @@ void MainWidget::loginKindChanged(int index)
         m_qlab3->hide();
     }
 
-    if (m_config["showagselect"].toBool()) {
+    bool showagselect = b_engine->getConfig("showagselect").toBool();
+    if (showagselect) {
         if (index > 0) {
             m_lab3->show();
             m_qlab3->show();
@@ -515,10 +520,21 @@ void MainWidget::showConfDialog()
     delete configwindow;
 }
 
+void MainWidget::fetchConfig()
+{
+    foreach (QString key, QStringList() << "userlogin"
+                                        << "password"
+                                        << "agentphonenumber"
+                                        << "keeppass"
+                                        << "guioptions.loginkind") {
+        m_config[key] = b_engine->getConfig(key);
+    }
+}
+
 void MainWidget::confUpdated()
 {
     // qDebug() << Q_FUNC_INFO;
-    m_config = b_engine->getConfig();
+    fetchConfig();
     m_qlab1->setText(m_config["userlogin"].toString());
     m_qlab2->setText(m_config["password"].toString());
     m_qlab3->setText(m_config["agentphonenumber"].toString());
@@ -637,15 +653,15 @@ void MainWidget::updatePresence()
     foreach (const QString & presencestate, presencemap.keys()) {
         const QVariantMap & pdetails = presencemap.value(presencestate).toMap();
         const QString & longname = pdetails.value("longname").toString();
-        if (! m_avact.contains(presencestate)) {
-            m_avact[presencestate] = new QAction(longname, this);
-            m_avact[presencestate]->setProperty("availstate", presencestate);
-            connect(m_avact[presencestate], SIGNAL(triggered()),
-                    b_engine, SLOT(setAvailability()));
-            m_availgrp->addAction(m_avact[presencestate]);
+            if (! m_avact.contains(presencestate)) {
+                m_avact[presencestate] = new QAction(longname, this);
+                m_avact[presencestate]->setProperty("availstate", presencestate);
+                connect(m_avact[presencestate], SIGNAL(triggered()),
+                        b_engine, SLOT(setAvailability()));
+                m_availgrp->addAction(m_avact[presencestate]);
+            }
         }
-    }
-    m_avail->addActions(m_availgrp->actions());
+        m_avail->addActions(m_availgrp->actions());
     syncPresence();
 }
 
@@ -718,12 +734,12 @@ void MainWidget::engineStarted()
     }
 
     qDebug() << Q_FUNC_INFO << "the xlets have been created";
-    m_tabwidget->setCurrentIndex(m_config["lastfocusedtab"].toInt());
+    m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
 
     foreach (QString name, m_docks.keys())
         m_docks[name]->show();
     // restore the saved state AFTER showing the docks
-    restoreState(m_config["mainwindowstate"].toByteArray());
+    restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 
     if ((m_resizingHelper == 0)&&(m_docks.size())) {
         // we gonna resize this widget in resizeEvent
@@ -816,9 +832,9 @@ void MainWidget::engineStopped()
 {
     // qDebug() << Q_FUNC_INFO;
     connectionStateChanged();
-    m_config["mainwindowstate"] = saveState();
+    b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
     if (m_tabwidget->currentIndex() > -1) {
-        m_config["lastfocusedtab"] = m_tabwidget->currentIndex();
+        b_engine->getSettings()->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
     }
 
     foreach (QString dname, m_docknames) {
@@ -850,13 +866,6 @@ void MainWidget::engineStopped()
     clearAppearance();
     m_appliname = tr("Client %1").arg(XIVOVER);
     updateAppliName();
-}
-
-void MainWidget::savePositions()
-{
-    // qDebug() << Q_FUNC_INFO;
-    m_config["mainwingeometry"] = saveGeometry();
-    b_engine->setConfig(m_config);
 }
 
 void MainWidget::resizeEvent(QResizeEvent *ev)

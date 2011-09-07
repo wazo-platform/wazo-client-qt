@@ -78,8 +78,11 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_presencevalue->setProperty("function", "presence");
     m_presencevalue->setContentsMargins(0, 0, 10, 0);
 
-    connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
-            this, SLOT(idxChanged(const QString &)));
+    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
+    m_presencevalue->setVisible(presenceEnabled);
+
+    connect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(idxChanged(int)));
 
     m_icon_user = new QLabel(this);
 
@@ -111,8 +114,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
 
-    m_functions = b_engine->getConfig().keys();
-    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
+    setGuiOptions();
 
     connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
             this, SLOT(setForward(const QString &, const QVariant &)));
@@ -148,22 +150,25 @@ void IdentityDisplay::setupIcons()
     m_glayout->setColumnStretch(10, 1);
 }
 
-void IdentityDisplay::setGuiOptions(const QVariantMap & optionsMap)
+void IdentityDisplay::setGuiOptions()
 {
-    if (optionsMap.contains("xlet.identity.fontname") && optionsMap.contains("xlet.identity.fontsize"))
-        m_gui_font = QFont(optionsMap.value("xlet.identity.fontname").toString(),
-                           optionsMap.value("xlet.identity.fontsize").toInt());
-    if (optionsMap.contains("xlet.identity.iconsize"))
-        m_gui_buttonsize = optionsMap.value("xlet.identity.iconsize").toInt();
+    if (b_engine->getConfig().contains("xlet.identity.fontname") && b_engine->getConfig().contains("xlet.identity.fontsize"))
+        m_gui_font = QFont(b_engine->getConfig("xlet.identity.fontname").toString(),
+                           b_engine->getConfig("xlet.identity.fontsize").toInt());
+    if (b_engine->getConfig().contains("xlet.identity.iconsize"))
+        m_gui_buttonsize = b_engine->getConfig("xlet.identity.iconsize").toInt();
 
     m_agent->setAllowedActions(b_engine->getConfig("xlet.identity.logagent").toBool(),
                                b_engine->getConfig("xlet.identity.pauseagent").toBool());
 
     setFont(m_gui_font);
 
-    m_loginkind = optionsMap.value("loginkind").toUInt();
+    m_loginkind = b_engine->getConfig("loginkind").toUInt();
 }
 
+/*!
+ * Get the new possible presence states list from CTI server
+ */
 void IdentityDisplay::updatePresence()
 {
     if (! m_ui) return;
@@ -171,14 +176,15 @@ void IdentityDisplay::updatePresence()
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
 
     m_presencevalue->hide();
-    if (! m_functions.contains("checked_function.presence"))
+
+    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
+    if (! presenceEnabled)
         return;
 
-    disconnect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
-               this, SLOT(idxChanged(const QString &)));
+    disconnect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
+               this, SLOT(idxChanged(int)));
 
     m_presencevalue->clear();
-    m_presence_names.clear();
 
     if (presencemap.contains(presence)) {
         QVariantMap details = presencemap.value(presence).toMap();
@@ -187,16 +193,15 @@ void IdentityDisplay::updatePresence()
         foreach (QString presencestate, allowedlist) {
             QVariantMap pdetails = presencemap.value(presencestate).toMap();
             QString longname = pdetails.value("longname").toString();
-            m_presencevalue->addItem(longname);
-            m_presence_names[presencestate] = longname;
+            m_presencevalue->addItem(longname, presencestate);
             if (presence == presencestate)
                 m_presencevalue->setCurrentIndex(idx);
             idx ++;
         }
     }
 
-    connect(m_presencevalue, SIGNAL(currentIndexChanged(const QString &)),
-            this, SLOT(idxChanged(const QString &)));
+    connect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(idxChanged(int)));
     m_presencevalue->show();
 }
 
@@ -219,7 +224,7 @@ void IdentityDisplay::setOpt()
         m_svcstatus["rna-number"] = m_ui->destrna();
         m_svcstatus["busy-enabled"] = m_ui->enablebusy();
         m_svcstatus["busy-number"] = m_ui->destbusy();
-        svcSummary();
+    svcSummary();
     }
 }
 
@@ -340,14 +345,13 @@ void IdentityDisplay::updateUserStatus(const QString & xuserid)
     }
 }
 
-void IdentityDisplay::idxChanged(const QString & newidx)
+void IdentityDisplay::idxChanged(int newidx)
 {
     QString function = sender()->property("function").toString();
-    qDebug() << Q_FUNC_INFO << newidx << sender() << function << m_presence_names;
+    qDebug() << Q_FUNC_INFO << m_presencevalue->itemData(newidx) << sender() << function;
     if (function == "presence") {
-        foreach (QString avstate, m_presence_names.keys())
-            if (m_presence_names[avstate] == newidx)
-                b_engine->setAvailState(avstate, false);
+        QString newavstate = m_presencevalue->itemData(newidx).toString();
+        b_engine->setAvailState(newavstate, false);
     }
 }
 

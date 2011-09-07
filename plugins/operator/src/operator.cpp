@@ -49,17 +49,15 @@ XletOperator::XletOperator(QWidget * parent)
     setAccessibleName( tr("Operator panel") );
     setTitle( tr("Operator") );
 
-    QVariantMap opts = b_engine->getGuiOptions("client_gui");
-
-    m_actionkey[opts["xlet_operator_keyanswer"        ].toInt()] = (QStringList() << "answer" << tr("Answer"));
-    m_actionkey[opts["xlet_operator_keyhangup"        ].toInt()] = (QStringList() << "hangup" << tr("Hangup"));
-    m_actionkey[opts["xlet_operator_keydtransfer"     ].toInt()] = (QStringList() << "dtransfer" << tr("D. Transfer"));
-    m_actionkey[opts["xlet_operator_keyitransfer"     ].toInt()] = (QStringList() << "itransfer" << tr("I. Transfer"));
-    m_actionkey[opts["xlet_operator_keyilink"         ].toInt()] = (QStringList() << "ilink" << tr("I. Link"));
-    m_actionkey[opts["xlet_operator_keyicancel"       ].toInt()] = (QStringList() << "icancel" << tr("I. Cancel"));
-    m_actionkey[opts["xlet_operator_keypark"          ].toInt()] = (QStringList() << "park" << tr("Park"));
-    m_actionkey[opts["xlet_operator_keyatxferfinalize"].toInt()] = (QStringList() << "atxferfinalize" << tr("Finalize Transfer"));
-    m_actionkey[opts["xlet_operator_keyatxfercancel"  ].toInt()] = (QStringList() << "atxfercancel" << tr("Cancel Transfer"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyanswer"        ).toInt()] = (QStringList() << "answer" << tr("Answer"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyhangup"        ) .toInt()] = (QStringList() << "hangup" << tr("Hangup"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keydtransfer"     ).toInt()] = (QStringList() << "dtransfer" << tr("D. Transfer"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyitransfer"     ).toInt()] = (QStringList() << "itransfer" << tr("I. Transfer"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyilink"         ).toInt()] = (QStringList() << "ilink" << tr("I. Link"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyicancel"       ).toInt()] = (QStringList() << "icancel" << tr("I. Cancel"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keypark"          ).toInt()] = (QStringList() << "park" << tr("Park"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyatxferfinalize").toInt()] = (QStringList() << "atxferfinalize" << tr("Finalize Transfer"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyatxfercancel"  ).toInt()] = (QStringList() << "atxfercancel" << tr("Cancel Transfer"));
     // m_actionkey[Qt::Key_Return] = (QStringList() << "numreturn" << tr("Call Number"));
 
     m_glayout->addWidget( m_lbl, 0, 0, 1, m_actionkey.size() + 4, Qt::AlignHCenter | Qt::AlignVCenter );
@@ -358,7 +356,7 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
                 QStringList action = QStringList() << "hangup"
                                                    << "dtransfer"
                                                    << "park";
-                if (b_engine->getGuiOptions("client_gui").value("xlet_operator_answer_work", 1).toInt()) {
+                if (b_engine->getConfig("guioptions.xlet_operator_answer_work").toInt()) {
                     action << "answer";
                 }
                 updateLine(xchannel, action);

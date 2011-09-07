@@ -59,15 +59,15 @@ class BASELIB_EXPORT BaseConfig: public QObject
         typedef enum {Masked, Unmasked} ReadMode;
         
         BaseConfig();
-        const QVariant value(const QString &, ReadMode rm = Masked) const;
+        const QVariant value(const QString &, ReadMode = Masked) const;
         const QVariant operator[](const QString &) const;
         QVariant & operator[](const QString &);
-        QVariantMap getSubSet (const QString &, ReadMode rm = Masked) const;
+        QVariantMap getSubSet (const QString &, ReadMode = Masked) const;
         bool isMasked(const QString &) const;
         QVariantMap toQVariantMap() const;
         void merge(const QVariantMap &, QString = "");
         bool contains(const QString &);
-        QString toString(ReadMode rm = Masked);
+        QString toString(ReadMode = Masked);
         QStringList keys();
         
     private:

@@ -12,7 +12,7 @@ include(../common.pri)
 
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
-TARGET = 
+TARGET =
 CONFIG += uitools
 DEPENDPATH += .
 INCLUDEPATH += . $${COMMONDIR} $${COMMONDIR}/built-in-xlet ../baselib/src ../baselib/src/gui
@@ -41,3 +41,10 @@ TRANSLATIONS += xivoclient_de.ts
 RC_FILE = appli.rc
 
 DESTDIR  = ../bin
+
+# Get the plugins dir from qmake persistent properties
+PLUGINDIR = $$system(echo -n $XIVOCLIENT_PLUGINDIR)
+isEmpty( PLUGINDIR ) {
+    PLUGINDIR = /usr/share/xivoclient/plugins
+}
+DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"

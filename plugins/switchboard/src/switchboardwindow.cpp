@@ -629,6 +629,7 @@ void XletSwitchBoard::mouseReleaseEvent(QMouseEvent *)
  */
 void XletSwitchBoard::paintEvent(QPaintEvent *event)
 {
+    // qDebug() << Q_FUNC_INFO;
     QPainter painter(this);
     int i;
     if (m_drawGrid) {

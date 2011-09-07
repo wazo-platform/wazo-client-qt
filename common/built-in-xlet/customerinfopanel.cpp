@@ -55,9 +55,9 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
     m_glayout->addWidget( m_tabs, 0, 0 );
     m_glayout->setRowStretch(0, 1);
     m_glayout->setColumnStretch(0, 1);
-    QVariantMap optionsMap = b_engine->getGuiOptions("merged_gui");
-    m_tablimit = optionsMap.value("sheet-tablimit").toUInt();
-    m_autourl_allowed = optionsMap.value("autourl_allowed").toBool();
+    
+    m_tablimit = b_engine->getConfig("guioptions.sheet-tablimit").toUInt();
+    m_autourl_allowed = b_engine->getConfig("guioptions.autourl_allowed").toBool();
 }
 
 /*!

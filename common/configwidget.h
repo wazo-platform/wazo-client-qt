@@ -79,6 +79,7 @@ class ConfigWidget: public QDialog
         //! Save the configuration to the BaseEngine object and close
         void saveAndClose();
         void changeOperatorKey(bool);
+        void changeEncrypted(bool);
         void loginKindChanged(int);
     protected:
         virtual void keyPressEvent(QKeyEvent *);
@@ -91,11 +92,9 @@ class ConfigWidget: public QDialog
         void _insert_operator_functiontab();
         void _insert_advanced_tab();
 
-        QVariantMap m_opts;
-        QVariantMap m_forcedopts;
         QVariantMap m_config;
-
-        BaseEngine * m_engine;          //!< BaseEngine object parameters are commited to
+        
+        QMap<QString, QString> m_dblclick_actions;
 
         QLineEdit * m_cti_address;      //!< IP/hostname of the server
         QSpinBox  * m_cti_port;         //!< server port
@@ -128,10 +127,13 @@ class ConfigWidget: public QDialog
         QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
         QSpinBox  * m_tablimit_sbox;    //!< Maximum number of tabs
         
+        QSpinBox  * m_dial_history_size; //!< Dial history saved
+        
         QSpinBox  * m_history_sbox;     //!< History size
         
         QSpinBox  * m_contactssize_sbox;  //!< Displayed contacts' size
         QSpinBox  * m_contactswidth_sbox; //!< Number of contacts displayed on one line
+        QComboBox * m_contacts_dblclick;  //!< Action to do when a contact is double clicked
 
         QHash<QString, QSpinBox *> m_queuelevels;      //!< For queue display
         QHash<QString, QSpinBox *> m_queuelevels_wait; //!< For queue display
@@ -140,6 +142,7 @@ class ConfigWidget: public QDialog
 
         QComboBox * m_comboswitchboard; //!< Appearance of switchboard
         QSpinBox * m_maxWidthWanted;    //!< Maximum width for small items in switchboard
+        QComboBox * m_switchboard_dblclick;  //!< Action to do when a switchboard item is double clicked
 
         QDialogButtonBox * m_btnbox;    //!< Buttons box
         QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets

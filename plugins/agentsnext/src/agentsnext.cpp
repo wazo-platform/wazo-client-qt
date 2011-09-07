@@ -65,7 +65,7 @@ XletAgentsNext::XletAgentsNext(QWidget *parent)
     // m_gridlayout->setVerticalSpacing(0);
     m_blinktime = 300;
 
-    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
+    fetchConfig();
     startTimer(1000);
 
     // connect signal/slots with engine
@@ -80,14 +80,14 @@ XletAgentsNext::XletAgentsNext(QWidget *parent)
             this, SLOT(setQueueOrder(const QVariant &)));
 }
 
-void XletAgentsNext::setGuiOptions(const QVariantMap &optionsMap)
+void XletAgentsNext::fetchConfig()
 {
-    if (optionsMap.contains("xlet.agentsnext.blinktime"))
-        m_blinktime = optionsMap.value("xlet.agentsnext.blinktime").toInt();
-    if (optionsMap.contains("xlet.agentsnext.fontname") &&
-        optionsMap.contains("xlet.agentsnext.fontsize"))
-        m_gui_font = QFont(optionsMap.value("xlet.agentsnext.fontname").toString(),
-                           optionsMap.value("xlet.agentsnext.fontsize").toInt());
+    if (b_engine->getConfig().contains("guioptions.xlet.agentsnext.blinktime"))
+        m_blinktime = b_engine->getConfig("guioptions.xlet.agentsnext.blinktime").toInt();
+    if (b_engine->getConfig().contains("guioptions.xlet.agentsnext.fontname") &&
+        b_engine->getConfig().contains("guioptions.xlet.agentsnext.fontsize"))
+        m_gui_font = QFont(b_engine->getConfig("guioptions.xlet.agentsnext.fontname").toString(),
+                           b_engine->getConfig("guioptions.xlet.agentsnext.fontsize").toInt());
 
     // setFont(m_gui_font);
     foreach (QString groupid, m_title.keys())

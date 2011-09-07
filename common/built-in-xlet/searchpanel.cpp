@@ -98,7 +98,7 @@ SearchPanel::SearchPanel(QWidget *parent)
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
     
-    connect(b_engine, SIGNAL(settingChanged(const QVariantMap &)),
+    connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateConf()));
 }
 
@@ -320,6 +320,5 @@ void SearchPanel::updateConf()
 {
     m_maxdisplay = b_engine->getConfig("guioptions.contacts-max").toUInt();
     m_ncolumns = b_engine->getConfig("guioptions.contacts-width").toUInt();
-    qDebug() << m_ncolumns;
     updateDisplay();
 }

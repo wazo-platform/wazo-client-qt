@@ -100,7 +100,6 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
         connect( m_action[function], SIGNAL(clicked()),
                  this, SLOT(actionClicked()));
     }
-    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
 
     // connect signal/slots with engine
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
@@ -126,14 +125,6 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
             this, SLOT(statusListen(const QString &, const QString &, const QString &)));
 }
-
-/*! \brief set options
- */
-void XletAgentDetails::setGuiOptions(const QVariantMap &optionsMap)
-{
-    m_optionsMap = optionsMap;
-}
-
 
 void XletAgentDetails::updateAgentConfig(const QString & xagentid)
 {
@@ -200,9 +191,9 @@ void XletAgentDetails::updatePanel()
 
     QStringList agent_descriptions;
     agent_descriptions << QString("<b>%1</b> (%2)").arg(agentinfo->fullname()).arg(agentinfo->agentNumber());
-    if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
+    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hideastid").toBool())
         agent_descriptions << tr("on <b>%1</b>").arg(agentinfo->ipbxid());
-    if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
+    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hidecontext").toBool())
         agent_descriptions << QString("(%1)").arg(agentinfo->context());
     QString lstatus = agentinfo->status();
     QString phonenum = agentinfo->phonenumber();
@@ -304,7 +295,7 @@ void XletAgentDetails::setQueueProps(const QString & xqueueid)
     const QueueInfo * queueinfo = b_engine->queue(xqueueid);
     if (queueinfo == NULL)
         return;
-    bool showNumber = b_engine->getGuiOptions("client_gui").value("queue_displaynu").toBool();
+    bool showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
     if (showNumber)
         m_queue_labels[xqueueid]->setText(QString("%1 (%2)")
                                           .arg(queueinfo->queueName())
@@ -312,9 +303,9 @@ void XletAgentDetails::setQueueProps(const QString & xqueueid)
     else
         m_queue_labels[xqueueid]->setText(queueinfo->queueName());
     QStringList tooltips;
-    if (! m_optionsMap.value("xlet.agentdetails.hideastid").toBool())
+    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hideastid").toBool())
         tooltips << tr("Server: %1").arg(queueinfo->ipbxid());
-    if (! m_optionsMap.value("xlet.agentdetails.hidecontext").toBool())
+    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hidecontext").toBool())
         tooltips << tr("Context: %1").arg(queueinfo->context());
     m_queue_labels[xqueueid]->setToolTip(tooltips.join("\n"));
 }
@@ -326,7 +317,7 @@ void XletAgentDetails::setQueueAgentSignals(const QString & xqueueid)
 
     connect( m_queue_more[xqueueid], SIGNAL(clicked()),
              this, SLOT(queueClicked()));
-    if (! m_optionsMap.value("xlet.agentdetails.noqueueaction").toBool()) {
+    if (! b_engine->getConfig("guioptions.xlet.agentdetails.noqueueaction").toBool()) {
         connect( m_queue_join_action[xqueueid], SIGNAL(clicked()),
                  this, SLOT(queueClicked()));
         connect( m_queue_pause_action[xqueueid], SIGNAL(clicked()),

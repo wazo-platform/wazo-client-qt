@@ -71,7 +71,7 @@ XletAgents::XletAgents(QWidget *parent)
     m_gridlayout->setRowStretch(100, 1);
     m_gridlayout->setVerticalSpacing(0);
 
-    setGuiOptions(b_engine->getGuiOptions("merged_gui"));
+    setGuiOptions();
     // connect signals/slots with engine
     connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
             this, SLOT(updateAgentConfig(const QString &)));
@@ -86,13 +86,15 @@ XletAgents::XletAgents(QWidget *parent)
 
 /*! \brief set font
  */
-void XletAgents::setGuiOptions(const QVariantMap & optionsMap)
+void XletAgents::setGuiOptions()
 {
-    if (optionsMap.contains("xlet.agents.fontname") && optionsMap.contains("xlet.agents.fontsize"))
-        m_gui_font = QFont(optionsMap.value("xlet.agents.fontname").toString(),
-                           optionsMap.value("xlet.agents.fontsize").toInt());
-    if (optionsMap.contains("xlet.agents.iconsize"))
-        m_gui_buttonsize = optionsMap.value("xlet.agents.iconsize").toInt();
+    QVariantMap optionsMap = b_engine->getConfig();
+    if (optionsMap.contains("guioptions.xlet.agents.fontname") &&
+        optionsMap.contains("guioptions.xlet.agents.fontsize"))
+            m_gui_font = QFont(b_engine->getConfig("guioptions.xlet.agents.fontname").toString(),
+                               b_engine->getConfig("guioptions.xlet.agents.fontsize").toInt());
+    if (optionsMap.contains("guioptions.xlet.agents.iconsize"))
+        m_gui_buttonsize = b_engine->getConfig("guioptions.xlet.agents.iconsize").toInt();
 
     m_title1->setFont(m_gui_font);
     m_title2->setFont(m_gui_font);
