@@ -56,7 +56,7 @@ class IdentityDisplay : public XLet
     public slots:
         void setGuiOptions();
         void updatePresence();
-        void setOpt(const QString &, bool);
+        void setOpt();
         void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);

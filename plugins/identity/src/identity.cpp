@@ -116,8 +116,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     setGuiOptions();
 
-    connect(b_engine, SIGNAL(optChanged(const QString &, bool)),
-            this, SLOT(setOpt(const QString &, bool)));
     connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
             this, SLOT(setForward(const QString &, const QVariant &)));
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
@@ -213,11 +211,21 @@ void IdentityDisplay::updatePresence()
 
 /*! \brief updates the boolean services
  */
-void IdentityDisplay::setOpt(const QString & capa, bool b)
+void IdentityDisplay::setOpt()
 {
-    if ((capa == "enablednd") || (capa == "incallfilter") || (capa == "callrecord") || (capa == "enablevoicemail"))
-        m_svcstatus[capa] = b;
+    if (m_ui) {
+        m_svcstatus["enablednd"] = m_ui->enablednd();
+        m_svcstatus["incallfilter"] = m_ui->incallfilter();
+        m_svcstatus["callrecord"] = m_ui->callrecord();
+        m_svcstatus["enablevoicemail"] = m_ui->enablevoicemail();
+        m_svcstatus["unc-enabled"] = m_ui->enableunc();
+        m_svcstatus["unc-number"] = m_ui->destunc();
+        m_svcstatus["rna-enabled"] = m_ui->enablerna();
+        m_svcstatus["rna-number"] = m_ui->destrna();
+        m_svcstatus["busy-enabled"] = m_ui->enablebusy();
+        m_svcstatus["busy-number"] = m_ui->destbusy();
     svcSummary();
+    }
 }
 
 /*! \brief updates the boolean+value services
@@ -235,14 +243,9 @@ void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
  */
 void IdentityDisplay::svcSummary()
 {
-    // m_phone->svcSummary(m_svcstatus);
-//     if (m_ui) {
-//         QStringList vm = m_ui->mwi();
-//         if (vm.size() > 2) {
-//             m_voicemail->svcSummary(m_svcstatus, m_ui);
-//         }
-//     }
-    return;
+    foreach (const QString & key, m_identityphones.keys()) {
+        m_identityphones[key]->svcSummary(m_svcstatus);
+    }
 }
 
 /*! \brief update phone config
@@ -336,6 +339,7 @@ void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
     if (m_ui && m_ui->xid() == xuserid) {
         updatePresence();
+        setOpt();
     }
 }
 

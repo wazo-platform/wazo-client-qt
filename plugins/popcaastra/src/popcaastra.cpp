@@ -41,6 +41,15 @@
 #include "holdedwidget.h"
 #include "incomingwidget.h"
 #include "parkedwidget.h"
+#include "popcaastra.h"
+#include "transferedwidget.h"
+#include "xivoconsts.h"
+#include "phonenumber.h"
+
+class QLabel;
+class QTableWidget;
+
+#include "channelinfo.h"
 #include "phoneinfo.h"
 #include "transferedwidget.h"
 #include "userinfo.h"
@@ -552,16 +561,8 @@ void PopcAastra::receiveNumber(const QString & number)
 
 void PopcAastra::targetChanged(const QString & text)
 {
-    QRegExp num_regex = QRegExp("[<]?[0-9]+[>]?");
-    int end = text.lastIndexOf(num_regex);
-    int start = text.indexOf(num_regex);
-    if (start >= 0 && text[start] == '<') {
-        start++;
-    }
-    if (start >= 0 && start <= end) {
-        QString tmp = text.left(end + 1);
-        m_selected_number = tmp.right(end - start + 1);
-    }
+    // qDebug() << Q_FUNC_INFO << text;
+    m_selected_number = PhoneNumber::extract(text);
 }
 
 void PopcAastra::fillCompleter()

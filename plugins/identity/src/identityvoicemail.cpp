@@ -89,7 +89,8 @@ void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
  */
 void IdentityVoiceMail::callVoiceMail()
 {
-    b_engine->actionCall("originate", "user:special:me", "user:special:myvoicemail");
+    b_engine->actionCall("dial", "",
+                         QString("voicemail:%1").arg(m_voicemailinfo->xid()));
 }
 
 /*! \brief Send an event to get complete voicemail status */

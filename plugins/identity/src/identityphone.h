@@ -80,7 +80,7 @@ class IdentityPhone : public QWidget
 
     public:
         IdentityPhone(QWidget *parent=0);
-        void svcSummary(QVariantMap &);
+        void svcSummary(const QVariantMap &);
         void setPhoneId(const QString &);
     public slots:
         void updatePhoneConfig(const QString &);
