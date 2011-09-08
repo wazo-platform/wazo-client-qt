@@ -18,6 +18,8 @@
 -no-opengl \
 -prefix ${PWD}
 
+make sub-src sub-translations
+
 ** These are not necessary (disabled by default)
 -no-sql-sqlite \
 -no-nas-sound \
@@ -51,6 +53,7 @@ configure.exe \
 OPENSSL_LIBS= "OPENSSL_LIBS=-lcrypto -lssl" \
 -prefix ${PWD}
 
+make sub-src sub-translations
 
 * MacOS
 -------
@@ -69,3 +72,5 @@ OPENSSL_LIBS= "OPENSSL_LIBS=-lcrypto -lssl" \
 -no-opengl \
 -universal \
 -prefix ${PWD}
+
+make sub-src sub-translations
