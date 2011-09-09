@@ -211,8 +211,12 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     QColor c = QColor(color);
     m_lblphones[xphoneid]->setPixmap( \
               TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
-    m_lblphones[xphoneid]->setToolTip(tr("Phone Number : %1\nStatus : %2\nBusy lines : %3")
+    m_lblphones[xphoneid]->setToolTip(tr("Phone Number : %1\n"
+                                         "IPBX : %2\n"
+                                         "Status : %3\n"
+                                         "Busy lines : %4")
                                       .arg(phoneinfo->number())
+                                      .arg(phoneinfo->ipbxid())
                                       .arg(longname)
                                       .arg(phoneinfo->channels().count())
                                       );

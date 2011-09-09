@@ -1035,7 +1035,7 @@ void BaseEngine::parseCommand(const QString &line)
         m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
         m_capafuncs = capas.value("functions").toStringList();
 
-        // ("agentstatus", "ipbxcommands", "phonestatus", "regcommands", "services", "functions", "userstatus")
+        // ("ipbxcommands", "regcommands", "services", "functions")
         m_config.merge(capas.value("preferences").toMap());
         m_config["services"] = capas.value("services");
         //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
