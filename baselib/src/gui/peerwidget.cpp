@@ -179,8 +179,11 @@ void PeerWidget::updatePresence()
         QColor c = QColor(colorstring);
         m_user_status->setIcon(TaintedPixmap( \
             QString(":/images/personal-trans.png"), c).getPixmap());
-        m_user_status->setToolTip(tr("User Name : %1\nStatus : %2")
+        m_user_status->setToolTip(tr("User Name : %1\n"
+                                     "IPBX : %2\n"
+                                     "Status : %3")
                                   .arg(m_ui_remote->fullname())
+                                  .arg(m_ui_remote->ipbxid())
                                   .arg(presencedetails.value("longname").toString()));
     }
 }
