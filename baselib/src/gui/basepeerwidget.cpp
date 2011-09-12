@@ -223,7 +223,7 @@ void BasePeerWidget::vmtransfer()
         QString xchannel = sender()->property("xchannel").toString();
         b_engine->actionCall("transfer",
                              QString("chan:%1").arg(xchannel),
-                             "voicemail:" + m_ui_remote->xid());
+                             "voicemail:" + m_ui_remote->xvoicemailid());
     }
 }
 
