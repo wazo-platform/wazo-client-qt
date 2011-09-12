@@ -74,7 +74,7 @@ int main(int argc, char ** argv)
     QString msg = "";
     for (int argi = 0; argi < argc - 1 ; argi ++) {
         QString argn(argv[argi + 1]);
-        if(PhoneNumber::isURI(argn))
+        if(! PhoneNumber::isURI(argn))
             profile = argn;
         else
             msg = argn;

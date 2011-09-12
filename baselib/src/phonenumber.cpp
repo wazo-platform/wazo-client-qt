@@ -59,7 +59,7 @@ namespace PhoneNumber
     bool isURI(const QString &string)
     {
         QRegExp re("^(tel|callto):" + phone_pattern, Qt::CaseInsensitive);
-        return (re.indexIn(string) < 0);
+        return (! (re.indexIn(string) < 0));
     }
 
     /*!
