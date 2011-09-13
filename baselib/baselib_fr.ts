@@ -197,8 +197,8 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation>Enlever ce poste du tableau</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="418"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="430"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="425"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="437"/>
         <source>&amp;Call</source>
         <translation>&amp;Appeler</translation>
     </message>
@@ -230,7 +230,7 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="74"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="503"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="510"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Intercepter</translation>
     </message>
@@ -243,27 +243,27 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation type="obsolete">Transférer cette communication</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="609"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="616"/>
         <source>Direct &amp;Transfer</source>
         <translation>&amp;Transfert direct</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="609"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="616"/>
         <source>&amp;Indirect Transfer</source>
         <translation>Transfert &amp;Indirect</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="466"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="473"/>
         <source>&amp;Edit</source>
         <translation>&amp;Modifier</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="565"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="572"/>
         <source>&amp;Park</source>
         <translation>&amp;Parquer</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="663"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="670"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfert vers boite &amp;vocale</translation>
     </message>
@@ -285,7 +285,7 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation>Intercepter l&apos;appel</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="528"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="535"/>
         <source>Invite in meetme room %0</source>
         <oldsource>Invite in meetme room %1</oldsource>
         <translation>Inviter à la conférence %0</translation>
@@ -303,12 +303,12 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation type="obsolete">&amp;Annule le Transfert</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="807"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="814"/>
         <source>XiVO Client - Removing %1 %2</source>
         <translation>XiVO Client - Enlever %1 %2</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="808"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="815"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation>Enlever %1 %2.
@@ -325,22 +325,22 @@ Etes-vous sûr ?</translation>
         <translation>Renommer ce poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="439"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="446"/>
         <source>Call &amp;mobile</source>
         <translation>Appeler &amp;mobile</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="558"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="565"/>
         <source>&amp;Park correspondant</source>
         <translation>&amp;Parquer le correspondant</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="822"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="829"/>
         <source>Rename Item</source>
         <translation>Renommer le poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="822"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="829"/>
         <source>Rename %1 :</source>
         <translation>Renommer %1 :</translation>
     </message>
@@ -491,7 +491,7 @@ Extension : %2</translation>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="235"/>
+        <location filename="src/gui/peerwidget.cpp" line="238"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>
@@ -512,12 +512,12 @@ In Queues : %2</source>
 Dans les files : %2</translation>
     </message>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="169"/>
+        <location filename="src/gui/peerwidget.cpp" line="170"/>
         <source>Mobile number : %1</source>
         <translation>Numéro de mobile : %1</translation>
     </message>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="182"/>
+        <location filename="src/gui/peerwidget.cpp" line="183"/>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
@@ -526,18 +526,32 @@ IPBXid : %2
 Statut : %3</translation>
     </message>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="213"/>
+        <location filename="src/gui/peerwidget.cpp" line="214"/>
         <source>Status:%1</source>
         <translation>Statut : %1</translation>
     </message>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="218"/>
+        <location filename="src/gui/peerwidget.cpp" line="219"/>
+        <source>Phone Number: %1
+Order: %2
+IPBXid: %3
+Context: %4
+Status: %5
+Busy lines: %6</source>
+        <translation>Extension : %1
+Ordre : %2
+IPBXid : %3
+Contexte : %4
+Statut : %5
+Lignes occupées : %6</translation>
+    </message>
+    <message>
         <source>Phone Number: %1
 IPBXid: %2
 Context: %3
 Status: %4
 Busy lines: %5</source>
-        <translation>Extension : %1
+        <translation type="obsolete">Extension : %1
 IPBXid : %2
 Contexte : %3
 Statut : %4

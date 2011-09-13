@@ -158,7 +158,8 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 
     QString agentnumber = agentinfo->agentNumber();
     // XXX QStringList queues = agentinfo->queuelist();
-    m_agentlbl->setToolTip(tr("Agent Number : %1\nIn Queues : %2")
+    m_agentlbl->setToolTip(tr("Agent Number : %1\n"
+                              "In Queues : %2")
                            .arg(agentnumber)
                            .arg(""));
 }
@@ -216,11 +217,13 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     m_lblphones[xphoneid]->setPixmap( \
               TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
     m_lblphones[xphoneid]->setToolTip(tr("Phone Number: %1\n"
-                                         "IPBXid: %2\n"
-                                         "Context: %3\n"
-                                         "Status: %4\n"
-                                         "Busy lines: %5")
+                                         "Order: %2\n"
+                                         "IPBXid: %3\n"
+                                         "Context: %4\n"
+                                         "Status: %5\n"
+                                         "Busy lines: %6")
                                       .arg(phoneinfo->number())
+                                      .arg(phoneinfo->rules_order())
                                       .arg(phoneinfo->ipbxid())
                                       .arg(phoneinfo->context())
                                       .arg(longname)
