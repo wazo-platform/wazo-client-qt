@@ -5,8 +5,9 @@
     <name>XletQueueDetails</name>
     <message>
         <location filename="src/queuedetails.cpp" line="48"/>
-        <source>Agents of a Queue</source>
-        <translation>Agents d&apos;une File d&apos;Attente</translation>
+        <source>Members of a Queue</source>
+        <oldsource>Agents of a Queue</oldsource>
+        <translation>Membres d&apos;une File d&apos;Attente</translation>
     </message>
     <message>
         <location filename="src/queuedetails.cpp" line="52"/>
@@ -43,12 +44,16 @@ Appel</translation>
         <translation>Pénalité</translation>
     </message>
     <message>
-        <location filename="src/queuedetails.cpp" line="139"/>
-        <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4)</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4)</translation>
+        <location filename="src/queuedetails.cpp" line="155"/>
+        <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agents and %6 phones</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agents et %6 téléphones</translation>
     </message>
     <message>
-        <location filename="src/queuedetails.cpp" line="207"/>
+        <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4)</source>
+        <translation type="obsolete">&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4)</translation>
+    </message>
+    <message>
+        <location filename="src/queuedetails.cpp" line="226"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1

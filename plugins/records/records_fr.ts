@@ -4,7 +4,7 @@
 <context>
     <name>ResultsWidget</name>
     <message>
-        <location filename="src/records.cpp" line="448"/>
+        <location filename="src/records.cpp" line="458"/>
         <source>Results : %1 found</source>
         <translation>Résultats : %1 trouvé(s)</translation>
     </message>
@@ -12,32 +12,32 @@
 <context>
     <name>SearchWidget</name>
     <message>
-        <location filename="src/records.cpp" line="307"/>
+        <location filename="src/records.cpp" line="317"/>
         <source>Search Filter(s)</source>
         <translation>Filtre(s) de recherche</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="312"/>
+        <location filename="src/records.cpp" line="322"/>
         <source>Lookup</source>
         <translation>Recherche</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="360"/>
+        <location filename="src/records.cpp" line="370"/>
         <source>Agent</source>
         <translation>Agent</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="361"/>
+        <location filename="src/records.cpp" line="371"/>
         <source>Queue</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="362"/>
+        <location filename="src/records.cpp" line="372"/>
         <source>Skill</source>
         <translation>Compétence</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="363"/>
+        <location filename="src/records.cpp" line="373"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
@@ -96,13 +96,13 @@
     </message>
     <message>
         <location filename="src/records.cpp" line="77"/>
-        <location filename="src/records.cpp" line="145"/>
+        <location filename="src/records.cpp" line="152"/>
         <source>Tag</source>
         <translation>Etiquette</translation>
     </message>
     <message>
         <location filename="src/records.cpp" line="78"/>
-        <location filename="src/records.cpp" line="154"/>
+        <location filename="src/records.cpp" line="161"/>
         <source>Comment</source>
         <translation>Commentaire</translation>
     </message>
@@ -122,14 +122,30 @@
         <translation>SVI choix</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="102"/>
+        <location filename="src/records.cpp" line="107"/>
+        <source>call start : %1 (duration %2 s, direction %3)
+path : %4
+filename : %5
+current tag : %6
+svi entries : %7
+svi variables : %8
+(this column : %9)</source>
+        <translation>début d&apos;appel : %1 (durée %2 s, direction %3)
+chemin : %4
+fichier : %5
+tag actuel : %6
+entrées SVI : %7
+variables SVI : %8
+(colonne %9)</translation>
+    </message>
+    <message>
         <source>call start : %1 (duration %2 s, direction %3)
 filename : %4
 current tag : %5
 svi entries : %6
 svi variables : %7
 (this column : %8)</source>
-        <translation>début d&apos;appel : %1 (durée %2 s, direction %3)
+        <translation type="obsolete">début d&apos;appel : %1 (durée %2 s, direction %3)
 fichier : %4
 tag actuel : %5
 entrées SVI : %6
@@ -137,36 +153,36 @@ variables SVI : %7
 (colonne %8)</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="146"/>
-        <location filename="src/records.cpp" line="155"/>
+        <location filename="src/records.cpp" line="153"/>
+        <location filename="src/records.cpp" line="162"/>
         <source>You attempted to change tag for id %1.
 The return code is %2.</source>
         <translation>Vous avez essayé de modifier le tag pour l&apos;id %1.
 Le code de retour est %2.</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="199"/>
-        <location filename="src/records.cpp" line="244"/>
+        <location filename="src/records.cpp" line="206"/>
+        <location filename="src/records.cpp" line="254"/>
         <source>Change tag to</source>
         <translation>Modifier la caractérisation en</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="220"/>
+        <location filename="src/records.cpp" line="227"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="251"/>
+        <location filename="src/records.cpp" line="261"/>
         <source>Call starting on %1 (id %2)</source>
         <translation>Appel démarrant le %1 (id %2)</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="252"/>
+        <location filename="src/records.cpp" line="262"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="src/records.cpp" line="243"/>
+        <location filename="src/records.cpp" line="253"/>
         <source>Change tag</source>
         <translation>Modifier la caractérisation</translation>
     </message>

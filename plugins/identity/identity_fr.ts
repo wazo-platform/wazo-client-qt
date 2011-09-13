@@ -4,56 +4,56 @@
 <context>
     <name>IdentityAgent</name>
     <message>
-        <location filename="src/identityagent.cpp" line="128"/>
+        <location filename="src/identityagent.cpp" line="149"/>
         <source>Connected to %1</source>
         <translation>Connecté à %1</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="131"/>
+        <location filename="src/identityagent.cpp" line="152"/>
         <source>Disconnected from %1</source>
         <translation>Déconnecté de %1</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="143"/>
-        <location filename="src/identityagent.cpp" line="144"/>
+        <location filename="src/identityagent.cpp" line="164"/>
+        <location filename="src/identityagent.cpp" line="165"/>
         <source>Paused</source>
         <translation>En retrait</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="148"/>
-        <location filename="src/identityagent.cpp" line="149"/>
+        <location filename="src/identityagent.cpp" line="169"/>
+        <location filename="src/identityagent.cpp" line="170"/>
         <source>Unpaused</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="156"/>
-        <location filename="src/identityagent.cpp" line="157"/>
+        <location filename="src/identityagent.cpp" line="177"/>
+        <location filename="src/identityagent.cpp" line="178"/>
         <source>Partially paused</source>
         <translation>Pause partielle</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="161"/>
-        <location filename="src/identityagent.cpp" line="162"/>
+        <location filename="src/identityagent.cpp" line="182"/>
+        <location filename="src/identityagent.cpp" line="183"/>
         <source>Not relevant</source>
         <translation>Non pertinent</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="176"/>
+        <location filename="src/identityagent.cpp" line="197"/>
         <source>Logout</source>
         <translation>Logout</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="180"/>
+        <location filename="src/identityagent.cpp" line="201"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="188"/>
+        <location filename="src/identityagent.cpp" line="209"/>
         <source>Pause</source>
         <translation>Retrait</translation>
     </message>
     <message>
-        <location filename="src/identityagent.cpp" line="193"/>
+        <location filename="src/identityagent.cpp" line="214"/>
         <source>Unpause</source>
         <translation>Prêt</translation>
     </message>
@@ -61,24 +61,35 @@
 <context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="src/identity.cpp" line="66"/>
+        <location filename="src/identity.cpp" line="65"/>
         <source>Current User Panel</source>
         <translation>Panneau des détails utilisateur</translation>
     </message>
     <message>
-        <location filename="src/identity.cpp" line="236"/>
+        <location filename="src/identity.cpp" line="281"/>
+        <source>IPBXid: %1</source>
+        <translation>IPBXid : %1</translation>
+    </message>
+    <message>
+        <location filename="src/identity.cpp" line="301"/>
+        <source>IPBXid: %1
+Context: %2</source>
+        <translation>IPBXid : %1
+Contexte : %2</translation>
+    </message>
+    <message>
         <source>Server: %1
 Context: %2</source>
-        <translation>Serveur: %1
+        <translation type="obsolete">Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="src/identity.cpp" line="331"/>
+        <location filename="src/identity.cpp" line="333"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>
     <message>
-        <location filename="src/identity.cpp" line="65"/>
+        <location filename="src/identity.cpp" line="64"/>
         <source>Identity</source>
         <translation>Identité</translation>
     </message>
@@ -86,77 +97,90 @@ Contexte: %2</translation>
 <context>
     <name>IdentityPhone</name>
     <message>
-        <location filename="src/identityphone.cpp" line="179"/>
-        <location filename="src/identityphone.cpp" line="294"/>
-        <location filename="src/identityphone.cpp" line="295"/>
+        <location filename="src/identityphone.cpp" line="184"/>
+        <location filename="src/identityphone.cpp" line="338"/>
+        <location filename="src/identityphone.cpp" line="339"/>
         <source>No option</source>
         <translation>Pas d&apos;option</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="194"/>
+        <location filename="src/identityphone.cpp" line="216"/>
         <source>Phone %1</source>
         <translation>Téléphone %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="195"/>
         <source>Server: %1
 Context: %2</source>
-        <translation>Serveur: %1
+        <translation type="obsolete">Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="234"/>
-        <location filename="src/identityphone.cpp" line="248"/>
+        <location filename="src/identityphone.cpp" line="217"/>
+        <source>Protocol: %1
+IPBXid: %2
+Context: %3</source>
+        <translation>Protocole : %1
+IPBXid : %2
+Contexte : %3</translation>
+    </message>
+    <message>
+        <location filename="src/identityphone.cpp" line="247"/>
+        <source>Status:%1</source>
+        <translation>Statut : %1</translation>
+    </message>
+    <message>
+        <location filename="src/identityphone.cpp" line="276"/>
+        <location filename="src/identityphone.cpp" line="290"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="277"/>
+        <location filename="src/identityphone.cpp" line="322"/>
         <source>DND</source>
         <translation>NPD</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="278"/>
+        <location filename="src/identityphone.cpp" line="323"/>
         <source>Do Not Disturb</source>
         <translation>Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="281"/>
+        <location filename="src/identityphone.cpp" line="325"/>
         <source>UNC %1</source>
         <translation>INC %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="282"/>
+        <location filename="src/identityphone.cpp" line="326"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="284"/>
+        <location filename="src/identityphone.cpp" line="328"/>
         <source>Busy %1</source>
         <translation>Occ %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="285"/>
+        <location filename="src/identityphone.cpp" line="329"/>
         <source>Busy Forward towards %1</source>
         <translation>Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="287"/>
+        <location filename="src/identityphone.cpp" line="331"/>
         <source>FNA %1</source>
         <translation>RNR %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="288"/>
+        <location filename="src/identityphone.cpp" line="332"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Renvoi sur Non-Réponse vers %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="290"/>
+        <location filename="src/identityphone.cpp" line="334"/>
         <source>Call Rec</source>
         <translation>Enr Appel</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="292"/>
+        <location filename="src/identityphone.cpp" line="336"/>
         <source>Call Filter</source>
         <translation>Filtre Appel</translation>
     </message>
@@ -169,17 +193,17 @@ Contexte: %2</translation>
         <translation>(Ligne %1)</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="100"/>
+        <location filename="src/identityphone.cpp" line="99"/>
         <source>Hangup</source>
         <translation>Annuler/Raccrocher</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="106"/>
+        <location filename="src/identityphone.cpp" line="105"/>
         <source>Reply</source>
         <translation>Répondre</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="112"/>
+        <location filename="src/identityphone.cpp" line="111"/>
         <source>Refuse</source>
         <translation>Refuser</translation>
     </message>
@@ -187,32 +211,33 @@ Contexte: %2</translation>
 <context>
     <name>IdentityVoiceMail</name>
     <message>
-        <location filename="src/identityvoicemail.cpp" line="74"/>
+        <location filename="src/identityvoicemail.cpp" line="80"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Boîte %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="src/identityvoicemail.cpp" line="75"/>
+        <location filename="src/identityvoicemail.cpp" line="81"/>
         <source>VoiceMail activated on %1</source>
         <translation>Messagerie activée sur %1</translation>
     </message>
     <message>
-        <location filename="src/identityvoicemail.cpp" line="77"/>
+        <location filename="src/identityvoicemail.cpp" line="83"/>
+        <location filename="src/identityvoicemail.cpp" line="118"/>
         <source>VoiceMailBox %1</source>
         <translation>Boîte %1</translation>
     </message>
     <message>
-        <location filename="src/identityvoicemail.cpp" line="78"/>
+        <location filename="src/identityvoicemail.cpp" line="84"/>
         <source>VoiceMail not activated on %1</source>
         <translation>Messagerie non activée sur %1</translation>
     </message>
     <message>
-        <location filename="src/identityvoicemail.cpp" line="86"/>
+        <location filename="src/identityvoicemail.cpp" line="127"/>
         <source>%1 old</source>
         <translation>%1 ancien(s)</translation>
     </message>
     <message>
-        <location filename="src/identityvoicemail.cpp" line="87"/>
+        <location filename="src/identityvoicemail.cpp" line="128"/>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
     </message>

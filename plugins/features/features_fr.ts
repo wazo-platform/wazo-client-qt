@@ -9,17 +9,17 @@
         <translation>&amp;Filtrage d&apos;Appel</translation>
     </message>
     <message>
-        <location filename="src/servicepanel.cpp" line="82"/>
+        <location filename="src/servicepanel.cpp" line="81"/>
         <source>Call Forwards</source>
         <translation>Renvois d&apos;appel</translation>
     </message>
     <message>
-        <location filename="src/servicepanel.cpp" line="56"/>
+        <location filename="src/servicepanel.cpp" line="55"/>
         <source>Call &amp;Recording</source>
         <translation>Enre&amp;gistrement d&apos;Appel</translation>
     </message>
     <message>
-        <location filename="src/servicepanel.cpp" line="95"/>
+        <location filename="src/servicepanel.cpp" line="94"/>
         <source>Destination</source>
         <translation>Destination</translation>
     </message>
@@ -39,8 +39,8 @@
         <translation>Renvoi sur N&amp;on Réponse</translation>
     </message>
     <message>
-        <location filename="src/servicepanel.cpp" line="54"/>
-        <location filename="src/servicepanel.cpp" line="68"/>
+        <location filename="src/servicepanel.cpp" line="53"/>
+        <location filename="src/servicepanel.cpp" line="67"/>
         <source>Services</source>
         <translation>Services</translation>
     </message>
@@ -50,7 +50,7 @@
         <translation>Renvoi &amp;Inconditionnel</translation>
     </message>
     <message>
-        <location filename="src/servicepanel.cpp" line="55"/>
+        <location filename="src/servicepanel.cpp" line="54"/>
         <source>Voice &amp;Mail</source>
         <translation>Messagerie &amp;Vocale</translation>
     </message>

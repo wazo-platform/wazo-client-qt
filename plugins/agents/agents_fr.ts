@@ -59,55 +59,55 @@ queues</source>
 en pause</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="197"/>
+        <location filename="src/agents.cpp" line="188"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="292"/>
         <source>online with %1 (%2)</source>
-        <translation>en ligne avec %1 (%2)</translation>
+        <translation type="obsolete">en ligne avec %1 (%2)</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="307"/>
-        <location filename="src/agents.cpp" line="313"/>
+        <location filename="src/agents.cpp" line="305"/>
+        <location filename="src/agents.cpp" line="311"/>
         <source>Agent logged on %1</source>
         <translation>Agent loggé sur %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="317"/>
+        <location filename="src/agents.cpp" line="315"/>
         <source>Agent NOT logged</source>
         <translation>Agent NON loggé</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="321"/>
+        <location filename="src/agents.cpp" line="319"/>
         <source>Unknown %1</source>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="356"/>
+        <location filename="src/agents.cpp" line="351"/>
         <source>Joined queues : %1</source>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="365"/>
+        <location filename="src/agents.cpp" line="371"/>
+        <location filename="src/agents.cpp" line="376"/>
         <source>Paused queues : %1</source>
         <translation>Files en pause : %1</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="367"/>
+        <location filename="src/agents.cpp" line="363"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="373"/>
+        <location filename="src/agents.cpp" line="368"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="src/agents.cpp" line="379"/>
+        <location filename="src/agents.cpp" line="373"/>
         <source>Partial</source>
         <translation>Partielle</translation>
     </message>

@@ -4,75 +4,75 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="2015"/>
+        <location filename="src/baseengine.cpp" line="1822"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1074"/>
+        <location filename="src/baseengine.cpp" line="936"/>
         <source>Could not modify the Services data.</source>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1617"/>
+        <location filename="src/baseengine.cpp" line="1465"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XiVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1074"/>
+        <location filename="src/baseengine.cpp" line="936"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Asterisk est peut-être arrêté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1619"/>
+        <location filename="src/baseengine.cpp" line="1467"/>
         <source>Missing Argument(s)</source>
         <translation>Argument(s) manquant(s)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1614"/>
+        <location filename="src/baseengine.cpp" line="1462"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1550"/>
+        <location filename="src/baseengine.cpp" line="1398"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1612"/>
+        <location filename="src/baseengine.cpp" line="1460"/>
         <source>You are already connected from %1:%2.</source>
         <translation>Vous êtes déjà connecté depuis %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1559"/>
+        <location filename="src/baseengine.cpp" line="1407"/>
         <source>You entered a wrong login / password.</source>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1562"/>
+        <location filename="src/baseengine.cpp" line="1410"/>
         <source>Your profile identifier &lt;%1&gt; is not defined.</source>
         <translation>Votre identifieur de profil &lt;%1&gt; n&apos;est pas défini.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1571"/>
+        <location filename="src/baseengine.cpp" line="1419"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <oldsource>You probably setup an IP address %1 that is actually an unresolved host name.</oldsource>
         <translation>Vous avez défini une adresse IP %1 qui est probablement un nom d&apos;hôte non résolu.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1574"/>
+        <location filename="src/baseengine.cpp" line="1422"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <oldsource>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, the IP address %1 that does not exist</oldsource>
         <translation>Timeout de socket (~ 60 s) : vous avez probablement essayé de joindre, via une passerelle, une adresse IP %1 qui n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1578"/>
+        <location filename="src/baseengine.cpp" line="1426"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <oldsource>There seems to be a machine running on this IP address %1, and either no CTI Server is running, or your port %2 is wrong.</oldsource>
         <translation>Il semble qu&apos;une machine soit présente à cette adresse IP %1, mais il n&apos;y a pas de serveur CTI, ou votre port %2 est faux.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1582"/>
+        <location filename="src/baseengine.cpp" line="1430"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -83,103 +83,103 @@
 - un câble a été débranché sur votre réseau local, sur le chemin vers cette adresse IP (~ 30 s de timeout).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1588"/>
+        <location filename="src/baseengine.cpp" line="1436"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation>Il semble que le serveur à l&apos;adresse IP %1 n&apos;accepte pas le chiffrage sur son port %2. Changez soit le port soit la configuration de chiffrage.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1592"/>
+        <location filename="src/baseengine.cpp" line="1440"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <oldsource>An unknown socket error has occured while attempting to join the IP address:port %1:%2.
 </oldsource>
         <translation>Une erreur de socket inconnue s&apos;est produite en essayant de joindre l&apos;IP %1:%2 (adresse:port).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1596"/>
+        <location filename="src/baseengine.cpp" line="1444"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <oldsource>An unmanaged (number %1) socket error has occure while attempting to join the IP address:port %1:%2.
 </oldsource>
         <translation>Une erreur de socket non gérée (numéro %1) s&apos;est produite en essayant de joindre l&apos;IP %1:%2 (adresse:port).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1623"/>
+        <location filename="src/baseengine.cpp" line="1471"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1628"/>
+        <location filename="src/baseengine.cpp" line="1476"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1642"/>
+        <location filename="src/baseengine.cpp" line="1490"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1647"/>
+        <location filename="src/baseengine.cpp" line="1495"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1657"/>
+        <location filename="src/baseengine.cpp" line="1505"/>
         <source>ERROR</source>
         <translation>ERREUR</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1635"/>
+        <location filename="src/baseengine.cpp" line="1483"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>La version majeure de votre client (%1)
 est différente de celle du serveur (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1651"/>
+        <location filename="src/baseengine.cpp" line="1499"/>
         <source>You were disconnected by the server.</source>
         <translation>Vous avez été déconnecté par le serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1653"/>
+        <location filename="src/baseengine.cpp" line="1501"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Vous avez été déconnecté de force par le serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1066"/>
+        <location filename="src/baseengine.cpp" line="930"/>
         <source>Received Services Data</source>
         <translation>Reçu les Informations de Services</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1554"/>
+        <location filename="src/baseengine.cpp" line="1402"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <oldsource>Your registration name &lt;%1@%2&gt;
 is not known by the XiVO CTI server on %3:%4.</oldsource>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu par le serveur CTI XiVO sur %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1566"/>
+        <location filename="src/baseengine.cpp" line="1414"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 n&apos;a pas répondu au dernier keepalive.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1601"/>
+        <location filename="src/baseengine.cpp" line="1449"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient de fermer la connexion.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1605"/>
+        <location filename="src/baseengine.cpp" line="1453"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être arrêté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1608"/>
+        <location filename="src/baseengine.cpp" line="1456"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être rechargé.</translation>
     </message>
@@ -187,170 +187,160 @@ is not known by the XiVO CTI server on %3:%4.</oldsource>
 <context>
     <name>BasePeerWidget</name>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="63"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="64"/>
         <source>&amp;Remove</source>
         <translation>&amp;Enlever</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="64"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="65"/>
         <source>Remove this peer from the panel</source>
         <translation>Enlever ce poste du tableau</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="389"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="418"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="430"/>
         <source>&amp;Call</source>
         <translation>&amp;Appeler</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="379"/>
         <source>Call this peer</source>
-        <translation>Appeler ce poste</translation>
+        <translation type="obsolete">Appeler ce poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="55"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="57"/>
         <source>&amp;Open a chat window</source>
         <translation>&amp;Ouvrir une fenêtre de discussion</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="56"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="58"/>
         <source>Open a chat window with this user</source>
         <translation>Ouvrir une fenêtre de discussion avec cet utilisateur</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="383"/>
         <source>&amp;Call mobile</source>
-        <translation>&amp;Apeller sur le mobile</translation>
+        <translation type="obsolete">&amp;Apeller sur le mobile</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="460"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="464"/>
         <source>&amp;Hangup</source>
-        <translation>&amp;Raccrocher</translation>
+        <translation type="obsolete">&amp;Raccrocher</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="465"/>
         <source>Hangup this communication</source>
-        <translation>Terminer la communication</translation>
+        <translation type="obsolete">Terminer la communication</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="73"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="480"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="484"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="74"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="503"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Intercepter</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="485"/>
         <source>Intercept this communication</source>
-        <translation>Intercepter la communication</translation>
+        <translation type="obsolete">Intercepter la communication</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="541"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="565"/>
         <source>Transfer this communication</source>
-        <translation>Transférer cette communication</translation>
+        <translation type="obsolete">Transférer cette communication</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="537"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="543"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="609"/>
         <source>Direct &amp;Transfer</source>
         <translation>&amp;Transfert direct</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="559"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="570"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="609"/>
         <source>&amp;Indirect Transfer</source>
         <translation>Transfert &amp;Indirect</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="396"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="466"/>
         <source>&amp;Edit</source>
         <translation>&amp;Modifier</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="497"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="501"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="565"/>
         <source>&amp;Park</source>
         <translation>&amp;Parquer</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="595"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="601"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="663"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfert vers boite &amp;vocale</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="544"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="571"/>
         <source>Transfer to this person</source>
-        <translation>Transférer vers ce poste</translation>
+        <translation type="obsolete">Transférer vers ce poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="599"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="602"/>
         <source>Transfer to voice mail</source>
-        <translation>Transférer vers cette messagerie vocale</translation>
+        <translation type="obsolete">Transférer vers cette messagerie vocale</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="502"/>
         <source>Park this call</source>
-        <translation>Parquer cet appel</translation>
+        <translation type="obsolete">Parquer cet appel</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="74"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="75"/>
         <source>Intercept call</source>
         <translation>Intercepter l&apos;appel</translation>
     </message>
     <message>
         <location filename="src/gui/basepeerwidget.cpp" line="528"/>
-        <source>Invite in meetme room %1</source>
-        <translation>Inviter à la conférence %1</translation>
+        <source>Invite in meetme room %0</source>
+        <oldsource>Invite in meetme room %1</oldsource>
+        <translation>Inviter à la conférence %0</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="566"/>
         <source>(Cancel)</source>
-        <translation>(Annuler)</translation>
+        <translation type="obsolete">(Annuler)</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="568"/>
-        <location filename="src/gui/basepeerwidget.cpp" line="573"/>
         <source>Cancel the Transfer</source>
-        <translation>Annuler le Transfert</translation>
+        <translation type="obsolete">Annuler le Transfert</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="572"/>
         <source>&amp;Cancel the Transfer</source>
-        <translation>&amp;Annule le Transfert</translation>
+        <translation type="obsolete">&amp;Annule le Transfert</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="742"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="807"/>
         <source>XiVO Client - Removing %1 %2</source>
         <translation>XiVO Client - Enlever %1 %2</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="743"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="808"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation>Enlever %1 %2.
 Etes-vous sûr ?</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="68"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="69"/>
         <source>Re&amp;name</source>
         <translation>Re&amp;nommer</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="69"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="70"/>
         <source>Rename this peer</source>
         <translation>Renommer ce poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="757"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="439"/>
+        <source>Call &amp;mobile</source>
+        <translation>Appeler &amp;mobile</translation>
+    </message>
+    <message>
+        <location filename="src/gui/basepeerwidget.cpp" line="558"/>
+        <source>&amp;Park correspondant</source>
+        <translation>&amp;Parquer le correspondant</translation>
+    </message>
+    <message>
+        <location filename="src/gui/basepeerwidget.cpp" line="822"/>
         <source>Rename Item</source>
         <translation>Renommer le poste</translation>
     </message>
     <message>
-        <location filename="src/gui/basepeerwidget.cpp" line="757"/>
+        <location filename="src/gui/basepeerwidget.cpp" line="822"/>
         <source>Rename %1 :</source>
         <translation>Renommer %1 :</translation>
     </message>
@@ -359,8 +349,25 @@ Etes-vous sûr ?</translation>
     <name>BasicPeerWidget</name>
     <message>
         <location filename="src/gui/basicpeerwidget.cpp" line="56"/>
+        <source>Phone Numbers : %1</source>
+        <translation>Extensions : %1</translation>
+    </message>
+    <message>
+        <location filename="src/gui/basicpeerwidget.cpp" line="60"/>
         <source>(No callerid yet)</source>
         <translation>(appelant non encore connu)</translation>
+    </message>
+    <message>
+        <location filename="src/gui/basicpeerwidget.cpp" line="117"/>
+        <source>User Name : %1
+Phone Numbers : %2</source>
+        <translation>Utilisateur : %1
+Extensions : %2</translation>
+    </message>
+    <message>
+        <location filename="src/gui/basicpeerwidget.cpp" line="124"/>
+        <source>Status : %1</source>
+        <translation>Statut : %1</translation>
     </message>
 </context>
 <context>
@@ -376,23 +383,31 @@ Etes-vous sûr ?</translation>
         <translation>&amp;Envoyer</translation>
     </message>
     <message>
-        <location filename="src/gui/chitchat.cpp" line="101"/>
+        <location filename="src/gui/chitchat.cpp" line="100"/>
+        <source>chitchat - %1 (%2)</source>
+        <translation>chitchat - %1 (%2)</translation>
+    </message>
+    <message>
+        <location filename="src/gui/chitchat.cpp" line="137"/>
+        <location filename="src/gui/chitchat.cpp" line="180"/>
+        <source>chat window opened with &quot;%1&quot; (%2)</source>
+        <translation>fenêtre de discussion ouverte avec &quot;%1&quot; (%2)</translation>
+    </message>
+    <message>
         <source>chitchat - %0</source>
-        <translation>chitchat - %0</translation>
+        <translation type="obsolete">chitchat - %0</translation>
     </message>
     <message>
-        <location filename="src/gui/chitchat.cpp" line="131"/>
-        <location filename="src/gui/chitchat.cpp" line="176"/>
         <source>chat window opened with user - </source>
-        <translation>fenêtre de discussion ouverte avec - </translation>
+        <translation type="obsolete">fenêtre de discussion ouverte avec - </translation>
     </message>
     <message>
-        <location filename="src/gui/chitchat.cpp" line="147"/>
+        <location filename="src/gui/chitchat.cpp" line="154"/>
         <source>you said: </source>
         <translation>Vous avez dit:</translation>
     </message>
     <message>
-        <location filename="src/gui/chitchat.cpp" line="176"/>
+        <location filename="src/gui/chitchat.cpp" line="183"/>
         <source>system: </source>
         <translation>système: </translation>
     </message>
@@ -423,12 +438,12 @@ Etes-vous sûr ?</translation>
         <translation>Envoyer un E-mail</translation>
     </message>
     <message>
-        <location filename="src/gui/extendedtablewidget.cpp" line="225"/>
+        <location filename="src/gui/extendedtablewidget.cpp" line="222"/>
         <source>Removing this contact</source>
         <translation>Suppression du contact</translation>
     </message>
     <message>
-        <location filename="src/gui/extendedtablewidget.cpp" line="226"/>
+        <location filename="src/gui/extendedtablewidget.cpp" line="223"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Suppression du contact.
@@ -464,21 +479,37 @@ Etes-vous sûr(e) ?</translation>
     </message>
 </context>
 <context>
+    <name>ExternalPhonePeerWidget</name>
+    <message>
+        <location filename="src/gui/externalphonepeerwidget.cpp" line="49"/>
+        <source>Label : %1
+Phone Number : %2</source>
+        <translation>Label : %1
+Extension : %2</translation>
+    </message>
+</context>
+<context>
     <name>PeerWidget</name>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="207"/>
+        <location filename="src/gui/peerwidget.cpp" line="235"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="210"/>
         <source>%1 &lt;%2&gt;</source>
-        <translation>%1 &lt;%2&gt;</translation>
+        <translation type="obsolete">%1 &lt;%2&gt;</translation>
     </message>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="142"/>
+        <location filename="src/gui/peerwidget.cpp" line="141"/>
         <source>Agent %1</source>
         <translation>Agent %1</translation>
+    </message>
+    <message>
+        <location filename="src/gui/peerwidget.cpp" line="161"/>
+        <source>Agent Number : %1
+In Queues : %2</source>
+        <translation>Numéro d&apos;agent : %1
+Dans les files : %2</translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="169"/>
@@ -487,19 +518,43 @@ Etes-vous sûr(e) ?</translation>
     </message>
     <message>
         <location filename="src/gui/peerwidget.cpp" line="182"/>
-        <source>User : %1</source>
-        <translation>Utilisateur : %1</translation>
+        <source>User Name: %1
+IPBXid: %2
+Status: %3</source>
+        <translation>Utilisateur : %1
+IPBXid : %2
+Statut : %3</translation>
     </message>
     <message>
-        <location filename="src/gui/peerwidget.cpp" line="196"/>
+        <location filename="src/gui/peerwidget.cpp" line="213"/>
+        <source>Status:%1</source>
+        <translation>Statut : %1</translation>
+    </message>
+    <message>
+        <location filename="src/gui/peerwidget.cpp" line="218"/>
+        <source>Phone Number: %1
+IPBXid: %2
+Context: %3
+Status: %4
+Busy lines: %5</source>
+        <translation>Extension : %1
+IPBXid : %2
+Contexte : %3
+Statut : %4
+Lignes occupées : %5</translation>
+    </message>
+    <message>
+        <source>User : %1</source>
+        <translation type="obsolete">Utilisateur : %1</translation>
+    </message>
+    <message>
         <source>Phone %1 : %2</source>
-        <translation>Téléphone %1 : %2</translation>
+        <translation type="obsolete">Téléphone %1 : %2</translation>
     </message>
     <message numerus="yes">
-        <location filename="src/gui/peerwidget.cpp" line="162"/>
         <source>Agent %1
 %n Queue(s) %2</source>
-        <translation>
+        <translation type="obsolete">
             <numerusform>Agent %1
 %n File %2</numerusform>
             <numerusform>Agent %1
