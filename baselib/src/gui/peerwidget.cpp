@@ -179,12 +179,13 @@ void PeerWidget::updatePresence()
         QColor c = QColor(colorstring);
         m_user_status->setIcon(TaintedPixmap( \
             QString(":/images/personal-trans.png"), c).getPixmap());
-        m_user_status->setToolTip(tr("User Name : %1\n"
-                                     "IPBX : %2\n"
-                                     "Status : %3")
+        m_user_status->setToolTip(tr("User Name: %1\n"
+                                     "IPBXid: %2\n"
+                                     "Status: %3")
                                   .arg(m_ui_remote->fullname())
                                   .arg(m_ui_remote->ipbxid())
                                   .arg(presencedetails.value("longname").toString()));
+        // to add some day in the tooltip : entity name
     }
 }
 
@@ -214,12 +215,14 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     QColor c = QColor(color);
     m_lblphones[xphoneid]->setPixmap( \
               TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
-    m_lblphones[xphoneid]->setToolTip(tr("Phone Number : %1\n"
-                                         "IPBX : %2\n"
-                                         "Status : %3\n"
-                                         "Busy lines : %4")
+    m_lblphones[xphoneid]->setToolTip(tr("Phone Number: %1\n"
+                                         "IPBXid: %2\n"
+                                         "Context: %3\n"
+                                         "Status: %4\n"
+                                         "Busy lines: %5")
                                       .arg(phoneinfo->number())
                                       .arg(phoneinfo->ipbxid())
+                                      .arg(phoneinfo->context())
                                       .arg(longname)
                                       .arg(phoneinfo->channels().count())
                                       );

@@ -277,7 +277,9 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         return;
     if (m_ui == NULL)
         return;
-    m_user->setText(QString("%1 (%2)").arg(m_ui->fullname()).arg(m_ui->ipbxid()));
+    m_user->setText(QString("%1").arg(m_ui->fullname()));
+    m_user->setToolTip(tr("IPBXid: %1").arg(m_ui->ipbxid()));
+    // to add some day in the tooltip : entity name
 
     foreach (QString xphoneid, m_ui->phonelist()) {
         const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
@@ -296,7 +298,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         m_identityphones[xphoneid]->setPhoneId(xphoneid);
     }
     m_phonenum->setText(b_engine->phonenumbers(m_ui).join(", "));
-    m_phonenum->setToolTip(tr("Server: %1\n"
+    m_phonenum->setToolTip(tr("IPBXid: %1\n"
                               "Context: %2")
                            .arg(m_ui->ipbxid())
                            .arg(m_ui->context()));

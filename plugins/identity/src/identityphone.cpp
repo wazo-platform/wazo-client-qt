@@ -215,7 +215,7 @@ void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
         return;
     m_phone->setText(tr("Phone %1").arg(phoneinfo->number()));
     m_phone->setToolTip(tr("Protocol: %1\n"
-                           "Server: %2\n"
+                           "IPBXid: %2\n"
                            "Context: %3")
                         .arg(phoneinfo->protocol())
                         .arg(phoneinfo->ipbxid())
