@@ -52,6 +52,7 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
     m_iconButton->setIcon(icon);
     m_iconButton->setFlat(true);
     m_iconButton->setIconSize(icon.size());
+    m_iconButton->setEnabled(false);
     m_layout->addWidget(m_iconButton, 0, 0, 3, 1, Qt::AlignHCenter|Qt::AlignTop);
     connect(m_iconButton, SIGNAL(clicked()), this, SLOT(callVoiceMail()));
 
@@ -76,7 +77,13 @@ void IdentityVoiceMail::setVoiceMailId(const QString & xvoicemailid)
  */
 void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
 {
-    if(svcstatus["enablevoicemail"].toBool()) {
+    bool has_phone = (ui && ui->phonelist().size());
+    m_iconButton->setEnabled(has_phone);
+    if (! m_voicemailinfo && ui) {
+        setVoiceMailId(ui->xvoicemailid());
+        updateVoiceMailStatus(m_xvoicemailid);
+    }
+    if(svcstatus["enablevoicemail"].toBool() && m_voicemailinfo) {
         m_name->setText(tr("<b>VoiceMailBox %1</b>").arg(ui->voicemailNumber()));
         m_name->setToolTip(tr("VoiceMail activated on %1").arg(ui->voicemailNumber()));
     } else {
