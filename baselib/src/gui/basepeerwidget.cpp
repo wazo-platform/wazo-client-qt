@@ -106,8 +106,15 @@ void BasePeerWidget::reloadSavedName()
  */
 void BasePeerWidget::dial()
 {
-    QString number = sender()->property("number").toString();
-    qDebug() << Q_FUNC_INFO << number;
+    QString number;
+    if (sender()) {
+        number = sender()->property("number").toString();
+    } else if (m_ui_remote) {
+        if (const PhoneInfo * p = b_engine->phone(
+                m_ui_remote->phonelist().value(0))) {
+            number = p->number();
+        }
+    }
     if (! number.isEmpty()) {
         b_engine->actionDialNumber(number);
     } else {
