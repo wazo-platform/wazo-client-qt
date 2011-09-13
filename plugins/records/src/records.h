@@ -44,16 +44,14 @@ class ResultsWidget;
 class CommonTableProperties;
 class CommonTableWidget;
 
-class XletRecords : public XLet
+class XletRecords : public XLet, IPBXListener
 {
     Q_OBJECT
     public:
         XletRecords(QWidget *parent=0);
         ~XletRecords();
         void recordResults(const QVariantMap &);
-        static void recordResults_t(const QVariantMap & p, void * udata) {
-                ((XletRecords *) udata)->recordResults(p);
-        };
+        void parseCommand(const QVariantMap &);
         static QString tooltip_t(const QModelIndex & modelindex, void * xlet) {
                 return ((XletRecords *) xlet)->tooltip(modelindex);
         };

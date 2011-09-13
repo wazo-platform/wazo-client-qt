@@ -31,64 +31,13 @@
  * $Date$
  */
 
-#ifndef __CHITCHAT_H__
-#define __CHITCHAT_H__
+#include "baseengine.h"
+#include "ipbxlistener.h"
 
-#include "baselib_export.h"
+void IPBXListener::parseCommand(const QVariantMap &){
+    qDebug() << "This should not appear !";
+}
 
-#include <QtGui>
-#include <baseengine.h>
-#include <ipbxlistener.h>
-
-class MessageEdit;
-
-
-/*! \brief open a chat window with another xivo user
- */
-class BASELIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
-{
-    Q_OBJECT
-
-    public:
-        static ChitChatWindow *chitchat_instance;
-
-        ChitChatWindow();
-        ChitChatWindow(const QString &);
-
-        void parseCommand(const QVariantMap & map);
-
-        void sendMessage(const QString &message);
-        void addMessage(const QString &, const QString &, const QString &, const QString &);
-        void receiveMessage(const QVariantMap &message);
-
-    public slots:
-        void writeMessageTo();
-        void clearMessageHistory();
-
-    private:
-        QString m_userid;
-        static QHash<QString, ChitChatWindow*> m_chat_window_opened;
-        MessageEdit *m_message;
-        QTextEdit *m_message_history;
-        QTextCursor lastCursor;
-};
-
-
-class MessageEdit : public QTextEdit
-{
-    Q_OBJECT
-
-    public:
-        MessageEdit(ChitChatWindow *parent) : QTextEdit((QWidget*) parent) { m_dad = parent; };
-
-    public slots:
-        void sendMessage();
-
-    private:
-        ChitChatWindow *m_dad;
-
-    protected:
-        virtual void keyPressEvent(QKeyEvent * event);
-};
-
-#endif
+void IPBXListener::registerListener(const QString &event_to_listen){
+    b_engine->registerListener(event_to_listen, this);
+}

@@ -108,9 +108,12 @@ ChitChatWindow::ChitChatWindow(const QString & xuserid_with) : QWidget(NULL)
 ChitChatWindow::ChitChatWindow()
 {
     // qDebug() << Q_FUNC_INFO << "registered";
-    b_engine->registerClassEvent("chitchat", ChitChatWindow::receiveMessage_t, this);
+    registerListener("chitchat");
 }
 
+void ChitChatWindow::parseCommand(const QVariantMap & map) {
+    receiveMessage(map);
+}
 
 void ChitChatWindow::receiveMessage(const QVariantMap & p)
 {

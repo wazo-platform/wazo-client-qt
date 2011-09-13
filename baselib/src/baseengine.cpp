@@ -466,16 +466,8 @@ void BaseEngine::clearInternalData()
                  << "Bytes/Second";
     }
 
-    /* cleaning the registered callbacks */
-    {
-        QHashIterator<QString, e_callback*> i(m_class_event_cb);
-        while (i.hasNext()) {
-            i.next();
-            qDebug() << Q_FUNC_INFO << "cleaning callback" << i.key();
-            delete i.value();
-        }
-        m_class_event_cb.clear();
-    }
+    /* cleaning the registered listeners */
+    m_listeners.clear();
 
     delete m_tree;
     m_tree = new DStore();
@@ -815,8 +807,8 @@ void BaseEngine::parseCommand(const QString &line)
     m_timesrv = datamap.value("timenow").toDouble();
     m_timeclt = QDateTime::currentDateTime();
 
-    if (callClassEventCallback(thisclass, datamap))  // a class callback was called,
-        return;                                      // so zap the 500 loc of if-else soup
+    if (forwardToListeners(thisclass, datamap))  // a class callback was called,
+        return;                                  // so zap the 500 loc of if-else soup
 
     // qDebug() << Q_FUNC_INFO << datamap.value("timenow").toString() << "BaseEngine message received"
     // << thisclass << datamap.value("function").toString()
@@ -2155,30 +2147,21 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     actionDialNumber(phonenum);
 }
 
-int BaseEngine::callClassEventCallback(QString class_event, const QVariantMap & map)
+int BaseEngine::forwardToListeners(QString event_dest, const QVariantMap & map)
 {
-    QList< e_callback* > values = m_class_event_cb.values(class_event);
-    e_callback * p;
-    int i;
-
-    for (i=0;i<values.size();++i) {
-        p = values.at(i);
-        p->cb(map, p->udata);
+    if (m_listeners.contains(event_dest)) {
+        foreach (IPBXListener *om, m_listeners.values(event_dest)) {
+            om->parseCommand(map);
+        }
+        return true ;
+    } else {
+        return false;
     }
-
-    return values.size();
 }
 
-void BaseEngine::registerClassEvent(const QString & class_event,
-                                    void (*cb)(const QVariantMap &, void *),
-                                    void * udata)
+void BaseEngine::registerListener(const QString & event_to_listen, IPBXListener *xlet)
 {
-    e_callback * e_call = new e_callback;
-
-    e_call->cb = cb;
-    e_call->udata = udata;
-
-    m_class_event_cb.insert(class_event, e_call);
+    m_listeners.insert(event_to_listen, xlet);
 }
 
 void BaseEngine::registerTranslation(const QString &path)

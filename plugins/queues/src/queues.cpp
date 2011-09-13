@@ -155,7 +155,7 @@ XletQueues::XletQueues(QWidget *parent)
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(settingsChanged()));
 
-    b_engine->registerClassEvent("queuestats", XletQueues::eatQueuesStats_t, this);
+    registerListener("queuestats");
     updateLongestWaitWidgets();
     QTimer::singleShot(0, this, SLOT(display()));
 }
@@ -164,6 +164,10 @@ void XletQueues::display()
 {
     show();
     QueueRow::getLayoutColumnsWidth(static_cast<QGridLayout*>(m_titleRow->layout()));
+}
+
+void XletQueues::parseCommand(const QVariantMap &map) {
+    eatQueuesStats(map);
 }
 
 void XletQueues::eatQueuesStats(const QVariantMap &p)
