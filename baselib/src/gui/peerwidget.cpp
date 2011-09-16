@@ -97,11 +97,19 @@ PeerWidget::PeerWidget(const UserInfo * ui)
     }
 
     foreach (QString xphoneid, ui->phonelist()) {
+        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
+        if (phoneinfo == NULL)
+            continue;
+        QString iduserfeatures = phoneinfo->iduserfeatures();
+        if ((iduserfeatures.isEmpty()) || (iduserfeatures == "0"))
+            continue;
+        int order = phoneinfo->rules_order();
+
         m_lblphones[xphoneid] = new QLabel(peer);
         m_lblphones[xphoneid]->setAlignment(Qt::AlignCenter);
         m_lblphones[xphoneid]->setMinimumSize(fsize, fsize);
         m_lblphones[xphoneid]->setProperty("kind", "term");
-        hLayout->addWidget(m_lblphones[xphoneid]);
+        hLayout->insertWidget(order, m_lblphones[xphoneid]);
     }
 
     if (! m_ui_remote->mobileNumber().isEmpty()) {
@@ -203,6 +211,10 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
+    QString iduserfeatures = phoneinfo->iduserfeatures();
+    if ((iduserfeatures.isEmpty()) || (iduserfeatures == "0"))
+        return;
+
     QString hintstatus = phoneinfo->hintstatus();
     QString color = "black";
     QString longname;
@@ -216,13 +228,16 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     QColor c = QColor(color);
     m_lblphones[xphoneid]->setPixmap( \
               TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
+    QString phonenumber = phoneinfo->number();
+    if (phonenumber.isEmpty())
+        phonenumber = tr("<EMPTY>");
     m_lblphones[xphoneid]->setToolTip(tr("Phone Number: %1\n"
                                          "Order: %2\n"
                                          "IPBXid: %3\n"
                                          "Context: %4\n"
                                          "Status: %5\n"
                                          "Busy lines: %6")
-                                      .arg(phoneinfo->number())
+                                      .arg(phonenumber)
                                       .arg(phoneinfo->rules_order())
                                       .arg(phoneinfo->ipbxid())
                                       .arg(phoneinfo->context())

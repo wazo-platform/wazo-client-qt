@@ -813,7 +813,8 @@ void BasePeerWidget::tryRemoveFromPanel()
     int ret;
     ret = QMessageBox::question(this,
                                 tr("XiVO Client - Removing %1 %2").arg(name()).arg(_number),
-                                tr("Removing %1 %2.\nAre you sure ?").arg(name()).arg(_number),
+                                tr("Removing %1 %2.\n"
+                                   "Are you sure ?").arg(name()).arg(_number),
                                 QMessageBox::Yes | QMessageBox::Cancel,
                                 QMessageBox::Cancel);
     if (ret == QMessageBox::Yes) {

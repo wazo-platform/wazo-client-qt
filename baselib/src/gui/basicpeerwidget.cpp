@@ -114,7 +114,8 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
 
 void BasicPeerWidget::updatePresence()
 {
-    QString text = tr("User Name : %1\nPhone Numbers : %2")
+    QString text = tr("User Name : %1\n"
+                      "Phone Numbers : %2")
         .arg(m_ui_remote->fullname())
         .arg(b_engine->phonenumbers(m_ui_remote).join(", "));
     QString availstate = m_ui_remote->availstate();
