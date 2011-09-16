@@ -41,7 +41,9 @@
  */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
-    : XInfo(ipbxid, id), m_fullname(""), m_callrecord(false)
+  : XInfo(ipbxid, id), m_callrecord(false), m_enablednd(false),
+    m_enablevoicemail(false), m_incallfilter(false), m_enablebusy(false),
+    m_enablerna(false), m_enableunc(false)
 {
 }
 
@@ -74,8 +76,10 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
         QStringList lid;
         foreach (QString id, prop.value("linelist").toStringList())
             lid << QString("%1/%2").arg(m_ipbxid).arg(id);
-        setPhoneIdList(lid);
-        haschanged = true;
+        if (lid != m_phoneidlist) {
+            haschanged = true;
+            setPhoneIdList(lid);
+        }
     }
 
     return haschanged;
