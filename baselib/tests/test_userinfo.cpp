@@ -128,3 +128,12 @@ void TestUserInfo::hasPhoneId()
     QCOMPARE(u.hasPhoneId(pxid), true);
     QCOMPARE(u.hasPhoneId(QString("%0/%1").arg(m_ipbxid).arg("133")), false);
 }
+
+void TestUserInfo::availstate()
+{
+    UserInfo u(m_ipbxid, "1234");
+    QCOMPARE(u.availstate(), QString());
+    QString teststate("teststate");
+    u.setAvailState(teststate);
+    QCOMPARE(u.availstate(), teststate);
+}

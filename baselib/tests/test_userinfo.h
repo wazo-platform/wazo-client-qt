@@ -10,6 +10,7 @@ class TestUserInfo: public QObject
     void xid();
     void updateConfig();
     void hasPhoneId();
+    void availstate();
   private:
     void init();
     QString m_ipbxid;
