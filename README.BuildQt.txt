@@ -16,6 +16,7 @@
 -no-declarative-debug \
 -no-cups \
 -no-opengl \
+-openssl \
 -prefix ${PWD}
 
 make sub-src sub-translations
@@ -29,7 +30,7 @@ make sub-src sub-translations
 
 ** Ubuntu packages prerequisites to build Qt
 
-libx11-dev libxau-dev libxaw7-dev libxcb1-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxfont-dev libxft-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev
+libx11-dev libxau-dev libxaw7-dev libxcb1-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxfont-dev libxft-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libssl-dev
 
 
 * Win32
@@ -70,6 +71,7 @@ make sub-src sub-translations
 -no-declarative-debug \
 -no-cups \
 -no-opengl \
+-openssl \
 -universal \
 -prefix ${PWD}
 
