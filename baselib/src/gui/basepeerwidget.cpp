@@ -612,6 +612,8 @@ void BasePeerWidget::addSwitchboardMenu(QMenu * menu)
  */
 void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 {
+    // XXX (pcm) We are ignoring attended transfers until they work properlly
+    if (! blind) return;
     if (! m_ui_local->xchannels().size()) return;
     if (m_ui_remote->isTalkingTo(m_ui_local->xid())) return;
     QString string = blind ? tr("Direct &Transfer") : tr("&Indirect Transfer");
