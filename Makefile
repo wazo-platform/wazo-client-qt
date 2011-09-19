@@ -59,7 +59,7 @@ clean-%:
 	@$(MAKE) -C $* distclean || true
 
 linux-%:
-	@cd $* && ${QMAKE} && $(MAKE)
+	@cd $* && ${QMAKE} && $(MAKE) ${XC_JOPT}
 
 all-win32:
 	@$(MAKE) -s versions
@@ -116,7 +116,7 @@ all-macos:
 	@$(MAKE) macos-xivoclient
 
 macos-%:
-	@cd $* && ${QMAKE} -macx && $(MAKE)
+	@cd $* && ${QMAKE} -macx && $(MAKE) ${XC_JOPT}
 
 packmacos:
 	@./cross/macos_pack.sh
