@@ -209,7 +209,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const TrunkInfo * trunk(const QString & id) const          //!< Return the trunk to any Xlet
             { return (const TrunkInfo *) m_anylist.value("trunks").value(id); };
         const AgentInfo * agent(const QString & id) const          //!< Return the agent to any Xlet
-            { return (const AgentInfo *) m_anylist.value("agents ").value(id); };
+            { return (const AgentInfo *) m_anylist.value("agents").value(id); };
         const QueueInfo * queue(const QString & id) const         //!< Return the queue to any Xlet
             { return (const QueueInfo *) m_anylist.value("queues").value(id); };
         const GroupInfo * group(const QString & id) const          //!< Return the group to any Xlet
