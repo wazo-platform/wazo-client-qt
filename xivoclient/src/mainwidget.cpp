@@ -51,8 +51,6 @@ MainWidget::MainWidget()
       m_pixmap_connected(QPixmap(":/images/connected.png")
                          .scaledToHeight(18, Qt::SmoothTransformation)),
       m_withsystray(true),
-      m_status(new QLabel(this)),
-      m_profilename(new QLabel(this)),
       m_centralWidget(new QStackedWidget(this)),
       m_resizingHelper(0),
       m_clipboard(NULL)
@@ -62,14 +60,24 @@ MainWidget::MainWidget()
     fetchConfig();
     
     m_appliname = tr("Client %1").arg(XIVOVER);
-    m_status->setPixmap(m_pixmap_disconnected);
 
+    m_profilename = new QLabel(this);
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
-    statusBar()->addPermanentWidget(m_profilename);
     if (m_profilename && displayprofile)
         m_profilename->show();
     else
         m_profilename->hide();
+    statusBar()->addPermanentWidget(m_profilename);
+
+    m_padlock = new QLabel(this);
+    QPixmap padlock_pixmap = QPixmap(":/images/padlock.png")
+                             .scaledToHeight(18, Qt::SmoothTransformation);
+    m_padlock->setPixmap(padlock_pixmap);
+    m_padlock->hide();
+    statusBar()->addPermanentWidget(m_padlock);
+
+    m_status = new QLabel(this);
+    m_status->setPixmap(m_pixmap_disconnected);
     statusBar()->addPermanentWidget(m_status);
 
     setWindowTitle(QString("XiVO %1").arg(m_appliname));
@@ -823,6 +831,7 @@ void MainWidget::connectionStateChanged()
         m_connectact->setEnabled(false);
         m_disconnectact->setEnabled(true);
         m_status->setPixmap(m_pixmap_connected);
+        m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
         m_profilename->setText(b_engine->getConfig("profilename").toString());
         b_engine->logAction("connection started");
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
@@ -830,6 +839,7 @@ void MainWidget::connectionStateChanged()
         m_connectact->setEnabled(true);
         m_disconnectact->setEnabled(false);
         m_status->setPixmap(m_pixmap_disconnected);
+        m_padlock->hide();
         m_profilename->setText("");
         b_engine->logAction("connection stopped");
     }
