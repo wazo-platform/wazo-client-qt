@@ -216,6 +216,7 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
         return;
 
     QString hintstatus = phoneinfo->hintstatus();
+    QString phonenumber = phoneinfo->number();
     QString color = "black";
     QString longname;
     if (b_engine->getOptionsPhoneStatus().contains(hintstatus)) {
@@ -225,10 +226,11 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     } else {
         longname = tr("Status:%1").arg(hintstatus);
     }
+    if (phonenumber.isEmpty())
+        longname = tr("No status (no phone number)");
     QColor c = QColor(color);
     m_lblphones[xphoneid]->setPixmap( \
               TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
-    QString phonenumber = phoneinfo->number();
     if (phonenumber.isEmpty())
         phonenumber = tr("<EMPTY>");
     m_lblphones[xphoneid]->setToolTip(tr("Phone Number: %1\n"

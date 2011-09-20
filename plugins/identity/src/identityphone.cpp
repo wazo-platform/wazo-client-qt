@@ -213,8 +213,10 @@ void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
     const PhoneInfo * phoneinfo = b_engine->phone(m_xphoneid);
     if (phoneinfo == NULL)
         return;
-    if (! phoneinfo->number().isEmpty())
-        m_phone->setText(tr("Phone %1").arg(phoneinfo->number()));
+
+    QString phonenumber = phoneinfo->number();
+    if (! phonenumber.isEmpty())
+        m_phone->setText(tr("Phone %1").arg(phonenumber));
     else
         m_phone->setText(tr("Phone <EMPTY>"));
     // would be good to display SIP/grmbl in tooltip, too ...
@@ -239,8 +241,10 @@ void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
 
     QPixmap square(10, 10);
     QString hintstatus = phoneinfo->hintstatus();
+    QString phonenumber = phoneinfo->number();
     QString color = "black";
     QString longname;
+
     if (b_engine->getOptionsPhoneStatus().contains(hintstatus)) {
         QVariantMap qvmop = b_engine->getOptionsPhoneStatus().value(hintstatus).toMap();
         color = qvmop.value("color").toString();
@@ -248,6 +252,10 @@ void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
     } else {
         longname = tr("Status:%1").arg(hintstatus);
     }
+    if (phonenumber.isEmpty())
+        longname = tr("No status\n"
+                      "(no phone number)");
+
     square.fill(color);
     m_phonecall->setPixmap(square);
     m_phonecall->setToolTip(longname);
