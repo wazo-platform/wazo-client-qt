@@ -121,6 +121,7 @@ class BASELIB_EXPORT BasePeerWidget : public QWidget
         QAction *m_chitchatAction;  //!< action to speak with an user
         QString m_number;  //!< phone number (filled if m_ui is NULL)
         bool m_editable;  //!< editable from a user point of view
+        bool m_transfered;  //!< if this call was transfered
         int m_maxWidthWanted;  //!< maximum width for "small" items
 };
 

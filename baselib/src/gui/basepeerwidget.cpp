@@ -48,7 +48,7 @@
  * initialize members.
  */
 BasePeerWidget::BasePeerWidget(const UserInfo * ui)
-    : m_ui_remote(ui), m_editable(false)
+    : m_ui_remote(ui), m_editable(false), m_transfered(false)
 {
     m_ui_local = b_engine->getXivoClientUser();
     if (m_ui_remote) {
@@ -183,6 +183,7 @@ void BasePeerWidget::transfer()
         .arg(m_ui_remote->ipbxid())
         .arg(sender()->property("number").toString());
     b_engine->actionCall("transfer", src, dst);
+    m_transfered = true;
 }
 
 /*! \brief Indirect Transfer
@@ -502,13 +503,15 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
  */
 void BasePeerWidget::addInterceptMenu(QMenu * menu)
 {
-    if (! b_engine->getCapasIpbxCommands().contains("intercept")) {
+    if (! b_engine->getCapasIpbxCommands().contains("intercept")
+            && ! m_transfered) {
         return;
     }
     foreach (const QString & channelxid, m_ui_remote->xchannels()) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
             if (c->commstatus() == CHAN_STATUS_RINGING) {
-                QAction * action = new QAction(tr("&Intercept"), this);
+                QString s = tr(m_transfered ? "Cancel transfer" : "&Intercept");
+                QAction * action = new QAction(s, this);
                 action->setProperty("xchannel",
                                     (QString("%0/%1")
                                      .arg(c->ipbxid())

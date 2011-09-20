@@ -215,6 +215,10 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     if ((iduserfeatures.isEmpty()) || (iduserfeatures == "0"))
         return;
 
+    if (! phoneinfo->xchannels().size()) {
+        m_transfered = false;
+    }
+
     QString hintstatus = phoneinfo->hintstatus();
     QString phonenumber = phoneinfo->number();
     QString color = "black";

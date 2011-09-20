@@ -2,7 +2,7 @@ XIVOVER = 1.2
 GIT_HASH = to_fill
 GIT_DATE = to_fill
 
-include(versions.pri)
+#include(versions.pri)
 
 DATEBUILD = $$system(LANG= date +%Y-%m-%dT%H:%M:%S)
 DEBUGON = $$system(echo -n $DEBUG)
