@@ -518,7 +518,7 @@ void MainWidget::createSystrayIcon()
 void MainWidget::showConfDialog()
 {
     setConfig();
-    ConfigWidget *configwindow = new ConfigWidget();
+    ConfigWidget *configwindow = new ConfigWidget(this);
     configwindow->exec();
     delete configwindow;
 }
@@ -743,6 +743,8 @@ void MainWidget::engineStarted()
 
     foreach (QString name, m_docks.keys())
         m_docks[name]->show();
+
+    m_defaultState = saveState();
     // restore the saved state AFTER showing the docks
     restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 
@@ -785,6 +787,11 @@ void MainWidget::setSystrayIcon(const QString & def)
         m_systrayIcon->setIcon(icon);
     }
     setWindowIcon(icon);
+}
+
+void MainWidget::resetState() {
+    // qDebug() << Q_FUNC_INFO;
+    restoreState(m_defaultState);
 }
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)

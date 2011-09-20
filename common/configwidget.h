@@ -92,6 +92,8 @@ class ConfigWidget: public QDialog
         void _insert_operator_functiontab();
         void _insert_advanced_tab();
 
+        QWidget * m_parent;
+
         QVariantMap m_config;
         
         QMap<QString, QString> m_dblclick_actions;
@@ -162,6 +164,8 @@ class ConfigWidget: public QDialog
         
         QCheckBox * m_displayprofile;
         QCheckBox * m_activate_on_tel;
+
+        QPushButton * m_reset_gui;
 };
 
 /*! \brief Wrapper to display a warning icon beside a QWidget*/

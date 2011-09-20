@@ -54,6 +54,7 @@ class MainWidget : public QMainWindow
     public slots:
         void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
         void setSystrayIcon(const QString &);
+        void resetState();
     private slots:
         void clipselection();
         void clipdata();
@@ -115,6 +116,8 @@ class MainWidget : public QMainWindow
 
         QWidget *m_wid;  //!< "Main" Widget
         QWidget *m_loginWidget;  //!< Central Widget for login
+
+        QByteArray m_defaultState;
 
         // Widgets for Xlets
         QTabWidget *m_tabwidget;        //!< Area to display messages, services and histories
