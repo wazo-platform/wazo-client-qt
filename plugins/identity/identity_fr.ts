@@ -98,13 +98,13 @@ Contexte: %2</translation>
     <name>IdentityPhone</name>
     <message>
         <location filename="src/identityphone.cpp" line="184"/>
-        <location filename="src/identityphone.cpp" line="340"/>
-        <location filename="src/identityphone.cpp" line="341"/>
+        <location filename="src/identityphone.cpp" line="348"/>
+        <location filename="src/identityphone.cpp" line="349"/>
         <source>No option</source>
         <translation>Pas d&apos;option</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="217"/>
+        <location filename="src/identityphone.cpp" line="219"/>
         <source>Phone %1</source>
         <translation>Téléphone %1</translation>
     </message>
@@ -123,12 +123,12 @@ IPBXid : %2
 Contexte : %3</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="219"/>
+        <location filename="src/identityphone.cpp" line="221"/>
         <source>Phone &lt;EMPTY&gt;</source>
         <translation>Téléphone &lt;VIDE&gt;</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="221"/>
+        <location filename="src/identityphone.cpp" line="223"/>
         <source>Protocol: %1
 Order: %2
 IPBXid: %3
@@ -139,63 +139,70 @@ IPBXid : %3
 Contexte : %4</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="249"/>
+        <location filename="src/identityphone.cpp" line="253"/>
         <source>Status:%1</source>
         <translation>Statut : %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="278"/>
-        <location filename="src/identityphone.cpp" line="292"/>
+        <location filename="src/identityphone.cpp" line="256"/>
+        <source>No status
+(no phone number)</source>
+        <translation>Pas de statut
+(pas de numéro)</translation>
+    </message>
+    <message>
+        <location filename="src/identityphone.cpp" line="286"/>
+        <location filename="src/identityphone.cpp" line="300"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="324"/>
+        <location filename="src/identityphone.cpp" line="332"/>
         <source>DND</source>
         <translation>NPD</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="325"/>
+        <location filename="src/identityphone.cpp" line="333"/>
         <source>Do Not Disturb</source>
         <translation>Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="327"/>
+        <location filename="src/identityphone.cpp" line="335"/>
         <source>UNC %1</source>
         <translation>INC %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="328"/>
+        <location filename="src/identityphone.cpp" line="336"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="330"/>
+        <location filename="src/identityphone.cpp" line="338"/>
         <source>Busy %1</source>
         <translation>Occ %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="331"/>
+        <location filename="src/identityphone.cpp" line="339"/>
         <source>Busy Forward towards %1</source>
         <translation>Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="333"/>
+        <location filename="src/identityphone.cpp" line="341"/>
         <source>FNA %1</source>
         <translation>RNR %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="334"/>
+        <location filename="src/identityphone.cpp" line="342"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Renvoi sur Non-Réponse vers %1</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="336"/>
+        <location filename="src/identityphone.cpp" line="344"/>
         <source>Call Rec</source>
         <translation>Enr Appel</translation>
     </message>
     <message>
-        <location filename="src/identityphone.cpp" line="338"/>
+        <location filename="src/identityphone.cpp" line="346"/>
         <source>Call Filter</source>
         <translation>Filtre Appel</translation>
     </message>
