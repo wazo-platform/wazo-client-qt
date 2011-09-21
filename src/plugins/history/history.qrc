@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../images/history/sent_call.png</file>
+        <file>../../../images/history/received_call.png</file>
+        <file>../../../images/history/missed_call.png</file>
+        <file>../../../obj/history_fr.qm</file>
+        <file>../../../obj/history_nl.qm</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../obj/agentdetails_fr.qm</file>
+        <file>../../../obj/agentdetails_nl.qm</file>
+    </qresource>
+</RCC>

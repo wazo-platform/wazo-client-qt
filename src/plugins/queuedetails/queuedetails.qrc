@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../obj/queuedetails_fr.qm</file>
+        <file>../../../obj/queuedetails_nl.qm</file>
+    </qresource>
+</RCC>

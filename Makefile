@@ -1,14 +1,15 @@
 QMAKE?=qmake
 ECHO?=/bin/echo
 DOXYGEN?=doxygen
+XC_VERSION?=1.2
+VERSIONS_FILE=src/versions.mak
 
 # WIN32 targets only
 MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
 UPXWIN?=/cygdrive/c/upx303w/upx.exe
 
 # Versions Definitions
--include versions.mak
--include uname.mak
+-include ${VERSIONS_FILE}
 
 default: all
 
@@ -27,70 +28,79 @@ help: guessos
 	@echo "          $(MAKE) doc"
 	@echo "Thanks."
 
-guessos:
-	@${ECHO} -n "_UNAME_ = " > uname.mak
-	@uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> uname.mak
+displayversions:
+	@${ECHO} ${XIVOVER}-${GIT_DATE}-${GIT_HASH}
+
+# to be executed under a bash/cygwin-like terminal
+versions:
+	
+	@${ECHO} -n "version (before update) : " && $(MAKE) -s displayversions
+	
+	@rm -f ${VERSIONS_FILE}
+	
+	@${ECHO} -n "XC_UNAME = " > ${VERSIONS_FILE}
+	@uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> ${VERSIONS_FILE}
+	
+	@${ECHO} -n "GIT_HASH = " >> ${VERSIONS_FILE}
+	@git log -1 --pretty=%h $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
+	
+	@${ECHO} -n "GIT_DATE = " >> ${VERSIONS_FILE}
+	@git log -1 --pretty=%ct $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
+	
+	@${ECHO} XIVOVER = ${XC_VERSION} >> ${VERSIONS_FILE}
+	
+	@${ECHO} -n "ROOT_DIR = " >> ${VERSIONS_FILE}
+	@git rev-parse --show-toplevel >> ${VERSIONS_FILE}
+	
+	@${ECHO} -n "version (after update) : " && $(MAKE) -s displayversions
 
 all:
-	@$(MAKE) -s guessos
+	@$(MAKE) -s versions
 	@$(MAKE) allbyos
 
 allbyos:
-	@echo "Will compile for target ${_UNAME_} : all-${_UNAME_}"
-	@$(MAKE) all-${_UNAME_}
+	@echo "Will compile for target ${XC_UNAME} : all-${XC_UNAME}"
+	@$(MAKE) all-${XC_UNAME}
 
 # LINUX targets
 # kind of dirtier than "all-linux: versions linux-xivoclient"
 # but allows the 'include versions.mak' to be reloaded once it has been set
 all-linux:
 	@$(MAKE) linux-baselib
+	@$(MAKE) linux-gui
 	@$(MAKE) linux-plugins
 	@$(MAKE) linux-xivoclient
 
 distclean:
 	@$(MAKE) clean-xivoclient
+	@$(MAKE) clean-gui
 	@$(MAKE) clean-baselib
 	@$(MAKE) clean-plugins
-	find . -name "moc_*" -print0 | xargs -0 rm -f
-	find . -name "*.o" -print0 | xargs -0 rm -f
-	rm -rf bin ; mkdir -p bin/plugins
+	rm -f ${VERSIONS_FILE}
+	rm -rf obj
+	rm -rf bin
 
 clean-%:
-	@$(MAKE) -C $* distclean || true
+	@$(MAKE) -C src/$* distclean || true
 
 linux-%:
-	@cd $* && ${QMAKE} && $(MAKE) ${XC_JOPT}
+	@cd src/$* && ${QMAKE} && $(MAKE) ${XC_JOPT}
 
 all-win32:
 	@$(MAKE) -s versions
 	@echo "   (under Qt prompt) :"
 	@pwd | sed "s#/#\\\\#g;s#^#      cd C:\\\\cygwin#"
-	@echo "      $(MAKE) win32-baselib win32-xivoclient win32-plugins"
+	@echo "      $(MAKE) win32-baselib win32-gui win32-xivoclient win32-plugins"
 	@echo "   (back here under Cygwin) :"
 	@echo "      $(MAKE) win32pack-xivoclient"
 
-# to be executed under a bash/cygwin-like terminal
-versions:
-	@${ECHO} -n "version (before update) : " && $(MAKE) -s displayversions
-	@rm -f versions.pri
-	@${ECHO} -n "GIT_HASH = " >> versions.pri
-	@git log -1 --pretty=%h $(git rev-list HEAD --max-count=1) >> versions.pri
-	@${ECHO} -n "GIT_DATE = " >> versions.pri
-	@git log -1 --pretty=%ct $(git rev-list HEAD --max-count=1) >> versions.pri
-	@cp versions.pri versions.mak
-	@grep ^XIVOVER common.pri >> versions.mak
-	@${ECHO} -n "version (after update) : " && $(MAKE) -s displayversions
-
-displayversions:
-	@${ECHO} ${XIVOVER}-${GIT_DATE}-${GIT_HASH}
-
 # to be executed under a mingw/dos-like terminal
 win32-%:
-	@cd $* && ${QMAKE} && $(MAKE) release
+	@cd src/$* && ${QMAKE} && $(MAKE) release
 
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
-	@${UPXWIN} $*/release/$*.exe || true
+	@${UPXWIN} src/$*/release/$*.exe || true
 	@rm -f delivery/settings.nsh
 	@${ECHO} "!define XIVOVER ${_XIVOVER_}" >> delivery/settings.nsh
 	@${ECHO} "!define SVNVER ${_SVNVER_}" >> delivery/settings.nsh
@@ -98,7 +108,7 @@ win32pack-%:
 	@mv delivery/$*-setup-win32.exe $*-setup-${_XIVOVER_}-${_SVNVER_}-win32.exe
 
 win32packdyn-%:
-	@${UPXWIN} $*/release/$*.exe || true
+	@${UPXWIN} src/$*/release/$*.exe || true
 	@rm -f delivery/settings.nsh
 	@${ECHO} "!define XIVOVER ${_XIVOVER_}" >> delivery/settings.nsh
 	@${ECHO} "!define SVNVER ${_SVNVER_}" >> delivery/settings.nsh
@@ -112,11 +122,12 @@ win32packdyn-%:
 
 all-macos:
 	@$(MAKE) macos-baselib
+	@$(MAKE) macos-gui
 	@$(MAKE) macos-plugins
 	@$(MAKE) macos-xivoclient
 
 macos-%:
-	@cd $* && ${QMAKE} -macx && $(MAKE) ${XC_JOPT}
+	@cd src/$* && ${QMAKE} -macx && $(MAKE) ${XC_JOPT}
 
 packmacos:
 	@./cross/macos_pack.sh
@@ -136,17 +147,17 @@ all-debian : debian-xivoclient
 debian-%:
 	@echo "## Building Debian Package for : $*"
 	@echo "## Changelog will be updated with ${NAME} <${DEBEMAIL}>"
-	cd $* && dch -v ${XIVOVER}~svn${SVNVER}-1 "New upstream release."
+	cd src/$* && dch -v ${XIVOVER}~svn${SVNVER}-1 "New upstream release."
 	rm -rf pf-xivo-cti-$**
 	mkdir pf-xivo-cti-$*-${XIVOVER}~svn${SVNVER}
-	cp -rp $*/debian pf-xivo-cti-$*-${XIVOVER}~svn${SVNVER}/debian
-	cd $* && tar zcf ../pf-xivo-cti-$*_${XIVOVER}~svn${SVNVER}.orig.tar.gz $*
-	cp $*/$* pf-xivo-cti-$*-${XIVOVER}~svn${SVNVER}
+	cp -rp src/$*/debian pf-xivo-cti-$*-${XIVOVER}~svn${SVNVER}/debian
+	cd src/$* && tar zcf ../pf-xivo-cti-$*_${XIVOVER}~svn${SVNVER}.orig.tar.gz $*
+	cp src/$*/$* pf-xivo-cti-$*-${XIVOVER}~svn${SVNVER}
 	cd pf-xivo-cti-$*-${XIVOVER}~svn${SVNVER} && \
 		DEB_AUTO_UPDATE_DEBIAN_CONTROL=yes fakeroot debian/rules clean && \
 		dpkg-buildpackage -us -uc -tc -rfakeroot
 
 # build doc
 
-doc:	common xivoclient
-	${DOXYGEN} xivoclient/Doxyfile 
+doc:
+	${DOXYGEN} Doxyfile 

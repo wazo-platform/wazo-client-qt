@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../images/conference/speak.png</file>
+        <file>../../../images/conference/mute.png</file>
+        <file>../../../obj/conference_fr.qm</file>
+        <file>../../../obj/conference_nl.qm</file>
+    </qresource>
+</RCC>
