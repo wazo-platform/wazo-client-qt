@@ -85,6 +85,8 @@ class BASELIB_EXPORT UserInfo : public XInfo
         bool enableunc() const { return m_enableunc; };
         const QString & destunc() const { return m_destunc; };
 
+        bool enableclient() const { return m_enableclient; };
+
         // methods to fetch statuses
         const QString & availstate() const;
         QString toString() const;
@@ -111,6 +113,8 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         QString m_agentnumber;  //!< agent number
         QString m_voicemailnumber;  //!< voice mail box number
+
+        bool m_enableclient;
 
         bool m_callrecord;
         bool m_enablednd;

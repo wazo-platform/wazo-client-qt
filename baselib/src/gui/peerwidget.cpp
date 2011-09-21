@@ -79,7 +79,7 @@ PeerWidget::PeerWidget(const UserInfo * ui)
     m_textlbl->setMinimumWidth(m_maxWidthWanted);
     setName(m_ui_remote->fullname());
 
-    if (!m_ui_remote->ctilogin().isEmpty()) {
+    if (m_ui_remote->enableclient()) {
         m_user_status = new ChitchatButton(peer, &m_ui_remote);
         m_user_status->setProperty("xuserid", ui->xid());
         m_user_status->setIconSize(QSize(fsize, fsize));

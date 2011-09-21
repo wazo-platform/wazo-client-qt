@@ -41,9 +41,9 @@
  */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
-  : XInfo(ipbxid, id), m_callrecord(false), m_enablednd(false),
-    m_enablevoicemail(false), m_incallfilter(false), m_enablebusy(false),
-    m_enablerna(false), m_enableunc(false)
+  : XInfo(ipbxid, id), m_enableclient(false), m_callrecord(false),
+    m_enablednd(false), m_enablevoicemail(false), m_incallfilter(false),
+    m_enablebusy(false), m_enablerna(false), m_enableunc(false)
 {
 }
 
@@ -68,6 +68,7 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
     haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
     haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
+    haschanged |= setIfChangeBool(prop, "enableclient", & m_enableclient);
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
     haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
