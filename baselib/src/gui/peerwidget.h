@@ -59,13 +59,14 @@ class BASELIB_EXPORT PeerWidget : public BasePeerWidget
         PeerWidget(const UserInfo *);
         void setName(const QString &);
         void setEngine(BaseEngine *);
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
         bool pOverMobileLbl(const QPoint &p);
+    public slots:
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
     protected:
         void updateChitChatButton();
     private:

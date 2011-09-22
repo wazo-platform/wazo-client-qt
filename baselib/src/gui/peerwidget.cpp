@@ -110,6 +110,10 @@ PeerWidget::PeerWidget(const UserInfo * ui)
     m_agentlbl->hide();
     m_hLayout->addWidget(m_agentlbl);
     m_hLayout->addStretch(1);
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
 
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(m_hLayout, 1, 2);
@@ -145,22 +149,26 @@ void PeerWidget::updateChitChatButton()
         delete m_user_status;
         m_user_status = 0;
         m_hLayout->insertSpacing(0 , m_iconsize);
+    } else if (m_hLayout->isEmpty()) {
+        m_hLayout->insertSpacing(0, m_iconsize);
     }
 }
 
 void PeerWidget::updateAgentConfig(const QString & xagentid)
 {
-    m_xagentid = xagentid;
-    if (m_xagentid.isEmpty())
-        return;
-    const AgentInfo * agentinfo = b_engine->agent(xagentid);
-    if (agentinfo == NULL)
-        return;
-    m_agentlbl->setAlignment(Qt::AlignCenter);
-    m_agentlbl->setMinimumSize(m_iconsize, m_iconsize);
-    m_agentlbl->setToolTip(tr("Agent %1").arg(agentinfo->agentNumber()));
-    m_agentlbl->setProperty("kind", "agent");
-    m_agentlbl->show();
+    if (m_ui_remote && m_ui_remote->xagentid() == xagentid) {
+        m_xagentid = xagentid;
+        if (m_xagentid.isEmpty())
+            return;
+        const AgentInfo * agentinfo = b_engine->agent(xagentid);
+        if (agentinfo == NULL)
+            return;
+        m_agentlbl->setAlignment(Qt::AlignCenter);
+        m_agentlbl->setMinimumSize(m_iconsize, m_iconsize);
+        m_agentlbl->setToolTip(tr("Agent %1").arg(agentinfo->agentNumber()));
+        m_agentlbl->setProperty("kind", "agent");
+        m_agentlbl->show();
+    }
 }
 
 void PeerWidget::updateAgentStatus(const QString & xagentid)
@@ -172,7 +180,17 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
         return;
     QString agentstatus = agentinfo->status();
     // color login/green logout/grey 
-    QColor c = QColor("green"); // XXXX according to caps/settings
+    QString color;
+    if (agentstatus == "AGENT_LOGGEDOFF") {
+        color = "grey";
+    } else if (agentstatus == "AGENT_IDLE") {
+        color = "green";
+    } else if (agentstatus == "AGENT_ONCALL") {
+        color = "red";
+    } else {
+        color = "grey";
+    }
+    QColor c = QColor(color); // XXXX according to caps/settings
     m_agentlbl->setPixmap(TaintedPixmap(                        \
        QString(":/images/agent-trans.png"), c).getPixmap());
 
