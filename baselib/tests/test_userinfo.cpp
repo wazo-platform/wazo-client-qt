@@ -32,6 +32,7 @@ void TestUserInfo::init()
     m_prop1["enablebusy"] = false;
     m_prop1["enablerna"] = true;
     m_prop1["enableune"] = false;
+    m_prop1["enableclient"] = true;
     m_prop1["destrna"] = "1002";
     m_prop1["linelist"] = m_linelist;
 }
@@ -67,6 +68,7 @@ void TestUserInfo::ctxor()
     QCOMPARE(u.enablebusy(), false);
     QCOMPARE(u.enablerna(), false);
     QCOMPARE(u.enableunc(), false);
+    QCOMPARE(u.enableclient(), false);
     QCOMPARE(u.simultcalls(), 0);
     QCOMPARE(u.xchannels(), emptylist);
     QCOMPARE(u.phonelist(), emptylist);
@@ -99,6 +101,7 @@ void TestUserInfo::updateConfig()
         QCOMPARE(u.simultcalls(), m_prop1["simultcalls"].toInt());
         QCOMPARE(u.enablerna(), m_prop1["enablerna"].toBool());
         QCOMPARE(u.destrna(), m_prop1["destrna"].toString());
+        QCOMPARE(u.enableclient(), m_prop1["enableclient"].toBool());
     }
     {
         bool res = u.updateConfig(m_prop1);
