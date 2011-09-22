@@ -51,50 +51,33 @@
 /*! \brief Constructor
  */
 PeerWidget::PeerWidget(const UserInfo * ui)
-    : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL), m_mobilelbl(NULL)
+    : BasePeerWidget(ui), m_user_status(NULL), m_agentlbl(NULL),
+      m_mobilelbl(0), m_hLayout(0), m_peer(0)
 {
-    int fsize = 25;
-
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     setLayout(vLayout);
     vLayout->setSpacing(0);
     vLayout->setMargin(0);
 
-    QHBoxLayout *hLayout = new QHBoxLayout;
-    hLayout->setSpacing(0);
-    QWidget * peer = new QWidget(this);
-    vLayout->addWidget(peer);
-    peer->setStyleSheet(".QWidget {"
+    m_hLayout = new QHBoxLayout;
+    m_hLayout->setSpacing(0);
+    m_peer = new QWidget(this);
+    vLayout->addWidget(m_peer);
+    m_peer->setStyleSheet(".QWidget {"
                             "border-style: dotted;"
                             "border-left-width: 1px;"
                             "border-color: #000000;"
                         "}");
 
-    QGridLayout *layout = new QGridLayout(peer);
-    peer->setLayout(layout);
+    QGridLayout *layout = new QGridLayout(m_peer);
+    m_peer->setLayout(layout);
     layout->setMargin(3);
     layout->setSpacing(0);
 
-    m_textlbl = new QLabel(peer);
+    m_textlbl = new QLabel(m_peer);
     m_textlbl->setMinimumWidth(m_maxWidthWanted);
     setName(m_ui_remote->fullname());
-
-    if (m_ui_remote->enableclient()) {
-        m_user_status = new ChitchatButton(peer, &m_ui_remote);
-        m_user_status->setProperty("xuserid", ui->xid());
-        m_user_status->setIconSize(QSize(fsize, fsize));
-        m_user_status->setFixedWidth(fsize);
-        m_user_status->setFlat(true);
-        m_user_status->setFocusPolicy(Qt::NoFocus);
-
-        if (b_engine->enabledFunction("chitchat")) {
-            connect(m_user_status, SIGNAL(pressed()),
-                    ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
-        }
-        hLayout->addWidget(m_user_status);
-    } else {
-        hLayout->addSpacing(fsize);
-    }
+    updateChitChatButton();
 
     foreach (QString xphoneid, ui->phonelist()) {
         const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
@@ -105,39 +88,68 @@ PeerWidget::PeerWidget(const UserInfo * ui)
             continue;
         int order = phoneinfo->rules_order();
 
-        m_lblphones[xphoneid] = new QLabel(peer);
+        m_lblphones[xphoneid] = new QLabel(m_peer);
         m_lblphones[xphoneid]->setAlignment(Qt::AlignCenter);
-        m_lblphones[xphoneid]->setMinimumSize(fsize, fsize);
+        m_lblphones[xphoneid]->setMinimumSize(m_iconsize, m_iconsize);
         m_lblphones[xphoneid]->setProperty("kind", "term");
-        hLayout->insertWidget(order, m_lblphones[xphoneid]);
+        m_hLayout->insertWidget(order, m_lblphones[xphoneid]);
     }
 
     if (! m_ui_remote->mobileNumber().isEmpty()) {
-        m_mobilelbl = new QLabel(peer);
+        m_mobilelbl = new QLabel(m_peer);
         m_mobilelbl->setPixmap(QPixmap(":/images/mobile-grey.png"));
         m_mobilelbl->setAlignment(Qt::AlignCenter);
-        m_mobilelbl->setMinimumSize(fsize, fsize);
+        m_mobilelbl->setMinimumSize(m_iconsize, m_iconsize);
         m_mobilelbl->setProperty("kind", "mobile");
         setMobileState("grey");
 
-        hLayout->addWidget(m_mobilelbl);
+        m_hLayout->addWidget(m_mobilelbl);
     }
 
-    m_agentlbl = new QLabel(peer);
+    m_agentlbl = new QLabel(m_peer);
     m_agentlbl->hide();
-    hLayout->addWidget(m_agentlbl);
-    hLayout->addStretch(1);
+    m_hLayout->addWidget(m_agentlbl);
+    m_hLayout->addStretch(1);
 
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
-    layout->addLayout(hLayout, 1, 2);
+    layout->addLayout(m_hLayout, 1, 2);
     setMaximumWidth(200);
 
     reloadSavedName();
 }
 
+void PeerWidget::updateChitChatButton()
+{
+    if (m_ui_remote->enableclient() && ! m_user_status) {
+        m_user_status = new ChitchatButton(m_peer, &m_ui_remote);
+        m_user_status->setProperty("xuserid", m_ui_local->xid());
+        m_user_status->setIconSize(QSize(m_iconsize, m_iconsize));
+        m_user_status->setFixedWidth(m_iconsize);
+        m_user_status->setFlat(true);
+        m_user_status->setFocusPolicy(Qt::NoFocus);
+
+        if (b_engine->enabledFunction("chitchat")) {
+            connect(m_user_status, SIGNAL(pressed()),
+                    ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
+        }
+        // Delete spacing
+        if (! m_hLayout->isEmpty()) {
+            QLayoutItem * item = m_hLayout->itemAt(0);
+            if (item) {
+                m_hLayout->removeItem(item);
+                delete item;
+            }
+        }
+        m_hLayout->insertWidget(0, m_user_status);
+    } else if (! m_ui_remote->enableclient() && m_user_status) {
+        delete m_user_status;
+        m_user_status = 0;
+        m_hLayout->insertSpacing(0 , m_iconsize);
+    }
+}
+
 void PeerWidget::updateAgentConfig(const QString & xagentid)
 {
-    int fsize = 25;
     m_xagentid = xagentid;
     if (m_xagentid.isEmpty())
         return;
@@ -145,7 +157,7 @@ void PeerWidget::updateAgentConfig(const QString & xagentid)
     if (agentinfo == NULL)
         return;
     m_agentlbl->setAlignment(Qt::AlignCenter);
-    m_agentlbl->setMinimumSize(fsize, fsize);
+    m_agentlbl->setMinimumSize(m_iconsize, m_iconsize);
     m_agentlbl->setToolTip(tr("Agent %1").arg(agentinfo->agentNumber()));
     m_agentlbl->setProperty("kind", "agent");
     m_agentlbl->show();
@@ -181,6 +193,7 @@ void PeerWidget::setMobileState(const QString &/* color*/)
 
 void PeerWidget::updatePresence()
 {
+    updateChitChatButton();
     if (m_user_status) {
         QString availstate = m_ui_remote->availstate();
         QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
