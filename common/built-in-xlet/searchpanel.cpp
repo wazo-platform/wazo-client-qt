@@ -161,8 +161,10 @@ void SearchPanel::updateDisplay()
         if ((name_match || num_match) && (naff < m_maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
-                peerwidget->updateAgentConfig(userinfo->xagentid());
-                peerwidget->updateAgentStatus(userinfo->xagentid());
+                if (! userinfo->agentid().isEmpty()) {
+                    peerwidget->updateAgentConfig(userinfo->xagentid());
+                    peerwidget->updateAgentStatus(userinfo->xagentid());
+                }
                 foreach (QString xphoneid, userinfo->phonelist()) {
                     peerwidget->updatePhoneConfig(xphoneid);
                     peerwidget->updatePhoneStatus(xphoneid);
