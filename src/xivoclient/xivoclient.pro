@@ -6,12 +6,17 @@ TEMPLATE = app
 TARGET =
 CONFIG += uitools
 DEPENDPATH += .
-INCLUDEPATH += . built-in-xlet ../baselib ../gui
+INCLUDEPATH += . ../baselib ../gui
 
 # Input
-HEADERS += *.h built-in-xlet/*.h
-
-SOURCES += *.cpp built-in-xlet/*.cpp
+HEADERS += *.h
+SOURCES += *.cpp
+XC_BUILTIN = callcampaign-builtin  customerinfo-builtin  dial-builtin  directory-builtin  fax-builtin  mylocaldir-builtin  search-builtin
+for(sourcedir, XC_BUILTIN){
+    INCLUDEPATH += ../plugins/$$sourcedir
+    HEADERS += ../plugins/$$sourcedir/*.h
+    SOURCES += ../plugins/$$sourcedir/*.cpp
+}
 
 unix:LIBS += -L$$ROOT_DIR/bin -lxivoclientbaselib -lxivoclientgui
 win32:LIBS += -L$$ROOT_DIR/bin -lxivoclientbaselib1 -lxivoclientgui
