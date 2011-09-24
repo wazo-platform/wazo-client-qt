@@ -114,7 +114,8 @@ PeerWidget::PeerWidget(const UserInfo * ui)
             this, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
-
+    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
+            this, SLOT(updateQueueStatus(const QString &)));
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(m_hLayout, 1, 2);
     setMaximumWidth(200);
@@ -165,9 +166,9 @@ void PeerWidget::updateAgentConfig(const QString & xagentid)
             return;
         m_agentlbl->setAlignment(Qt::AlignCenter);
         m_agentlbl->setMinimumSize(m_iconsize, m_iconsize);
-        m_agentlbl->setToolTip(tr("Agent %1").arg(agentinfo->agentNumber()));
         m_agentlbl->setProperty("kind", "agent");
         m_agentlbl->show();
+        updateAgentToolTip();
     }
 }
 
@@ -181,25 +182,49 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
     QString agentstatus = agentinfo->status();
     // color login/green logout/grey 
     QString color;
-    if (agentstatus == "AGENT_LOGGEDOFF") {
-        color = "grey";
-    } else if (agentstatus == "AGENT_IDLE") {
+    if (agentstatus == "AGENT_IDLE") {
         color = "green";
     } else if (agentstatus == "AGENT_ONCALL") {
         color = "red";
     } else {
         color = "grey";
     }
-    QColor c = QColor(color); // XXXX according to caps/settings
-    m_agentlbl->setPixmap(TaintedPixmap(                        \
-       QString(":/images/agent-trans.png"), c).getPixmap());
+    m_agentlbl->setPixmap(TaintedPixmap(
+       QString(":/images/agent-trans.png"), QColor(color)).getPixmap());
+    updateAgentToolTip();
+}
 
-    QString agentnumber = agentinfo->agentNumber();
-    // XXX QStringList queues = agentinfo->queuelist();
-    m_agentlbl->setToolTip(tr("Agent Number : %1\n"
-                              "In Queues : %2")
-                           .arg(agentnumber)
-                           .arg(""));
+void PeerWidget::updateQueueStatus(const QString &)
+{
+    if (m_ui_remote && ! m_ui_remote->agentid().isEmpty()) {
+        updateAgentToolTip();
+    }
+}
+
+void PeerWidget::updateAgentToolTip()
+{
+    if (m_ui_remote && ! m_ui_remote->agentid().isEmpty()) {
+        if (const AgentInfo * a = b_engine->agent(m_ui_remote->xagentid())) {
+            QString agentnumber = a->agentNumber();
+            QStringList queues;
+            if (m_ui_remote && ! m_ui_remote->agentid().isEmpty()) {
+                foreach (const QString & xqid,
+                        b_engine->iterover("queues").keys()) {
+                    if (const QueueInfo * q = b_engine->queue(xqid)) {
+                        if (q->xagentids().contains(m_ui_remote->xagentid())) {
+                            queues << q->queueName();
+                        }
+                    }
+                }
+            }
+            m_agentlbl->setToolTip(
+                    tr("Agent Number : %1\n"
+                            "In Queues : %2")
+                            .arg(agentnumber)
+                            .arg(queues.join(" ")));
+        }
+    }
+
 }
 
 void PeerWidget::setMobileState(const QString &/* color*/)

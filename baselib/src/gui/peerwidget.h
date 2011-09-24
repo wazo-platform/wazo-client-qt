@@ -63,10 +63,12 @@ class BASELIB_EXPORT PeerWidget : public BasePeerWidget
         void updatePhoneStatus(const QString &);
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
+        void updateAgentToolTip();
         bool pOverMobileLbl(const QPoint &p);
     public slots:
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
+        void updateQueueStatus(const QString &);
     protected:
         void updateChitChatButton();
     private:
