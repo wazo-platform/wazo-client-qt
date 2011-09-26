@@ -69,7 +69,7 @@ class IdentityAgent : public QFrame
         void pause();
         void unpause();
     private:
-        void setStatusColors(const QString &);
+        void setStatusColors();
         void setPausedColors(int, int);
         QString m_xagentid;
 

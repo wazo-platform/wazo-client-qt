@@ -95,63 +95,60 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
         return;
 
     setSystrayIcon(icon_color_black);
-    setStatusColors("345");
     setPausedColors(7, 3);
+    setStatusColors();
 
-    // agentinfo->status();
-    // QString phonenumber = agentinfo->phoneNumber();
-    // setStatusColors(phonenumber);
+    const QString & agstatus = agentinfo->status();
+    if(agstatus != m_agstatus) {
+        m_agstatus = agstatus;
+        if(agstatus == "AGENT_LOGGEDOFF") {
+            setSystrayIcon(icon_color_black);
+        } else if(agstatus == "AGENT_IDLE") {
+            setSystrayIcon(icon_color_green);
+        } else if(agstatus == "AGENT_ONCALL") {
+            setSystrayIcon(icon_color_green);
+        } else {
+            qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
+        }
+        setStatusColors();
+    }
 
-//     QVariantMap agqjoined = properties["queues_by_agent"].toMap();
-//     QVariantMap agentstats = properties["agentstats"].toMap();
-//     QString agstatus = agentstats["status"].toString();
-//     QString phonenum = agentstats["agent_phone_number"].toString();
+    const QStringList joined = agentinfo->xqueueids();
+    int unpaused = 0;
 
-//     if(agstatus != m_agstatus) {
-//         m_agstatus = agstatus;
-//         if(agstatus == "AGENT_LOGGEDOFF") {
-//             setSystrayIcon(icon_color_black);
-//             setStatusColors(phonenum);
-//         } else if(agstatus == "AGENT_IDLE") {
-//             setSystrayIcon(icon_color_green);
-//             setStatusColors(phonenum);
-//         } else if(agstatus == "AGENT_ONCALL") {
-//             setSystrayIcon(icon_color_green);
-//             setStatusColors(phonenum);
-//         } else
-//             qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
-//     }
+    foreach (const QString & qxid, joined) {
+        if (const QueueInfo * q = b_engine->queue(qxid)) {
+            QString qmemberxid = QString("%0/qa:%1-%2")
+                    .arg(agentinfo->ipbxid())
+                    .arg(q->id())
+                    .arg(agentinfo->id());
+            if (b_engine->queuemembers().contains(qmemberxid)) {
+                const QueueMemberInfo * qmi = b_engine->queuemembers()[qmemberxid];
+                if (qmi->paused() == "0") {
+                    ++unpaused;
+                }
+            }
+        }
+    }
 
-//     QStringList joined_queues;
-//     QStringList unpaused_queues;
-//     foreach (QString qname, agqjoined.keys()) {
-//         QVariantMap qv = agqjoined[qname].toMap();
-//         if(qv.contains("Status")) {
-//             QString pstatus = qv["Paused"].toString();
-//             //QString sstatus = qv["Status"].toString();
-//             joined_queues << qname;
-//             if(pstatus == "0")
-//                 unpaused_queues << qname;
-//         }
-//     }
-
-//     int njoined = joined_queues.size();
-//     int nunpaused = unpaused_queues.size();
-//     setPausedColors(njoined, njoined - nunpaused);
+    int njoined = joined.size();
+    setPausedColors(njoined, njoined - unpaused);
 }
 
-void IdentityAgent::setStatusColors(const QString & phonenum)
+void IdentityAgent::setStatusColors()
 {
     QPixmap square(10, 10);
-    const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
-    if(agentinfo->status() == "AGENT_IDLE") {
-        square.fill("#00ff00");
-        m_statustxt->setText(tr("Connected to %1").arg(agentinfo->phonenumber()));
-    } else {
-        square.fill("#ff0000");
-        m_statustxt->setText(tr("Disconnected from %1").arg(agentinfo->phonenumber()));
+    if (const AgentInfo * agentinfo = b_engine->agent(m_xagentid)) {
+        const QString phonenumber = b_engine->getConfig("agentphonenumber").toString();
+        if(agentinfo->status() == "AGENT_IDLE") {
+            square.fill("#00ff00");
+            m_statustxt->setText(tr("Connected to %1").arg(phonenumber));
+        } else {
+            square.fill("#ff0000");
+            m_statustxt->setText(tr("Disconnected from %1").arg(phonenumber));
+        }
+        m_status->setPixmap(square);
     }
-    m_status->setPixmap(square);
 }
 
 void IdentityAgent::setPausedColors(int nj, int np)

@@ -207,14 +207,9 @@ void PeerWidget::updateAgentToolTip()
         if (const AgentInfo * a = b_engine->agent(m_ui_remote->xagentid())) {
             QString agentnumber = a->agentNumber();
             QStringList queues;
-            if (m_ui_remote && ! m_ui_remote->agentid().isEmpty()) {
-                foreach (const QString & xqid,
-                        b_engine->iterover("queues").keys()) {
-                    if (const QueueInfo * q = b_engine->queue(xqid)) {
-                        if (q->xagentids().contains(m_ui_remote->xagentid())) {
-                            queues << q->queueName();
-                        }
-                    }
+            foreach (const QString & queuexid, a->xqueueids()) {
+                if (const QueueInfo * q = b_engine->queue(queuexid)) {
+                    queues << q->queueName();
                 }
             }
             m_agentlbl->setToolTip(
@@ -224,7 +219,6 @@ void PeerWidget::updateAgentToolTip()
                             .arg(queues.join(" ")));
         }
     }
-
 }
 
 void PeerWidget::setMobileState(const QString &/* color*/)
