@@ -196,7 +196,7 @@ void XletAgentDetails::updatePanel()
     if (! b_engine->getConfig("guioptions.xlet.agentdetails.hidecontext").toBool())
         agent_descriptions << QString("(%1)").arg(agentinfo->context());
     QString lstatus = agentinfo->status();
-    QString phonenum = agentinfo->phonenumber();
+    QString phonenum = b_engine->getConfig()["agentphonenumber"].toString();
 
     if (lstatus == "AGENT_LOGGEDOFF") {
         agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
