@@ -240,22 +240,16 @@ void IdentityAgent::logout()
 
 void IdentityAgent::pause()
 {
-    QVariantMap ipbxcommand;
-    QString ipbxid = b_engine->getXivoClientUser()->ipbxid();
-    ipbxcommand["command"] = "queuepause";
-    ipbxcommand["member"] = QString("agent:%1/me").arg(ipbxid);
-    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    b_engine->ipbxCommand(ipbxcommand);
+    if (const AgentInfo * a = b_engine->agent(m_xagentid)) {
+        a->pauseAllQueue(true);
+    }
 }
 
 void IdentityAgent::unpause()
 {
-    QVariantMap ipbxcommand;
-    QString ipbxid = b_engine->getXivoClientUser()->ipbxid();
-    ipbxcommand["command"] = "queueunpause";
-    ipbxcommand["member"] = QString("agent:%1/me").arg(ipbxid);
-    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    b_engine->ipbxCommand(ipbxcommand);
+    if (const AgentInfo * a = b_engine->agent(m_xagentid)) {
+        a->pauseAllQueue(false);
+    }
 }
 
 void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent)

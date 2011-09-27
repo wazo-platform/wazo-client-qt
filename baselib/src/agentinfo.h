@@ -66,6 +66,8 @@ class BASELIB_EXPORT AgentInfo : public XInfo
          * The agent is considered paused even if he is partially paused
          */
         bool paused() const;
+        void pauseQueue(const QString &, bool) const;
+        void pauseAllQueue(bool) const;
     private:
         QString m_context;
         QString m_agentnumber;
