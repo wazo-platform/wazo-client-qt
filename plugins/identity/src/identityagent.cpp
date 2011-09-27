@@ -184,38 +184,43 @@ void IdentityAgent::setPausedColors(int nj, int np)
 
 void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
 {
-    // qDebug() << Q_FUNC_INFO;
     QMenu contextMenu(this);
 
-    if(m_allow_logagent) {
-        QAction * logAction = new QAction(this);
-        const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
-        if(agentinfo->status() == "AGENT_IDLE") {
-            logAction->setText(tr("Logout"));
-            connect(logAction, SIGNAL(triggered()),
-                    this, SLOT(logout()) );
-        } else {
-            logAction->setText(tr("Login"));
-            connect(logAction, SIGNAL(triggered()),
-                    this, SLOT(login()) );
+    if (const AgentInfo * agentinfo = b_engine->agent(m_xagentid)) {
+        bool loggedin = agentinfo->status() == "AGENT_IDLE";
+        bool paused = agentinfo->paused();
+
+        if(m_allow_logagent) {
+            QAction * logAction = new QAction(this);
+            if(loggedin) {
+                logAction->setText(tr("Logout"));
+                connect(logAction, SIGNAL(triggered()),
+                        this, SLOT(logout()) );
+            } else {
+                logAction->setText(tr("Login"));
+                connect(logAction, SIGNAL(triggered()),
+                        this, SLOT(login()) );
+            }
+            contextMenu.addAction(logAction);
         }
-        contextMenu.addAction(logAction);
+
+        if(m_allow_pauseagent) {
+            if (paused) {
+                QAction * unpauseAction = new QAction(tr("Unpause"), this);
+                connect(unpauseAction, SIGNAL(triggered()),
+                        this, SLOT(unpause()) );
+                contextMenu.addAction(unpauseAction);
+            } else {
+                QAction * pauseAction = new QAction(tr("Pause"), this);
+                connect(pauseAction, SIGNAL(triggered()),
+                        this, SLOT(pause()) );
+                contextMenu.addAction(pauseAction);
+            }
+        }
+
+        if(m_allow_logagent || m_allow_pauseagent)
+            contextMenu.exec(event->globalPos());
     }
-
-    if(m_allow_pauseagent) {
-        QAction * pauseAction = new QAction(tr("Pause"), this);
-        connect(pauseAction, SIGNAL(triggered()),
-                this, SLOT(pause()) );
-        contextMenu.addAction(pauseAction);
-
-        QAction * unpauseAction = new QAction(tr("Unpause"), this);
-        connect(unpauseAction, SIGNAL(triggered()),
-                this, SLOT(unpause()) );
-        contextMenu.addAction(unpauseAction);
-    }
-
-    if(m_allow_logagent || m_allow_pauseagent)
-        contextMenu.exec(event->globalPos());
 }
 
 void IdentityAgent::login()
@@ -255,7 +260,6 @@ void IdentityAgent::unpause()
 
 void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent)
 {
-    // qDebug() << Q_FUNC_INFO << allow_logagent << allow_pauseagent;
     m_allow_logagent = allow_logagent;
     m_allow_pauseagent = allow_pauseagent;
 }

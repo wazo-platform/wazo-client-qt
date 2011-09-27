@@ -156,6 +156,7 @@ void IdentityDisplay::setupIcons()
 
 void IdentityDisplay::setGuiOptions()
 {
+    // These options can be set in the web-i in cti server > profile > preference
     if (b_engine->getConfig().contains("xlet.identity.fontname") && b_engine->getConfig().contains("xlet.identity.fontsize"))
         m_gui_font = QFont(b_engine->getConfig("xlet.identity.fontname").toString(),
                            b_engine->getConfig("xlet.identity.fontsize").toInt());
