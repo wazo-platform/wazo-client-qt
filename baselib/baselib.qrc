@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>guioptions.json</file>
+        <file>obj/baselib_fr.qm</file>
+        <file>obj/baselib_nl.qm</file>
+    </qresource>
+</RCC>

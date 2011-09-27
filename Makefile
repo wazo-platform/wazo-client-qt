@@ -2,7 +2,7 @@ QMAKE?=qmake
 ECHO?=/bin/echo
 DOXYGEN?=doxygen
 XC_VERSION?=1.2
-VERSIONS_FILE=src/versions.mak
+VERSIONS_FILE=versions.mak
 
 # WIN32 targets only
 MAKENSIS=/cygdrive/c/Program\ Files/NSIS/makensis.exe
@@ -49,8 +49,11 @@ versions:
 	
 	@${ECHO} XIVOVER = ${XC_VERSION} >> ${VERSIONS_FILE}
 	
-	@${ECHO} -n "ROOT_DIR = " >> ${VERSIONS_FILE}
+	@${ECHO} -n "GIT_DIR = " >> ${VERSIONS_FILE}
 	@git rev-parse --show-toplevel >> ${VERSIONS_FILE}
+
+	@${ECHO} -n "DATEBUILD = " >> ${VERSIONS_FILE}
+	@LANG= date +%Y-%m-%dT%H:%M:%S >> ${VERSIONS_FILE}
 	
 	@${ECHO} -n "version (after update) : " && $(MAKE) -s displayversions
 
@@ -62,32 +65,38 @@ allbyos:
 	@echo "Will compile for target ${XC_UNAME} : all-${XC_UNAME}"
 	@$(MAKE) all-${XC_UNAME}
 
+distclean: clean-baselib clean-xivoclient clean-xletlib clean-xlets
+	rm -f ${VERSIONS_FILE}
+	rm -rf xivoclient/obj xivoclient/bin
+	rm -rf bin
+
+clean-baselib:
+	@$(MAKE) -C baselib distclean || true
+	rm -rf baselib/obj baselib/bin
+
+clean-%:
+	@$(MAKE) -C xivoclient -f Makefile_$* distclean || true
+
 # LINUX targets
 # kind of dirtier than "all-linux: versions linux-xivoclient"
 # but allows the 'include versions.mak' to be reloaded once it has been set
 all-linux:
 	@$(MAKE) linux-baselib
-	@$(MAKE) linux-gui
-	@$(MAKE) linux-plugins
+	@$(MAKE) linux-xletlib
 	@$(MAKE) linux-xivoclient
+	@$(MAKE) linux-xlets
 
-distclean:
-	@$(MAKE) clean-xivoclient
-	@$(MAKE) clean-gui
-	@$(MAKE) clean-baselib
-	@$(MAKE) clean-plugins
-	rm -f ${VERSIONS_FILE}
-	rm -rf obj
-	rm -rf bin
-
-clean-%:
-	@$(MAKE) -C src/$* distclean || true
+linux-baselib:
+	@cd baselib && ${QMAKE} && $(MAKE) ${XC_JOPT}
+	@mkdir -p bin
+	@cp -rd baselib/bin/* bin
 
 linux-%:
-	@cd src/$* && ${QMAKE} && $(MAKE) ${XC_JOPT}
+	@cd xivoclient && ${QMAKE} -o Makefile_$* $*.pro && $(MAKE) ${XC_JOPT} -f Makefile_$*
+
+# WIN32 targets
 
 all-win32:
-	@$(MAKE) -s versions
 	@echo "   (under Qt prompt) :"
 	@pwd | sed "s#/#\\\\#g;s#^#      cd C:\\\\cygwin#"
 	@echo "      $(MAKE) win32-baselib win32-gui win32-xivoclient win32-plugins"
