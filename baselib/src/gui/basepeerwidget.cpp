@@ -426,20 +426,28 @@ void BasePeerWidget::addDialMenu(QMenu * menu)
         if (QMenu * submenu = new QMenu(tr("&Call"), menu)) {
             foreach (const QString & phonexid, m_ui_remote->phonelist()) {
                 if (const PhoneInfo * p = b_engine->phone(phonexid)) {
-                    if (QAction * action = new QAction(p->number(), this)) {
-                        action->setProperty("number", p->number());
-                        connect(action, SIGNAL(triggered()), this, SLOT(dial()));
-                        submenu->addAction(action);
+                    const QString & number = p->number();
+                    if (! number.isEmpty()) {
+                        if (QAction * action = new QAction(p->number(), this)) {
+                            action->setProperty("number", p->number());
+                            connect(action, SIGNAL(triggered()), this, SLOT(dial()));
+                            submenu->addAction(action);
+                        }
                     }
                 }
             }
             menu->addMenu(submenu);
         }
-    } else  if (QAction * action = new QAction(tr("&Call"), this)) {
+    } else {
         if (const PhoneInfo * p = b_engine->phone(m_ui_remote->phonelist().value(0))) {
-            action->setProperty("number", p->number());
-            connect(action, SIGNAL(triggered()), this, SLOT(dial()));
-            menu->addAction(action);
+            const QString & number = p->number();
+            if (! number.isEmpty()) {
+                if (QAction * action = new QAction(tr("&Call"), this)) {
+                    action->setProperty("number", p->number());
+                    connect(action, SIGNAL(triggered()), this, SLOT(dial()));
+                    menu->addAction(action);
+                }
+            }
         }
     }
 
