@@ -127,7 +127,7 @@ void PeerWidget::updateChitChatButton()
 {
     if (m_ui_remote->enableclient() && ! m_user_status) {
         m_user_status = new ChitchatButton(m_peer, &m_ui_remote);
-        m_user_status->setProperty("xuserid", m_ui_local->xid());
+        m_user_status->setProperty("xuserid", m_ui_remote->xid());
         m_user_status->setIconSize(QSize(m_iconsize, m_iconsize));
         m_user_status->setFixedWidth(m_iconsize);
         m_user_status->setFlat(true);
