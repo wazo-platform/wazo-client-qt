@@ -216,5 +216,10 @@ Contexte: %2</translation>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
     </message>
+    <message>
+        <location filename="src/identityvoicemail.cpp" line="87"/>
+        <source>call your voicemail</source>
+        <translation>Appeler votre messagerie vocale.</translation>
+    </message>
 </context>
 </TS>

@@ -47,7 +47,7 @@ IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
 
     m_iconButton = new QPushButton(this);
     m_iconButton->setFocusPolicy(Qt::NoFocus);
-    m_iconButton->setToolTip("call your voicemail");
+    m_iconButton->setToolTip(tr("call your voicemail"));
     QPixmap icon = QPixmap(":/in/kthememgr.png");
     m_iconButton->setIcon(icon);
     m_iconButton->setFlat(true);
