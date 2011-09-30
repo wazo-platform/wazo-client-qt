@@ -428,22 +428,24 @@ void BasePeerWidget::addDialMenu(QMenu * menu)
                 if (const PhoneInfo * p = b_engine->phone(phonexid)) {
                     const QString & number = p->number();
                     if (! number.isEmpty()) {
-                        if (QAction * action = new QAction(p->number(), this)) {
-                            action->setProperty("number", p->number());
+                        if (QAction * action = new QAction(number, this)) {
+                            action->setProperty("number", number);
                             connect(action, SIGNAL(triggered()), this, SLOT(dial()));
                             submenu->addAction(action);
                         }
                     }
                 }
             }
-            menu->addMenu(submenu);
+            if (! submenu->isEmpty()) {
+                menu->addMenu(submenu);
+            }
         }
     } else {
         if (const PhoneInfo * p = b_engine->phone(m_ui_remote->phonelist().value(0))) {
             const QString & number = p->number();
             if (! number.isEmpty()) {
                 if (QAction * action = new QAction(tr("&Call"), this)) {
-                    action->setProperty("number", p->number());
+                    action->setProperty("number", number);
                     connect(action, SIGNAL(triggered()), this, SLOT(dial()));
                     menu->addAction(action);
                 }
