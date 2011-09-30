@@ -16,3 +16,4 @@ xivoclient/versions.pri
 Makefile.Debug
 Makefile.Release
 doc
+versions.pri

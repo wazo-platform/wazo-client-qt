@@ -46,9 +46,13 @@ XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
 LogWidgetModel::LogWidgetModel(int initialMode)
     : QAbstractTableModel(NULL)
 {
-    b_engine->registerClassEvent("history", LogWidgetModel::updateHistory_t, this);
+    registerListener("history");
     m_mode = initialMode;
     m_history << QVariant() << QVariant() << QVariant();
+}
+
+void LogWidgetModel::parseCommand(const QVariantMap &map) {
+    updateHistory(map);
 }
 
 void LogWidgetModel::sort(int column, Qt::SortOrder order)
@@ -262,7 +266,6 @@ LogWidget::LogWidget(QWidget *parent)
     hBox2->addWidget(m_view, 4);
     hBox2->addStretch(1);
     layout->addLayout(hBox2);
-
 }
 
 LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)

@@ -99,16 +99,14 @@ class QueueRow : public QWidget {
 
 /*! \brief Displays queues and their status
  */
-class XletQueues : public XLet
+class XletQueues : public XLet, IPBXListener
 {
     Q_OBJECT
 
     public:
         XletQueues(QWidget *parent=0);
         void eatQueuesStats(const QVariantMap &);
-        static void eatQueuesStats_t(const QVariantMap & p, void * udata) {
-                ((XletQueues*)udata)->eatQueuesStats(p);
-        };
+        void parseCommand(const QVariantMap &);
         bool showMoreQueueDetailButton() { return m_showMore; };
         bool showNumber() { return m_showNumber; };
 

@@ -41,7 +41,9 @@
  */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
-    : XInfo(ipbxid, id), m_fullname(""), m_callrecord(false)
+  : XInfo(ipbxid, id), m_enableclient(false), m_callrecord(false),
+    m_enablednd(false), m_enablevoicemail(false), m_incallfilter(false),
+    m_enablebusy(false), m_enablerna(false), m_enableunc(false)
 {
 }
 
@@ -66,6 +68,7 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
     haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
     haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
+    haschanged |= setIfChangeBool(prop, "enableclient", & m_enableclient);
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
     haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
@@ -74,8 +77,10 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
         QStringList lid;
         foreach (QString id, prop.value("linelist").toStringList())
             lid << QString("%1/%2").arg(m_ipbxid).arg(id);
-        setPhoneIdList(lid);
-        haschanged = true;
+        if (lid != m_phoneidlist) {
+            haschanged = true;
+            setPhoneIdList(lid);
+        }
     }
 
     return haschanged;
@@ -166,4 +171,40 @@ QString UserInfo::toString() const
     str += " status=" + m_availstate;
 
     return str;
+}
+
+/*!
+ * Retrieves a list of channels for this user
+ */
+QStringList UserInfo::xchannels() const
+{
+    QStringList channels;
+    foreach (const QString & phonexid, phonelist()) {
+        if (const PhoneInfo * p = b_engine->phone(phonexid)) {
+            foreach (const QString & channelxid, p->xchannels()) {
+                channels << channelxid;
+            }
+        }
+    }
+    return channels;
+}
+
+/*!
+ * Check if we are talking to another user
+ * \param rhs Other user
+ */
+bool UserInfo::isTalkingTo(const QString & rhs) const
+{
+    if (const UserInfo * u = b_engine->user(rhs)) {
+        const QStringList & peers_channel = u->xchannels();
+        foreach (const QString & channelxid, peers_channel) {
+            if (const ChannelInfo * c = b_engine->channel(channelxid)) {
+                QString identity = c->talkingto_id().split("-").value(0);
+                if (identitylist().contains(identity)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }

@@ -60,6 +60,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent),
       m_currentKeyChange(-1)
 {
+    m_parent = parent;
     setWindowTitle(tr("Configuration"));
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -403,6 +404,11 @@ void ConfigWidget::_insert_guisetting_tab()
     m_activate_on_tel = new QCheckBox(tr("Activate the window when calling from external application")) ;
     m_activate_on_tel->setChecked(m_config["activate_on_tel"].toBool());
     layout4->addRow(new WarningWidget(m_activate_on_tel));
+
+    m_reset_gui = new QPushButton(tr("Reset"));
+    connect(m_reset_gui, SIGNAL(pressed()),
+            m_parent, SLOT(resetState()));
+    layout4->addRow(tr("Reset docks position"), m_reset_gui);
     
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }

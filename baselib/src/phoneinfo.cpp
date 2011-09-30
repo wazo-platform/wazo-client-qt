@@ -72,6 +72,7 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
         m_identity.replace("\\/", "/");
     }
     haschanged |= setIfChangeString(prop, "iduserfeatures", & m_iduserfeatures);
+    haschanged |= setIfChangeInt(prop, "rules_order", & m_rules_order);
 
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
     haschanged |= setIfChangeBool(prop, "initialized", & m_initialized);

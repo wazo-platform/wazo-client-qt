@@ -4,29 +4,25 @@
 <context>
     <name>XletParking</name>
     <message>
-        <location filename="src/parking.cpp" line="49"/>
+        <location filename="src/parking.cpp" line="50"/>
         <source>Parking</source>
         <translation>Parking</translation>
     </message>
     <message>
-        <location filename="src/parking.cpp" line="58"/>
         <source>Number</source>
-        <translation>Numéro</translation>
+        <translation type="obsolete">Numéro</translation>
     </message>
     <message>
-        <location filename="src/parking.cpp" line="58"/>
         <source>Time</source>
-        <translation>Temps</translation>
+        <translation type="obsolete">Temps</translation>
     </message>
     <message>
-        <location filename="src/parking.cpp" line="58"/>
         <source>Parked</source>
-        <translation>Parqué</translation>
+        <translation type="obsolete">Parqué</translation>
     </message>
     <message>
-        <location filename="src/parking.cpp" line="58"/>
         <source>Parker</source>
-        <translation>Parqueur</translation>
+        <translation type="obsolete">Parqueur</translation>
     </message>
 </context>
 </TS>

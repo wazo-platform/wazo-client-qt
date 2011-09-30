@@ -84,8 +84,7 @@ XletRecords::XletRecords(QWidget *parent)
     m_xletLayout->addWidget(m_ctwidget);
 
     // m_xletLayout->insertStretch(-1, 1);
-    b_engine->registerClassEvent("records_campaign",
-                                 XletRecords::recordResults_t, this);
+    registerListener("records_campaign");
 }
 
 XletRecords::~XletRecords()
@@ -121,6 +120,10 @@ QString XletRecords::tooltip(const QModelIndex & modelindex)
         .arg(modelindex.sibling(row, m_ctp->revindex("svivariables")).data().toString())
         .arg(m_ctp->eventfield(column));
     return ttip;
+}
+
+void XletRecords::parseCommand(const QVariantMap &map) {
+    recordResults(map);
 }
 
 void XletRecords::recordResults(const QVariantMap & p)

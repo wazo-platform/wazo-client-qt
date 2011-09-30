@@ -57,6 +57,8 @@
 #include "voicemailinfo.h"
 #include "userinfo.h"
 #include "baseconfig.h"
+#include "xlet.h"
+#include "ipbxlistener.h"
 
 class QApplication;
 class QDateTime;
@@ -72,11 +74,6 @@ class QUdpSocket;
 class QVariant;
 
 class Xlet;
-
-struct e_callback {
-    void (*cb)(const QVariantMap &, void *);
-    void *udata;
-};
 
 /*! \brief Class which handles connection with the XiVO CTI server
  *
@@ -212,7 +209,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const TrunkInfo * trunk(const QString & id) const          //!< Return the trunk to any Xlet
             { return (const TrunkInfo *) m_anylist.value("trunks").value(id); };
         const AgentInfo * agent(const QString & id) const          //!< Return the agent to any Xlet
-            { return (const AgentInfo *) m_anylist.value("agents ").value(id); };
+            { return (const AgentInfo *) m_anylist.value("agents").value(id); };
         const QueueInfo * queue(const QString & id) const         //!< Return the queue to any Xlet
             { return (const QueueInfo *) m_anylist.value("queues").value(id); };
         const GroupInfo * group(const QString & id) const          //!< Return the group to any Xlet
@@ -234,9 +231,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void pasteToDial(const QString &);
         
-        void registerClassEvent(const QString &class_function,
-                                void (*)(const QVariantMap &map, void *udata),
-                                void *udata);
+        void registerListener(const QString &, IPBXListener *); //!< Register an XLet wanting to listen IPBX messages
         
         void sendJsonCommand(const QVariantMap &);
 
@@ -267,7 +262,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void loadSettings();  //!< load server settings from QSettings (conf file)
         void saveSettings();  //!< save server settings into QSettings (conf file)
         
-        int callClassEventCallback(QString className, const QVariantMap &map);
+        int forwardToListeners(QString className, const QVariantMap &map); //!< forward IPBX message to XLets listening
         
         void stopConnection();     //!< stop the engine
         void clearInternalData();  //!< clear the engine internal data
@@ -385,7 +380,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitMessageBox(const QString &);
         
         void setQueueGroups(const QVariant &);
-
         
         void peersReceived();  //!< list of peer was received
 
@@ -536,7 +530,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_rate_samples; //!< number of Json decode
         bool m_forced_to_disconnect;    //!< set to true when disconnected by server
         
-        QMultiHash<QString, e_callback* > m_class_event_cb;
+        QMultiHash<QString, IPBXListener*> m_listeners;
 
         // miscellaneous statuses to share between xlets
         QHash<QString, newXInfoProto> m_xinfoList;  //!< XInfo constructors

@@ -31,58 +31,13 @@
  * $Date$
  */
 
-#ifndef __IDENTITYAGENT_H__
-#define __IDENTITYAGENT_H__
+#include "baseengine.h"
+#include "ipbxlistener.h"
 
-#include <QDebug>
-#include <QFrame>
-#include <QVariant>
-#include <QLabel>
-#include <QGridLayout>
-#include <QAction>
-#include <QMenu>
-#include <QContextMenuEvent>
+void IPBXListener::parseCommand(const QVariantMap &){
+    qDebug() << "This should not appear !";
+}
 
-/*! \brief Display Agent information
- *
- * \see IdentityDisplay
- */
-class IdentityAgent : public QFrame
-{
-    Q_OBJECT
-
-    public:
-        IdentityAgent(QWidget *parent=0);
-        void setAgentId(const QString &);
-        void setAllowedActions(bool allow_logagent, bool allow_pauseagent);
-    public slots:
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
-    protected:
-        void contextMenuEvent(QContextMenuEvent *);
-    signals:
-        void setSystrayIcon(const QString &);
-        void ipbxCommand(const QVariantMap &);
-    private slots:
-        void logout();
-        void login();
-        void pause();
-        void unpause();
-    private:
-        void setStatusColors();
-        void setPausedColors(int, int);
-        QString m_xagentid;
-
-        QGridLayout *m_layout;
-        QLabel *m_icon;
-        QLabel *m_text;
-        QLabel *m_status;
-        QLabel *m_statustxt;
-        QLabel *m_pause;
-        QLabel *m_pausetxt;
-        QString m_agstatus; //!< agent status string
-        bool m_allow_logagent;
-        bool m_allow_pauseagent;
-};
-
-#endif
+void IPBXListener::registerListener(const QString &event_to_listen){
+    b_engine->registerListener(event_to_listen, this);
+}

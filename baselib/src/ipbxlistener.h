@@ -27,62 +27,21 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
+ /* $Revision$
  * $Date$
  */
 
-#ifndef __IDENTITYAGENT_H__
-#define __IDENTITYAGENT_H__
+#ifndef __IPBXLISTENER_H__
+#define __IPBXLISTENER_H__
 
+#include <QVariantMap>
 #include <QDebug>
-#include <QFrame>
-#include <QVariant>
-#include <QLabel>
-#include <QGridLayout>
-#include <QAction>
-#include <QMenu>
-#include <QContextMenuEvent>
 
-/*! \brief Display Agent information
- *
- * \see IdentityDisplay
- */
-class IdentityAgent : public QFrame
-{
-    Q_OBJECT
-
-    public:
-        IdentityAgent(QWidget *parent=0);
-        void setAgentId(const QString &);
-        void setAllowedActions(bool allow_logagent, bool allow_pauseagent);
-    public slots:
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
-    protected:
-        void contextMenuEvent(QContextMenuEvent *);
-    signals:
-        void setSystrayIcon(const QString &);
-        void ipbxCommand(const QVariantMap &);
-    private slots:
-        void logout();
-        void login();
-        void pause();
-        void unpause();
-    private:
-        void setStatusColors();
-        void setPausedColors(int, int);
-        QString m_xagentid;
-
-        QGridLayout *m_layout;
-        QLabel *m_icon;
-        QLabel *m_text;
-        QLabel *m_status;
-        QLabel *m_statustxt;
-        QLabel *m_pause;
-        QLabel *m_pausetxt;
-        QString m_agstatus; //!< agent status string
-        bool m_allow_logagent;
-        bool m_allow_pauseagent;
+class IPBXListener {
+    public :
+        virtual void parseCommand(const QVariantMap &);
+    protected :
+        void registerListener(const QString &str);
 };
 
 #endif

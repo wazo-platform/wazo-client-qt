@@ -38,14 +38,14 @@
 
 #include <QtGui>
 #include <baseengine.h>
-
+#include <ipbxlistener.h>
 
 class MessageEdit;
 
 
 /*! \brief open a chat window with another xivo user
  */
-class BASELIB_EXPORT ChitChatWindow : public QWidget
+class BASELIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
 {
     Q_OBJECT
 
@@ -55,12 +55,11 @@ class BASELIB_EXPORT ChitChatWindow : public QWidget
         ChitChatWindow();
         ChitChatWindow(const QString &);
 
+        void parseCommand(const QVariantMap & map);
+
         void sendMessage(const QString &message);
         void addMessage(const QString &, const QString &, const QString &, const QString &);
         void receiveMessage(const QVariantMap &message);
-        static void receiveMessage_t(const QVariantMap &message, void *udata) {
-            return ((ChitChatWindow*)udata)->receiveMessage(message);
-        };
 
     public slots:
         void writeMessageTo();

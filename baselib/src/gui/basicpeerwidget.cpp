@@ -81,7 +81,7 @@ void BasicPeerWidget::setText(const QString &text)
  */
 void BasicPeerWidget::paintEvent(QPaintEvent *)
 {
-    bool hasPresenceIndicator = ! m_ui_remote->ctilogin().isEmpty();
+    bool hasPresenceIndicator = m_ui_remote->enableclient();
     QRect rectangle = contentsRect();
     QPainter painter(this);
     // draw the color rectangle
@@ -114,12 +114,13 @@ void BasicPeerWidget::paintEvent(QPaintEvent *)
 
 void BasicPeerWidget::updatePresence()
 {
-    QString text = tr("User Name : %1\nPhone Numbers : %2")
+    QString text = tr("User Name : %1\n"
+                      "Phone Numbers : %2")
         .arg(m_ui_remote->fullname())
         .arg(b_engine->phonenumbers(m_ui_remote).join(", "));
     QString availstate = m_ui_remote->availstate();
     QVariantMap presencedetails = b_engine->getOptionsUserStatus().value(availstate).toMap();
-    if (! m_ui_remote->ctilogin().isEmpty()) {
+    if (m_ui_remote->enableclient()) {
         text.append("\n");
         text.append(tr("Status : %1").arg(presencedetails.value("longname").toString()));
     }

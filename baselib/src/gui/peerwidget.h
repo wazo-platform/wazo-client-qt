@@ -59,14 +59,18 @@ class BASELIB_EXPORT PeerWidget : public BasePeerWidget
         PeerWidget(const UserInfo *);
         void setName(const QString &);
         void setEngine(BaseEngine *);
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
+        void updateAgentToolTip();
         bool pOverMobileLbl(const QPoint &p);
-
+    public slots:
+        void updateAgentConfig(const QString &);
+        void updateAgentStatus(const QString &);
+        void updateQueueStatus(const QString &);
+    protected:
+        void updateChitChatButton();
     private:
         QString m_xagentid;
         QHash<QString, QLabel *> m_lblphones; //!< phone labels
@@ -75,6 +79,9 @@ class BASELIB_EXPORT PeerWidget : public BasePeerWidget
         QLabel *m_agentlbl;       //!< agent state label
         QLabel *m_mobilelbl;      //!< mobile phone label
         QLabel *m_textlbl;        //!< text label : to display peer name
+        QHBoxLayout * m_hLayout;
+        QWidget * m_peer;
+        static const int m_iconsize = 25;;
 };
 
 class ChitchatButton : public QPushButton

@@ -61,6 +61,13 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         const QStringList & xqueueids() const { return m_xqueueids; };  //! queues in which this agent is in
         const QStringList & xgroupids() const { return m_xgroupids; };  //! groups in which this agent is in
 
+        /*! \brief Check if this agent is paused
+         *
+         * The agent is considered paused even if he is partially paused
+         */
+        bool paused() const;
+        void pauseQueue(const QString &, bool) const;
+        void pauseAllQueue(bool) const;
     private:
         QString m_context;
         QString m_agentnumber;

@@ -88,10 +88,6 @@ SearchPanel::SearchPanel(QWidget *parent)
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
-    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
-            this, SLOT(updateAgentConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
-            this, SLOT(updateAgentStatus(const QString &)));
 
     connect(b_engine, SIGNAL(peersReceived()),
             this, SLOT(updateDisplay()));
@@ -161,8 +157,10 @@ void SearchPanel::updateDisplay()
         if ((name_match || num_match) && (naff < m_maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
-                peerwidget->updateAgentConfig(userinfo->xagentid());
-                peerwidget->updateAgentStatus(userinfo->xagentid());
+                if (! userinfo->agentid().isEmpty()) {
+                    peerwidget->updateAgentConfig(userinfo->xagentid());
+                    peerwidget->updateAgentStatus(userinfo->xagentid());
+                }
                 foreach (QString xphoneid, userinfo->phonelist()) {
                     peerwidget->updatePhoneConfig(xphoneid);
                     peerwidget->updatePhoneStatus(xphoneid);
@@ -206,25 +204,14 @@ void SearchPanel::removeUserConfig(const QString & xuserid)
 
 void SearchPanel::updateUserStatus(const QString & xuserid)
 {
-    // qDebug() << Q_FUNC_INFO << xuserid << m_peerhash.keys();
     PeerItem * peeritem = NULL;
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
         peeritem->updateStatus();
     }
-}
-
-void SearchPanel::updateAgentConfig(const QString & xagentid)
-{
-    qDebug() << Q_FUNC_INFO << xagentid;
-}
-
-void SearchPanel::updateAgentStatus(const QString & xagentid)
-{
-    qDebug() << Q_FUNC_INFO << xagentid;
-    // XXXX find xuserid
-//     if (m_peerhash.contains(xuserid))
-//         m_peerhash.value(xuserid)->updateAgentStatus(xagentid);
+    if (m_peerhash.size() != m_peerlayout->count()) {
+        updateDisplay();
+    }
 }
 
 void SearchPanel::updatePhoneConfig(const QString & xphoneid)

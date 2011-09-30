@@ -41,16 +41,13 @@
 
 /*! \brief cdr model
  */
-class LogWidgetModel : public QAbstractTableModel
+class LogWidgetModel : public QAbstractTableModel, public IPBXListener
 {
     Q_OBJECT
 
     public:
         LogWidgetModel(int);
-        void updateHistory(const QVariantMap &p);
-        static void updateHistory_t(const QVariantMap &p, void *udata) {
-            return ((LogWidgetModel*)udata)->updateHistory(p);
-        };
+        void parseCommand(const QVariantMap &);
 
     protected:
         virtual int rowCount(const QModelIndex&) const;
@@ -62,6 +59,7 @@ class LogWidgetModel : public QAbstractTableModel
 
     public slots:
         void changeMode(bool);
+        void updateHistory(const QVariantMap &p);
 
     private:
         static int ascendingOrderByDuration(const QVariant &a, const QVariant &b) {

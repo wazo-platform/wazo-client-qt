@@ -62,12 +62,6 @@ IdentityAgent::IdentityAgent(QWidget *parent)
     m_layout->addWidget(m_statustxt, 1, 2);
     m_layout->addWidget(m_pause, 2, 1);
     m_layout->addWidget(m_pausetxt, 2, 2);
-
-    setStyleSheet("QFrame {background: white;}");
-    // setFrameStyle(QFrame::Panel | QFrame::Raised);
-    // setLineWidth(3);
-    // m_layout->setSpacing(0);
-    // m_layout->setMargin(0);
 }
 
 void IdentityAgent::setAgentId(const QString & xagentid)
@@ -95,63 +89,60 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
         return;
 
     setSystrayIcon(icon_color_black);
-    setStatusColors("345");
     setPausedColors(7, 3);
+    setStatusColors();
 
-    // agentinfo->status();
-    // QString phonenumber = agentinfo->phoneNumber();
-    // setStatusColors(phonenumber);
+    const QString & agstatus = agentinfo->status();
+    if(agstatus != m_agstatus) {
+        m_agstatus = agstatus;
+        if(agstatus == "AGENT_LOGGEDOFF") {
+            setSystrayIcon(icon_color_black);
+        } else if(agstatus == "AGENT_IDLE") {
+            setSystrayIcon(icon_color_green);
+        } else if(agstatus == "AGENT_ONCALL") {
+            setSystrayIcon(icon_color_green);
+        } else {
+            qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
+        }
+        setStatusColors();
+    }
 
-//     QVariantMap agqjoined = properties["queues_by_agent"].toMap();
-//     QVariantMap agentstats = properties["agentstats"].toMap();
-//     QString agstatus = agentstats["status"].toString();
-//     QString phonenum = agentstats["agent_phone_number"].toString();
+    const QStringList joined = agentinfo->xqueueids();
+    int unpaused = 0;
 
-//     if(agstatus != m_agstatus) {
-//         m_agstatus = agstatus;
-//         if(agstatus == "AGENT_LOGGEDOFF") {
-//             setSystrayIcon(icon_color_black);
-//             setStatusColors(phonenum);
-//         } else if(agstatus == "AGENT_IDLE") {
-//             setSystrayIcon(icon_color_green);
-//             setStatusColors(phonenum);
-//         } else if(agstatus == "AGENT_ONCALL") {
-//             setSystrayIcon(icon_color_green);
-//             setStatusColors(phonenum);
-//         } else
-//             qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
-//     }
+    foreach (const QString & qxid, joined) {
+        if (const QueueInfo * q = b_engine->queue(qxid)) {
+            QString qmemberxid = QString("%0/qa:%1-%2")
+                    .arg(agentinfo->ipbxid())
+                    .arg(q->id())
+                    .arg(agentinfo->id());
+            if (b_engine->queuemembers().contains(qmemberxid)) {
+                const QueueMemberInfo * qmi = b_engine->queuemembers()[qmemberxid];
+                if (qmi->paused() == "0") {
+                    ++unpaused;
+                }
+            }
+        }
+    }
 
-//     QStringList joined_queues;
-//     QStringList unpaused_queues;
-//     foreach (QString qname, agqjoined.keys()) {
-//         QVariantMap qv = agqjoined[qname].toMap();
-//         if(qv.contains("Status")) {
-//             QString pstatus = qv["Paused"].toString();
-//             //QString sstatus = qv["Status"].toString();
-//             joined_queues << qname;
-//             if(pstatus == "0")
-//                 unpaused_queues << qname;
-//         }
-//     }
-
-//     int njoined = joined_queues.size();
-//     int nunpaused = unpaused_queues.size();
-//     setPausedColors(njoined, njoined - nunpaused);
+    int njoined = joined.size();
+    setPausedColors(njoined, njoined - unpaused);
 }
 
-void IdentityAgent::setStatusColors(const QString & phonenum)
+void IdentityAgent::setStatusColors()
 {
     QPixmap square(10, 10);
-    const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
-    if(agentinfo->status() == "AGENT_IDLE") {
-        square.fill("#00ff00");
-        m_statustxt->setText(tr("Connected to %1").arg(agentinfo->phonenumber()));
-    } else {
-        square.fill("#ff0000");
-        m_statustxt->setText(tr("Disconnected from %1").arg(agentinfo->phonenumber()));
+    if (const AgentInfo * agentinfo = b_engine->agent(m_xagentid)) {
+        const QString phonenumber = b_engine->getConfig("agentphonenumber").toString();
+        if(agentinfo->status() == "AGENT_IDLE") {
+            square.fill("#00ff00");
+            m_statustxt->setText(tr("Connected to %1").arg(phonenumber));
+        } else {
+            square.fill("#ff0000");
+            m_statustxt->setText(tr("Disconnected from %1").arg(phonenumber));
+        }
+        m_status->setPixmap(square);
     }
-    m_status->setPixmap(square);
 }
 
 void IdentityAgent::setPausedColors(int nj, int np)
@@ -187,38 +178,43 @@ void IdentityAgent::setPausedColors(int nj, int np)
 
 void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
 {
-    // qDebug() << Q_FUNC_INFO;
     QMenu contextMenu(this);
 
-    if(m_allow_logagent) {
-        QAction * logAction = new QAction(this);
-        const AgentInfo * agentinfo = b_engine->agent(m_xagentid);
-        if(agentinfo->status() == "AGENT_IDLE") {
-            logAction->setText(tr("Logout"));
-            connect(logAction, SIGNAL(triggered()),
-                    this, SLOT(logout()) );
-        } else {
-            logAction->setText(tr("Login"));
-            connect(logAction, SIGNAL(triggered()),
-                    this, SLOT(login()) );
+    if (const AgentInfo * agentinfo = b_engine->agent(m_xagentid)) {
+        bool loggedin = agentinfo->status() == "AGENT_IDLE";
+        bool paused = agentinfo->paused();
+
+        if(m_allow_logagent) {
+            QAction * logAction = new QAction(this);
+            if(loggedin) {
+                logAction->setText(tr("Logout"));
+                connect(logAction, SIGNAL(triggered()),
+                        this, SLOT(logout()) );
+            } else {
+                logAction->setText(tr("Login"));
+                connect(logAction, SIGNAL(triggered()),
+                        this, SLOT(login()) );
+            }
+            contextMenu.addAction(logAction);
         }
-        contextMenu.addAction(logAction);
+
+        if(m_allow_pauseagent) {
+            if (paused) {
+                QAction * unpauseAction = new QAction(tr("Unpause"), this);
+                connect(unpauseAction, SIGNAL(triggered()),
+                        this, SLOT(unpause()) );
+                contextMenu.addAction(unpauseAction);
+            } else {
+                QAction * pauseAction = new QAction(tr("Pause"), this);
+                connect(pauseAction, SIGNAL(triggered()),
+                        this, SLOT(pause()) );
+                contextMenu.addAction(pauseAction);
+            }
+        }
+
+        if(m_allow_logagent || m_allow_pauseagent)
+            contextMenu.exec(event->globalPos());
     }
-
-    if(m_allow_pauseagent) {
-        QAction * pauseAction = new QAction(tr("Pause"), this);
-        connect(pauseAction, SIGNAL(triggered()),
-                this, SLOT(pause()) );
-        contextMenu.addAction(pauseAction);
-
-        QAction * unpauseAction = new QAction(tr("Unpause"), this);
-        connect(unpauseAction, SIGNAL(triggered()),
-                this, SLOT(unpause()) );
-        contextMenu.addAction(unpauseAction);
-    }
-
-    if(m_allow_logagent || m_allow_pauseagent)
-        contextMenu.exec(event->globalPos());
 }
 
 void IdentityAgent::login()
@@ -238,27 +234,20 @@ void IdentityAgent::logout()
 
 void IdentityAgent::pause()
 {
-    QVariantMap ipbxcommand;
-    QString ipbxid = b_engine->getXivoClientUser()->ipbxid();
-    ipbxcommand["command"] = "queuepause";
-    ipbxcommand["member"] = QString("agent:%1/me").arg(ipbxid);
-    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    b_engine->ipbxCommand(ipbxcommand);
+    if (const AgentInfo * a = b_engine->agent(m_xagentid)) {
+        a->pauseAllQueue(true);
+    }
 }
 
 void IdentityAgent::unpause()
 {
-    QVariantMap ipbxcommand;
-    QString ipbxid = b_engine->getXivoClientUser()->ipbxid();
-    ipbxcommand["command"] = "queueunpause";
-    ipbxcommand["member"] = QString("agent:%1/me").arg(ipbxid);
-    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    b_engine->ipbxCommand(ipbxcommand);
+    if (const AgentInfo * a = b_engine->agent(m_xagentid)) {
+        a->pauseAllQueue(false);
+    }
 }
 
 void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent)
 {
-    // qDebug() << Q_FUNC_INFO << allow_logagent << allow_pauseagent;
     m_allow_logagent = allow_logagent;
     m_allow_pauseagent = allow_pauseagent;
 }

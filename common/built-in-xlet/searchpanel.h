@@ -64,8 +64,6 @@ class SearchPanel : public XLet
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
         void removeUserConfig(const QString &);
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void updateConf();
