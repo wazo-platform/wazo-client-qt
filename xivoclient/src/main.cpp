@@ -128,7 +128,7 @@ int main(int argc, char ** argv)
 
     QString qsskind = engine->getConfig("qss").toString();
 
-    QFile qssFile(QString(":/common/%1.qss").arg(qsskind));
+    QFile qssFile(QString(":/%1.qss").arg(qsskind));
     if(qssFile.open(QIODevice::ReadOnly)) {
         app.setStyleSheet(qssFile.readAll());
     }

@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../obj/switchboard_fr.qm</file>
+        <file>../../../obj/switchboard_nl.qm</file>
+    </qresource>
+</RCC>

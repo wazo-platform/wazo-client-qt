@@ -34,7 +34,7 @@
 #ifndef __BASEENGINE_H__
 #define __BASEENGINE_H__
 
-#include <baselib_export.h>
+#include "baselib_export.h"
 
 #include <QHash>
 #include <QMultiHash>
@@ -43,7 +43,7 @@
 #include <QSettings>
 
 #include "queue_agent_status.h"
-#include "dstore/src/dstore.h"
+#include "dstore/dstore.h"
 
 #include "channelinfo.h"
 #include "incallsinfo.h"
@@ -57,7 +57,6 @@
 #include "voicemailinfo.h"
 #include "userinfo.h"
 #include "baseconfig.h"
-#include "xlet.h"
 #include "ipbxlistener.h"
 
 class QApplication;
@@ -72,8 +71,6 @@ class QTimerEvent;
 class QTranslator;
 class QUdpSocket;
 class QVariant;
-
-class Xlet;
 
 /*! \brief Class which handles connection with the XiVO CTI server
  *

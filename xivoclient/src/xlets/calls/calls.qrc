@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../images/calls/leftarrow.png</file>
+        <file>../../../images/calls/rightarrow.png</file>
+        <file>../../../obj/calls_fr.qm</file>
+        <file>../../../obj/calls_nl.qm</file>
+    </qresource>
+</RCC>

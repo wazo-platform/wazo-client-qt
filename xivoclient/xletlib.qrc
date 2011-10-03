@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>obj/xletlib_fr.qm</file>
+        <file>obj/xletlib_nl.qm</file>
+    </qresource>
+</RCC>

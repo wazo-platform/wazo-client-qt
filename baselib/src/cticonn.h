@@ -37,7 +37,7 @@
 #include <QTcpSocket>
 #include <QObject>
 #include <QTimer>
-#include <baseengine.h>
+#include "baseengine.h"
 
 class CtiConn : public QObject
 {

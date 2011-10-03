@@ -1,19 +1,14 @@
+doc
+obj
+bin
+
 *.mak
-*.moc
 *.o
 *.qm
-*/Makefile
+
+# Every Makefile (and Makefile.{Debug,Release})
+Makefile*
+# But not the main one
+!/Makefile
+
 *~
-bin
-moc_*.cpp
-*.moc
-*.mak
-bin
-plugins/*/Makefile
-plugins/*/qrc_res.cpp
-xivoclient/qrc_appli.cpp
-xivoclient/versions.pri
-Makefile.Debug
-Makefile.Release
-doc
-versions.pri

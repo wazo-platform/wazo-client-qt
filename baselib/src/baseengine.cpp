@@ -49,12 +49,12 @@
 #include <QSslSocket>
 #include <QUdpSocket>
 
-#include "JsonToVariant.h"
-#include "VariantToJson.h"
+#include <JsonToVariant.h>
+#include <VariantToJson.h>
 #include "xivoconsts.h"
 
 #include "baseengine.h"
-#include <cticonn.h>
+#include "cticonn.h"
 #include "phonenumber.h"
 
 
@@ -132,8 +132,9 @@ BaseEngine::BaseEngine(QSettings *settings,
     if (m_config["autoconnect"].toBool())
         start();
     translationFiles = \
-        (QStringList() << ":/xivoclient_%1"
-                       << ":/baselib/baselib_%1"
+        (QStringList() << ":/obj/xivoclient_%1"
+                       << ":/obj/baselib_%1"
+                       << ":/obj/xletlib_%1"
                        << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
     changeTranslation();
 }
@@ -239,7 +240,7 @@ void BaseEngine::loadSettings()
     m_settings->endGroup();
     
     QString defaultguioptions;
-    QFile defaultguioptions_file(":/common/guioptions.json");
+    QFile defaultguioptions_file(":/guioptions.json");
     if (defaultguioptions_file.exists()) {
         defaultguioptions_file.open(QFile::ReadOnly);
         defaultguioptions = defaultguioptions_file.readAll();

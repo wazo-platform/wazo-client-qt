@@ -27,7 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cticonn.h>
+#include "cticonn.h"
 
 CtiConn::CtiConn(QTcpSocket * s)
     : QObject(NULL)

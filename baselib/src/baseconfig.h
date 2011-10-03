@@ -34,7 +34,7 @@
 #ifndef __BASECONFIG_H__
 #define __BASECONFIG_H__
 
-#include <baselib_export.h>
+#include "baselib_export.h"
 #include <QObject>
 #include <QVariantMap>
 #include <QStringList>
