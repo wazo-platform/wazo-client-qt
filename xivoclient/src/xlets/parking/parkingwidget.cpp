@@ -48,6 +48,13 @@ ParkingWidget::ParkingWidget(const QString & parkingid, QWidget * parent)
     if (! p) return;
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->setMargin(0);
+
+    /*! \brief Columns header for the parked call tables */
+    m_labels = QStringList() << tr("Number")
+                             << tr("Time")
+                             << tr("Parked")
+                             << tr("Parker");
+    
     QString header = QString("%1 <%2> %3").arg(p->name()).arg(p->number()).arg(p->description());
     m_header = new ExtendedLabel(header, this);
     m_table = new ExtendedTableWidget(this);
@@ -65,12 +72,6 @@ ParkingWidget::ParkingWidget(const QString & parkingid, QWidget * parent)
             this, SLOT(doubleClickListener(QTableWidgetItem *)));
     connect(m_header, SIGNAL(clicked()), this, SLOT(headerClicked()));
     refresh();
-
-    /*! \brief Columns header for the parked call tables */
-    m_labels = QStringList() << tr("Number")
-                             << tr("Time")
-                             << tr("Parked")
-                             << tr("Parker");
 }
 
 void ParkingWidget::headerClicked()
