@@ -32,7 +32,6 @@
  */
 
 #include "conference.h"
-#include <QDir>
 
 Q_EXPORT_PLUGIN2(xletconferenceplugin, XLetConferencePlugin);
 
@@ -105,8 +104,6 @@ int ConfTab::indexOf(const QString & xid)
 
 XLet* XLetConferencePlugin::newXLetInstance(QWidget *parent)
 {
-    QDir dir (":/obj");
-    qDebug() << Q_FUNC_INFO << dir.entryList();
     b_engine->registerTranslation(":/obj/conference_%1");
     return new XletConference(parent);
 }
