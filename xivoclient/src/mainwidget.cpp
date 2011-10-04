@@ -680,22 +680,14 @@ void MainWidget::updatePresence()
 
 void MainWidget::clearPresence()
 {
-    QVariantMap presence = b_engine->getOptionsUserStatus();
-    if (presence.contains("names")) {
-        QMapIterator<QString, QVariant> capapres(presence.value("names").toMap());
-        while (capapres.hasNext()) {
-            capapres.next();
-            QString avstate = capapres.key();
-            if (m_avact.contains(avstate)) {
-                disconnect(m_avact[avstate], SIGNAL(triggered()),
-                           b_engine, SLOT(setAvailability()));
-                m_availgrp->removeAction(m_avact[avstate]);
-                delete m_avact[avstate];
-            }
-        }
-        m_avact.clear();
-        m_avail->clear();
+    foreach (QAction *action, m_avact) {
+        disconnect(action, SIGNAL(triggered()),
+                   b_engine, SLOT(setAvailability()));
+        m_availgrp->removeAction(action);
+        delete action;
     }
+    m_avact.clear();
+    m_avail->clear();
 }
 
 /*!
