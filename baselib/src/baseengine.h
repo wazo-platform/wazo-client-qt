@@ -453,6 +453,12 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void clearLists();
         void clearChannelList();
 
+        /*! \brief Retrieve the initial presence
+         *
+         * Returns the state for a new connection to the cti server
+         */
+        QString getInitialPresence() const;
+
         // Class Members
         // Parameters given by the User at Login time
         
@@ -503,6 +509,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_timerid_changestate;      //!< timer id for changing state automatically
         QString m_changestate_oldstate; //!< old state when changing state automatically
         QString m_changestate_newstate; //!< new state when changing state automatically
+        QString m_default_login_state;  //!< when the state from the previous session is not available
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
         QString m_numbertodial;         //!< Number dialed in
         QString m_osname;               //!< OS informations

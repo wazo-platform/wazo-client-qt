@@ -82,6 +82,7 @@ BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
       m_sessionid(""), m_state(ENotLogged),
+      m_default_login_state("available"),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
@@ -450,7 +451,11 @@ void BaseEngine::clearInternalData()
         command["stopper"] = stopper;
         sendJsonCommand(command);
         m_settings->setValue("lastlogout/stopper", stopper);
-        m_settings->setValue("lastlogout/datetime", QDateTime::currentDateTime().toString(Qt::ISODate));
+        m_settings->setValue("lastlogout/datetime",
+                QDateTime::currentDateTime().toString(Qt::ISODate));
+        if (const UserInfo * u = user(getFullId())) {
+            m_settings->setValue("lastlogout/presence", u->availstate());
+        }
         m_attempt_loggedin = false;
     }
 
@@ -678,6 +683,7 @@ void BaseEngine::ctiSocketConnected()
     command["xivoversion"] = __xivo_version__;
     command["git_hash"] = __git_hash__;
     command["git_date"] = __git_date__;
+
     // for debuging purposes :
     command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
     command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
@@ -997,10 +1003,7 @@ void BaseEngine::parseCommand(const QString &line)
                 break;
             }
 
-            if (m_config["checked_function.presence"].toBool())
-                command["state"] = m_availstate;
-            else
-                command["state"] = __nopresence__;
+            command["state"] = getInitialPresence();
 
             /*!
              * \todo To be deleted, when the server will accept it
@@ -2057,6 +2060,15 @@ void BaseEngine::changeState()
     command["ipbxid"] = m_ipbxid;
     command["userid"] = m_userid;
     sendJsonCommand(command);
+}
+
+QString BaseEngine::getInitialPresence() const
+{
+    if (m_config["checked_function.presence"].toBool()) {
+        QString state = m_settings->value("lastlogout/presence").toString();
+        return (state.isEmpty() ? m_default_login_state : state);
+    }
+    return __nopresence__;
 }
 
 /*! \brief send message to the CTI Server */
