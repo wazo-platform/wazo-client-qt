@@ -469,9 +469,7 @@ void BasePeerWidget::addDialMenu(QMenu * menu)
 void BasePeerWidget::addChitChatMenu(QMenu * menu)
 {
     if (! b_engine->enabledFunction("chitchat")) return;
-    bool valid_state = (b_engine->getOptionsUserStatus().contains(
-                            m_ui_remote->availstate()));
-    if (m_ui_remote->enableclient() && valid_state) {
+    if (m_ui_remote->enableclient() && m_ui_remote->connected()) {
         menu->addAction(m_chitchatAction);
     }
 }
