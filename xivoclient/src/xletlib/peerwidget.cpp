@@ -341,7 +341,7 @@ bool ChitchatButton::event(QEvent *e)
      * with someone non connected or with himself */
     if ((e->type() == QEvent::MouseButtonPress) ||
         (e->type() == QEvent::MouseButtonDblClick)) {
-        if (((*m_ui)->availstate() == "xivo_unknown") ||
+        if ((! (*m_ui)->connected()) ||
             (b_engine->getFullId() == (*m_ui)->xid())) {
             return true;
         }
