@@ -95,11 +95,13 @@ class BASELIB_EXPORT UserInfo : public XInfo
         QString findNumberForXChannel(const QString &) const;
         QStringList xchannels() const;
         bool isTalkingTo(const QString &) const;
+        bool connected() const { return m_connection == "yes"; };
     private:
         QString m_company;  //!< user company
         QString m_ctilogin;  //!< user login on cti
         QString m_fullname;  //!< user full name
         QString m_context;  //!< user context
+        QString m_connection;
 
         int m_simultcalls;
 
