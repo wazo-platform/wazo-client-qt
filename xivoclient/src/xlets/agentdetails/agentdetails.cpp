@@ -423,8 +423,8 @@ void XletAgentDetails::queueClicked()
     const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
 
     QVariantMap ipbxcommand;
-    ipbxcommand["agentids"] = m_monitored_agentid;
-    ipbxcommand["queueids"] = xqueueid;
+    ipbxcommand["member"] = QString("agent:%0").arg(m_monitored_agentid);
+    ipbxcommand["queue"] = QString("queue:%0").arg(xqueueid);
 
     if (action == "changequeue")
         b_engine->changeWatchedQueue(xqueueid);
@@ -446,9 +446,9 @@ void XletAgentDetails::queueClicked()
         QString smstatus = qmi->status();
         QString pmstatus = qmi->paused();
         if (pmstatus == "0") {
-            ipbxcommand["command"] = "agentpausequeue";
+            ipbxcommand["command"] = "queuepause";
         } else if (pmstatus == "1") {
-            ipbxcommand["command"] = "agentunpausequeue";
+            ipbxcommand["command"] = "queueunpause";
         } else
             qDebug() << Q_FUNC_INFO << queuename << m_monitored_agentid << smstatus << pmstatus;
     } else
