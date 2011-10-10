@@ -77,6 +77,7 @@ class MainWidget : public QMainWindow
         void showMessageBox(const QString &);
         void showWidgetOnTop(QWidget *);
         void updateUserStatus(const QString &);
+        void setAvailability();  //!< set user status from menu
     signals:
         void functionKeyPressed(int);
     protected:
@@ -97,6 +98,7 @@ class MainWidget : public QMainWindow
         void clearPresence();
         void makeLoginWidget();
         void setConfig();
+        void setMenuAvailabilityEnabled(bool);
 
         QSystemTrayIcon *m_systrayIcon;  //!< System Tray Icon
         QIcon m_icon_transp;  //!< Icon Objects

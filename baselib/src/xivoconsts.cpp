@@ -38,3 +38,5 @@ const char __xivo_version__[] = XIVOVER;
 const char __git_hash__[] = GIT_HASH;
 const char __git_date__[] = GIT_DATE;
 const char __nopresence__[] = "nopresence";
+const char __presence_on__[]  = "available";
+const char __presence_off__[] = "disconnected";

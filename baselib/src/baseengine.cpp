@@ -275,9 +275,17 @@ void BaseEngine::loadSettings()
     if (settingsversion != "1.0")
         m_settings->endGroup();
 
+    QMap<QString, bool> enable_function_bydefault;
+    foreach (QString function, CheckFunctions)
+        enable_function_bydefault[function] = false;
+    enable_function_bydefault["presence"] = true;
+
     m_settings->beginGroup("user-functions");
         foreach (QString function, CheckFunctions)
-            m_config["checked_function." + function] = m_settings->value(function, false).toBool();
+            m_config["checked_function." + function] =
+                    m_settings->value(function,
+                                      enable_function_bydefault[function]
+                                     ).toBool();
     m_settings->endGroup();
 }
 
@@ -359,17 +367,6 @@ void BaseEngine::setProfileSetting(const QString & key, const QVariant & value)
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue(key, value);
     m_settings->endGroup();
-}
-
-void BaseEngine::setCheckedFunction(const QString & function, bool b)
-{
-    if (b != m_config["checked_function." + function].toBool()) {
-        m_config["checked_function." + function] = b;
-        if ((state() == ELogged) && m_enabled_function[function]) {
-            if (function == "presence")
-                emit availAllowChanged(b);
-        }
-    }
 }
 
 void BaseEngine::pasteToDial(const QString & toPaste)
@@ -590,14 +587,10 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
     // qDebug() << Q_FUNC_INFO << "from" << m_availstate << "to" << newstate << comesFromServer;
     if (m_availstate != newstate) {
         m_availstate = newstate;
-            emit changesAvailChecks();
         if (! comesFromServer) {
             changeState();
         }
         keepLoginAlive();
-    } else {
-        if (comesFromServer)
-            emit changesAvailChecks();
     }
 }
 
@@ -612,13 +605,6 @@ const QString & BaseEngine::getAvailState() const
     // If it's too early to have an initialized UserInfo use m_availstate
     qDebug() << Q_FUNC_INFO << "No user defined at this point using available";
     return m_availstate;
-}
-
-/*! \brief set availability */
-void BaseEngine::setAvailability()
-{
-    QString availstate = sender()->property("availstate").toString();
-    setAvailState(availstate, false);
 }
 
 /*! \brief send command to XiVO CTI server */
@@ -1700,15 +1686,26 @@ QVariant BaseEngine::getConfig(const QString & setting) const
     return m_config[setting];
 }
 
+// only used to simplify the writing of one config setting
+// use setConfig(const QVariantMap & qvm) if there are multiple values to change
+void BaseEngine::setConfig(const QString & setting, QVariant value) {
+    QVariantMap qvm;
+    qvm[setting] = value;
+    setConfig(qvm);
+}
+
 // qvm may not contain every key, only the ones that need to be modified
 void BaseEngine::setConfig(const QVariantMap & qvm)
 {
+    // qDebug() << Q_FUNC_INFO << qvm;
     bool reload_tryagain = qvm.contains("trytoreconnectinterval") &&
                            m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
     bool reload_keepalive = qvm.contains("keepaliveinterval") &&
                             m_config["keepaliveinterval"].toUInt() != qvm["keepaliveinterval"].toUInt();
     bool change_translation = qvm.contains("forcelocale") &&
                             m_config["forcelocale"].toUInt() != qvm["forcelocale"].toUInt();
+    bool toggle_presence_enabled = qvm.contains("checked_function.presence") &&
+                            m_config["checked_function.presence"].toBool() != qvm["checked_function.presence"].toBool();
 
     m_config.merge(qvm);
     
@@ -1725,9 +1722,13 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
     
     if (change_translation)
         changeTranslation();
-    
-    // Update presence combobox in XLet identity
-    emit updatePresence();
+
+    if (toggle_presence_enabled) {
+        if (m_config["checked_function.presence"].toBool())
+            setAvailState(__presence_on__, false);
+        else
+            setAvailState(__presence_off__, false);
+    }
 
     // qDebug() << m_config.toString();
     
@@ -1964,13 +1965,9 @@ void BaseEngine::setState(EngineState state)
         m_state = state;
         if (state == ELogged) {
             stopTryAgainTimer();
-            if (m_config["checked_function.presence"].toBool() && m_enabled_function["presence"]) {
-                emit availAllowChanged(true);
-            }
             emit logged();
             // emit updatePresence();
         } else if (state == ENotLogged) {
-            emit availAllowChanged(false);
             emit delogged();
             // reset some variables when disconnecting
         }

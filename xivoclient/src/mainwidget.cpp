@@ -444,10 +444,10 @@ void MainWidget::syncPresence()
         const QString & state = u->availstate();
         if (m_avact.contains(state)) {
             disconnect(m_avact[state], SIGNAL(triggered()),
-                       b_engine, SLOT(setAvailability()));
+                       this, SLOT(setAvailability()));
             checksAvailState();
             connect(m_avact[state], SIGNAL(triggered()),
-                    b_engine, SLOT(setAvailability()));
+                    this, SLOT(setAvailability()));
         }
     }
 }
@@ -466,8 +466,6 @@ void MainWidget::createMenus()
 
     m_avail = menuBar()->addMenu(tr("&Availability"));
     m_avail->setEnabled(false);
-    connect(b_engine, SIGNAL(availAllowChanged(bool)),
-            m_avail, SLOT(setEnabled(bool)));
 
     m_helpmenu = menuBar()->addMenu(tr("&Help"));
     m_helpmenu->addAction(tr("&About XiVO Client"), this, SLOT(about()));
@@ -551,8 +549,11 @@ void MainWidget::confUpdated()
     m_qlab3->setText(m_config["agentphonenumber"].toString());
     m_kpass->setChecked(m_config["keeppass"].toBool());
     m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
+    
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
     m_profilename->setVisible(displayprofile);
+    
+    setMenuAvailabilityEnabled(true);
     
     // No need to call loginKindChanged because
     // if the index is the same, no need to do anything
@@ -670,7 +671,7 @@ void MainWidget::updatePresence()
                 m_avact[presencestate] = new QAction(longname, this);
                 m_avact[presencestate]->setProperty("availstate", presencestate);
                 connect(m_avact[presencestate], SIGNAL(triggered()),
-                        b_engine, SLOT(setAvailability()));
+                        this, SLOT(setAvailability()));
                 m_availgrp->addAction(m_avact[presencestate]);
             }
         }
@@ -682,7 +683,7 @@ void MainWidget::clearPresence()
 {
     foreach (QAction *action, m_avact) {
         disconnect(action, SIGNAL(triggered()),
-                   b_engine, SLOT(setAvailability()));
+                   this, SLOT(setAvailability()));
         m_availgrp->removeAction(action);
         delete action;
     }
@@ -825,6 +826,7 @@ void MainWidget::connectionStateChanged()
         m_status->setPixmap(m_pixmap_connected);
         m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
         m_profilename->setText(b_engine->getConfig("profilename").toString());
+        setMenuAvailabilityEnabled(true);
         b_engine->logAction("connection started");
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
         statusBar()->showMessage(tr("Disconnected"));
@@ -833,8 +835,29 @@ void MainWidget::connectionStateChanged()
         m_status->setPixmap(m_pixmap_disconnected);
         m_padlock->hide();
         m_profilename->setText("");
+        setMenuAvailabilityEnabled(false);
         b_engine->logAction("connection stopped");
     }
+}
+
+/*!
+ * enables or disables the Availability menu
+ */
+void MainWidget::setMenuAvailabilityEnabled(bool enabled) {
+    if (enabled) {
+        bool presence_enabled = b_engine->getConfig("checked_function.presence").toBool();
+        qDebug() << Q_FUNC_INFO << presence_enabled;
+        m_avail->setEnabled(presence_enabled);
+    } else {
+        m_avail->setEnabled(false);
+    }
+}
+
+/*! \brief send the availability action clicked in the menu */
+void MainWidget::setAvailability()
+{
+    QString availstate = sender()->property("availstate").toString();
+    b_engine->setAvailState(availstate, false);
 }
 
 /*!

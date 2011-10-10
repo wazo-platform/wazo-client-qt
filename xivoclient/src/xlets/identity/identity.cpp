@@ -40,7 +40,7 @@
 #include <QMouseEvent>
 #include <QSizePolicy>
 
-#include "baseengine.h"
+#include <baseengine.h>
 #include "identity.h"
 #include "userinfo.h"
 #include "phoneinfo.h"
@@ -178,13 +178,13 @@ void IdentityDisplay::updatePresence()
 {
     if (! m_ui) return;
     QString presence = m_ui->availstate();
+
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
 
     m_presencevalue->hide();
 
     bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
     if (! presenceEnabled)
-        //! \todo make the server send this user's presence as disconnected
         return;
 
     disconnect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
@@ -195,7 +195,6 @@ void IdentityDisplay::updatePresence()
     if (presencemap.contains(presence)) {
         QVariantMap details = presencemap.value(presence).toMap();
         QStringList allowedlist = details.value("allowed").toStringList();
-        qDebug() << allowedlist ;
         int idx = 0;
         foreach (QString presencestate, allowedlist) {
             QVariantMap pdetails = presencemap.value(presencestate).toMap();

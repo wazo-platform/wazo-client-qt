@@ -151,8 +151,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         QVariantMap getConfig() const;              //!< all BaseEngine settings.
         QVariant getConfig(const QString &) const;  //!< one BaseEngine setting. Use to read a setting.
-        void setConfig(const QVariantMap &);                //!< set as many settings as you want
-
+        void setConfig(const QVariantMap &);        //!< set as many settings as you want
+        void setConfig(const QString &, QVariant);    //!< set one setting
 
         // public setters/getters for properties
 
@@ -161,7 +161,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         const QString& getAvailState() const;  //!< returns availability status
         
-        void setCheckedFunction(const QString &, bool b);  //!< set m_checked_function
         bool checkedFunction(const QString &);             //!< get m_checked_function
         void setEnabledFunction(const QString &, bool b);  //!< set m_enabled_function
         bool enabledFunction(const QString &);             //!< on m_capafuncs
@@ -273,8 +272,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void setAvailState(const QString &, bool); //!< set m_availstate
         
-        void setAvailability();  //!< set user status from menu
-        
         // public operations slots
         
         void start(); //!< start the connection process.
@@ -349,8 +346,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void logged();    //!< signal emitted when the state becomes ELogged
         void delogged();  //!< signal emitted when the state becomes ENotLogged
         
-        void availAllowChanged(bool);  //!< presence function has been enabled/disabled
-        
         void emitTextMessage(const QString &);  //!< message to be displayed to the user.
         
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
@@ -418,8 +413,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void optChanged(const QString &);
         void forwardUpdated(const QString &);
-        
-        void changesAvailChecks();
         
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
