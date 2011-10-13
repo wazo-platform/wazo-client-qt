@@ -195,7 +195,7 @@ void MainWidget::makeLoginWidget()
     m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
     loginL->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
 
-    loginKindChanged(m_loginkind->currentIndex());
+    setAgentLoginWidgetsVisible();
     m_qlab1->setFocus();
 
     connect(m_qlab1, SIGNAL(returnPressed()),
@@ -207,7 +207,7 @@ void MainWidget::makeLoginWidget()
     connect(m_ack, SIGNAL(pressed()),
              this, SLOT(setConfigAndStart()));
     connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(loginKindChanged(int)));
+             this, SLOT(syncAgentLoginWidgets()));
 }
 
 void MainWidget::clipselection()
@@ -295,26 +295,34 @@ void MainWidget::setConfigAndStart()
     b_engine->start();
 }
 
-void MainWidget::loginKindChanged(int index)
-{
-    // qDebug() << Q_FUNC_INFO << index;
-    if (index == 0) {
-        m_lab3->hide();
-        m_qlab3->hide();
-    }
+/*! \brief Displays the agent login widgets or not, according to the config
+ */
 
+void MainWidget::setAgentLoginWidgetsVisible() {
     bool showagselect = b_engine->getConfig("showagselect").toBool();
     if (showagselect) {
-        if (index > 0) {
-            m_lab3->show();
-            m_qlab3->show();
-        }
         m_loginkind->show();
+        syncAgentLoginWidgets();
     } else {
         m_lab3->hide();
         m_qlab3->hide();
         m_loginkind->hide();
     }
+}
+
+/*! \brief Displays the right agent login widgets, according to m_loginkind
+ */
+void MainWidget::syncAgentLoginWidgets()
+{
+    int index = m_loginkind->currentIndex();
+    if (index == 0) {
+        m_lab3->hide();
+        m_qlab3->hide();
+    } else if (index > 0) {
+        m_lab3->show();
+        m_qlab3->show();
+    }
+    m_loginkind->show();
 }
 
 /*! \brief hide "main" window and show login widget
@@ -554,11 +562,7 @@ void MainWidget::confUpdated()
     m_profilename->setVisible(displayprofile);
     
     setMenuAvailabilityEnabled(true);
-    
-    // No need to call loginKindChanged because
-    // if the index is the same, no need to do anything
-    // if the index changed, loginKindChanged is automatically called by a QComboBox signal
-    // loginKindChanged(m_loginkind->currentIndex()); // Hide or Show the phone number
+    setAgentLoginWidgetsVisible();
 }
 
 /*! \brief process clicks to the systray icon

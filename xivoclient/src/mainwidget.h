@@ -70,7 +70,8 @@ class MainWidget : public QMainWindow
         void about();
         void showCredits();
         void setConfigAndStart();
-        void loginKindChanged(int);
+        void setAgentLoginWidgetsVisible();
+        void syncAgentLoginWidgets();
         void fetchConfig();
         void confUpdated();
         void updatePresence();
