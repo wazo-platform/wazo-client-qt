@@ -137,8 +137,8 @@ void XletAgents::updateAgentStatus(const QString & xagentid)
 
     if (m_agent_presence.contains(xagentid)) {
         foreach (QString xuserid, b_engine->iterover("users").keys()) {
-            UserInfo *ui = b_engine->user(xuserid);
-            if (ui->xagentid == xagentid) {
+            const UserInfo *ui = b_engine->user(xuserid);
+            if (ui->xagentid() == xagentid) {
                 /*! \todo get the presence profile of the wanted user,
                  * its availability state, the associated color and longname
                  */
