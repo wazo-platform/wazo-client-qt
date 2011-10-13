@@ -58,7 +58,6 @@ BASELIB_EXPORT extern const char __datebuild_client__[];
 BASELIB_EXPORT extern const char __xivo_version__[];
 BASELIB_EXPORT extern const char __git_hash__[];
 BASELIB_EXPORT extern const char __git_date__[];
-BASELIB_EXPORT extern const char __nopresence__[];
 BASELIB_EXPORT extern const char __presence_on__[];
 BASELIB_EXPORT extern const char __presence_off__[];
 

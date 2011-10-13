@@ -327,7 +327,6 @@ void BaseEngine::saveSettings()
         m_settings->setValue("trytoreconnect", m_config["trytoreconnect"].toBool());
         m_settings->setValue("trytoreconnectinterval", m_config["trytoreconnectinterval"].toUInt());
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
-        m_settings->setValue("availstate", m_availstate);
         m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
         m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
         
@@ -448,10 +447,10 @@ void BaseEngine::clearInternalData()
         sendJsonCommand(command);
         m_settings->setValue("lastlogout/stopper", stopper);
         m_settings->setValue("lastlogout/datetime",
-                QDateTime::currentDateTime().toString(Qt::ISODate));
-        if (const UserInfo * u = user(getFullId())) {
-            m_settings->setValue("lastlogout/presence", u->availstate());
-        }
+                             QDateTime::currentDateTime().toString(Qt::ISODate));
+        m_settings->beginGroup(m_profilename_write);
+            m_settings->setValue("availstate", m_availstate);
+        m_settings->endGroup();
         m_attempt_loggedin = false;
     }
 
@@ -2061,12 +2060,12 @@ void BaseEngine::changeState()
 QString BaseEngine::getInitialPresence() const
 {
     if (m_config["checked_function.presence"].toBool()) {
-        QString state = m_settings->value("lastlogout/presence").toString();
+        QString state = m_availstate;
         if (state.isEmpty() || state == __presence_off__)
             state = __presence_on__;
         return state;
     }
-    return __nopresence__;
+    return __presence_off__;
 }
 
 /*! \brief send message to the CTI Server */
