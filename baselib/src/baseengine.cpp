@@ -82,7 +82,6 @@ BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
     : QObject(NULL),
       m_sessionid(""), m_state(ENotLogged),
-      m_default_login_state("available"),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
@@ -2063,7 +2062,9 @@ QString BaseEngine::getInitialPresence() const
 {
     if (m_config["checked_function.presence"].toBool()) {
         QString state = m_settings->value("lastlogout/presence").toString();
-        return (state.isEmpty() ? m_default_login_state : state);
+        if (state.isEmpty() || state == __presence_off__)
+            state = __presence_on__;
+        return state;
     }
     return __nopresence__;
 }
