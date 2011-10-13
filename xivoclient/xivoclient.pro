@@ -52,12 +52,4 @@ isEmpty( PLUGINDIR ) {
 }
 DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"
 
-# GNU/Linux = strip and pack.
-# These commands are executed just after the final compilation of the executable.
-# Doing this here instead of the main Makefile avoids stripping an already packed version ...
-unix:CONFIG(release,debug|release) {
-    QMAKE_POST_LINK += strip $(TARGET) ;
-    QMAKE_POST_LINK += upx $(TARGET) ;
-}
-
 MAKEFILE = Makefile_xivoclient
