@@ -135,14 +135,20 @@ void XletAgents::updateAgentStatus(const QString & xagentid)
     if (agentinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << xagentid << agentinfo->status();
-    qDebug() << Q_FUNC_INFO << b_engine->getOptionsAgentStatus();
     if (m_agent_presence.contains(xagentid)) {
+        foreach (QString xuserid, b_engine->iterover("users").keys()) {
+            UserInfo *ui = b_engine->user(xuserid);
+            if (ui->xagentid == xagentid) {
+                /*! \todo get the presence profile of the wanted user,
+                 * its availability state, the associated color and longname
+                 */
+                // QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
+                // square.fill(QColor(presencestatus.toMap().value("color").toString()));
+                // m_agent_presence[xagentid]->setPixmap(square);
+                // m_agent_presence[xagentid]->setToolTip(presencestatus.toMap().value("longname").toString());
+            }
+        }
     }
-//             QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-//             square.fill(QColor(presencestatus.toMap().value("color").toString()));
-//             m_agent_presence[agentid]->setPixmap(square);
-//             m_agent_presence[agentid]->setToolTip(presencestatus.toMap().value("longname").toString());
 
     updateAgentDisplay(xagentid);
 }

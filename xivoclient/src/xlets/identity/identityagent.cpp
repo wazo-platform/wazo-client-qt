@@ -34,9 +34,10 @@
 #include "baseengine.h"
 #include "identityagent.h"
 
-const QString icon_color_red = "xivo-red";
-const QString icon_color_black = "xivo-black";
-const QString icon_color_green = "xivo-green";
+const QString icon_user_unlogged = "xivo-black";
+const QString icon_user_logged = "xivo-transp";
+const QString icon_agent_logged = "xivo-green";
+const QString icon_agent_paused = "xivo-red";
 
 const QColor Orange = QColor(255, 128, 0);
 
@@ -88,7 +89,7 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     if (agentinfo == NULL)
         return;
 
-    setSystrayIcon(icon_color_black);
+    emit setSystrayIcon(icon_user_logged);
     setPausedColors(7, 3);
     setStatusColors();
 
@@ -96,11 +97,11 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     if(agstatus != m_agstatus) {
         m_agstatus = agstatus;
         if(agstatus == "AGENT_LOGGEDOFF") {
-            setSystrayIcon(icon_color_black);
+            emit setSystrayIcon(icon_user_logged);
         } else if(agstatus == "AGENT_IDLE") {
-            setSystrayIcon(icon_color_green);
+            emit setSystrayIcon(icon_agent_logged);
         } else if(agstatus == "AGENT_ONCALL") {
-            setSystrayIcon(icon_color_green);
+            emit setSystrayIcon(icon_agent_logged);
         } else {
             qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
         }
@@ -150,7 +151,7 @@ void IdentityAgent::setPausedColors(int nj, int np)
     QPixmap square(10, 10);
     if(nj > 0) {
         if(np == nj) {
-            setSystrayIcon(icon_color_red);
+            emit setSystrayIcon(icon_agent_paused);
             square.fill("#ff0000");
             m_pause->setToolTip(tr("Paused"));
             m_pausetxt->setText(tr("Paused"));
@@ -160,9 +161,9 @@ void IdentityAgent::setPausedColors(int nj, int np)
             m_pause->setToolTip(tr("Unpaused"));
             m_pausetxt->setText(tr("Unpaused"));
             if(agentinfo->status() == "AGENT_IDLE")
-                setSystrayIcon(icon_color_green);
+                emit setSystrayIcon(icon_agent_logged);
             else
-                setSystrayIcon(icon_color_black);
+                emit setSystrayIcon(icon_user_logged);
         } else {
             square.fill(Orange);
             m_pause->setToolTip(tr("Partially paused"));
