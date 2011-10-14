@@ -13,7 +13,7 @@ UPXWIN?=/cygdrive/c/upx303w/upx.exe
 
 default: all
 
-help: guessos
+help:
 	@echo
 	@echo "Please choose your target according to the OS you are using :"
 	@echo " -- to build Linux binaries or debian packages :"
@@ -34,36 +34,40 @@ displayversions:
 # to be executed under a bash/cygwin-like terminal
 versions:
 	
-	@${ECHO} -n "version (before update) : " && $(MAKE) -s displayversions
-	
-	@rm -f ${VERSIONS_FILE}
-	
-	@${ECHO} -n "XC_UNAME = " > ${VERSIONS_FILE}
-	@uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> ${VERSIONS_FILE}
-	
-	@${ECHO} -n "GIT_HASH = " >> ${VERSIONS_FILE}
-	@git log -1 --pretty=%h $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
-	
-	@${ECHO} -n "GIT_DATE = " >> ${VERSIONS_FILE}
-	@git log -1 --pretty=%ct $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
-	
-	@${ECHO} XIVOVER = ${XC_VERSION} >> ${VERSIONS_FILE}
-	
-	@${ECHO} -n "GIT_DIR = " >> ${VERSIONS_FILE}
-	@git rev-parse --show-toplevel >> ${VERSIONS_FILE}
+	${ECHO} -n "version (before update) : " && $(MAKE) -s displayversions
 
-	@${ECHO} -n "DATEBUILD = " >> ${VERSIONS_FILE}
-	@LANG= date +%Y-%m-%dT%H:%M:%S >> ${VERSIONS_FILE}
+	rm -f ${VERSIONS_FILE}
 	
-	@${ECHO} -n "version (after update) : " && $(MAKE) -s displayversions
+	${ECHO} -n "XC_UNAME = " > ${VERSIONS_FILE}
+	uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> ${VERSIONS_FILE}
+	
+	${ECHO} -n "GIT_HASH = " >> ${VERSIONS_FILE}
+	git log -1 --pretty=%h $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
+	
+	${ECHO} -n "GIT_DATE = " >> ${VERSIONS_FILE}
+	git log -1 --pretty=%ct $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
+	
+	${ECHO} XIVOVER = ${XC_VERSION} >> ${VERSIONS_FILE}
+	
+	${ECHO} -n "GIT_DIR = " >> ${VERSIONS_FILE}
+	git rev-parse --show-toplevel >> ${VERSIONS_FILE}
+
+	${ECHO} -n "DATEBUILD = " >> ${VERSIONS_FILE}
+	LANG= date +%Y-%m-%dT%H:%M:%S >> ${VERSIONS_FILE}
+	
+	${ECHO} -n "version (after update) : " && $(MAKE) -s displayversions
 
 all:
 	@$(MAKE) -s versions
-	@$(MAKE) allbyos
+	@$(MAKE) os-all
 
-allbyos:
-	@echo "Will compile for target ${XC_UNAME} : all-${XC_UNAME}"
-	@$(MAKE) all-${XC_UNAME}
+tests:
+	@$(MAKE) -s versions
+	@$(MAKE) os-tests
+
+os-%:
+	# Example : os-all -> linux-all
+	$(MAKE) ${XC_UNAME}-$*
 
 distclean: clean-baselib clean-xivoclient clean-xletlib clean-xlets
 	rm -f ${VERSIONS_FILE}
@@ -80,14 +84,19 @@ clean-%:
 # LINUX targets
 # kind of dirtier than "all-linux: versions linux-xivoclient"
 # but allows the 'include versions.mak' to be reloaded once it has been set
-all-linux:
+linux-all:
 	@$(MAKE) linux-baselib
 	@$(MAKE) linux-xletlib
 	@$(MAKE) linux-xivoclient
 	@$(MAKE) linux-xlets
 
+linux-tests:
+	@cd baselib && ${QMAKE} -o Makefile_tests tests.pro && $(MAKE) ${XC_JOPT} -f Makefile_tests
+	@mkdir -p bin
+	@cp -rd baselib/bin/* bin
+
 linux-baselib:
-	@cd baselib && ${QMAKE} && $(MAKE) ${XC_JOPT}
+	@cd baselib && ${QMAKE} -o Makefile_baselib baselib.pro && $(MAKE) ${XC_JOPT} -f Makefile_baselib
 	@mkdir -p bin
 	@cp -rd baselib/bin/* bin
 
@@ -96,7 +105,7 @@ linux-%:
 
 # WIN32 targets
 
-all-win32:
+win32-all:
 	@echo "   (under Qt prompt) :"
 	@pwd | sed "s#/#\\\\#g;s#^#      cd C:\\\\cygwin#"
 	@echo "      $(MAKE) win32-baselib win32-gui win32-xivoclient win32-plugins"
@@ -129,7 +138,7 @@ win32packdyn-%:
 # (man hdiutil) "-format UDBZ" works only >= 10.4, thus "-format UDZO"
 # export UPXRUN=/Users/proformatique/upx-3.01-src/src/upx.out
 
-all-macos:
+macos-all:
 	@$(MAKE) macos-baselib
 	@$(MAKE) macos-gui
 	@$(MAKE) macos-plugins
@@ -151,7 +160,7 @@ packmacos:
 
 # DEBIAN targets
 
-all-debian : debian-xivoclient
+debian-all : debian-xivoclient
 
 debian-%:
 	@echo "## Building Debian Package for : $*"

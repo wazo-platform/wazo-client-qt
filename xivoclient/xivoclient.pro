@@ -4,25 +4,11 @@ include($${ROOT_DIR}/qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
 CONFIG += uitools
-INCLUDEPATH += $$BASELIB_DIR/src $${ROOT_DIR}/src/xletlib
 
-# Input
-HEADERS += $${ROOT_DIR}/src/*.h
-SOURCES += $${ROOT_DIR}/src/*.cpp
-XC_BUILTIN = callcampaign-builtin customerinfo-builtin dial-builtin directory-builtin fax-builtin mylocaldir-builtin search-builtin
-for(xletdir, XC_BUILTIN){
-    INCLUDEPATH += $${ROOT_DIR}/src/xlets/$${xletdir}
-    HEADERS     += $${ROOT_DIR}/src/xlets/$${xletdir}/*.h
-    # SOURCES     += $${ROOT_DIR}/src/xlets/$${xletdir}/*.cpp
-}
-
-LIBS += -L$${BASELIB_DIR}/bin -L$${BIN_DIR}
+LIBS += -L$${BIN_DIR}
 unix:LIBS += -lxivoclient -lxivoclientxlets
 win32:LIBS += -lxivoclient1 -lxivoclientxlets1
-
-win32 {
-    LIBS += -lole32 -loleaut32 -luuid
-}
+win32:LIBS += -lole32 -loleaut32 -luuid
 
 QT += xml
 
@@ -30,18 +16,36 @@ RESOURCES += xivoclient.qrc
 RC_FILE = xivoclient.rc
 
 # this should just tell lrelease to compile these files
-TRANSLATIONS  = $$ROOT_DIR/i18n/xivoclient_fr.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_nl.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_de.ts
 
+# Input
+INCLUDEPATH += $$BASELIB_DIR/src $${ROOT_DIR}/src/xletlib
+HEADERS += $${ROOT_DIR}/src/*.h
+SOURCES += $${ROOT_DIR}/src/*.cpp
+
+BUILTIN_DIRS += callcampaign-builtin
+BUILTIN_DIRS += customerinfo-builtin
+BUILTIN_DIRS += dial-builtin
+BUILTIN_DIRS += directory-builtin
+BUILTIN_DIRS += fax-builtin
+BUILTIN_DIRS += mylocaldir-builtin
+BUILTIN_DIRS += search-builtin
+for(BUILTIN_DIR, BUILTIN_DIRS){
+    INCLUDEPATH += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}
+    HEADERS     += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}/*.h
+    # SOURCES     += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}/*.cpp
+}
+
 # necessary to make lupdate process these source files
-SOURCES      += $${ROOT_DIR}/src/xlets/callcampaign-builtin/*.cpp
-SOURCES      += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.cpp
-SOURCES      += $${ROOT_DIR}/src/xlets/dial-builtin/*.cpp
-SOURCES      += $${ROOT_DIR}/src/xlets/directory-builtin/*.cpp
-SOURCES      += $${ROOT_DIR}/src/xlets/fax-builtin/*.cpp
-SOURCES      += $${ROOT_DIR}/src/xlets/mylocaldir-builtin/*.cpp
-SOURCES      += $${ROOT_DIR}/src/xlets/search-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/callcampaign-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/dial-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/directory-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/fax-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/mylocaldir-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/search-builtin/*.cpp
 
 DESTDIR  = $$BIN_DIR
 
@@ -51,5 +55,3 @@ isEmpty( PLUGINDIR ) {
     PLUGINDIR = /usr/share/xivoclient/plugins
 }
 DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"
-
-MAKEFILE = Makefile_xivoclient
