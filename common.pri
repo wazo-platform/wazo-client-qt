@@ -4,6 +4,7 @@ DEBUGON = $$system(echo -n $DEBUG)
 
 contains(DEBUGON, "yes" ) {
     CONFIG += debug
+    CONFIG -= release
     message(">> Debug Build <<")
 }
 

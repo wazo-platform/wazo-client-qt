@@ -16,5 +16,8 @@ Makefile*
 # Backup files
 *~
 
+# Unit tests report files
+unit-tests/*.xml
+
 # Local tests
-/test*
+/test-*

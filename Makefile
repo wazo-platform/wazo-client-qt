@@ -32,6 +32,8 @@ displayversions:
 	@${ECHO} ${XIVOVER}-${GIT_DATE}-${GIT_HASH}
 
 # to be executed under a bash/cygwin-like terminal
+# must be executed separately, since it generates a file included by make
+# hence, it can not be included as dependencies of a target
 versions:
 	
 	${ECHO} -n "version (before update) : " && $(MAKE) -s displayversions
@@ -63,16 +65,23 @@ all:
 
 tests:
 	@$(MAKE) -s versions
+	@$(MAKE) clean-baselib
+# DEBUG=yes enables code coverage infos
+	@$(MAKE) os-baselib DEBUG=yes
 	@$(MAKE) os-tests
 
+coverage:
+	cd baselib && ../unit-tests/tools/gcovr --xml > ../unit-tests/cov-baselib.xml
+
+# Example : os-all -> linux-all
 os-%:
-	# Example : os-all -> linux-all
 	$(MAKE) ${XC_UNAME}-$*
 
 distclean: clean-baselib clean-xivoclient clean-xletlib clean-xlets
 	rm -f ${VERSIONS_FILE}
 	rm -rf xivoclient/obj xivoclient/bin
 	rm -rf bin
+	rm -f unit-tests/*.xml
 
 clean-baselib:
 	@$(MAKE) -C baselib distclean || true
