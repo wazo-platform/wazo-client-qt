@@ -43,7 +43,8 @@ UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
   : XInfo(ipbxid, id), m_enableclient(false), m_callrecord(false),
     m_enablednd(false), m_enablevoicemail(false), m_incallfilter(false),
-    m_enablebusy(false), m_enablerna(false), m_enableunc(false)
+    m_enablebusy(false), m_enablerna(false), m_enableunc(false),
+    m_simultcalls(0)
 {
 }
 
