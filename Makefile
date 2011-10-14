@@ -69,9 +69,8 @@ tests:
 # DEBUG=yes enables code coverage infos
 	@$(MAKE) os-baselib DEBUG=yes
 	@$(MAKE) os-tests
-
-coverage:
-	cd baselib && ../unit-tests/tools/gcovr --xml > ../unit-tests/cov-baselib.xml
+	LD_LIBRARY_PATH=bin bin/baselib-tests -xunitxml -o unit-tests/unit-baselib.xml
+	cd baselib && ../unit-tests/tools/gcovr --xml -o ../unit-tests/cov-baselib.xml
 
 # Example : os-all -> linux-all
 os-%:
