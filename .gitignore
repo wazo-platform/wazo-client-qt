@@ -1,7 +1,9 @@
+# Generated folders
 doc
 obj
 bin
 
+# Generated files
 *.mak
 *.o
 *.qm
@@ -11,4 +13,8 @@ Makefile*
 # But not the main one
 !/Makefile
 
+# Backup files
 *~
+
+# Local tests
+/test*
