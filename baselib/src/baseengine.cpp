@@ -1158,6 +1158,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     emit removeAgentConfig(xid);
                 else if (listname == "queues")
                     emit removeQueueConfig(xid);
+                else if (listname == "meetmes")
+                    emit removeMeetmeConfig(xid);
             }
 
         } else if (function == "updateconfig") {

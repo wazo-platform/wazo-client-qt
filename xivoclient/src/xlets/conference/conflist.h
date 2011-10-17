@@ -59,6 +59,7 @@ class ConfListModel : public QAbstractTableModel
 
     private slots:
         void updateMeetmesConfig(const QString &);
+        void removeMeetmeConfig(const QString &);
     protected:
         void timerEvent(QTimerEvent *event);
     private:
@@ -68,7 +69,9 @@ class ConfListModel : public QAbstractTableModel
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int , Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
-        QMap<int, QString> m_row2id;
+        QStringList m_row2id;
+        int m_sortColumn;
+        Qt::SortOrder m_sortOrder;
 };
 
 class ConfListView : public QTableView

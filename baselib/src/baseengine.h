@@ -394,6 +394,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);
         void removeQueueConfig(const QString &);
+        void removeMeetmeConfig(const QString &);
 
         void newQueueList(const QStringList &);
         void removeQueues(const QString &, const QStringList &);

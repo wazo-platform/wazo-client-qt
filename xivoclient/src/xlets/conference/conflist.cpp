@@ -56,6 +56,10 @@ ConfListModel::ConfListModel()
 
     connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
             this, SLOT(updateMeetmesConfig(const QString &)));
+    connect(b_engine, SIGNAL(removeMeetmeConfig(const QString &)),
+            this, SLOT(removeMeetmeConfig(const QString &)));
+    m_sortColumn = NUMBER;
+    m_sortOrder = Qt::AscendingOrder;
 }
 
 void ConfListModel::timerEvent(QTimerEvent *)
@@ -63,14 +67,17 @@ void ConfListModel::timerEvent(QTimerEvent *)
     reset();
 }
 
-void ConfListModel::updateMeetmesConfig(const QString &)
+void ConfListModel::updateMeetmesConfig(const QString &xid)
 {
-    int row = 0;
-    if (b_engine->iterover("meetmes").size() != m_row2id.size()) {
-        foreach (const QString & key, b_engine->iterover("meetmes").keys()) {
-            m_row2id.insert(row++, key);
-        }
+    if (! m_row2id.contains(xid)) {
+        m_row2id.append(xid);
+        sort(m_sortColumn, m_sortOrder);
     }
+    reset();
+}
+
+void ConfListModel::removeMeetmeConfig(const QString &xid) {
+    m_row2id.removeAll(xid);
     reset();
 }
 
@@ -100,7 +107,7 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     int row = index.row(), col = index.column();
     QString meetme_id;
 
-    if (m_row2id.contains(row)) {
+    if (m_row2id.size() > row) {
         meetme_id = m_row2id[row];
     }
 
@@ -165,9 +172,12 @@ void ConfListModel::sort(int column, Qt::SortOrder order)
         }
     } sFun;
 
+    m_sortColumn = column;
+    m_sortOrder = order;
+
     QList<QPair<QString, QString> > toSort;
 
-    int count = rowCount(QModelIndex());
+    int count = m_row2id.size();
     for (int i = 0; i < count; i++) {
         toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
                                               index(i, column).data().toString()));
@@ -176,9 +186,9 @@ void ConfListModel::sort(int column, Qt::SortOrder order)
     qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
                                          sFun.ascending :
                                          sFun.descending);
-
+    m_row2id.clear();
     for (int i = 0; i < count; i++) {
-        m_row2id.insert(i, QString(toSort[i].first));
+        m_row2id.append(toSort[i].first);
     }
     reset();
 }
