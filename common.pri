@@ -2,6 +2,7 @@ include(versions.mak)
 
 DEBUGON = $$system(echo -n $DEBUG)
 
+CONFIG -= debug
 contains(DEBUGON, "yes" ) {
     CONFIG += debug
     CONFIG -= release
