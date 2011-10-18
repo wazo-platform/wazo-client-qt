@@ -31,6 +31,8 @@
  * $Date$
  */
 
+#include <QSortFilterProxyModel>
+
 #include "conflist.h"
 
 enum ColOrder {
@@ -40,8 +42,8 @@ enum ColOrder {
 
 static QVariant COL_TITLE[NB_COL];
 
-ConfListModel::ConfListModel()
-    : QAbstractTableModel()
+ConfListModel::ConfListModel(QWidget *parent)
+    : QAbstractTableModel(parent)
 {
     // qDebug() << Q_FUNC_INFO;
 
@@ -58,8 +60,6 @@ ConfListModel::ConfListModel()
             this, SLOT(updateMeetmesConfig(const QString &)));
     connect(b_engine, SIGNAL(removeMeetmeConfig(const QString &)),
             this, SLOT(removeMeetmeConfig(const QString &)));
-    m_sortColumn = NUMBER;
-    m_sortOrder = Qt::AscendingOrder;
 }
 
 void ConfListModel::timerEvent(QTimerEvent *)
@@ -70,15 +70,14 @@ void ConfListModel::timerEvent(QTimerEvent *)
 void ConfListModel::updateMeetmesConfig(const QString &xid)
 {
     if (! m_row2id.contains(xid)) {
+        int insertId = m_row2id.size();
         m_row2id.append(xid);
-        sort(m_sortColumn, m_sortOrder);
     }
-    reset();
 }
 
 void ConfListModel::removeMeetmeConfig(const QString &xid) {
+    int removeId = m_row2id.indexOf(xid);
     m_row2id.removeAll(xid);
-    reset();
 }
 
 Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
@@ -88,7 +87,7 @@ Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 
 int ConfListModel::rowCount(const QModelIndex&) const
 {
-    return b_engine->iterover("meetmes").size();
+    return m_row2id.size();
 }
 
 int ConfListModel::columnCount(const QModelIndex&) const
@@ -104,6 +103,11 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
+    /* Rows here are not the same than the lines displayed by the view,
+     * as there is a proxy model between the view and this model,
+     * that maps the displayed lines to the stored lines, see ConfList
+     * constructor
+     */
     int row = index.row(), col = index.column();
     QString meetme_id;
 
@@ -157,48 +161,10 @@ QVariant ConfListModel::headerData(int section,
     return QVariant();
 }
 
-void ConfListModel::sort(int column, Qt::SortOrder order)
-{
-    struct {
-        static bool ascending(const QPair<QString, QString> &a,
-                              const QPair<QString, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               true : false;
-        }
-        static bool descending(const QPair<QString, QString> &a,
-                               const QPair<QString, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               false : true;
-        }
-    } sFun;
-
-    m_sortColumn = column;
-    m_sortOrder = order;
-
-    QList<QPair<QString, QString> > toSort;
-
-    int count = m_row2id.size();
-    for (int i = 0; i < count; i++) {
-        toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
-                                              index(i, column).data().toString()));
-    }
-
-    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
-                                         sFun.ascending :
-                                         sFun.descending);
-    m_row2id.clear();
-    for (int i = 0; i < count; i++) {
-        m_row2id.append(toSort[i].first);
-    }
-    reset();
-}
-
-
-ConfListView::ConfListView(QWidget *parent, ConfListModel *model)
+ConfListView::ConfListView(QWidget *parent)
     : QTableView(parent)
 {
     setSortingEnabled(true);
-    setModel(model);
     setShowGrid(0);
     verticalHeader()->hide();
     horizontalHeader()->setResizeMode(QHeaderView::Stretch);
@@ -208,7 +174,6 @@ ConfListView::ConfListView(QWidget *parent, ConfListModel *model)
                     "background: transparent;"
                     "color:black;"
                   "}");
-    hideColumn(0);
 
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
@@ -261,14 +226,21 @@ ConfList::ConfList(XletConference *parent)
     // qDebug() << Q_FUNC_INFO;
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
-    ConfListView *view = new ConfListView(this, new ConfListModel());
-
-    view->setStyleSheet("ConfListView {"
-                            "border: none;"
-                            "background:transparent;"
-                            "color:black;"
-                        "}");
-    view->verticalHeader()->hide();
+    
+    // this contains the data, unordered
+    ConfListModel *model = new ConfListModel(this);
+    
+    // this maps the indexes between the sorted view and the unordered model
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(model);
+    proxyModel->setDynamicSortFilter(true); /* sorts right on insertion, instead
+    of half a second after the window has appeared */
+    
+    // this displays the sorted data
+    ConfListView *view = new ConfListView(this);
+    view->setModel(proxyModel);
+    view->hideColumn(ID);
+    view->sortByColumn(NAME, Qt::AscendingOrder);
 
     hBox->addStretch(1);
     hBox->addWidget(view, 8);

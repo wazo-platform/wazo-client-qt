@@ -55,7 +55,7 @@ class ConfListModel : public QAbstractTableModel
     Q_OBJECT
 
     public:
-        ConfListModel();
+        ConfListModel(QWidget *parent = NULL);
 
     private slots:
         void updateMeetmesConfig(const QString &);
@@ -63,15 +63,12 @@ class ConfListModel : public QAbstractTableModel
     protected:
         void timerEvent(QTimerEvent *event);
     private:
-        void sort(int, Qt::SortOrder);
         int rowCount(const QModelIndex&) const;
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int , Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
         QStringList m_row2id;
-        int m_sortColumn;
-        Qt::SortOrder m_sortOrder;
 };
 
 class ConfListView : public QTableView
@@ -79,7 +76,7 @@ class ConfListView : public QTableView
     Q_OBJECT
 
     public:
-        ConfListView(QWidget *parent, ConfListModel *model);
+        ConfListView(QWidget *parent);
     private slots:
         void onViewClick(const QModelIndex &);
     protected:
