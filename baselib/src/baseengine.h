@@ -399,6 +399,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void newQueueList(const QStringList &);
         void removeQueues(const QString &, const QStringList &);
         
+        void updateQueuesStats(const QVariantMap &);
+
         void newAgentList(const QStringList &);
         
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.

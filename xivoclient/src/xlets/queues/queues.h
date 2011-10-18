@@ -105,7 +105,6 @@ class XletQueues : public XLet, IPBXListener
 
     public:
         XletQueues(QWidget *parent=0);
-        void eatQueuesStats(const QVariantMap &);
         void parseCommand(const QVariantMap &);
         bool showMoreQueueDetailButton() { return m_showMore; };
         bool showNumber() { return m_showNumber; };
@@ -131,6 +130,7 @@ class XletQueues : public XLet, IPBXListener
         void askForQueueStats();
         void queueClicked();
         void display();
+        void eatQueuesStats(const QVariantMap &);
 
     private:
         bool m_showMore;

@@ -807,7 +807,9 @@ void BaseEngine::parseCommand(const QString &line)
     if ((thisclass == "keepalive") || (thisclass == "availstate"))
         // ack from the keepalive and availstate commands previously sent
         return;
-
+    if (thisclass == "getqueuesstats") {
+        emit updateQueuesStats(datamap);
+    }
     if (thisclass == "callcampaign") {
         emit requestFileListResult(datamap.value("payload"));
     } else if (thisclass == "sheet") {

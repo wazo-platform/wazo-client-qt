@@ -34,6 +34,9 @@
 
 #include "queues.h"
 
+#include <QDebug>
+
+
 Q_EXPORT_PLUGIN2(xletqueuesplugin, XLetQueuesPlugin);
 
 XLet* XLetQueuesPlugin::newXLetInstance(QWidget *parent)
@@ -154,6 +157,8 @@ XletQueues::XletQueues(QWidget *parent)
             this, SLOT(removeQueues(const QString &, const QStringList &)));
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(settingsChanged()));
+    connect(b_engine, SIGNAL(updateQueuesStats(const QVariantMap &)),
+            this, SLOT(eatQueuesStats(const QVariantMap &)));
 
     registerListener("queuestats");
     updateLongestWaitWidgets();
@@ -173,6 +178,7 @@ void XletQueues::parseCommand(const QVariantMap &map) {
 void XletQueues::eatQueuesStats(const QVariantMap &p)
 {
     foreach (QString queueid, p.value("stats").toMap().keys()) {
+        QString queuexid = QString("%0/%1").arg(b_engine->ipbxid()).arg(queueid);
         QVariantMap qvm = p.value("stats").toMap().value(queueid).toMap();
         foreach (QString stats, qvm.keys()) {
             QString field;
@@ -186,7 +192,7 @@ void XletQueues::eatQueuesStats(const QVariantMap &p)
             } else {
                 field = qvm.value(stats).toString();
             }
-            m_queueList[queueid]->updateSliceStat(stats, field);
+            m_queueList[queuexid]->updateSliceStat(stats, field);
         }
     }
 }
@@ -224,7 +230,6 @@ void XletQueues::removeQueues(const QString &, const QStringList &queues)
 
 void XletQueues::updateQueueConfig(const QString & xqueueid)
 {
-    // qDebug() << Q_FUNC_INFO << xqueueid;
     const QueueInfo * queueinfo = b_engine->queue(xqueueid);
     if (queueinfo == NULL)
         return;
