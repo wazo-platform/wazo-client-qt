@@ -95,7 +95,6 @@ ServicePanel::ServicePanel(QWidget * parent)
             gridlayout2->addWidget(label[capa], line, 0);
             m_forwarddest[capa] = new QLineEdit(this);
             m_forwarddest[capa]->setProperty("capa", capa);
-            m_forward[capa]->setEnabled(false);
             gridlayout2->addWidget(m_forwarddest[capa], line++, 1);
             label[capa]->setObjectName("service");
         }
@@ -120,8 +119,8 @@ ServicePanel::ServicePanel(QWidget * parent)
     Reset();
     foreach (QString capa, fwdcapas)
         if (m_capas.contains(capa)) {
-            connect(m_forwarddest[capa], SIGNAL(textEdited(const QString &)),
-                    this, SLOT(toggleIfAllowed(const QString &)));
+            connect(m_forwarddest[capa], SIGNAL(lostFocus()),
+                    this, SLOT(forwardLostFocus()));
         }
     Connect();
 
@@ -216,20 +215,12 @@ void ServicePanel::Reset()
     }
 }
 
-void ServicePanel::toggleIfAllowed(const QString & text)
+void ServicePanel::forwardLostFocus()
 {
     QString capa = sender()->property("capa").toString();
-    bool allowed     = (text.size() > 0);
-    bool was_checked = (m_forward[capa]->checkState() == Qt::Checked);
-    m_forward[capa]->setEnabled(allowed);
-    if (allowed == false) {
-        m_forward[capa]->setChecked(false);
-        if (was_checked) {
-            b_engine->featurePutForward(capa, false, m_forwarddest[capa]->text());
-        }
-    } else if (was_checked) {
-        b_engine->featurePutForward(capa, true, m_forwarddest[capa]->text());
-    }
+    //qDebug() << "forwardLostFocus:" << capa;
+
+    b_engine->featurePutForward(capa, m_forward[capa]->isChecked(), m_forwarddest[capa]->text());
 }
 
 void ServicePanel::chkoptToggled(bool b)
@@ -238,10 +229,18 @@ void ServicePanel::chkoptToggled(bool b)
     b_engine->featurePutOpt(capa, b);
 }
 
+/**
+ * Called on call forward checkbox toggle
+ */
 void ServicePanel::Toggled(bool b)
 {
-    QString capa = sender()->property("capa").toString();
-    b_engine->featurePutForward(capa, b, m_forwarddest[capa]->text());
+    QString capa  = sender()->property("capa").toString();
+    QString fdest = m_forwarddest[capa]->text();
+
+		if(!b || !fdest.isEmpty())
+			b_engine->featurePutForward(capa, b, m_forwarddest[capa]->text());
+
+		m_forwarddest[capa]->setFocus();
 }
 
 // The following actions are entered in when the status is received from the server (init or update)
@@ -271,13 +270,10 @@ void ServicePanel::setForward(const QString & capa)
         if (m_capas.contains(thiscapa)) {
             if (capa == "enablebusy") {
                 m_forward[thiscapa]->setChecked(m_ui->enablebusy());
-                m_forward[thiscapa]->setEnabled(m_ui->destbusy().size() > 0);
             } else if (capa == "enablerna") {
                 m_forward[thiscapa]->setChecked(m_ui->enablerna());
-                m_forward[thiscapa]->setEnabled(m_ui->destrna().size() > 0);
             } else if (capa == "enableunc") {
                 m_forward[thiscapa]->setChecked(m_ui->enableunc());
-                m_forward[thiscapa]->setEnabled(m_ui->destunc().size() > 0);
             }
         }
     } else if (capa.startsWith("dest")) {
@@ -285,13 +281,10 @@ void ServicePanel::setForward(const QString & capa)
         if (m_capas.contains(thiscapa)) {
             if (capa == "destbusy") {
                 m_forwarddest[thiscapa]->setText(m_ui->destbusy());
-                m_forwarddest[thiscapa]->setEnabled(m_ui->destbusy().size() > 0);
             } else if (capa == "destrna") {
                 m_forwarddest[thiscapa]->setText(m_ui->destrna());
-                m_forwarddest[thiscapa]->setEnabled(m_ui->destrna().size() > 0);
             } else if (capa == "destunc") {
                 m_forwarddest[thiscapa]->setText(m_ui->destunc());
-                m_forwarddest[thiscapa]->setEnabled(m_ui->destunc().size() > 0);
             }
         }
     }

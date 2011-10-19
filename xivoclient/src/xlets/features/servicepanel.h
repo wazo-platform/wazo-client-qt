@@ -64,6 +64,7 @@ class ServicePanel : public XLet
         void chkoptToggled(bool);
         void Toggled(bool);
         void toggleIfAllowed(const QString &);
+        void forwardLostFocus();
 
     private:
         QStringList m_capas;

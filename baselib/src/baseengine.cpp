@@ -1861,31 +1861,33 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
 
 /*! \brief send a feature put command to the cti server
  *
+ * NOTE: we send value (forward target number) BEFORE status (enabled/disabled)
+ *       to prevent server disabling back forward if value was empty
  */
 void BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
 {
     QVariantMap command;
     command["class"] = "featuresput";
     if (capa == "fwdunc") {
-        command["function"] = "enableunc";
-        command["value"] = QString(b ? "1" : "0");
-        sendJsonCommand(command);
         command["function"] = "destunc";
         command["value"] = dst;
         sendJsonCommand(command);
-    } else if (capa == "fwdbusy") {
-        command["function"] = "enablebusy";
+        command["function"] = "enableunc";
         command["value"] = QString(b ? "1" : "0");
         sendJsonCommand(command);
+    } else if (capa == "fwdbusy") {
         command["function"] = "destbusy";
         command["value"] = dst;
         sendJsonCommand(command);
-    } else if (capa == "fwdrna") {
-        command["function"] = "enablerna";
+        command["function"] = "enablebusy";
         command["value"] = QString(b ? "1" : "0");
         sendJsonCommand(command);
+    } else if (capa == "fwdrna") {
         command["function"] = "destrna";
         command["value"] = dst;
+        sendJsonCommand(command);
+        command["function"] = "enablerna";
+        command["value"] = QString(b ? "1" : "0");
         sendJsonCommand(command);
     }
 }
