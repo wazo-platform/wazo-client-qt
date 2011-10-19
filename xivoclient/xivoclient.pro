@@ -5,10 +5,9 @@ TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
 CONFIG += uitools
 
-LIBS += -L$${BIN_DIR}
-unix:LIBS += -lxivoclient -lxivoclientxlets
-win32:LIBS += -lxivoclient1 -lxivoclientxlets1
-win32:LIBS += -lole32 -loleaut32 -luuid
+unix:LIBS += -lxivoclientxlets
+win32:LIBS += -lxivoclientxlets1
+
 
 QT += xml
 
