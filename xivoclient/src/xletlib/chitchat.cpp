@@ -32,7 +32,6 @@
  */
 
 #include "chitchat.h"
-#include <stdio.h>
 
 QHash<QString, ChitChatWindow*> ChitChatWindow::m_chat_window_opened = QHash <QString, ChitChatWindow*>();
 ChitChatWindow * ChitChatWindow::chitchat_instance = NULL;

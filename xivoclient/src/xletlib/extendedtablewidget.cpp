@@ -34,12 +34,13 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include <xivoconsts.h>
+#include <userinfo.h>
+#include <phoneinfo.h>
+#include <baseengine.h>
+#include <phonenumber.h>
+
 #include "extendedtablewidget.h"
-#include "xivoconsts.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "baseengine.h"
-#include "phonenumber.h"
 
 /*! \brief Constructor
  */

@@ -34,11 +34,11 @@
 #ifndef __CHITCHAT_H__
 #define __CHITCHAT_H__
 
-#include "xletlib_export.h"
-
 #include <QtGui>
 #include <baseengine.h>
 #include <ipbxlistener.h>
+
+#include "xletlib_export.h"
 
 class MessageEdit;
 
