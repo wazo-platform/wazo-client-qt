@@ -238,11 +238,11 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
                     return QVariant();
                 }
             } else if (col == ACTION_TALK_TO) {
-                return QPixmap(":in_conference/speak.png").scaledToHeight(16,
+                return QPixmap(":images/conference/speak.png").scaledToHeight(16,
                                Qt::SmoothTransformation);
             } else if (col == ACTION_MUTE) {
                 if (m_admin || my_channel) {
-                    return QPixmap(":in_conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
+                    return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
                 } else {
                     return QVariant();
                 }
