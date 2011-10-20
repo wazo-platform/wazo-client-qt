@@ -157,10 +157,8 @@ XletQueues::XletQueues(QWidget *parent)
             this, SLOT(removeQueues(const QString &, const QStringList &)));
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(settingsChanged()));
-    connect(b_engine, SIGNAL(updateQueuesStats(const QVariantMap &)),
-            this, SLOT(eatQueuesStats(const QVariantMap &)));
 
-    registerListener("queuestats");
+    registerListener("getqueuesstats");
     updateLongestWaitWidgets();
     QTimer::singleShot(0, this, SLOT(display()));
 }

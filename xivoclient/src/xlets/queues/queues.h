@@ -111,6 +111,7 @@ class XletQueues : public XLet, IPBXListener
 
     protected:
         virtual void contextMenuEvent(QContextMenuEvent *);
+        void eatQueuesStats(const QVariantMap &);
 
     private:
         void openConfigureWindow();
@@ -130,7 +131,6 @@ class XletQueues : public XLet, IPBXListener
         void askForQueueStats();
         void queueClicked();
         void display();
-        void eatQueuesStats(const QVariantMap &);
 
     private:
         bool m_showMore;
