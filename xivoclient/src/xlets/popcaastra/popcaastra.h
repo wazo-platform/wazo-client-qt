@@ -37,7 +37,8 @@
 
 #include <QObject>
 
-#include "xlet.h"
+#include <baseengine.h>
+#include <xlet.h>
 
 class IncomingWidget;
 class FilteredLineEdit;

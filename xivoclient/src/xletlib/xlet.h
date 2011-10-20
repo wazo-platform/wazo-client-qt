@@ -34,13 +34,14 @@
 #ifndef __XLET_H__
 #define __XLET_H__
 
-class XLet ;
-
 #include <QVariantMap>
 #include <QWidget>
-#include <baseengine.h>
-#include "ipbxlistener.h"
+
+#include <userinfo.h>
+
 #include "xletlib_export.h"
+
+class XLet;
 
 /*! \brief base class for all XLets
  *

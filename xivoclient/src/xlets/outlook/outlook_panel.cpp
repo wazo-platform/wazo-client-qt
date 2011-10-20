@@ -54,12 +54,13 @@
 #include <QLineEdit>
 #include <QSignalMapper>
 
-#include "baseengine.h"
-#include "extendedtablewidget.h"
+#include <baseengine.h>
+#include <extendedtablewidget.h>
 //#include "extendedlineedit.h"
-#include "xivoconsts.h"
-#include "phoneinfo.h"
-#include "userinfo.h"
+#include <xivoconsts.h>
+#include <phoneinfo.h>
+#include <userinfo.h>
+#include <phonenumber.h>
 
 #include "outlook_panel.h"
 #include "outlook_tools.h"

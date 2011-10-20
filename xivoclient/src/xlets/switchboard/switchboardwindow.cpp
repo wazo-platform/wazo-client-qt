@@ -31,16 +31,17 @@
  * $Date$
  */
 
-#include "switchboardwindow.h"
 #include <QtColorPicker>
 
 #include <baseengine.h>
-#include <peerwidgetfactory.h>
-#include <peerslayout.h>
 #include <peeritem.h>
 #include <xivoconsts.h>
 #include <externalphonedialog.h>
-#include <group.h>
+
+#include "switchboardwindow.h"
+#include "peerwidgetfactory.h"
+#include "peerslayout.h"
+#include "group.h"
 
 Q_EXPORT_PLUGIN2(xletswitchboardplugin, XLetSwitchboardPlugin);
 

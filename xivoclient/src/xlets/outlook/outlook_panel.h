@@ -42,9 +42,9 @@
 #ifndef __OUTLOOKPANEL_H__
 #define __OUTLOOKPANEL_H__
 
-#include "outlook_contact.h"
+#include <xlet.h>
 
-#include "xlet.h"
+#include "outlook_contact.h"
 
 class QDropEvent;
 class QFocusEvent;

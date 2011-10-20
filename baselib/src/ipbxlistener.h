@@ -37,7 +37,9 @@
 #include <QVariantMap>
 #include <QDebug>
 
-class IPBXListener {
+#include "baselib_export.h"
+
+class BASELIB_EXPORT IPBXListener {
     public :
         virtual void parseCommand(const QVariantMap &);
     protected :

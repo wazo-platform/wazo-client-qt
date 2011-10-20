@@ -31,6 +31,8 @@
  * $Date$
  */
 
+#include <baseengine.h>
+
 #include "xlet.h"
 
 XLet::XLet(QWidget *parent)

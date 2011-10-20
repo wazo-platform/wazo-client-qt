@@ -35,7 +35,8 @@
 #define __XLETWEBPLUGIN_H__
 
 #include <QObject>
-#include "xletinterface.h"
+
+#include <xletinterface.h>
 
 /*! \brief XLetInterface implementation
  *

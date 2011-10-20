@@ -49,8 +49,9 @@
 #include <baseengine.h>
 
 #include "xlet.h"
+#include "xletlib_export.h"
 
-class CommonTableProperties
+class XLETLIB_EXPORT CommonTableProperties
 {
     public:
         CommonTableProperties(const QString &);
@@ -134,7 +135,7 @@ class CommonTableView : public QTableView
         QList<QModelIndex> m_modelindexlist;
 };
 
-class CommonTableWidget : public QWidget
+class XLETLIB_EXPORT CommonTableWidget : public QWidget
 {
     Q_OBJECT
 

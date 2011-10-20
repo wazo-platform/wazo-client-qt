@@ -35,6 +35,7 @@
 #define __XLETWEB_H__
 
 #include <QObject>
+
 #include <xlet.h>
 
 class QWebView;

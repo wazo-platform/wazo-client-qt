@@ -37,9 +37,11 @@
 #include <QDropEvent>
 #include <QLineEdit>
 
+#include "xletlib_export.h"
+
 /*! \brief Table class inheriting QLineEdit with contextMenu added.
  */
-class ExtendedLineEdit : public QLineEdit
+class XLETLIB_EXPORT ExtendedLineEdit : public QLineEdit
 {
     Q_OBJECT
 
@@ -50,7 +52,7 @@ class ExtendedLineEdit : public QLineEdit
         void dropEvent(QDropEvent *event);
 };
 
-class FileNameLineEdit : public QLineEdit
+class XLETLIB_EXPORT FileNameLineEdit : public QLineEdit
 {
     Q_OBJECT
 

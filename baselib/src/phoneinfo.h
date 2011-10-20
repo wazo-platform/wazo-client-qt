@@ -99,7 +99,7 @@ namespace phone {
 /*! \brief Find a phone for a given phone identity
  * \param identity The phone's protocol/id
  * \return the PhoneInfo or NULL */
-const PhoneInfo * findByIdentity(const QString & identity);
+const PhoneInfo * BASELIB_EXPORT findByIdentity(const QString & identity);
 
 } // namespace phone
 

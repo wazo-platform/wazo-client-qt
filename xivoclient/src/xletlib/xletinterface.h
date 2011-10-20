@@ -34,9 +34,6 @@
 #ifndef __XLETINTERFACE_H__
 #define __XLETINTERFACE_H__
 
-#include "xletlib_export.h"
-
-class BaseEngine;
 class QWidget;
 class XLet;
 
@@ -46,7 +43,7 @@ class XLet;
  * Inherited classes could implement also constructor or destructor
  * in order to initialize things.
  */
-class XLETLIB_EXPORT XLetInterface
+class XLetInterface
 {
     public:
         virtual ~XLetInterface() {};

@@ -36,7 +36,7 @@
 
 #include <QtGui>
 #include <xletinterface.h>
-#include "xlet.h"
+#include <xlet.h>
 
 class QCheckBox;
 class QLineEdit;

@@ -34,6 +34,8 @@
 #include <QDebug>
 #include <QtPlugin>
 
+#include <baseengine.h>
+
 #include "outlook_panel.h"
 #include "outlookplugin.h"
 

@@ -31,7 +31,8 @@
  * $Date$
  */
 
-#include "baseengine.h"
+#include <baseengine.h>
+
 #include "servicepanel.h"
 
 const QStringList chkcapas = (QStringList() << "enablevoicemail" << "callrecord" << "incallfilter" << "enablednd");
@@ -288,4 +289,7 @@ void ServicePanel::setForward(const QString & capa)
             }
         }
     }
+}
+
+void ServicePanel::toggleIfAllowed(const QString &) {
 }

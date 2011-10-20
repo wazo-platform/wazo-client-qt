@@ -31,6 +31,8 @@
  * $Format:Commit date: %cd$
  */
 
+#include <baseengine.h>
+
 #include "datetime.h"
 
 Q_EXPORT_PLUGIN2(xletdatetimeplugin, XLetDatetimePlugin);

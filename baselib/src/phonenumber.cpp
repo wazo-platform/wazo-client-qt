@@ -34,6 +34,7 @@
 #include <QRegExp>
 #include <QDebug>
 
+#include "baselib_export.h"
 #include "phonenumber.h"
 
 namespace PhoneNumber
@@ -41,7 +42,7 @@ namespace PhoneNumber
     /*!
      * \return regexp whose pattern is phone_pattern
      */
-    QRegExp phone_re()
+    QRegExp BASELIB_EXPORT phone_re()
     {
         return QRegExp(PhoneNumber::phone_pattern);
     }
@@ -56,7 +57,7 @@ namespace PhoneNumber
      * we support tel:number and callto:number
      * \return true if the parameter matches RFC 3966
      */
-    bool isURI(const QString &string)
+    bool BASELIB_EXPORT isURI(const QString &string)
     {
         QRegExp re("^(tel|callto):" + phone_pattern, Qt::CaseInsensitive);
         return (! (re.indexIn(string) < 0));
@@ -65,7 +66,7 @@ namespace PhoneNumber
     /*!
      * \return the last contained phone number cleaned, i.e. with only numbers left
      */
-    QString extract(const QString &string, const QString &prefix, const QString &suffix)
+    QString BASELIB_EXPORT extract(const QString &string, const QString &prefix, const QString &suffix)
     {
         QRegExp re(prefix + phone_pattern + suffix);
         re.indexIn(string);                           // Apply the regexp
@@ -80,7 +81,7 @@ namespace PhoneNumber
     /*!
      * \return true if the parameter contains a phone number that can be extracted
      */
-    bool contains(const QString &string)
+    bool BASELIB_EXPORT contains(const QString &string)
     {
         QRegExp re(phone_pattern);
         return (re.indexIn(string) < 0);
