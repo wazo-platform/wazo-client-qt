@@ -121,7 +121,6 @@ XletQueues::XletQueues(QWidget *parent)
     setTitle(tr("Queues' List"));
 
     QStringList xletlist;
-    // foreach (QString xletdesc, b_engine->getCapaXlets())
     m_showMore = true; // xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     m_showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
     uint nsecs = 30;
@@ -244,7 +243,6 @@ void XletQueues::updateQueueConfig(const QString & xqueueid)
 
 void XletQueues::updateQueueStatus(const QString & xqueueid)
 {
-    // qDebug() << Q_FUNC_INFO << xqueueid;
     updateQueueConfig(xqueueid);
 }
 
@@ -598,7 +596,6 @@ void QueueRow::getLayoutColumnsWidth(QGridLayout *layout)
     // so that if the xlet is hidden these values are wrong
     // - 3 when in a tab
     // - 100 when starting in systray
-    // qDebug() << Q_FUNC_INFO << m_colWidth;
 }
 
 void QueueRow::updateSliceStat(const QString &stat, const QString &value)
@@ -837,11 +834,10 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
         QString hashname;
         QString name;
         QString tooltip;
-    } stats_detail[] =  {
-        {   "Holdtime",
-            tr("Estimated\nHoldtime"),
-            tr("Average waiting time before getting an agent,"
-               "calculated by asterisk") },
+    } stats_detail[] = {
+        {"Holdtime",
+         tr("Estimated Holdtime"),
+         tr("Average waiting time before getting an agent, calculated by asterisk") },
         {   "Xivo-Conn",
             tr("Connected"),
             tr("Number of agents in this queue") },
@@ -849,52 +845,26 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
             tr("Available"),
             tr("Number of available agents in this queue") },
         {   "Xivo-Talking",
-            tr("Currently\nTalking"),
+            tr("Currently Talking"),
             tr("Number of agents in this queue, currently talking") },
-        {   "Xivo-Holdtime-avg",
-            tr("Average\nHoldtime"),
-            tr("Average waiting time before getting an agent") },
-        {   "Xivo-Holdtime-max",
-            tr("Max\nHoldtime"),
-            tr("Maximum waiting time before getting an agent") },
-     /* {   "Completed",
-            tr("Completed"),
-            tr("Completed") },
-        {   "Abandoned",
-            tr("Abandoned"),
-            tr("Abandoned") },
-        {   "ServicelevelPerf",
-            tr("ServicelevelPerf\n(%)"),
-            tr("ServicelevelPerf(%)") },
-        {   "Servicelevel",
-            tr("Servicelevel"),
-            tr("Servicelevel") },
-        {   "Max",
-            tr("Max"),
-            tr("Max") },
-        {   "Weight",
-            tr("Weight"),
-            tr("Weight") }, */
         {   "Xivo-Join",
-            tr("Joined"),
-            tr("Number of calls this queue has received") },
+            tr("Received"),
+            tr("Number of received calls") },
         {   "Xivo-Link",
-            tr("Linked"),
-            tr("Number of calls that were answered on this queue") },
+            tr("Answered"),
+            tr("Number of answered calls") },
         {   "Xivo-Lost",
-            tr("Lost"),
-            tr("Number of calls where the caller has left "
-               "before getting an answer from an agent") },
+            tr("Abandonned"),
+            tr("Number of abandonned calls") },
+        {   "Xivo-Holdtime-max",
+             tr("Max\nHoldtime"),
+             tr("Maximum waiting time before getting an agent") },
         {   "Xivo-Rate",
-            tr("Efficiency\n(%)"),
-            tr("Ratio (Linked) / (Joined) (%)") },
-        {   "Xivo-TalkingTime",
-            tr("Conversation\nTime"),
-            tr("Average length of a conversation") },
+            tr("Efficiency"),
+            tr("Ratio (Answered) / (Received)") },
         {   "Xivo-Qos",
-            tr("Quality of\nService\n(%)"),
-            tr("Ratio (Number of calls answered in less than X sec) / "
-               "(Number of calls answered) (%)") }
+            tr("QOS"),
+            tr("Ratio (Number of calls answered in less than X sec / Number of calls answered)") }
     };
 
     int i;
@@ -903,11 +873,10 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
             statItems << stats_detail[i].hashname;
         }
 
-        statsOfDurationType << "Xivo-TalkingTime" << "Xivo-Holdtime-max"
-                            << "Xivo-Holdtime-avg";
+        statsOfDurationType << "Xivo-Holdtime-max";
 
-        statsToRequest << "Xivo-Holdtime-max" << "Xivo-Holdtime-avg" << "Xivo-QoS"
-                       << "Xivo-Join" << "Xivo-Lost" << "Xivo-TalkingTime"
+        statsToRequest << "Xivo-Holdtime-max" << "Xivo-QoS"
+                       << "Xivo-Join" << "Xivo-Lost"
                        << "Xivo-Rate" << "Xivo-Link";
     }
 
