@@ -4,46 +4,46 @@
 <context>
     <name>IdentityAgent</name>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="149"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="140"/>
         <source>Connected to %1</source>
         <translation>Verbonden met %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="152"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="143"/>
         <source>Disconnected from %1</source>
         <translation>Verbinding met %1 verbroken</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="164"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="165"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="156"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="157"/>
         <source>Paused</source>
         <translation>Gepauzeerd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="169"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="170"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="161"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="162"/>
         <source>Unpaused</source>
         <translation>Klaar</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="177"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="178"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="169"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="170"/>
         <source>Partially paused</source>
         <translation>gepauzeerd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="182"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="183"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="174"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="175"/>
         <source>Not relevant</source>
         <translation>Niet relevant</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="197"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="191"/>
         <source>Logout</source>
         <translation>Uitloggen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="201"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="195"/>
         <source>Login</source>
         <translation>Inloggen</translation>
     </message>
@@ -53,7 +53,7 @@
         <translation>Pauzeren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="214"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="204"/>
         <source>Unpause</source>
         <translation>Klaar</translation>
     </message>
@@ -71,12 +71,12 @@
         <translation>Panel van huidige gebruikers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="281"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="287"/>
         <source>IPBXid: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="301"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1
 Context: %2</source>
         <translation type="unfinished"></translation>
@@ -88,7 +88,7 @@ Context: %2</source>
 Context: %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="333"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="339"/>
         <source>(Line %1)</source>
         <translation>(Lijn %1)</translation>
     </message>
@@ -219,6 +219,11 @@ Context: %4</source>
 </context>
 <context>
     <name>IdentityVoiceMail</name>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="50"/>
+        <source>call your voicemail</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="87"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>

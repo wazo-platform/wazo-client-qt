@@ -836,8 +836,8 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
         QString tooltip;
     } stats_detail[] = {
         {"Holdtime",
-         tr("Estimated Holdtime"),
-         tr("Average waiting time before getting an agent, calculated by asterisk") },
+         tr("Est. Wait. Time"),
+         tr("Estimated waiting time before getting an agent") },
         {   "Xivo-Conn",
             tr("Connected"),
             tr("Number of agents in this queue") },
@@ -857,14 +857,14 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
             tr("Abandonned"),
             tr("Number of abandonned calls") },
         {   "Xivo-Holdtime-max",
-             tr("Max\nHoldtime"),
+             tr("Max Waiting Time"),
              tr("Maximum waiting time before getting an agent") },
         {   "Xivo-Rate",
             tr("Efficiency"),
             tr("Ratio (Answered) / (Received)") },
         {   "Xivo-Qos",
             tr("QOS"),
-            tr("Ratio (Number of calls answered in less than X sec / Number of calls answered)") }
+            tr("Ratio (Calls answered in less than X sec / Number of calls answered)") }
     };
 
     int i;
@@ -892,7 +892,7 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
     layout->addWidget(label, 0, 6, 1, 3);
 
     label = new QLabel(row);
-    label->setText(tr("Stats on Slice"));
+    label->setText(tr("Statistic on period"));
     label->setAlignment(Qt::AlignCenter);
     label->setStyleSheet("QLabel { background-color:#333;color:#eee; } ");
     layout->addWidget(label, 0, 9, 1, nelem(stats_detail)-4);
@@ -921,6 +921,7 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
         label->setAlignment(Qt::AlignCenter);
         label->setStyleSheet(detailCss);
         label->setToolTip(stats_detail[i].tooltip);
+        label->setMargin(5);
         layout->addWidget(label, 1, col++);
         m_colWidth.append(-1);
     }

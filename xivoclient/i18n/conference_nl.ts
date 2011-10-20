@@ -4,49 +4,49 @@
 <context>
     <name>ConfListModel</name>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="49"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="51"/>
         <source>Room UID</source>
         <translation>UID van de kamer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="50"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="52"/>
         <source>Number</source>
         <translation>Nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="51"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="53"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="52"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="54"/>
         <source>Pin code</source>
         <translation>Pincode</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="53"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="55"/>
         <source>Member count</source>
         <translation>Aantal deelnemers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="54"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="56"/>
         <source>Moderated</source>
         <translation>Gemodereerd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="55"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="57"/>
         <source>Started since</source>
         <translation>Aangevangen op sinds</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="119"/>
-        <location filename="../src/xlets/conference/conflist.cpp" line="121"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="132"/>
         <source>No</source>
         <translation>Nee</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="119"/>
-        <location filename="../src/xlets/conference/conflist.cpp" line="121"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="132"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
@@ -54,7 +54,7 @@
 <context>
     <name>ConfListView</name>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="227"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="202"/>
         <source>Get in room %1 (%2)</source>
         <translation>Toegang tot kamer %1 (%2)</translation>
     </message>
@@ -218,12 +218,12 @@
 <context>
     <name>XletConference</name>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="118"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="115"/>
         <source>Conference</source>
         <translation>Vergadering</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="124"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="121"/>
         <source>Conference room list</source>
         <translation>Lijst van de vergaderkamers</translation>
     </message>

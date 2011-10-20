@@ -4,22 +4,22 @@
 <context>
     <name>ParkingWidget</name>
     <message>
-        <location filename="../src/xlets/parking/parkingwidget.cpp" line="70"/>
+        <location filename="../src/xlets/parking/parkingwidget.cpp" line="53"/>
         <source>Number</source>
         <translation type="unfinished">Nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/parking/parkingwidget.cpp" line="71"/>
+        <location filename="../src/xlets/parking/parkingwidget.cpp" line="54"/>
         <source>Time</source>
         <translation type="unfinished">Tijd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/parking/parkingwidget.cpp" line="72"/>
+        <location filename="../src/xlets/parking/parkingwidget.cpp" line="55"/>
         <source>Parked</source>
         <translation type="unfinished">Geparkeerd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/parking/parkingwidget.cpp" line="73"/>
+        <location filename="../src/xlets/parking/parkingwidget.cpp" line="56"/>
         <source>Parker</source>
         <translation type="unfinished">Parkeerder</translation>
     </message>

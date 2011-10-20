@@ -58,7 +58,7 @@ queues</source>
 wachtrijen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="188"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="194"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Server: %1
@@ -69,44 +69,44 @@ Context: %2</translation>
         <translation type="obsolete">online met %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="305"/>
         <location filename="../src/xlets/agents/agents.cpp" line="311"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="317"/>
         <source>Agent logged on %1</source>
         <translation>Agent ingelogd op %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="315"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="321"/>
         <source>Agent NOT logged</source>
         <translation>Agent NIET ingelogd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="319"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="325"/>
         <source>Unknown %1</source>
         <translation>Onbekend %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="351"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="357"/>
         <source>Joined queues : %1</source>
         <translation>Gegroepeerde wachtrijen: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="371"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="376"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="377"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="382"/>
         <source>Paused queues : %1</source>
         <translation>Gepauzeerde wachtrijen: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="363"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="369"/>
         <source>No</source>
         <translation>Nee</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="368"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="374"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="373"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="379"/>
         <source>Partial</source>
         <translation>Gedeeltelijk Onvolledig?</translation>
     </message>
