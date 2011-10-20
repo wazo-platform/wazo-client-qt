@@ -1866,30 +1866,14 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
  */
 void BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
 {
-    QVariantMap command;
-    command["class"] = "featuresput";
-    if (capa == "fwdunc") {
-        command["function"] = "destunc";
-        command["value"] = dst;
-        sendJsonCommand(command);
-        command["function"] = "enableunc";
-        command["value"] = QString(b ? "1" : "0");
-        sendJsonCommand(command);
-    } else if (capa == "fwdbusy") {
-        command["function"] = "destbusy";
-        command["value"] = dst;
-        sendJsonCommand(command);
-        command["function"] = "enablebusy";
-        command["value"] = QString(b ? "1" : "0");
-        sendJsonCommand(command);
-    } else if (capa == "fwdrna") {
-        command["function"] = "destrna";
-        command["value"] = dst;
-        sendJsonCommand(command);
-        command["function"] = "enablerna";
-        command["value"] = QString(b ? "1" : "0");
-        sendJsonCommand(command);
-    }
+    QVariantMap command, value;
+    command["class"]    = "featuresput";
+		command["function"] = "fwd";
+
+    value["enable"+capa.mid(3)] = QString(b?"1":"0");
+    value["dest"+capa.mid(3)]   = dst;
+    command["value"]            = value;
+    sendJsonCommand(command);
 }
 
 /*! \brief send a featursget command to the cti server */
