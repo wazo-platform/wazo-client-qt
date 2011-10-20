@@ -195,6 +195,12 @@ void IdentityDisplay::updatePresence()
     if (presencemap.contains(presence)) {
         QVariantMap details = presencemap.value(presence).toMap();
         QStringList allowedlist = details.value("allowed").toStringList();
+        allowedlist.removeAll(""); /* in case there's no allowed state, we get
+        a non empty list with one empty string ("") */
+        /* A state should not have to be authorised to change to itself, so we
+         * add it by default */
+        if (! allowedlist.contains(presence))
+            allowedlist << presence;
         int idx = 0;
         foreach (QString presencestate, allowedlist) {
             QVariantMap pdetails = presencemap.value(presencestate).toMap();
