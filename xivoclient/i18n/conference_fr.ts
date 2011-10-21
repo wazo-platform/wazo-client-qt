@@ -4,14 +4,14 @@
 <context>
     <name>ConfListModel</name>
     <message>
+        <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
         <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
-        <location filename="../src/xlets/conference/conflist.cpp" line="132"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
+        <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
         <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
-        <location filename="../src/xlets/conference/conflist.cpp" line="132"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
@@ -54,7 +54,7 @@
 <context>
     <name>ConfListView</name>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="202"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="200"/>
         <source>Get in room %1 (%2)</source>
         <translation>Rentrer dans la salle de conférence %1 ( %2 )</translation>
     </message>
