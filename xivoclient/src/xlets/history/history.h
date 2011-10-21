@@ -92,8 +92,7 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
                                               "yyyy-MM-dd hh:mm:ss").toTime_t();
         }
 
-        void requestHistory(const QString &, int,
-                            const QDateTime & since = QDateTime());
+        void requestHistory(const QString &, int);
 
         QVariantList m_history;
         int m_mode;

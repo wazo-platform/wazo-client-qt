@@ -158,22 +158,14 @@ Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
 }
 
 /*! \brief ask history for an extension */
-void LogWidgetModel::requestHistory(const QString & xuserid,
-                                    int mode,
-                                    const QDateTime & moreRecent)
+void LogWidgetModel::requestHistory(const QString & xuserid, int mode)
 {
-    /* mode = 0 : Out calls
-     * mode = 1 : In calls
-     * mode = 2 : Missed calls */
-    if(mode >= OUTCALLS) {
+    if (mode == OUTCALLS || mode == INCALLS || mode == MISSEDCALLS) {
         QVariantMap command;
         command["class"] = "history";
         command["xuserid"] = xuserid;
         command["size"] = QString::number(b_engine->getConfig("historysize").toUInt());
         command["mode"] = QString::number(mode);
-        if(moreRecent.isValid()) {
-            command["morerecentthan"] = moreRecent.toString(Qt::ISODate);
-        }
         b_engine->sendJsonCommand(command);
     }
 }
