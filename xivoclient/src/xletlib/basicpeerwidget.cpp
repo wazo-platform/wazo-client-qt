@@ -128,7 +128,7 @@ void BasicPeerWidget::updatePresence()
     m_presenceColor.setNamedColor(presencedetails.value("color").toString());
 }
 
-void BasicPeerWidget::updatePhoneConfig(const QString & xphoneid)
+void BasicPeerWidget::updatePhoneConfig(const QString & /*xphoneid*/)
 {
 //     qDebug() << Q_FUNC_INFO;
 //     QString ipbxid = m_ui_remote->ipbxid();
@@ -143,7 +143,7 @@ void BasicPeerWidget::updatePhoneConfig(const QString & xphoneid)
 //     }
 }
 
-void BasicPeerWidget::updatePhoneStatus(const QString & xphoneid)
+void BasicPeerWidget::updatePhoneStatus(const QString & /*xphoneid*/)
 {
 }
 

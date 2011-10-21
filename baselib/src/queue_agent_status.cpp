@@ -180,7 +180,7 @@ QueueMemberInfo::QueueMemberInfo(const QString & ipbxid,
 {
 }
 
-bool QueueMemberInfo::updateConfig(const QVariantMap & prop)
+bool QueueMemberInfo::updateConfig(const QVariantMap &)
 {
     bool haschanged = false;
     return haschanged;

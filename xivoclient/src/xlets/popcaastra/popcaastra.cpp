@@ -313,7 +313,7 @@ void PopcAastra::conf()
     }
 }
 
-void PopcAastra::hangupLine(int line)
+void PopcAastra::hangupLine(int /*line*/)
 {
     QStringList commands;
     // commands.append(aastra_notify::GetKeyUri(aastra_notify::LINE, line));

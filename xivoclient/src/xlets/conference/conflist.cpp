@@ -70,13 +70,11 @@ void ConfListModel::timerEvent(QTimerEvent *)
 void ConfListModel::updateMeetmesConfig(const QString &xid)
 {
     if (! m_row2id.contains(xid)) {
-        int insertId = m_row2id.size();
         m_row2id.append(xid);
     }
 }
 
 void ConfListModel::removeMeetmeConfig(const QString &xid) {
-    int removeId = m_row2id.indexOf(xid);
     m_row2id.removeAll(xid);
 }
 

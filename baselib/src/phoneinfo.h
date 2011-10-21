@@ -34,12 +34,13 @@
 #ifndef __PHONEINFO_H__
 #define __PHONEINFO_H__
 
-#include "baselib_export.h"
 #include <QString>
 #include <QStringList>
 #include <QVariant>
 #include <QVariantMap>
+
 #include "xinfo.h"
+#include "baselib_export.h"
 
 /*! \brief Store Phone information
  */
@@ -96,10 +97,10 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
 
 namespace phone {
 
-/*! \brief Find a phone for a given phone identity
- * \param identity The phone's protocol/id
- * \return the PhoneInfo or NULL */
-const PhoneInfo * BASELIB_EXPORT findByIdentity(const QString & identity);
+    /*! \brief Find a phone for a given phone identity
+     * \param identity The phone's protocol/id
+     * \return the PhoneInfo or NULL */
+    BASELIB_EXPORT const PhoneInfo * findByIdentity(const QString & identity);
 
 } // namespace phone
 

@@ -385,7 +385,7 @@ bool BasePeerWidget::isme() const
  * \param menu The contextual menu to modify
  * \param event The click event that was received
  */
-void BasePeerWidget::updateMenuSelf(QMenu * menu, QContextMenuEvent * event)
+void BasePeerWidget::updateMenuSelf(QMenu * menu, QContextMenuEvent * /*event*/)
 {
     addHangupMenu(menu);
 }
@@ -395,7 +395,7 @@ void BasePeerWidget::updateMenuSelf(QMenu * menu, QContextMenuEvent * event)
  * \param menu The contextual menu to modify
  * \param event The click event that was received
  */
-void BasePeerWidget::updateMenuPeer(QMenu * menu, QContextMenuEvent * event)
+void BasePeerWidget::updateMenuPeer(QMenu * menu, QContextMenuEvent * /*event*/)
 {
     qDebug() << Q_FUNC_INFO;
     addDialMenu(menu);

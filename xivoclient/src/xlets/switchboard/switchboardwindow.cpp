@@ -138,11 +138,11 @@ void XletSwitchBoard::updateUserStatus(const QString & xuserid)
     }
 }
 
-void XletSwitchBoard::updateAgentConfig(const QString & xagentid)
+void XletSwitchBoard::updateAgentConfig(const QString & /*xagentid*/)
 {
 }
 
-void XletSwitchBoard::updateAgentStatus(const QString & xagentid)
+void XletSwitchBoard::updateAgentStatus(const QString & /*xagentid*/)
 {
     // XXXX find xuserid
 //     if (m_peerhash.contains(xuserid))
@@ -150,11 +150,11 @@ void XletSwitchBoard::updateAgentStatus(const QString & xagentid)
     return;
 }
 
-void XletSwitchBoard::updatePhoneConfig(const QString & xphoneid)
+void XletSwitchBoard::updatePhoneConfig(const QString & /*xphoneid*/)
 {
 }
 
-void XletSwitchBoard::updatePhoneStatus(const QString & xphoneid)
+void XletSwitchBoard::updatePhoneStatus(const QString & /*xphoneid*/)
 {
     // XXXX find xuserid
 //     if (m_peerhash.contains(xuserid))

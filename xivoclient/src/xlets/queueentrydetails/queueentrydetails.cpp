@@ -66,12 +66,12 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
             this, SLOT(monitorThisQueue(const QString &)));
 }
 
-void XLetQueueEntryDetails::updateAgentConfig(const QString & xagentid)
+void XLetQueueEntryDetails::updateAgentConfig(const QString & /*xagentid*/)
 {
     // qDebug() << Q_FUNC_INFO << xagentid;
 }
 
-void XLetQueueEntryDetails::updateAgentStatus(const QString & xagentid)
+void XLetQueueEntryDetails::updateAgentStatus(const QString & /*xagentid*/)
 {
     // qDebug() << Q_FUNC_INFO << xagentid;
 }

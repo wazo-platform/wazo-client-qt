@@ -329,7 +329,7 @@ void XletOperator::changeCurrentChannel(const QString & before, const QString & 
     }
 }
 
-void XletOperator::updatePhoneConfig(const QString & xphoneid)
+void XletOperator::updatePhoneConfig(const QString & /*xphoneid*/)
 {
 }
 

@@ -138,7 +138,7 @@ void XletCalls::parkcall(const QString &chan)
                          "ext:special:parkthecall"); // Call
 }
 
-void XletCalls::updatePhoneConfig(const QString & xphoneid)
+void XletCalls::updatePhoneConfig(const QString & /*xphoneid*/)
 {
 }
 
