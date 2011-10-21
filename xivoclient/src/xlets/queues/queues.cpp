@@ -49,6 +49,7 @@ XLet* XLetQueuesPlugin::newXLetInstance(QWidget *parent)
 QList<int> QueueRow::m_colWidth = QList<int>();
 static QStringList statItems;  //!< list of stats items which are reported for each queue
 static QStringList statsOfDurationType;
+static QStringList statsInPercent;
 
 static QStringList statsToRequest;
 
@@ -172,6 +173,11 @@ void XletQueues::parseCommand(const QVariantMap &map) {
     eatQueuesStats(map);
 }
 
+QString formatPercent(const QString & value)
+{
+    return value.isEmpty() ? "-" : QString("%0 %").arg(value);
+}
+
 void XletQueues::eatQueuesStats(const QVariantMap &p)
 {
     foreach (QString queueid, p.value("stats").toMap().keys()) {
@@ -179,6 +185,9 @@ void XletQueues::eatQueuesStats(const QVariantMap &p)
         QVariantMap qvm = p.value("stats").toMap().value(queueid).toMap();
         foreach (QString stats, qvm.keys()) {
             QString field;
+            if (statsInPercent.contains(stats)) {
+                qvm[stats] = formatPercent(qvm.value(stats).toString());
+            }
             if (statsOfDurationType.contains(stats)) {
                 if (qvm.value(stats).toString() != "na") {
                     int sec_total = qRound(qvm.value(stats).toDouble());
@@ -875,9 +884,11 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
 
         statsOfDurationType << "Xivo-Holdtime-max";
 
-        statsToRequest << "Xivo-Holdtime-max" << "Xivo-QoS"
+        statsToRequest << "Xivo-Holdtime-max" << "Xivo-Qos"
                        << "Xivo-Join" << "Xivo-Lost"
                        << "Xivo-Rate" << "Xivo-Link";
+
+        statsInPercent << "Xivo-Rate" << "Xivo-Qos";
     }
 
     int col = 0;
