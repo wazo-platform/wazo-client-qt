@@ -35,6 +35,12 @@
 #include "history.h"
 #include <phonenumber.h>
 
+enum HistoryMode {
+    OUTCALLS = 0,
+    INCALLS,
+    MISSEDCALLS,
+};
+
 Q_EXPORT_PLUGIN2(xlethistoryplugin, XLetHistoryPlugin);
 
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
@@ -94,9 +100,9 @@ int LogWidgetModel::rowCount(const QModelIndex &a) const
 
 int LogWidgetModel::columnCount(const QModelIndex&) const
 {
-    if ((m_mode == 0) || (m_mode == 1))
+    if ((m_mode == OUTCALLS) || (m_mode == INCALLS))
         return 3;
-    else if (m_mode == 2)
+    else if (m_mode == MISSEDCALLS)
         return 2;
 
     return 0;
@@ -159,7 +165,7 @@ void LogWidgetModel::requestHistory(const QString & xuserid,
     /* mode = 0 : Out calls
      * mode = 1 : In calls
      * mode = 2 : Missed calls */
-    if(mode >= 0) {
+    if(mode >= OUTCALLS) {
         QVariantMap command;
         command["class"] = "history";
         command["xuserid"] = xuserid;
@@ -195,7 +201,7 @@ QVariant LogWidgetModel::headerData(int section,
         else if (section == 1)
             return QVariant(tr("Date"));
 
-        if ((section == 2) && ((m_mode == 0) || (m_mode == 1)))
+        if ((section == 2) && ((m_mode == OUTCALLS) || (m_mode == INCALLS)))
             return QVariant(tr("Duration"));
     }
 
@@ -254,10 +260,10 @@ LogWidget::LogWidget(QWidget *parent)
 
     hBox->addStretch(1);
 
-    buildRadioButton(tr("Sent calls"), "sent_call.png",   0, groupBox, hBox, viewmodel)
+    buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, viewmodel)
                     ->setChecked(true);
-    buildRadioButton(tr("Received calls"), "received_call.png", 1, groupBox, hBox, viewmodel);
-    buildRadioButton(tr("Missed calls"),   "missed_call.png",   2, groupBox, hBox, viewmodel);
+    buildRadioButton(tr("Received calls"), "received_call.png", INCALLS, groupBox, hBox, viewmodel);
+    buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, viewmodel);
 
     hBox->addStretch(1);
 
