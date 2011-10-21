@@ -1245,7 +1245,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             // qDebug() << function << listname << xid << haschanged << status;
 
             if (listname == "users") {
-                setAvailState(status["availstate"], true);
+                setAvailState(status["availstate"].toString(), true);
                 emit updateUserStatus(xid);
             } else if (listname == "phones") {
                 emit updatePhoneStatus(xid);
