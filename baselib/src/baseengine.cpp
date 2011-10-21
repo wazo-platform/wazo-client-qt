@@ -1502,7 +1502,7 @@ void BaseEngine::popupError(const QString & errorid)
  */
 void BaseEngine::saveToFile(const QString & filename)
 {
-    qDebug() << Q_FUNC_INFO << filename << m_downloaded.size();
+    qDebug() << "Saving downloaded file" << filename << "size" << m_downloaded.size();
     QFile outputfile(filename);
     outputfile.open(QIODevice::WriteOnly);
     outputfile.write(m_downloaded);
@@ -1518,12 +1518,11 @@ void BaseEngine::ctiSocketReadyRead()
     while (m_ctiserversocket->canReadLine()) {
         QByteArray data  = m_ctiserversocket->readLine();
         m_byte_counter += data.size();
-        // qDebug() << Q_FUNC_INFO << "data.size() = " << data.size();
         QString line = QString::fromUtf8(data);
 
         if (line.startsWith("<ui version=")) {
             // we get here when receiving a sheet as a Qt4 .ui form
-            qDebug() << Q_FUNC_INFO << "(Customer Info)" << line.size();
+            qDebug() << "Incoming sheet, size:" << line.size();
             emit displayFiche(line, true, QString());
         } else
             parseCommand(line);
@@ -1542,7 +1541,7 @@ void BaseEngine::filetransferSocketReadyRead()
         QVariant jsondata;
         try {
             jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
-        } catch(JsonQt::ParseException) {
+        } catch(JsonQt::ParseException &) {
             qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         }
         QVariantMap jsondatamap = jsondata.toMap();
@@ -1574,7 +1573,6 @@ void BaseEngine::filetransferSocketReadyRead()
  */
 void BaseEngine::actionFromFiche(const QVariant & infos)
 {
-    // qDebug() << Q_FUNC_INFO << infos;
     QVariantMap command;
     command["class"] = "actionfiche";
     command["infos"] = infos;
@@ -1600,7 +1598,6 @@ void BaseEngine::actionCall(const QString & action,
         qDebug() << Q_FUNC_INFO << "IGNORE" << action << src << dst;
         return;
     }
-    qDebug() << Q_FUNC_INFO << "ACCEPT" << action << src << dst;
 
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = action;
@@ -1653,7 +1650,6 @@ void BaseEngine::actionDialNumber(const QString & number)
  */
 void BaseEngine::receiveNumberSelection(const QStringList & numbers)
 {
-    // qDebug() << Q_FUNC_INFO;
     emit broadcastNumberSelection(numbers);
 }
 
@@ -1663,7 +1659,6 @@ void BaseEngine::receiveNumberSelection(const QStringList & numbers)
  */
 void BaseEngine::searchDirectory(const QString & text)
 {
-    // qDebug() << Q_FUNC_INFO << text;
     QVariantMap command;
     command["class"] = "directory";
     command["pattern"] = text;
@@ -1697,7 +1692,6 @@ void BaseEngine::setConfig(const QString & setting, QVariant value) {
 // qvm may not contain every key, only the ones that need to be modified
 void BaseEngine::setConfig(const QVariantMap & qvm)
 {
-    // qDebug() << Q_FUNC_INFO << qvm;
     bool reload_tryagain = qvm.contains("trytoreconnectinterval") &&
                            m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
     bool reload_keepalive = qvm.contains("keepaliveinterval") &&
@@ -1730,8 +1724,6 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
             setAvailState(__presence_off__, false);
     }
 
-    // qDebug() << m_config.toString();
-    
     saveSettings();
 }
 
@@ -1790,7 +1782,6 @@ void BaseEngine::initFeatureFields(const QString & field)
 
 void BaseEngine::stopKeepAliveTimer()
 {
-    qDebug() << Q_FUNC_INFO;
     if (m_timerid_keepalive > 0) {
         killTimer(m_timerid_keepalive);
         m_timerid_keepalive = 0;
@@ -1799,7 +1790,6 @@ void BaseEngine::stopKeepAliveTimer()
 
 void BaseEngine::stopTryAgainTimer()
 {
-    qDebug() << Q_FUNC_INFO;
     if (m_timerid_tryreconnect > 0) {
         killTimer(m_timerid_tryreconnect);
         m_timerid_tryreconnect = 0;
@@ -1808,7 +1798,6 @@ void BaseEngine::stopTryAgainTimer()
 
 void BaseEngine::startTryAgainTimer()
 {
-    qDebug() << Q_FUNC_INFO;
     if (m_timerid_tryreconnect == 0 && m_config["trytoreconnect"].toBool() && ! m_forced_to_disconnect)
         m_timerid_tryreconnect = startTimer(m_config["trytoreconnectinterval"].toUInt());
 }
@@ -1819,11 +1808,9 @@ void BaseEngine::startTryAgainTimer()
 void BaseEngine::timerEvent(QTimerEvent *event)
 {
     int timerId = event->timerId();
-    // qDebug() << Q_FUNC_INFO << timerId << m_timerid_tryreconnect;
     if (timerId == m_timerid_keepalive) {
         keepLoginAlive();
     } else if (timerId == m_timerid_tryreconnect) {
-        qDebug() << Q_FUNC_INFO << m_timerid_tryreconnect;
         emit emitTextMessage(tr("Attempting to reconnect to server"));
         start();
     } else if (timerId == m_timerid_changestate) {
@@ -1832,7 +1819,7 @@ void BaseEngine::timerEvent(QTimerEvent *event)
         killTimer(timerId);
         m_timerid_changestate = 0;
     } else {
-        qDebug() << Q_FUNC_INFO << "ghost timer" << timerId << "will be stopped";
+        qDebug() << "Removing unused timer:" << timerId;
         killTimer(timerId);
     }
 }
@@ -1877,7 +1864,6 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
 /*! \brief send a featursget command to the cti server */
 void BaseEngine::askFeatures()
 {
-    qDebug() << Q_FUNC_INFO;
     QVariantMap command;
     command["class"] = "featuresget";
     sendJsonCommand(command);
@@ -1897,7 +1883,6 @@ void BaseEngine::fetchIPBXList()
  */
 void BaseEngine::fetchLists()
 {
-    // qDebug() << Q_FUNC_INFO;
     QVariantMap command;
 
     command["class"] = "getlist";
@@ -1962,7 +1947,6 @@ void BaseEngine::setState(EngineState state)
 
 void BaseEngine::changeWatchedAgent(const QString & agentid, bool force)
 {
-    // qDebug() << Q_FUNC_INFO << agentid << force;
     if ((force || (agentid.size() > 0)) && (hasAgent(agentid))) {
         emit changeWatchedAgentSignal(agentid);
     }
@@ -1970,7 +1954,6 @@ void BaseEngine::changeWatchedAgent(const QString & agentid, bool force)
 
 void BaseEngine::changeWatchedQueue(const QString & queueid)
 {
-    // qDebug() << Q_FUNC_INFO << queueid;
     emit changeWatchedQueueSignal(queueid);
 }
 
@@ -2007,20 +1990,6 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
  */
 void BaseEngine::keepLoginAlive()
 {
-    // qDebug() << Q_FUNC_INFO << m_availstate;
-
-//     // got to disconnected state if more than xx keepalive messages
-//     // have been left without response.
-//     if (m_pendingkeepalivemsg > 1) {
-//         qDebug() << Q_FUNC_INFO << m_pendingkeepalivemsg << "=> 0";
-//         stopKeepAliveTimer();
-//         setState(ENotLogged);
-//         m_pendingkeepalivemsg = 0;
-//         popupError("no_keepalive_from_server");
-//         startTryAgainTimer();
-//         return;
-//     }
-
     QVariantMap command;
     command["class"] = "keepalive";
     if (m_rate_bytes > 100000) {
@@ -2061,7 +2030,6 @@ void BaseEngine::logClient(const QString & level,
                            const QString & classmethod,
                            const QString & message)
 {
-    // qDebug() << Q_FUNC_INFO << classmethod << message;
     QVariantMap command;
     command["class"] = "logfromclient";
     command["level"] = level;
@@ -2087,7 +2055,6 @@ void BaseEngine::loadQueueGroups()
  * Return NULL if not available */
 UserInfo * BaseEngine::getXivoClientUser()
 {
-    // qDebug() << Q_FUNC_INFO << m_ipbxid << m_userid << m_xuserid;
     if (m_anylist.value("users").contains(m_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_xuserid);
     }
@@ -2096,7 +2063,6 @@ UserInfo * BaseEngine::getXivoClientUser()
 
 UserInfo * BaseEngine::getXivoClientMonitored()
 {
-    // qDebug() << Q_FUNC_INFO << m_ipbxid << m_userid << m_xuserid;
     if (m_anylist.value("users").contains(m_monitored_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_monitored_xuserid);
     }
@@ -2110,7 +2076,6 @@ UserInfo * BaseEngine::getXivoClientMonitored()
  */
 const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const
 {
-    // qDebug() << Q_FUNC_INFO << xcid;
     foreach (const QString xuid, b_engine->iterover("users").keys()) {
         const UserInfo * user = b_engine->user(xuid);
         foreach (const QString pid, user->phonelist()) {
