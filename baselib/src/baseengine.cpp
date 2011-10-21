@@ -1852,7 +1852,7 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
         command["function"] = "incallfilter";
     else if (capa == "enablednd")
         command["function"] = "enablednd";
-    command["value"] = QString(b ? "1" : "0");
+    command["value"] = b;
     sendJsonCommand(command);
 }
 
@@ -1867,7 +1867,7 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
     command["class"]    = "featuresput";
 		command["function"] = "fwd";
 
-    value["enable"+capa.mid(3)] = QString(b?"1":"0");
+    value["enable"+capa.mid(3)] = b;
     value["dest"+capa.mid(3)]   = dst;
     command["value"]            = value;
     sendJsonCommand(command);
