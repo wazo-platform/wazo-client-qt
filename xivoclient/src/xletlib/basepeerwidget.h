@@ -58,6 +58,7 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         virtual void updateAgentStatus(const QString &) = 0;
         virtual void updatePhoneConfig(const QString &) = 0;
         virtual void updatePhoneStatus(const QString &) = 0;
+        virtual void removePhoneConfig(const QString &) {}
         virtual void updatePresence() = 0;  //! update presence information displayed
 
         virtual const QString& number() const { return m_number; };  //! Phone number

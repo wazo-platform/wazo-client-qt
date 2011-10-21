@@ -250,15 +250,34 @@ void PeerWidget::updatePresence()
 
 void PeerWidget::updatePhoneConfig(const QString & xphoneid)
 {
-    updatePhoneStatus(xphoneid);
+    // qDebug() << Q_FUNC_INFO;
+
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
+    if (phoneinfo == NULL)
+        return;
+    int order = phoneinfo->rules_order();
+
+    // Add a new phone if it does not exist
+    if (! m_lblphones.contains(xphoneid)) {
+        m_lblphones[xphoneid] = new QLabel(m_peer);
+        m_lblphones[xphoneid]->setAlignment(Qt::AlignCenter);
+        m_lblphones[xphoneid]->setMinimumSize(m_iconsize, m_iconsize);
+        m_lblphones[xphoneid]->setProperty("kind", "term");
+        m_hLayout->insertWidget(order, m_lblphones[xphoneid]);
+    } else {
+        if (m_hLayout->indexOf(m_lblphones[xphoneid]) != order) {
+            m_hLayout->removeWidget(m_lblphones[xphoneid]);
+            m_hLayout->insertWidget(order, m_lblphones[xphoneid]);
+        }
+    }
 }
 
 void PeerWidget::updatePhoneStatus(const QString & xphoneid)
 {
-    if (! m_ui_remote->phonelist().contains(xphoneid))
-        return;
     const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
+        return;
+    if (m_ui_remote->id() != phoneinfo->iduserfeatures())
         return;
 
     QString iduserfeatures = phoneinfo->iduserfeatures();
@@ -300,6 +319,14 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
                                       .arg(longname)
                                       .arg(phoneinfo->channels().count())
                                       );
+}
+
+void PeerWidget::removePhoneConfig(const QString & xphoneid) {
+    if (m_lblphones.contains(xphoneid)) {
+        m_hLayout->removeWidget(m_lblphones[xphoneid]);
+        delete m_lblphones[xphoneid];
+        m_lblphones.remove(xphoneid);
+    }
 }
 
 /*! \brief change displayed name

@@ -36,12 +36,13 @@
 #include <QScrollArea>
 #include <QDebug>
 
+#include <peerwidget.h>
+#include <baseengine.h>
+#include <extendedlineedit.h>
+#include <userinfo.h>
+#include <chitchat.h>
+
 #include "searchpanel.h"
-#include "peerwidget.h"
-#include "baseengine.h"
-#include "extendedlineedit.h"
-#include "userinfo.h"
-#include "chitchat.h"
 
 SearchPanel::SearchPanel(QWidget *parent)
     : XLet(parent)
@@ -88,6 +89,8 @@ SearchPanel::SearchPanel(QWidget *parent)
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(removePhoneConfig(const QString &)),
+            this, SLOT(removePhoneConfig(const QString &)));
 
     connect(b_engine, SIGNAL(peersReceived()),
             this, SLOT(updateDisplay()));
@@ -217,36 +220,52 @@ void SearchPanel::updateUserStatus(const QString & xuserid)
 void SearchPanel::updatePhoneConfig(const QString & xphoneid)
 {
     foreach (QString peerkey, m_peerhash.keys()) {
-        PeerItem * peeritem = m_peerhash.value(peerkey);
-        if (peeritem == NULL)
-            continue;
-        BasePeerWidget * peerwidget = peeritem->getWidget();
-        if (peerwidget == NULL)
-            continue;
         const UserInfo * userinfo = b_engine->user(peerkey);
         if (userinfo == NULL)
             continue;
-
-        if (userinfo->phonelist().contains(xphoneid))
+        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
+        if (phoneinfo == NULL)
+            continue;
+        QString xiduserfeatures = phoneinfo->ipbxid() + "/" + phoneinfo->iduserfeatures();
+        if (xiduserfeatures == userinfo->xid()) {
+            PeerItem * peeritem = m_peerhash.value(peerkey);
+            if (peeritem == NULL)
+                continue;
+            BasePeerWidget * peerwidget = peeritem->getWidget();
+            if (peerwidget == NULL)
+                continue;
             peerwidget->updatePhoneConfig(xphoneid);
+        }
     }
 }
 
 void SearchPanel::updatePhoneStatus(const QString & xphoneid)
 {
     foreach (QString peerkey, m_peerhash.keys()) {
-        PeerItem * peeritem = m_peerhash.value(peerkey);
-        if (peeritem == NULL)
-            continue;
-        BasePeerWidget * peerwidget = peeritem->getWidget();
-        if (peerwidget == NULL)
-            continue;
         const UserInfo * userinfo = b_engine->user(peerkey);
         if (userinfo == NULL)
             continue;
-
-        if (userinfo->phonelist().contains(xphoneid))
+        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
+        if (phoneinfo == NULL)
+            continue;
+        if (phoneinfo->iduserfeatures() == userinfo->id()) {
+            PeerItem * peeritem = m_peerhash.value(peerkey);
+            if (peeritem == NULL)
+                continue;
+            BasePeerWidget * peerwidget = peeritem->getWidget();
+            if (peerwidget == NULL)
+                continue;
             peerwidget->updatePhoneStatus(xphoneid);
+        }
+    }
+}
+
+void SearchPanel::removePhoneConfig(const QString & xphoneid) {
+    foreach (PeerItem *peeritem, m_peerhash) {
+        BasePeerWidget * peerwidget = peeritem->getWidget();
+        if (peerwidget == NULL)
+            continue;
+        peerwidget->removePhoneConfig(xphoneid);
     }
 }
 

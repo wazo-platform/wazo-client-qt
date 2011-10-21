@@ -61,6 +61,7 @@ class XLETLIB_EXPORT PeerWidget : public BasePeerWidget
         void setEngine(BaseEngine *);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
+        void removePhoneConfig(const QString &);
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
         void updateAgentToolTip();

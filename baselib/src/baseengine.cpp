@@ -1244,9 +1244,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
             // qDebug() << function << listname << xid << haschanged << status;
 
-            if (listname == "users")
+            if (listname == "users") {
+                setAvailState(status["availstate"], true);
                 emit updateUserStatus(xid);
-            else if (listname == "phones") {
+            } else if (listname == "phones") {
                 emit updatePhoneStatus(xid);
                 if (hasPhone(xid)) {
                     QVariantMap command;
