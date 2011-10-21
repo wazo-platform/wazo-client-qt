@@ -242,6 +242,7 @@ void ConfigWidget::_insert_function_tab()
             m_queuelevels[color] = new QSpinBox(this);
             m_queuelevels[color]->setRange(0, 100);
             m_queuelevels[color]->setValue(m_config["guioptions.queuelevels"].toMap().value(color).toUInt());
+            m_queuelevels[color]->setToolTip(tr("Longest wait threshold"));
             layout_queues->addWidget(m_queuelevels[color], line, ncol++);
         }
         line++;
@@ -254,6 +255,7 @@ void ConfigWidget::_insert_function_tab()
             m_queuelevels_wait[color] = new QSpinBox(this);
             m_queuelevels_wait[color]->setRange(0, 3600);
             m_queuelevels_wait[color]->setValue(m_config["guioptions.queuelevels_wait"].toMap().value(color).toUInt());
+            m_queuelevels_wait[color]->setToolTip(tr("Call waiting threshold"));
             layout_queues->addWidget(m_queuelevels_wait[color], line, ncol++);
         }
 
