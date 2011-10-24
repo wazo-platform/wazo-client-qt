@@ -125,8 +125,9 @@ XletQueues::XletQueues(QWidget *parent)
     m_showMore = true; // xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
     m_showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
     uint nsecs = 30;
-    if (b_engine->getConfig().contains("guioptions.xlet.queues.statsfetchperiod"))
-        nsecs = b_engine->getConfig("guioptions.xlet.queues.statsfetchperiod").toInt();
+    if (b_engine->getConfig().contains("xlet.queues.statsfetchperiod")) {
+        nsecs = b_engine->getConfig("xlet.queues.statsfetchperiod").toInt();
+    }
 
     QVBoxLayout *xletLayout = new QVBoxLayout(this);
     xletLayout->setSpacing(0);
@@ -392,9 +393,6 @@ void XletQueues::askForQueueStats()
 
     b_engine->sendJsonCommand(command);
 }
-
-
-
 
 XletQueuesConfigure::XletQueuesConfigure(XletQueues *)
     : QWidget(NULL)
@@ -692,19 +690,7 @@ void QueueRow::updateRow()
     m_busy->setProperty("value", infos["Calls"]);
 
     foreach (QString stat, statItems) {
-        if (infos.contains(stat) && (!statsToRequest.contains(stat))) {
-            QString text;
-            if (stat == "Holdtime") {
-                if (infos[stat] == "0") {
-                    text = tr("na");
-                } else {
-                    int sec_total = infos[stat].toInt();
-                    __format_duration(&text, sec_total);
-                }
-            } else {
-                text = infos[stat];
-            }
-
+        if (infos.contains(stat) && (! statsToRequest.contains(stat))) {
             if (m_infoList.contains(stat)) {
                 m_infoList[stat]->setText(infos[stat]);
             } else {
@@ -844,9 +830,6 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
         QString name;
         QString tooltip;
     } stats_detail[] = {
-        {"Holdtime",
-         tr("Est. Wait. Time"),
-         tr("Estimated waiting time before getting an agent") },
         {   "Xivo-Conn",
             tr("Connected"),
             tr("Number of agents in this queue") },
@@ -900,13 +883,13 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
     label->setText(tr("Number of agents"));
     label->setAlignment(Qt::AlignCenter);
     label->setStyleSheet("background-color:#333;color:#eee;margin-right:1px;");
-    layout->addWidget(label, 0, 6, 1, 3);
+    layout->addWidget(label, 0, 5, 1, 3);
 
     label = new QLabel(row);
     label->setText(tr("Statistic on period"));
     label->setAlignment(Qt::AlignCenter);
     label->setStyleSheet("QLabel { background-color:#333;color:#eee; } ");
-    layout->addWidget(label, 0, 9, 1, nelem(stats_detail)-4);
+    layout->addWidget(label, 0, 8, 1, nelem(stats_detail) - 3);
 
     spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
     layout->addItem(spacer, 1, col++);
