@@ -897,7 +897,7 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
     layout->addItem(spacer, 1, col++);
 
     label = new QLabel(row);
-    label->setText(tr("Busy"));
+    label->setText(tr("Waiting calls"));
     label->setFixedSize(100, 30);
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label, 1, col++);
