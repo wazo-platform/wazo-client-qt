@@ -75,6 +75,11 @@ void __format_duration(QString *field, int duration)
                                  .arg(sec, 2, 10, QChar('0')));
 }
 
+QString formatPercent(const QString & value)
+{
+    return value.isEmpty() ? "-" : QString("%0 %").arg(value);
+}
+
 void XletQueues::settingsChanged()
 {
     m_showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
@@ -172,11 +177,6 @@ void XletQueues::display()
 
 void XletQueues::parseCommand(const QVariantMap &map) {
     eatQueuesStats(map);
-}
-
-QString formatPercent(const QString & value)
-{
-    return value.isEmpty() ? "-" : QString("%0 %").arg(value);
 }
 
 void XletQueues::eatQueuesStats(const QVariantMap &p)
