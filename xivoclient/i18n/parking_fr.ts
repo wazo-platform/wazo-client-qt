@@ -31,21 +31,5 @@
         <source>Parking</source>
         <translation>Parking</translation>
     </message>
-    <message>
-        <source>Number</source>
-        <translation type="obsolete">Numéro</translation>
-    </message>
-    <message>
-        <source>Time</source>
-        <translation type="obsolete">Temps</translation>
-    </message>
-    <message>
-        <source>Parked</source>
-        <translation type="obsolete">Parqué</translation>
-    </message>
-    <message>
-        <source>Parker</source>
-        <translation type="obsolete">Parqueur</translation>
-    </message>
 </context>
 </TS>

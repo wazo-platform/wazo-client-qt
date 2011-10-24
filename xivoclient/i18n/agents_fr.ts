@@ -66,10 +66,6 @@ Context: %2</source>
 Contexte: %2</translation>
     </message>
     <message>
-        <source>online with %1 (%2)</source>
-        <translation type="obsolete">en ligne avec %1 (%2)</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/agents/agents.cpp" line="311"/>
         <location filename="../src/xlets/agents/agents.cpp" line="317"/>
         <source>Agent logged on %1</source>

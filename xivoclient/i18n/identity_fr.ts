@@ -78,12 +78,6 @@ Context: %2</source>
 Contexte : %2</translation>
     </message>
     <message>
-        <source>Server: %1
-Context: %2</source>
-        <translation type="obsolete">Serveur: %1
-Contexte: %2</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/identity/identity.cpp" line="339"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
@@ -107,20 +101,6 @@ Contexte: %2</translation>
         <location filename="../src/xlets/identity/identityphone.cpp" line="219"/>
         <source>Phone %1</source>
         <translation>Téléphone %1</translation>
-    </message>
-    <message>
-        <source>Server: %1
-Context: %2</source>
-        <translation type="obsolete">Serveur: %1
-Contexte: %2</translation>
-    </message>
-    <message>
-        <source>Protocol: %1
-IPBXid: %2
-Context: %3</source>
-        <translation type="obsolete">Protocole : %1
-IPBXid : %2
-Contexte : %3</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="221"/>

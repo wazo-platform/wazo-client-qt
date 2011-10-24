@@ -49,10 +49,6 @@ Appel</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agents et %6 téléphones</translation>
     </message>
     <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4)</source>
-        <translation type="obsolete">&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4)</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="226"/>
         <source>Server: %1
 Context: %2</source>

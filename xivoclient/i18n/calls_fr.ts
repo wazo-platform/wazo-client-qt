@@ -44,14 +44,6 @@
         <translation>Salle de conférence numero %1</translation>
     </message>
     <message>
-        <source>%1 : %2</source>
-        <translation type="obsolete">%1 : %2</translation>
-    </message>
-    <message>
-        <source>Parked call</source>
-        <translation type="obsolete">Appel parqué</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
         <source>Parked call in %1</source>
         <translation>Appel parqué sur le %1</translation>

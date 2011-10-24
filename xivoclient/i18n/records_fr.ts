@@ -139,20 +139,6 @@ variables SVI : %8
 (colonne %9)</translation>
     </message>
     <message>
-        <source>call start : %1 (duration %2 s, direction %3)
-filename : %4
-current tag : %5
-svi entries : %6
-svi variables : %7
-(this column : %8)</source>
-        <translation type="obsolete">début d&apos;appel : %1 (durée %2 s, direction %3)
-fichier : %4
-tag actuel : %5
-entrées SVI : %6
-variables SVI : %7
-(colonne %8)</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/records/records.cpp" line="156"/>
         <location filename="../src/xlets/records/records.cpp" line="165"/>
         <source>You attempted to change tag for id %1.

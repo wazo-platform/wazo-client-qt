@@ -67,10 +67,6 @@
         <translation>&amp;Mettre en pause la conférence</translation>
     </message>
     <message>
-        <source> Conference room </source>
-        <translation type="obsolete"> Salle de conférence </translation>
-    </message>
-    <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="507"/>
         <source> Conference room %1 (%2) </source>
         <translation> Salle de conférence %1 (%2) </translation>
@@ -186,10 +182,6 @@
         <location filename="../src/xlets/conference/confroom.cpp" line="292"/>
         <source>No</source>
         <translation>Non</translation>
-    </message>
-    <message>
-        <source>nobody</source>
-        <translation type="obsolete">personne</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="54"/>
