@@ -429,14 +429,15 @@ void XletAgentDetails::queueClicked()
     if (action == "changequeue")
         b_engine->changeWatchedQueue(xqueueid);
     else if (action == "leavejoin") {
-        if (qmi == NULL)
-            return;
-        QString smstatus = qmi->status();
-        QString pmstatus = qmi->paused();
+        QString smstatus, pmstatus;
+        if (qmi != NULL) {
+            smstatus = qmi->status();
+            pmstatus = qmi->paused();
+        }
         if ((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
-            ipbxcommand["command"] = "agentleavequeue";
+            ipbxcommand["command"] = "queueremove";
         } else if (smstatus == "") {
-            ipbxcommand["command"] = "agentjoinqueue";
+            ipbxcommand["command"] = "queueadd";
         } else
             qDebug() << Q_FUNC_INFO << queuename << m_monitored_agentid << smstatus << pmstatus;
         // join the queue in the previously recorded paused status (to manage on the server side)
