@@ -236,18 +236,18 @@ void ConfigWidget::_insert_function_tab()
         
         int line = 0;
 
-        layout_queues->addWidget(new QLabel(tr("Queue Display"), this), line, 0);
+        layout_queues->addWidget(new QLabel(tr("Queue thresholds (waiting calls)"), this), line, 0);
         int ncol = 1;
         foreach(QString color, queuelevel_colors) {
             m_queuelevels[color] = new QSpinBox(this);
             m_queuelevels[color]->setRange(0, 100);
             m_queuelevels[color]->setValue(m_config["guioptions.queuelevels"].toMap().value(color).toUInt());
-            m_queuelevels[color]->setToolTip(tr("Longest wait threshold"));
+            m_queuelevels[color]->setToolTip(tr("Thresholds to change the color of the queue, in number of waiting calls"));
             layout_queues->addWidget(m_queuelevels[color], line, ncol++);
         }
         line++;
 
-        m_queue_longestwait = new QCheckBox(tr("Queue Display (Longest Wait)"), this);
+        m_queue_longestwait = new QCheckBox(tr("Queue thresholds (longest wait)"), this);
         m_queue_longestwait->setChecked(m_config["guioptions.queue_longestwait"].toBool());
         layout_queues->addWidget(m_queue_longestwait, line, 0);
         ncol = 1;
@@ -255,12 +255,12 @@ void ConfigWidget::_insert_function_tab()
             m_queuelevels_wait[color] = new QSpinBox(this);
             m_queuelevels_wait[color]->setRange(0, 3600);
             m_queuelevels_wait[color]->setValue(m_config["guioptions.queuelevels_wait"].toMap().value(color).toUInt());
-            m_queuelevels_wait[color]->setToolTip(tr("Call waiting threshold"));
+            m_queuelevels_wait[color]->setToolTip(tr("Thresholds to change the color of the queue, in seconds of longest wait"));
             layout_queues->addWidget(m_queuelevels_wait[color], line, ncol++);
         }
 
         line++;
-        m_queue_displaynu = new QCheckBox(tr("Queue Display number"), this);
+        m_queue_displaynu = new QCheckBox(tr("Display queue number"), this);
         m_queue_displaynu->setChecked(m_config["guioptions.queue_displaynu"].toBool());
         layout_queues->addWidget(m_queue_displaynu, line, 0);
     

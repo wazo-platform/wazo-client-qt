@@ -138,29 +138,16 @@
         <translation type="unfinished">Contacten</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="239"/>
         <source>Queue Display</source>
-        <translation>Weergave van de wachtrij</translation>
+        <translation type="obsolete">Weergave van de wachtrij</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="245"/>
-        <source>Longest wait threshold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="250"/>
         <source>Queue Display (Longest Wait)</source>
-        <translation>Wachtrij weergeven (langste wachttijd)</translation>
+        <translation type="obsolete">Wachtrij weergeven (langste wachttijd)</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="258"/>
-        <source>Call waiting threshold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="263"/>
         <source>Queue Display number</source>
-        <translation>Wachtrijnummer weergeven </translation>
+        <translation type="obsolete">Wachtrijnummer weergeven </translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="267"/>
@@ -357,6 +344,31 @@ ones beneath) on first window</source>
         <location filename="../src/configwidget.cpp" line="228"/>
         <location filename="../src/configwidget.cpp" line="296"/>
         <source>Double-click action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="239"/>
+        <source>Queue thresholds (waiting calls)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="245"/>
+        <source>Thresholds to change the color of the queue, in number of waiting calls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="250"/>
+        <source>Queue thresholds (longest wait)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="258"/>
+        <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="263"/>
+        <source>Display queue number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1142,12 +1154,12 @@ Bent u zeker?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="50"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
         <source>Contacts</source>
         <translation type="unfinished">Contacten</translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="57"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="58"/>
         <source>N&amp;ame or number to search :</source>
         <translation type="unfinished">Op te zoeken N&amp;aam of nummer:</translation>
     </message>

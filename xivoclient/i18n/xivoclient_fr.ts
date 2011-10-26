@@ -6,57 +6,57 @@
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="53"/>
         <source>Browse</source>
-        <translation type="unfinished">Parcourir</translation>
+        <translation>Parcourir</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="104"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
-        <translation type="unfinished">Fichiers CSV (*.csv);;Tous les Fichiers (*)</translation>
+        <translation>Fichiers CSV (*.csv);;Tous les Fichiers (*)</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="49"/>
         <source>File to load</source>
-        <translation type="unfinished">Fichier à charger</translation>
+        <translation>Fichier à charger</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="56"/>
         <source>Load</source>
-        <translation type="unfinished">Charger</translation>
+        <translation>Charger</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="102"/>
         <source>Open PhoneList File</source>
-        <translation type="unfinished">Ouvrir la liste de téléphones</translation>
+        <translation>Ouvrir la liste de téléphones</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="60"/>
         <source>Server</source>
-        <translation type="unfinished">Serveur</translation>
+        <translation>Serveur</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="61"/>
         <source>Get</source>
-        <translation type="unfinished">Récupérer</translation>
+        <translation>Récupérer</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="62"/>
         <source>Start</source>
-        <translation type="unfinished">Commencer</translation>
+        <translation>Commencer</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="63"/>
         <source>Stop</source>
-        <translation type="unfinished">Arrêter</translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="64"/>
         <source>Clear</source>
-        <translation type="unfinished">Nettoyer</translation>
+        <translation>Nettoyer</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="42"/>
         <source>Call Campaign</source>
-        <translation type="unfinished">Campagne d&apos;appel</translation>
+        <translation>Campagne d&apos;appel</translation>
     </message>
 </context>
 <context>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="172"/>
         <source>Allow the Automatic Opening of URL&apos;s</source>
-        <translation>Ouverture automatique d&apos;URL autorisée</translation>
+        <translation>Autoriser l'ouverture automatique d&apos;URL</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="328"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="220"/>
         <source>Contacts per row</source>
-        <translation>Nombre de contacts par rangée</translation>
+        <translation>Nombre de contacts par ligne</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="144"/>
@@ -159,11 +159,6 @@
         <translation>Rapport de présence</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="239"/>
-        <source>Queue Display</source>
-        <translation>Affichage des files</translation>
-    </message>
-    <message>
         <location filename="../src/configwidget.cpp" line="100"/>
         <source>Server Host</source>
         <translation>Adresse du serveur</translation>
@@ -187,6 +182,31 @@
         <location filename="../src/configwidget.cpp" line="125"/>
         <source>Try to reconnect interval</source>
         <translation>Délai de reconnexion</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="239"/>
+        <source>Queue thresholds (waiting calls)</source>
+        <translation>Seuils d'affichage des files (appels en attente)</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="245"/>
+        <source>Thresholds to change the color of the queue, in number of waiting calls</source>
+        <translation>Seuils de changement de couleur de file, en nombre d'appels en attente</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="250"/>
+        <source>Queue thresholds (longest wait)</source>
+        <translation>Seuils d'affichage des files (plus longue attente)</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="258"/>
+        <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
+        <translation>Seuils de changement de couleur de file, en secondes d'attente la plus longue</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="263"/>
+        <source>Display queue number</source>
+        <translation>Afficher le numéro de la file</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="318"/>
@@ -213,7 +233,7 @@
         <source>Show the Agent options (like the
 ones beneath) on first window</source>
         <translation>Montre les options d&apos;agent (telles
-que celles ci-dessous) en première page</translation>
+que celles ci-dessous) à la connexion</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="111"/>
@@ -229,16 +249,6 @@ que celles ci-dessous) en première page</translation>
         <location filename="../src/configwidget.cpp" line="230"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="250"/>
-        <source>Queue Display (Longest Wait)</source>
-        <translation>Affichage des files (plus longue attente)</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="263"/>
-        <source>Queue Display number</source>
-        <translation>Montrer le numéro de la file</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="267"/>
@@ -300,16 +310,6 @@ que celles ci-dessous) en première page</translation>
         <location filename="../src/configwidget.cpp" line="296"/>
         <source>Double-click action</source>
         <translation>Action de double-clic</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="245"/>
-        <source>Longest wait threshold</source>
-        <translation>Seuils pour attente la plus longue</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="258"/>
-        <source>Call waiting threshold</source>
-        <translation>Seuils pour appels en attente</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="275"/>
@@ -488,42 +488,42 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="41"/>
         <source>Contact</source>
-        <translation type="unfinished">Contact</translation>
+        <translation>Contact</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="44"/>
         <source>First Name</source>
-        <translation type="unfinished">Prénom</translation>
+        <translation>Prénom</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="46"/>
         <source>Last Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
         <source>Phone Number</source>
-        <translation type="unfinished">Numéro de téléphone</translation>
+        <translation>Numéro de téléphone</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="52"/>
         <source>Company</source>
-        <translation type="unfinished">Entreprise</translation>
+        <translation>Entreprise</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
         <source>Email Address</source>
-        <translation type="unfinished">Adresse email</translation>
+        <translation>Adresse email</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="54"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Numéro de fax</translation>
+        <translation>Numéro de fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="56"/>
         <source>Mobile Number</source>
-        <translation type="unfinished">Numéro de mobile</translation>
+        <translation>Numéro de mobile</translation>
     </message>
 </context>
 <context>
@@ -531,7 +531,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="42"/>
         <source>Sheets</source>
-        <translation type="unfinished">Fiches</translation>
+        <translation>Fiches</translation>
     </message>
 </context>
 <context>
@@ -539,22 +539,22 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="47"/>
         <source>Enter &amp;Number :</source>
-        <translation type="unfinished">&amp;Numéro :</translation>
+        <translation>&amp;Numéro :</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
         <source>Input here the phone number to dial</source>
-        <translation type="unfinished">Entrer ici le numéro à appeler</translation>
+        <translation>Entrer ici le numéro à appeler</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="44"/>
         <source>Dial Panel</source>
-        <translation type="unfinished">Panneau de composition de numéro</translation>
+        <translation>Panneau de composition de numéro</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
         <source>Dial</source>
-        <translation type="unfinished">Composer</translation>
+        <translation>Composer</translation>
     </message>
 </context>
 <context>
@@ -562,7 +562,7 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../src/xlets/fax-builtin/dirdialog.cpp" line="41"/>
         <source>Directory</source>
-        <translation type="unfinished">Répertoire</translation>
+        <translation>Répertoire</translation>
     </message>
 </context>
 <context>
@@ -570,32 +570,32 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="48"/>
         <source>Di&amp;rectory</source>
-        <translation type="unfinished">&amp;Répertoire</translation>
+        <translation>&amp;Répertoire</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="150"/>
         <source>Double-click to call</source>
-        <translation type="unfinished">Double-cliquer pour appeler</translation>
+        <translation>Double-cliquer pour appeler</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="148"/>
         <source>Double-click to send an E-mail to</source>
-        <translation type="unfinished">Double-cliquer pour envoyer un e-mail à</translation>
+        <translation>Double-cliquer pour envoyer un e-mail à</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="56"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="45"/>
         <source>Directory Panel</source>
-        <translation type="unfinished">Répertoire</translation>
+        <translation>Répertoire</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="44"/>
         <source>Directory</source>
-        <translation type="unfinished">Répertoire</translation>
+        <translation>Répertoire</translation>
     </message>
 </context>
 <context>
@@ -603,76 +603,76 @@ que celles ci-dessous) en première page</translation>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
         <source>1. Choose Destination Number</source>
-        <translation type="unfinished">1. Choisir le numéro destination</translation>
+        <translation>1. Choisir le numéro destination</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="66"/>
         <source>2. Choose File to Send</source>
-        <translation type="unfinished">2. Choisir le fichier à envoyer</translation>
+        <translation>2. Choisir le fichier à envoyer</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="79"/>
         <source>3. Hide the Number ?</source>
-        <translation type="unfinished">3. Cacher le numéro ?</translation>
+        <translation>3. Cacher le numéro ?</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="91"/>
         <source>4. Send your File</source>
-        <translation type="unfinished">4. Envoyer le fichier</translation>
+        <translation>4. Envoyer le fichier</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="72"/>
         <source>Browse</source>
-        <translation type="unfinished">Parcourir</translation>
+        <translation>Parcourir</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="53"/>
         <source>Directory</source>
-        <translation type="unfinished">Répertoire</translation>
+        <translation>Répertoire</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="51"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Numéro de fax</translation>
+        <translation>Numéro de fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="84"/>
         <source>Hide Number</source>
-        <translation type="unfinished">Cacher le numéro</translation>
+        <translation>Cacher le numéro</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="157"/>
         <source>Open Fax File</source>
-        <translation type="unfinished">Ouvrir le fichier fax</translation>
+        <translation>Ouvrir le fichier fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="159"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
-        <translation type="unfinished">Fichiers PDF (*.pdf);;Tous les fichiers (*)</translation>
+        <translation>Fichiers PDF (*.pdf);;Tous les fichiers (*)</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="95"/>
         <source>Send</source>
-        <translation type="unfinished">Envoyer</translation>
+        <translation>Envoyer</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="211"/>
         <source>Your Fax (file %1)
 is being processed and will be sent soon.</source>
-        <translation type="unfinished">Votre fax (fichier %1)
+        <translation>Votre fax (fichier %1)
 est en cours de traitement et sera bientôt envoyé.</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="232"/>
         <source>Not given</source>
-        <translation type="unfinished">Inconnue</translation>
+        <translation>Inconnue</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="234"/>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>
-        <translation type="unfinished">Votre fax (fichier %1)
+        <translation>Votre fax (fichier %1)
 n&apos;a PAS été envoyé à %2.
 Raison donnée : %3.</translation>
     </message>
@@ -680,53 +680,53 @@ Raison donnée : %3.</translation>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="207"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
-        <translation type="unfinished">Votre fax (fichier %1)
+        <translation>Votre fax (fichier %1)
 a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="216"/>
         <source>File not found</source>
-        <translation type="unfinished">Fichier non trouvé</translation>
+        <translation>Fichier non trouvé</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="218"/>
         <source>Empty file</source>
-        <translation type="unfinished">Fichier vide</translation>
+        <translation>Fichier vide</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="220"/>
         <source>Problem when dialing the number</source>
-        <translation type="unfinished">Problème lors de la composition du numéro</translation>
+        <translation>Problème lors de la composition du numéro</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
         <source>Unable to convert your PDF to TIFF</source>
-        <translation type="unfinished">Impossible de convertir votre PDF en TIFF</translation>
+        <translation>Impossible de convertir votre PDF en TIFF</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="224"/>
         <source>Document not a PDF</source>
-        <translation type="unfinished">Document non PDF</translation>
+        <translation>Document non PDF</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="226"/>
         <source>Dialog between CTI server and IPBX</source>
-        <translation type="unfinished">Dialogue entre le serveur CTI et l&apos;IPBX</translation>
+        <translation>Dialogue entre le serveur CTI et l&apos;IPBX</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="228"/>
         <source>(Server) missing directory</source>
-        <translation type="unfinished">(Serveur) répertoire manquant</translation>
+        <translation>(Serveur) répertoire manquant</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="230"/>
         <source>Unknown</source>
-        <translation type="unfinished">Inconnue</translation>
+        <translation>Inconnue</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="42"/>
         <source>Fax</source>
-        <translation type="unfinished">Fax</translation>
+        <translation>Fax</translation>
     </message>
 </context>
 <context>
@@ -895,7 +895,7 @@ a été envoyé à %2.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="354"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="482"/>
@@ -973,126 +973,126 @@ a été envoyé à %2.</translation>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="76"/>
         <source>&amp;New Contact</source>
-        <translation type="unfinished">&amp;Nouveau contact</translation>
+        <translation>&amp;Nouveau contact</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="80"/>
         <source>&amp;Export Contacts</source>
-        <translation type="unfinished">&amp;Exporter les contacts</translation>
+        <translation>&amp;Exporter les contacts</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="84"/>
         <source>&amp;Import Contacts</source>
-        <translation type="unfinished">&amp;Importer les contacts</translation>
+        <translation>&amp;Importer les contacts</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="102"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="256"/>
         <source>First Name</source>
-        <translation type="unfinished">Prénom</translation>
+        <translation>Prénom</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="103"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="260"/>
         <source>Last Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="104"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="265"/>
         <source>Phone Number</source>
-        <translation type="unfinished">Numéro de téléphone</translation>
+        <translation>Numéro de téléphone</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="105"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="272"/>
         <source>Email Address</source>
-        <translation type="unfinished">Adresse email</translation>
+        <translation>Adresse email</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="106"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="282"/>
         <source>Company</source>
-        <translation type="unfinished">Entreprise</translation>
+        <translation>Entreprise</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="191"/>
         <source>Open Contacts File</source>
-        <translation type="unfinished">Ouvrir un fichier de contact</translation>
+        <translation>Ouvrir un fichier de contact</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="267"/>
         <source>Number</source>
-        <translation type="unfinished">Numéro</translation>
+        <translation>Numéro</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="274"/>
         <source>Email</source>
-        <translation type="unfinished">Email</translation>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="88"/>
         <source>&amp;Search</source>
-        <translation type="unfinished">&amp;Recherche</translation>
+        <translation>&amp;Recherche</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="207"/>
         <source>Save Contacts File</source>
-        <translation type="unfinished">Enregistrer le fichier de contacts</translation>
+        <translation>Enregistrer le fichier de contacts</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="193"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="209"/>
         <source>Comma Separated Value (*.csv)</source>
-        <translation type="unfinished">Fichier CSV (*.csv)</translation>
+        <translation>Fichier CSV (*.csv)</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="68"/>
         <source>Personal Directory</source>
-        <translation type="unfinished">Répertoire personnel</translation>
+        <translation>Répertoire personnel</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="273"/>
         <source>E-mail Address</source>
-        <translation type="unfinished">Adresse de messagerie</translation>
+        <translation>Adresse de messagerie</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="107"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="287"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Numéro de Fax</translation>
+        <translation>Numéro de Fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="108"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="294"/>
         <source>Mobile Number</source>
-        <translation type="unfinished">Numéro de mobile</translation>
+        <translation>Numéro de mobile</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="288"/>
         <source>Fax</source>
-        <translation type="unfinished">Fax</translation>
+        <translation>Fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="295"/>
         <source>Mobile</source>
-        <translation type="unfinished">Mobile</translation>
+        <translation>Mobile</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="92"/>
         <source>&amp;Remove all Contacts</source>
-        <translation type="unfinished">&amp;Supprimer tous les contacts</translation>
+        <translation>&amp;Supprimer tous les contacts</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="406"/>
         <source>Removing all contacts</source>
-        <translation type="unfinished">Suppression de tous les contacts</translation>
+        <translation>Suppression de tous les contacts</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="407"/>
         <source>Removing all contacts.
 Are you sure ?</source>
-        <translation type="unfinished">Vous êtes sur le point de supprimer tous les contacts.
+        <translation>Vous êtes sur le point de supprimer tous les contacts.
 Êtes-vous sûr ?</translation>
     </message>
 </context>
@@ -1101,20 +1101,20 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/customerinfo-builtin/remarkarea.cpp" line="67"/>
         <source>&amp;Submit</source>
-        <translation type="unfinished">&amp;Soumettre</translation>
+        <translation>&amp;Soumettre</translation>
     </message>
 </context>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="57"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="58"/>
         <source>N&amp;ame or number to search :</source>
-        <translation type="unfinished">N&amp;om ou numéro à rechercher :</translation>
+        <translation>N&amp;om ou numéro à rechercher :</translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="50"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
         <source>Contacts</source>
-        <translation type="unfinished">Contacts</translation>
+        <translation>Contacts</translation>
     </message>
 </context>
 <context>

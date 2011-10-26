@@ -156,9 +156,8 @@
         <translation>Anwesenhaitsrapport</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="239"/>
         <source>Queue Display</source>
-        <translation>Anzeige Warteschlangen</translation>
+        <translation type="obsolete">Anzeige Warteschlangen</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="100"/>
@@ -184,6 +183,31 @@
         <location filename="../src/configwidget.cpp" line="125"/>
         <source>Try to reconnect interval</source>
         <translation>Zeit vor Wiederverbindung</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="239"/>
+        <source>Queue thresholds (waiting calls)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="245"/>
+        <source>Thresholds to change the color of the queue, in number of waiting calls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="250"/>
+        <source>Queue thresholds (longest wait)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="258"/>
+        <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="263"/>
+        <source>Display queue number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="318"/>
@@ -238,14 +262,12 @@ auf der ersten Seite</translation>
         <translation type="unfinished">Kontakt</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="250"/>
         <source>Queue Display (Longest Wait)</source>
-        <translation>Sehen Sie sich die längste Wartezeit in Warteschlangen</translation>
+        <translation type="obsolete">Sehen Sie sich die längste Wartezeit in Warteschlangen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="263"/>
         <source>Queue Display number</source>
-        <translation>Anzeige der Number auf Warteschlangen</translation>
+        <translation type="obsolete">Anzeige der Number auf Warteschlangen</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="267"/>
@@ -311,16 +333,6 @@ auf der ersten Seite</translation>
         <location filename="../src/configwidget.cpp" line="228"/>
         <location filename="../src/configwidget.cpp" line="296"/>
         <source>Double-click action</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="245"/>
-        <source>Longest wait threshold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="258"/>
-        <source>Call waiting threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1130,12 +1142,12 @@ Sind Sie sicher?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="57"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="58"/>
         <source>N&amp;ame or number to search :</source>
         <translation type="unfinished">N&amp;ame oder Nummer zu suchen :</translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="50"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
         <source>Contacts</source>
         <translation type="unfinished">Kontakt</translation>
     </message>
