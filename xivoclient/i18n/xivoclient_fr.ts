@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="172"/>
         <source>Allow the Automatic Opening of URL&apos;s</source>
-        <translation>Autoriser l'ouverture automatique d&apos;URL</translation>
+        <translation>Autoriser l&apos;ouverture automatique d&apos;URL</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="328"/>
@@ -95,11 +95,6 @@
         <location filename="../src/configwidget.cpp" line="215"/>
         <source>Contacts&apos; max number</source>
         <translation>Nombre max de contacts</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="220"/>
-        <source>Contacts per row</source>
-        <translation>Nombre de contacts par ligne</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="144"/>
@@ -186,22 +181,22 @@
     <message>
         <location filename="../src/configwidget.cpp" line="239"/>
         <source>Queue thresholds (waiting calls)</source>
-        <translation>Seuils d'affichage des files (appels en attente)</translation>
+        <translation>Seuils d&apos;affichage des files (appels en attente)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="245"/>
         <source>Thresholds to change the color of the queue, in number of waiting calls</source>
-        <translation>Seuils de changement de couleur de file, en nombre d'appels en attente</translation>
+        <translation>Seuils de changement de couleur de file, en nombre d&apos;appels en attente</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="250"/>
         <source>Queue thresholds (longest wait)</source>
-        <translation>Seuils d'affichage des files (plus longue attente)</translation>
+        <translation>Seuils d&apos;affichage des files (plus longue attente)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="258"/>
         <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
-        <translation>Seuils de changement de couleur de file, en secondes d'attente la plus longue</translation>
+        <translation>Seuils de changement de couleur de file, en secondes d&apos;attente la plus longue</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="263"/>
@@ -304,6 +299,11 @@ que celles ci-dessous) à la connexion</translation>
         <location filename="../src/configwidget.cpp" line="195"/>
         <source>Dialer</source>
         <translation>Composeur</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="220"/>
+        <source>Contacts per row (0 = auto)</source>
+        <translation>Nombre de contacts par ligne (0 = auto)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="228"/>
@@ -1107,7 +1107,7 @@ Are you sure ?</source>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="58"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="56"/>
         <source>N&amp;ame or number to search :</source>
         <translation>N&amp;om ou numéro à rechercher :</translation>
     </message>

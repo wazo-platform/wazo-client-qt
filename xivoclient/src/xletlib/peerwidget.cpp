@@ -42,11 +42,12 @@
 #include <QDebug>
 #include <QFontMetrics>
 
-#include "baseengine.h"
+#include <baseengine.h>
+#include <xivoconsts.h>
+#include <userinfo.h>
+#include <phoneinfo.h>
+
 #include "peerwidget.h"
-#include "xivoconsts.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
 
 /*! \brief Constructor
  */
@@ -118,7 +119,7 @@ PeerWidget::PeerWidget(const UserInfo * ui)
             this, SLOT(updateQueueStatus(const QString &)));
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(m_hLayout, 1, 2);
-    setMaximumWidth(200);
+    setMaximumWidth(PeerWidget::max_width);
 
     reloadSavedName();
 }

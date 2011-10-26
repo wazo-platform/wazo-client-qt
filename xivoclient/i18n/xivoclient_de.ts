@@ -185,6 +185,11 @@
         <translation>Zeit vor Wiederverbindung</translation>
     </message>
     <message>
+        <location filename="../src/configwidget.cpp" line="220"/>
+        <source>Contacts per row (0 = auto)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="239"/>
         <source>Queue thresholds (waiting calls)</source>
         <translation type="unfinished"></translation>
@@ -322,11 +327,6 @@ auf der ersten Seite</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="195"/>
         <source>Dialer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="220"/>
-        <source>Contacts per row</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1142,7 +1142,7 @@ Sind Sie sicher?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="58"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="56"/>
         <source>N&amp;ame or number to search :</source>
         <translation type="unfinished">N&amp;ame oder Nummer zu suchen :</translation>
     </message>

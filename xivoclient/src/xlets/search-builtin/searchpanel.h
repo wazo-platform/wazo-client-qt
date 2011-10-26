@@ -55,6 +55,7 @@ class SearchPanel : public XLet
     Q_OBJECT
     public:
         SearchPanel(QWidget *parent=0);
+        void resizeEvent(QResizeEvent *);
         ~SearchPanel();        //!< Destructor
     public slots:
         void affTextChanged(const QString &);
@@ -67,15 +68,14 @@ class SearchPanel : public XLet
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void removePhoneConfig(const QString &);
-        void updateConf();
     private:
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         QGridLayout *m_peerlayout; //!< layout object
         ExtendedLineEdit *m_input; //!< widget for search string input
-
-        int m_maxdisplay;  //!< max number of peers displayed on the search panel
-        int m_ncolumns;
+        QScrollArea * m_scrollarea; //!< widget to see all or part of the contacts list
+        
         QString m_searchpattern;
+        static const unsigned peer_spacing = 6;
     protected:
         virtual void paintEvent(QPaintEvent *event);
 };

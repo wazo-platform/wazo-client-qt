@@ -50,8 +50,6 @@ SearchPanel::SearchPanel(QWidget *parent)
     // qDebug() << Q_FUNC_INFO;
     setTitle(tr("Contacts"));
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
-    
-    updateConf();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
@@ -63,18 +61,20 @@ SearchPanel::SearchPanel(QWidget *parent)
             this, SLOT(affTextChanged(const QString &)));
     vlayout->addWidget(m_input);
 
-    QScrollArea *scrollarea = new QScrollArea(this);
-    scrollarea->setWidgetResizable(true);
-    QWidget *widget = new QWidget(scrollarea);
+    m_scrollarea = new QScrollArea(this);
+    m_scrollarea->setWidgetResizable(true);
+    QWidget *widget = new QWidget(m_scrollarea);
     widget->setObjectName("scroller");
-    scrollarea->setWidget(widget);
+    m_scrollarea->setWidget(widget);
     QVBoxLayout *scrollarealayout = new QVBoxLayout(widget);
     m_peerlayout = new QGridLayout;
     m_peerlayout->setMargin(0);
-    m_peerlayout->setSpacing(6);
+    m_peerlayout->setSpacing(SearchPanel::peer_spacing);
     scrollarealayout->addLayout(m_peerlayout);
-    scrollarealayout->addStretch(1);
-    vlayout->addWidget(scrollarea);
+    /* addstretch makes the peerlayout only use the vertical space it needs,
+     * instead of taking all the space available */
+    scrollarealayout->addStretch(10);
+    vlayout->addWidget(m_scrollarea);
 
     m_searchpattern = "";
 
@@ -98,7 +98,7 @@ SearchPanel::SearchPanel(QWidget *parent)
             this, SLOT(removePeers()));
     
     connect(b_engine, SIGNAL(settingsChanged()),
-            this, SLOT(updateConf()));
+            this, SLOT(updateDisplay()));
 }
 
 SearchPanel::~SearchPanel()
@@ -115,10 +115,27 @@ void SearchPanel::affTextChanged(const QString & text)
     updateDisplay();
 }
 
+void SearchPanel::resizeEvent(QResizeEvent *) {
+    updateDisplay();
+}
+
 /*! \brief update the list of Persons displayed
  */
 void SearchPanel::updateDisplay()
 {
+    // max number of peers displayed on the search panel
+    unsigned maxdisplay = b_engine->getConfig("guioptions.contacts-max").toUInt();
+    // number of columns (0 = auto)
+    unsigned ncolumns = b_engine->getConfig("guioptions.contacts-width").toUInt();
+    if (ncolumns == 0) {
+        ncolumns = m_scrollarea->width() /
+            (PeerWidget::max_width + 2 * SearchPanel::peer_spacing);
+    }
+    // Prevent arithmetic exception
+    if (ncolumns == 0) {
+        ncolumns = 1;
+    }
+
     // first hide/delete everyonedisplayed
     QHashIterator<QString, PeerItem *> i(m_peerhash);
     while (i.hasNext()) {
@@ -129,15 +146,13 @@ void SearchPanel::updateDisplay()
             (m_peerlayout->indexOf(peerwidget) > -1)) {
             m_peerlayout->removeWidget(peerwidget);
             peerwidget->hide();
-            // originate
-            // if switchboard : transfer, atxfer, hangup, intercept
             peeritem->setWidget(NULL);
             peerwidget->deleteLater();
         }
     }
 
     // then display all users whose name match the search pattern
-    int naff = 0;
+    unsigned naff = 0;
     i.toFront();
     while (i.hasNext()) {
         i.next();
@@ -157,7 +172,7 @@ void SearchPanel::updateDisplay()
         }
         bool name_match = userinfo->fullname().contains(
             m_searchpattern, Qt::CaseInsensitive);
-        if ((name_match || num_match) && (naff < m_maxdisplay)) {
+        if ((name_match || num_match) && (naff < maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
                 if (! userinfo->agentid().isEmpty()) {
@@ -173,8 +188,8 @@ void SearchPanel::updateDisplay()
                 peeritem->updateDisplayedName();
 
                 m_peerlayout->addWidget(peerwidget,
-                                        naff / m_ncolumns,
-                                        naff % m_ncolumns);
+                                        naff / ncolumns,
+                                        naff % ncolumns);
 
                 naff++;
                 peerwidget->show();
@@ -317,13 +332,4 @@ void SearchPanel::paintEvent(QPaintEvent *)
         update();
         i = 1;
     }
-}
-
-/*! \brief reads the configuration from BaseEngine
- */
-void SearchPanel::updateConf()
-{
-    m_maxdisplay = b_engine->getConfig("guioptions.contacts-max").toUInt();
-    m_ncolumns = b_engine->getConfig("guioptions.contacts-width").toUInt();
-    updateDisplay();
 }

@@ -34,10 +34,9 @@
 #ifndef __PEERWIDGET_H__
 #define __PEERWIDGET_H__
 
-#include "xletlib_export.h"
-
 #include <QtGui>
 
+#include "xletlib_export.h"
 #include "basepeerwidget.h"
 #include "taintedpixmap.h"
 #include "chitchat.h"
@@ -82,7 +81,10 @@ class XLETLIB_EXPORT PeerWidget : public BasePeerWidget
         QLabel *m_textlbl;        //!< text label : to display peer name
         QHBoxLayout * m_hLayout;
         QWidget * m_peer;
-        static const int m_iconsize = 25;;
+        static const int m_iconsize = 25;
+
+    public:
+        static const unsigned max_width = 200;
 };
 
 class ChitchatButton : public QPushButton

@@ -215,9 +215,9 @@ void ConfigWidget::_insert_function_tab()
         layout_contacts->addRow(tr("Contacts' max number"), m_contactssize_sbox);
         
         m_contactswidth_sbox = new QSpinBox(this);
-        m_contactswidth_sbox->setRange(1, 20);
+        m_contactswidth_sbox->setRange(0, 20);
         m_contactswidth_sbox->setValue(m_config["guioptions.contacts-width"].toUInt());
-        layout_contacts->addRow(tr("Contacts per row"), m_contactswidth_sbox);
+        layout_contacts->addRow(tr("Contacts per row (0 = auto)"), m_contactswidth_sbox);
         
         m_contacts_dblclick = new QComboBox(this);
         foreach (QString key, m_dblclick_actions.keys()) {

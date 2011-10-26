@@ -306,6 +306,11 @@ ones beneath) on first window</source>
         <translation>Max. aantal tabbladen</translation>
     </message>
     <message>
+        <location filename="../src/configwidget.cpp" line="220"/>
+        <source>Contacts per row (0 = auto)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="376"/>
         <source>Systrayed at startup</source>
         <translation>Minimaliseren bij het opstarten</translation>
@@ -334,11 +339,6 @@ ones beneath) on first window</source>
         <location filename="../src/configwidget.cpp" line="164"/>
         <source>Presence indicator size (in pixels)</source>
         <translation>Grootte van de aanwezigheidsindicator (in pixels)</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="220"/>
-        <source>Contacts per row</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="228"/>
@@ -1159,7 +1159,7 @@ Bent u zeker?</translation>
         <translation type="unfinished">Contacten</translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="58"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="56"/>
         <source>N&amp;ame or number to search :</source>
         <translation type="unfinished">Op te zoeken N&amp;aam of nummer:</translation>
     </message>

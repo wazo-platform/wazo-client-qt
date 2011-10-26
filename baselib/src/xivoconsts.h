@@ -34,9 +34,10 @@
 #ifndef __XiVOCONSTS_H__
 #define __XiVOCONSTS_H__
 
-#include "baselib_export.h"
 #include <QString>
 #include <QStringList>
+
+#include "baselib_export.h"
 
 #define XUSERID_MIMETYPE  "XiVO_IPBX_XUSERID"
 #define XPHONEID_MIMETYPE "XiVO_IPBX_XPHONEID"
