@@ -108,7 +108,7 @@ bool UserInfo::hasPhoneId(const QString & xphoneid) const
 
 /*! \brief Returns a phone number for a channel
  *
- * If a channel is owned by the one of the user's phone the phone number
+ * If a channel is owned by one of the user's phone the phone number
  * is returned.
  *
  * \param xcid The channel's XiVO id
