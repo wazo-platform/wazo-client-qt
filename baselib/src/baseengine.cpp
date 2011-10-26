@@ -87,7 +87,6 @@ BaseEngine::BaseEngine(QSettings *settings,
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
       m_forced_to_disconnect(false), m_tree(new DStore())
 {
-    b_engine = this;
     settings->setParent(this);
     m_timerid_keepalive = 0;
     m_timerid_changestate = 0;
@@ -1092,10 +1091,6 @@ void BaseEngine::parseCommand(const QString &line)
 void BaseEngine::configsLists(const QString & thisclass, const QString & function,
                               const QVariantMap & datamap)
 {
-    QVariantMap payload;
-    if (function == "sendlist")
-        payload = datamap.value("payload").toMap();
-
     if (thisclass == "getlist") {
         // qDebug() << Q_FUNC_INFO << thisclass << function << datamap;
         QString listname = datamap.value("listname").toString();

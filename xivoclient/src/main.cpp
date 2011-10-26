@@ -124,9 +124,9 @@ int main(int argc, char ** argv)
     
     settings->setValue("profile/lastused", profile);
     
-    BaseEngine *engine = new BaseEngine(settings, info_osname);
+    b_engine = new BaseEngine(settings, info_osname);
 
-    QString qsskind = engine->getConfig("qss").toString();
+    QString qsskind = b_engine->getConfig("qss").toString();
 
     QFile qssFile(QString(":/%1.qss").arg(qsskind));
     if(qssFile.open(QIODevice::ReadOnly)) {
@@ -134,20 +134,20 @@ int main(int argc, char ** argv)
     }
 
     MainWidget window;
-    bool activate_on_tel = engine->getConfig("activate_on_tel").toBool();
+    bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
     app.setActivationWindow(&window, activate_on_tel);
 
     app.setQuitOnLastWindowClosed(false);
     app.setProperty("stopper", "lastwindow");
 
     QObject::connect(&app, SIGNAL(standBy()),
-                     engine, SLOT(stop()));
+                     b_engine, SLOT(stop()));
     QObject::connect(&app, SIGNAL(resume()),
-                     engine, SLOT(start()));
+                     b_engine, SLOT(start()));
     QObject::connect(&app, SIGNAL(powerEvent(const QString &)),
-                     engine, SLOT(powerEvent(const QString &)));
+                     b_engine, SLOT(powerEvent(const QString &)));
     QObject::connect(&app, SIGNAL(messageReceived(const QString &)),
-                     engine, SLOT(handleOtherInstanceMessage(const QString &)));
+                     b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
 
     return app.exec();
 }

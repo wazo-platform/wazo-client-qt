@@ -178,7 +178,6 @@ void SearchPanel::updateDisplay()
 
                 naff++;
                 peerwidget->show();
-                // if switchboard : transfer, atxfer, hangup, intercept
             }
         }
     }
