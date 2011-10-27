@@ -57,7 +57,7 @@ ServicePanel::ServicePanel(QWidget * parent)
     // m_capalegend["incallrec"]    = tr("");
     m_capalegend["incallfilter"]    = tr("Call &Filtering");
     m_capalegend["enablednd"]       = tr("Do Not &Disturb");
-    m_capalegend["fwdrna"]          = tr("Forward on &No Reply");
+    m_capalegend["fwdrna"]          = tr("Forward on &No Answer");
     m_capalegend["fwdbusy"]         = tr("Forward on &Busy");
     m_capalegend["fwdunc"]          = tr("&Unconditional Forward");
 
