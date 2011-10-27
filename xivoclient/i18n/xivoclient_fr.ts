@@ -291,6 +291,11 @@ que celles ci-dessous) à la connexion</translation>
         <translation>Petite</translation>
     </message>
     <message>
+        <location filename="../src/configwidget.cpp" line="71"/>
+        <source>Call</source>
+        <translation>Appeler</translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="193"/>
         <source>Lines of call history saved</source>
         <translation>Lignes de l&apos;historique d&apos;appel conservées</translation>

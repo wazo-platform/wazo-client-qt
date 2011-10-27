@@ -320,6 +320,11 @@ auf der ersten Seite</translation>
         <translation>klein</translation>
     </message>
     <message>
+        <location filename="../src/configwidget.cpp" line="71"/>
+        <source>Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="193"/>
         <source>Lines of call history saved</source>
         <translation type="unfinished"></translation>

@@ -341,6 +341,11 @@ ones beneath) on first window</source>
         <translation>Grootte van de aanwezigheidsindicator (in pixels)</translation>
     </message>
     <message>
+        <location filename="../src/configwidget.cpp" line="71"/>
+        <source>Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="228"/>
         <location filename="../src/configwidget.cpp" line="296"/>
         <source>Double-click action</source>

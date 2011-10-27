@@ -68,7 +68,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     m_config = b_engine->getConfig();
     
-    m_dblclick_actions["call"] = "Call";
+    m_dblclick_actions["call"] = tr("Call");
     // XXX: disable atxfer until they work in asterisk 1.8
     // m_dblclick_actions["atxfer"] = "Indirect transfer";
 

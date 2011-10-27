@@ -497,7 +497,7 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
             if (can_hangup.contains(c->commstatus())
                 || c->talkingto_kind().contains("meetme")) {
-                QAction * action = new QAction("&Hangup", this);
+                QAction * action = new QAction(tr("&Hangup"), this);
                 action->setProperty("xchannel", c->xid());
                 menu->addAction(action);
                 connect(action, SIGNAL(triggered()), this, SLOT(hangup()));
@@ -518,7 +518,10 @@ void BasePeerWidget::addInterceptMenu(QMenu * menu)
     foreach (const QString & channelxid, m_ui_remote->xchannels()) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
             if (c->commstatus() == CHAN_STATUS_RINGING) {
-                QString s = tr(m_transfered ? "Cancel transfer" : "&Intercept");
+                /* tr() can't be factorised, e.g. tr(..?..:..), because lupdate
+                 * can't evaluate the ternary operator and will not detect the
+                 * strings */
+                QString s = m_transfered ? tr("Cancel transfer") : tr("&Intercept");
                 QAction * action = new QAction(s, this);
                 action->setProperty("xchannel",
                                     (QString("%0/%1")
