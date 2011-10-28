@@ -32,6 +32,7 @@
  */
 
 #include <QDebug>
+
 #include "userinfo.h"
 #include "baseengine.h"
 
@@ -41,10 +42,16 @@
  */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
-  : XInfo(ipbxid, id), m_simultcalls(0), m_enableclient(false),
-    m_callrecord(false), m_enablednd(false), m_enablevoicemail(false),
-    m_incallfilter(false), m_enablebusy(false), m_enablerna(false),
-    m_enableunc(false)
+  : XInfo(ipbxid, id),
+    m_simultcalls(0),
+    m_enableclient(false),
+    m_enablevoicemail(false),
+    m_callrecord(false),
+    m_incallfilter(false),
+    m_enablednd(false),
+    m_enableunc(false),
+    m_enablerna(false),
+    m_enablebusy(false)
 {
 }
 
@@ -54,7 +61,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
     haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
     haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
-    haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
 
     haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
@@ -165,9 +171,8 @@ QString UserInfo::toString() const
 {
     QString str;
 
-    str = "Userid=" + m_id + " company=" + m_company + " fullname=" + m_fullname;
+    str  = "Userid=" + m_id + " fullname=" + m_fullname;
     str += " mobile=" + m_mobilenumber;
-    str += " m_voicemailnum=" + m_voicemailnumber;
     str += " nphones=" + QString::number(m_phoneidlist.size());
     str += " phonesids=" + m_phoneidlist.join(",");
     str += " status=" + m_availstate;
@@ -176,7 +181,7 @@ QString UserInfo::toString() const
 }
 
 /*!
- * Retrieves a list of channels for this user
+ * \brief Retrieves a list of channels for this user
  */
 QStringList UserInfo::xchannels() const
 {
@@ -192,7 +197,7 @@ QStringList UserInfo::xchannels() const
 }
 
 /*!
- * Check if we are talking to another user
+ * \brief Check if we are talking to another user
  * \param rhs Other user
  */
 bool UserInfo::isTalkingTo(const QString & rhs) const

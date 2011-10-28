@@ -304,10 +304,8 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         m_identityphones[xphoneid]->setPhoneId(xphoneid);
     }
     m_phonenum->setText(b_engine->phonenumbers(m_ui).join(", "));
-    m_phonenum->setToolTip(tr("IPBXid: %1\n"
-                              "Context: %2")
-                           .arg(m_ui->ipbxid())
-                           .arg(m_ui->context()));
+    m_phonenum->setToolTip(tr("IPBXid: %1")
+                           .arg(m_ui->ipbxid()));
 
     if (m_ui->voicemailid().isEmpty())
         m_voicemail->hide();

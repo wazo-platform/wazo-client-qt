@@ -1,8 +1,8 @@
-#include "test_userinfo.h"
-
 #include <QtTest/QtTest>
 
 #include "userinfo.h"
+
+#include "test_userinfo.h"
 
 TestUserInfo::TestUserInfo()
 {
@@ -18,26 +18,27 @@ void TestUserInfo::init()
     m_linelist.append("42");
     m_phoneidlist.append(QString("%0/%1").arg(m_ipbxid).arg("42"));
 
-    m_prop1["loginclient"] = "testlogin";
     m_prop1["fullname"] = "testfullname";
-    m_prop1["mobilephonenumber"] = "4185555555";
-    m_prop1["context"] = "testctx";
-    m_prop1["simultcalls"] = 5;
-    m_prop1["agentid"] = "1234";
     m_prop1["voicemailid"] = "2345";
-    m_prop1["callrecord"] = false;
-    m_prop1["enablednd"] = false;
-    m_prop1["enablevoicemail"] = true;
-    m_prop1["incallfilter"] = false;
-    m_prop1["enablebusy"] = false;
-    m_prop1["enablerna"] = true;
-    m_prop1["enableune"] = false;
+    m_prop1["agentid"] = "1234";
+    m_prop1["simultcalls"] = 5;
     m_prop1["enableclient"] = true;
+    m_prop1["loginclient"] = "testlogin";
+    m_prop1["enablevoicemail"] = true;
+    m_prop1["callrecord"] = false;
+    m_prop1["incallfilter"] = false;
+    m_prop1["enablednd"] = false;
+    m_prop1["enableunc"] = false;
+    m_prop1["enablerna"] = true;
     m_prop1["destrna"] = "1002";
+    m_prop1["enablebusy"] = false;
+    m_prop1["mobilephonenumber"] = "4185555555";
     m_prop1["linelist"] = m_linelist;
+    m_prop1["available"] = "available";
+    m_prop1["connection"] = "yes";
 }
 
-void TestUserInfo::ctxor()
+void TestUserInfo::constructor()
 {
     QString ipbxid("testipbx");
     QString id("1234");
@@ -47,32 +48,33 @@ void TestUserInfo::ctxor()
 
     QCOMPARE(u.ipbxid(), ipbxid);
     QCOMPARE(u.id(), id);
-    QCOMPARE(u.mobileNumber(), empty);
     QCOMPARE(u.fullname(), empty);
-    QCOMPARE(u.ctilogin(), empty);
-    QCOMPARE(u.context(), empty);
-    QCOMPARE(u.agentid(), empty);
-    QCOMPARE(u.xagentid(), empty);
     QCOMPARE(u.voicemailid(), empty);
     QCOMPARE(u.xvoicemailid(), empty);
-    QCOMPARE(u.agentNumber(), empty);
-    QCOMPARE(u.voicemailNumber(), empty);
-    QCOMPARE(u.destbusy(), empty);
-    QCOMPARE(u.destrna(), empty);
-    QCOMPARE(u.destunc(), empty);
-    QCOMPARE(u.availstate(), empty);
-    QCOMPARE(u.callrecord(), false);
-    QCOMPARE(u.enablednd(), false);
-    QCOMPARE(u.enablevoicemail(), false);
-    QCOMPARE(u.incallfilter(), false);
-    QCOMPARE(u.enablebusy(), false);
-    QCOMPARE(u.enablerna(), false);
-    QCOMPARE(u.enableunc(), false);
-    QCOMPARE(u.enableclient(), false);
+    QCOMPARE(u.agentid(), empty);
+    QCOMPARE(u.xagentid(), empty);
     QCOMPARE(u.simultcalls(), 0);
-    QCOMPARE(u.xchannels(), emptylist);
+    QCOMPARE(u.enableclient(), false);
+    QCOMPARE(u.ctilogin(), empty);
+    QCOMPARE(u.enablevoicemail(), false);
+    QCOMPARE(u.callrecord(), false);
+    QCOMPARE(u.incallfilter(), false);
+    QCOMPARE(u.enablednd(), false);
+    QCOMPARE(u.enableunc(), false);
+    QCOMPARE(u.destunc(), empty);
+    QCOMPARE(u.enablerna(), false);
+    QCOMPARE(u.destrna(), empty);
+    QCOMPARE(u.enablebusy(), false);
+    QCOMPARE(u.destbusy(), empty);
+    QCOMPARE(u.mobileNumber(), empty);
+    
     QCOMPARE(u.phonelist(), emptylist);
+    
+    QCOMPARE(u.availstate(), empty);
+    QCOMPARE(u.connected(), false);
+    
     QCOMPARE(u.identitylist(), emptylist);
+    QCOMPARE(u.xchannels(), emptylist);
 }
 
 void TestUserInfo::xid()
@@ -87,10 +89,12 @@ void TestUserInfo::updateConfig()
 {
     UserInfo u(m_ipbxid, "1");
     {
+        // ensure we have at least one member that is different before updateConfig
         QCOMPARE(u.fullname(), QString());
+        
         bool res = u.updateConfig(m_prop1);
         QCOMPARE(res, true);
-        QCOMPARE(u.phonelist(), m_phoneidlist);
+        
         QCOMPARE(u.fullname(), m_prop1["fullname"].toString());
         QString vmxid = (QString("%0/%1").arg(m_ipbxid)
                          .arg(m_prop1["voicemailid"].toString()));
@@ -99,9 +103,19 @@ void TestUserInfo::updateConfig()
                         .arg(m_prop1["agentid"].toString()));
         QCOMPARE(u.xagentid(), axid);
         QCOMPARE(u.simultcalls(), m_prop1["simultcalls"].toInt());
+        QCOMPARE(u.enableclient(), m_prop1["enableclient"].toBool());
+        QCOMPARE(u.ctilogin(), m_prop1["loginclient"].toString());
+        QCOMPARE(u.enablevoicemail(), m_prop1["enablevoicemail"].toBool());
+        QCOMPARE(u.callrecord(), m_prop1["callrecord"].toBool());
+        QCOMPARE(u.incallfilter(), m_prop1["incallfilter"].toBool());
+        QCOMPARE(u.enablednd(), m_prop1["enablednd"].toBool());
+        QCOMPARE(u.enableunc(), m_prop1["enableunc"].toBool());
         QCOMPARE(u.enablerna(), m_prop1["enablerna"].toBool());
         QCOMPARE(u.destrna(), m_prop1["destrna"].toString());
-        QCOMPARE(u.enableclient(), m_prop1["enableclient"].toBool());
+        QCOMPARE(u.enablebusy(), m_prop1["enablebusy"].toBool());
+        QCOMPARE(u.mobileNumber(), m_prop1["mobilephonenumber"].toString());
+        
+        QCOMPARE(u.phonelist(), m_phoneidlist);
     }
     {
         bool res = u.updateConfig(m_prop1);
@@ -122,6 +136,32 @@ void TestUserInfo::updateConfig()
     }
 }
 
+void TestUserInfo::updateStatus()
+{
+    UserInfo u(m_ipbxid, "1234");
+    {
+        QCOMPARE(u.availstate(), QString());
+        bool res = u.updateStatus(m_prop1);
+        QCOMPARE(res, true);
+
+        QCOMPARE(u.availstate(), m_prop1["availstate"].toString());
+        QCOMPARE(u.connected(), true);
+    }
+    {
+        bool res = u.updateStatus(m_prop1);
+        QCOMPARE(res, false);
+    }
+}
+
+void TestUserInfo::setAvailState()
+{
+    UserInfo u(m_ipbxid, "1234");
+    QCOMPARE(u.availstate(), QString());
+    QString teststate("teststate");
+    u.setAvailState(teststate);
+    QCOMPARE(u.availstate(), teststate);
+}
+
 void TestUserInfo::hasPhoneId()
 {
     UserInfo u(m_ipbxid, "1234");
@@ -132,11 +172,27 @@ void TestUserInfo::hasPhoneId()
     QCOMPARE(u.hasPhoneId(QString("%0/%1").arg(m_ipbxid).arg("133")), false);
 }
 
-void TestUserInfo::availstate()
+void TestUserInfo::hasChannelId()
 {
-    UserInfo u(m_ipbxid, "1234");
-    QCOMPARE(u.availstate(), QString());
-    QString teststate("teststate");
-    u.setAvailState(teststate);
-    QCOMPARE(u.availstate(), teststate);
+    // need a BaseEngine mock
+}
+
+void TestUserInfo::findNumberForXChannel()
+{
+    // need a BaseEngine mock
+}
+
+void TestUserInfo::xchannels()
+{
+    // need a BaseEngine mock
+}
+
+void TestUserInfo::isTalkingTo()
+{
+    // need a BaseEngine mock
+}
+
+void TestUserInfo::identitylist()
+{
+    // need a BaseEngine mock
 }

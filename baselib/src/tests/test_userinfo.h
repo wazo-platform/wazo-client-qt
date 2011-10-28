@@ -6,11 +6,17 @@ class TestUserInfo: public QObject
   public:
     TestUserInfo();
   private slots:
-    void ctxor();
+    void constructor();
     void xid();
     void updateConfig();
+    void updateStatus();
+    void setAvailState();
     void hasPhoneId();
-    void availstate();
+    void hasChannelId();
+    void findNumberForXChannel();
+    void xchannels();
+    void isTalkingTo();
+    void identitylist();
   private:
     void init();
     QString m_ipbxid;

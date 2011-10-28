@@ -35,10 +35,6 @@
 #define __USERINFO_H__
 
 #include "baselib_export.h"
-#include <QStringList>
-#include <QVariant>
-#include <QHash>
-#include <QMap>
 #include "xinfo.h"
 
 /*! \brief Store User information
@@ -47,89 +43,90 @@ class BASELIB_EXPORT UserInfo : public XInfo
 {
     public:
         UserInfo(const QString &, const QString &);
-        bool updateConfig(const QVariantMap &);
-        bool updateStatus(const QVariantMap &);
-
-        void setAvailState(const QString & availstate) {m_availstate = availstate;};
-
-        void setPhoneIdList(const QStringList &);
-        void setAgentNumber(const QString &);
-
-        bool hasPhoneId(const QString &) const;
-        bool hasChannelId(const QString &) const;
-
-        const QString & mobileNumber() const { return m_mobilenumber; };
-        const QStringList & phonelist() const { return m_phoneidlist; };
-        const QStringList & identitylist() const;
-        const QString & fullname() const { return m_fullname; };
-        const QString & ctilogin() const { return m_ctilogin; };
-        const QString & context() const { return m_context; };
-        int simultcalls() const { return m_simultcalls; };
-        const QString & agentid() const { return m_agentid; };
-        const QString & xagentid() const { return m_xagentid; };
-        const QString & voicemailid() const { return m_voicemailid; };
-        const QString & xvoicemailid() const { return m_xvoicemailid; };
-
-        // method to fetch config indirectly
-        const QString & agentNumber() const { return m_agentnumber; };
-        const QString & voicemailNumber() const { return m_voicemailnumber; };
-
-        bool callrecord() const { return m_callrecord; };
-        bool enablednd() const { return m_enablednd; };
-        bool enablevoicemail() const { return m_enablevoicemail; };
-        bool incallfilter() const { return m_incallfilter; };
-        bool enablebusy() const { return m_enablebusy; };
-        const QString & destbusy() const { return m_destbusy; };
-        bool enablerna() const { return m_enablerna; };
-        const QString & destrna() const { return m_destrna; };
-        bool enableunc() const { return m_enableunc; };
-        const QString & destunc() const { return m_destunc; };
-
-        bool enableclient() const { return m_enableclient; };
-
-        // methods to fetch statuses
-        const QString & availstate() const;
         QString toString() const;
 
-        // helper methods
-        QString findNumberForXChannel(const QString &) const;
-        QStringList xchannels() const;
-        bool isTalkingTo(const QString &) const;
-        bool connected() const { return m_connection == "yes"; };
+        //! \name Getters
+        //! @{
+            // Config
+            const QString & fullname() const { return m_fullname; };
+            const QString & voicemailid() const { return m_voicemailid; };
+            const QString & xvoicemailid() const { return m_xvoicemailid; };
+            const QString & agentid() const { return m_agentid; };
+            const QString & xagentid() const { return m_xagentid; };
+            int simultcalls() const { return m_simultcalls; };
+            bool enableclient() const { return m_enableclient; };
+            const QString & ctilogin() const { return m_ctilogin; };
+            bool enablevoicemail() const { return m_enablevoicemail; };
+            bool callrecord() const { return m_callrecord; };
+            bool incallfilter() const { return m_incallfilter; };
+            bool enablednd() const { return m_enablednd; };
+            bool enableunc() const { return m_enableunc; };
+            const QString & destunc() const { return m_destunc; };
+            bool enablerna() const { return m_enablerna; };
+            const QString & destrna() const { return m_destrna; };
+            bool enablebusy() const { return m_enablebusy; };
+            const QString & destbusy() const { return m_destbusy; };
+            const QString & mobileNumber() const { return m_mobilenumber; };
+            
+            const QStringList & phonelist() const { return m_phoneidlist; };
+
+            // Status
+            const QString & availstate() const;
+            bool connected() const { return m_connection == "yes"; };
+        //! @}
+
+        //! \name Setters
+        //! @{
+            bool updateConfig(const QVariantMap &);
+            bool updateStatus(const QVariantMap &);
+
+            void setAvailState(const QString & availstate) {m_availstate = availstate;};
+
+            void setPhoneIdList(const QStringList &);
+        //! @}
+
+        //! \name Helpers
+        //! @{
+            bool hasPhoneId(const QString &) const;
+            bool hasChannelId(const QString &) const;
+            QString findNumberForXChannel(const QString &) const;
+            QStringList xchannels() const;
+            bool isTalkingTo(const QString &) const;
+            const QStringList & identitylist() const;
+        //! @}
+            
     private:
-        QString m_company;  //!< user company
-        QString m_ctilogin;  //!< user login on cti
-        QString m_fullname;  //!< user full name
-        QString m_context;  //!< user context
-        QString m_connection;
+        //! \name Config
+        //! @{
+            QString m_fullname; //!< user full name
+            QString m_voicemailid;              //!< voice mail box id
+            QString m_xvoicemailid;             //!< ipbxid + voice mail box id
+            QString m_agentid;                  //!< agent id
+            QString m_xagentid;                 //!< ipbxid + agent id
+            int m_simultcalls;
+            bool m_enableclient;
+            QString m_ctilogin;                 //!< user login on cti
+            bool m_enablevoicemail;
+            bool m_callrecord;
+            bool m_incallfilter;
+            bool m_enablednd;
+            bool m_enableunc;
+            QString m_destunc;
+            bool m_enablerna;
+            QString m_destrna;
+            bool m_enablebusy;
+            QString m_destbusy;
+            QString m_mobilenumber;             //!< mobile phone number
+            
+            QStringList m_phoneidlist;          //!< map to phones
+            mutable QStringList m_identitylist; //!< Cached identities for this user
+        //! @}
 
-        int m_simultcalls;
-
-        QString m_mobilenumber;  //!< mobile phone number
-        QString m_agentid; //!< agent id
-        QString m_xagentid; //!< ipbxid + agent id
-        QString m_voicemailid;  //!< voice mail box id
-        QString m_xvoicemailid;  //!< ipbxid + voice mail box id
-        QStringList m_phoneidlist;  //!< map to phones
-        mutable QStringList m_identitylist; //!< Cached identities for this user
-
-        QString m_agentnumber;  //!< agent number
-        QString m_voicemailnumber;  //!< voice mail box number
-
-        bool m_enableclient;
-
-        bool m_callrecord;
-        bool m_enablednd;
-        bool m_enablevoicemail;
-        bool m_incallfilter;
-        bool m_enablebusy;
-        QString m_destbusy;
-        bool m_enablerna;
-        QString m_destrna;
-        bool m_enableunc;
-        QString m_destunc;
-
-        QString m_availstate;   //!< availability state
+        //! \name Status
+        //! @{
+            QString m_availstate; //!< availability state
+            QString m_connection;
+        //! @}
 };
 
 #endif

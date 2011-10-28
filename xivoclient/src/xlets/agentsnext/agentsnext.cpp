@@ -743,7 +743,9 @@ void XletAgentsNext::newQueue(const QString & /*ipbxid*/,
 {
     QString queuecontext = queueprops.toMap().value("context").toString();
     // qDebug() << Q_FUNC_INFO << ipbxid << queuename << queuecontext;
-    if ((! m_queuelist.contains(queuename)) && (m_ui->context() == queuecontext))
+
+    //! \todo Context verification below to be ported to multi-line management
+    if ((! m_queuelist.contains(queuename))/* && (m_ui->context() == queuecontext)*/)
         m_queuelist.append(queuename);
 }
 
