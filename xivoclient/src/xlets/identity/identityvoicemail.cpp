@@ -41,7 +41,7 @@
 /*! \brief Constructor
  */
 IdentityVoiceMail::IdentityVoiceMail(QWidget * parent)
-    : QWidget(parent), m_initialized(false)
+    : QWidget(parent), m_initialized(false), m_voicemailinfo(NULL)
 {
     m_layout = new QGridLayout( this );
 
@@ -83,12 +83,18 @@ void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
         setVoiceMailId(ui->xvoicemailid());
         updateVoiceMailStatus(m_xvoicemailid);
     }
-    if(svcstatus["enablevoicemail"].toBool() && m_voicemailinfo) {
-        m_name->setText(tr("<b>VoiceMailBox %1</b>").arg(ui->voicemailNumber()));
-        m_name->setToolTip(tr("VoiceMail activated on %1").arg(ui->voicemailNumber()));
+    if (m_voicemailinfo == NULL)
+        return;
+    qDebug() << b_engine->iterover("voicemails");
+    qDebug() << b_engine->voicemail("nothing");
+    qDebug() << b_engine->voicemail(ui->xvoicemailid());
+    qDebug() << Q_FUNC_INFO << m_voicemailinfo << m_voicemailinfo->id();
+    if(svcstatus["enablevoicemail"].toBool()) {
+        m_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_voicemailinfo->mailbox()));
+        m_name->setToolTip(tr("VoiceMail activated on %1").arg(m_voicemailinfo->mailbox()));
     } else {
-        m_name->setText(tr("VoiceMailBox %1").arg(ui->voicemailNumber()));
-        m_name->setToolTip(tr("VoiceMail not activated on %1").arg(ui->voicemailNumber()));
+        m_name->setText(tr("VoiceMailBox %1").arg(m_voicemailinfo->mailbox()));
+        m_name->setToolTip(tr("VoiceMail not activated on %1").arg(m_voicemailinfo->mailbox()));
     }
 }
 
