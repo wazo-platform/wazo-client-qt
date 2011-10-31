@@ -46,7 +46,6 @@ XletCalls::XletCalls(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Calls"));
-    qDebug() << Q_FUNC_INFO;
     QVBoxLayout *toplayout = new QVBoxLayout(this);
     toplayout->setMargin(0);
     QLabel *titleLabel = new QLabel("                     ", this);
@@ -68,48 +67,10 @@ XletCalls::XletCalls(QWidget *parent)
 
     connect(b_engine, SIGNAL(monitorPeerChanged()),
             this, SLOT(monitorPeerChanged()));
-
-    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
-            this, SLOT(updateUserConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
-            this, SLOT(updateUserStatus(const QString &)));
-    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
-            this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
             this, SLOT(updateChannelStatus(const QString &)));
-}
-
-/*! \brief update display if needed
- *
- * Check if this is about the monitored user
- * and call updateDisplay().
- */
-void XletCalls::updateUserConfig(const QString & /*xuserid*/)
-{
-//     if (m_monitored_ui)
-//         qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
-//     else
-//         qDebug() << Q_FUNC_INFO << xuserid;
-
-//     if (ui == m_monitored_ui) {
-//         // we need to update the display
-//         updateDisplay();
-//     }
-}
-
-void XletCalls::updateUserStatus(const QString & /*xuserid*/)
-{
-//     if (m_monitored_ui)
-//         qDebug() << Q_FUNC_INFO << m_monitored_ui->xid() << xuserid;
-//     else
-//         qDebug() << Q_FUNC_INFO << xuserid;
-
-//     if (ui == m_monitored_ui) {
-//         // we need to update the display
-//         updateDisplay();
-//     }
 }
 
 /*! \brief hang up channel
@@ -135,11 +96,7 @@ void XletCalls::parkcall(const QString &chan)
 {
     b_engine->actionCall("transfer",
                          "chan:" + m_monitored_ui->id() + ":" + chan,
-                         "ext:special:parkthecall"); // Call
-}
-
-void XletCalls::updatePhoneConfig(const QString & /*xphoneid*/)
-{
+                         "ext:special:parkthecall");
 }
 
 void XletCalls::updatePhoneStatus(const QString & xphoneid)
@@ -152,8 +109,6 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
     if (phoneinfo == NULL)
         return;
 
-    qDebug() << Q_FUNC_INFO << xphoneid << m_affhash.keys() << phoneinfo->xchannels();
-
     foreach (const QString xchannel, m_affhash.keys()) {
         CallWidget * callwidget = m_affhash.value(xchannel);
         if (! phoneinfo->xchannels().contains(xchannel)) {
@@ -162,10 +117,7 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
         }
     }
     foreach (const QString xchannel, phoneinfo->xchannels()) {
-        if (m_affhash.contains(xchannel))
-            {}
-        // m_affhash[xchannel]->updateWidget(xchannel, ts);
-        else {
+        if (! m_affhash.contains(xchannel)) {
             CallWidget * callwidget = new CallWidget(m_monitored_ui,
                                                      xchannel,
                                                      this);
@@ -184,42 +136,14 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
 
 void XletCalls::updateChannelStatus(const QString & xchannel)
 {
-    // qDebug() << Q_FUNC_INFO << xchannel;
     const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
     if (channelinfo == NULL)
         return;
     QString status = channelinfo->commstatus();
-    //                 if (map.contains("time-dial"))
-    //                     ts = map.value("time-dial").toUInt() + current_ts;
-    //                 if (map.contains("timestamp-dial"))
-    //                     ts = map.value("timestamp-dial").toDouble() + b_engine->timeDeltaServerClient();
-    //                 if (map.contains("time-link"))
-    //                     ts = map.value("time-link").toUInt() + current_ts;
-    //                 if (map.contains("timestamp-link"))
-    //                     ts = map.value("timestamp-link").toDouble() + b_engine->timeDeltaServerClient();
-    // qDebug() << Q_FUNC_INFO << it.key() << channelme << "status" << status;
-    // dont display hangup channels !
     if (status == CHAN_STATUS_HANGUP)
         return;
-    // activeChannels << channelme;
-    // qDebug() << Q_FUNC_INFO << "adding/updating" << xchannel << m_affhash;
-    if (m_affhash.contains(xchannel))
+    if (m_affhash.contains(xchannel)) {
         m_affhash[xchannel]->updateWidget(xchannel);
-    else {
-//         CallWidget * callwidget = new CallWidget(m_monitored_ui,
-//                                                  xchannel,
-//                                                  ts,
-//                                                  this,
-//                                                  phoneinfo);
-//         connect(callwidget, SIGNAL(doHangUp(const QString &)),
-//                 this, SLOT(hupchan(const QString &)));
-//         connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
-//                 this, SLOT(transftonumberchan(const QString &)));
-//         connect(callwidget, SIGNAL(doParkCall(const QString &)),
-//                 this, SLOT(parkcall(const QString &)));
-//         m_layout->insertWidget(m_layout->count() - 1, callwidget,
-//                                0, Qt::AlignTop);
-//         m_affhash[xchannel] = callwidget;
     }
 }
 
@@ -239,7 +163,6 @@ void XletCalls::updateDisplay()
  */
 void XletCalls::dragEnterEvent(QDragEnterEvent *event)
 {
-    // qDebug() << Q_FUNC_INFO << event->mimeData()->formats();
     if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)) {
         event->acceptProposedAction();
     }
@@ -252,7 +175,6 @@ void XletCalls::dragEnterEvent(QDragEnterEvent *event)
  */
 void XletCalls::monitorPeerChanged()
 {
-    //emptyList();
     if (m_monitored_ui == NULL)
         return;
     changeTitle(tr("Monitoring : %1").arg(m_monitored_ui->fullname()));
@@ -270,7 +192,6 @@ void XletCalls::dropEvent(QDropEvent *event)
         event->ignore();
         return;
     }
-    qDebug() << Q_FUNC_INFO << event->mimeData()->data(XUSERID_MIMETYPE);
     b_engine->monitorPeerRequest(event->mimeData()->data(XUSERID_MIMETYPE));
     event->acceptProposedAction();
 }
