@@ -83,6 +83,8 @@ distclean: clean-baselib clean-xivoclient clean-xletlib clean-xlets
 	rm -rf bin
 	rm -f unit-tests/*.xml
 
+clean: distclean
+
 clean-baselib:
 	@$(MAKE) -C baselib distclean -f Makefile_baselib|| true
 	rm -rf baselib/obj baselib/bin
