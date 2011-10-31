@@ -33,9 +33,9 @@
 
 #include <QDebug>
 
-#include <baseengine.h>
-#include <phoneinfo.h>
-#include <channelinfo.h>
+#include "baseengine.h"
+#include "phoneinfo.h"
+#include "channelinfo.h"
 
 #include "userinfo.h"
 
