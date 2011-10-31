@@ -1,4 +1,8 @@
-include(versions.mak)
+exists(versions.mak) {
+    include(versions.mak)
+} else {
+    error(Missing file versions.mak. Please do 'make versions')
+}
 
 DEBUGON = $$system(echo -n $DEBUG)
 

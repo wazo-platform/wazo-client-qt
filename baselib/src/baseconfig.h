@@ -34,7 +34,6 @@
 #ifndef __BASECONFIG_H__
 #define __BASECONFIG_H__
 
-#include "baselib_export.h"
 #include <QObject>
 #include <QVariantMap>
 #include <QStringList>
@@ -50,7 +49,7 @@
  * You can read masked with operator[]().\n
  * Friend classes can write mask with mask() and mergeMask().\n
  */
-class BASELIB_EXPORT BaseConfig: public QObject
+class BaseConfig: public QObject
 {
     Q_OBJECT
     

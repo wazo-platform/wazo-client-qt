@@ -33,7 +33,7 @@ displayversions:
 
 # to be executed under a bash/cygwin-like terminal
 # must be executed separately, since it generates a file included by make
-# hence, it can not be included as dependencies of a target
+# then, it shall not be included as dependencies of a target
 versions:
 	
 	${ECHO} -n "version (before update) : " && $(MAKE) -s displayversions

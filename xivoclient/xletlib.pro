@@ -1,7 +1,7 @@
 include(common-xivoclient.pri)
 
 TEMPLATE = lib
-CONFIG   += dll
+CONFIG   += dll hide_symbols
 
 # Library version
 VERSION = $${XIVOVER}

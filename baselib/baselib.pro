@@ -1,7 +1,8 @@
 include(common-baselib.pri)
 
 TEMPLATE    = lib
-CONFIG      += dll
+# hide_symbols avoids exporting all symbols from dll with gcc
+CONFIG      += dll hide_symbols
 
 TARGET      = $$qtLibraryTarget(xivoclient)
 
