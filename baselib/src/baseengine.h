@@ -162,8 +162,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString& getAvailState() const;  //!< returns availability status
         
         bool checkedFunction(const QString &);             //!< get m_checked_function
-        void setEnabledFunction(const QString &, bool b);  //!< set m_enabled_function
-        bool enabledFunction(const QString &);             //!< on m_capafuncs
 
         const QVariantList & getCapaXlets() const;
         
@@ -475,7 +473,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, bool> m_enabled_function;  //!< function enabled
 
         // Replies given by the server
-        QStringList m_capafuncs;         //!< List of func capabilities issued by the server after a successful login
         QVariantList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
         QVariantMap m_options_userstatus;    //!< Display Options for User statuses (presence)
         QVariantMap m_options_phonestatus;   //!< Display Options for Phone statuses

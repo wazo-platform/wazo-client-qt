@@ -134,10 +134,8 @@ void PeerWidget::updateChitChatButton()
         m_user_status->setFlat(true);
         m_user_status->setFocusPolicy(Qt::NoFocus);
 
-        if (b_engine->enabledFunction("chitchat")) {
-            connect(m_user_status, SIGNAL(pressed()),
-                    ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
-        }
+        connect(m_user_status, SIGNAL(pressed()),
+                ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
         // Delete spacing
         if (! m_hLayout->isEmpty()) {
             QLayoutItem * item = m_hLayout->itemAt(0);

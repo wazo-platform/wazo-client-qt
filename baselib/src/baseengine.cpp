@@ -376,16 +376,6 @@ bool BaseEngine::checkedFunction(const QString & function)
     return m_config["checked_function." + function].toBool();
 }
 
-void BaseEngine::setEnabledFunction(const QString & function, bool b)
-{
-    m_enabled_function[function] = b;
-}
-
-bool BaseEngine::enabledFunction(const QString & function)
-{
-    return m_capafuncs.contains(function);
-}
-
 void BaseEngine::openLogFile()
 {
     QString logfilename = m_config["logfilename"].toString();
@@ -800,9 +790,6 @@ void BaseEngine::parseCommand(const QString &line)
     if (forwardToListeners(thisclass, datamap))  // a class callback was called,
         return;                                  // so zap the 500 loc of if-else soup
 
-    // qDebug() << Q_FUNC_INFO << datamap.value("timenow").toString() << "BaseEngine message received"
-    // << thisclass << datamap.value("function").toString()
-    // << datamap.value("phoneid").toString();
     if ((thisclass == "keepalive") || (thisclass == "availstate"))
         // ack from the keepalive and availstate commands previously sent
         return;
@@ -923,15 +910,6 @@ void BaseEngine::parseCommand(const QString &line)
                 emit emitTextMessage("");
             }
         }
-
-//         } else if (thisclass == "features") {
-//             if (function == "update") {
-//                 QVariantMap featuresupdate_map = datamap.value("payload").toMap();
-//                 if (m_monitored_xuserid == datamap.value("userid").toString())
-//                     foreach (QString featurekey, featuresupdate_map.keys())
-//                         initFeatureFields(featurekey);
-//             }
-
     } else if (thisclass == "login_id") {
         if (datamap.contains("error_string")) {
             stopConnection();
@@ -948,7 +926,6 @@ void BaseEngine::parseCommand(const QString &line)
             command["hashedpassword"] = QString(res);
             sendJsonCommand(command);
         }
-
     } else if (thisclass == "login_pass") {
         if (datamap.contains("error_string")) {
             stopConnection();
@@ -1011,30 +988,20 @@ void BaseEngine::parseCommand(const QString &line)
         m_options_agentstatus = capas.value("agentstatus").toMap();
         m_capas_regcommands = capas.value("regcommands").toStringList();
         m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
-        m_capafuncs = capas.value("functions").toStringList();
 
         // ("ipbxcommands", "regcommands", "services", "functions")
         m_config.merge(capas.value("preferences").toMap());
         m_config["services"] = capas.value("services");
         //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
 
-        /*!
-         * \todo To be simplified
-         */
         QVariantMap tmp;
         QStringList todisp;
         m_config["checked_function.switchboard"] = true;
-        foreach (QString function, m_capafuncs)
-            if (m_config.contains("checked_function." + function)
-                && m_config["checked_function." + function].toBool())
-                    todisp.append(function);
         tmp["functions"] = todisp;
         m_config["guioptions.server_funcs"] = tmp;
 
-        //qDebug() << "clientXlets" << XletList;
         qDebug() << "\n";
         qDebug() << "capaxlets" << m_capaxlets;
-        qDebug() << "capafuncs" << m_capafuncs;
         qDebug() << "appliname" << m_appliname;
         qDebug() << "\n";
 
@@ -1044,21 +1011,6 @@ void BaseEngine::parseCommand(const QString &line)
             urltolaunch.replace("{xc-password}", m_config["password"].toString());
             this->urlAuto(urltolaunch);
         }
-
-        // XXXX m_capafuncs => config file
-        // m_enabled_function's purposes are :
-        // - to keep track of the user's true rights
-        foreach (QString function, CheckFunctions)
-            if (m_capafuncs.contains(function))
-                m_enabled_function[function] = true;
-            else
-                m_enabled_function[function] = false;
-
-        // if no capa ?
-        // stopConnection();
-        // clearInternalData();
-        // setState(ENotLogged);
-        // popupError("no_capability");
 
         fetchIPBXList();
         setState(ELogged); // calls logged()
@@ -1084,7 +1036,7 @@ void BaseEngine::parseCommand(const QString &line)
 
     } else {
         if (replyid.isEmpty())
-            qDebug() << Q_FUNC_INFO << "unknown server command class" << thisclass << datamap;
+            qDebug() << "Unknown server command received:" << thisclass << datamap;
     }
 }
 
@@ -1092,7 +1044,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                               const QVariantMap & datamap)
 {
     if (thisclass == "getlist") {
-        // qDebug() << Q_FUNC_INFO << thisclass << function << datamap;
         QString listname = datamap.value("listname").toString();
         QString ipbxid = datamap.value("tipbxid").toString();
 
@@ -1237,8 +1188,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 }
             }
 
-            // qDebug() << function << listname << xid << haschanged << status;
-
             if (listname == "users") {
                 setAvailState(status["availstate"].toString(), true);
                 emit updateUserStatus(xid);
@@ -1312,10 +1261,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QVariantList listusers = datamap.value("payload").toList();
             foreach (QVariant userprops, listusers) {
                 QVariantMap uinfo = userprops.toMap();
-                //qDebug() << "-------------" << uinfo;
-
                 addUpdateUserInTree(tree(), uinfo);
-
             }
         }
     }
@@ -1325,8 +1271,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 /*! \brief send meetme command to the CTI server */
 void BaseEngine::meetmeAction(const QString &function, const QString &functionargs)
 {
-    // The first argument is the meetme xid and the second is the usernum (for mute)
-    qDebug() << "meetmeAction" << function << " -- arg: " << functionargs;
     QVariantMap command;
     command["command"] = "meetme";
     command["function"] = function;
@@ -1819,10 +1763,7 @@ void BaseEngine::timerEvent(QTimerEvent *event)
     }
 }
 
-/*! \brief send a feature put command to the cti server
- *
- * ???
- */
+/*! \brief send a feature put command to the cti server */
 void BaseEngine::featurePutOpt(const QString &capa, bool b)
 {
     QVariantMap command;

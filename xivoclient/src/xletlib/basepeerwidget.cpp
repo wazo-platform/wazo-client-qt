@@ -80,11 +80,9 @@ BasePeerWidget::BasePeerWidget(const UserInfo * ui)
             b_engine, SLOT(receiveNumberSelection(const QStringList &)));
 
     m_maxWidthWanted = 200;
-    if (b_engine->enabledFunction("switchboard")) {
-        m_maxWidthWanted = b_engine->getConfig("guioptions.maxwidthwanted").toInt();
-        if (m_maxWidthWanted < 50) {
-            m_maxWidthWanted = 200;
-        }
+    m_maxWidthWanted = b_engine->getConfig("guioptions.maxwidthwanted").toInt();
+    if (m_maxWidthWanted < 50) {
+        m_maxWidthWanted = 200;
     }
     setMaximumWidth(m_maxWidthWanted);
     setAcceptDrops(true);
@@ -102,8 +100,6 @@ void BasePeerWidget::reloadSavedName()
     settings->endGroup();
 }
 
-/*! \brief call this peer
- */
 void BasePeerWidget::dial()
 {
     QString number;
@@ -118,7 +114,7 @@ void BasePeerWidget::dial()
     if (! number.isEmpty()) {
         b_engine->actionDialNumber(number);
     } else {
-        qDebug() << Q_FUNC_INFO << "No number to dial";
+        qDebug() << "Failed to dial: Empty number";
     }
 }
 
@@ -127,8 +123,6 @@ void BasePeerWidget::dialMobilePhone()
     b_engine->actionDialNumber(m_ui_remote->mobileNumber());
 }
 
-/*! \brief make this peer call the number
- */
 void BasePeerWidget::peerdial()
 {
     if (m_ui_remote) {
@@ -210,8 +204,6 @@ void BasePeerWidget::itransfercancel()
     }
 }
 
-/*! \brief park the call
- */
 void BasePeerWidget::parkcall()
 {
     if (m_ui_remote) {
@@ -334,10 +326,6 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    if (! b_engine->enabledFunction("switchboard")) {
-        return;
-    }
-
     QDrag *drag = new QDrag(this);
     QMimeData * mimeData = new QMimeData;
     if (m_ui_remote) {
@@ -351,7 +339,6 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     drag->setMimeData(mimeData);
 
     drag->start(Qt::CopyAction | Qt::MoveAction);
-    //qDebug() << Q_FUNC_INFO << "dropAction=" << dropAction;
 }
 
 QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * userinfo)
@@ -397,7 +384,6 @@ void BasePeerWidget::updateMenuSelf(QMenu * menu, QContextMenuEvent * /*event*/)
  */
 void BasePeerWidget::updateMenuPeer(QMenu * menu, QContextMenuEvent * /*event*/)
 {
-    qDebug() << Q_FUNC_INFO;
     addDialMenu(menu);
     addChitChatMenu(menu);
     addInterceptMenu(menu);
@@ -468,7 +454,6 @@ void BasePeerWidget::addDialMenu(QMenu * menu)
  */
 void BasePeerWidget::addChitChatMenu(QMenu * menu)
 {
-    if (! b_engine->enabledFunction("chitchat")) return;
     if (m_ui_remote->enableclient() && m_ui_remote->connected()) {
         menu->addAction(m_chitchatAction);
     }
@@ -869,15 +854,12 @@ QString BasePeerWidget::id() const
 
 bool BasePeerWidget::event(QEvent *e)
 {
-    if (!b_engine->enabledFunction("switchboard")) {
-        if ((e->type() == QEvent::DragMove) ||
-            (e->type() == QEvent::DragEnter) ||
-            (e->type() == QEvent::DragLeave) ||
-            (e->type() == QEvent::DragResponse )) {
-            return 1;
-        }
+    if ((e->type() == QEvent::DragMove) ||
+        (e->type() == QEvent::DragEnter) ||
+        (e->type() == QEvent::DragLeave) ||
+        (e->type() == QEvent::DragResponse )) {
+        return 1;
     }
-
     return QWidget::event(e);
 }
 
