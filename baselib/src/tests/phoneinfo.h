@@ -27,13 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#ifndef __PHONEINFO_H__
+#define __PHONEINFO_H__
 
-#include "baseengine.h"
-#include "test_userinfo.h"
+#include <QString>
+#include <QStringList>
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
+class PhoneInfo
+{
+    public:
+        PhoneInfo(const QString &, const QString &);
+        QString identity() const;
+        QStringList xchannels() const;
+        QString number() const;
+};
 
-QTEST_MAIN(TestUserInfo)
+#endif

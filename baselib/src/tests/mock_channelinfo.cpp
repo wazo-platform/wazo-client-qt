@@ -27,13 +27,15 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#include <QString>
 
-#include "baseengine.h"
-#include "test_userinfo.h"
+#include "channelinfo.h"
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
+ChannelInfo::ChannelInfo(const QString &ipbxid, const QString &channelid)
+{
+}
 
-QTEST_MAIN(TestUserInfo)
+QString ChannelInfo::talkingto_id() const
+{
+    return "";
+}

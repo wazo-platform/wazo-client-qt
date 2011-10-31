@@ -65,10 +65,8 @@ all:
 
 tests:
 	@$(MAKE) -s versions
-	@$(MAKE) clean-baselib
-# DEBUG=yes enables code coverage infos
-	@$(MAKE) os-baselib DEBUG=yes
-	@$(MAKE) os-tests
+	@$(MAKE) clean-tests
+	@$(MAKE) os-tests DEBUG=yes
 	LD_LIBRARY_PATH=bin bin/baselib-tests
 	LD_LIBRARY_PATH=bin bin/baselib-tests -xunitxml -o unit-tests/unit-baselib.xml
 	cd baselib && ../unit-tests/tools/gcovr --xml -o ../unit-tests/cov-baselib.xml
@@ -77,16 +75,19 @@ tests:
 os-%:
 	$(MAKE) ${XC_UNAME}-$*
 
-distclean: clean-baselib clean-xivoclient clean-xletlib clean-xlets
+clean: distclean
+
+distclean: clean-tests clean-baselib clean-xivoclient clean-xletlib clean-xlets
 	rm -f ${VERSIONS_FILE}
 	rm -rf xivoclient/obj xivoclient/bin
 	rm -rf bin
 	rm -f unit-tests/*.xml
 
-clean: distclean
+clean-tests:
+	@$(MAKE) -C baselib distclean -f Makefile_tests || true
 
 clean-baselib:
-	@$(MAKE) -C baselib distclean -f Makefile_baselib|| true
+	@$(MAKE) -C baselib distclean -f Makefile_baselib || true
 	rm -rf baselib/obj baselib/bin
 
 clean-%:

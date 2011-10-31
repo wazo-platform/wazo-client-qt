@@ -33,8 +33,11 @@
 
 #include <QDebug>
 
+#include <baseengine.h>
+#include <phoneinfo.h>
+#include <channelinfo.h>
+
 #include "userinfo.h"
-#include "baseengine.h"
 
 /*! \brief Constructor
  *
@@ -58,27 +61,25 @@ UserInfo::UserInfo(const QString & ipbxid,
 bool UserInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
     haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
-    haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
-    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
-
-    haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
-    m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
     haschanged |= setIfChangeString(prop, "voicemailid", & m_voicemailid);
     m_xvoicemailid = QString("%1/%2").arg(m_ipbxid).arg(m_voicemailid);
-
-    haschanged |= setIfChangeBool(prop, "callrecord", & m_callrecord);
-    haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
-    haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
-    haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
-    haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
-    haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
-    haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
+    haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
+    m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
+    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
+    haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
     haschanged |= setIfChangeBool(prop, "enableclient", & m_enableclient);
-    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
-    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
+    haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
+    haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
+    haschanged |= setIfChangeBool(prop, "callrecord", & m_callrecord);
+    haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
+    haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
+    haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
     haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
+    haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
+    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
+    haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
+    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
 
     if (prop.contains("linelist")) {
         QStringList lid;

@@ -27,13 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#ifndef __BASEENGINE_H__
+#define __BASEENGINE_H__
 
-#include "baseengine.h"
-#include "test_userinfo.h"
+class PhoneInfo;
+class UserInfo;
+class ChannelInfo;
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
+class MockBaseEngine
+{
+    public:
+        MockBaseEngine();
+        const PhoneInfo * phone(const QString &) const;
+        const UserInfo * user (const QString &) const;
+        const ChannelInfo * channel (const QString &) const;
+        
+    private:
+        QMap <QString, PhoneInfo *> m_phones;
+};
 
-QTEST_MAIN(TestUserInfo)
+extern MockBaseEngine * b_engine;
+
+#endif

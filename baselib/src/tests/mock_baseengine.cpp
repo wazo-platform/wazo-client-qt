@@ -30,10 +30,41 @@
 #include <QtTest/QtTest>
 
 #include "baseengine.h"
-#include "test_userinfo.h"
+#include <phoneinfo.h>
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
+MockBaseEngine * b_engine;
 
-QTEST_MAIN(TestUserInfo)
+MockBaseEngine::MockBaseEngine()
+{
+    QVariantMap config;
+    
+    m_phones["asterisk/p1"] = new PhoneInfo("asterisk", "p1");
+    config["iduserfeatures"] = "asterisk/u1";
+    config["identity"] = "SIP/s1";
+    // m_phones["asterisk/p1"]->updateConfig(config);
+
+    config.clear();
+    m_phones["asterisk/p2"] = new PhoneInfo("asterisk", "p2");
+    config["iduserfeatures"] = "asterisk/u2";
+    config["identity"] = "SIP/s2";
+    // m_phones["asterisk/p2"]->updateConfig(config);
+}
+    
+const PhoneInfo * MockBaseEngine::phone(const QString &xphoneid) const
+{
+    if(m_phones.contains(xphoneid)) {
+        return m_phones[xphoneid];
+    } else {
+        return NULL;
+    }
+}
+
+const UserInfo * MockBaseEngine::user(const QString &xphoneid) const
+{
+    return NULL;
+}
+
+const ChannelInfo * MockBaseEngine::channel(const QString &xphoneid) const
+{
+    return NULL;
+}
