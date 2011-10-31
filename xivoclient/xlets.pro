@@ -16,9 +16,6 @@ SUBDIRS  = \
     src/xlets/queues \
     src/xlets/queuedetails \
     src/xlets/queueentrydetails \
-    src/xlets/records \
     src/xlets/switchboard \
     src/xlets/videoxlet \
-    src/xlets/xletnull \
     src/xlets/xletweb
-win32:SUBDIRS += src/xlets/outlook
