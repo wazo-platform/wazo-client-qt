@@ -35,7 +35,7 @@
 
 #include "servicepanel.h"
 
-const QStringList chkcapas = (QStringList() << "enablevoicemail" << "callrecord" << "incallfilter" << "enablednd");
+const QStringList chkcapas = (QStringList() << "enablevoicemail" << "incallfilter" << "enablednd");
 const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
 
 Q_EXPORT_PLUGIN2(xletfeatureplugin, XLetFeaturePlugin);
@@ -53,8 +53,6 @@ ServicePanel::ServicePanel(QWidget * parent)
 {
     setTitle(tr("Services"));
     m_capalegend["enablevoicemail"] = tr("Voice &Mail");
-    m_capalegend["callrecord"]      = tr("Call &Recording");
-    // m_capalegend["incallrec"]    = tr("");
     m_capalegend["incallfilter"]    = tr("Call &Filtering");
     m_capalegend["enablednd"]       = tr("Do Not &Disturb");
     m_capalegend["fwdrna"]          = tr("Forward on &No Answer");
@@ -103,7 +101,6 @@ ServicePanel::ServicePanel(QWidget * parent)
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     if (m_capas.contains("enablevoicemail") ||
-        m_capas.contains("callrecord") ||
         m_capas.contains("incallfilter") ||
         m_capas.contains("enablednd")) {
         groupBox1->show();
@@ -257,8 +254,6 @@ void ServicePanel::setOpt(const QString & capa)
             m_chkopt[capa]->setChecked(m_ui->incallfilter());
         if (capa == "enablevoicemail")
             m_chkopt[capa]->setChecked(m_ui->enablevoicemail());
-        if (capa == "callrecord")
-            m_chkopt[capa]->setChecked(m_ui->callrecord());
     }
 }
 

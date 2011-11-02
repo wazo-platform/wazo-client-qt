@@ -25,66 +25,41 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="58"/>
-        <source>Record</source>
-        <translation>Enregistre</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="59"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="205"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="195"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="186"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>sur &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="202"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
         <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>déloggé de &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="207"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="214"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="198"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="205"/>
         <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>loggé sur le téléphone &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="210"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="217"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="208"/>
         <source>Logout</source>
         <translation>Logout</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="307"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="298"/>
         <source>Server: %1</source>
         <translation>Serveur: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="309"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="300"/>
         <source>Context: %1</source>
         <translation>Contexte: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="505"/>
-        <source>Record files for this agent</source>
-        <translation>Fichiers enregistrés pour cet agent</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="518"/>
-        <source>No Record for this agent</source>
-        <translation>Pas d&apos;enregistrement pour cet agent</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="571"/>
-        <source>Save Sound File</source>
-        <translation>Sauve un Fichier Son</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="573"/>
-        <source>All Files (*)</source>
-        <translation>Tous les Fichiers (*)</translation>
     </message>
 </context>
 </TS>

@@ -71,8 +71,8 @@
         <translation>Panel van huidige gebruikers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="287"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="286"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="306"/>
         <source>IPBXid: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -83,7 +83,7 @@ Context: %2</source>
 Context: %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="337"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="336"/>
         <source>(Line %1)</source>
         <translation>(Lijn %1)</translation>
     </message>
@@ -92,8 +92,8 @@ Context: %2</translation>
     <name>IdentityPhone</name>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="184"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="348"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="349"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="346"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="347"/>
         <source>No option</source>
         <translation>Geen optie</translation>
     </message>
@@ -179,12 +179,11 @@ Context: %4</source>
         <translation>Indien geen antwoord doorschakelen naar %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="344"/>
         <source>Call Rec</source>
-        <translation>Opn. Oproep</translation>
+        <translation type="obsolete">Opn. Oproep</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="346"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="344"/>
         <source>Call Filter</source>
         <translation>Oproepfilter</translation>
     </message>

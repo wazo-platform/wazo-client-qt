@@ -56,7 +56,6 @@ class XletAgentDetails : public XLet
 
     signals:
         void changeWatchedQueue(const QString &);
-        void setFileName(const QString &);
 
     public slots:
         void updateAgentConfig(const QString &);
@@ -64,15 +63,11 @@ class XletAgentDetails : public XLet
         void updateQueueConfig(const QString &);
         void updateQueueStatus(const QString &);
         void monitorThisAgent(const QString &);
-        void saveToFile();
-        void statusRecord(const QString &, const QString &, const QString &);
         void statusListen(const QString &, const QString &, const QString &);
 
     private slots:
         void queueClicked();
         void actionClicked();
-        void serverFileList(const QStringList &);
-        void getFile();
 
     private:
         void clearPanel();

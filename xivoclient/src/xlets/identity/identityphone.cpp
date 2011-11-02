@@ -340,8 +340,6 @@ void IdentityPhone::svcSummary(const QVariantMap & svcstatus)
     } else if (svcstatus["rna-enabled"].toBool()) {
         m_phonestatustxt->setText(tr("FNA %1").arg(svcstatus["rna-number"].toString()));
         m_phonestatustxt->setToolTip(tr("Non-Answer Forward towards %1").arg(svcstatus["rna-number"].toString()));
-    } else if (svcstatus["callrecord"].toBool()) {
-        m_phonestatustxt->setText(tr("Call Rec"));
     } else if (svcstatus["incallfilter"].toBool()) {
         m_phonestatustxt->setText(tr("Call Filter"));
     } else {

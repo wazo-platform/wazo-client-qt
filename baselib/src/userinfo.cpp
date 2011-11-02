@@ -49,7 +49,6 @@ UserInfo::UserInfo(const QString & ipbxid,
     m_simultcalls(0),
     m_enableclient(false),
     m_enablevoicemail(false),
-    m_callrecord(false),
     m_incallfilter(false),
     m_enablednd(false),
     m_enableunc(false),
@@ -71,7 +70,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enableclient", & m_enableclient);
     haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
     haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
-    haschanged |= setIfChangeBool(prop, "callrecord", & m_callrecord);
     haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
     haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
     haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);

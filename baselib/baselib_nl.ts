@@ -4,62 +4,62 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="896"/>
+        <location filename="src/baseengine.cpp" line="891"/>
         <source>Received Services Data</source>
         <translation>Gegevens ontvangen van Services</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="902"/>
+        <location filename="src/baseengine.cpp" line="897"/>
         <source>Could not modify the Services data.</source>
         <translation>De gegevens voor Services konden niet worden gewijzigd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="902"/>
+        <location filename="src/baseengine.cpp" line="897"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Misschien werkt Asterisk momenteel niet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1321"/>
+        <location filename="src/baseengine.cpp" line="1316"/>
         <source>Server has sent an Error.</source>
         <translation>De server heeft een foutmelding teruggestuurd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1325"/>
+        <location filename="src/baseengine.cpp" line="1320"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Uw registratienaam &lt;%1@%2&gt; wordt niet herkend door de XiVO CTI server op %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1330"/>
+        <location filename="src/baseengine.cpp" line="1325"/>
         <source>You entered a wrong login / password.</source>
         <translation>U hebt een verkeerd(e) login/paswoord ingevoerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1333"/>
+        <location filename="src/baseengine.cpp" line="1328"/>
         <source>Your profile identifier &lt;%1&gt; is not defined.</source>
         <translation>Uw profielidentificatie &lt;%1&gt; is niet gedefinieerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1337"/>
+        <location filename="src/baseengine.cpp" line="1332"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft de laatste keepalive niet beantwoord.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1342"/>
+        <location filename="src/baseengine.cpp" line="1337"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation>U hebt een IP-adres %1 gedefinieerd dat waarschijnlijk een onbekende hostnaam is.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1345"/>
+        <location filename="src/baseengine.cpp" line="1340"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation>Socket time-out (~ 60 s): u hebt waarschijnlijk via een gateway, een onbestaand IP-adres %1 proberen te bereiken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1349"/>
+        <location filename="src/baseengine.cpp" line="1344"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation>Er lijkt een machine te werken op dit IP-adres %1, maar ofwel is er geen CTI-server actief, ofwel is uw poort %2 verkeerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1353"/>
+        <location filename="src/baseengine.cpp" line="1348"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -70,107 +70,107 @@
 - er is een kabel losgeraakt op uw LAN op weg naar dit IP-adres (time-out ~ 30 s).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1359"/>
+        <location filename="src/baseengine.cpp" line="1354"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1363"/>
+        <location filename="src/baseengine.cpp" line="1358"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbekende socketfout voorgedaan tijdens de poging om het IP-adres te bereiken:poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1367"/>
+        <location filename="src/baseengine.cpp" line="1362"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbeheerde socketfout (nummer %1) voorgedaan tijdens de poging om het IP-adres te bereiken: poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1372"/>
+        <location filename="src/baseengine.cpp" line="1367"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft net de verbinding verbroken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1376"/>
+        <location filename="src/baseengine.cpp" line="1371"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net stopgezet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1379"/>
+        <location filename="src/baseengine.cpp" line="1374"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net terug opgeladen.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1383"/>
+        <location filename="src/baseengine.cpp" line="1378"/>
         <source>You are already connected from %1:%2.</source>
         <translation>U bent al verbonden sinds %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1385"/>
+        <location filename="src/baseengine.cpp" line="1380"/>
         <source>No capability allowed.</source>
         <translation>Geen capaciteit toegestaan.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1388"/>
+        <location filename="src/baseengine.cpp" line="1383"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Max. aantal (%1) XiVO Clients bereikt.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1390"/>
+        <location filename="src/baseengine.cpp" line="1385"/>
         <source>Missing Argument(s)</source>
         <translation>Ontbrekend(e) argument(en)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1394"/>
+        <location filename="src/baseengine.cpp" line="1389"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve op z&apos;n minst naar versie %2 te upgraden. </translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1399"/>
+        <location filename="src/baseengine.cpp" line="1394"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1406"/>
+        <location filename="src/baseengine.cpp" line="1401"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>De hoofdversie  (%1) van uw klant
 is niet dezelfde als deze van de server (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1413"/>
+        <location filename="src/baseengine.cpp" line="1408"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve op z&apos;n minst naar versie %2 te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1418"/>
+        <location filename="src/baseengine.cpp" line="1413"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1422"/>
+        <location filename="src/baseengine.cpp" line="1417"/>
         <source>You were disconnected by the server.</source>
         <translation>Uw verbinding werd verbroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1424"/>
+        <location filename="src/baseengine.cpp" line="1419"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Uw verbinding werd gedwongen afgebroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1428"/>
+        <location filename="src/baseengine.cpp" line="1423"/>
         <source>ERROR</source>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1743"/>
+        <location filename="src/baseengine.cpp" line="1737"/>
         <source>Attempting to reconnect to server</source>
         <translation>Poging tot herverbinden met de server</translation>
     </message>

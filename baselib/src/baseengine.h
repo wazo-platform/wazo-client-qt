@@ -353,7 +353,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void serverFileList(const QStringList &);  //!< needed by agentdetails
         void fileReceived();                       //!< needed by agentdetails
         
-        void statusRecord(const QString &, const QString &, const QString &);
         void statusListen(const QString &, const QString &, const QString &);
         
         void emitMessageBox(const QString &);

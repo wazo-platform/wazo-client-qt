@@ -57,7 +57,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
             bool enableclient() const { return m_enableclient; };
             const QString & ctilogin() const { return m_ctilogin; };
             bool enablevoicemail() const { return m_enablevoicemail; };
-            bool callrecord() const { return m_callrecord; };
             bool incallfilter() const { return m_incallfilter; };
             bool enablednd() const { return m_enablednd; };
             bool enableunc() const { return m_enableunc; };
@@ -107,7 +106,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
             bool m_enableclient;
             QString m_ctilogin;                 //!< user login on cti
             bool m_enablevoicemail;
-            bool m_callrecord;
             bool m_incallfilter;
             bool m_enablednd;
             bool m_enableunc;

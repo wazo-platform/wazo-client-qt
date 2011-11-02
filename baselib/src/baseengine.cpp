@@ -824,11 +824,6 @@ void BaseEngine::parseCommand(const QString &line)
 
     } else if (thisclass == "getlist") {
         configsLists(thisclass, function, datamap);
-    } else if (thisclass == "agentrecord") {
-        emit statusRecord(datamap.value("ipbxid").toString(),
-                          datamap.value("agentid").toString(),
-                          datamap.value("status").toString());
-
     } else if (thisclass == "agentlisten") {
         emit statusListen(datamap.value("ipbxid").toString(),
                           datamap.value("agentid").toString(),
@@ -1693,8 +1688,7 @@ uint BaseEngine::port_to_use() const
 
 void BaseEngine::initFeatureFields(const QString & field)
 {
-    if ( (field == "callrecord") ||
-         (field == "enablednd") ||
+    if ( (field == "enablednd") ||
          (field == "enablevoicemail") ||
          (field == "incallfilter") )
         emit optChanged(field);
@@ -1760,8 +1754,6 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
     command["class"] = "featuresput";
     if (capa == "enablevoicemail")
         command["function"] = "enablevoicemail";
-    else if (capa == "callrecord")
-        command["function"] = "callrecord";
     else if (capa == "incallfilter")
         command["function"] = "incallfilter";
     else if (capa == "enablednd")

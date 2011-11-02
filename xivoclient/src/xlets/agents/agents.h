@@ -54,7 +54,6 @@ class XletAgents : public XLet
         void setGuiOptions();
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
-        void statusRecord(const QString &, const QString &);
         void statusListen(const QString &, const QString &);
 
     private slots:
@@ -74,7 +73,6 @@ class XletAgents : public XLet
 
         QHash<QString, QLabel *>      m_agent_labels;
         QHash<QString, QPushButton *> m_agent_more;
-        QHash<QString, QPushButton *> m_agent_record;
         QHash<QString, QPushButton *> m_agent_listen;
         QHash<QString, QLabel *>      m_agent_busy;
         QHash<QString, QLabel *>      m_agent_presence;
@@ -88,11 +86,10 @@ class XletAgents : public XLet
         QHash<QString, QStringList> m_agent_joined_list;
         QHash<QString, QStringList> m_agent_paused_list;
 
-        QLabel *m_title1;  //!< "Agent"
-        QLabel *m_title2;  //!< "Record"
-        QLabel *m_title3;  //!< "Listen"
-        QLabel *m_title4;  //!< "On Line"
-        QLabel *m_title5;  //!< "Presence"
+        QLabel *m_title_agent;  //!< "Agent"
+        QLabel *m_title_listen;  //!< "Listen"
+        QLabel *m_title_online;  //!< "On Line"
+        QLabel *m_title_presence;  //!< "Presence"
         QLabel *m_title_logged;    //!< "Logged"
         QLabel *m_title_paused;    //!< "Paused"
         QLabel *m_title_njoined;   //!< "Joined queues"

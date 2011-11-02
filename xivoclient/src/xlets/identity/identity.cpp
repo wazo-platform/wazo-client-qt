@@ -228,7 +228,6 @@ void IdentityDisplay::setOpt()
     if (m_ui) {
         m_svcstatus["enablednd"] = m_ui->enablednd();
         m_svcstatus["incallfilter"] = m_ui->incallfilter();
-        m_svcstatus["callrecord"] = m_ui->callrecord();
         m_svcstatus["enablevoicemail"] = m_ui->enablevoicemail();
         m_svcstatus["unc-enabled"] = m_ui->enableunc();
         m_svcstatus["unc-number"] = m_ui->destunc();

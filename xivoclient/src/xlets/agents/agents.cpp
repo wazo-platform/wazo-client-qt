@@ -48,21 +48,19 @@ XletAgents::XletAgents(QWidget *parent)
     m_gui_buttonsize = 10;
 
     m_gridlayout = new QGridLayout(this);
-    m_title1 = new QLabel(tr("Agent"), this);
-    m_title2 = new QLabel(tr("Record"), this);
-    m_title3 = new QLabel(tr("Listen"), this);
-    m_title4 = new QLabel(tr("On Line"), this);
-    m_title5 = new QLabel(tr("Presence"), this);
+    m_title_agent = new QLabel(tr("Agent"), this);
+    m_title_listen = new QLabel(tr("Listen"), this);
+    m_title_online = new QLabel(tr("On Line"), this);
+    m_title_presence = new QLabel(tr("Presence"), this);
     m_title_logged  = new QLabel(tr("Logged"), this);
     m_title_njoined = new QLabel(tr("Joined\nqueues"), this);
     m_title_paused  = new QLabel(tr("Paused"), this);
     m_title_npaused = new QLabel(tr("Paused\nqueues"), this);
 
-    m_gridlayout->addWidget(m_title1, 0, 0, 1, 2, Qt::AlignLeft);
-    m_gridlayout->addWidget(m_title2, 0, 2, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title3, 0, 3, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title4, 0, 4, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title5, 0, 6, 1, 1, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_title_agent, 0, 0, 1, 2, Qt::AlignLeft);
+    m_gridlayout->addWidget(m_title_listen, 0, 3, 1, 1, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_title_online, 0, 4, 1, 1, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_title_presence, 0, 6, 1, 1, Qt::AlignCenter);
     m_gridlayout->addWidget(m_title_logged, 0, 8, 1, 2, Qt::AlignCenter);
     m_gridlayout->addWidget(m_title_njoined, 0, 10, 1, 1, Qt::AlignCenter);
     m_gridlayout->addWidget(m_title_paused, 0, 12, 1, 2, Qt::AlignCenter);
@@ -77,11 +75,8 @@ XletAgents::XletAgents(QWidget *parent)
             this, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
-    connect(b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
-            this, SLOT(statusRecord(const QString &, const QString &, const QString &)));
     connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
             this, SLOT(statusListen(const QString &, const QString &, const QString &)));
-
 }
 
 /*! \brief set font
@@ -96,11 +91,10 @@ void XletAgents::setGuiOptions()
     if (optionsMap.contains("guioptions.xlet.agents.iconsize"))
         m_gui_buttonsize = b_engine->getConfig("guioptions.xlet.agents.iconsize").toInt();
 
-    m_title1->setFont(m_gui_font);
-    m_title2->setFont(m_gui_font);
-    m_title3->setFont(m_gui_font);
-    m_title4->setFont(m_gui_font);
-    m_title5->setFont(m_gui_font);
+    m_title_agent->setFont(m_gui_font);
+    m_title_listen->setFont(m_gui_font);
+    m_title_online->setFont(m_gui_font);
+    m_title_presence->setFont(m_gui_font);
     m_title_logged->setFont(m_gui_font);
     m_title_njoined->setFont(m_gui_font);
     m_title_paused->setFont(m_gui_font);
@@ -159,9 +153,6 @@ void XletAgents::newAgentLine(const QString & xagentid)
     m_agent_more[xagentid] = new QPushButton(this);
     connect(m_agent_more[xagentid], SIGNAL(clicked()),
              this, SLOT(agentClicked()));
-    m_agent_record[xagentid] = new QPushButton(this);
-    connect(m_agent_record[xagentid], SIGNAL(clicked()),
-             this, SLOT(agentClicked()));
     m_agent_listen[xagentid] = new QPushButton(this);
     connect(m_agent_listen[xagentid], SIGNAL(clicked()),
              this, SLOT(agentClicked()));
@@ -197,7 +188,6 @@ void XletAgents::updateAgentLineAdmin(const QString & xagentid)
                                          .arg(agentinfo->context()));
     m_agent_more[xagentid]->setProperty("xagentid", xagentid);
     m_agent_more[xagentid]->setProperty("action", "changeagent");
-    m_agent_record[xagentid]->setProperty("xagentid", xagentid);
     m_agent_listen[xagentid]->setProperty("xagentid", xagentid);
     m_agent_busy[xagentid]->setProperty("xagentid", xagentid);
     m_agent_logged_action[xagentid]->setProperty("xagentid", xagentid);
@@ -207,7 +197,6 @@ void XletAgents::updateAgentLineAdmin(const QString & xagentid)
 // update according to misc parameters
 void XletAgents::updateAgentLineEvent(const QString & xagentid)
 {
-    m_agent_record[xagentid]->setProperty("action", "record");
     m_agent_listen[xagentid]->setProperty("action", "listen");
     m_agent_logged_action[xagentid]->setProperty("action", "loginoff");
     m_agent_paused_action[xagentid]->setProperty("action", "pause");
@@ -231,8 +220,6 @@ void XletAgents::displayLine(const QString & xagentid, int linenum)
 
     m_agent_more[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
     m_agent_more[xagentid]->setIcon(QIcon(":/images/add.png"));
-    m_agent_record[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-    m_agent_record[xagentid]->setIcon(QIcon(":/images/player_stop.png"));
     m_agent_listen[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
     m_agent_listen[xagentid]->setIcon(QIcon(":/images/player_play.png"));
     m_agent_logged_action[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
@@ -241,7 +228,6 @@ void XletAgents::displayLine(const QString & xagentid, int linenum)
     int colnum = 0;
     m_gridlayout->addWidget(m_agent_labels[xagentid], linenum, colnum++, Qt::AlignLeft);
     m_gridlayout->addWidget(m_agent_more[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_record[xagentid], linenum, colnum++, Qt::AlignCenter);
     m_gridlayout->addWidget(m_agent_listen[xagentid], linenum, colnum++, Qt::AlignCenter);
     m_gridlayout->addWidget(m_agent_busy[xagentid], linenum, colnum++, Qt::AlignCenter);
     m_gridlayout->addWidget(qvline1, linenum, colnum++, Qt::AlignHCenter);
@@ -435,33 +421,8 @@ void XletAgents::agentClicked()
         ipbxcommand["command"] = "stoplisten";
         ipbxcommand["source"] = "user:special:me";
         ipbxcommand["destination"] = xagentid;
-    } else if (action == "record") {
-        ipbxcommand["command"] = "record";
-        ipbxcommand["source"] = "user:special:me";
-        ipbxcommand["destination"] = xagentid;
-    } else if (action == "stoprecord") {
-        ipbxcommand["command"] = "stoprecord";
-        ipbxcommand["source"] = "user:special:me";
-        ipbxcommand["destination"] = xagentid;
     }
     emit ipbxCommand(ipbxcommand);
-}
-
-/*! \brief update Record/Stop Record buttons
- */
-void XletAgents::statusRecord(const QString & xagentid, const QString & status)
-{
-    // qDebug() << Q_FUNC_INFO << xagentid << status;
-    if (! m_agent_record.contains(xagentid))
-        return;
-
-    if (status == "started") {
-        m_agent_record[xagentid]->setProperty("action", "stoprecord");
-        m_agent_record[xagentid]->setStyleSheet("QPushButton {background: #fbb638}");
-    } else if (status == "stopped") {
-        m_agent_record[xagentid]->setProperty("action", "record");
-        m_agent_record[xagentid]->setStyleSheet("");
-    }
 }
 
 /*! \brief update Listen/Stop Listen buttons

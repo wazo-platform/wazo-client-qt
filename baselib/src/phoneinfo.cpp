@@ -90,7 +90,6 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
     haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);
     haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
-    haschanged |= setIfChangeBool(prop, "callrecord", & m_callrecord);
 
     return haschanged;
 }

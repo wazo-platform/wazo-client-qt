@@ -82,7 +82,6 @@ class BASELIB_EXPORT TrunkInfo : public XInfo
         bool m_enablevoicemail;
         bool m_enablexfer;
         bool m_incallfilter;
-        bool m_callrecord;
 };
 
 #endif

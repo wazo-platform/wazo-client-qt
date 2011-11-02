@@ -66,13 +66,13 @@
         <translation>Panneau des détails utilisateur</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="287"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="286"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="306"/>
         <source>IPBXid: %1</source>
         <translation>IPBXid : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="337"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="336"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>
@@ -86,8 +86,8 @@
     <name>IdentityPhone</name>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="184"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="348"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="349"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="346"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="347"/>
         <source>No option</source>
         <translation>Pas d&apos;option</translation>
     </message>
@@ -172,11 +172,6 @@ Contexte : %4</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="344"/>
-        <source>Call Rec</source>
-        <translation>Enr Appel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="346"/>
         <source>Call Filter</source>
         <translation>Filtre Appel</translation>
     </message>

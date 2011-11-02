@@ -92,7 +92,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         bool m_enablevoicemail;
         bool m_enablexfer;
         bool m_incallfilter;
-        bool m_callrecord;
 };
 
 namespace phone {

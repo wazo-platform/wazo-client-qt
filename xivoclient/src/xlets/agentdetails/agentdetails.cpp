@@ -55,13 +55,10 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     m_agentlegend_njoined = new QLabel("0", this);
     m_agentlegend_npaused = new QLabel("0", this);
 
-    m_actionlegends["record"] = new QLabel(tr("Record"), this);
     m_actionlegends["agentlogin"] = new QLabel(tr("Login"), this);
 
     foreach (QString function, m_actionlegends.keys())
         m_action[function] = new QPushButton(this);
-    m_action["record"]->setIconSize(QSize(10, 10));
-    m_action["record"]->setIcon(QIcon(":/images/player_stop.png"));
     m_action["agentlogin"]->setIconSize(QSize(10, 10));
     m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
 
@@ -116,12 +113,6 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
 
-    connect(b_engine, SIGNAL(serverFileList(const QStringList &)),
-            this, SLOT(serverFileList(const QStringList &)));
-    connect(b_engine, SIGNAL(fileReceived()),
-            this, SLOT(saveToFile()));
-    connect(b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
-            this, SLOT(statusRecord(const QString &, const QString &, const QString &)));
     connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
             this, SLOT(statusListen(const QString &, const QString &, const QString &)));
 }
@@ -458,21 +449,13 @@ void XletAgentDetails::queueClicked()
     emit ipbxCommand(ipbxcommand);
 }
 
-/*! \brief left click actions (record, stoprecord, login, logout) */
+/*! \brief left click actions (login, logout) */
 void XletAgentDetails::actionClicked()
 {
     // qDebug() << Q_FUNC_INFO << sender()->property("function").toString() << m_monitored_agentid;
     QString function = sender()->property("function").toString();
     QVariantMap ipbxcommand;
-    if (function == "record") {
-        ipbxcommand["command"] = "record";
-        ipbxcommand["target"] = m_monitored_agentid;
-        emit ipbxCommand(ipbxcommand);
-    } else if (function == "stoprecord") {
-        ipbxcommand["command"] = "stoprecord";
-        ipbxcommand["target"] = m_monitored_agentid;
-        emit ipbxCommand(ipbxcommand);
-    } else if (function == "agentlogin") {
+    if (function == "agentlogin") {
         ipbxcommand["command"] = "agentlogin";
         ipbxcommand["agentids"] = m_monitored_agentid;
         emit ipbxCommand(ipbxcommand);
@@ -483,95 +466,9 @@ void XletAgentDetails::actionClicked()
     }
 }
 
-/*! \brief triggerred on right click */
-void XletAgentDetails::contextMenuEvent(QContextMenuEvent *event)
-{
-    // qDebug() << Q_FUNC_INFO << event;
-    m_eventpoint = event->globalPos();
-    QVariantMap ipbxcommand;
-    ipbxcommand["command"] = "getfilelist";
-    ipbxcommand["agentid"] = m_monitored_agentid;
-    emit ipbxCommand(ipbxcommand);
-}
-
-/*! \brief display file list */
-void XletAgentDetails::serverFileList(const QStringList &qsl)
-{
-    // qDebug() << Q_FUNC_INFO << qsl;
-    QMenu contextMenu(this);
-    QStringList qsl_sorted = qsl;
-    qsl_sorted.sort();
-    if (qsl.size() > 0) {
-        QAction *actiontitle = new QAction(tr("Record files for this agent"), this);
-        contextMenu.addAction(actiontitle);
-        contextMenu.addSeparator();
-        foreach (QString filename, qsl_sorted) {
-            QAction *action = new QAction(filename, this);
-            action->setProperty("filename", filename);
-            connect( action, SIGNAL(triggered()),
-                     this, SLOT(getFile()) );
-            contextMenu.addAction(action);
-            delete action;
-        }
-        delete actiontitle;
-    } else {
-        QAction *action = new QAction(tr("No Record for this agent"), this);
-        contextMenu.addAction(action);
-        delete action;
-    }
-    contextMenu.exec( m_eventpoint );
-}
-
-/*! \brief update Record/Stop Record buttons
- */
-void XletAgentDetails::statusRecord(const QString &astid, const QString &agentid, const QString &status)
-{
-    // qDebug() << Q_FUNC_INFO << agentnum << m_monitored_agentid << status;
-    QString gagentid = QString("%1/%2").arg(astid).arg(agentid);
-    if (gagentid == m_monitored_agentid) {
-        if (status == "started") {
-            m_action["record"]->setProperty("function", "stoprecord");
-            m_action["record"]->setStyleSheet("QPushButton {background: #fbb638}");
-        } else if (status == "stopped") {
-            m_action["record"]->setProperty("function", "record");
-            m_action["record"]->setStyleSheet("");
-        }
-    }
-}
-
 /*! \brief update Listen/Stop Listen buttons
  */
 void XletAgentDetails::statusListen(const QString &astid, const QString &agentid, const QString &status)
 {
     qDebug() << Q_FUNC_INFO << astid << agentid << status;
-}
-
-/*! \brief retrieve a sound file
- */
-void XletAgentDetails::getFile()
-{
-    // qDebug() << Q_FUNC_INFO;
-    QString filename = sender()->property("filename").toString();
-    QVariantMap ipbxcommand;
-    ipbxcommand["command"] = "getfile";
-    ipbxcommand["agentid"] = m_monitored_agentid;
-    ipbxcommand["filename"] = filename;
-    emit ipbxCommand(ipbxcommand);
-}
-
-/*! \brief to save sound files
- *
- * open a QFileDialog and emit setFileName()
- */
-void XletAgentDetails::saveToFile()
-{
-    // qDebug() << Q_FUNC_INFO;
-    QString selectedFilter;
-    QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Save Sound File"),
-                                                    "",
-                                                    tr("All Files (*)"),
-                                                    &selectedFilter);
-    if (!fileName.isEmpty())
-        b_engine->saveToFile(fileName);
 }

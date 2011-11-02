@@ -82,8 +82,6 @@ bool TrunkInfo::updateConfig(const QVariantMap & prop)
         m_enablexfer = prop.value("enablexfer").toBool();
     if (prop.contains("incallfilter"))
         m_incallfilter = prop.value("incallfilter").toBool();
-    if (prop.contains("callrecord"))
-        m_callrecord = prop.value("callrecord").toBool();
 
     return haschanged;
 }

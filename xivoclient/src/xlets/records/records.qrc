@@ -1,7 +1,0 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-    <qresource>
-        <file>../../../obj/records_fr.qm</file>
-        <file>../../../obj/records_nl.qm</file>
-    </qresource>
-</RCC>
