@@ -77,8 +77,14 @@ class QueueRow : public QWidget {
         void updateLongestWaitWidget(int display, uint greenlevel, uint orangelevel);
         void updateBusyWidget();
         void updateName();
+        QString queueName() const;
 
         static QWidget* makeTitleRow(XletQueues *parent);
+        static void makeTitleQueue(QGridLayout *, QWidget*, uint);
+        static void makeTitleStatistics(QGridLayout *, QWidget *, uint);
+        static void makeTitleWaitingCalls(QGridLayout *, QWidget *, uint);
+        static void makeTitleLongestWait(QGridLayout *, QWidget *, uint);
+        static void makeSpacer(QGridLayout *, uint);
         static void getLayoutColumnsWidth(QGridLayout *layout);
         static void setLayoutColumnWidth(QGridLayout *layout, int nbStat);
 

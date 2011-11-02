@@ -50,7 +50,6 @@ QList<int> QueueRow::m_colWidth = QList<int>();
 static QStringList statItems;  //!< list of stats items which are reported for each queue
 static QStringList statsOfDurationType;
 static QStringList statsInPercent;
-
 static QStringList statsToRequest;
 
 const static QString commonqss = "QProgressBar { "
@@ -127,7 +126,7 @@ XletQueues::XletQueues(QWidget *parent)
     setTitle(tr("Queues' List"));
 
     QStringList xletlist;
-    m_showMore = true; // xletlist.contains("queuedetails") || xletlist.contains("queueentrydetails");
+    m_showMore = true;
     m_showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
     uint nsecs = 30;
     if (b_engine->getConfig().contains("xlet.queues.statsfetchperiod")) {
@@ -260,13 +259,13 @@ void XletQueues::updateQueueStatus(const QString & xqueueid)
  *
  * to update display.
  */
-void XletQueues::setQueueOrder(const QStringList & queueOrder)
+void XletQueues::setQueueOrder(const QStringList &queueOrder)
 {
     QueueRow *rowAtPos;
     QueueRow *rowAtWrongPos;
     int rowMovedIndex;
     int index = 1;
-    foreach(QString queue, queueOrder) {
+    foreach(const QString &queue, queueOrder) {
         QLayoutItem * qli = m_layout->itemAt(index);
         if(qli != NULL) {
             rowAtPos = qobject_cast<QueueRow *>(qli->widget());
@@ -325,8 +324,7 @@ void XletQueues::queueClicked()
     QStringList queueOrder;
     int nbItem = m_layout->count();
 
-    int i;
-    for(i=1;i<nbItem;i++) {
+    for(int i = 1; i < nbItem; i++) {
         row = qobject_cast<QueueRow *>(m_layout->itemAt(i)->widget());
         queueOrder.append(row->property("id").toString());
     }
@@ -334,11 +332,6 @@ void XletQueues::queueClicked()
     saveQueueOrder(queueOrder);
 }
 
-
-/*! \brief updateLongestWaitWidgets
- *
- *  update the longest waiting time label for each queues
- */
 void XletQueues::updateLongestWaitWidgets()
 {
     uint greenlevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("green").toUInt() - 1;
@@ -366,9 +359,6 @@ void XletQueues::updateLongestWaitWidgets()
     }
 }
 
-/*! \brief askForQueueStats
- * Request queue stats periodicly
- */
 void XletQueues::askForQueueStats()
 {
     QHashIterator<QString, QueueRow *> i(m_queueList);
@@ -509,9 +499,6 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
 
     int visible = b_engine->getConfig("guioptions.queuespanel").toMap().value("visible"+queueId, true).toBool();
 
-    if (!visible)
-        hide();
-
     int col = 0;
     m_name = new QLabel(this);
     m_layout->addWidget(m_name, 0, col++);
@@ -573,6 +560,11 @@ QueueRow::QueueRow(const QueueInfo *qInfo, XletQueues *parent)
 
     // setMaximumHeight(30);
     updateRow();
+
+    if (!visible) {
+        getLayoutColumnsWidth(m_layout);
+        hide();
+    }
 }
 
 void QueueRow::setLayoutColumnWidth(QGridLayout *layout, int nbStat)
@@ -583,21 +575,19 @@ void QueueRow::setLayoutColumnWidth(QGridLayout *layout, int nbStat)
     layout->setColumnMinimumWidth(3, 100); // queue busy
     layout->setColumnMinimumWidth(4, 100); // queue longest waiting time
 
-    int i;
-    for (i = 0 ; i < nbStat ; i++) {
+    for (int i = 0 ; i < nbStat ; i++) {
         if (m_colWidth[i] != -1) {
-            layout->setColumnMinimumWidth(i+5, m_colWidth[i]);
+            layout->setColumnMinimumWidth(i + 5, m_colWidth[i]);
         } else {
-            layout->setColumnMinimumWidth(i+5, 55);
+            layout->setColumnMinimumWidth(i + 5, 55);
         }
     }
 }
 
 void QueueRow::getLayoutColumnsWidth(QGridLayout *layout)
 {
-    int i;
-    for(i=0;i<m_colWidth.size();i++) {
-        m_colWidth[i] = layout->itemAtPosition(1, i+5)->widget()->width();
+    for(int i = 0; i < m_colWidth.size(); i++) {
+        m_colWidth[i] = layout->itemAtPosition(1, i + 5)->widget()->width();
     }
     // warning : it seems that m_colWidth is set only here,
     // so that if the xlet is hidden these values are wrong
@@ -703,81 +693,6 @@ void QueueRow::updateRow()
     QStringList queueagents_list;
     int nagents;
 
-    // number of Available agents
-    nagents = 0;
-    queueagents_list.clear();
-    foreach (QString xagentid, m_queueinfo->xagentids()) {
-        QString xqueuemember = m_queueinfo->reference("agents", xagentid);
-        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
-        if (qmi == NULL)
-            continue;
-        const AgentInfo * agentinfo = b_engine->agent(xagentid);
-        if (agentinfo == NULL)
-            continue;
-        if ((qmi->status() == "1") && (qmi->paused() == "0")) {
-            nagents ++;
-            queueagents_list << agentinfo->agentNumber();
-        }
-    }
-
-    if (m_infoList.contains("Xivo-Avail")) {
-        m_infoList["Xivo-Avail"]->setText(QString::number(nagents));
-        QString todisp;
-        if (nagents)
-            todisp = tr("Available agents : %1").arg(queueagents_list.join(", "));
-        m_infoList["Xivo-Avail"]->setToolTip(todisp);
-    }
-
-    // number of Connected agents
-    nagents = 0;
-    queueagents_list.clear();
-    foreach (QString xagentid, m_queueinfo->xagentids()) {
-        QString xqueuemember = m_queueinfo->reference("agents", xagentid);
-        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
-        if (qmi == NULL)
-            continue;
-        const AgentInfo * agentinfo = b_engine->agent(xagentid);
-        if (agentinfo == NULL)
-            continue;
-        if ((qmi->status() == "1") || (qmi->status() == "3")) {
-            nagents ++;
-            queueagents_list << agentinfo->agentNumber();
-        }
-    }
-
-    if (m_infoList.contains("Xivo-Conn")) {
-        m_infoList["Xivo-Conn"]->setText(QString::number(nagents));
-        QString todisp;
-        if (nagents)
-            todisp = tr("Connected agents : %1").arg(queueagents_list.join(", "));
-        m_infoList["Xivo-Conn"]->setToolTip(todisp);
-    }
-
-    // number of Talking agents
-    nagents = 0;
-    queueagents_list.clear();
-    foreach (QString xagentid, m_queueinfo->xagentids()) {
-        QString xqueuemember = m_queueinfo->reference("agents", xagentid);
-        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
-        if (qmi == NULL)
-            continue;
-        const AgentInfo * agentinfo = b_engine->agent(xagentid);
-        if (agentinfo == NULL)
-            continue;
-        if ((qmi->status() == "3") && (qmi->paused() == "0")) {
-            nagents ++;
-            queueagents_list << agentinfo->agentNumber();
-        }
-    }
-
-    if (m_infoList.contains("Xivo-Talking")) {
-        m_infoList["Xivo-Talking"]->setText(QString::number(nagents));
-        QString todisp;
-        if (nagents)
-            todisp = tr("Talking agents : %1").arg(queueagents_list.join(", "));
-        m_infoList["Xivo-Talking"]->setToolTip(todisp);
-    }
-
     uint oldest = 0;
     int first_item = 1;
     uint current_entrytime;
@@ -805,14 +720,16 @@ void QueueRow::updateRow()
 
 void QueueRow::updateName()
 {
-    QString queueName;
-    if (m_xlet->showNumber()) {
-        queueName = m_queueinfo->queueName() + " (" + m_queueinfo->queueNumber() + ")";
-    } else {
-        queueName = m_queueinfo->queueName();
-    }
+    m_name->setText(queueName());
+}
 
-    m_name->setText(queueName);
+QString QueueRow::queueName() const
+{
+    if (m_xlet->showNumber()) {
+        return m_queueinfo->queueName() + " (" + m_queueinfo->queueNumber() + ")";
+    } else {
+        return m_queueinfo->queueName();
+    }
 }
 
 QWidget* QueueRow::makeTitleRow(XletQueues *parent)
@@ -821,8 +738,6 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
     QGridLayout *layout = new QGridLayout(row);
     layout->setSpacing(0);
     row->setLayout(layout);
-    QLabel *label;
-    QSpacerItem *spacer;
     m_colWidth.clear();
 
     static struct {
@@ -830,15 +745,6 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
         QString name;
         QString tooltip;
     } stats_detail[] = {
-        {   "Xivo-Conn",
-            tr("Connected"),
-            tr("Number of agents in this queue") },
-        {   "Xivo-Avail",
-            tr("Available"),
-            tr("Number of available agents in this queue") },
-        {   "Xivo-Talking",
-            tr("Currently Talking"),
-            tr("Number of agents in this queue, currently talking") },
         {   "Xivo-Join",
             tr("Received"),
             tr("Number of received calls") },
@@ -859,58 +765,29 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
             tr("Ratio (Calls answered in less than X sec / Number of calls answered)") }
     };
 
-    int i;
     if (statItems.empty()) {
-        for (i=0;i<nelem(stats_detail);i++) {
+        for (int i = 0; i < nelem(stats_detail); i++) {
             statItems << stats_detail[i].hashname;
         }
 
         statsOfDurationType << "Xivo-Holdtime-max";
-
         statsToRequest << "Xivo-Holdtime-max" << "Xivo-Qos"
                        << "Xivo-Join" << "Xivo-Lost"
                        << "Xivo-Rate" << "Xivo-Link";
-
         statsInPercent << "Xivo-Rate" << "Xivo-Qos";
     }
 
-    int col = 0;
-    label = new QLabel(row);
-    label->setText(tr("Queues"));
-    layout->addWidget(label, 1, col++);
-
-    label = new QLabel(row);
-    label->setText(tr("Number of agents"));
-    label->setAlignment(Qt::AlignCenter);
-    label->setStyleSheet("background-color:#333;color:#eee;margin-right:1px;");
-    layout->addWidget(label, 0, 5, 1, 3);
-
-    label = new QLabel(row);
-    label->setText(tr("Statistic on period"));
-    label->setAlignment(Qt::AlignCenter);
-    label->setStyleSheet("QLabel { background-color:#333;color:#eee; } ");
-    layout->addWidget(label, 0, 8, 1, nelem(stats_detail) - 3);
-
-    spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
-    layout->addItem(spacer, 1, col++);
-    spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
-    layout->addItem(spacer, 1, col++);
-
-    label = new QLabel(row);
-    label->setText(tr("Waiting calls"));
-    label->setFixedSize(100, 30);
-    label->setAlignment(Qt::AlignCenter);
-    layout->addWidget(label, 1, col++);
-
-    label = new QLabel(row);
-    label->setFixedSize(100, 30);
-    label->setText(tr("Longest Wait"));
-    label->setAlignment(Qt::AlignCenter);
-    layout->addWidget(label, 1, col++);
+    uint col = 0;
+    makeTitleQueue(layout, row, col++);
+    makeTitleStatistics(layout, row, nelem(stats_detail));
+    makeSpacer(layout, col++);
+    makeSpacer(layout, col++);
+    makeTitleWaitingCalls(layout, row, col++);
+    makeTitleLongestWait(layout, row, col++);
 
     QString detailCss = "QLabel { background-color:#666; }";
-    for (i=0 ; i<nelem(stats_detail) ; i++) {
-        label = new QLabel(row);
+    for (int i = 0 ; i < nelem(stats_detail); i++) {
+        QLabel *label = new QLabel(row);
         label->setText(stats_detail[i].name);
         label->setAlignment(Qt::AlignCenter);
         label->setStyleSheet(detailCss);
@@ -921,9 +798,43 @@ QWidget* QueueRow::makeTitleRow(XletQueues *parent)
     }
     setLayoutColumnWidth(layout, nelem(stats_detail));
 
-    spacer = new QSpacerItem(1, 1);
-    layout->addItem(spacer, 1, col, 1,-1);
+    layout->addItem(new QSpacerItem(1, 1), 1, col, 1,-1);
     layout->setColumnStretch(col, 1);
 
     return row;
+}
+
+void QueueRow::makeTitleQueue(QGridLayout *layout, QWidget *parent, uint col) {
+    QLabel *title = new QLabel(parent);
+    title->setText(tr("Queues"));
+    layout->addWidget(title, 1, col);
+}
+
+void QueueRow::makeTitleStatistics(QGridLayout *layout, QWidget *parent, uint length) {
+    QLabel *title = new QLabel(parent);
+    title->setText(tr("Statistic on period"));
+    title->setAlignment(Qt::AlignCenter);
+    title->setStyleSheet("QLabel { background-color:#333;color:#eee; } ");
+    layout->addWidget(title, 0, 5, 1, length);
+}
+
+void QueueRow::makeTitleWaitingCalls(QGridLayout *layout, QWidget *parent, uint col) {
+    QLabel *title = new QLabel(parent);
+    title->setText(tr("Waiting calls"));
+    title->setFixedSize(100, 30);
+    title->setAlignment(Qt::AlignCenter);
+    layout->addWidget(title, 1, col);
+}
+
+void QueueRow::makeTitleLongestWait(QGridLayout *layout, QWidget *parent, uint col) {
+    QLabel *title = new QLabel(parent);
+    title->setFixedSize(100, 30);
+    title->setText(tr("Longest Wait"));
+    title->setAlignment(Qt::AlignCenter);
+    layout->addWidget(title, 1, col);
+}
+
+void QueueRow::makeSpacer(QGridLayout *layout, uint col) {
+    QSpacerItem *spacer = new QSpacerItem(25, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    layout->addItem(spacer, 1, col);
 }
