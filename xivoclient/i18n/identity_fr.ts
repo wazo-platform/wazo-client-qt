@@ -67,18 +67,12 @@
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="287"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1</source>
         <translation>IPBXid : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
-        <source>IPBXid: %1
-Context: %2</source>
-        <translation>IPBXid : %1
-Contexte : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="339"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="337"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>
@@ -213,33 +207,33 @@ Contexte : %4</translation>
 <context>
     <name>IdentityVoiceMail</name>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="87"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="93"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Boîte %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="88"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="94"/>
         <source>VoiceMail activated on %1</source>
         <translation>Messagerie activée sur %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="90"/>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="125"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="96"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="131"/>
         <source>VoiceMailBox %1</source>
         <translation>Boîte %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="97"/>
         <source>VoiceMail not activated on %1</source>
         <translation>Messagerie non activée sur %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="134"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="140"/>
         <source>%1 old</source>
         <translation>%1 ancien(s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="135"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="141"/>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
     </message>

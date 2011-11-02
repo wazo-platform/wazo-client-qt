@@ -63,6 +63,7 @@ class BaseEngine;
  * \code $ egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib \endcode
  * where variables stands for the list of the variables obtained by the 
  * previous command, separated by |*/
+
 class ConfigWidget: public QDialog
 {
     Q_OBJECT
@@ -149,11 +150,23 @@ class ConfigWidget: public QDialog
         QDialogButtonBox * m_btnbox;    //!< Buttons box
         QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
 
+        enum operator_actions {
+            ANSWER,
+            HANGUP,
+            DTXFER,
+            ITXFER,
+            ILINK,
+            ICANCEL,
+            ATXFER_FINAL,
+            CANCEL_TXFER,
+            NB_OP_ACTIONS
+        };
+
         struct {
             QString action;
             QString translation;
             QPushButton *button;
-        } m_operator_action[9];
+        } m_operator_action[NB_OP_ACTIONS];
 
         QCheckBox * m_operator_answer_work; //!< should we display the answer key in operator xlet ?
 

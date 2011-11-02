@@ -40,7 +40,6 @@
 #include "currentcallwidget.h"
 #include "holdedwidget.h"
 #include "incomingwidget.h"
-#include "parkedwidget.h"
 #include "popcaastra.h"
 #include "transferedwidget.h"
 #include "xivoconsts.h"
@@ -412,51 +411,6 @@ void PopcAastra::selectLine(int line)
                          aastra_notify::LINE, SPECIAL_ME, line));
 }
 
-void PopcAastra::park()
-{
-    QString pxid = promptParking();
-    if (const ParkingInfo * parking = b_engine->parkinglot(pxid)) {
-        QStringList commands = QStringList()
-            << aastra_notify::GetKeyUri(aastra_notify::XFER);
-        aastra_notify::AppendNumber(parking->number(), commands);
-        commands.append(aastra_notify::GetKeyUri(aastra_notify::XFER));
-        emit ipbxCommand(aastra_notify::Build(commands, SPECIAL_ME));
-        trackParked(pxid, m_current_call->phonexid());
-    }
-}
-
-QString PopcAastra::promptParking() const
-{
-    QMap<QString, QPushButton *> parking_map;
-    QMessageBox box;
-    foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
-        if (const ParkingInfo * p = b_engine->parkinglot(pxid)) {
-            parking_map[p->xid()] = box.addButton(QString("%0 - %1")
-                                                  .arg(p->number()).arg(p->name()),
-                                                  QMessageBox::ActionRole);
-            if (parking_map.size() == 1) {
-                box.setDefaultButton(parking_map[p->xid()]);
-            }
-        }
-    }
-
-    if (parking_map.size() > 0) {
-        box.setText(tr("Choose the parking to park the call to"));
-        box.addButton(QMessageBox::Cancel);
-        box.exec();
-        foreach (const QString & pxid, b_engine->iterover("parkinglots").keys()) {
-            const ParkingInfo * p = b_engine->parkinglot(pxid);
-            if (p && box.clickedButton() == parking_map[p->xid()]) {
-                return pxid;
-            }
-        }
-    } else {
-        qDebug() << Q_FUNC_INFO << "No parking available";
-    }
-    qDebug() << Q_FUNC_INFO << "No parking selected";
-    return QString();
-}
-
 QString PopcAastra::promptMeetme() const
 {
     QMap<QString, QPushButton *> meetme_map;
@@ -487,16 +441,6 @@ QString PopcAastra::promptMeetme() const
     }
     qDebug() << Q_FUNC_INFO << "No meetme selected";
     return QString();
-}
-
-void PopcAastra::trackParked(const QString & parkingxid,
-                             const QString & phonexid)
-{
-    if (PendingWidget * w = new ParkedWidget(phonexid, parkingxid, this)) {
-        w->update();
-        m_pendingcalls[phonexid] = w;
-        m_layout->addWidget(w);
-    }
 }
 
 void PopcAastra::volUp()

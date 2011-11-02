@@ -50,14 +50,12 @@ public slots:
     void doConf();
     void doHangup();
     void doHold();
-    void doPark();
     void doTxfer();
 signals:
     void atxfer();
     // void blindTransfer(const QString &, int, const QString &, const QString &);
     void hangup();
     void hold();
-    void park();
     void selectLine(int);
     void remove_me();
     void txfer();
@@ -72,7 +70,6 @@ private:
     QPushButton * m_btn_hold;
     QPushButton * m_btn_hangup;
     QPushButton * m_btn_conf;
-    QPushButton * m_btn_park;
 };
 
 inline int CurrentCallWidget::line() const

@@ -31,8 +31,12 @@
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="60"/>
+        <source>Forward on &amp;No Answer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Forward on &amp;No Reply</source>
-        <translation>Doorschakelen indien &amp;geen antwoord</translation>
+        <translation type="obsolete">Doorschakelen indien &amp;geen antwoord</translation>
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="61"/>

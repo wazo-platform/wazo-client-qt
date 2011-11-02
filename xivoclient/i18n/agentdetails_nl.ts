@@ -67,22 +67,22 @@
         <translation>Context: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="504"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="505"/>
         <source>Record files for this agent</source>
         <translation>Voor deze agent opgenomen bestanden</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="517"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="518"/>
         <source>No Record for this agent</source>
         <translation>Geen opname voor deze agent </translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="570"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="571"/>
         <source>Save Sound File</source>
         <translation>Geluidsbestand opslaan</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="572"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="573"/>
         <source>All Files (*)</source>
         <translation>Alle bestanden (*)</translation>
     </message>

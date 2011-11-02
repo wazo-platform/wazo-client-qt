@@ -271,7 +271,7 @@ ones beneath) on first window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="511"/>
+        <location filename="../src/configwidget.cpp" line="509"/>
         <source>Operator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -423,7 +423,7 @@ ones beneath) on first window</source>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="451"/>
-        <location filename="../src/configwidget.cpp" line="492"/>
+        <location filename="../src/configwidget.cpp" line="490"/>
         <source>(current: %0) click to change</source>
         <translation>(momenteel %0) klik om te wijzigen</translation>
     </message>
@@ -458,37 +458,36 @@ ones beneath) on first window</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="473"/>
         <source>Park</source>
-        <translation>Parkeren</translation>
+        <translation type="obsolete">Parkeren</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="475"/>
+        <location filename="../src/configwidget.cpp" line="473"/>
         <source>Finalize Transfer</source>
         <translation>Doorschakeling voltooien</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="477"/>
+        <location filename="../src/configwidget.cpp" line="475"/>
         <source>Cancel Transfer</source>
         <translation>Doorschakeling annuleren</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="488"/>
+        <location filename="../src/configwidget.cpp" line="486"/>
         <source>Operator action</source>
         <translation>Handeling van de operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="489"/>
+        <location filename="../src/configwidget.cpp" line="487"/>
         <source>Key binding</source>
         <translation>Toets toekenning</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="505"/>
+        <location filename="../src/configwidget.cpp" line="503"/>
         <source>Display an answer action</source>
         <translation> Een antwoordactie weergeven</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="509"/>
+        <location filename="../src/configwidget.cpp" line="507"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Elke wijziging hier vereist een heropstarten van het programma/de toepassing om toegepast te worden</translation>
     </message>
@@ -497,12 +496,12 @@ ones beneath) on first window</source>
         <translation type="obsolete">Xlet van de operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="537"/>
+        <location filename="../src/configwidget.cpp" line="535"/>
         <source>This key is already bound</source>
         <translation>Deze toets werd al toegekend</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="538"/>
+        <location filename="../src/configwidget.cpp" line="536"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Gelieve een andere toets in te drukken, deze toets werd al toegekend</translation>
     </message>
@@ -1172,7 +1171,7 @@ Bent u zeker?</translation>
 <context>
     <name>WarningWidget</name>
     <message>
-        <location filename="../src/configwidget.cpp" line="672"/>
+        <location filename="../src/configwidget.cpp" line="670"/>
         <source>You must restart the program for this setting to apply</source>
         <translation type="unfinished"></translation>
     </message>

@@ -59,7 +59,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         bool ismonitored() const;
         bool isspied() const;
         bool isholded() const;
-        bool isparked() const;
         const QString & agent() const;
         QString toString() const;
 

@@ -417,7 +417,7 @@ auf der ersten Seite</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="451"/>
-        <location filename="../src/configwidget.cpp" line="492"/>
+        <location filename="../src/configwidget.cpp" line="490"/>
         <source>(current: %0) click to change</source>
         <translation>(%0) klicken um zu wescheln</translation>
     </message>
@@ -452,42 +452,41 @@ auf der ersten Seite</translation>
         <translation>abrechen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="473"/>
         <source>Park</source>
-        <translation>Park</translation>
+        <translation type="obsolete">Park</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="475"/>
+        <location filename="../src/configwidget.cpp" line="473"/>
         <source>Finalize Transfer</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="477"/>
+        <location filename="../src/configwidget.cpp" line="475"/>
         <source>Cancel Transfer</source>
         <translation>abrechen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="488"/>
+        <location filename="../src/configwidget.cpp" line="486"/>
         <source>Operator action</source>
         <translation>Operator Aktion</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="489"/>
+        <location filename="../src/configwidget.cpp" line="487"/>
         <source>Key binding</source>
         <translation>Allocate Schlüssel</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="505"/>
+        <location filename="../src/configwidget.cpp" line="503"/>
         <source>Display an answer action</source>
         <translation>Ein Knopf um zu antworten zeigen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="509"/>
+        <location filename="../src/configwidget.cpp" line="507"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Jede Änderung hier erfordert Neustart der Anwendung wirksam zu sein</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="511"/>
+        <location filename="../src/configwidget.cpp" line="509"/>
         <source>Operator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -496,12 +495,12 @@ auf der ersten Seite</translation>
         <translation type="obsolete">Xlet Operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="537"/>
+        <location filename="../src/configwidget.cpp" line="535"/>
         <source>This key is already bound</source>
         <translation>Dieser Schlüssel ist bereits allocate</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="538"/>
+        <location filename="../src/configwidget.cpp" line="536"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Bitte drücken Sie eine andere Taste, das ist eine bereits zugeordnete Aktion &apos;%0&apos;</translation>
     </message>
@@ -1160,7 +1159,7 @@ Sind Sie sicher?</translation>
 <context>
     <name>WarningWidget</name>
     <message>
-        <location filename="../src/configwidget.cpp" line="672"/>
+        <location filename="../src/configwidget.cpp" line="670"/>
         <source>You must restart the program for this setting to apply</source>
         <translation type="unfinished"></translation>
     </message>

@@ -90,15 +90,6 @@ void XletCalls::transftonumberchan(const QString &chan)
                          "ext:special:dialxlet"); // Call
 }
 
-/*! \brief transfers the channel to a number
- */
-void XletCalls::parkcall(const QString &chan)
-{
-    b_engine->actionCall("transfer",
-                         "chan:" + m_monitored_ui->id() + ":" + chan,
-                         "ext:special:parkthecall");
-}
-
 void XletCalls::updatePhoneStatus(const QString & xphoneid)
 {
     if (m_monitored_ui == NULL)
@@ -125,8 +116,6 @@ void XletCalls::updatePhoneStatus(const QString & xphoneid)
                     this, SLOT(hupchan(const QString &)));
             connect(callwidget, SIGNAL(doTransferToNumber(const QString &)),
                     this, SLOT(transftonumberchan(const QString &)));
-            connect(callwidget, SIGNAL(doParkCall(const QString &)),
-                    this, SLOT(parkcall(const QString &)));
             m_layout->insertWidget(m_layout->count() - 1, callwidget,
                                    0, Qt::AlignTop);
             m_affhash[xchannel] = callwidget;

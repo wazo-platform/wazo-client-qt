@@ -4,33 +4,28 @@
 <context>
     <name>CurrentCallWidget</name>
     <message>
-        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="115"/>
+        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="109"/>
         <source>Atxfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="116"/>
+        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="110"/>
         <source>Txfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="117"/>
+        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="111"/>
         <source>Hold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="118"/>
+        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="112"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="119"/>
+        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="113"/>
         <source>Conference</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/popcaastra/currentcallwidget.cpp" line="120"/>
-        <source>Park</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -61,14 +56,6 @@
     </message>
 </context>
 <context>
-    <name>ParkedWidget</name>
-    <message>
-        <location filename="../src/xlets/popcaastra/parkedwidget.cpp" line="57"/>
-        <source>parked at</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PendingWidget</name>
     <message>
         <location filename="../src/xlets/popcaastra/pendingwidget.cpp" line="58"/>
@@ -79,17 +66,12 @@
 <context>
     <name>PopcAastra</name>
     <message>
-        <location filename="../src/xlets/popcaastra/popcaastra.cpp" line="64"/>
+        <location filename="../src/xlets/popcaastra/popcaastra.cpp" line="63"/>
         <source>POPC Aastra operator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/popcaastra/popcaastra.cpp" line="444"/>
-        <source>Choose the parking to park the call to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/popcaastra/popcaastra.cpp" line="476"/>
+        <location filename="../src/xlets/popcaastra/popcaastra.cpp" line="430"/>
         <source>Choose the conference room to transfer this call to</source>
         <translation type="unfinished"></translation>
     </message>

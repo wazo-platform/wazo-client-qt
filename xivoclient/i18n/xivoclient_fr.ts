@@ -393,7 +393,7 @@ que celles ci-dessous) à la connexion</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="451"/>
-        <location filename="../src/configwidget.cpp" line="492"/>
+        <location filename="../src/configwidget.cpp" line="490"/>
         <source>(current: %0) click to change</source>
         <translation>(actuellement %0) cliquer pour changer</translation>
     </message>
@@ -429,51 +429,46 @@ que celles ci-dessous) à la connexion</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="473"/>
-        <source>Park</source>
-        <translation>Parquer</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="475"/>
         <source>Finalize Transfer</source>
         <translation>Finaliser</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="477"/>
+        <location filename="../src/configwidget.cpp" line="475"/>
         <source>Cancel Transfer</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="488"/>
+        <location filename="../src/configwidget.cpp" line="486"/>
         <source>Operator action</source>
         <translation>Action de l&apos;opérateur</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="489"/>
+        <location filename="../src/configwidget.cpp" line="487"/>
         <source>Key binding</source>
         <translation>Touche allouée</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="505"/>
+        <location filename="../src/configwidget.cpp" line="503"/>
         <source>Display an answer action</source>
         <translation>Afficher un bouton pour répondre</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="509"/>
+        <location filename="../src/configwidget.cpp" line="507"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Tout changement ici nécessite un redémarrage de l&apos;application pour être effectif</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="511"/>
+        <location filename="../src/configwidget.cpp" line="509"/>
         <source>Operator</source>
         <translation>Opérateur</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="537"/>
+        <location filename="../src/configwidget.cpp" line="535"/>
         <source>This key is already bound</source>
         <translation>Cette touche est déjà allouée</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="538"/>
+        <location filename="../src/configwidget.cpp" line="536"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Veuillez presser une autre touche, celle-ci est déjà allouée pour l&apos;action &apos;%0&apos;</translation>
     </message>
@@ -1125,7 +1120,7 @@ Are you sure ?</source>
 <context>
     <name>WarningWidget</name>
     <message>
-        <location filename="../src/configwidget.cpp" line="672"/>
+        <location filename="../src/configwidget.cpp" line="670"/>
         <source>You must restart the program for this setting to apply</source>
         <translation>Vous devez redémarrer le programme pour appliquer ce paramètre</translation>
     </message>

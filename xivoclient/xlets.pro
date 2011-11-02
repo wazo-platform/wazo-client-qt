@@ -11,7 +11,6 @@ SUBDIRS  = \
     src/xlets/history \
     src/xlets/identity \
     src/xlets/operator \
-    src/xlets/parking \
     src/xlets/popcaastra \
     src/xlets/queues \
     src/xlets/queuedetails \

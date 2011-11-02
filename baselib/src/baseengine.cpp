@@ -75,7 +75,7 @@ static const QStringList CheckFunctions = (QStringList() << "presence" << "custo
 static const QStringList GenLists = (QStringList()
                                      << "users" << "phones" << "trunks"
                                      << "agents" << "queues" << "groups" << "meetmes"
-                                     << "voicemails" << "incalls" << "parkinglots");
+                                     << "voicemails" << "incalls");
 static CtiConn * m_ctiConn;
 
 BaseEngine::BaseEngine(QSettings *settings,
@@ -104,7 +104,6 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("meetmes", newXInfo<MeetmeInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
     m_xinfoList.insert("incalls", newXInfo<InCallsInfo>);
-    m_xinfoList.insert("parkinglots", newXInfo<ParkingInfo>);
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
@@ -259,9 +258,8 @@ void BaseEngine::loadSettings()
     guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
     guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
     guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
-    guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
-    guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
-    guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
+    guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F7));
+    guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F8));
     data.setValue(guisetting_map);
 
     // this is used to make a migration from 1.0 to 1.1
@@ -1151,8 +1149,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateVoiceMailConfig(xid);
             else if (listname == "meetmes")
                 emit updateMeetmesConfig(xid);
-            else if (listname == "parkinglots")
-                emit updateParkinglotConfig(xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1204,8 +1200,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                         sendJsonCommand(command);
                     }
                 }
-            } else if (haschanged && listname == "parkinglots") {
-                emit updateParkinglotStatus(xid);
             } else if (listname == "agents")
                 emit updateAgentStatus(xid);
             else if (listname == "queues") {
@@ -1554,10 +1548,6 @@ void BaseEngine::actionCall(const QString & action,
     } else if (action == "dial") {
         ipbxcommand["command"] = action;
         ipbxcommand["destination"] = dst;
-    } else if (action == "parking") {
-        ipbxcommand["command"] = action;
-        ipbxcommand["source"] = src;
-        ipbxcommand["destination"] = dst;
     } else if (action == "answer") {
         ipbxcommand["command"] = action;
         ipbxcommand["phoneids"] = src;
@@ -1835,7 +1825,7 @@ void BaseEngine::fetchLists()
     getlists = (QStringList()
                 << "users" << "phones" << "trunks"
                 << "agents" << "queues" << "groups" << "meetmes"
-                << "voicemails" << "incalls" << "parkinglots");
+                << "voicemails" << "incalls");
 
     foreach (QString ipbxid, m_ipbxlist) {
         command["tipbxid"] = ipbxid;

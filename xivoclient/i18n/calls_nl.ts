@@ -24,29 +24,26 @@
         <translation>Schakel het kanaal door naar het gekozen opgebeld nummer </translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="95"/>
         <source>&amp;Park the call</source>
-        <translation>&amp;De oproep parkeren</translation>
+        <translation type="obsolete">&amp;De oproep parkeren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="96"/>
         <source>Park this call</source>
-        <translation>Deze oproep parkeren</translation>
+        <translation type="obsolete">Deze oproep parkeren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="142"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="136"/>
         <source>Unknown</source>
         <translation>Onbekend</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="138"/>
         <source>Conference room number %1</source>
         <translation>Vergaderkamer nummer %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
         <source>Parked call in %1</source>
-        <translation>Geparkeerde oproep in %1</translation>
+        <translation type="obsolete">Geparkeerde oproep in %1</translation>
     </message>
     <message>
         <source>Parked call</source>
@@ -65,7 +62,7 @@
         <translation>Oproepen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="258"/>
+        <location filename="../src/xlets/calls/calls.cpp" line="169"/>
         <source>Monitoring : %1</source>
         <translation>Monitoring: %1</translation>
     </message>

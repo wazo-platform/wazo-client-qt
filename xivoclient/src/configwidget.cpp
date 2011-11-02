@@ -457,24 +457,22 @@ void ConfigWidget::changeOperatorKey(bool a)
 /*! \brief operator xlet config tab */
 void ConfigWidget::_insert_operator_functiontab()
 {
-    m_operator_action[0].action = QString("answer");
-    m_operator_action[0].translation = tr("Answer");
-    m_operator_action[1].action = QString("hangup");
-    m_operator_action[1].translation = tr("Hangup");
-    m_operator_action[2].action = QString("dtransfer");
-    m_operator_action[2].translation = tr("D. Transfer");
-    m_operator_action[3].action = QString("itransfer");
-    m_operator_action[3].translation = tr("I. Transfer");
-    m_operator_action[4].action = QString("ilink");
-    m_operator_action[4].translation = tr("I. Link");
-    m_operator_action[5].action = QString("icancel");
-    m_operator_action[5].translation = tr("I. Cancel");
-    m_operator_action[6].action = QString("park");
-    m_operator_action[6].translation = tr("Park");
-    m_operator_action[7].action = QString("atxferfinalize");
-    m_operator_action[7].translation = tr("Finalize Transfer");
-    m_operator_action[8].action = QString("atxfercancel");
-    m_operator_action[8].translation = tr("Cancel Transfer");
+    m_operator_action[ANSWER].action = QString("answer");
+    m_operator_action[ANSWER].translation = tr("Answer");
+    m_operator_action[HANGUP].action = QString("hangup");
+    m_operator_action[HANGUP].translation = tr("Hangup");
+    m_operator_action[DTXFER].action = QString("dtransfer");
+    m_operator_action[DTXFER].translation = tr("D. Transfer");
+    m_operator_action[ITXFER].action = QString("itransfer");
+    m_operator_action[ITXFER].translation = tr("I. Transfer");
+    m_operator_action[ILINK].action = QString("ilink");
+    m_operator_action[ILINK].translation = tr("I. Link");
+    m_operator_action[ICANCEL].action = QString("icancel");
+    m_operator_action[ICANCEL].translation = tr("I. Cancel");
+    m_operator_action[ATXFER_FINAL].action = QString("atxferfinalize");
+    m_operator_action[ATXFER_FINAL].translation = tr("Finalize Transfer");
+    m_operator_action[CANCEL_TXFER].action = QString("atxfercancel");
+    m_operator_action[CANCEL_TXFER].translation = tr("Cancel Transfer");
 
     int i;
 
@@ -488,7 +486,7 @@ void ConfigWidget::_insert_operator_functiontab()
     glayout->addWidget(new QLabel(tr("Operator action")), 0, 1);
     glayout->addWidget(new QLabel(tr("Key binding")), 0, 2);
 
-    for(i=0;i<9;i++) {
+    for(i=0;i<NB_OP_ACTIONS;i++) {
         selectKey = new QPushButton(tr("(current: %0) click to change")
                                     .arg(QKeySequence(m_config["guioptions.xlet_operator_key" + m_operator_action[i].action].toInt()).toString()),
                                     root_widget);
@@ -524,7 +522,7 @@ void ConfigWidget::keyPressEvent(QKeyEvent *e)
 
     int i, already_bound = -1;
 
-    for (i=0;i<9;i++) {
+    for (i=0;i<NB_OP_ACTIONS;i++) {
         if ((m_config["guioptions.xlet_operator_key" + m_operator_action[i].action].toInt() == e->key()) &&
             (i != m_currentKeyChange)) {
             already_bound = i;
@@ -612,7 +610,7 @@ void ConfigWidget::saveAndClose()
     foreach(QString function, func_legend.keys())
         m_config["checked_function." + function] = m_function[function]->isChecked();
 
-    for(i=0;i<9;i++) {
+    for(i=0;i<NB_OP_ACTIONS;i++) {
         m_config["guioptions.xlet_operator_key" + m_operator_action[i].action] =
             m_config["guioptions.xlet_operator_key" + m_operator_action[i].action].toInt();
     }

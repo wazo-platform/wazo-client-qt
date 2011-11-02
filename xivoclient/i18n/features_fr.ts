@@ -9,6 +9,11 @@
         <translation>&amp;Filtrage d&apos;Appel</translation>
     </message>
     <message>
+        <location filename="../src/xlets/features/servicepanel.cpp" line="60"/>
+        <source>Forward on &amp;No Answer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="82"/>
         <source>Call Forwards</source>
         <translation>Renvois d&apos;appel</translation>
@@ -32,11 +37,6 @@
         <location filename="../src/xlets/features/servicepanel.cpp" line="61"/>
         <source>Forward on &amp;Busy</source>
         <translation>Renvoi sur Oc&amp;cupation</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/features/servicepanel.cpp" line="60"/>
-        <source>Forward on &amp;No Reply</source>
-        <translation>Renvoi sur N&amp;on Réponse</translation>
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="54"/>

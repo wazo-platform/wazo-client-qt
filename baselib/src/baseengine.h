@@ -48,7 +48,6 @@
 #include "channelinfo.h"
 #include "incallsinfo.h"
 #include "meetmeinfo.h"
-#include "parkinginfo.h"
 #include "phoneinfo.h"
 #include "queueinfo.h"
 #include "agentinfo.h"
@@ -127,9 +126,6 @@ class QVariant;
  *  - (int) \b guioptions.xlet_operator_keyicancel = key code to cancel ?
  *  - (int) \b guioptions.xlet_operator_keyilink = key code to join
  *  - (int) \b guioptions.xlet_operator_keyitransfer = key code to indirect transfer
- *  - (int) \b guioptions.xlet_operator_keypark = key code to park
- *  - (bool) \b checked_function.presence = presence function enabled ?
- *  - (bool) \b checked_function.customerinfo = customerinfo function enabled ?
  */
 class BASELIB_EXPORT BaseEngine: public QObject
 {
@@ -210,8 +206,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
             { return (const GroupInfo *) m_anylist.value("groups").value(id); };
         const MeetmeInfo * meetme(const QString & id) const        //!< Return the meetme to any Xlet
             { return (const MeetmeInfo *) m_anylist.value("meetmes").value(id); };
-        const ParkingInfo * parkinglot(const QString & id) const   //!< Return the meetme to any Xlet
-            { return (const ParkingInfo *) m_anylist.value("parkinglots").value(id); }
         const VoiceMailInfo * voicemail(const QString & id) const  //!< Return the voicemail to any Xlet
             { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };
 
@@ -347,11 +341,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitTextMessage(const QString &);  //!< message to be displayed to the user.
         
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
-        
-        void parkingEvent(const QString &,
-                          const QString &,
-                          const QString &,
-                          const QVariant &);
                           
         void ackFax(const QString &, const QString &);
         
@@ -386,8 +375,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateChannelStatus(const QString &);
         void updateMeetmesConfig(const QString &);
         void updateMeetmesStatus(const QString &);
-        void updateParkinglotConfig(const QString &);
-        void updateParkinglotStatus(const QString &);
         void removePhoneConfig(const QString &);
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);

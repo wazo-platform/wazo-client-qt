@@ -138,16 +138,6 @@ private:
      * \param line The line number on the phone
      */
     void trackHolded(const QString &, int);
-    /**
-     * Track parked calls
-     *
-     * Parked calls are tracked in m_pendingcalls to be able to unpark them if
-     * no other users retrieves the call
-     *
-     * \param parkingxid The parking's XiVO id
-     * \param phonexid The parked phone's XiVO id
-     */
-    void trackParked(const QString &, const QString &);
 public slots:
     /**
      * Dial a number using Aastra SIP notify
@@ -235,13 +225,6 @@ public slots:
      */
     void transfer();
     /**
-     * Park the selected number
-     *
-     * If more than one parking is available, the operator will be prompted for
-     * for a target parking to send the call
-     */
-    void park();
-    /**
      * Select a line on the phone
      *
      * \param line
@@ -302,12 +285,6 @@ public slots:
      */
     void targetChanged(const QString &);
     /**
-     * Prompt the operator for a parking
-     * 
-     * \return the parkinglot XiVO id
-     */
-    QString promptParking() const;
-    /**
      * Prompt the operator for a meetme
      *
      * \return The meetme XiVO id
@@ -316,7 +293,7 @@ public slots:
     /**
      * Set the completion list for the completion targets
      *
-     * The completer should contain peers, contacts, conference and parkings
+     * The completer should contain peers, contacts and conference
      */
     void fillCompleter();
 private:
