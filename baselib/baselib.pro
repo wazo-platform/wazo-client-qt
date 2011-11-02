@@ -14,11 +14,9 @@ DEFINES     += BASELIB_LIBRARY
 INCLUDEPATH += $${JSON_JSONQT_DIR}
 
 HEADERS     += $${ROOT_DIR}/src/*.h
-HEADERS     += $${ROOT_DIR}/src/dstore/*.h
 HEADERS     += $${JSON_JSONQT_DIR}/*.h
 
 SOURCES     += $${ROOT_DIR}/src/*.cpp
-SOURCES     += $${ROOT_DIR}/src/dstore/*.cpp
 SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 
 DESTDIR     = $${BIN_DIR}

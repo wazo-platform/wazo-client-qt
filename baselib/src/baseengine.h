@@ -43,7 +43,6 @@
 #include <QSettings>
 
 #include "queue_agent_status.h"
-#include "dstore/dstore.h"
 
 #include "channelinfo.h"
 #include "incallsinfo.h"
@@ -517,18 +516,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
         QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
-        
-        
-
-        DStore * m_tree;
-    public:
-        DStore* tree() { return m_tree; };
-        QVariant eV(const QString &req) {
-                return tree()->extractVariant(req);
-        }
-        QVariantMap eVM(const QString &req) {
-                return tree()->extractVMap(req);
-        }
 
     friend class CtiConn;
 };

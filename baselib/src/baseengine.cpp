@@ -85,7 +85,7 @@ BaseEngine::BaseEngine(QSettings *settings,
       m_pendingkeepalivemsg(0), m_logfile(NULL),
       m_byte_counter(0), m_attempt_loggedin(false),
       m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
-      m_forced_to_disconnect(false), m_tree(new DStore())
+      m_forced_to_disconnect(false)
 {
     settings->setParent(this);
     m_timerid_keepalive = 0;
@@ -456,9 +456,6 @@ void BaseEngine::clearInternalData()
 
     /* cleaning the registered listeners */
     m_listeners.clear();
-
-    delete m_tree;
-    m_tree = new DStore();
 }
 
 void BaseEngine::stop()
@@ -718,39 +715,6 @@ QString BaseEngine::timeElapsed(double timestamp) const
             .arg(sec, 2, 10, QChar('0'));
     return timefmt;
     // to bench : this, against .toString("hh:mm:ss") (see confs)
-}
-
-/* until cti protocol get changed the following function
- * function are there to fill the tree manually
- * { */
-
-
-void addMobilePhone(DStore *tree, const QString &userId, const QString &number)
-{
-    if (number.isEmpty())
-        return ;
-
-    QVariantMap mobilePhoneList =
-        tree->extractVMap(QString("mobilephones/*[user-id=@%0]").arg(userId));
-
-    if (mobilePhoneList.size() == 0) {
-        int id = tree->extractVMap(QString("mobilephones")).size();
-        QVariantMap info;
-        info["user-id"] = userId;
-        info["number"] = number;
-        tree->populate(QString("mobilephones/%0").arg(id), info);
-    }
-}
-
-void addUpdateUserInTree(DStore *tree, const QVariantMap & uinfo)
-{
-    QVariantMap info;
-    info["id"] = uinfo.value("xivo_userid");
-    info["fullname"] = uinfo.value("fullname");
-    info["state-id"] = uinfo.value("statedetails").toMap().value("stateid");
-    tree->populate(QString("users/%0").arg(info.value("id").toString()), info);
-    addMobilePhone(tree, info.value("id").toString(), uinfo.value("mobilephone").toString());
-    info.clear();
 }
 
 void BaseEngine::emitMessage(const QString & msg)
@@ -1242,15 +1206,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             foreach (QString id, listid) {
                 command["tid"] = id;
                 sendJsonCommand(command);
-            }
-        }
-
-    } else if (thisclass == "users") {
-        if (function == "sendlist") {
-            QVariantList listusers = datamap.value("payload").toList();
-            foreach (QVariant userprops, listusers) {
-                QVariantMap uinfo = userprops.toMap();
-                addUpdateUserInTree(tree(), uinfo);
             }
         }
     }
