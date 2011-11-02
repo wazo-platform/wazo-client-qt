@@ -67,8 +67,8 @@ tests:
 	@$(MAKE) -s versions
 	@$(MAKE) clean-tests
 	@$(MAKE) os-tests DEBUG=yes
-	LD_LIBRARY_PATH=bin bin/baselib-tests
-	LD_LIBRARY_PATH=bin bin/baselib-tests -xunitxml -o unit-tests/unit-baselib.xml
+	bin/baselib-tests
+	bin/baselib-tests -xunitxml -o unit-tests/unit-baselib.xml
 	cd baselib && ../unit-tests/tools/gcovr --xml -o ../unit-tests/cov-baselib.xml
 
 # Example : os-all -> linux-all

@@ -22,3 +22,5 @@ SOURCES += $${ROOT_DIR}/src/userinfo.cpp \
 RCC_DIR = $$ROOT_DIR/obj
 MOC_DIR = $$ROOT_DIR/obj
 OBJECTS_DIR = $$ROOT_DIR/obj
+
+QMAKE_CXXFLAGS += -include tests/baseengine.h -include tests/phoneinfo.h -include tests/channelinfo.h

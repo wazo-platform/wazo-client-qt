@@ -30,9 +30,12 @@
 #ifndef __BASEENGINE_H__
 #define __BASEENGINE_H__
 
+#include <QMap>
+
 class PhoneInfo;
 class UserInfo;
 class ChannelInfo;
+class QString;
 
 class MockBaseEngine
 {
