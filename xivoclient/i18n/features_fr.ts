@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="58"/>
         <source>Forward on &amp;No Answer</source>
-        <translation type="unfinished"></translation>
+        <translation>Renvois sur non réponse</translation>
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="80"/>
