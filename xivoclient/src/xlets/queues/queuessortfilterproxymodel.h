@@ -27,73 +27,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESPANEL_H__
-#define __QUEUESPANEL_H__
+#ifndef __QUEUESSORTFILTERPROXYMODEL_H__
+#define __QUEUESSORTFILTERPROXYMODEL_H__
 
-#include <xlet.h>
-#include <xletinterface.h>
-#include <ipbxlistener.h>
+#include <QSortFilterProxyModel>
+#include <QStringList>
 
-#include "queuesmodel.h"
-#include "queuessortfilterproxymodel.h"
-#include "queuesview.h"
-
-class UserInfo;
-class XletQueues;
-class QueueInfo;
-
-/*! \brief to configure if the queue should be shown and the queue
- *  stats parameters
+/*! \brief Queues proxy model class
+ *
+ * It allows sorting and filtering the data from the model, without affecting
+ * the model.
+ *
+ * The filter is a simple list containing the queues xids that should be
+ * filtered.
+ *
+ * Sorting is automatic, thanks to Qt's Model/View framework.
  */
-class XletQueuesConfigure : public QWidget
+class QueuesSortFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
     public:
-        XletQueuesConfigure(XletQueues *xlet);
-        QWidget* buildConfigureQueueList(QWidget *);
-
-    protected:
-        virtual void closeEvent(QCloseEvent *);
-
-    private slots:
-        void changeQueueStatParam(int);
-};
-
-/*! \brief Displays queues and their status
- */
-class XletQueues : public XLet, IPBXListener
-{
-    Q_OBJECT
-
-    public:
-        XletQueues(QWidget *parent=0);
-        void parseCommand(const QVariantMap &);
-
-    protected:
-        virtual void contextMenuEvent(QContextMenuEvent *);
-
-    private:
-        void openConfigureWindow();
-
+        QueuesSortFilterProxyModel(QObject *parent = NULL);
+        void setFilterId(const QString &, bool);
     public slots:
-        void askForQueueStats();
-
+        void updateFilter();
+    protected:
+        bool filterAcceptsRow(int , const QModelIndex &) const;
     private:
-        XletQueuesConfigure *m_configureWindow;
-
-        QueuesModel *m_model;
-        QueuesSortFilterProxyModel *m_proxyModel;
+        QStringList m_filtered;
 };
-
-class XLetQueuesPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
 
 #endif

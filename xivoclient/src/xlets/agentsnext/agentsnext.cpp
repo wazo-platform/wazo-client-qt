@@ -732,7 +732,7 @@ void XletAgentsNext::newQueueList(const QStringList & /*qlist*/)
         QString queueid = iter.key();
         // if (list.contains(queueid)) {
         QueueInfo * queueinfo = (QueueInfo *) iter.value();
-        newQueue(queueinfo->ipbxid(), queueinfo->queueName(), queueinfo->properties());
+        newQueue(queueinfo->ipbxid(), queueinfo->queueName(), QVariantMap() /*queueinfo->properties()*/);
         // }
     }
 }

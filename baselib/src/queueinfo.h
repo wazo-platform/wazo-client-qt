@@ -52,7 +52,6 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         const QString & queueNumber() const { return m_number; };  //! queue number
         const QString & queueName() const  { return m_name; };  //! queue name
 
-        const QVariantMap & properties() const { return m_properties; };  //! queue properties
         const QStringList & xincalls() const { return m_xincalls; };  //! incoming channel calls
 
         const QStringList & xagentids() const { return m_xagentids; };  //! agent members of this queue
@@ -76,7 +75,6 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         QStringList m_trunkmembers;
 
         QStringList m_xincalls;
-        QVariantMap m_properties;
 };
 
 #endif

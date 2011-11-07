@@ -94,10 +94,6 @@ bool QueueInfo::updateStatus(const QVariantMap & prop)
         }
         haschanged = true;
     }
-    if (m_properties != prop) {
-        m_properties = prop;
-        haschanged = true;
-    }
     return haschanged;
 }
 

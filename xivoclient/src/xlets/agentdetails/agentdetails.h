@@ -51,9 +51,6 @@ class XletAgentDetails : public XLet
     public:
         XletAgentDetails(QWidget *parent);
 
-    protected:
-        void contextMenuEvent(QContextMenuEvent *);
-
     signals:
         void changeWatchedQueue(const QString &);
 

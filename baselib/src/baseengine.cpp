@@ -1121,18 +1121,17 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString id = datamap.value("tid").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap status = datamap.value("status").toMap();
-            bool haschanged = false;
             if (GenLists.contains(listname)) {
                 if (m_anylist.value(listname).contains(xid))
-                    haschanged = m_anylist.value(listname).value(xid)->updateStatus(status);
+                    m_anylist.value(listname).value(xid)->updateStatus(status);
             } else if (listname == "channels") {
                 if (! m_channels.contains(xid))
                     m_channels[xid] = new ChannelInfo(ipbxid, id);
-                haschanged = m_channels[xid]->updateStatus(status);
+                m_channels[xid]->updateStatus(status);
             } else if (listname == "queuemembers") {
                 if (! m_queuemembers.contains(xid))
                     m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
-                haschanged = m_queuemembers[xid]->updateStatus(status);
+                m_queuemembers[xid]->updateStatus(status);
                 if (id.startsWith("qa:")) {
                     QString qaids = id.split(":")[1];
                     QStringList parts = qaids.split("-");

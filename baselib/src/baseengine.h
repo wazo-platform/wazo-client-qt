@@ -231,6 +231,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);
+
     private:
     
         

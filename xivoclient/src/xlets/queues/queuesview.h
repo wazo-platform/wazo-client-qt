@@ -27,73 +27,23 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESPANEL_H__
-#define __QUEUESPANEL_H__
+#ifndef __QUEUESVIEW_H__
+#define __QUEUESVIEW_H__
 
-#include <xlet.h>
-#include <xletinterface.h>
-#include <ipbxlistener.h>
+#include <QTableView>
 
-#include "queuesmodel.h"
-#include "queuessortfilterproxymodel.h"
-#include "queuesview.h"
-
-class UserInfo;
-class XletQueues;
-class QueueInfo;
-
-/*! \brief to configure if the queue should be shown and the queue
- *  stats parameters
- */
-class XletQueuesConfigure : public QWidget
+class QueuesView : public QTableView
 {
     Q_OBJECT
 
     public:
-        XletQueuesConfigure(XletQueues *xlet);
-        QWidget* buildConfigureQueueList(QWidget *);
-
-    protected:
-        virtual void closeEvent(QCloseEvent *);
-
-    private slots:
-        void changeQueueStatParam(int);
-};
-
-/*! \brief Displays queues and their status
- */
-class XletQueues : public XLet, IPBXListener
-{
-    Q_OBJECT
-
-    public:
-        XletQueues(QWidget *parent=0);
-        void parseCommand(const QVariantMap &);
-
-    protected:
-        virtual void contextMenuEvent(QContextMenuEvent *);
-
-    private:
-        void openConfigureWindow();
-
+        QueuesView(QWidget *parent = NULL);
+        void init();
     public slots:
-        void askForQueueStats();
-
+        void updateColumnHidden();
+    private slots:
+        void changeWatchedQueue(const QModelIndex &);
     private:
-        XletQueuesConfigure *m_configureWindow;
-
-        QueuesModel *m_model;
-        QueuesSortFilterProxyModel *m_proxyModel;
 };
-
-class XLetQueuesPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
 
 #endif

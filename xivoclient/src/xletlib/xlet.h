@@ -36,6 +36,7 @@
 
 #include <QVariantMap>
 #include <QWidget>
+#include <QtPlugin>
 
 #include <userinfo.h>
 
