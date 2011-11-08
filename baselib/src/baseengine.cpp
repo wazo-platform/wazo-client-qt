@@ -566,12 +566,9 @@ const QString & BaseEngine::getCapaApplication() const
  */
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
-    // qDebug() << Q_FUNC_INFO << "from" << m_availstate << "to" << newstate << comesFromServer;
-    if (m_availstate != newstate) {
+    if (m_availstate != newstate && !comesFromServer) {
         m_availstate = newstate;
-        if (! comesFromServer) {
-            changeState();
-        }
+        changeState();
         keepLoginAlive();
     }
 }
@@ -1596,10 +1593,11 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
         changeTranslation();
 
     if (toggle_presence_enabled) {
-        if (m_config["checked_function.presence"].toBool())
+        if (m_config["checked_function.presence"].toBool()) {
             setAvailState(__presence_on__, false);
-        else
+        } else {
             setAvailState(__presence_off__, false);
+        }
     }
 
     saveSettings();
