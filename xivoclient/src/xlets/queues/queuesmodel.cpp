@@ -308,7 +308,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
             case NUMBER :
                 return queueinfo->queueNumber();
             case NAME :
-                return queueinfo->queueName();
+                return queueinfo->queueDisplayName();
             case WAITING_CALLS :
                 return QString::number(queue_data.waiting_calls);
             case CURRENT_MAX_WAIT :

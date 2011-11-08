@@ -51,6 +51,7 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         const QString & context() const { return m_context; };  //! context this queue belongs to
         const QString & queueNumber() const { return m_number; };  //! queue number
         const QString & queueName() const  { return m_name; };  //! queue name
+        const QString & queueDisplayName() const  { return m_displayname; };  //! queue name
 
         const QStringList & xincalls() const { return m_xincalls; };  //! incoming channel calls
 
@@ -65,6 +66,7 @@ class BASELIB_EXPORT QueueInfo : public XInfo
     private:
         QString m_context;
         QString m_name;
+        QString m_displayname;
         QString m_number;
 
         QStringList m_xagentids;

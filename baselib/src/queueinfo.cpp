@@ -45,6 +45,7 @@ bool QueueInfo::updateConfig(const QVariantMap & prop)
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "name", & m_name);
+    haschanged |= setIfChangeString(prop, "displayname", & m_displayname);
     haschanged |= setIfChangeString(prop, "number", & m_number);
     return haschanged;
 }
