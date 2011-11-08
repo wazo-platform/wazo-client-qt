@@ -113,11 +113,7 @@ void XletQueues::parseCommand(const QVariantMap &map)
 
 void XletQueues::openConfigureWindow()
 {
-    if (m_configureWindow != NULL) {
-        m_configureWindow->show();
-    } else {
-        m_configureWindow = new XletQueuesConfigure(this);
-    }
+    m_configureWindow = new XletQueuesConfigure(this);
 }
 
 void XletQueues::contextMenuEvent(QContextMenuEvent *event)
@@ -261,10 +257,4 @@ void XletQueuesConfigure::changeQueueStatParam(int v)
     config["guioptions.queuespanel"] = qcfg;
 
     b_engine->setConfig(config);
-}
-
-void XletQueuesConfigure::closeEvent(QCloseEvent *)
-{
-    // Do not destroy the window, and reuse it later
-    hide();
 }

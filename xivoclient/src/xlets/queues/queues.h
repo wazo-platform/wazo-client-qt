@@ -53,9 +53,6 @@ class XletQueuesConfigure : public QWidget
         XletQueuesConfigure(XletQueues *xlet);
         QWidget* buildConfigureQueueList(QWidget *);
 
-    protected:
-        virtual void closeEvent(QCloseEvent *);
-
     private slots:
         void changeQueueStatParam(int);
 };
