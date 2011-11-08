@@ -86,6 +86,7 @@ class ConfigWidget: public QDialog
         virtual void keyPressEvent(QKeyEvent *);
 
     private:
+        void createColors();
         void _insert_connection_tab();
         void _insert_account_tab();
         void _insert_guisetting_tab();
@@ -96,6 +97,12 @@ class ConfigWidget: public QDialog
         QWidget * m_parent;
 
         QVariantMap m_config;
+
+        struct ColorLevelStruct {
+            QString id;
+            QString label;
+        };
+        QList<ColorLevelStruct> m_queue_colors;
         
         QMap<QString, QString> m_dblclick_actions;
 

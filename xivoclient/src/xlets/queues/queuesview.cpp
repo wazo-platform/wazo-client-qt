@@ -119,4 +119,3 @@ void QueuesView::changeWatchedQueue(const QModelIndex &index)
 
     b_engine->changeWatchedQueue(id_string);
 }
-

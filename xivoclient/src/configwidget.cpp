@@ -52,7 +52,6 @@
 #include "baseengine.h"
 #include "xivoconsts.h"
 
-static const QStringList queuelevel_colors = (QStringList() << "green" << "orange");
 QHash<QString, QString> func_legend;
 
 /*! \brief constructor */
@@ -72,6 +71,8 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     // XXX: disable atxfer until they work in asterisk 1.8
     // m_dblclick_actions["atxfer"] = "Indirect transfer";
 
+    createColors();
+
     _insert_connection_tab();
     _insert_account_tab();
     _insert_guisetting_tab();
@@ -86,6 +87,17 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     connect(m_btnbox, SIGNAL(rejected()), this, SLOT(close()));
     m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
     vlayout->addWidget(m_btnbox);
+}
+
+void ConfigWidget::createColors()
+{
+    ColorLevelStruct color;
+    color.id="green";
+    color.label=tr("Green");
+    m_queue_colors.append(color);
+    color.id="orange";
+    color.label=tr("Orange");
+    m_queue_colors.append(color);
 }
 
 /*! \brief connection config tab */
@@ -235,15 +247,21 @@ void ConfigWidget::_insert_function_tab()
         widget_queues->setLayout(layout_queues);
         
         int line = 0;
+        int ncol = 1;
+        foreach(ColorLevelStruct color, m_queue_colors) {
+            layout_queues->addWidget(new QLabel(color.label, this), line, ncol++);
+        }
+        line++;
 
         layout_queues->addWidget(new QLabel(tr("Queue thresholds (waiting calls)"), this), line, 0);
-        int ncol = 1;
-        foreach(QString color, queuelevel_colors) {
-            m_queuelevels[color] = new QSpinBox(this);
-            m_queuelevels[color]->setRange(0, 100);
-            m_queuelevels[color]->setValue(m_config["guioptions.queuelevels"].toMap().value(color).toUInt());
-            m_queuelevels[color]->setToolTip(tr("Thresholds to change the color of the queue, in number of waiting calls"));
-            layout_queues->addWidget(m_queuelevels[color], line, ncol++);
+        ncol = 1;
+        qDebug() << m_queue_colors.count();
+        foreach(ColorLevelStruct color, m_queue_colors) {
+            m_queuelevels[color.id] = new QSpinBox(this);
+            m_queuelevels[color.id]->setRange(0, 100);
+            m_queuelevels[color.id]->setValue(m_config["guioptions.queuelevels"].toMap().value(color.id).toUInt());
+            m_queuelevels[color.id]->setToolTip(tr("Thresholds to change the color of the queue, in number of waiting calls"));
+            layout_queues->addWidget(m_queuelevels[color.id], line, ncol++);
         }
         line++;
 
@@ -253,15 +271,15 @@ void ConfigWidget::_insert_function_tab()
         line++;
 
         QLabel *queue_longestwait_thresholds
-            = new QLabel(tr("Queue thresholds (longest wait)"));
+            = new QLabel(tr("Queue thresholds (longest wait)"), this);
         layout_queues->addWidget(queue_longestwait_thresholds, line, 0);
         ncol = 1;
-        foreach(QString color, queuelevel_colors) {
-            m_queuelevels_wait[color] = new QSpinBox(this);
-            m_queuelevels_wait[color]->setRange(0, 3600);
-            m_queuelevels_wait[color]->setValue(m_config["guioptions.queuelevels_wait"].toMap().value(color).toUInt());
-            m_queuelevels_wait[color]->setToolTip(tr("Thresholds to change the color of the queue, in seconds of longest wait"));
-            layout_queues->addWidget(m_queuelevels_wait[color], line, ncol++);
+        foreach(ColorLevelStruct color, m_queue_colors) {
+            m_queuelevels_wait[color.id] = new QSpinBox(this);
+            m_queuelevels_wait[color.id]->setRange(0, 3600);
+            m_queuelevels_wait[color.id]->setValue(m_config["guioptions.queuelevels_wait"].toMap().value(color.id).toUInt());
+            m_queuelevels_wait[color.id]->setToolTip(tr("Thresholds to change the color of the queue, in seconds of longest wait"));
+            layout_queues->addWidget(m_queuelevels_wait[color.id], line, ncol++);
         }
 
         line++;
@@ -486,8 +504,6 @@ void ConfigWidget::_insert_operator_functiontab()
     root_widget->setLayout(glayout);
     QPushButton *selectKey;
 
-
-
     glayout->addWidget(new QLabel(tr("Operator action")), 0, 1);
     glayout->addWidget(new QLabel(tr("Key binding")), 0, 2);
 
@@ -623,12 +639,11 @@ void ConfigWidget::saveAndClose()
 
     QVariantMap qvm, qvm2;
 
-    foreach(QString color, queuelevel_colors)
-        qvm[color] = QVariant(m_queuelevels[color]->value());
+    foreach(ColorLevelStruct color, m_queue_colors) {
+        qvm[color.id] = QVariant(m_queuelevels[color.id]->value());
+        qvm2[color.id] = QVariant(m_queuelevels_wait[color.id]->value());
+    }
     m_config["guioptions.queuelevels"] = qvm;
-
-    foreach(QString color, queuelevel_colors)
-        qvm2[color] = QVariant(m_queuelevels_wait[color]->value());
     m_config["guioptions.queuelevels_wait"] = qvm2;
 
     m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
