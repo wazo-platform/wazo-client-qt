@@ -174,7 +174,6 @@ QSettings* BaseEngine::getSettings()
  */
 void BaseEngine::loadSettings()
 {
-    // qDebug() << Q_FUNC_INFO;
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
     m_config["qss"] = m_settings->value("display/qss", "none").toString();
@@ -412,7 +411,9 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << Q_FUNC_INFO << m_config["cti_address"].toString() << port_to_use() << m_config["cti_encrypt"].toBool() << m_config.getSubSet("checked_function");
+    qDebug() << "XiVO client starting:" << m_config["cti_address"].toString()
+            << port_to_use() << m_config["cti_encrypt"].toBool()
+            << m_config.getSubSet("checked_function");
 
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
@@ -463,7 +464,6 @@ void BaseEngine::stop()
     QString stopper = sender()->property("stopper").toString();
     qDebug() << Q_FUNC_INFO << "stopper = " << stopper;
     stopConnection();
-    // if (stopper != "connection_lost")
     clearInternalData();
     setState(ENotLogged);
 }
@@ -607,7 +607,6 @@ void BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
 /*! \brief send an ipbxcommand command to the cti server */
 void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 {
-    // qDebug() << Q_FUNC_INFO << ipbxcommand;
     if (! ipbxcommand.contains("command"))
         return;
     QVariantMap cticommand = ipbxcommand;
@@ -618,15 +617,12 @@ void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 /*! \brief set monitored peer id */
 void BaseEngine::monitorPeerRequest(const QString & xuserid)
 {
-    // qDebug() << Q_FUNC_INFO << xuserid << m_monitored_xuserid;
-    // if (xuserid == m_monitored_xuserid) {
     if (m_anylist.value("users").contains(xuserid)) {
         m_monitored_xuserid = xuserid;
         emit monitoredUserInfoDefined();
         emit monitorPeerChanged();
         m_settings->setValue("monitor/userid", xuserid);
     }
-    // }
 }
 
 /*! \brief called when the socket is first connected
@@ -674,10 +670,6 @@ void BaseEngine::filetransferSocketConnected()
     command["formatted_size"] = m_filedata.size();
     command["file_size"] = m_faxsize;
     sendJsonCommand(command);
-
-//     // ??? useless test ???
-//     if (m_filetransfersocket->state() == QAbstractSocket::ConnectedState)
-//         m_filetransfersocket->write((jsoncommand + "\n").toAscii());
 }
 
 double BaseEngine::timeServer() const
@@ -756,7 +748,6 @@ void BaseEngine::parseCommand(const QString &line)
         emit requestFileListResult(datamap.value("payload"));
     } else if (thisclass == "sheet") {
         // TODO : use id better than just channel name
-        // qDebug() << Q_FUNC_INFO << "sheet" << datamap;
         QString channel = datamap.value("channel").toString();
         if (function == "getownership") {
             emit gotSheetOwnership(channel);
@@ -800,7 +791,6 @@ void BaseEngine::parseCommand(const QString &line)
                                datamap.value("resultlist").toStringList());
 
     } else if (thisclass == "faxsend") {
-        //m_filedir = datamap.value("tdirection").toString();
         if (datamap.contains("step"))
             qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
         else {
@@ -927,7 +917,6 @@ void BaseEngine::parseCommand(const QString &line)
         }
 
     } else if (thisclass == "login_capas") {
-        // qDebug() << "login_capas_ok" << datamap;
         m_ipbxid = datamap.value("ipbxid").toString();
         m_userid = datamap.value("userid").toString();
         m_xuserid = QString("%1/%2").arg(m_ipbxid).arg(m_userid);
@@ -946,7 +935,6 @@ void BaseEngine::parseCommand(const QString &line)
         // ("ipbxcommands", "regcommands", "services", "functions")
         m_config.merge(capas.value("preferences").toMap());
         m_config["services"] = capas.value("services");
-        //qDebug() << "======== guisettings ======== " << datamap.value("guisettings");
 
         QVariantMap tmp;
         QStringList todisp;
@@ -983,11 +971,9 @@ void BaseEngine::parseCommand(const QString &line)
         } else {
             popupError("disconnected");
         }
-    } else if (thisclass == "ipbxcommand") {
     } else if (thisclass == "getipbxlist") {
         m_ipbxlist = datamap.value("ipbxlist").toStringList();
         fetchLists();
-
     } else {
         if (replyid.isEmpty())
             qDebug() << "Unknown server command received:" << thisclass << datamap;
@@ -1677,9 +1663,6 @@ void BaseEngine::startTryAgainTimer()
         m_timerid_tryreconnect = startTimer(m_config["trytoreconnectinterval"].toUInt());
 }
 
-/*! \brief implement timer event
- *
- */
 void BaseEngine::timerEvent(QTimerEvent *event)
 {
     int timerId = event->timerId();
