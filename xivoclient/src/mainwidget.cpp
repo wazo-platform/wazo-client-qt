@@ -406,8 +406,8 @@ void MainWidget::checksAvailState()
     if (const UserInfo * u = b_engine->getXivoClientUser()) {
         const QString & state = u->availstate();
         if (! state.isEmpty() && m_avact.contains(state)) {
-            m_avact[state]->setChecked(true);
             setEnabledMenus(state);
+            m_avact[state]->setChecked(true);
         }
     }
 }
@@ -452,11 +452,7 @@ void MainWidget::syncPresence()
     if (const UserInfo * u = b_engine->getXivoClientUser()) {
         const QString & state = u->availstate();
         if (m_avact.contains(state)) {
-            disconnect(m_avact[state], SIGNAL(triggered()),
-                       this, SLOT(setAvailability()));
             checksAvailState();
-            connect(m_avact[state], SIGNAL(triggered()),
-                    this, SLOT(setAvailability()));
         }
     }
 }
