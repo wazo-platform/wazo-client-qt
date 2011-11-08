@@ -103,7 +103,7 @@ attente</translation>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
-        <translation>Ratio (Appels répondus en moins de X sec) / (Nombre d'appels reçus)</translation>
+        <translation>Ratio (Appels répondus en moins de X sec) / (Nombre d&apos;appels reçus)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="303"/>
@@ -119,7 +119,7 @@ attente</translation>
         <translation>Liste des Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="125"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="126"/>
         <source>Configure</source>
         <translation>Configurer</translation>
     </message>
@@ -127,44 +127,44 @@ attente</translation>
 <context>
     <name>XletQueuesConfigure</name>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="162"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="163"/>
         <source>Queues configuration</source>
         <translation>Configuration des files</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="164"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="165"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
         <translation>Choisissez quelles files d&apos;attente doivent être affichées, 
 ainsi que les paramètres pour les statistiques:</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="175"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="176"/>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="188"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="189"/>
         <source>Queue</source>
         <translation>File d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="195"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="196"/>
         <source>The window is the period of time used to compute the statistics</source>
         <translation>La fenêtre est la durée sur laquelle les statistiques sont calculées</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="189"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="190"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="190"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
         <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
         <translation>Ceci est le seuil en secondes de la durée d&apos;attente pour considérer la réponse à un appel comme étant trop tardive pour être de qualité.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="194"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="195"/>
         <source>Window (s)</source>
         <translation>Fenêtre (s)</translation>
     </message>

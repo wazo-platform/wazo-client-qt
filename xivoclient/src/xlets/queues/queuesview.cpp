@@ -72,11 +72,17 @@ QueuesView::QueuesView(QWidget *parent)
     /* This is terrible, but not all styles support to change headers
      * background, but plastique does (probably others, but we have to
      * choose one.
-     * Better solutions are welcome (reimplementing QHeaderView ?)
+     * Better solutions are welcome (subclassing QHeaderView ?)
      */
     QStyle *plastique = QStyleFactory::create("plastique");
     horizontalHeader()->setStyle(plastique);
     verticalHeader()->setStyle(plastique);
+
+    // Necessary to make the tooltip visible, we can't see the text without this
+    horizontalHeader()->setStyleSheet(
+        "QToolTip {"
+            "color: #000;"
+        "}");
 
     // In case some options the hide columns are toggled
     connect(b_engine, SIGNAL(settingsChanged()),
@@ -87,7 +93,6 @@ void QueuesView::init()
 {
     // Hide columns according to options
     updateColumnHidden();
-    horizontalHeader()->setResizeMode(QHeaderView::Interactive);
 }
 
 void QueuesView::updateColumnHidden()

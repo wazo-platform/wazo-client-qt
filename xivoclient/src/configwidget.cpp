@@ -247,9 +247,14 @@ void ConfigWidget::_insert_function_tab()
         }
         line++;
 
-        m_queue_longestwait = new QCheckBox(tr("Queue thresholds (longest wait)"), this);
+        m_queue_longestwait = new QCheckBox(tr("Display queue's longest wait"), this);
         m_queue_longestwait->setChecked(m_config["guioptions.queue_longestwait"].toBool());
         layout_queues->addWidget(m_queue_longestwait, line, 0);
+        line++;
+
+        QLabel *queue_longestwait_thresholds
+            = new QLabel(tr("Queue thresholds (longest wait)"));
+        layout_queues->addWidget(queue_longestwait_thresholds, line, 0);
         ncol = 1;
         foreach(QString color, queuelevel_colors) {
             m_queuelevels_wait[color] = new QSpinBox(this);

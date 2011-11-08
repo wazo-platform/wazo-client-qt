@@ -76,6 +76,7 @@ XletQueues::XletQueues(QWidget *parent)
     m_proxyModel->setSourceModel(m_model);
     m_proxyModel->setDynamicSortFilter(true); /* sorts right on insertion,
     instead of half a second after the window has appeared */
+    m_proxyModel->updateFilter();
 
     // View
     QueuesView *view = new QueuesView(this);
