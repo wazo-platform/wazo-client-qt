@@ -339,7 +339,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         }
     }
 
-    if (! m_ui->agentid().isEmpty())
+    if (! m_ui->xagentid().isEmpty() && b_engine->getConfig("guioptions.loginkind").toUInt() != 0)
         m_agent->show();
     m_agent->setAgentId(m_ui->xagentid());
 }
