@@ -27,19 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <baseengine.h>
-#include "history.h"
 #include <phonenumber.h>
 
-enum HistoryMode {
-    OUTCALLS = 0,
-    INCALLS,
-    MISSEDCALLS,
-};
+#include "history.h"
 
 Q_EXPORT_PLUGIN2(xlethistoryplugin, XLetHistoryPlugin);
 
@@ -53,8 +44,10 @@ LogWidgetModel::LogWidgetModel(int initialMode)
     : QAbstractTableModel(NULL)
 {
     registerListener("history");
-    m_mode = initialMode;
+    m_mode = (HistoryMode) initialMode;
     m_history << QVariant() << QVariant() << QVariant();
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(requestHistory()));
 }
 
 void LogWidgetModel::parseCommand(const QVariantMap &map) {
@@ -158,8 +151,14 @@ Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
 }
 
 /*! \brief ask history for an extension */
-void LogWidgetModel::requestHistory(const QString & xuserid, int mode)
+void LogWidgetModel::requestHistory(HistoryMode mode, QString xuserid)
 {
+    if (mode == DEFAULT) {
+        mode = m_mode;
+    }
+    if (xuserid.isEmpty()) {
+        xuserid = b_engine->getFullId();
+    }
     if (mode == OUTCALLS || mode == INCALLS || mode == MISSEDCALLS) {
         QVariantMap command;
         command["class"] = "history";
@@ -173,8 +172,8 @@ void LogWidgetModel::requestHistory(const QString & xuserid, int mode)
 void LogWidgetModel::changeMode(bool active)
 {
     if (active) {
-        m_mode = qobject_cast<QRadioButton *>(sender())->property("mode").toInt();
-        requestHistory(b_engine->getFullId(), m_mode);
+        m_mode = (HistoryMode)sender()->property("mode").toInt();
+        requestHistory(m_mode);
         emit headerDataChanged(Qt::Horizontal, 0, 3);
         reset();
     }
@@ -199,9 +198,6 @@ QVariant LogWidgetModel::headerData(int section,
 
     return QVariant();
 }
-
-
-
 
 static inline
 QRadioButton* buildRadioButton(QString text,

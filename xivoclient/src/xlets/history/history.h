@@ -40,6 +40,13 @@
 #include <xlet.h>
 #include <ipbxlistener.h>
 
+enum HistoryMode {
+    OUTCALLS = 0,
+    INCALLS,
+    MISSEDCALLS,
+    DEFAULT
+};
+
 /*! \brief cdr model
  */
 class LogWidgetModel : public QAbstractTableModel, public IPBXListener
@@ -62,7 +69,11 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
         void changeMode(bool);
         void updateHistory(const QVariantMap &p);
 
+    private slots:
+        void requestHistory(HistoryMode mode = DEFAULT, QString xuserid = "");
+
     private:
+
         static int ascendingOrderByDuration(const QVariant &a, const QVariant &b) {
                 return a.toMap().value("duration").toInt() <
                         b.toMap().value("duration").toInt();
@@ -92,10 +103,8 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
                                               "yyyy-MM-dd hh:mm:ss").toTime_t();
         }
 
-        void requestHistory(const QString &, int);
-
         QVariantList m_history;
-        int m_mode;
+        HistoryMode m_mode;
 };
 
 /* class reason:
