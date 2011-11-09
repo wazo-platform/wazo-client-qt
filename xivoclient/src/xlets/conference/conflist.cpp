@@ -238,6 +238,7 @@ ConfList::ConfList(XletConference *parent)
     ConfListView *view = new ConfListView(this);
     view->setModel(proxyModel);
     view->hideColumn(ID);
+    view->hideColumn(MODERATED);
     view->sortByColumn(NAME, Qt::AscendingOrder);
 
     hBox->addStretch(1);
