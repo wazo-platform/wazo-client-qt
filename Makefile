@@ -75,7 +75,10 @@ clean-%:
 
 # We need the order, so no prerequisites
 linux-all:
-	@$(MAKE) linux-baselib linux-xletlib linux-xivoclient linux-xlets
+	@$(MAKE) linux-baselib
+	@$(MAKE) linux-xletlib
+	@$(MAKE) linux-xivoclient
+	@$(MAKE) linux-xlets
 
 linux-tests:
 	@cd baselib \
