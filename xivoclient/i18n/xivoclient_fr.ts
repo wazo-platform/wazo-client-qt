@@ -959,8 +959,8 @@ a été envoyé à %2.</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1067"/>
-        <source>Proformatique Development Team</source>
-        <translation>Équipe de développement Proformatique</translation>
+        <source>Avencall Development Team</source>
+        <translation>Équipe de développement Avencall</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1077"/>

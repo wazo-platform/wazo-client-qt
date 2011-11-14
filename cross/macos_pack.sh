@@ -3,7 +3,7 @@
 QTPATH=/opt/qt-4.6.3-shared
 cd ./bin/
 
-sed -i "" -e "s/Created by Qt\/QMake/Created by Proformatique/g" \
+sed -i "" -e "s/Created by Qt\/QMake/Created by Avencall/g" \
     -e "s/com\.yourcompany\.xivoclient/com.proformatique.xivoclient/g" \
     -e "s/appli\.rc/xivo.icns/g" ./xivoclient.app/Contents/Info.plist
 

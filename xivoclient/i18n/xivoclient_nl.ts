@@ -1015,7 +1015,7 @@ werd NIET verzonden naar %2.
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1067"/>
-        <source>Proformatique Development Team</source>
+        <source>Avencall Development Team</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

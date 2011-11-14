@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Proformatique
+ * Copyright (C) 2007-2011, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -1054,13 +1054,13 @@ void MainWidget::about()
                        tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
                        tr("(Application Launched on : %1)").arg(m_launchDateTime.toString()) + "<br>" +
                        tr("(Config File Location : %1)").arg(b_engine->getSettings()->fileName()) + "<hr>" +
-                       "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Proformatique</b></a>"
+                       "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Avencall</b></a>"
                        "<br>"
                        "10 bis rue Lucien Voilin - 92800 Puteaux - FRANCE"
                        "<p>"
                        "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
-                       "<b>" + tr("Authors : ") + "</b>" + tr("Proformatique Development Team") +
+                       "<b>" + tr("Authors : ") + "</b>" + tr("Avencall Development Team") +
                        "<hr>"
                        "<b>" + tr("License : ") + "</b>" +
                        "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a><br>"

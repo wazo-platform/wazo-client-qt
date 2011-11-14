@@ -13,7 +13,7 @@ make_the_build <<!
 
   cd ./bin/
 
-  sed -e "s/Created by Qt\/QMake/Created by Proformatique/g" \
+  sed -e "s/Created by Qt\/QMake/Created by Avencall/g" \
       -e "s/com\.yourcompany\.xivoclient/com.proformatique.xivoclient/g" \
       -e "s/appli\.rc/xivo.icns/g" < ./xivoclient.app/Contents/Info.plist > plop
 

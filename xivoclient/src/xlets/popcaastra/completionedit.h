@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2011, Proformatique
+ * Copyright (C) 2011, Avencall
  *
  * This file is part of XiVO Client.
  *

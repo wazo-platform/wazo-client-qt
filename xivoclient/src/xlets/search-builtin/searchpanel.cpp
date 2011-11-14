@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Proformatique
+ * Copyright (C) 2007-2011, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -96,7 +96,7 @@ SearchPanel::SearchPanel(QWidget *parent)
             this, SLOT(updateDisplay()));
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(removePeers()));
-    
+
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateDisplay()));
 }

@@ -992,8 +992,8 @@ am %2 gesendet</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1067"/>
-        <source>Proformatique Development Team</source>
-        <translation>Entwicklung Mitarbeiter : Proformatique</translation>
+        <source>Avencall Development Team</source>
+        <translation>Entwicklung Mitarbeiter : Avencall</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1077"/>
