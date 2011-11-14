@@ -15,49 +15,27 @@ default: all
 
 help:
 	@echo
-	@echo "Please choose your target according to the OS you are using :"
-	@echo " -- to build Linux binaries or debian packages :"
-	@echo "          $(MAKE) linux-all "
-	@echo "          $(MAKE) debian-all "
-	@echo " -- to build Windows binaries (application + NSIS setup) :"
-	@echo "          $(MAKE) win32-all "
-	@echo " -- to build Mac OS X binaries (Universal Binary applications + .dmg packages) :"
-	@echo "          $(MAKE) macos-all "
-	@echo ""
-	@echo "You can also build docs using doxygen :"
-	@echo "          $(MAKE) doc"
+	@echo "Enter make to build the XiVO Client."
+	@echo
+	@echo "Please see options on https://wiki.xivo.fr/index.php/XiVO_1.2-Skaro/CTI_XiVO_Client_Qt_Builder"
+	@echo
 	@echo "Thanks."
-
-displayversions:
-	@${ECHO} ${XIVOVER}-${GIT_DATE}-${GIT_HASH}
+	@echo
 
 # to be executed under a bash/cygwin-like terminal
 # must be executed separately, since it generates a file included by make
 # then, it shall not be included as dependencies of a target
-versions:
-	
-	${ECHO} -n "version (before update) : " && $(MAKE) -s displayversions
+versions premake:
+	@echo -n 'version (before update) : '
+	@$(MAKE) displayversions
 
-	rm -f ${VERSIONS_FILE}
-	
-	${ECHO} -n "XC_UNAME = " > ${VERSIONS_FILE}
-	uname -s | sed "s/Linux/linux/;s/CYGWIN.*/win32/;s/Darwin/macos/" >> ${VERSIONS_FILE}
-	
-	${ECHO} -n "GIT_HASH = " >> ${VERSIONS_FILE}
-	git log -1 --pretty=%h $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
-	
-	${ECHO} -n "GIT_DATE = " >> ${VERSIONS_FILE}
-	git log -1 --pretty=%ct $(git rev-list HEAD --max-count=1) >> ${VERSIONS_FILE}
-	
-	${ECHO} XIVOVER = ${XC_VERSION} >> ${VERSIONS_FILE}
-	
-	${ECHO} -n "GIT_DIR = " >> ${VERSIONS_FILE}
-	git rev-parse --show-toplevel >> ${VERSIONS_FILE}
+	sh premake.sh ${VERSIONS_FILE} ${XC_VERSION}
+	echo -n 'version (after update) : '
 
-	${ECHO} -n "DATEBUILD = " >> ${VERSIONS_FILE}
-	LANG= date +%Y-%m-%dT%H:%M:%S >> ${VERSIONS_FILE}
-	
-	${ECHO} -n "version (after update) : " && $(MAKE) -s displayversions
+	@$(MAKE) displayversions
+
+displayversions:
+	echo ${XIVOVER}-${GIT_DATE}-${GIT_HASH}
 
 all:
 	@$(MAKE) -s versions
@@ -69,15 +47,15 @@ tests:
 	@$(MAKE) os-tests DEBUG=yes
 	bin/baselib-tests
 	bin/baselib-tests -xunitxml -o unit-tests/unit-baselib.xml
-	cd baselib && ../unit-tests/tools/gcovr --xml -o ../unit-tests/cov-baselib.xml
+	cd baselib \
+		&& ../unit-tests/tools/gcovr --xml -o ../unit-tests/cov-baselib.xml
 
 # Example : os-all -> linux-all
 os-%:
 	$(MAKE) ${XC_UNAME}-$*
 
-clean: distclean
-
-distclean: clean-tests clean-baselib clean-xivoclient clean-xletlib clean-xlets
+clean distclean: clean-tests clean-baselib clean-xivoclient clean-xletlib \
+                 clean-xlets
 	rm -f ${VERSIONS_FILE}
 	rm -rf xivoclient/obj xivoclient/bin
 	rm -rf bin
@@ -94,39 +72,62 @@ clean-%:
 	@$(MAKE) -C xivoclient -f Makefile_$* distclean || true
 
 # LINUX targets
-# kind of dirtier than "all-linux: versions linux-xivoclient"
-# but allows the 'include versions.mak' to be reloaded once it has been set
+
+# We need the order, so no prerequisites
 linux-all:
-	@$(MAKE) linux-baselib
-	@$(MAKE) linux-xletlib
-	@$(MAKE) linux-xivoclient
-	@$(MAKE) linux-xlets
+	@$(MAKE) linux-baselib linux-xletlib linux-xivoclient linux-xlets
 
 linux-tests:
-	@cd baselib && ${QMAKE} -o Makefile_tests tests.pro && $(MAKE) ${XC_JOPT} -f Makefile_tests
+	@cd baselib \
+		&& ${QMAKE} -o Makefile_tests tests.pro \
+		&& $(MAKE) ${XC_JOPT} -f Makefile_tests
 	@mkdir -p bin
 	@cp -rd baselib/bin/* bin
 
 linux-baselib:
-	@cd baselib && ${QMAKE} -o Makefile_baselib baselib.pro && $(MAKE) ${XC_JOPT} -f Makefile_baselib
+	@cd baselib \
+		&& ${QMAKE} -o Makefile_baselib baselib.pro \
+		&& $(MAKE) ${XC_JOPT} -f Makefile_baselib
 	@mkdir -p bin
 	@cp -rd baselib/bin/* bin
 
 linux-%:
-	@cd xivoclient && ${QMAKE} -o Makefile_$* $*.pro && $(MAKE) ${XC_JOPT} -f Makefile_$*
+	@cd xivoclient \
+		&& ${QMAKE} -o Makefile_$* $*.pro \
+		&& $(MAKE) ${XC_JOPT} -f Makefile_$*
 
 # WIN32 targets
 
+# Get here when entering make.
+# Print the instructions specific to Windows building
+# "cygpath -wa ." gives the Windows path of pwd
+# -w for Windows format
+# -a for absolute path
 win32-all:
 	@echo "   (under Qt prompt) :"
-	@pwd | sed "s#/#\\\\#g;s#^#      cd C:\\\\cygwin#"
-	@echo "      $(MAKE) win32-baselib win32-gui win32-xivoclient win32-plugins"
+	@echo "      cd $(shell cygpath -wa .)"
+	@echo "      mingw32-make win32-build"
 	@echo "   (back here under Cygwin) :"
-	@echo "      $(MAKE) win32pack-xivoclient"
+	@echo "      make win32pack-xivoclient"
+
+win32-build:
+	@$(MAKE) win32-baselib win32-xletlib win32-xivoclient win32-xlets
 
 # to be executed under a mingw/dos-like terminal
+win32-baselib:
+	@cd baselib \
+		&& ${QMAKE} -o Makefile_baselib baselib.pro \
+		&& $(MAKE) ${XC_JOPT} -f Makefile_baselib
+# mkdir fails if bin already exists (no options)
+	@-mkdir bin
+# /Y silents xcopy when destination file already exists
+	@xcopy /Y baselib\\bin\\*.dll bin
+
+# mingw/dos-like terminal
 win32-%:
-	@cd src/$* && ${QMAKE} && $(MAKE) release
+	@cd xivoclient \
+		&& ${QMAKE} -o Makefile_$* $*.pro \
+		&& $(MAKE) ${XC_JOPT} -f Makefile_$*
 
 # to be executed under a bash/cygwin-like terminal
 win32pack-%:
@@ -190,4 +191,4 @@ debian-%:
 # build doc
 
 docs:
-	${DOXYGEN} Doxyfile 
+	${DOXYGEN} Doxyfile

@@ -11,6 +11,7 @@ JSON_JSONQT_DIR = $${ROOT_DIR}/json_jsonqt/lib
 # Library version
 VERSION      = $${XIVOVER}
 DEFINES     += BASELIB_LIBRARY
+DEFINES     += QT_MAKEDLL
 INCLUDEPATH += $${JSON_JSONQT_DIR}
 
 HEADERS     += $${ROOT_DIR}/src/*.h

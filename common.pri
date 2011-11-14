@@ -4,7 +4,7 @@ exists(versions.mak) {
     error(Missing file versions.mak. Please do 'make versions')
 }
 
-DEBUGON = $$system(echo -n $DEBUG)
+DEBUGON = $$(DEBUG)
 
 CONFIG -= debug
 contains(DEBUGON, "yes" ) {
