@@ -159,8 +159,8 @@ void ServicePanel::setUserInfo(const UserInfo * ui)
     if (ui == NULL) {
         return;
     }
-    if ((ui->mwi().size() < 3) && (m_chkopt.contains("enablevm"))) {
-        m_chkopt["enablevm"]->hide();
+    if (m_chkopt.contains("enablevm")) {
+        m_chkopt["enablevm"]->setEnabled(ui->mwi().size() >= 3);
     }
 }
 
