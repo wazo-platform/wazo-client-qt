@@ -27,19 +27,16 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PHONEINFO_H__
-#define __PHONEINFO_H__
+#ifndef __CHANNELINFO_H__
+#define __CHANNELINFO_H__
 
-#include <QString>
-#include <QStringList>
-
-class PhoneInfo
+class MockChannelInfo
 {
     public:
-        PhoneInfo(const QString &, const QString &);
-        QString identity() const;
-        QStringList xchannels() const;
-        QString number() const;
+        MockChannelInfo(const QString &, const QString &);
+        QString talkingto_id() const;
 };
+
+typedef MockChannelInfo ChannelInfo;
 
 #endif

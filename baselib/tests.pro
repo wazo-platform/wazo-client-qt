@@ -6,8 +6,6 @@ QT -= gui
 TARGET = baselib-tests
 DESTDIR = $${BIN_DIR}
 
-# Do not put anything before the tests directory
-# It makes the mocks get priority over "official" headers
 INCLUDEPATH += $${ROOT_DIR}/src/tests $${ROOT_DIR}/src
 
 # Input
@@ -23,4 +21,10 @@ RCC_DIR = $$ROOT_DIR/obj
 MOC_DIR = $$ROOT_DIR/obj
 OBJECTS_DIR = $$ROOT_DIR/obj
 
-QMAKE_CXXFLAGS += -include tests/baseengine.h -include tests/phoneinfo.h -include tests/channelinfo.h
+# This adds lines 'include "<file>"' at the very beginning of the cpp file,
+# thus overriding definitions of real classes by mock classes.
+# This is only necessary for the inclusion by real classes.
+# Mock classes inclusions can safely ignore this.
+QMAKE_CXXFLAGS += -include tests/mock_baseengine.h \
+                  -include tests/mock_phoneinfo.h \
+                  -include tests/mock_channelinfo.h

@@ -29,13 +29,13 @@
 
 #include <QString>
 
-#include "channelinfo.h"
+#include "mock_channelinfo.h"
 
-ChannelInfo::ChannelInfo(const QString &ipbxid, const QString &channelid)
+MockChannelInfo::MockChannelInfo(const QString &ipbxid, const QString &channelid)
 {
 }
 
-QString ChannelInfo::talkingto_id() const
+QString MockChannelInfo::talkingto_id() const
 {
     return "";
 }

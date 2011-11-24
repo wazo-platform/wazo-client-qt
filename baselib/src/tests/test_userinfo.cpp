@@ -29,8 +29,10 @@
 
 #include <QtTest/QtTest>
 
-#include "baseengine.h"
 #include <userinfo.h>
+
+#include "mock_baseengine.h"
+#include "mock_phoneinfo.h"
 
 #include "test_userinfo.h"
 
@@ -95,12 +97,12 @@ void TestUserInfo::constructor()
     QCOMPARE(u.enablebusy(), false);
     QCOMPARE(u.destbusy(), empty);
     QCOMPARE(u.mobileNumber(), empty);
-    
+
     QCOMPARE(u.phonelist(), emptylist);
-    
+
     QCOMPARE(u.availstate(), empty);
     QCOMPARE(u.connected(), false);
-    
+
     QCOMPARE(u.identitylist(), emptylist);
     QCOMPARE(u.xchannels(), emptylist);
 }
@@ -119,10 +121,10 @@ void TestUserInfo::updateConfig()
     {
         // ensure we have at least one member that is different before updateConfig
         QCOMPARE(u.fullname(), QString());
-        
+
         bool res = u.updateConfig(m_prop1);
         QCOMPARE(res, true);
-        
+
         QCOMPARE(u.fullname(), m_prop1["fullname"].toString());
         QString vmxid = (QString("%0/%1").arg(m_ipbxid)
                          .arg(m_prop1["voicemailid"].toString()));
@@ -141,7 +143,7 @@ void TestUserInfo::updateConfig()
         QCOMPARE(u.destrna(), m_prop1["destrna"].toString());
         QCOMPARE(u.enablebusy(), m_prop1["enablebusy"].toBool());
         QCOMPARE(u.mobileNumber(), m_prop1["mobilephonenumber"].toString());
-        
+
         QCOMPARE(u.phonelist(), m_phoneidlist);
     }
     {
@@ -201,7 +203,12 @@ void TestUserInfo::hasPhoneId()
 
 void TestUserInfo::hasChannelId()
 {
-    // need a BaseEngine mock
+    UserInfo u(m_ipbxid, "1234");
+    QCOMPARE(u.hasChannelId("SIP/sip1"), false);
+    u.setPhoneIdList(QStringList() << "asterisk/p0");
+    QCOMPARE(u.hasChannelId("SIP/sip1"), false);
+    u.setPhoneIdList(QStringList() << "asterisk/p1");
+    QCOMPARE(u.hasChannelId("SIP/sip1"), true);
 }
 
 void TestUserInfo::findNumberForXChannel()
@@ -221,5 +228,10 @@ void TestUserInfo::isTalkingTo()
 
 void TestUserInfo::identitylist()
 {
-    // need a BaseEngine mock
+    UserInfo u(m_ipbxid, "1234");
+    QCOMPARE(u.identitylist(), QStringList());
+    u.setPhoneIdList(QStringList() << "asterisk/p0");
+    QCOMPARE(u.identitylist(), QStringList());
+    u.setPhoneIdList(QStringList() << "asterisk/p1" << "asterisk/p2");
+    QCOMPARE(u.identitylist(), QStringList() << "SIP/sip1" << "SIP/sip2");
 }

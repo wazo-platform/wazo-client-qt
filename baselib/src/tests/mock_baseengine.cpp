@@ -29,34 +29,32 @@
 
 #include <QtTest/QtTest>
 
-#include "baseengine.h"
-#include <phoneinfo.h>
+#include "mock_phoneinfo.h"
+#include "mock_channelinfo.h"
+
+#include "mock_baseengine.h"
 
 MockBaseEngine * b_engine;
 
 MockBaseEngine::MockBaseEngine()
 {
-    QVariantMap config;
-    
-    m_phones["asterisk/p1"] = new PhoneInfo("asterisk", "p1");
-    config["iduserfeatures"] = "asterisk/u1";
-    config["identity"] = "SIP/s1";
-    // m_phones["asterisk/p1"]->updateConfig(config);
-
-    config.clear();
-    m_phones["asterisk/p2"] = new PhoneInfo("asterisk", "p2");
-    config["iduserfeatures"] = "asterisk/u2";
-    config["identity"] = "SIP/s2";
-    // m_phones["asterisk/p2"]->updateConfig(config);
 }
-    
-const PhoneInfo * MockBaseEngine::phone(const QString &xphoneid) const
+
+const MockPhoneInfo * MockBaseEngine::phone(const QString &xphoneid) const
 {
-    if(m_phones.contains(xphoneid)) {
-        return m_phones[xphoneid];
-    } else {
-        return NULL;
+    QVariantMap config;
+    MockPhoneInfo *ret = NULL;
+
+    if (xphoneid == "asterisk/p1") {
+        ret = new MockPhoneInfo("asterisk", "p1");
+        config["identity"] = "SIP/sip1";
+        ret->setConfig(config);
+    } else if (xphoneid == "asterisk/p2") {
+        ret = new MockPhoneInfo("asterisk", "p2");
+        config["identity"] = "SIP/sip2";
+        ret->setConfig(config);
     }
+    return ret;
 }
 
 const UserInfo * MockBaseEngine::user(const QString &xphoneid) const
@@ -64,7 +62,7 @@ const UserInfo * MockBaseEngine::user(const QString &xphoneid) const
     return NULL;
 }
 
-const ChannelInfo * MockBaseEngine::channel(const QString &xphoneid) const
+const MockChannelInfo * MockBaseEngine::channel(const QString &xphoneid) const
 {
     return NULL;
 }

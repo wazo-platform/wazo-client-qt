@@ -29,7 +29,6 @@
 
 #include <QtTest/QtTest>
 
-#include "baseengine.h"
 #include "test_userinfo.h"
 
 // To run the tests use

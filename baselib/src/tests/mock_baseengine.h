@@ -32,22 +32,23 @@
 
 #include <QMap>
 
-class PhoneInfo;
+class MockPhoneInfo;
 class UserInfo;
-class ChannelInfo;
+class MockChannelInfo;
 class QString;
 
 class MockBaseEngine
 {
     public:
         MockBaseEngine();
-        const PhoneInfo * phone(const QString &) const;
+        const MockPhoneInfo * phone(const QString &) const;
         const UserInfo * user (const QString &) const;
-        const ChannelInfo * channel (const QString &) const;
-        
+        const MockChannelInfo * channel (const QString &) const;
+
     private:
-        QMap <QString, PhoneInfo *> m_phones;
 };
+
+typedef MockBaseEngine BaseEngine;
 
 extern MockBaseEngine * b_engine;
 

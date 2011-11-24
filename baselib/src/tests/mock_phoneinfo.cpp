@@ -27,23 +27,27 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "phoneinfo.h"
+#include "mock_phoneinfo.h"
 
-PhoneInfo::PhoneInfo(const QString &, const QString &)
+MockPhoneInfo::MockPhoneInfo(const QString &, const QString &)
 {
 }
 
-QString PhoneInfo::identity() const
-{
-    return "";
+void MockPhoneInfo::setConfig(const QVariantMap &config) {
+    this->config = config;
 }
 
-QStringList PhoneInfo::xchannels() const
+QString MockPhoneInfo::identity() const
 {
-    return QStringList();
+    return this->config["identity"].toString();
 }
 
-QString PhoneInfo::number() const
+QStringList MockPhoneInfo::xchannels() const
 {
-    return "";
+    return this->config["xchannels"].toStringList();
+}
+
+QString MockPhoneInfo::number() const
+{
+    return this->config["number"].toString();
 }
