@@ -223,7 +223,7 @@ void BaseEngine::loadSettings()
         m_config["autoconnect"] = m_settings->value("autoconnect", false).toBool();
         m_config["trytoreconnect"] = m_settings->value("trytoreconnect", false).toBool();
         m_config["trytoreconnectinterval"] = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
-        m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 20*1000).toUInt();
+        m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 120*1000).toUInt();
         m_availstate = m_settings->value("availstate", "available").toString();
         m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
         m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 0).toInt();

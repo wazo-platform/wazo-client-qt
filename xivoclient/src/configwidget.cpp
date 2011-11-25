@@ -137,7 +137,7 @@ void ConfigWidget::_insert_connection_tab()
     layout1->addRow(tr("Try to reconnect interval"), m_tryinterval_sbox);
 
     m_kainterval_sbox = new QSpinBox(this);
-    m_kainterval_sbox->setRange(1, 120);
+    m_kainterval_sbox->setRange(1, 999);
     m_kainterval_sbox->setValue(m_config["keepaliveinterval"].toUInt() / 1000);
     layout1->addRow(tr("Keep alive interval"), m_kainterval_sbox);
 
