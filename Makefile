@@ -61,7 +61,10 @@ clean distclean: clean-tests clean-baselib clean-xivoclient clean-xletlib \
 	rm -f unit-tests/*.xml
 
 clean-tests:
-	@$(MAKE) -C baselib distclean -f Makefile_tests || true
+# We need to have a Makefile before cleaning
+	-@cd baselib \
+		&& ${QMAKE} -o Makefile_tests tests.pro \
+		&& $(MAKE) distclean -f Makefile_tests
 
 clean-baselib:
 	@$(MAKE) -C baselib distclean -f Makefile_baselib || true
