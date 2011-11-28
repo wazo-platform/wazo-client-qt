@@ -47,6 +47,8 @@ enum HistoryMode {
     DEFAULT
 };
 
+const QString DATE_PATTERN = "yyyy-MM-ddThh:mm:ss";
+
 /*! \brief cdr model
  */
 class LogWidgetModel : public QAbstractTableModel, public IPBXListener
@@ -73,7 +75,10 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
         void requestHistory(HistoryMode mode = DEFAULT, QString xuserid = "");
 
     private:
-
+        static QDateTime dateFromString(const QString &string) {
+            QString date = string.split(".")[0];
+            return QDateTime::fromString(date, DATE_PATTERN);
+        }
         static int ascendingOrderByDuration(const QVariant &a, const QVariant &b) {
                 return a.toMap().value("duration").toInt() <
                         b.toMap().value("duration").toInt();
@@ -91,16 +96,14 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
                         b.toMap().value("fullname").toString();
         }
         static int ascendingOrderByDate(const QVariant &a, const QVariant &b) {
-                return QDateTime::fromString(a.toMap().value("ts").toString(),
-                                             "yyyy-MM-dd hh:mm:ss").toTime_t() <
-                        QDateTime::fromString(b.toMap().value("ts").toString(),
-                                              "yyyy-MM-dd hh:mm:ss").toTime_t();
+            QDateTime first_date = dateFromString(a.toMap()["calldate"].toString());
+            QDateTime second_date = dateFromString(b.toMap()["calldate"].toString());
+            return first_date.toTime_t() < second_date.toTime_t();
         }
         static int descendingOrderByDate(const QVariant &a, const QVariant &b) {
-                return QDateTime::fromString(a.toMap().value("ts").toString(),
-                                             "yyyy-MM-dd hh:mm:ss").toTime_t() >
-                        QDateTime::fromString(b.toMap().value("ts").toString(),
-                                              "yyyy-MM-dd hh:mm:ss").toTime_t();
+            QDateTime first_date = dateFromString(a.toMap()["calldate"].toString());
+            QDateTime second_date = dateFromString(b.toMap()["calldate"].toString());
+            return first_date.toTime_t() > second_date.toTime_t();
         }
 
         QVariantList m_history;
