@@ -268,7 +268,7 @@ LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
     setSortingEnabled(true);
     setModel(model);
     verticalHeader()->hide();
-    horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
 
     connect(this, SIGNAL(clicked(const QModelIndex &)),
