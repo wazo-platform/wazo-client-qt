@@ -40,29 +40,32 @@ MockBaseEngine::MockBaseEngine()
 {
 }
 
-const MockPhoneInfo * MockBaseEngine::phone(const QString &xphoneid) const
+void MockBaseEngine::setPhone(const QString & xphoneid, PhoneInfo *phone)
 {
-    QVariantMap config;
-    MockPhoneInfo *ret = NULL;
-
-    if (xphoneid == "asterisk/p1") {
-        ret = new MockPhoneInfo("asterisk", "p1");
-        config["identity"] = "SIP/sip1";
-        ret->setConfig(config);
-    } else if (xphoneid == "asterisk/p2") {
-        ret = new MockPhoneInfo("asterisk", "p2");
-        config["identity"] = "SIP/sip2";
-        ret->setConfig(config);
-    }
-    return ret;
+    this->m_phones[xphoneid] = phone;
 }
 
-const UserInfo * MockBaseEngine::user(const QString &xphoneid) const
+const PhoneInfo * MockBaseEngine::phone(const QString &xphoneid) const
 {
-    return NULL;
+    return this->m_phones[xphoneid];
 }
 
-const MockChannelInfo * MockBaseEngine::channel(const QString &xphoneid) const
+void MockBaseEngine::setUser(const QString & xuserid, UserInfo *user)
 {
-    return NULL;
+    this->m_users[xuserid] = user;
+}
+
+const UserInfo * MockBaseEngine::user(const QString &xuserid) const
+{
+    return this->m_users[xuserid];
+}
+
+void MockBaseEngine::setChannel (const QString &xchannelid, ChannelInfo *channel)
+{
+    this->m_channels[xchannelid] = channel;
+}
+
+const ChannelInfo * MockBaseEngine::channel(const QString &xchannelid) const
+{
+    return this->m_channels[xchannelid];
 }

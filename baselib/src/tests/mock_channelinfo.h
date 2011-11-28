@@ -34,7 +34,11 @@ class MockChannelInfo
 {
     public:
         MockChannelInfo(const QString &, const QString &);
+        void setConfig(const QVariantMap &);
         QString talkingto_id() const;
+
+    private:
+        QVariantMap m_config;
 };
 
 typedef MockChannelInfo ChannelInfo;

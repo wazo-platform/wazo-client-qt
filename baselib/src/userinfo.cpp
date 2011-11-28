@@ -206,7 +206,7 @@ bool UserInfo::isTalkingTo(const QString & rhs) const
         foreach (const QString & channelxid, peers_channel) {
             if (const ChannelInfo * c = b_engine->channel(channelxid)) {
                 QString identity = c->talkingto_id().split("-").value(0);
-                if (identitylist().contains(identity)) {
+                if (this->identitylist().contains(identity)) {
                     return true;
                 }
             }

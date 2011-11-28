@@ -31,11 +31,16 @@
 
 #include "mock_channelinfo.h"
 
-MockChannelInfo::MockChannelInfo(const QString &ipbxid, const QString &channelid)
+MockChannelInfo::MockChannelInfo(const QString &, const QString &)
 {
+}
+
+void MockChannelInfo::setConfig(const QVariantMap &config)
+{
+    this->m_config = config;
 }
 
 QString MockChannelInfo::talkingto_id() const
 {
-    return "";
+    return this->m_config["talkingto_id"].toString();
 }

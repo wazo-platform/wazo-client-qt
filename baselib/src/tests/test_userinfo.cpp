@@ -67,6 +67,39 @@ void TestUserInfo::initTestCase()
     m_prop1["linelist"] = m_linelist;
     m_prop1["availstate"] = "available";
     m_prop1["connection"] = "yes";
+
+    MockPhoneInfo * phoneinfo;
+    QVariantMap config;
+
+    phoneinfo = new MockPhoneInfo("asterisk", "p1");
+    config.clear();
+    config["identity"] = "SIP/sip1";
+    config["xchannels"] = "SIP/sip1-01";
+    config["number"] = "101";
+    phoneinfo->setConfig(config);
+    b_engine->setPhone("asterisk/p1", phoneinfo);
+
+    phoneinfo = new MockPhoneInfo("asterisk", "p2");
+    config.clear();
+    config["identity"] = "SIP/sip2";
+    config["xchannels"] = "SIP/sip2-02";
+    config["number"] = "102";
+    phoneinfo->setConfig(config);
+    b_engine->setPhone("asterisk/p2", phoneinfo);
+
+    MockChannelInfo *channelinfo;
+
+    channelinfo = new MockChannelInfo("asterisk", "SIP/sip1-01");
+    config.clear();
+    config["talkingto_id"] = "SIP/sip2-02";
+    channelinfo->setConfig(config);
+    b_engine->setChannel("SIP/sip1-01", channelinfo);
+
+    channelinfo = new MockChannelInfo("asterisk", "SIP/sip2-02");
+    config.clear();
+    config["talkingto_id"] = "SIP/sip1-01";
+    channelinfo->setConfig(config);
+    b_engine->setChannel("SIP/sip2-02", channelinfo);
 }
 
 void TestUserInfo::constructor()
@@ -191,6 +224,15 @@ void TestUserInfo::setAvailState()
     QCOMPARE(u.availstate(), teststate);
 }
 
+void TestUserInfo::setPhoneIdList()
+{
+    UserInfo u(m_ipbxid, "1234");
+    QCOMPARE(u.phonelist(), QStringList());
+    QStringList testphonelist(QStringList() << "asterisk/p1" << "asterisk/p2");
+    u.setPhoneIdList(testphonelist);
+    QCOMPARE(u.phonelist(), testphonelist);
+}
+
 void TestUserInfo::hasPhoneId()
 {
     UserInfo u(m_ipbxid, "1234");
@@ -213,17 +255,35 @@ void TestUserInfo::hasChannelId()
 
 void TestUserInfo::findNumberForXChannel()
 {
-    // need a BaseEngine mock
+    UserInfo u(m_ipbxid, "1234");
+    QCOMPARE(u.findNumberForXChannel("SIP/sip1"), QString());
+    u.setPhoneIdList(QStringList() << "asterisk/p1");
+    QCOMPARE(u.findNumberForXChannel("SIP/sip1-01"), QString("101"));
+    QCOMPARE(u.findNumberForXChannel("SIP/sip2-02"), QString());
 }
 
 void TestUserInfo::xchannels()
 {
-    // need a BaseEngine mock
+    UserInfo u(m_ipbxid, "1234");
+    QCOMPARE(u.xchannels(), QStringList());
+    u.setPhoneIdList(QStringList() << "asterisk/p0");
+    QCOMPARE(u.xchannels(), QStringList());
+    u.setPhoneIdList(QStringList() << "asterisk/p1");
+    QCOMPARE(u.xchannels(), QStringList() << "SIP/sip1-01");
+    u.setPhoneIdList(QStringList() << "asterisk/p1" << "asterisk/p2");
+    QCOMPARE(u.xchannels(), QStringList() << "SIP/sip1-01" << "SIP/sip2-02");
 }
 
 void TestUserInfo::isTalkingTo()
 {
-    // need a BaseEngine mock
+    UserInfo u(m_ipbxid, "1234");
+    u.setPhoneIdList(QStringList() << "asterisk/p1");
+    UserInfo *other = new UserInfo("asterisk", "u2");
+    other->setPhoneIdList(QStringList() << "asterisk/p2");
+
+    QCOMPARE(u.isTalkingTo("asterisk/u2"), false);
+    b_engine->setUser("asterisk/u2", other);
+    QCOMPARE(u.isTalkingTo("asterisk/u2"), true);
 }
 
 void TestUserInfo::identitylist()

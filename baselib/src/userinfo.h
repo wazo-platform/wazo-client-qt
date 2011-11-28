@@ -66,7 +66,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
             bool enablebusy() const { return m_enablebusy; };
             const QString & destbusy() const { return m_destbusy; };
             const QString & mobileNumber() const { return m_mobilenumber; };
-            
+
             const QStringList & phonelist() const { return m_phoneidlist; };
 
             // Status

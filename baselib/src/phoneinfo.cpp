@@ -67,7 +67,7 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "number", & m_number);
     haschanged |= setIfChangeString(prop, "identity", & m_identity);
-    // TODO: fix somewhere else
+    //! \todo: fix somewhere else
     if (m_identity.contains("\\/")) {
         m_identity.replace("\\/", "/");
     }
@@ -123,4 +123,3 @@ QString PhoneInfo::toString() const
 
     return s;
 }
-
