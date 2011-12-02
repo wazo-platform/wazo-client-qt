@@ -44,7 +44,6 @@
 
 /*! \brief Store Phone information
  */
-
 class BASELIB_EXPORT PhoneInfo : public XInfo
 {
     public:

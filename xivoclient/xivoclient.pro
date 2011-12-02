@@ -8,7 +8,6 @@ CONFIG += uitools
 unix:LIBS += -lxivoclientxlets
 win32:LIBS += -lxivoclientxlets1
 
-
 QT += xml
 
 RESOURCES += xivoclient.qrc

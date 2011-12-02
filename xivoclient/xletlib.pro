@@ -12,7 +12,6 @@ TARGET      = $$qtLibraryTarget(xivoclientxlets)
 INCLUDEPATH += $${BASELIB_DIR}/src
 
 HEADERS += $${ROOT_DIR}/src/xletlib/*.h
-
 SOURCES += $${ROOT_DIR}/src/xletlib/*.cpp
 
 DESTDIR = $${BIN_DIR}

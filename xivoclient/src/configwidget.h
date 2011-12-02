@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __CONFIGWIDGET_H__
 #define __CONFIGWIDGET_H__
 
@@ -72,7 +68,7 @@ class ConfigWidget: public QDialog
         ConfigWidget(QWidget *parent=0);
         QSize sizeHint();
         ~ConfigWidget();
-    
+
     public slots:
         bool close();
 
@@ -103,7 +99,7 @@ class ConfigWidget: public QDialog
             QString label;
         };
         QList<ColorLevelStruct> m_queue_colors;
-        
+
         QMap<QString, QString> m_dblclick_actions;
 
         QLineEdit * m_cti_address;      //!< IP/hostname of the server
@@ -129,18 +125,18 @@ class ConfigWidget: public QDialog
         QCheckBox * m_clipboard;        //!< Clipboard enabled?
 
         QHash<QString, QCheckBox *> m_function; //!< connect to functions checkboxes
-        
+
         QTabWidget * m_function_tabwidget; //!< Contains the settings for the xlets
-        
+
         QSpinBox * m_presenceIndicatorSize; //!< size of the presence indicator for basic peer widgets
-        
+
         QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
         QSpinBox  * m_tablimit_sbox;    //!< Maximum number of tabs
-        
+
         QSpinBox  * m_dial_history_size; //!< Dial history saved
-        
+
         QSpinBox  * m_history_sbox;     //!< History size
-        
+
         QSpinBox  * m_contactssize_sbox;  //!< Displayed contacts' size
         QSpinBox  * m_contactswidth_sbox; //!< Number of contacts displayed on one line
         QComboBox * m_contacts_dblclick;  //!< Action to do when a contact is double clicked
@@ -178,25 +174,14 @@ class ConfigWidget: public QDialog
         QCheckBox * m_operator_answer_work; //!< should we display the answer key in operator xlet ?
 
         int m_currentKeyChange;
-        
+
         QCheckBox * m_logtofile;
         QLineEdit * m_logfilename;
-        
+
         QCheckBox * m_displayprofile;
         QCheckBox * m_activate_on_tel;
 
         QPushButton * m_reset_gui;
-};
-
-/*! \brief Wrapper to display a warning icon beside a QWidget*/
-class WarningWidget : public QWidget
-{
-    Q_OBJECT
-    
-    private:
-        QHBoxLayout * layout;
-    public:
-        WarningWidget(QWidget *, QString s = "");
 };
 
 #endif

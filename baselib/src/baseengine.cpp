@@ -841,18 +841,13 @@ void BaseEngine::parseCommand(const QString &line)
         }
         emit emitTextMessage(tr("Received Services Data"));
     } else if (thisclass == "featuresput") {
-        QVariantMap featuresput_map = datamap.value("payload").toMap();
-        if (m_monitored_xuserid == datamap.value("userid").toString()) {
-            if (featuresput_map.isEmpty()) {
-                emit featurePutIsKO();
-                emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
-            } else {
-                emit featurePutIsOK();
-                foreach (QString featurekey, featuresput_map.keys()) {
-                    initFeatureFields(featurekey);
-                }
-                emit emitTextMessage("");
-            }
+        QString featuresput_status = datamap.value("status").toString();
+        if (featuresput_status != "OK") {
+            emit featurePutIsKO();
+            emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
+        } else {
+            emit featurePutIsOK();
+            emit emitTextMessage("");
         }
     } else if (thisclass == "login_id") {
         if (datamap.contains("error_string")) {
@@ -1706,7 +1701,7 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
 {
     QVariantMap command, value;
     command["class"]    = "featuresput";
-		command["function"] = "fwd";
+    command["function"] = "fwd";
 
     value["enable"+capa.mid(3)] = b;
     value["dest"+capa.mid(3)]   = dst;

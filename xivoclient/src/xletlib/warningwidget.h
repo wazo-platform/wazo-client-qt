@@ -27,57 +27,38 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SERVICEPANEL_H__
-#define __SERVICEPANEL_H__
+#ifndef __WARNINGWIDGET_H__
+#define __WARNINGWIDGET_H__
 
-#include <QCheckBox>
+#include <QObject>
+#include <QWidget>
 
-#include <xletinterface.h>
-#include <xlet.h>
-#include <warningwidget.h>
+#include "xletlib_export.h"
 
-class QLineEdit;
+class QLabel;
+class QString;
 
-class UserInfo;
-class BaseEngine;
-
-class ServicePanel : public XLet
+/*! \brief Wrapper to display a warning icon beside a QWidget*/
+template <class WidgetType>
+class XLETLIB_EXPORT WarningWidget : public QWidget
 {
-    Q_OBJECT
+    // Q_OBJECT does not support template classes
 
     public:
-        ServicePanel(QWidget *parent=0);
-
-    public slots:
-        void setOpt(const QString &);
-        void setForward(const QString &);
-        void Connect();
-        void DisConnect();
-        void Reset();
-        void updateUserConfig(const QString &);
-        void updatePhoneConfig(const QString &);
-
-    private slots:
-        void chkoptToggled(bool);
-        void Toggled(bool);
-        void toggleIfAllowed(const QString &);
-        void forwardLostFocus();
-
+        WarningWidget(WidgetType *, QString s = "", bool visible = true);
+        void showWarning();
+        void hideWarning();
+        void setWarningVisible(bool);
+        WidgetType * widget();
     private:
-        QStringList m_capas;
-        QHash<QString, QString> m_capalegend;
-        QHash<QString, QCheckBox *> m_chkopt;
-        QHash<QString, WarningWidget<QCheckBox> *> m_forward;
-        QHash<QString, QLineEdit *> m_forwarddest;
+        WidgetType * m_widget;
+        QLabel * m_warning;
 };
 
-class XLetFeaturePlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet* newXLetInstance(QWidget *parent=0);
-};
+/* Template class need to be implemented in the same place that it is defined.
+ * This is because the compiler can't know with which type the template will be
+ * used, this will be detected on compilation.
+ */
+#include "warningwidget.cpp"
 
 #endif

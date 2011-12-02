@@ -27,57 +27,54 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SERVICEPANEL_H__
-#define __SERVICEPANEL_H__
+#include <QLabel>
+#include <QString>
+#include <QHBoxLayout>
 
-#include <QCheckBox>
+// Template class : the header includes the implementation
+// #include "warningwidget.h"
 
-#include <xletinterface.h>
-#include <xlet.h>
-#include <warningwidget.h>
-
-class QLineEdit;
-
-class UserInfo;
-class BaseEngine;
-
-class ServicePanel : public XLet
+template <class WidgetType>
+WarningWidget<WidgetType>::WarningWidget(WidgetType * widget = NULL, QString tooltip, bool visible)
+    : QWidget()
 {
-    Q_OBJECT
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setMargin(0);
+    layout->setSpacing(5);
+    layout->setAlignment(Qt::AlignLeft);
+    setLayout(layout);
 
-    public:
-        ServicePanel(QWidget *parent=0);
+    m_warning = new QLabel();
+    m_warning->setPixmap (QPixmap(":/images/warning.png").scaledToHeight(18, Qt::SmoothTransformation));
+    m_warning->setToolTip(tooltip);
+    m_warning->setVisible(visible);
 
-    public slots:
-        void setOpt(const QString &);
-        void setForward(const QString &);
-        void Connect();
-        void DisConnect();
-        void Reset();
-        void updateUserConfig(const QString &);
-        void updatePhoneConfig(const QString &);
+    m_widget = widget;
 
-    private slots:
-        void chkoptToggled(bool);
-        void Toggled(bool);
-        void toggleIfAllowed(const QString &);
-        void forwardLostFocus();
+    layout->addWidget(widget);
+    layout->addWidget(m_warning);
+}
 
-    private:
-        QStringList m_capas;
-        QHash<QString, QString> m_capalegend;
-        QHash<QString, QCheckBox *> m_chkopt;
-        QHash<QString, WarningWidget<QCheckBox> *> m_forward;
-        QHash<QString, QLineEdit *> m_forwarddest;
-};
-
-class XLetFeaturePlugin : public QObject, XLetInterface
+template <class WidgetType>
+void WarningWidget<WidgetType>::showWarning()
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+    setWarningVisible(true);
+}
 
-    public:
-        XLet* newXLetInstance(QWidget *parent=0);
-};
+template <class WidgetType>
+void WarningWidget<WidgetType>::hideWarning()
+{
+    setWarningVisible(false);
+}
 
-#endif
+template <class WidgetType>
+void WarningWidget<WidgetType>::setWarningVisible(bool visible)
+{
+    m_warning->setVisible(visible);
+}
+
+template <class WidgetType>
+WidgetType * WarningWidget<WidgetType>::widget()
+{
+    return m_widget;
+}

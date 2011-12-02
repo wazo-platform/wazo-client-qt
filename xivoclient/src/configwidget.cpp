@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDebug>
@@ -48,11 +44,14 @@
 #include <QPixmap>
 #include <QDir>
 
+#include <baseengine.h>
+#include <xivoconsts.h>
+#include <warningwidget.h>
+
 #include "configwidget.h"
-#include "baseengine.h"
-#include "xivoconsts.h"
 
 QHash<QString, QString> func_legend;
+char reboot_message[] = "You must restart the program for this setting to apply.";
 
 /*! \brief constructor */
 ConfigWidget::ConfigWidget(QWidget *parent)
@@ -81,7 +80,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
     vlayout->addWidget(m_tabwidget);
-    
+
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(m_btnbox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
     connect(m_btnbox, SIGNAL(rejected()), this, SLOT(close()));
@@ -125,7 +124,7 @@ void ConfigWidget::_insert_connection_tab()
     connect(m_cti_encrypt, SIGNAL(toggled(bool)),
             this, SLOT(changeEncrypted(bool)));
     layout1->addRow(m_cti_encrypt);
-    
+
     m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                      tr("Checking this box disables the Error Popups"), this);
     m_trytoreconnect->setChecked(m_config["trytoreconnect"].toBool());
@@ -150,7 +149,7 @@ void ConfigWidget::_insert_function_tab()
     QVBoxLayout *layout2 = new QVBoxLayout();
     QWidget *widget_functions = new QWidget();
     widget_functions->setLayout(layout2);
-    
+
     // Please don't split this loop, because it is much simpler to add new functions this way
     func_legend["presence"] = tr("Presence reporting");
     func_legend["customerinfo"] = tr("Customer Info");
@@ -160,9 +159,9 @@ void ConfigWidget::_insert_function_tab()
         m_function[function]->setChecked(m_config["checked_function." + function].toBool());
         layout2->addWidget(m_function[function]);
     }
-    
+
     m_function_tabwidget = new QTabWidget();
-    
+
         QWidget * widget_presence = new QWidget() ;
         QFormLayout * layout_presence = new QFormLayout() ;
         widget_presence->setLayout(layout_presence);
@@ -176,7 +175,7 @@ void ConfigWidget::_insert_function_tab()
         layout_presence->addRow(tr("Presence indicator size (in pixels)"), m_presenceIndicatorSize);
         
     m_function_tabwidget->addTab(widget_presence, tr("Presence reporting"));
-    
+
         QWidget * widget_customerinfo = new QWidget() ;
         QFormLayout * layout_customerinfo = new QFormLayout() ;
         widget_customerinfo->setLayout(layout_customerinfo);
@@ -191,7 +190,7 @@ void ConfigWidget::_insert_function_tab()
         layout_customerinfo->addRow(tr("Tab limit"), m_tablimit_sbox);
         
     m_function_tabwidget->addTab(widget_customerinfo, tr("Customer Info"));
-    
+
         QWidget * widget_dial = new QWidget() ;
         QFormLayout * layout_dial = new QFormLayout() ;
         widget_dial->setLayout(layout_dial);
@@ -205,7 +204,7 @@ void ConfigWidget::_insert_function_tab()
         layout_dial->addRow(tr("Lines of call history saved"), m_dial_history_size);
 
     m_function_tabwidget->addTab(widget_dial, tr("Dialer"));
-    
+
         QWidget * widget_history = new QWidget() ;
         QFormLayout * layout_history = new QFormLayout() ;
         widget_history->setLayout(layout_history);
@@ -240,7 +239,7 @@ void ConfigWidget::_insert_function_tab()
         layout_contacts->addRow(tr("Double-click action"), m_contacts_dblclick);
         
     m_function_tabwidget->addTab(widget_contacts, tr("Contacts"));
-    
+
         QWidget * widget_queues = new QWidget() ;
         QGridLayout * layout_queues = new QGridLayout() ;
         layout_queues->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
@@ -286,13 +285,13 @@ void ConfigWidget::_insert_function_tab()
         m_queue_displaynu = new QCheckBox(tr("Display queue number"), this);
         m_queue_displaynu->setChecked(m_config["guioptions.queue_displaynu"].toBool());
         layout_queues->addWidget(m_queue_displaynu, line, 0);
-    
+
     m_function_tabwidget->addTab(widget_queues, tr("Queues"));
-    
+
         QWidget * widget_switchboard = new QWidget() ;
         QFormLayout * layout_switchboard = new QFormLayout() ;
         widget_switchboard->setLayout(layout_switchboard);
-    
+
         m_comboswitchboard = new QComboBox(this);
         m_comboswitchboard->addItem(tr("Small"), QString("small"));
         m_comboswitchboard->addItem(tr("Detailed"), QString("detailed"));
@@ -317,13 +316,13 @@ void ConfigWidget::_insert_function_tab()
         int i_switchboard_dblclick = m_switchboard_dblclick->findData (m_config["doubleclick.switchboard"].toString());
         m_switchboard_dblclick->setCurrentIndex(i_switchboard_dblclick);
         layout_switchboard->addRow(tr("Double-click action"), m_switchboard_dblclick);
-    
+
     m_function_tabwidget->addTab(widget_switchboard, tr("Switchboard"));
-    
+
     _insert_operator_functiontab();
-    
+
     layout2->addWidget(m_function_tabwidget);
-    
+
     m_tabwidget->addTab(widget_functions, tr("Functions"));
 }
 
@@ -347,7 +346,7 @@ void ConfigWidget::_insert_account_tab()
     m_keeppass = new QCheckBox(tr("Keep Password"));
     m_keeppass->setChecked(m_config["keeppass"].toBool());
     layout3->addRow(m_keeppass);
-    
+
     m_autoconnect = new QCheckBox(tr("Autoconnect at startup"), this);
     m_autoconnect->setChecked(m_config["autoconnect"].toBool());
     layout3->addRow(m_autoconnect);
@@ -390,7 +389,7 @@ void ConfigWidget::_insert_guisetting_tab()
         if (m_config["forcelocale"].toString() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);
     }
-    layout4->addRow(tr("Language"), new WarningWidget(m_locale_cbox));
+    layout4->addRow(tr("Language"), new WarningWidget<QComboBox>(m_locale_cbox, tr(reboot_message)));
 
     QFrame *qhline5 = new QFrame(this);
     qhline5->setFrameShape(QFrame::HLine);
@@ -399,12 +398,12 @@ void ConfigWidget::_insert_guisetting_tab()
     m_systrayed = new QCheckBox(tr("Systrayed at startup"), this);
     m_systrayed->setChecked(m_config["systrayed"].toBool());
     layout4->addRow(m_systrayed);
-    
+
     // The value displayed is the inverse of the bool in memory
     m_unique = new QCheckBox(tr("Allow multiple instances of XiVO Client"), this);
     m_unique->setChecked(!m_config["uniqueinstance"].toBool());
-    layout4->addRow(new WarningWidget(m_unique));
-    
+    layout4->addRow(new WarningWidget<QCheckBox>(m_unique, tr(reboot_message)));
+
     m_qss = new QComboBox();
     m_qss->addItem(tr("Default style"), QString("none"));
     QDir qss_dir(":/") ;
@@ -417,25 +416,25 @@ void ConfigWidget::_insert_guisetting_tab()
     if(qss_index != -1) {
         m_qss->setCurrentIndex(qss_index);
     }
-    layout4->addRow(tr("Interface style"), new WarningWidget(m_qss));
-    
+    layout4->addRow(tr("Interface style"), new WarningWidget<QComboBox>(m_qss, tr(reboot_message)));
+
     m_clipboard = new QCheckBox(tr("Enable the clipboard")) ;
     m_clipboard->setChecked(m_config["enableclipboard"].toBool());
-    layout4->addRow(new WarningWidget(m_clipboard));
-    
+    layout4->addRow(new WarningWidget<QCheckBox>(m_clipboard, tr(reboot_message)));
+
     m_displayprofile = new QCheckBox(tr("Display the configuration profile")) ;
     m_displayprofile->setChecked(m_config["displayprofile"].toBool());
     layout4->addRow(m_displayprofile);
-    
+
     m_activate_on_tel = new QCheckBox(tr("Activate the window when calling from external application")) ;
     m_activate_on_tel->setChecked(m_config["activate_on_tel"].toBool());
-    layout4->addRow(new WarningWidget(m_activate_on_tel));
+    layout4->addRow(new WarningWidget<QCheckBox>(m_activate_on_tel, tr(reboot_message)));
 
     m_reset_gui = new QPushButton(tr("Reset"));
     connect(m_reset_gui, SIGNAL(pressed()),
             m_parent, SLOT(resetState()));
     layout4->addRow(tr("Reset docks position"), m_reset_gui);
-    
+
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }
 
@@ -445,15 +444,15 @@ void ConfigWidget::_insert_advanced_tab()
     QFormLayout * layout5 = new QFormLayout();
     QWidget * widget_adv = new QWidget();
     widget_adv->setLayout(layout5);
-    
+
     m_logtofile = new QCheckBox(tr("Enable logging of program actions"));
     m_logtofile->setChecked(m_config["logtofile"].toBool());
-    layout5->addRow(new WarningWidget(m_logtofile));
-    
+    layout5->addRow(new WarningWidget<QCheckBox>(m_logtofile, tr(reboot_message)));
+
     m_logfilename = new QLineEdit();
     m_logfilename->setText(m_config["logfilename"].toString());
-    layout5->addRow(tr("Logfile name"), new WarningWidget(m_logfilename));
-    
+    layout5->addRow(tr("Logfile name"), new WarningWidget<QLineEdit>(m_logfilename, tr(reboot_message)));
+
     m_tabwidget->addTab(widget_adv, tr("Advanced"));
 }
 
@@ -660,9 +659,9 @@ void ConfigWidget::saveAndClose()
     m_config["guioptions.switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex()); // not currentText()
     m_config["guioptions.maxwidthwanted"] = m_maxWidthWanted->value();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
-    
+
     b_engine->setConfig(m_config);
-    
+
     close();
 }
 
@@ -674,23 +673,4 @@ bool ConfigWidget::close()
 {
     b_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
     return QDialog::close();
-}
-
-WarningWidget::WarningWidget(QWidget * widget = NULL, QString tooltip) : QWidget() {
-    
-    layout = new QHBoxLayout();
-    layout->setMargin(0);
-    layout->setSpacing(5);
-    layout->setAlignment(Qt::AlignLeft);
-    setLayout(layout);
-    
-    QLabel * label = new QLabel();
-    label->setPixmap (QPixmap(":/images/warning.png").scaledToHeight(18, Qt::SmoothTransformation));
-    if (tooltip.isEmpty()) {
-        tooltip = tr("You must restart the program for this setting to apply");
-    }
-    label->setToolTip(tooltip);
-    
-    layout->addWidget(widget);
-    layout->addWidget(label);
 }
