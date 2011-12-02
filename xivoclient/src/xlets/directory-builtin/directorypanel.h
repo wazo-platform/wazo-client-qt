@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __DIRECTORYPANEL_H__
 #define __DIRECTORYPANEL_H__
 
@@ -72,6 +68,9 @@ class DirectoryPanel : public XLet
         void startSearch();
         void itemClicked(QTableWidgetItem *);
         void itemDoubleClicked(QTableWidgetItem *);
+
+    signals:
+        void selectedText(const QString &);
 
     public slots:
         void setSearchResponse(const QStringList &, const QStringList &);

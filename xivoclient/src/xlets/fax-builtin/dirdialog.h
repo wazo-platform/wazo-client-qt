@@ -63,6 +63,7 @@ class DirDialog: public QDialog
          */
         DirDialog(QWidget *);
         ~DirDialog();
+        DirectoryPanel * dirpanel();
         const QString & faxnumber() const;
 
     private slots:

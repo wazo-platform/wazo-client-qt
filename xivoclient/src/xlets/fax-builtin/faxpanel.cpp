@@ -186,6 +186,8 @@ void FaxPanel::dirLookup()
 {
     // qDebug() << Q_FUNC_INFO;
     m_dirw = new DirDialog(m_mainwindow);
+    connect(m_dirw->dirpanel(), SIGNAL(selectedText(const QString &)),
+            m_destination, SLOT(setText(const QString &)));
     m_dirw->exec();
     // qDebug() << Q_FUNC_INFO << "DirDialog exec'ed";
     QString retstr = m_dirw->faxnumber();

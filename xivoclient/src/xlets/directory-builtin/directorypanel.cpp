@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include "directorypanel.h"
 #include "phonenumber.h"
 
@@ -98,6 +94,7 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
     if( PhoneNumber::phone_re().exactMatch(item->text()) ) {
         //qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         b_engine->pasteToDial(item->text());
+        emit selectedText(item->text());
     }
 }
 

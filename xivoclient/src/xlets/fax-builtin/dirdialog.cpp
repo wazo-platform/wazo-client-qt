@@ -71,6 +71,11 @@ DirDialog::~DirDialog()
     b_engine->getSettings()->setValue("faxhistory/geometry", saveGeometry());
 }
 
+DirectoryPanel * DirDialog::dirpanel()
+{
+    return m_directory;
+}
+
 const QString & DirDialog::faxnumber() const
 {
     return m_retfaxnumber;
