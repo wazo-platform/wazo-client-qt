@@ -6,12 +6,12 @@
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="56"/>
         <source>Call &amp;Filtering</source>
-        <translation>&amp;Filtrage d&apos;Appel</translation>
+        <translation>&amp;Filtrage d&apos;appel</translation>
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="58"/>
         <source>Forward on &amp;No Answer</source>
-        <translation>Renvois sur non réponse</translation>
+        <translation>Renvoi sur non réponse</translation>
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="80"/>
@@ -19,7 +19,12 @@
         <translation>Renvois d&apos;appel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/features/servicepanel.cpp" line="93"/>
+        <location filename="../src/xlets/features/servicepanel.cpp" line="90"/>
+        <source>This change has not been submitted yet. Please fill the destination.</source>
+        <translation>Ce paramètre n&apos;a pas encore été modifié. Vous devez remplir le champ Destination.</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/features/servicepanel.cpp" line="96"/>
         <source>Destination</source>
         <translation>Destination</translation>
     </message>
@@ -31,7 +36,7 @@
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="59"/>
         <source>Forward on &amp;Busy</source>
-        <translation>Renvoi sur Oc&amp;cupation</translation>
+        <translation>Renvoi sur oc&amp;cupation</translation>
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="54"/>
@@ -42,12 +47,12 @@
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="60"/>
         <source>&amp;Unconditional Forward</source>
-        <translation>Renvoi &amp;Inconditionnel</translation>
+        <translation>Renvoi &amp;inconditionnel</translation>
     </message>
     <message>
         <location filename="../src/xlets/features/servicepanel.cpp" line="55"/>
         <source>Voice &amp;Mail</source>
-        <translation>Messagerie &amp;Vocale</translation>
+        <translation>Messagerie &amp;vocale</translation>
     </message>
 </context>
 </TS>

@@ -34,6 +34,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/xlets/features/servicepanel.cpp" line="90"/>
+        <source>This change has not been submitted yet. Please fill the destination.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Forward on &amp;No Reply</source>
         <translation type="obsolete">Doorschakelen indien &amp;geen antwoord</translation>
     </message>
@@ -53,7 +58,7 @@
         <translation>Doorschakelingen oproepen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/features/servicepanel.cpp" line="93"/>
+        <location filename="../src/xlets/features/servicepanel.cpp" line="96"/>
         <source>Destination</source>
         <translation>Bestemming</translation>
     </message>

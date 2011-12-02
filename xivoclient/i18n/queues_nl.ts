@@ -254,7 +254,7 @@ Service
         <translation>Lijst van de wachtrijen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="126"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="122"/>
         <source>Configure</source>
         <translation>Configureren</translation>
     </message>
@@ -262,33 +262,33 @@ Service
 <context>
     <name>XletQueuesConfigure</name>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="163"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="159"/>
         <source>Queues configuration</source>
         <translation>Configuratie van de wachtrijen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="165"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="161"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
         <translation>Kies welke wachtrij wordt weergegeven, evenals de parameters van de wachtrij voor de statistieken van de periode:</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="176"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="172"/>
         <source>&amp;Close</source>
         <translation>&amp;Sluiten</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="189"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="185"/>
         <source>Queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="187"/>
         <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="196"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
         <source>The window is the period of time used to compute the statistics</source>
         <translation type="unfinished"></translation>
     </message>
@@ -297,12 +297,12 @@ queues parameters for the Stats on slice:</source>
         <translation type="obsolete">Wachtrij weergeven</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="190"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="186"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="195"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
         <source>Window (s)</source>
         <translation>Venster(s)</translation>
     </message>

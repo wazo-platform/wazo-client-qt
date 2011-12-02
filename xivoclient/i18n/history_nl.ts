@@ -4,7 +4,7 @@
 <context>
     <name>LogTableView</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="312"/>
+        <location filename="../src/xlets/history/history.cpp" line="309"/>
         <source>Call %1</source>
         <translation>Oproep %1</translation>
     </message>
@@ -12,22 +12,22 @@
 <context>
     <name>LogWidget</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="236"/>
+        <location filename="../src/xlets/history/history.cpp" line="232"/>
         <source>History</source>
         <translation>Historiek</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="255"/>
+        <location filename="../src/xlets/history/history.cpp" line="252"/>
         <source>Sent calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="257"/>
+        <location filename="../src/xlets/history/history.cpp" line="254"/>
         <source>Received calls</source>
         <translation>Ontvangen oproepen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="258"/>
+        <location filename="../src/xlets/history/history.cpp" line="255"/>
         <source>Missed calls</source>
         <translation>Gemiste oproepen</translation>
     </message>
@@ -35,32 +35,32 @@
 <context>
     <name>LogWidgetModel</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="132"/>
+        <location filename="../src/xlets/history/history.cpp" line="125"/>
         <source>%1 hr %2 min %3 s</source>
         <translation>%1 u %2 min %3 s</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="134"/>
+        <location filename="../src/xlets/history/history.cpp" line="127"/>
         <source>%1 min %2 s</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="136"/>
+        <location filename="../src/xlets/history/history.cpp" line="129"/>
         <source>%1 s</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="192"/>
+        <location filename="../src/xlets/history/history.cpp" line="191"/>
         <source>Number</source>
         <translation>Nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="194"/>
+        <location filename="../src/xlets/history/history.cpp" line="193"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="197"/>
+        <location filename="../src/xlets/history/history.cpp" line="196"/>
         <source>Duration</source>
         <translation>Duur</translation>
     </message>
