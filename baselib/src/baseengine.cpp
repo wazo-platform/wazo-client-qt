@@ -590,7 +590,7 @@ const QString & BaseEngine::getAvailState() const
 void BaseEngine::sendCommand(const QString & command)
 {
     if (m_ctiserversocket->state() == QAbstractSocket::ConnectedState)
-        m_ctiserversocket->write((command + "\n").toAscii());
+        m_ctiserversocket->write((command + "\n").toUtf8());
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
