@@ -385,6 +385,7 @@ void ConfigWidget::_insert_guisetting_tab()
     m_locale_cbox->addItem(tr("French"), QString("fr_FR"));
     m_locale_cbox->addItem(tr("Nederlands"), QString("nl_NL"));
     m_locale_cbox->addItem(tr("German"), QString("de_DE"));
+    m_locale_cbox->addItem(tr("Japanese"), QString("ja_JP"));
     for (int i = 0; i < m_locale_cbox->count(); i++) {
         if (m_config["forcelocale"].toString() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);

@@ -17,6 +17,7 @@ RC_FILE = xivoclient.rc
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_nl.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_de.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_ja.ts
 
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src $${ROOT_DIR}/src/xletlib

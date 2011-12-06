@@ -3,6 +3,7 @@
     <qresource>
         <file>../../../obj/identity_fr.qm</file>
         <file>../../../obj/identity_nl.qm</file>
+        <file>../../../obj/identity_ja.qm</file>
         <file>../../../images/identity/applixware.png</file>
         <file>../../../images/identity/identity-phone.png</file>
         <file>../../../images/identity/identity-user.png</file>
