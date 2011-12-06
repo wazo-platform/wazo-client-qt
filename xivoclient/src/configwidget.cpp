@@ -51,13 +51,14 @@
 #include "configwidget.h"
 
 QHash<QString, QString> func_legend;
-char reboot_message[] = "You must restart the program for this setting to apply.";
+QString reboot_message;
 
 /*! \brief constructor */
 ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent),
       m_currentKeyChange(-1)
 {
+    reboot_message = tr("You must restart the program for this setting to apply.");
     m_parent = parent;
     setWindowTitle(tr("Configuration"));
 
@@ -390,7 +391,7 @@ void ConfigWidget::_insert_guisetting_tab()
         if (m_config["forcelocale"].toString() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);
     }
-    layout4->addRow(tr("Language"), new WarningWidget<QComboBox>(m_locale_cbox, tr(reboot_message)));
+    layout4->addRow(tr("Language"), new WarningWidget<QComboBox>(m_locale_cbox, reboot_message));
 
     QFrame *qhline5 = new QFrame(this);
     qhline5->setFrameShape(QFrame::HLine);
@@ -403,7 +404,7 @@ void ConfigWidget::_insert_guisetting_tab()
     // The value displayed is the inverse of the bool in memory
     m_unique = new QCheckBox(tr("Allow multiple instances of XiVO Client"), this);
     m_unique->setChecked(!m_config["uniqueinstance"].toBool());
-    layout4->addRow(new WarningWidget<QCheckBox>(m_unique, tr(reboot_message)));
+    layout4->addRow(new WarningWidget<QCheckBox>(m_unique, reboot_message));
 
     m_qss = new QComboBox();
     m_qss->addItem(tr("Default style"), QString("none"));
@@ -417,11 +418,11 @@ void ConfigWidget::_insert_guisetting_tab()
     if(qss_index != -1) {
         m_qss->setCurrentIndex(qss_index);
     }
-    layout4->addRow(tr("Interface style"), new WarningWidget<QComboBox>(m_qss, tr(reboot_message)));
+    layout4->addRow(tr("Interface style"), new WarningWidget<QComboBox>(m_qss, reboot_message));
 
     m_clipboard = new QCheckBox(tr("Enable the clipboard")) ;
     m_clipboard->setChecked(m_config["enableclipboard"].toBool());
-    layout4->addRow(new WarningWidget<QCheckBox>(m_clipboard, tr(reboot_message)));
+    layout4->addRow(new WarningWidget<QCheckBox>(m_clipboard, reboot_message));
 
     m_displayprofile = new QCheckBox(tr("Display the configuration profile")) ;
     m_displayprofile->setChecked(m_config["displayprofile"].toBool());
@@ -429,7 +430,7 @@ void ConfigWidget::_insert_guisetting_tab()
 
     m_activate_on_tel = new QCheckBox(tr("Activate the window when calling from external application")) ;
     m_activate_on_tel->setChecked(m_config["activate_on_tel"].toBool());
-    layout4->addRow(new WarningWidget<QCheckBox>(m_activate_on_tel, tr(reboot_message)));
+    layout4->addRow(new WarningWidget<QCheckBox>(m_activate_on_tel, reboot_message));
 
     m_reset_gui = new QPushButton(tr("Reset"));
     connect(m_reset_gui, SIGNAL(pressed()),
@@ -448,11 +449,11 @@ void ConfigWidget::_insert_advanced_tab()
 
     m_logtofile = new QCheckBox(tr("Enable logging of program actions"));
     m_logtofile->setChecked(m_config["logtofile"].toBool());
-    layout5->addRow(new WarningWidget<QCheckBox>(m_logtofile, tr(reboot_message)));
+    layout5->addRow(new WarningWidget<QCheckBox>(m_logtofile, reboot_message));
 
     m_logfilename = new QLineEdit();
     m_logfilename->setText(m_config["logfilename"].toString());
-    layout5->addRow(tr("Logfile name"), new WarningWidget<QLineEdit>(m_logfilename, tr(reboot_message)));
+    layout5->addRow(tr("Logfile name"), new WarningWidget<QLineEdit>(m_logfilename, reboot_message));
 
     m_tabwidget->addTab(widget_adv, tr("Advanced"));
 }
