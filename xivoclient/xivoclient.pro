@@ -6,7 +6,10 @@ TEMPLATE = app
 CONFIG += uitools
 
 unix:LIBS += -lxivoclientxlets
-win32:LIBS += -lxivoclientxlets1
+win32 {
+    debug:LIBS += -lxivoclientxletsd1
+    release:LIBS += -lxivoclientxlets1
+}
 
 QT += xml
 

@@ -20,5 +20,8 @@ RCC_DIR = $$ROOT_DIR/obj
 
 LIBS += -L$${BIN_DIR}
 unix:LIBS += -lxivoclient
-win32:LIBS += -lxivoclient1
-win32:LIBS += -lole32 -loleaut32 -luuid
+win32 {
+    debug:LIBS += -lxivoclientd1
+    release:LIBS += -lxivoclient1
+    LIBS += -lole32 -loleaut32 -luuid
+}
