@@ -40,7 +40,7 @@ class QString;
 
 /*! \brief Wrapper to display a warning icon beside a QWidget*/
 template <class WidgetType>
-class XLETLIB_EXPORT WarningWidget : public QWidget
+class WarningWidget : public QWidget
 {
     // Q_OBJECT does not support template classes
 
