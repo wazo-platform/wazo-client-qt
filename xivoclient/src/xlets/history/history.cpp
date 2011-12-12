@@ -258,7 +258,7 @@ LogWidget::LogWidget(QWidget *parent)
 
     layout->addWidget(groupBox);
     hBox2->addStretch(1);
-    hBox2->addWidget(m_view, 4);
+    hBox2->addWidget(m_view, 4, Qt::AlignHCenter);
     hBox2->addStretch(1);
     layout->addLayout(hBox2);
 }
