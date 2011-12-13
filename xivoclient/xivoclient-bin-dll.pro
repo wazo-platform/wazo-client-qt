@@ -1,20 +1,24 @@
 include(common-xivoclient-bin.pri)
 
+# This changes the DLL name
 TEMPLATE = lib
+
 CONFIG   += dll hide_symbols
 
 # Library version
 VERSION = $${XIVOVER}
 
-TARGET = $$qtLibraryTarget(_xivoclientwrapper)
+TARGET = pyxivoclient
 
 INCLUDEPATH += $$system(ls -d /usr/include/python*)
 
-SWIG_FILES = src/pythonwrapper.i
-SWIG_OUTPUT = obj/pythonwrapper.cpp
+SWIG_FILES = src/pyxivoclient_wrap.i
+SWIG_OUTPUT = obj/pyxivoclient_wrap.cpp
 
-pythonwrapper.depends = $${SWIG_FILES}
-pythonwrapper.target = $${SWIG_OUTPUT}
-pythonwrapper.commands = swig -c++ -python -o $$pythonwrapper.target $$pythonwrapper.depends
+pyxivoclient_wrap.depends = $${SWIG_FILES} src/pyxivoclient.h
+pyxivoclient_wrap.target = $${SWIG_OUTPUT}
+pyxivoclient_wrap.commands = swig -c++ -python -o $$pyxivoclient_wrap.target $${SWIG_FILES}
 
-QMAKE_EXTRA_TARGETS += pythonwrapper
+INCLUDEPATH += $${ROOT_DIR}/src
+SOURCES += $${SWIG_OUTPUT}
+QMAKE_EXTRA_TARGETS += pyxivoclient_wrap

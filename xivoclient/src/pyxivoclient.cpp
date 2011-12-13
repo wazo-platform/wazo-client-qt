@@ -27,19 +27,30 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QString>
+#include <QStringList>
+
+#include <cstdlib>
+
 #include "main.h"
-#include "pythonwrapper.h"
+#include "pyxivoclient.h"
 
-PythonWrapper::PythonWrapper()
+PyXiVOClient::PyXiVOClient()
 {
 }
 
-void PythonWrapper::launch()
+void PyXiVOClient::launch(QString & args)
 {
-    char argv[10] = "xivoclient";
-    main(0, argv);
+    // Parse args
+    QStringList arg_list = args.split(" ");
+    char **argv = (char **) malloc(arg_list.size() * sizeof(char *));
+    for (int i = 0 ; i < arg_list.size() ; i++) {
+        argv[i] = arg_list[i].toUtf8().data();
+    }
+
+    main(arg_list.size(), argv);
 }
 
-void PythonWrapper::exit()
+void PyXiVOClient::exit()
 {
 }

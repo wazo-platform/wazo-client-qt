@@ -157,5 +157,10 @@ ExecObjects init(int argc, char **argv)
 int main(int argc, char **argv)
 {
     ExecObjects main = init(argc, argv);
-    return main.app->exec();
+    int ret = main.app->exec();
+    qDebug() << main.win << main.baseengine << main.app;
+    delete main.win;
+    // BaseEngine is already deleted by MainWidget
+    delete main.app;
+    return ret;
 }

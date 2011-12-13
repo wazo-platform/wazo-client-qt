@@ -27,16 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PYTHONWRAPPER_H__
-#define __PYTHONWRAPPER_H__
+#ifndef __PYXIVOCLIENT_H__
+#define __PYXIVOCLIENT_H__
 
-class PythonWrapper {
+class QString;
+
+class PyXiVOClient {
     public:
-        PythonWrapper();
-        void launch();
-        void exit();
+        PyXiVOClient();
+        void launch(QString &);
 
     private:
+        void exit();
 };
 
 #endif
