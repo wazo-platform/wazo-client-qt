@@ -41,7 +41,7 @@ XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
 }
 
 LogWidgetModel::LogWidgetModel(int initialMode)
-    : QAbstractTableModel(NULL)
+    : QAbstractTableModel(NULL), m_sorted(false), m_sorted_column(0), m_sort_order(Qt::AscendingOrder)
 {
     registerListener("history");
     m_mode = (HistoryMode) initialMode;
@@ -56,6 +56,10 @@ void LogWidgetModel::parseCommand(const QVariantMap &map) {
 
 void LogWidgetModel::sort(int column, Qt::SortOrder order)
 {
+    m_sorted = true;
+    m_sorted_column = column;
+    m_sort_order = order;
+
     QList<QVariant> tosort = m_history[m_mode].toList();
 
     if (order == Qt::AscendingOrder) {
@@ -142,6 +146,9 @@ void LogWidgetModel::updateHistory(const QVariantMap &p)
     QVariantList h = p.value("history").toList();
     if (mode == m_mode)
         m_history[m_mode] = h;
+    if (m_sorted) {
+        sort(m_sorted_column, m_sort_order);
+    }
     reset();
 }
 
@@ -220,7 +227,7 @@ QRadioButton* buildRadioButton(QString text,
 }
 
 LogWidget::LogWidget(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent), m_view(0), m_history_model(0)
 {
     setTitle(tr("History"));
 
@@ -229,15 +236,15 @@ LogWidget::LogWidget(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout(groupBox);
 
-    LogWidgetModel *historymodel = new LogWidgetModel(0);
+    m_history_model = new LogWidgetModel(0);
 
     hBox->addStretch(1);
-    buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, historymodel)->setChecked(true);
-    buildRadioButton(tr("Received calls"), "received_call.png", INCALLS, groupBox, hBox, historymodel);
-    buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, historymodel);
+    buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, m_history_model)->setChecked(true);
+    buildRadioButton(tr("Received calls"), "received_call.png", INCALLS, groupBox, hBox, m_history_model);
+    buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, m_history_model);
     hBox->addStretch(1);
 
-    m_view = new LogTableView(this, historymodel);
+    m_view = new LogTableView(this, m_history_model);
     m_view->installEventFilter(this);
 
     layout->addWidget(groupBox);
