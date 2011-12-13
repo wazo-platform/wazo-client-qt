@@ -90,10 +90,18 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
 }
 #endif
 
-/*! ???
+/*! This function is called when the window manager closes the user's
+ * session when the XiVO Client is still running.
+ * XLets wanting to save their data before exiting should connect to
+ * the qApp->commitDataRequest signal (e.g. LocalDirectory).
  */
-void PowerAwareApplication::commitData(QSessionManager &)
+void PowerAwareApplication::commitData(QSessionManager &sm)
 {
+    /* The commitDataRequest signal does not seem to be thrown
+     * if commitData is reimplemented, as it is the case here.
+     * See Qt bug 23117
+     */
+    emit commitDataRequest(sm); 
     powerEvent("sessionclosed");
 }
 
