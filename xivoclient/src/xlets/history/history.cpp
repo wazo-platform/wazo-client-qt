@@ -219,13 +219,6 @@ QRadioButton* buildRadioButton(QString text,
     return build;
 }
 
-static inline void layoutMarginSpacingTo0(QBoxLayout *l)
-{
-    l->setMargin(0);
-    l->setSpacing(0);
-}
-
-
 LogWidget::LogWidget(QWidget *parent)
     : XLet(parent)
 {
@@ -257,8 +250,7 @@ LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
     setSortingEnabled(true);
     setModel(model);
     verticalHeader()->hide();
-    horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
+    horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
