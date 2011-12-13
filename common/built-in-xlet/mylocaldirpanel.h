@@ -35,6 +35,7 @@
 #define __MYLOCALDIRPANEL_H__
 
 #include <QObject>
+#include <QTableWidget>
 #include <QFile>
 #include "xlet.h"
 
@@ -63,6 +64,7 @@ class MyLocalDirPanel : public XLet
         void exportContacts();
         void findNext();
         void removeAllContacts();
+				void contactChanged();
 
     private:
         void loadFromFile(QFile & file);

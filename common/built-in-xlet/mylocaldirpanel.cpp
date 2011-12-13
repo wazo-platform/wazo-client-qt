@@ -109,6 +109,8 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
     m_table->setColumnCount(contacts_index.size());
     m_table->setHorizontalHeaderLabels(columnNames);
     m_table->setSortingEnabled(true);
+
+
     vlayout->addWidget(m_table);
     QFile file(getSaveFile());
     file.copy(getBackupFile());
@@ -183,6 +185,13 @@ void MyLocalDirPanel::openNewContactDialog()
     }
 }
 
+void MyLocalDirPanel::contactChanged()
+{
+    //qDebug() << "contact changed";
+    QFile file(getSaveFile());
+    saveToFile( file );
+}
+
 /*! \brief import contacts from a .csv file
  *
  * open a "Open File" dialog and then call
@@ -251,6 +260,9 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
+    // do not handle itemChanged signal when loading a file
+    disconnect(m_table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(contactChanged()));
+
     CsvStream in(&file);
     bool saveSorting = m_table->isSortingEnabled();
 
@@ -305,6 +317,7 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
              << emailCol << companyCol << faxnumberCol << mobilenumberCol;
     if(maxCol < 0) {
         // no header recognized... exiting
+        connect(m_table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(contactChanged()));
         return;
     }
     m_table->setSortingEnabled( false );
@@ -352,6 +365,8 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
         }
     }
     m_table->setSortingEnabled( saveSorting );
+
+    connect(m_table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(contactChanged()));
 }
 
 /*! \brief find the column index
