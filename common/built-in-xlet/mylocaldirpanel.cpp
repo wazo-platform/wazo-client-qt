@@ -176,6 +176,10 @@ void MyLocalDirPanel::openNewContactDialog()
         m_table->setItem( row, 6, itemMobileNumber );
 
         m_table->setSortingEnabled( saveSorting );
+
+				// we save directory each time we add a new entry
+        QFile file(getSaveFile());
+        saveToFile( file );
     }
 }
 
