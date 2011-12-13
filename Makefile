@@ -49,12 +49,19 @@ tests:
 	@cd baselib \
 		&& ../unit-tests/tools/gcovr --xml -o ../unit-tests/cov-baselib.xml
 
+functests:
+	@$(MAKE) -s versions
+	@$(MAKE) os-baselib
+	@$(MAKE) os-xletlib
+	@$(MAKE) os-xlets
+	@$(MAKE) os-xivoclient-bin-dll
+
 # Example : os-all -> linux-all
 os-%:
-	$(MAKE) ${XC_UNAME}-$*
+	@$(MAKE) ${XC_UNAME}-$*
 
 clean distclean: clean-tests clean-baselib clean-xivoclient clean-xletlib \
-                 clean-xlets
+                 clean-xlets clean-functests
 	rm -f ${VERSIONS_FILE}
 	rm -rf xivoclient/obj xivoclient/bin
 	rm -rf bin
@@ -67,11 +74,11 @@ clean-tests:
 		&& $(MAKE) distclean -f Makefile_tests
 
 clean-baselib:
-	@$(MAKE) -C baselib distclean -f Makefile_baselib || true
+	-@$(MAKE) -C baselib distclean -f Makefile_baselib
 	rm -rf baselib/obj baselib/bin
 
 clean-%:
-	@$(MAKE) -C xivoclient -f Makefile_$* distclean || true
+	-@$(MAKE) -C xivoclient -f Makefile_$* distclean
 
 # LINUX targets
 
@@ -79,7 +86,7 @@ clean-%:
 linux-all:
 	@$(MAKE) linux-baselib
 	@$(MAKE) linux-xletlib
-	@$(MAKE) linux-xivoclient
+	@$(MAKE) linux-xivoclient-bin-app
 	@$(MAKE) linux-xlets
 
 linux-tests:
