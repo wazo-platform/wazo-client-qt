@@ -27,15 +27,12 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __MYLOCALDIRPANEL_H__
 #define __MYLOCALDIRPANEL_H__
 
 #include <QObject>
 #include <QFile>
+
 #include "xlet.h"
 
 class QLineEdit;
@@ -63,6 +60,9 @@ class MyLocalDirPanel : public XLet
         void exportContacts();
         void findNext();
         void removeAllContacts();
+
+    private slots:
+        void syncWithSaveFile();
 
     private:
         void loadFromFile(QFile & file);

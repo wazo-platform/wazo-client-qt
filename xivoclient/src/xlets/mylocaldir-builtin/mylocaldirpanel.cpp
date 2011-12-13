@@ -110,6 +110,10 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
     m_table->setHorizontalHeaderLabels(columnNames);
     m_table->setSortingEnabled(true);
     vlayout->addWidget(m_table);
+
+    connect(qApp, SIGNAL(commitDataRequest(QSessionManager &)),
+            this, SLOT(syncWithSaveFile()));
+
     QFile file(getSaveFile());
     file.copy(getBackupFile());
     loadFromFile(file);
@@ -120,9 +124,7 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
  */
 MyLocalDirPanel::~MyLocalDirPanel()
 {
-    // qDebug() << Q_FUNC_INFO;
-    QFile file(getSaveFile());
-    saveToFile( file );
+    syncWithSaveFile();
 }
 
 /*! \brief get the saved file
@@ -211,6 +213,14 @@ void MyLocalDirPanel::exportContacts()
         return;
     QFile file(fileName);
     saveToFile( file );
+}
+
+/*! \brief Write contacts in the dedicated file
+ */
+void MyLocalDirPanel::syncWithSaveFile()
+{
+    QFile save_file(getSaveFile());
+    saveToFile(save_file);
 }
 
 /*! \brief save the contact list to a .csv file
