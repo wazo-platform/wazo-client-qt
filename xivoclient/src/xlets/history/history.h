@@ -75,6 +75,10 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
         void requestHistory(HistoryMode mode = DEFAULT, QString xuserid = "");
 
     private:
+        bool m_sorted;
+        int m_sorted_column;
+        Qt::SortOrder m_sort_order;
+
         static QDateTime dateFromString(const QString &string) {
             QString date = string.split(".")[0];
             return QDateTime::fromString(date, DATE_PATTERN);
@@ -121,11 +125,9 @@ class LogTableView : public QTableView
 
     public:
         LogTableView(QWidget *parent, LogWidgetModel *model);
-
     private slots:
         void onViewClick(const QModelIndex &);
         void callOnClick(bool);
-
     protected:
         virtual void mousePressEvent(QMouseEvent *event);
 
@@ -142,9 +144,9 @@ class LogWidget : public XLet
 
     public:
         LogWidget(QWidget *parent=0);
-
     private:
         LogTableView * m_view;
+        LogWidgetModel *m_history_model;
 };
 
 class XLetHistoryPlugin : public QObject, XLetInterface

@@ -41,7 +41,7 @@ XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
 }
 
 LogWidgetModel::LogWidgetModel(int initialMode)
-    : QAbstractTableModel(NULL)
+    : QAbstractTableModel(NULL), m_sorted(false), m_sorted_column(0), m_sort_order(Qt::AscendingOrder)
 {
     registerListener("history");
     m_mode = (HistoryMode) initialMode;
@@ -56,6 +56,10 @@ void LogWidgetModel::parseCommand(const QVariantMap &map) {
 
 void LogWidgetModel::sort(int column, Qt::SortOrder order)
 {
+    m_sorted = true;
+    m_sorted_column = column;
+    m_sort_order = order;
+
     QList<QVariant> tosort = m_history[m_mode].toList();
 
     if (order == Qt::AscendingOrder) {
@@ -142,6 +146,9 @@ void LogWidgetModel::updateHistory(const QVariantMap &p)
     QVariantList h = p.value("history").toList();
     if (mode == m_mode)
         m_history[m_mode] = h;
+    if (m_sorted) {
+        sort(m_sorted_column, m_sort_order);
+    }
     reset();
 }
 
@@ -219,48 +226,29 @@ QRadioButton* buildRadioButton(QString text,
     return build;
 }
 
-static inline void layoutMarginSpacingTo0(QBoxLayout *l)
-{
-    l->setMargin(0);
-    l->setSpacing(0);
-}
-
-
 LogWidget::LogWidget(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent), m_view(0), m_history_model(0)
 {
     setTitle(tr("History"));
 
     QGroupBox *groupBox = new QGroupBox(this);
-    groupBox->setAlignment(Qt::AlignHCenter);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout(groupBox);
-    QHBoxLayout *hBox2 = new QHBoxLayout;
-    hBox2->setAlignment(Qt::AlignHCenter);
-    layoutMarginSpacingTo0(layout);
-    layoutMarginSpacingTo0(hBox);
 
-    LogWidgetModel *viewmodel = new LogWidgetModel(0);
+    m_history_model = new LogWidgetModel(0);
 
-    m_view = new LogTableView(this, viewmodel);
+    hBox->addStretch(1);
+    buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, m_history_model)->setChecked(true);
+    buildRadioButton(tr("Received calls"), "received_call.png", INCALLS, groupBox, hBox, m_history_model);
+    buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, m_history_model);
+    hBox->addStretch(1);
+
+    m_view = new LogTableView(this, m_history_model);
     m_view->installEventFilter(this);
 
-
-    hBox->addStretch(1);
-
-    buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, viewmodel)
-                    ->setChecked(true);
-    buildRadioButton(tr("Received calls"), "received_call.png", INCALLS, groupBox, hBox, viewmodel);
-    buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, viewmodel);
-
-    hBox->addStretch(1);
-
     layout->addWidget(groupBox);
-    hBox2->addStretch(1);
-    hBox2->addWidget(m_view, 4);
-    hBox2->addStretch(1);
-    layout->addLayout(hBox2);
+    layout->addWidget(m_view);
 }
 
 LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
@@ -269,8 +257,7 @@ LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
     setSortingEnabled(true);
     setModel(model);
     verticalHeader()->hide();
-    horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    setStyleSheet("QTableView { border: none; background:transparent; color:black; }");
+    horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
