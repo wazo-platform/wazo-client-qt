@@ -1,8 +1,6 @@
 include(common-xivoclient.pri)
 include($${ROOT_DIR}/qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
 
-TEMPLATE = app
-# CONFIG += console # uncomment to get console on Win32
 CONFIG += uitools
 
 unix:LIBS += -lxivoclientxlets
@@ -24,8 +22,8 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_ja.ts
 
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src $${ROOT_DIR}/src/xletlib
-HEADERS += $${ROOT_DIR}/src/*.h
-SOURCES += $${ROOT_DIR}/src/*.cpp
+HEADERS += $$system(ls $${ROOT_DIR}/src/*.h)
+SOURCES += $$system(ls $${ROOT_DIR}/src/*.cpp)
 
 BUILTIN_DIRS += callcampaign-builtin
 BUILTIN_DIRS += customerinfo-builtin
@@ -51,8 +49,8 @@ SOURCES += $${ROOT_DIR}/src/xlets/search-builtin/*.cpp
 
 DESTDIR  = $$BIN_DIR
 
-# Get the optional plugins dir from shell env
-PLUGINDIR = $$system(echo -n $XIVOCLIENT_PLUGINDIR)
+# Get the optional plugins dir from environment variable
+PLUGINDIR = $$(XIVOCLIENT_PLUGINDIR)
 isEmpty( PLUGINDIR ) {
     PLUGINDIR = /usr/share/xivoclient/plugins
 }
