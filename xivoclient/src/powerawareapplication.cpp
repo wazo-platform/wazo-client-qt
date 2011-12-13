@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QCoreApplication>
 #include <QVariant>
 
@@ -94,6 +90,8 @@ bool PowerAwareApplication::winEventFilter(MSG * msg, long * result)
  * session when the XiVO Client is still running.
  * XLets wanting to save their data before exiting should connect to
  * the qApp->commitDataRequest signal (e.g. LocalDirectory).
+ *
+ * Be warned : this function is not called with the "console" option in Windows.
  */
 void PowerAwareApplication::commitData(QSessionManager &sm)
 {
@@ -101,7 +99,6 @@ void PowerAwareApplication::commitData(QSessionManager &sm)
      * if commitData is reimplemented, as it is the case here.
      * See Qt bug 23117
      */
-    emit commitDataRequest(sm); 
+    emit commitDataRequest(sm);
     powerEvent("sessionclosed");
 }
-
