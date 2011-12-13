@@ -232,35 +232,23 @@ LogWidget::LogWidget(QWidget *parent)
     setTitle(tr("History"));
 
     QGroupBox *groupBox = new QGroupBox(this);
-    groupBox->setAlignment(Qt::AlignHCenter);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout(groupBox);
-    QHBoxLayout *hBox2 = new QHBoxLayout;
-    hBox2->setAlignment(Qt::AlignHCenter);
-    layoutMarginSpacingTo0(layout);
-    layoutMarginSpacingTo0(hBox);
 
-    LogWidgetModel *viewmodel = new LogWidgetModel(0);
+    LogWidgetModel *historymodel = new LogWidgetModel(0);
 
-    m_view = new LogTableView(this, viewmodel);
+    hBox->addStretch(1);
+    buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, historymodel)->setChecked(true);
+    buildRadioButton(tr("Received calls"), "received_call.png", INCALLS, groupBox, hBox, historymodel);
+    buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, historymodel);
+    hBox->addStretch(1);
+
+    m_view = new LogTableView(this, historymodel);
     m_view->installEventFilter(this);
 
-
-    hBox->addStretch(1);
-
-    buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, viewmodel)
-                    ->setChecked(true);
-    buildRadioButton(tr("Received calls"), "received_call.png", INCALLS, groupBox, hBox, viewmodel);
-    buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, viewmodel);
-
-    hBox->addStretch(1);
-
     layout->addWidget(groupBox);
-    hBox2->addStretch(1);
-    hBox2->addWidget(m_view, 4, Qt::AlignHCenter);
-    hBox2->addStretch(1);
-    layout->addLayout(hBox2);
+    layout->addWidget(m_view);
 }
 
 LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
