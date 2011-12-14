@@ -67,8 +67,8 @@ functests:
 os-%:
 	@$(MAKE) ${XC_UNAME}-$*
 
-clean distclean: clean-tests clean-baselib clean-xivoclient clean-xletlib \
-                 clean-xlets clean-functests
+clean distclean: clean-tests clean-baselib clean-xivoclient-bin-app clean-xletlib \
+                 clean-xlets clean-xivoclient-bin-dll
 	rm -f ${VERSIONS_FILE}
 	rm -rf xivoclient/obj xivoclient/bin
 	rm -rf bin
