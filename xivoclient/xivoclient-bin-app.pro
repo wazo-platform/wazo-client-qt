@@ -5,8 +5,5 @@ TEMPLATE = app
 
 TARGET = xivoclient
 
-INCLUDEPATH += /usr/include/python2.6
-message($$INCLUDEPATH)
-
-SOURCES -= $${ROOT_DIR}/src/pythonwrapper.cpp
-HEADERS -= $${ROOT_DIR}/src/pythonwrapper.h
+SOURCES -= $${ROOT_DIR}/src/pyxivoclient.cpp
+HEADERS -= $${ROOT_DIR}/src/pyxivoclient.h
