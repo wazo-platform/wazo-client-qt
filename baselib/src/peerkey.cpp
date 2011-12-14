@@ -31,11 +31,13 @@
  * $Date$
  */
 
+#include <QDebug>
 #include "peerkey.h"
 
-PeerKey::PeerKey(const QString &userid, const QString &fullname)
+PeerKey::PeerKey(const QString &userid, const QString &fullname, const QString &phonenumber)
     : m_userid(userid),
-      m_fullname(fullname)
+      m_fullname(fullname),
+      m_phonenumber(phonenumber)
 {
 }
 
@@ -44,5 +46,8 @@ bool PeerKey::operator==(const PeerKey &other) const {
 }
 
 bool PeerKey::operator<(const PeerKey &other) const {
-    return (this->m_fullname < other.fullname());
+    if(this->m_fullname != other.fullname())
+        return this->m_fullname < other.fullname();
+
+    return this->m_phonenumber < other.phonenumber();
 }

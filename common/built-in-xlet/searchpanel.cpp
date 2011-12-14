@@ -163,7 +163,8 @@ void SearchPanel::updateUser(UserInfo *ui)
 {
     const QString &userid = ui->userid();
     const QString &fullname = ui->fullname();
-    PeerKey *peerkey = new PeerKey(userid, fullname);
+    const QString &phonenumber = ui->phoneNumber();
+    PeerKey *peerkey = new PeerKey(userid, fullname, phonenumber);
     PeerItem *peeritem = NULL;
 // 	PeerKey const &peerkey2 = *peerkey;
 
@@ -197,7 +198,7 @@ void SearchPanel::updatePeerAgent(double,
  */
 void SearchPanel::removePeer(const QString &ext)
 {
-    PeerKey *peerkey = new PeerKey(ext, "");
+    PeerKey *peerkey = new PeerKey(ext, "", "");
     // qDebug() << Q_FUNC_INFO << ext;
     if (m_peermap.contains(*peerkey)) {
         PeerItem *peeritem = m_peermap.value(*peerkey);
