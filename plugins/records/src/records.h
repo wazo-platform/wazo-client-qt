@@ -35,7 +35,7 @@
 #define __RECORDSPANEL_H__
 
 #include <QtGui>
-#include <Phonon/AudioOutput>
+#include <QtMultimedia>
 
 #include <xletinterface.h>
 #include <xlet.h>
