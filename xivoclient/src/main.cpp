@@ -47,14 +47,14 @@ struct ExecObjects {
     BaseEngine *baseengine;
 };
 
-/*! \brief init XiVO Client
+/*! \brief program entry point
  *
  * Set some static Qt parameters for using QSettings,
  * instantiate a MainWidget window and a BaseEngine object.
  *
  * \sa MainWidget, BaseEngine
  */
-ExecObjects init(int argc, char **argv)
+int main(int argc, char **argv)
 {
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
@@ -116,8 +116,7 @@ ExecObjects init(int argc, char **argv)
     if (shallbeunique && app->isRunning()) {
         qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
         // do not create a new application, just activate the currently running one
-        ExecObjects ret = {NULL, NULL, NULL};
-        return ret;
+        return 0;
     }
 
     settings->setValue("profile/lastused", profile);
@@ -147,20 +146,10 @@ ExecObjects init(int argc, char **argv)
     QObject::connect(app, SIGNAL(messageReceived(const QString &)),
                      b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
 
-    ExecObjects ret = {app, window, b_engine};
+    int ret = app->exec();
 
-    return ret;
-}
-
-/*! \brief program entry point
- */
-int main(int argc, char **argv)
-{
-    ExecObjects main = init(argc, argv);
-    int ret = main.app->exec();
-    qDebug() << main.win << main.baseengine << main.app;
-    delete main.win;
+    delete window;
     // BaseEngine is already deleted by MainWidget
-    delete main.app;
+    delete app;
     return ret;
 }
