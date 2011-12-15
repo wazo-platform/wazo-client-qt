@@ -30,12 +30,12 @@
 #ifndef __PYXIVOCLIENT_H__
 #define __PYXIVOCLIENT_H__
 
-class QString;
+#include <QString>
 
 class PyXiVOClient {
     public:
         PyXiVOClient();
-        void launch(QString &);
+        void launch(const QString & args = "xivoclient");
 
     private:
         void exit();

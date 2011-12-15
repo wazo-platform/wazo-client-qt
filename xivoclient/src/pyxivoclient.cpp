@@ -39,7 +39,7 @@ PyXiVOClient::PyXiVOClient()
 {
 }
 
-void PyXiVOClient::launch(QString & args)
+void PyXiVOClient::launch(const QString & args)
 {
     // Parse args
     QStringList arg_list = args.split(" ");
