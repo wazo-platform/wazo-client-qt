@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __SEARCHPANEL_H__
 #define __SEARCHPANEL_H__
 
@@ -48,15 +44,13 @@ class BaseEngine;
 class ExtendedLineEdit;
 class UserInfo;
 
-/*! \brief search panel widget
- */
 class SearchPanel : public XLet
 {
     Q_OBJECT
     public:
         SearchPanel(QWidget *parent=0);
         void resizeEvent(QResizeEvent *);
-        ~SearchPanel();        //!< Destructor
+        ~SearchPanel();
     public slots:
         void affTextChanged(const QString &);
         void removePeer(const QString &);
@@ -70,7 +64,7 @@ class SearchPanel : public XLet
         void removePhoneConfig(const QString &);
     private:
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
-        QGridLayout *m_peerlayout; //!< layout object
+        QGridLayout *m_peerlayout;
         ExtendedLineEdit *m_input; //!< widget for search string input
         QScrollArea * m_scrollarea; //!< widget to see all or part of the contacts list
         

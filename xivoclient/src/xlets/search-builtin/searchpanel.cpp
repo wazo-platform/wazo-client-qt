@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QScrollArea>
@@ -47,7 +43,6 @@
 SearchPanel::SearchPanel(QWidget *parent)
     : XLet(parent)
 {
-    // qDebug() << Q_FUNC_INFO;
     setTitle(tr("Contacts"));
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
 
@@ -71,8 +66,6 @@ SearchPanel::SearchPanel(QWidget *parent)
     m_peerlayout->setMargin(0);
     m_peerlayout->setSpacing(SearchPanel::peer_spacing);
     scrollarealayout->addLayout(m_peerlayout);
-    /* addstretch makes the peerlayout only use the vertical space it needs,
-     * instead of taking all the space available */
     scrollarealayout->addStretch(10);
     vlayout->addWidget(m_scrollarea);
 
@@ -103,7 +96,6 @@ SearchPanel::SearchPanel(QWidget *parent)
 
 SearchPanel::~SearchPanel()
 {
-    // qDebug() << Q_FUNC_INFO;
     removePeers();
 }
 
@@ -283,11 +275,8 @@ void SearchPanel::removePhoneConfig(const QString & xphoneid) {
     }
 }
 
-/*! \brief remove a peer
- */
 void SearchPanel::removePeer(const QString & xuserid)
 {
-    // qDebug() << Q_FUNC_INFO << ext;
     if (m_peerhash.contains(xuserid)) {
         PeerItem * peeritem = m_peerhash.value(xuserid);
         BasePeerWidget * peerwidget = peeritem->getWidget();
@@ -300,11 +289,8 @@ void SearchPanel::removePeer(const QString & xuserid)
     }
 }
 
-/*! \brief clear the widget
- */
 void SearchPanel::removePeers()
 {
-    // qDebug() << Q_FUNC_INFO;
     foreach (QString peerkey, m_peerhash.keys()) {
         PeerItem * peeritem = m_peerhash[peerkey];
         BasePeerWidget * peerwidget = peeritem->getWidget();
