@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QDebug>
 #include <QApplication>
 #include <QAction>
@@ -43,10 +39,6 @@
 #include "baseengine.h"
 #include "xivoconsts.h"
 
-/*! \brief Constructor
- *
- * initialize members.
- */
 BasePeerWidget::BasePeerWidget(const UserInfo * ui)
     : m_ui_remote(ui), m_editable(false), m_transfered(false)
 {
@@ -306,10 +298,10 @@ void BasePeerWidget::mousePressEvent(QMouseEvent *event)
  */
 void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    // TODO : check for the right to drag and drop
-    if (!(event->buttons() & Qt::LeftButton)) {
+    if (!(event->buttons() & Qt::LeftButton) || ! isme()) {
         return;
     }
+
     if ((event->pos() - m_dragstartpos).manhattanLength()
         < QApplication::startDragDistance()) {
         return;
@@ -665,7 +657,6 @@ QString BasePeerWidget::name() const
  */
 void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    // qDebug() << Q_FUNC_INFO << event->mimeData()->formats();
     if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)  ||
         event->mimeData()->hasFormat(XPHONEID_MIMETYPE) ||
         event->mimeData()->hasFormat(NUMBER_MIMETYPE)   ||
@@ -682,7 +673,6 @@ void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
  */
 void BasePeerWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-    //qDebug() << Q_FUNC_INFO << event->mimeData()->formats() << event->po
     event->accept(rect());
     if (event->proposedAction() & (Qt::CopyAction | Qt::MoveAction)) {
         event->acceptProposedAction();
@@ -703,18 +693,6 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     } else {
         to = "ext:" + m_number;
     }
-    qDebug() << Q_FUNC_INFO
-             << event << event->keyboardModifiers()
-             << event->mimeData() << event->proposedAction();
-
-    if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE))
-        qDebug() << Q_FUNC_INFO << "CHANNEL_MIMETYPE";
-    if (event->mimeData()->hasFormat(XUSERID_MIMETYPE))
-        qDebug() << Q_FUNC_INFO << "XUSERID_MIMETYPE";
-    if (event->mimeData()->hasFormat(XPHONEID_MIMETYPE))
-        qDebug() << Q_FUNC_INFO << "XPHONEID_MIMETYPE";
-    if (event->mimeData()->hasFormat(NUMBER_MIMETYPE))
-        qDebug() << Q_FUNC_INFO << "NUMBER_MIMETYPE";
 
     switch(event->proposedAction()) {
     case Qt::CopyAction:
@@ -738,7 +716,7 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
                              to);
         break;
     default:
-        qDebug() << Q_FUNC_INFO << "Unrecognized action" << event->proposedAction();
+        qDebug() << "Unrecognized action" << event->proposedAction();
         break;
     }
 }
@@ -790,17 +768,6 @@ QString BasePeerWidget::id() const
     } else {
         return (QString("number-") + number());
     }
-}
-
-bool BasePeerWidget::event(QEvent *e)
-{
-    if ((e->type() == QEvent::DragMove) ||
-        (e->type() == QEvent::DragEnter) ||
-        (e->type() == QEvent::DragLeave) ||
-        (e->type() == QEvent::DragResponse )) {
-        return 1;
-    }
-    return QWidget::event(e);
 }
 
 /*!

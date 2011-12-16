@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __BASEPEERWIDGET_H__
 #define __BASEPEERWIDGET_H__
 
@@ -75,7 +71,6 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void dragEnterEvent(QDragEnterEvent *);
         void dragMoveEvent(QDragMoveEvent *);
         void dropEvent(QDropEvent *);
-        bool event(QEvent *);
         QString xletName() const;
         // Menu helper functions
         bool isme() const;
