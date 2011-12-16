@@ -104,8 +104,7 @@ static bool findPluginDir()
         // if there is a plugins dir next to where the application remain
         pluginDirFound = true;
     } else {
-        if (pluginDir.cd(PLUGINDIR)) { // PLUGINDIR defined in xivoclient.pro
-            //  the xivo_client might be installed properly for all the user on an unix box
+        if (pluginDir.cd(PLUGINDIR)) { // PLUGINDIR defined in common-xivoclient-bin.pri
             pluginDirFound = true;
         } else {
             qDebug() << Q_FUNC_INFO << "cannot find plugins directory";
