@@ -294,11 +294,28 @@ void BasePeerWidget::mousePressEvent(QMouseEvent *event)
     }
 }
 
+bool BasePeerWidget::canDrag(const QMouseEvent *event) const
+{
+    if (! isLeftClick(event)) return false;
+    if (! isme() && ! isSwitchBoard()) return false;
+    return true;
+}
+
+bool BasePeerWidget::isSwitchBoard() const
+{
+    return (m_ui_local && m_ui_local->isSwitchBoard());
+}
+
+bool BasePeerWidget::isLeftClick(const QMouseEvent *event) const
+{
+    return (event->buttons() & Qt::LeftButton) == true;
+}
+
 /*! \brief start drag if necessary
  */
 void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (!(event->buttons() & Qt::LeftButton) || ! isme()) {
+    if (! canDrag(event)) {
         return;
     }
 

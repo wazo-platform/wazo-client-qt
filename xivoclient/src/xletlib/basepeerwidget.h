@@ -88,6 +88,9 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void addTxferVmMenu(QMenu *);
     private:
         QList<const ChannelInfo *> loopOverChannels(const UserInfo *);
+        bool canDrag(const QMouseEvent *) const;
+        bool isLeftClick(const QMouseEvent *) const;
+        bool isSwitchBoard() const;
     signals:
         void removeFromPanel(); //! hide the widget from the containing window
         void selectedNumber(const QStringList &);

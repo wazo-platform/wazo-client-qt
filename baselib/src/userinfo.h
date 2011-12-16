@@ -34,6 +34,8 @@
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
+#define PROFILE_SWITCHBOARD "switchboard"
+
 #include "baselib_export.h"
 #include "xinfo.h"
 
@@ -55,6 +57,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
             const QString & xagentid() const { return m_xagentid; };
             int simultcalls() const { return m_simultcalls; };
             bool enableclient() const { return m_enableclient; };
+            bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
             const QString & ctilogin() const { return m_ctilogin; };
             bool enablevoicemail() const { return m_enablevoicemail; };
             bool incallfilter() const { return m_incallfilter; };
@@ -104,6 +107,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
             QString m_xagentid;                 //!< ipbxid + agent id
             int m_simultcalls;
             bool m_enableclient;
+            QString m_profileclient;
             QString m_ctilogin;                 //!< user login on cti
             bool m_enablevoicemail;
             bool m_incallfilter;

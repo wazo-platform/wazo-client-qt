@@ -78,6 +78,7 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
+    haschanged |= setIfChangeString(prop, "profileclient", & m_profileclient);
 
     if (prop.contains("linelist")) {
         QStringList lid;
