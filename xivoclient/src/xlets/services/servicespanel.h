@@ -52,18 +52,15 @@ class ServicesPanel : public XLet, public IPBXListener
         ServicesPanel(QWidget *parent=0);
 
     public slots:
-        void setOpt(const QString &);
-        void setForward(const QString &);
-        void Connect();
-        void DisConnect();
-        void Reset();
+        void syncOpt(const QString &);
+        void syncForward(const QString &);
+        void resetWidgets();
         void updateUserConfig(const QString &, const QVariantMap &);
         void updatePhoneConfig(const QString &);
 
     private slots:
         void chkoptToggled(bool);
-        void Toggled(bool);
-        void toggleIfAllowed(const QString &);
+        void forwardToggled(bool);
         void forwardLostFocus();
         void servicePutIsOK(const QString &, const QString &);
 

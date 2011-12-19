@@ -282,8 +282,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void textEdited(const QString &);
         
-        void featurePutOpt(const QString &, bool);
-        QString featurePutForward(const QString &, bool, const QString &);
+        void servicePutOpt(const QString &, bool);
+        QString servicePutForward(const QString &, bool, const QString &);
         void askServices();
         
         void fetchIPBXList();

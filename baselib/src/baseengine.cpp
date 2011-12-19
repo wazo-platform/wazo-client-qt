@@ -1681,7 +1681,7 @@ void BaseEngine::timerEvent(QTimerEvent *event)
 }
 
 /*! \brief send a feature put command to the cti server */
-void BaseEngine::featurePutOpt(const QString &capa, bool b)
+void BaseEngine::servicePutOpt(const QString &capa, bool b)
 {
     QVariantMap command;
     command["class"] = "featuresput";
@@ -1700,7 +1700,7 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
  * NOTE: we send value (forward target number) BEFORE status (enabled/disabled)
  *       to prevent server disabling back forward if value was empty
  */
-QString BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
+QString BaseEngine::servicePutForward(const QString & capa, bool b, const QString & dst)
 {
     QVariantMap command, value;
     command["class"]    = "featuresput";

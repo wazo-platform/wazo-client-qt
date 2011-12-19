@@ -117,18 +117,32 @@ ServicesPanel::ServicesPanel(QWidget * parent)
     }
     vlayout->addStretch(1);
 
-    Reset();
-    Connect();
+    resetWidgets();
 
     // connect signals/slots
 
+    foreach (QString capa, chkcapas) {
+        if (m_capas.contains(capa)) {
+            connect(m_chkopt[capa]->widget(), SIGNAL(clicked(bool)),
+                    this, SLOT(chkoptToggled(bool)));
+        }
+    }
+    foreach (QString capa, fwdcapas) {
+        if (m_capas.contains(capa)) {
+            connect(m_forward[capa]->widget(), SIGNAL(clicked(bool)),
+                    this, SLOT(forwardToggled(bool)));
+            connect(m_forwarddest[capa]->widget(), SIGNAL(lostFocus()),
+                    this, SLOT(forwardLostFocus()));
+        }
+    }
+
     connect(b_engine, SIGNAL(resetServices()),
-            this, SLOT(Reset()));
+            this, SLOT(resetWidgets()));
 
     connect(b_engine, SIGNAL(optChanged(const QString &)),
-            this, SLOT(setOpt(const QString &)));
+            this, SLOT(syncOpt(const QString &)));
     connect(b_engine, SIGNAL(forwardUpdated(const QString &)),
-            this, SLOT(setForward(const QString &)) );
+            this, SLOT(syncForward(const QString &)) );
 
     connect(b_engine, SIGNAL(servicePutIsOK(const QString &, const QString &)),
             this, SLOT(servicePutIsOK(const QString &, const QString &)));
@@ -147,10 +161,10 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
         foreach (QVariant config_var, datamap["config"].toMap().keys()) {
             QString config_str = config_var.toString();
             if (chkcapas.contains(config_str)) {
-                setOpt(config_str);
+                syncOpt(config_str);
             } else {
                 // this will filter the configstr to retain only enable* and dest*
-                setForward(config_str);
+                syncForward(config_str);
             }
         }
     }
@@ -160,45 +174,7 @@ void ServicesPanel::updatePhoneConfig(const QString &)
 {
 }
 
-void ServicesPanel::Connect()
-{
-    foreach (QString capa, chkcapas) {
-        if (m_capas.contains(capa)) {
-            connect(m_chkopt[capa]->widget(), SIGNAL(clicked(bool)),
-                    this, SLOT(chkoptToggled(bool)));
-        }
-    }
-    foreach (QString capa, fwdcapas) {
-        if (m_capas.contains(capa)) {
-            connect(m_forward[capa]->widget(), SIGNAL(clicked(bool)),
-                    this, SLOT(Toggled(bool)));
-            connect(m_forwarddest[capa]->widget(), SIGNAL(lostFocus()),
-                    this, SLOT(forwardLostFocus()));
-        }
-    }
-}
-
-void ServicesPanel::DisConnect()
-{
-    foreach (QString capa, chkcapas) {
-        if (m_capas.contains(capa)) {
-            disconnect(m_chkopt[capa]->widget(), SIGNAL(clicked(bool)),
-                       this, SLOT(chkoptToggled(bool)));
-        }
-    }
-    foreach (QString capa, fwdcapas) {
-        if (m_capas.contains(capa)) {
-            disconnect(m_forward[capa]->widget(), SIGNAL(clicked(bool)),
-                       this, SLOT(Toggled(bool)));
-        }
-    }
-    // foreach(QString capa, fwdcapas)
-    // if(m_capas.contains(capa))
-    // disconnect(m_forward[capa]->widget(), SIGNAL(textEdited(const QString &)),
-    // this, SLOT(toggleIfAllowed(const QString &)));
-}
-
-void ServicesPanel::Reset()
+void ServicesPanel::resetWidgets()
 {
     //qDebug() << Q_FUNC_INFO;
     foreach (QString capa, chkcapas) {
@@ -217,13 +193,10 @@ void ServicesPanel::chkoptToggled(bool b)
 {
     QString capa = sender()->property("capa").toString();
     m_chkopt[capa]->lock();
-    b_engine->featurePutOpt(capa, b);
+    b_engine->servicePutOpt(capa, b);
 }
 
-/**
- * Called on call forward checkbox toggle
- */
-void ServicesPanel::Toggled(bool b)
+void ServicesPanel::forwardToggled(bool b)
 {
     QString capa  = sender()->property("capa").toString();
     QString fdest = m_forwarddest[capa]->widget()->text();
@@ -231,7 +204,7 @@ void ServicesPanel::Toggled(bool b)
     if(! (b && fdest.isEmpty())) {
         m_forward[capa]->lock();
         m_forwarddest[capa]->lock();
-        m_replyids[capa] = b_engine->featurePutForward(capa, b, fdest);
+        m_replyids[capa] = b_engine->servicePutForward(capa, b, fdest);
     } else {
         qDebug() << "Forwarding calls to nothing ... This should not happen !";
     }
@@ -249,11 +222,18 @@ void ServicesPanel::forwardLostFocus()
     }
     m_forward[capa]->lock();
     m_forwarddest[capa]->lock();
-    m_replyids[capa] = b_engine->featurePutForward(capa,
+    m_replyids[capa] = b_engine->servicePutForward(capa,
                                                    m_forward[capa]->widget()->isChecked(),
                                                    fdest);
 }
 
+/*!
+ * The main reason of this function is to catch reply of the CTI server in case
+ * no changes have been sent, for example when entering and exiting focus of a
+ * text field without changing it. It prevents the WaitingWidgets to wait for an
+ * update that will never come, because there is no new data, then nothing to
+ * update.
+ */
 void ServicesPanel::servicePutIsOK(const QString & replyid, const QString & warning_string)
 {
     if (warning_string == "no changes") {
@@ -267,8 +247,9 @@ void ServicesPanel::servicePutIsOK(const QString & replyid, const QString & warn
 }
 
 // The following actions are entered in when the status is received from the server (init or update)
-
-void ServicesPanel::setOpt(const QString & capa)
+/*! \brief sync widgets with userinfo
+ */
+void ServicesPanel::syncOpt(const QString & capa)
 {
     if (m_ui == NULL)
         return;
@@ -284,7 +265,9 @@ void ServicesPanel::setOpt(const QString & capa)
     }
 }
 
-void ServicesPanel::setForward(const QString & capa)
+/*! \brief sync widgets with userinfo
+ */
+void ServicesPanel::syncForward(const QString & capa)
 {
     if (m_ui == NULL)
         return;
@@ -315,7 +298,4 @@ void ServicesPanel::setForward(const QString & capa)
             m_forwarddest[thiscapa]->unlock();
         }
     }
-}
-
-void ServicesPanel::toggleIfAllowed(const QString &) {
 }
