@@ -594,14 +594,15 @@ void BaseEngine::sendCommand(const QString & command)
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
-void BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
+QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
 {
     if (! cticommand.contains("class"))
-        return;
+        return QString("");
     QVariantMap fullcommand = cticommand;
     fullcommand["commandid"] = qrand();
     QString jsoncommand(JsonQt::VariantToJson::parse(fullcommand));
     sendCommand(jsoncommand);
+    return fullcommand["commandid"].toString();
 }
 
 /*! \brief send an ipbxcommand command to the cti server */
@@ -835,7 +836,7 @@ void BaseEngine::parseCommand(const QString &line)
 
     } else if (thisclass == "featuresget") {
         QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
-        resetFeatures();
+        resetServices();
         foreach (QString featurekey, featuresget_map.keys()) {
             initFeatureFields(featurekey);
         }
@@ -843,10 +844,11 @@ void BaseEngine::parseCommand(const QString &line)
     } else if (thisclass == "featuresput") {
         QString featuresput_status = datamap.value("status").toString();
         if (featuresput_status != "OK") {
-            emit featurePutIsKO();
+            emit servicePutIsKO();
             emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
         } else {
-            emit featurePutIsOK();
+            emit servicePutIsOK(datamap.value("replyid").toString(),
+                                datamap.value("warning_string").toString());
             emit emitTextMessage("");
         }
     } else if (thisclass == "login_id") {
@@ -1074,9 +1076,10 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             }
 
             // transmission to xlets
-            if (listname == "users")
+            if (listname == "users") {
                 emit updateUserConfig(xid);
-            else if (listname == "phones")
+                emit updateUserConfig(xid,datamap);
+            } else if (listname == "phones")
                 emit updatePhoneConfig(xid);
             else if (listname == "agents")
                 emit updateAgentConfig(xid);
@@ -1697,7 +1700,7 @@ void BaseEngine::featurePutOpt(const QString &capa, bool b)
  * NOTE: we send value (forward target number) BEFORE status (enabled/disabled)
  *       to prevent server disabling back forward if value was empty
  */
-void BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
+QString BaseEngine::featurePutForward(const QString & capa, bool b, const QString & dst)
 {
     QVariantMap command, value;
     command["class"]    = "featuresput";
@@ -1706,11 +1709,11 @@ void BaseEngine::featurePutForward(const QString & capa, bool b, const QString &
     value["enable"+capa.mid(3)] = b;
     value["dest"+capa.mid(3)]   = dst;
     command["value"]            = value;
-    sendJsonCommand(command);
+    return sendJsonCommand(command);
 }
 
 /*! \brief send a featursget command to the cti server */
-void BaseEngine::askFeatures()
+void BaseEngine::askServices()
 {
     QVariantMap command;
     command["class"] = "featuresget";
@@ -1969,8 +1972,8 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
 int BaseEngine::forwardToListeners(QString event_dest, const QVariantMap & map)
 {
     if (m_listeners.contains(event_dest)) {
-        foreach (IPBXListener *om, m_listeners.values(event_dest)) {
-            om->parseCommand(map);
+        foreach (IPBXListener *listener, m_listeners.values(event_dest)) {
+            listener->parseCommand(map);
         }
         return true ;
     } else {

@@ -35,8 +35,8 @@
 // #include "warningwidget.h"
 
 template <class WidgetType>
-WarningWidget<WidgetType>::WarningWidget(WidgetType * widget = NULL, QString tooltip, bool visible)
-    : QWidget()
+WarningWidget<WidgetType>::WarningWidget(WidgetType * widget, QString tooltip, bool visible)
+    : QWidget(), m_widget(widget)
 {
     QHBoxLayout * layout = new QHBoxLayout();
     layout->setMargin(0);
@@ -44,12 +44,10 @@ WarningWidget<WidgetType>::WarningWidget(WidgetType * widget = NULL, QString too
     layout->setAlignment(Qt::AlignLeft);
     setLayout(layout);
 
-    m_warning = new QLabel();
+    m_warning = new QLabel(this);
     m_warning->setPixmap (QPixmap(":/images/warning.png").scaledToHeight(18, Qt::SmoothTransformation));
     m_warning->setToolTip(tooltip);
     m_warning->setVisible(visible);
-
-    m_widget = widget;
 
     layout->addWidget(widget);
     layout->addWidget(m_warning);

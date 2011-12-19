@@ -27,35 +27,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __WARNINGWIDGET_H__
-#define __WARNINGWIDGET_H__
+#ifndef __WAITINGWIDGET_H__
+#define __WAITINGWIDGET_H__
 
 #include <QWidget>
 
-class QLabel;
 class QString;
+class QLabel;
 
 /*! \brief Wrapper to display a warning icon beside a QWidget*/
 template <class WidgetType>
-class WarningWidget : public QWidget
+class WaitingWidget : public QWidget
 {
     // Q_OBJECT does not support template classes
 
     public:
-        WarningWidget(WidgetType * = NULL, QString s = "", bool visible = true);
-        void showWarning();
-        void hideWarning();
-        void setWarningVisible(bool);
+        WaitingWidget(WidgetType * = NULL);
+        void lock();
+        void unlock(bool = true);
         WidgetType * widget();
+
     private:
         WidgetType * m_widget;
-        QLabel * m_warning;
+        QLabel * m_waitanim;
 };
 
 /* Template class need to be implemented in the same place that it is defined.
  * This is because the compiler can't know with which type the template will be
  * used, this will be detected on compilation.
  */
-#include "warningwidget.cpp"
+#include "waitingwidget.cpp"
 
 #endif

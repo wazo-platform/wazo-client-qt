@@ -27,57 +27,52 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SERVICEPANEL_H__
-#define __SERVICEPANEL_H__
+#include <QHBoxLayout>
+#include <QMovie>
+#include <QLabel>
 
-#include <QCheckBox>
+// Template class, the header includes the implementation
+// #include "waitingwidget.h"
 
-#include <xletinterface.h>
-#include <xlet.h>
-#include <warningwidget.h>
-
-class QLineEdit;
-
-class UserInfo;
-class BaseEngine;
-
-class ServicePanel : public XLet
+template <class WidgetType>
+WaitingWidget<WidgetType>::WaitingWidget(WidgetType * widget)
+    : QWidget(), m_widget(widget)
 {
-    Q_OBJECT
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setMargin(0);
+    layout->setSpacing(5);
+    layout->setAlignment(Qt::AlignLeft);
+    setLayout(layout);
 
-    public:
-        ServicePanel(QWidget *parent=0);
+    // Waiting animation
+    m_waitanim = new QLabel(this);
+    // waitanim.gif comes from http://ajaxload.info/ (color XiVO #f37224)
+    m_waitanim->setMovie(new QMovie(":/images/services/waitanim.gif"));
+    m_waitanim->hide();
 
-    public slots:
-        void setOpt(const QString &);
-        void setForward(const QString &);
-        void Connect();
-        void DisConnect();
-        void Reset();
-        void updateUserConfig(const QString &);
-        void updatePhoneConfig(const QString &);
+    layout->addWidget(widget);
+    layout->addWidget(m_waitanim);
+}
 
-    private slots:
-        void chkoptToggled(bool);
-        void Toggled(bool);
-        void toggleIfAllowed(const QString &);
-        void forwardLostFocus();
-
-    private:
-        QStringList m_capas;
-        QHash<QString, QString> m_capalegend;
-        QHash<QString, QCheckBox *> m_chkopt;
-        QHash<QString, WarningWidget<QCheckBox> *> m_forward;
-        QHash<QString, QLineEdit *> m_forwarddest;
-};
-
-class XLetFeaturePlugin : public QObject, XLetInterface
+template <class WidgetType>
+WidgetType * WaitingWidget<WidgetType>::widget()
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+    return m_widget;
+}
 
-    public:
-        XLet* newXLetInstance(QWidget *parent=0);
-};
+template <class WidgetType>
+void WaitingWidget<WidgetType>::lock()
+{
+    m_widget->clearFocus();
+    m_widget->setEnabled(false);
+    m_waitanim->show();
+    m_waitanim->movie()->start();
+}
 
-#endif
+template <class WidgetType>
+void WaitingWidget<WidgetType>::unlock(bool enabled)
+{
+    m_widget->setEnabled(enabled);
+    m_waitanim->hide();
+    m_waitanim->movie()->stop();
+}

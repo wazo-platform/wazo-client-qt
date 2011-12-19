@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../obj/services_fr.qm</file>
+        <file>../../../obj/services_nl.qm</file>
+        <file>../../../images/services/waitanim.gif</file>
+    </qresource>
+</RCC>

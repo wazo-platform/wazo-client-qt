@@ -27,35 +27,62 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __WARNINGWIDGET_H__
-#define __WARNINGWIDGET_H__
+#ifndef __SERVICESPANEL_H__
+#define __SERVICESPANEL_H__
 
-#include <QWidget>
+#include <QObject>
 
-class QLabel;
-class QString;
+#include <xletinterface.h>
+#include <xlet.h>
+#include <ipbxlistener.h>
 
-/*! \brief Wrapper to display a warning icon beside a QWidget*/
-template <class WidgetType>
-class WarningWidget : public QWidget
+#include "waitingwidget.h"
+
+class QLineEdit;
+class QCheckBox;
+
+class UserInfo;
+class BaseEngine;
+
+class ServicesPanel : public XLet, public IPBXListener
 {
-    // Q_OBJECT does not support template classes
+    Q_OBJECT
 
     public:
-        WarningWidget(WidgetType * = NULL, QString s = "", bool visible = true);
-        void showWarning();
-        void hideWarning();
-        void setWarningVisible(bool);
-        WidgetType * widget();
+        ServicesPanel(QWidget *parent=0);
+
+    public slots:
+        void setOpt(const QString &);
+        void setForward(const QString &);
+        void Connect();
+        void DisConnect();
+        void Reset();
+        void updateUserConfig(const QString &, const QVariantMap &);
+        void updatePhoneConfig(const QString &);
+
+    private slots:
+        void chkoptToggled(bool);
+        void Toggled(bool);
+        void toggleIfAllowed(const QString &);
+        void forwardLostFocus();
+        void servicePutIsOK(const QString &, const QString &);
+
     private:
-        WidgetType * m_widget;
-        QLabel * m_warning;
+        QStringList m_capas;
+        QHash<QString, QString> m_capalegend;
+        QHash<QString, WaitingWidget<QCheckBox> *> m_chkopt;
+        QHash<QString, WaitingWidget<QCheckBox> *> m_forward;
+        QHash<QString, WaitingWidget<QLineEdit> *> m_forwarddest;
+        QHash<QString, QString>                    m_replyids;
 };
 
-/* Template class need to be implemented in the same place that it is defined.
- * This is because the compiler can't know with which type the template will be
- * used, this will be detected on compilation.
- */
-#include "warningwidget.cpp"
+class XLetServicesPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet* newXLetInstance(QWidget *parent=0);
+};
 
 #endif

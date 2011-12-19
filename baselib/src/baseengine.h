@@ -220,7 +220,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void registerListener(const QString &, IPBXListener *); //!< Register an XLet wanting to listen IPBX messages
         
-        void sendJsonCommand(const QVariantMap &);
+        QString sendJsonCommand(const QVariantMap &);
 
         QStringList phonenumbers(const UserInfo *);
 
@@ -283,8 +283,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void textEdited(const QString &);
         
         void featurePutOpt(const QString &, bool);
-        void featurePutForward(const QString &, bool, const QString &);
-        void askFeatures();
+        QString featurePutForward(const QString &, bool, const QString &);
+        void askServices();
         
         void fetchIPBXList();
         void fetchLists();
@@ -364,6 +364,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void updateUserConfig(const QString &);
+        void updateUserConfig(const QString &, const QVariantMap &);
         void updateUserStatus(const QString &);
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
@@ -387,11 +388,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
         
-        void disconnectFeatures();
-        void connectFeatures();
-        void resetFeatures();
-        void featurePutIsKO();
-        void featurePutIsOK();
+        void resetServices();
+        void servicePutIsKO();
+        void servicePutIsOK(const QString &, const QString &);
         
         void localUserInfoDefined();
         void monitoredUserInfoDefined();
