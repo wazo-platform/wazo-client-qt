@@ -47,6 +47,11 @@ class QAbstractButton;
 class UserInfo;
 class BaseEngine;
 
+struct CallForwardStruct {
+    bool enabled;
+    QString destination;
+};
+
 class ServicesPanel : public XLet, public IPBXListener
 {
     Q_OBJECT
@@ -65,11 +70,12 @@ class ServicesPanel : public XLet, public IPBXListener
         void forwardToggled(bool);
         void forwardLostFocus();
         void servicePutIsOK(const QString &, const QString &);
-        void forwardTypeChanged();
+        void forwardModeChanged();
 
     private:
         void updateCheckboxEnabled(const QString &);
         void updateTextboxEnabled(const QString &);
+        CallForwardStruct localCallForward(const QString &);
 
         QStringList m_capas;
         QHash<QString, QString> m_capalegend;

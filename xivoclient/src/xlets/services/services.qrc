@@ -4,5 +4,6 @@
         <file>../../../obj/services_fr.qm</file>
         <file>../../../obj/services_nl.qm</file>
         <file>../../../images/services/waitanim.gif</file>
+        <file>../../../images/services/help.png</file>
     </qresource>
 </RCC>

@@ -40,14 +40,20 @@
         <translation>Renvoi &amp;inconditionnel vers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="88"/>
-        <source>No call forward</source>
-        <translation>Aucun renvoi d'appel</translation>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="91"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="132"/>
+        <source>Please enter a destination to activate the checkboxes</source>
+        <translation>Veuillez saisir une destination pour pouvoir activer les renvois d'appel.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="90"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="95"/>
+        <source>No call forward</source>
+        <translation>Aucun renvoi d&apos;appel</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="97"/>
         <source>Simple call forwards</source>
-        <translation>Renvois d'appel simples</translation>
+        <translation>Renvois d&apos;appel simples</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="83"/>
