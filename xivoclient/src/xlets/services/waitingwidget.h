@@ -42,14 +42,17 @@ class WaitingWidget : public QWidget
     // Q_OBJECT does not support template classes
 
     public:
-        WaitingWidget(WidgetType * = NULL);
+    WaitingWidget(WidgetType * = NULL, bool = true);
         void lock();
         void unlock(bool = true);
         WidgetType * widget();
+        bool locked();
 
     private:
         WidgetType * m_widget;
         QLabel * m_waitanim;
+        bool m_locked;
+        bool m_showanim;
 };
 
 /* Template class need to be implemented in the same place that it is defined.

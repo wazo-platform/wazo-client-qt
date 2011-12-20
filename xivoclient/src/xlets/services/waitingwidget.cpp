@@ -35,8 +35,8 @@
 // #include "waitingwidget.h"
 
 template <class WidgetType>
-WaitingWidget<WidgetType>::WaitingWidget(WidgetType * widget)
-    : QWidget(), m_widget(widget)
+WaitingWidget<WidgetType>::WaitingWidget(WidgetType * widget, bool showanim)
+    : QWidget(), m_widget(widget), m_locked(false), m_showanim(showanim)
 {
     QHBoxLayout * layout = new QHBoxLayout();
     layout->setMargin(0);
@@ -65,14 +65,26 @@ void WaitingWidget<WidgetType>::lock()
 {
     m_widget->clearFocus();
     m_widget->setEnabled(false);
-    m_waitanim->show();
-    m_waitanim->movie()->start();
+    if (m_showanim) {
+        m_waitanim->show();
+        m_waitanim->movie()->start();
+    }
+    m_locked = true;
 }
 
 template <class WidgetType>
 void WaitingWidget<WidgetType>::unlock(bool enabled)
 {
     m_widget->setEnabled(enabled);
-    m_waitanim->hide();
-    m_waitanim->movie()->stop();
+    if (m_showanim) {
+        m_waitanim->hide();
+        m_waitanim->movie()->stop();
+    }
+    m_locked = false;
+}
+
+template <class WidgetType>
+bool WaitingWidget<WidgetType>::locked()
+{
+    return m_locked;
 }

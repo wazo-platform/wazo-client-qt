@@ -29,16 +29,18 @@
 
 #include <QGroupBox>
 #include <QGridLayout>
-#include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QRadioButton>
+#include <QButtonGroup>
+#include <QAbstractButton>
 
 #include <baseengine.h>
 
 #include "servicespanel.h"
 
 const QStringList chkcapas = (QStringList() << "enablevoicemail" << "incallfilter" << "enablednd");
-const QStringList fwdcapas = (QStringList() << "fwdrna" << "fwdbusy" << "fwdunc");
+const QStringList fwdcapas = (QStringList() << "fwdunc" << "fwdrna" << "fwdbusy");
 
 Q_EXPORT_PLUGIN2(xletservicesplugin, XLetServicesPlugin);
 
@@ -55,9 +57,9 @@ ServicesPanel::ServicesPanel(QWidget * parent)
     m_capalegend["enablevoicemail"] = tr("Voice &Mail");
     m_capalegend["incallfilter"]    = tr("Call &Filtering");
     m_capalegend["enablednd"]       = tr("Do Not &Disturb");
-    m_capalegend["fwdrna"]          = tr("Forward on &No Answer");
-    m_capalegend["fwdbusy"]         = tr("Forward on &Busy");
-    m_capalegend["fwdunc"]          = tr("&Unconditional Forward");
+    m_capalegend["fwdrna"]          = tr("Forward on &No Answer to");
+    m_capalegend["fwdbusy"]         = tr("Forward on &Busy to");
+    m_capalegend["fwdunc"]          = tr("&Unconditional Forward to");
 
     m_capas = b_engine->getConfig("services").toStringList();
 
@@ -82,25 +84,49 @@ ServicesPanel::ServicesPanel(QWidget * parent)
     groupBox2->setAlignment(Qt::AlignLeft);
     groupBox2->hide();
     QGridLayout *gridlayout2 = new QGridLayout(groupBox2);
-    QHash<QString, QLabel *> label;
+
+    m_nofwd = new QRadioButton(tr("No call forward"), this);
+    m_uncfwd = new QRadioButton(m_capalegend["fwdunc"], this);
+    m_otherfwd = new QRadioButton(tr("Simple call forwards"), this);
+
+    m_fwdmode = new QButtonGroup(this);
+    m_fwdmode->setExclusive(true);
+    m_fwdmode->addButton(m_nofwd);
+
+    gridlayout2->addWidget(m_nofwd, line++, 0, 1, 2);
 
     foreach (QString capa, fwdcapas) {
         if (m_capas.contains(capa)) {
-            m_forward[capa] = new WaitingWidget<QCheckBox>(
-                 new QCheckBox(m_capalegend[capa], this));
+            if (capa == "fwdunc") {
+                m_fwdmode->addButton(m_uncfwd);
+                /* m_forward will have pointers (through WaitingWidget) to one
+                 * QRadioButton and some QCheckBoxes.
+                 */
+                m_forward[capa] = new WaitingWidget<QAbstractButton>(m_uncfwd, false);
+                gridlayout2->addWidget(m_uncfwd, line, 0, 1, 2);
+            } else {
+                // If the "simple forwarding calls" is not there yet
+                if (! m_fwdmode->buttons().contains(m_otherfwd)) {
+                    m_fwdmode->addButton(m_otherfwd);
+                    gridlayout2->addWidget(m_otherfwd, line++, 0, 1, 2);
+                }
+                m_forward[capa] = new WaitingWidget<QAbstractButton>(
+                    new QCheckBox(m_capalegend[capa], this), false);
+                gridlayout2->addItem(new QSpacerItem(25, 0, QSizePolicy::Fixed), line, 0);
+                gridlayout2->addWidget(m_forward[capa], line, 1);
+            }
             m_forward[capa]->widget()->setObjectName("service");
             m_forward[capa]->widget()->setProperty("capa", capa);
-            gridlayout2->addWidget(m_forward[capa], line++, 0, 1, 0);
 
-            label[capa] = new QLabel(tr("Destination"), this);
-            gridlayout2->addWidget(label[capa], line, 0);
             m_forwarddest[capa] = new WaitingWidget<QLineEdit>(
                  new QLineEdit(this));
             m_forwarddest[capa]->widget()->setProperty("capa", capa);
-            gridlayout2->addWidget(m_forwarddest[capa], line++, 1);
-            label[capa]->setObjectName("service");
+            gridlayout2->addWidget(m_forwarddest[capa], line++, 2);
         }
     }
+
+    m_nofwd->setChecked(true);
+    forwardTypeChanged();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     if (m_capas.contains("enablevoicemail") ||
@@ -117,8 +143,6 @@ ServicesPanel::ServicesPanel(QWidget * parent)
     }
     vlayout->addStretch(1);
 
-    resetWidgets();
-
     // connect signals/slots
 
     foreach (QString capa, chkcapas) {
@@ -129,20 +153,12 @@ ServicesPanel::ServicesPanel(QWidget * parent)
     }
     foreach (QString capa, fwdcapas) {
         if (m_capas.contains(capa)) {
-            connect(m_forward[capa]->widget(), SIGNAL(clicked(bool)),
+            connect(m_forward[capa]->widget(), SIGNAL(toggled(bool)),
                     this, SLOT(forwardToggled(bool)));
             connect(m_forwarddest[capa]->widget(), SIGNAL(lostFocus()),
                     this, SLOT(forwardLostFocus()));
         }
     }
-
-    connect(b_engine, SIGNAL(resetServices()),
-            this, SLOT(resetWidgets()));
-
-    connect(b_engine, SIGNAL(optChanged(const QString &)),
-            this, SLOT(syncOpt(const QString &)));
-    connect(b_engine, SIGNAL(forwardUpdated(const QString &)),
-            this, SLOT(syncForward(const QString &)) );
 
     connect(b_engine, SIGNAL(servicePutIsOK(const QString &, const QString &)),
             this, SLOT(servicePutIsOK(const QString &, const QString &)));
@@ -151,6 +167,8 @@ ServicesPanel::ServicesPanel(QWidget * parent)
             this, SLOT(updateUserConfig(const QString &, const QVariantMap &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
+    connect(m_fwdmode, SIGNAL(buttonReleased(QAbstractButton *)),
+            this, SLOT(forwardTypeChanged()));
 
     b_engine->askServices();
 }
@@ -158,6 +176,15 @@ ServicesPanel::ServicesPanel(QWidget * parent)
 void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap & datamap)
 {
     if (xuserid == m_xuserid) {
+        /* We already are fetching infos from the server (though indirectly).
+         * We don't need to send changes.
+         */
+        foreach (QString capa, fwdcapas) {
+            if (m_capas.contains(capa)) {
+                 disconnect(m_forward[capa]->widget(), SIGNAL(toggled(bool)),
+                            this, SLOT(forwardToggled(bool)));
+            }
+        }
         foreach (QVariant config_var, datamap["config"].toMap().keys()) {
             QString config_str = config_var.toString();
             if (chkcapas.contains(config_str)) {
@@ -167,6 +194,12 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
                 syncForward(config_str);
             }
         }
+        foreach (QString capa, fwdcapas) {
+            if (m_capas.contains(capa)) {
+                 connect(m_forward[capa]->widget(), SIGNAL(toggled(bool)),
+                         this, SLOT(forwardToggled(bool)));
+            }
+        }
     }
 }
 
@@ -174,18 +207,44 @@ void ServicesPanel::updatePhoneConfig(const QString &)
 {
 }
 
-void ServicesPanel::resetWidgets()
+/*!
+ * Textbox for unconditional call forward is always active.
+ * Other textboxes are only enabled when the "Simple call forward" is checked.
+ * Exceptions happen when widgets are waiting server answer. They then are disabled.
+ */
+void ServicesPanel::updateTextboxEnabled(const QString & capa)
 {
-    //qDebug() << Q_FUNC_INFO;
-    foreach (QString capa, chkcapas) {
-        if (m_capas.contains(capa))
-            m_chkopt[capa]->widget()->setChecked(false);
+    if (m_forwarddest[capa]->locked()) { // Waiting server
+        m_forwarddest[capa]->widget()->setEnabled(false);
+    } else if (capa == "fwdunc") { // Unconditional call forward
+        m_forwarddest[capa]->widget()->setEnabled(true);
+    } else if (m_fwdmode->checkedButton() == m_otherfwd) {
+        m_forwarddest[capa]->widget()->setEnabled(true);
+    } else {
+        m_forwarddest[capa]->widget()->setEnabled(false);
     }
-    foreach (QString capa, fwdcapas) {
-        if (m_capas.contains(capa)) {
-            m_forward[capa]->widget()->setChecked(false);
-            m_forwarddest[capa]->widget()->setText("");
-        }
+}
+
+/*!
+ * Checkboxes are only enabled when the associated destination is not empty.
+ * Checkboxes of simple call forwards are only enabled when the "Simple call
+ * forward" is checked.
+ * Exceptions happen when widgets are waiting server answer. They then are disabled.
+ */
+void ServicesPanel::updateCheckboxEnabled(const QString & capa)
+{
+    if (m_forwarddest[capa]->locked()) { // Waiting server
+        m_forwarddest[capa]->widget()->setEnabled(false);
+    } else if (m_forwarddest[capa]->widget()->text().isEmpty()) { // No destination
+        m_forward[capa]->widget()->setChecked(false);
+        m_forward[capa]->widget()->setEnabled(false);
+    } else if (capa == "fwdunc") { // Unconditional call forward
+        m_forward[capa]->widget()->setEnabled(true);
+    } else if (m_fwdmode->checkedButton() == m_otherfwd) {
+        m_forward[capa]->widget()->setEnabled(true);
+    } else {
+        m_forward[capa]->widget()->setChecked(false);
+        m_forward[capa]->widget()->setEnabled(false);
     }
 }
 
@@ -194,6 +253,14 @@ void ServicesPanel::chkoptToggled(bool b)
     QString capa = sender()->property("capa").toString();
     m_chkopt[capa]->lock();
     b_engine->servicePutOpt(capa, b);
+}
+
+void ServicesPanel::forwardTypeChanged()
+{
+    foreach (QString capa, fwdcapas) {
+        updateCheckboxEnabled(capa);
+        updateTextboxEnabled(capa);
+    }
 }
 
 void ServicesPanel::forwardToggled(bool b)
@@ -216,10 +283,15 @@ void ServicesPanel::forwardLostFocus()
     QString fdest = m_forwarddest[capa]->widget()->text();
     //qDebug() << Q_FUNC_INFO << capa;
 
-    if (fdest.isEmpty()) {
-        m_forward[capa]->widget()->setChecked(false);
-        m_forward[capa]->widget()->setEnabled(false);
-    }
+    /* Avoid sending twice the same info :
+     * - first time because the checkbox is unchecked
+     * - second time here
+     */
+    disconnect(m_forward[capa]->widget(), SIGNAL(toggled(bool)),
+               this, SLOT(forwardToggled(bool)));
+    updateCheckboxEnabled(capa);
+    connect(m_forward[capa]->widget(), SIGNAL(toggled(bool)),
+            this, SLOT(forwardToggled(bool)));
     m_forward[capa]->lock();
     m_forwarddest[capa]->lock();
     m_replyids[capa] = b_engine->servicePutForward(capa,
@@ -239,8 +311,10 @@ void ServicesPanel::servicePutIsOK(const QString & replyid, const QString & warn
     if (warning_string == "no changes") {
         foreach(QString capa, m_replyids.keys()) {
             if (m_replyids[capa] == replyid) {
-                m_forward[capa]->unlock(! m_forwarddest[capa]->widget()->text().isEmpty());
+                m_forward[capa]->unlock();
                 m_forwarddest[capa]->unlock();
+                updateCheckboxEnabled(capa);
+                updateTextboxEnabled(capa);
             }
         }
     }
@@ -276,13 +350,21 @@ void ServicesPanel::syncForward(const QString & capa)
         if (m_capas.contains(thiscapa)) {
             if (capa == "enablebusy") {
                 m_forward[thiscapa]->widget()->setChecked(m_ui->enablebusy());
+                if (m_fwdmode->checkedButton() == m_nofwd && m_ui->enablebusy())
+                    m_otherfwd->setChecked(true);
             } else if (capa == "enablerna") {
                 m_forward[thiscapa]->widget()->setChecked(m_ui->enablerna());
+                if (m_fwdmode->checkedButton() == m_nofwd && m_ui->enablerna())
+                    m_otherfwd->setChecked(true);
             } else if (capa == "enableunc") {
                 m_forward[thiscapa]->widget()->setChecked(m_ui->enableunc());
+                if (m_ui->enableunc())
+                    m_uncfwd->setChecked(true);
             }
-            m_forward[thiscapa]->unlock(! m_forwarddest[thiscapa]->widget()->text().isEmpty());
+            m_forward[thiscapa]->unlock();
             m_forwarddest[thiscapa]->unlock();
+            updateCheckboxEnabled(thiscapa);
+            updateTextboxEnabled(thiscapa);
         }
     } else if (capa.startsWith("dest")) {
         QString thiscapa = "fwd" + capa.mid(4);
@@ -294,8 +376,10 @@ void ServicesPanel::syncForward(const QString & capa)
             } else if (capa == "destunc") {
                 m_forwarddest[thiscapa]->widget()->setText(m_ui->destunc());
             }
-            m_forward[thiscapa]->unlock(! m_forwarddest[thiscapa]->widget()->text().isEmpty());
+            m_forward[thiscapa]->unlock();
             m_forwarddest[thiscapa]->unlock();
+            updateCheckboxEnabled(thiscapa);
+            updateTextboxEnabled(thiscapa);
         }
     }
 }

@@ -388,7 +388,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
         
-        void resetServices();
         void servicePutIsKO();
         void servicePutIsOK(const QString &, const QString &);
         

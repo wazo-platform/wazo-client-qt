@@ -836,7 +836,6 @@ void BaseEngine::parseCommand(const QString &line)
 
     } else if (thisclass == "featuresget") {
         QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
-        resetServices();
         foreach (QString featurekey, featuresget_map.keys()) {
             initFeatureFields(featurekey);
         }
