@@ -185,15 +185,13 @@ void FaxPanel::sendFax()
 void FaxPanel::dirLookup()
 {
     // qDebug() << Q_FUNC_INFO;
-    m_dirw = new DirDialog(m_mainwindow);
-    connect(m_dirw->dirpanel(), SIGNAL(selectedText(const QString &)),
+    DirDialog dirdialog(m_mainwindow);
+    connect(dirdialog.dirpanel(), SIGNAL(selectedText(const QString &)),
             m_destination, SLOT(setText(const QString &)));
-    m_dirw->exec();
-    // qDebug() << Q_FUNC_INFO << "DirDialog exec'ed";
-    QString retstr = m_dirw->faxnumber();
-    if(retstr.size() > 0)
-        m_destination->setText(retstr);
-    delete m_dirw;
+    QString old_destination = m_destination->text();
+    int ret = dirdialog.exec();
+    if (ret == QDialog::Rejected)
+        m_destination->setText(old_destination);
 }
 
 void FaxPanel::popupMsg(const QString & status, const QString & reason)

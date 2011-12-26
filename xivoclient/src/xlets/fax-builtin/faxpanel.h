@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __FAXPANEL_H__
 #define __FAXPANEL_H__
 
@@ -79,7 +75,6 @@ class FaxPanel : public XLet
         QLineEdit *m_destination;
         QCheckBox *m_maskornot;
         QPushButton *m_sendButton;
-        DirDialog *m_dirw;
 
         QString m_dest_string;
         QString m_file_string;

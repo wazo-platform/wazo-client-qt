@@ -27,41 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include "dirdialog.h"
 
 DirDialog::DirDialog(QWidget *parent)
     : QDialog(parent)
 {
     restoreGeometry(b_engine->getSettings()->value("faxhistory/geometry").toByteArray());
-    // the object will be destroyed when closed
     setWindowTitle(tr("Directory"));
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     m_directory = new DirectoryPanel(this);
-    connect(m_directory, SIGNAL(searchDirectory(const QString &)),
-            b_engine, SLOT(searchDirectory(const QString &)));
-    connect(m_directory, SIGNAL(copyNumber(const QString &)),
-            this, SLOT(copyNumber(const QString &)));
-    connect(m_directory, SIGNAL(emitDial(const QString &, bool)),
-            this, SLOT(copyNumberAndQuit(const QString &, bool)));
-
     m_btnbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(m_btnbox, SIGNAL(accepted()),
-            this, SLOT(saveAndClose()));
+            this, SLOT(accept()));
     connect(m_btnbox, SIGNAL(rejected()),
-            this, SLOT(close()));
-    m_btnbox->button(QDialogButtonBox::Cancel)->setDefault(false);
-    m_btnbox->button(QDialogButtonBox::Ok)->setDefault(false);
+            this, SLOT(reject()));
 
     vlayout->addWidget(m_directory);
     vlayout->addWidget(m_btnbox);
-
-    m_faxnumber = "";
-    m_retfaxnumber = "";
 }
 
 /*! \brief Destructor */
@@ -74,27 +57,4 @@ DirDialog::~DirDialog()
 DirectoryPanel * DirDialog::dirpanel()
 {
     return m_directory;
-}
-
-const QString & DirDialog::faxnumber() const
-{
-    return m_retfaxnumber;
-}
-
-void DirDialog::copyNumber(const QString & number)
-{
-    m_faxnumber = number;
-}
-
-void DirDialog::copyNumberAndQuit(const QString & number, bool)
-{
-    m_faxnumber = number;
-    saveAndClose();
-}
-
-void DirDialog::saveAndClose()
-{
-    m_retfaxnumber = m_faxnumber;
-    if(m_retfaxnumber.size() > 0)
-        close();
 }

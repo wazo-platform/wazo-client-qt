@@ -166,12 +166,10 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
 }
 
 /*! \brief start the search process
- *
- * sends the searchDirectory() signal avec the right argument.
  */
 void DirectoryPanel::startSearch()
 {
-    b_engine->searchDirectory( m_searchText->text() );
+    b_engine->searchDirectory(m_searchText->text());
 }
 
 /*! \brief stop
