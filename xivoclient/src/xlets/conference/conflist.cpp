@@ -134,10 +134,12 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
         {
             const ChannelInfo * pseudochan = b_engine->channel(
                 QString("%0/%1").arg(m->ipbxid()).arg(m->pseudochan()));
-            uint now = QDateTime::currentDateTime().toTime_t();
-            return QDateTime::fromTime_t(
-                now - (pseudochan ? pseudochan->timestamp() : now) -
-                b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
+            if (pseudochan) {
+                uint now = QDateTime::currentDateTime().toTime_t();
+                uint startedsince = now - pseudochan->timestamp() - b_engine->timeDeltaServerClient();
+                return QDateTime::fromTime_t(startedsince).toUTC().toString("hh:mm:ss");
+            } else
+                return QString(tr("Not started"));
         }
     default:
         break;

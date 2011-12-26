@@ -50,11 +50,16 @@
         <source>Started since</source>
         <translation>Commencée depuis</translation>
     </message>
+    <message>
+        <location filename="../src/xlets/conference/conflist.cpp" line="142"/>
+        <source>Not started</source>
+        <translation>Non commencée</translation>
+    </message>
 </context>
 <context>
     <name>ConfListView</name>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="200"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="202"/>
         <source>Get in room %1 (%2)</source>
         <translation>Rentrer dans la salle de conférence %1 ( %2 )</translation>
     </message>

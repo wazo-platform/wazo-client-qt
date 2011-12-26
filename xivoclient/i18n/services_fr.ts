@@ -43,7 +43,7 @@
         <location filename="../src/xlets/services/servicespanel.cpp" line="91"/>
         <location filename="../src/xlets/services/servicespanel.cpp" line="132"/>
         <source>Please enter a destination to activate the checkboxes</source>
-        <translation>Veuillez saisir une destination pour pouvoir activer les renvois d'appel.</translation>
+        <translation>Veuillez saisir une destination pour pouvoir activer les renvois d&apos;appel.</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="95"/>
