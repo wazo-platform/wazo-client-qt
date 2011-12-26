@@ -164,7 +164,9 @@ void DialPanel::clearlist()
 void DialPanel::loadHistory()
 {
     // qDebug() << Q_FUNC_INFO;
-    m_input->addItems(b_engine->getProfileSetting("dialpanel/history").toStringList());
+    int nb_to_load = b_engine->getConfig("dialpanel.history_length").toInt();
+    QStringList history = b_engine->getProfileSetting("dialpanel/history").toStringList();
+    m_input->addItems(history.mid(0, nb_to_load));
 }
 
 /*!
@@ -176,7 +178,7 @@ void DialPanel::saveHistory()
     if (m_input->count() < nb_to_save) {
         nb_to_save = m_input->count();
     }
-    
+
     QStringList savedHistory;
     for (int i = 0; i < nb_to_save; i++) {
         savedHistory << m_input->itemText(i);
