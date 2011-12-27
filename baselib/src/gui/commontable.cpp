@@ -354,6 +354,14 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
     reset();
 }
 
+QString CommonTableModel::row2id(int row)
+{
+    if (!m_row2id.contains(row))
+        return NULL;
+
+    return m_row2id[row];
+}
+
 //
 // CommonTableView class
 //
@@ -437,3 +445,9 @@ QList<QModelIndex> CommonTableWidget::currentSelection() const
 {
     return m_view->currentSelection();
 }
+
+CommonTableView* CommonTableWidget::view()
+{
+    return m_view;
+}
+

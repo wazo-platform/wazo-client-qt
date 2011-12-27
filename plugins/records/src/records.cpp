@@ -65,6 +65,7 @@ XletRecords::XletRecords(QWidget *parent)
     m_ctp = new CommonTableProperties("records");
     // last item : should define : editable or not, in tooltip or not, hidden or not ...
     m_ctp->addColumn(tr("ID"), "id", QVariant::String, "id");
+    m_ctp->addColumn(tr("Media"), "media", QVariant::Int, "id");
     m_ctp->addColumn(tr("Start Date"), "callstart", QVariant::DateTime, "id");
     m_ctp->addColumn(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
     m_ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
@@ -136,6 +137,22 @@ void XletRecords::recordResults(const QVariantMap & p)
         }
         b_engine->tree()->populate("records", qvm);
         emit update(qvl.size());
+
+        CommonTableModel *model = (CommonTableModel*) m_ctwidget->view()->model();
+        for(int i = 0; i < model->rowCount(QModelIndex()); i++)
+        {
+            QModelIndex idx = model->index(i,1);
+
+            //PlayButton *btn = new PlayButton(QIcon(":/images/player_play.png"), tr("play"));
+            PlayButton *btn = new PlayButton(QIcon(":/images/player_play.png"), "");
+            btn->setFlat(true);
+            btn->setProperty("id"      , model->row2id(i));
+            btn->setProperty("filename", idx.sibling(i,4).data());
+
+            connect(btn, SIGNAL(clicked(bool)), btn, SLOT(play(bool)));
+            m_ctwidget->view()->setIndexWidget(idx, btn);
+	}
+
     } else if (function == "getprops") {
         m_tags = p.value("tags").toMap();
         m_tags.remove("notag");
@@ -456,4 +473,60 @@ void ResultsWidget::update(int nresults)
 {
     // qDebug() << Q_FUNC_INFO;
     m_summary->setText(tr("Results : %1 found").arg(nresults));
+}
+
+PlayButton::PlayButton(const QIcon &icon, const QString &text, QWidget *parent)
+    : QPushButton(icon, text, parent)
+{}
+
+PlayButton::~PlayButton()
+{}
+
+bool PlayButton::setProperty(const char *name, const QVariant &value)
+{
+    return QPushButton::setProperty(name, value);
+}
+
+void PlayButton::play(bool state)
+{
+    qDebug() << "button play" << state << this->property("filename");
+    this->setIcon(QIcon(":/images/player_pause.png"));
+
+ QFile inputFile;     // class member.
+ QAudioOutput* audio; // class member.
+ inputFile.setFileName("/root/test.wav");
+ inputFile.open(QIODevice::ReadOnly);
+
+ QAudioFormat format;
+ // Set up the format, eg.
+ format.setFrequency(8000);
+ format.setChannels(1);
+ format.setSampleSize(16);
+ format.setCodec("audio/pcm");
+ format.setByteOrder(QAudioFormat::LittleEndian);
+ format.setSampleType(QAudioFormat::Unknown);
+ //format.setSampleType(QAudioFormat::UnSignedInt);
+
+ QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+   qDebug() << info.supportedCodecs();
+ if (!info.isFormatSupported(format)) {
+     qWarning()<<"raw audio format not supported by backend, cannot play audio.";
+     return;
+ }
+
+ audio = new QAudioOutput(format, this);
+ connect(audio,SIGNAL(stateChanged(QAudio::State)),SLOT(finishedPlaying(QAudio::State)));
+ audio->start(&inputFile);
+}
+
+
+void PlayButton::finishedPlaying(QAudio::State state)
+{
+/*
+    if(state == QAudio::IdleState) {
+        audio->stop();
+        inputFile->close();
+        delete audio;
+    }
+*/
 }

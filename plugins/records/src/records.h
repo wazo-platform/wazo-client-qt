@@ -134,4 +134,16 @@ class ResultsWidget : public QWidget
         QLabel * m_summary;
 };
 
+class PlayButton : public QPushButton
+{
+    Q_OBJECT
+    public:
+        PlayButton(const QIcon&, const QString&, QWidget *parent=0);
+        ~PlayButton();
+        bool setProperty(const char*, const QVariant&);
+    public slots:
+        void play(bool);
+        void finishedPlaying(QAudio::State);
+};
+
 #endif

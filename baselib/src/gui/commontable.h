@@ -94,6 +94,8 @@ class BASELIB_EXPORT CommonTableModel : public QAbstractTableModel
 
         int displayOptionShowGrid() const;
         QString displayOptionStyleSheet() const;
+        int rowCount(const QModelIndex &) const;
+        QString row2id(int);
 
     signals:
         void setDataEdit(const QModelIndex &, const QVariant &);
@@ -103,7 +105,6 @@ class BASELIB_EXPORT CommonTableModel : public QAbstractTableModel
         void timerEvent(QTimerEvent *event);
     private:
         void sort(int, Qt::SortOrder);
-        int rowCount(const QModelIndex &) const;
         int columnCount(const QModelIndex &) const;
         QString tooltip(const QModelIndex &) const;
         bool setData(const QModelIndex &, const QVariant &, int);
@@ -143,6 +144,8 @@ class BASELIB_EXPORT CommonTableWidget : public QWidget
                           XLet * parent);
         ~CommonTableWidget() {};
         QList<QModelIndex> currentSelection() const;
+        CommonTableView* view();
+	
     private:
         CommonTableView * m_view;
 };
