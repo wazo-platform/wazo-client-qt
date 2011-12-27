@@ -31,6 +31,7 @@
  * $Date$
  */
 
+#include <QDir>
 #include "records.h"
 #include "commontable.h"
 
@@ -489,12 +490,12 @@ bool PlayButton::setProperty(const char *name, const QVariant &value)
 
 void PlayButton::play(bool state)
 {
-    qDebug() << "button play" << state << this->property("filename");
+    qDebug() << "button play" << state << this->property("filename") << QDir::temp().absoluteFilePath("test.wav");
     this->setIcon(QIcon(":/images/player_pause.png"));
 
  QFile inputFile;     // class member.
  QAudioOutput* audio; // class member.
- inputFile.setFileName("/root/test.wav");
+ inputFile.setFileName(QDir::temp().absoluteFilePath("test.wav"));
  inputFile.open(QIODevice::ReadOnly);
 
  QAudioFormat format;
