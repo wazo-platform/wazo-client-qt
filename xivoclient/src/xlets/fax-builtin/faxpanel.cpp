@@ -115,6 +115,7 @@ FaxPanel::FaxPanel(QWidget *parent)
 FaxPanel::~FaxPanel()
 {
     // qDebug() << Q_FUNC_INFO;
+    b_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
 }
 
 void FaxPanel::destSelectionChanged()
@@ -152,12 +153,14 @@ void FaxPanel::setOpenFileName()
     // previously, probably because of a too quick copy/paste from an example.
     // While on Linux platforms, it makes no difference, on MacOS it is worth
     // not setting it, in order for special places like "Volumes" to be seen.
-    QString selectedFilter;
+    QString open_path = m_openFileNameLabel->text();
+    if (open_path.isEmpty()) {
+        open_path = QDir::toNativeSeparators(QDir::homePath());
+    }
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Fax File"),
-                                                    m_openFileNameLabel->text(),
-                                                    tr("PDF Files (*.pdf);;All Files (*)"),
-                                                    &selectedFilter);
+                                                    open_path,
+                                                    tr("PDF Files (*.pdf);;All Files (*)"));
     if (!fileName.isEmpty())
         m_openFileNameLabel->setText(fileName);
 }
@@ -165,7 +168,6 @@ void FaxPanel::setOpenFileName()
 
 void FaxPanel::sendFax()
 {
-    b_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
     if ((! m_openFileNameLabel->text().isEmpty()) && (! m_destination->text().isEmpty())) {
         // qDebug() << Q_FUNC_INFO
         // << m_openFileNameLabel->text()
@@ -174,8 +176,8 @@ void FaxPanel::sendFax()
         // m_sendButton->setEnabled(false);
         m_dest_string = m_destination->text();
         m_file_string = m_openFileNameLabel->text();
-        m_destination->setText("");
-        m_openFileNameLabel->setText("");
+        m_destination->clear();
+        m_openFileNameLabel->clear();
         b_engine->sendFaxCommand(m_file_string,
                                  m_dest_string,
                                  m_maskornot->checkState());
