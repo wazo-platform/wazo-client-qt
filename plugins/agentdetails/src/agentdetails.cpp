@@ -113,10 +113,9 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
 
     connect(b_engine, SIGNAL(serverFileList(const QStringList &)),
             this, SLOT(serverFileList(const QStringList &)));
-    connect(b_engine, SIGNAL(fileReceived()),
-            this, SLOT(saveToFile()));
     connect(this, SIGNAL(setFileName(const QString &)),
             b_engine, SLOT(saveToFile(const QString &)));
+
     connect(b_engine, SIGNAL(statusRecord(const QString &, const QString &, const QString &)),
             this, SLOT(statusRecord(const QString &, const QString &, const QString &)));
     connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
@@ -519,6 +518,8 @@ void XletAgentDetails::getFile()
     ipbxcommand["command"] = "getfile";
     ipbxcommand["agentid"] = m_monitored_agentid;
     ipbxcommand["filename"] = filename;
+
+    b_engine->registerDownload(filename, (download_callback)&XletAgentDetails::saveToFile) ;
     emit ipbxCommand(ipbxcommand);
 }
 
@@ -526,7 +527,7 @@ void XletAgentDetails::getFile()
  *
  * open a QFileDialog and emit setFileName()
  */
-void XletAgentDetails::saveToFile()
+void XletAgentDetails::saveToFile(const QString &filename)
 {
     // qDebug() << Q_FUNC_INFO;
     QString selectedFilter;

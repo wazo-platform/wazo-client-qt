@@ -67,6 +67,9 @@ struct e_callback {
     void *udata;
 };
 
+// file download callback
+typedef void(*download_callback)(const QString&);
+
 class QSocketNotifier;
 class QTcpSocket;
 
@@ -178,11 +181,13 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changeTranslation(const QString &);
         void sendUrlToBrowser(const QString &);
         void addToDataBase(QVariantMap &);
+        void registerDownload(QString &, download_callback);
 
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
         QMultiHash<QString, e_callback* > m_class_event_cb;
         void setOSInfos(const QString &);
+        QHash<QString, download_callback> m_download_cb;
 
     public slots:
         void start();  //!< start the connection process.
@@ -226,6 +231,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void filetransferSocketReadyRead();
         void filetransferSocketConnected();
         void actionFromFiche(const QVariant &);
+        void fileReceivedProxy(const QString &);
 
     signals:
         void settingChanged(const QVariantMap &);  //!< signal emitted when the setting are changed
@@ -247,7 +253,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updatePresence(const QVariant &);
         void updateCounter(const QVariant &);
         void serverFileList(const QStringList &);
-        void fileReceived();
+        void fileReceived(const QString &);
         void statusRecord(const QString &, const QString &, const QString &);
         void statusListen(const QString &, const QString &, const QString &);
         void emitMessageBox(const QString &);
