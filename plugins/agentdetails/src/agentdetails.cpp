@@ -519,7 +519,8 @@ void XletAgentDetails::getFile()
     ipbxcommand["agentid"] = m_monitored_agentid;
     ipbxcommand["filename"] = filename;
 
-    b_engine->registerDownload(filename, (download_callback)&XletAgentDetails::saveToFile) ;
+    b_engine->registerDownload(filename, this, (download_callback)&XletAgentDetails::saveToFile,
+        NULL);
     emit ipbxCommand(ipbxcommand);
 }
 
@@ -527,7 +528,7 @@ void XletAgentDetails::getFile()
  *
  * open a QFileDialog and emit setFileName()
  */
-void XletAgentDetails::saveToFile(const QString &filename)
+void XletAgentDetails::saveToFile(const QString &filename, void *data)
 {
     // qDebug() << Q_FUNC_INFO;
     QString selectedFilter;

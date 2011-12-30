@@ -669,7 +669,7 @@ void BaseEngine::ctiSocketConnected()
  */
 void BaseEngine::filetransferSocketConnected()
 {
-    qDebug() << ">> filetransferSocketConnected()";
+    //qDebug() << ">> filetransferSocketConnected()";
 
     QVariantMap command;
     command["class"] = "filetransfer";
@@ -1624,7 +1624,7 @@ void BaseEngine::popupError(const QString & errorid)
  */
 void BaseEngine::saveToFile(const QString & filename)
 {
-    qDebug() << Q_FUNC_INFO << filename << m_downloaded.size();
+    //qDebug() << Q_FUNC_INFO << filename << m_downloaded.size();
     QFile outputfile(filename);
     outputfile.open(QIODevice::WriteOnly);
     outputfile.write(m_downloaded);
@@ -2388,14 +2388,15 @@ void BaseEngine::fileReceivedProxy(const QString &filename)
     //qDebug() << "fileReceivedProxy" << filename;
     if(m_download_cb.contains(filename)) {
         // take & unregister callback
-        download_callback clb = m_download_cb.take(filename);
+        QTriple<QObject*, download_callback, void*> triple = m_download_cb.take(filename);
 
-        clb(filename);
+        triple.second(triple.first, filename, triple.third);
     }
 }
 
-void BaseEngine::registerDownload(QString &filename, void(*callback)(const QString &))
+void BaseEngine::registerDownload(QString &filename, QObject *target, 
+                                  download_callback callback, void *data)
 {
-    //qDebug() << "fileReceivedRegister" << filename << callback;
-    m_download_cb.insert(filename, callback);
+    //qDebug() << "fileReceivedRegister" << filename << callback << data;
+    m_download_cb.insert(filename, qMakeTriple(target, callback, data));
 }

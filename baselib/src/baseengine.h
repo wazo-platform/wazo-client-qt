@@ -61,6 +61,7 @@ class Xlet;
 #include <parkinginfo.h>
 
 #include <dstore/src/dstore.h>
+#include "qtriple.h"
 
 struct e_callback {
     void (*cb)(const QVariantMap &, void *);
@@ -68,7 +69,7 @@ struct e_callback {
 };
 
 // file download callback
-typedef void(*download_callback)(const QString&);
+typedef void(*download_callback)(const QObject*, const QString&, void*);
 
 class QSocketNotifier;
 class QTcpSocket;
@@ -181,13 +182,13 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changeTranslation(const QString &);
         void sendUrlToBrowser(const QString &);
         void addToDataBase(QVariantMap &);
-        void registerDownload(QString &, download_callback);
+        void registerDownload(QString &, QObject*, download_callback, void*);
 
     private:
         int callClassEventCallback(QString className, const QVariantMap &map);
         QMultiHash<QString, e_callback* > m_class_event_cb;
         void setOSInfos(const QString &);
-        QHash<QString, download_callback> m_download_cb;
+        QHash<QString, QTriple<QObject*, download_callback, void*> > m_download_cb;
 
     public slots:
         void start();  //!< start the connection process.
