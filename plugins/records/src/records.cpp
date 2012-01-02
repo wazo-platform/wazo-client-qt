@@ -138,7 +138,6 @@ void XletRecords::layoutChanged()
 
             connect(btn, SIGNAL(clicked(bool)), this, SLOT(playRecord(bool)));
             m_ctwidget->view()->setIndexWidget(idx, btn);
-            qDebug() << btn << m_ctwidget->view()->indexWidget(model->index(i,1));
         }
     }
 }
@@ -146,11 +145,14 @@ void XletRecords::layoutChanged()
 XletRecords::~XletRecords()
 {
     // qDebug() << Q_FUNC_INFO;
+    if(m_clickbutton != NULL)
+        audioStateChanged(QAudio::IdleState);
+    /*
     if(m_audio != NULL)
         delete m_audio;
-
     if(m_recordfile != NULL)
         delete m_recordfile;
+    */
 }
 
 QString XletRecords::tooltip(const QModelIndex & modelindex)
