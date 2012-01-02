@@ -112,11 +112,45 @@ XletRecords::XletRecords(QWidget *parent)
     b_engine->registerClassEvent("records-campaign",
                                  XletRecords::recordResults_t, this);
 
+    connect(m_ctwidget->view()->model(), SIGNAL(layoutChanged()),
+            this, SLOT(layoutChanged()));
+}
+
+void XletRecords::layoutChanged() 
+{
+    if(m_audio) {
+        if(m_clickbutton != NULL) {
+            // force stop NOW
+            audioStateChanged(QAudio::IdleState);
+        }
+
+        CommonTableView  *view  = m_ctwidget->view();
+        CommonTableModel *model = (CommonTableModel*) view->model();
+
+        for(int i = 0; i < model->rowCount(QModelIndex()); i++) {
+            QModelIndex idx = model->index(i,1);
+    
+            QPushButton *btn = new QPushButton(QIcon(":/images/player_play.png"), "", this);
+            btn->setFlat(true);
+            btn->setProperty("id"      , model->row2id(i));
+            btn->setProperty("filename", idx.sibling(i,4).data());
+            btn->setProperty("state"   , "stopped");
+
+            connect(btn, SIGNAL(clicked(bool)), this, SLOT(playRecord(bool)));
+            m_ctwidget->view()->setIndexWidget(idx, btn);
+            qDebug() << btn << m_ctwidget->view()->indexWidget(model->index(i,1));
+        }
+    }
 }
 
 XletRecords::~XletRecords()
 {
     // qDebug() << Q_FUNC_INFO;
+    if(m_audio != NULL)
+        delete m_audio;
+
+    if(m_recordfile != NULL)
+        delete m_recordfile;
 }
 
 QString XletRecords::tooltip(const QModelIndex & modelindex)
@@ -170,22 +204,7 @@ void XletRecords::recordResults(const QVariantMap & p)
         b_engine->tree()->populate("records", qvm);
         emit update(qvl.size());
 
-        if(m_audio) {
-            CommonTableModel *model = (CommonTableModel*) m_ctwidget->view()->model();
-            for(int i = 0; i < model->rowCount(QModelIndex()); i++)
-            {
-                QModelIndex idx = model->index(i,1);
-    
-                QPushButton *btn = new QPushButton(QIcon(":/images/player_play.png"), "", this);
-                btn->setFlat(true);
-                btn->setProperty("id"      , model->row2id(i));
-                btn->setProperty("filename", idx.sibling(i,4).data());
-                btn->setProperty("state"   , "stopped");
-
-                connect(btn, SIGNAL(clicked(bool)), this, SLOT(playRecord(bool)));
-                m_ctwidget->view()->setIndexWidget(idx, btn);
-            }
-        }
+        this->layoutChanged();
 
     } else if (function == "getprops") {
         m_tags = p.value("tags").toMap();
@@ -345,7 +364,7 @@ void XletRecords::changeTag()
 void XletRecords::playRecord(bool state)
 {
     QPushButton *btn = (QPushButton *)sender();
-    //qDebug() << "PLAY RECORD" << state << btn->property("filename") << btn->property("state");
+    qDebug() << "PLAY RECORD" << state << btn->property("filename") << btn->property("state");
 
     QString filename = btn->property("filename").toString();
     QString bstate   = btn->property("state").toString();

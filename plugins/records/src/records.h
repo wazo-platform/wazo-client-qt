@@ -72,6 +72,7 @@ class XletRecords : public XLet
         void changeTag();
         void playRecord(bool);
         void audioStateChanged(QAudio::State);
+        void layoutChanged();
     private:
         QString tooltip(const QModelIndex &);
         void commonMenuDisplay(const QModelIndex &);
@@ -90,6 +91,7 @@ class XletRecords : public XLet
         QVariantMap m_tags;
 
         // for records playing
+        QHash<QString,QPushButton *> m_buttons;
         QPushButton  *m_clickbutton;
 	QFile        *m_recordfile;
         QAudioOutput *m_audio;

@@ -187,6 +187,7 @@ void CommonTableModel::mylistChange(const QString &, DStoreEvent)
             m_row2id.insert(row++, myId);
         }
     }
+
     reset();
 }
 
@@ -351,7 +352,8 @@ void CommonTableModel::sort(int column, Qt::SortOrder order)
         }
     }
 
-    reset();
+    //reset();
+    emit layoutChanged();
 }
 
 QString CommonTableModel::row2id(int row)
