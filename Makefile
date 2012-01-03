@@ -38,6 +38,7 @@ guessos:
 
 all:
 	@make -s guessos
+	@make -s versions
 	@make allbyos
 
 allbyos:
