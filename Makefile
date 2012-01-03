@@ -15,7 +15,7 @@ UPXWIN?=/cygdrive/c/upx303w/upx.exe
 -include versions.mak
 -include uname.mak
 
-default: help
+default: all
 
 help: guessos
 	@echo
