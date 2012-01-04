@@ -9,4 +9,6 @@ TRANSLATIONS += records_uk.ts
 
 TARGET      = $$qtLibraryTarget(recordsplugin)
 
+QT += multimedia
+
 RESOURCES = res.qrc

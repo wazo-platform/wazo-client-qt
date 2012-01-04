@@ -31,6 +31,7 @@
  * $Date$
  */
 
+#include <QDir>
 #include "records.h"
 #include "commontable.h"
 
@@ -62,9 +63,33 @@ XletRecords::XletRecords(QWidget *parent)
     connect(this, SIGNAL(update(int)),
             m_resultswidget, SLOT(update(int)));
 
+    // Audio init
+    m_clickbutton = NULL;
+    m_recordfile  = NULL;
+    m_audio       = NULL;
+
+    m_audiofmt.setFrequency(8000);
+    m_audiofmt.setChannels(1);
+    m_audiofmt.setSampleSize(16);
+    m_audiofmt.setCodec("audio/pcm");
+    m_audiofmt.setByteOrder(QAudioFormat::LittleEndian);
+    m_audiofmt.setSampleType(QAudioFormat::Unknown);
+    //m_audiofmt.setSampleType(QAudioFormat::UnSignedInt);
+
+    QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+    if(!info.isFormatSupported(m_audiofmt)) {
+        qWarning()<< "raw audio format not supported by backend, cannot play audio.";
+    } else {
+        m_audio = new QAudioOutput(m_audiofmt, this);
+        connect(m_audio, SIGNAL(stateChanged(QAudio::State)), SLOT(audioStateChanged(QAudio::State)));
+    }
+    // END Audio init
+
     m_ctp = new CommonTableProperties("records");
     // last item : should define : editable or not, in tooltip or not, hidden or not ...
     m_ctp->addColumn(tr("ID"), "id", QVariant::String, "id");
+    if(m_audio)
+        m_ctp->addColumn(""      , "media", QVariant::Int, "id"); // no title
     m_ctp->addColumn(tr("Start Date"), "callstart", QVariant::DateTime, "id");
     m_ctp->addColumn(tr("Stop Date"), "callstop", QVariant::DateTime, "id");
     m_ctp->addColumn(tr("Filename"), "filename", QVariant::String, "id");
@@ -86,11 +111,48 @@ XletRecords::XletRecords(QWidget *parent)
     // m_xletLayout->insertStretch(-1, 1);
     b_engine->registerClassEvent("records-campaign",
                                  XletRecords::recordResults_t, this);
+
+    connect(m_ctwidget->view()->model(), SIGNAL(layoutChanged()),
+            this, SLOT(layoutChanged()));
+}
+
+void XletRecords::layoutChanged() 
+{
+    if(m_audio) {
+        if(m_clickbutton != NULL) {
+            // force stop NOW
+            audioStateChanged(QAudio::IdleState);
+        }
+
+        CommonTableView  *view  = m_ctwidget->view();
+        CommonTableModel *model = (CommonTableModel*) view->model();
+
+        for(int i = 0; i < model->rowCount(QModelIndex()); i++) {
+            QModelIndex idx = model->index(i,1);
+    
+            QPushButton *btn = new QPushButton(QIcon(":/images/player_play.png"), "", this);
+            btn->setFlat(true);
+            btn->setProperty("id"      , model->row2id(i));
+            btn->setProperty("filename", idx.sibling(i,4).data());
+            btn->setProperty("state"   , "stopped");
+
+            connect(btn, SIGNAL(clicked(bool)), this, SLOT(playRecord(bool)));
+            m_ctwidget->view()->setIndexWidget(idx, btn);
+        }
+    }
 }
 
 XletRecords::~XletRecords()
 {
     // qDebug() << Q_FUNC_INFO;
+    if(m_clickbutton != NULL)
+        audioStateChanged(QAudio::IdleState);
+    /*
+    if(m_audio != NULL)
+        delete m_audio;
+    if(m_recordfile != NULL)
+        delete m_recordfile;
+    */
 }
 
 QString XletRecords::tooltip(const QModelIndex & modelindex)
@@ -127,6 +189,13 @@ void XletRecords::recordResults(const QVariantMap & p)
 {
     QString function = p.value("function").toString();
     if (function == "search") {
+        if(m_clickbutton != NULL) {
+            //qDebug() << "stop previous record playing" << m_clickbutton->property("filename");
+            // force stop NOW
+            audioStateChanged(QAudio::IdleState);
+        }
+
+
         QVariantList qvl = p.value("payload").toList();
         b_engine->tree()->rmPath("records");
         QVariantMap qvm;
@@ -136,6 +205,9 @@ void XletRecords::recordResults(const QVariantMap & p)
         }
         b_engine->tree()->populate("records", qvm);
         emit update(qvl.size());
+
+        this->layoutChanged();
+
     } else if (function == "getprops") {
         m_tags = p.value("tags").toMap();
         m_tags.remove("notag");
@@ -290,6 +362,87 @@ void XletRecords::changeTag()
     command["tag"] = sender()->property("tag").toString();
     b_engine->sendJsonCommand(command);
 }
+
+void XletRecords::playRecord(bool state)
+{
+    QPushButton *btn = (QPushButton *)sender();
+    qDebug() << "PLAY RECORD" << state << btn->property("filename") << btn->property("state");
+
+    QString filename = btn->property("filename").toString();
+    QString bstate   = btn->property("state").toString();
+
+    if(bstate == "stopped") {
+        QVariantMap command;
+        command["class"]    = "records-campaign";
+        command["function"] = "getfile";
+        command["filename"] = filename;
+
+        b_engine->registerDownload(filename, 
+            this, (download_callback)&XletRecords::saveToFile, btn) ;
+        b_engine->sendJsonCommand(command);
+
+    } else if(bstate == "playing") {
+        m_audio->suspend();
+
+    } else if(bstate == "paused") {
+        m_audio->resume();
+    }
+}
+
+/**
+	Save received record on file, then starting to read
+*/
+void XletRecords::saveToFile(const QString &filename, void *data)
+{
+    QString target = QDir::temp().absoluteFilePath(QFileInfo(filename).fileName());
+    //qDebug() << Q_FUNC_INFO << filename << target;
+    b_engine->saveToFile(target);
+
+    // stop playin any other record
+    if(m_clickbutton != NULL) {
+        //qDebug() << "stop previous record playing" << m_clickbutton->property("filename");
+        // force stop NOW
+        audioStateChanged(QAudio::IdleState);
+    }
+
+ 
+    m_recordfile = new QFile(target);
+    if(!m_recordfile->open(QIODevice::ReadOnly))
+    {
+	qWarning() << "cannot open" << target << "file";
+        delete m_recordfile;
+        m_recordfile = NULL;
+	return;
+    }
+
+    m_clickbutton = (QPushButton*) data;
+    m_audio->start(m_recordfile);
+}
+
+void XletRecords::audioStateChanged(QAudio::State state)
+{
+    //qDebug() << "finished playing" << state;
+
+    if(state == QAudio::IdleState) {
+        m_audio->stop();
+        m_recordfile->close();
+
+        delete m_recordfile; m_recordfile = NULL;
+
+        m_clickbutton->setProperty("state", "stopped");
+    	m_clickbutton->setIcon(QIcon(":/images/player_play.png"));
+        m_clickbutton = NULL;
+
+    } else if(state == QAudio::SuspendedState) {
+        m_clickbutton->setProperty("state", "paused");
+    	m_clickbutton->setIcon(QIcon(":/images/player_play.png"));
+
+    } else if(state == QAudio::ActiveState) {
+        m_clickbutton->setProperty("state", "playing");
+    	m_clickbutton->setIcon(QIcon(":/images/player_pause.png"));
+    }
+}
+
 
 SearchWidget::SearchWidget(QWidget * parent)
     : QWidget(parent)
@@ -457,3 +610,4 @@ void ResultsWidget::update(int nresults)
     // qDebug() << Q_FUNC_INFO;
     m_summary->setText(tr("Results : %1 found").arg(nresults));
 }
+

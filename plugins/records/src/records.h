@@ -35,9 +35,11 @@
 #define __RECORDSPANEL_H__
 
 #include <QtGui>
+#include <QtMultimedia>
 
 #include <xletinterface.h>
 #include <xlet.h>
+#include <baseengine.h>
 
 class SearchWidget;
 class ResultsWidget;
@@ -57,6 +59,7 @@ class XletRecords : public XLet
         static QString tooltip_t(const QModelIndex & modelindex, void * xlet) {
                 return ((XletRecords *) xlet)->tooltip(modelindex);
         };
+        void saveToFile(const QString &, void*);
 
     signals:
         void update(int);
@@ -67,6 +70,9 @@ class XletRecords : public XLet
         void onViewDoubleClick(const QModelIndex &);
         void mousePressEvent(QMouseEvent *);
         void changeTag();
+        void playRecord(bool);
+        void audioStateChanged(QAudio::State);
+        void layoutChanged();
     private:
         QString tooltip(const QModelIndex &);
         void commonMenuDisplay(const QModelIndex &);
@@ -83,6 +89,12 @@ class XletRecords : public XLet
         CommonTableProperties * m_ctp;
         CommonTableWidget * m_ctwidget;
         QVariantMap m_tags;
+
+        // for records playing
+        QPushButton  *m_clickbutton;
+	QFile        *m_recordfile;
+        QAudioOutput *m_audio;
+        QAudioFormat  m_audiofmt;
 };
 
 class XLetRecordsPlugin : public QObject, XLetInterface

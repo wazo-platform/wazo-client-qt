@@ -104,6 +104,8 @@ BaseEngine::BaseEngine(QSettings *settings,
             this, SLOT(filetransferSocketConnected()));
     connect(m_filetransfersocket, SIGNAL(readyRead()),
             this, SLOT(filetransferSocketReadyRead()));
+    connect(this, SIGNAL(fileReceived(const QString&)),
+            this, SLOT(fileReceivedProxy(const QString&)));
 
     if (m_autoconnect)
         start();
@@ -667,6 +669,8 @@ void BaseEngine::ctiSocketConnected()
  */
 void BaseEngine::filetransferSocketConnected()
 {
+    //qDebug() << ">> filetransferSocketConnected()";
+
     QVariantMap command;
     command["class"] = "filetransfer";
     command["direction"] = "xivoserver";
@@ -674,8 +678,10 @@ void BaseEngine::filetransferSocketConnected()
     command["fileid"] = m_fileid;
     QString jsoncommand(JsonQt::VariantToJson::parse(command));
     // ??? useless test ???
-    if (m_filetransfersocket->state() == QAbstractSocket::ConnectedState)
+    if (m_filetransfersocket->state() == QAbstractSocket::ConnectedState) {
+        //qDebug() << ">> send filetransfer command";
         m_filetransfersocket->write((jsoncommand + "\n").toAscii());
+    }
 }
 
 UserInfo * BaseEngine::findUserFromPhone(const QString & astid,
@@ -934,6 +940,13 @@ void BaseEngine::parseCommand(const QString &line)
         // << datamap.value("phoneid").toString();
         if (thisclass == "callcampaign") {
             requestFileListResult(datamap.value("payload"));
+
+	// read callcampaign record file (.wav)
+        } else if (thisclass == "callcampaign-record") {
+            m_filedir = datamap.value("tdirection").toString();
+            m_fileid  = datamap.value("fileid").toString();
+            //qDebug() << "CALLCAMPAIGN RECORD" << m_filedir << m_fileid << m_serverhost << m_ctiport;
+            m_filetransfersocket->connectToHost(m_serverhost, m_ctiport);
 
         } else if (thisclass == "parkcall") {
             QString eventkind = datamap.value("eventkind").toString();
@@ -1611,7 +1624,7 @@ void BaseEngine::popupError(const QString & errorid)
  */
 void BaseEngine::saveToFile(const QString & filename)
 {
-    qDebug() << Q_FUNC_INFO << filename << m_downloaded.size();
+    //qDebug() << Q_FUNC_INFO << filename << m_downloaded.size();
     QFile outputfile(filename);
     outputfile.open(QIODevice::WriteOnly);
     outputfile.write(m_downloaded);
@@ -1645,6 +1658,8 @@ void BaseEngine::ctiSocketReadyRead()
  */
 void BaseEngine::filetransferSocketReadyRead()
 {
+    //qDebug() << ">> filetranserSocketReadyRead()";
+
     while(m_filetransfersocket->canReadLine()) {
         QByteArray data = m_filetransfersocket->readLine();
         QString line = QString::fromUtf8(data);
@@ -1658,8 +1673,8 @@ void BaseEngine::filetransferSocketReadyRead()
         if (jsondatamap.value("class").toString() == "fileref") {
             if (m_filedir == "download") {
                 m_downloaded = QByteArray::fromBase64(jsondatamap.value("payload").toByteArray());
-                qDebug() << jsondatamap.value("filename").toString() << m_downloaded.size();
-                fileReceived();
+                //qDebug() << jsondatamap.value("filename").toString() << m_downloaded.size();
+                fileReceived(jsondatamap.value("filename").toString());
             } else {
                 QByteArray fax64 = m_filedata.toBase64();
                 qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString()
@@ -2366,4 +2381,22 @@ void BaseEngine::sendUrlToBrowser(const QString & value)
 #else
     QDesktopServices::openUrl(QUrl(value));
 #endif
+}
+
+void BaseEngine::fileReceivedProxy(const QString &filename)
+{
+    //qDebug() << "fileReceivedProxy" << filename;
+    if(m_download_cb.contains(filename)) {
+        // take & unregister callback
+        QTriple<QObject*, download_callback, void*> triple = m_download_cb.take(filename);
+
+        triple.second(triple.first, filename, triple.third);
+    }
+}
+
+void BaseEngine::registerDownload(QString &filename, QObject *target, 
+                                  download_callback callback, void *data)
+{
+    //qDebug() << "fileReceivedRegister" << filename << callback << data;
+    m_download_cb.insert(filename, qMakeTriple(target, callback, data));
 }

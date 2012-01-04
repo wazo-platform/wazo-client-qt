@@ -62,7 +62,7 @@ class XletAgentDetails : public XLet
         void setGuiOptions(const QVariantMap &);
         void newAgentList(const QStringList &);
         void monitorThisAgent(const QString &);
-        void saveToFile();
+        void saveToFile(const QString &, void*);
         void statusRecord(const QString &, const QString &, const QString &);
         void statusListen(const QString &, const QString &, const QString &);
 

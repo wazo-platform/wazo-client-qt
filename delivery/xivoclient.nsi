@@ -37,6 +37,7 @@ File ${QTBINPATH}\QtNetwork4.dll
 File ${QTBINPATH}\QtXml4.dll
 File ${QTBINPATH}\QtWebKit4.dll
 File ${QTBINPATH}\QtSql4.dll
+File ${QTBINPATH}\QtMultimedia4.dll
 !endif
 !ifdef QTPLUGINSPATH
 File ${QTPLUGINSPATH}\sqldrivers\qsqlite4.dll
@@ -100,6 +101,7 @@ Delete "$INSTDIR\QtNetwork4.dll"
 Delete "$INSTDIR\QtXml4.dll"
 Delete "$INSTDIR\QtWebKit4.dll"
 Delete "$INSTDIR\QtSql4.dll"
+Delete "$INSTDIR\QtMultimedia4.dll"
 !endif
 !ifdef QTPLUGINSPATH
 Delete "$INSTDIR\qsqlite4.dll"
