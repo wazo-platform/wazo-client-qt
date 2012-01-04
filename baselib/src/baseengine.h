@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __BASEENGINE_H__
 #define __BASEENGINE_H__
 
@@ -288,7 +284,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void fetchIPBXList();
         void fetchLists();
-        
+
+        void inviteConfRoom(const QString &);
+
         void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
         
         void meetmeAction(const QString &, const QString &);

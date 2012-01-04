@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QDebug>
 
 #include "baseengine.h"
@@ -39,10 +35,6 @@
 
 #include "userinfo.h"
 
-/*! \brief Constructor
- *
- * just set userid
- */
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
   : XInfo(ipbxid, id),
@@ -210,6 +202,20 @@ bool UserInfo::isTalkingTo(const QString & rhs) const
                 if (this->identitylist().contains(identity)) {
                     return true;
                 }
+            }
+        }
+    }
+    return false;
+}
+
+bool UserInfo::isInMeetme() const
+{
+    QStringList channels = xchannels();
+    if (channels.size() < 1) return false;
+    foreach (const XInfo * meetme, b_engine->iterover("meetmes")) {
+        foreach (const QString &channelid, static_cast<const MeetmeInfo *>(meetme)->channels().keys()) {
+            if (channels.contains(QString("%0/%1").arg(meetme->ipbxid()).arg(channelid))) {
+                return true;
             }
         }
     }

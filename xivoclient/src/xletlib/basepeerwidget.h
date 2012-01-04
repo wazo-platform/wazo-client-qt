@@ -97,12 +97,13 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
     protected slots:
         void dial();
         void dialMobilePhone();
-        void peerdial();
         void hangup();
         void intercept();
         void transfer();
+        void inviteConfRoom();
         void itransfer();
         void itransfercancel();
+        void peerdial();
         void vmtransfer();
         void tryRemoveFromPanel();
         void rename();

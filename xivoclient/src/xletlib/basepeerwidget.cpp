@@ -208,6 +208,14 @@ void BasePeerWidget::vmtransfer()
     }
 }
 
+void BasePeerWidget::inviteConfRoom()
+{
+    if (m_ui_remote) {
+        QString invitee = QString("%0:%1").arg("user").arg(m_ui_remote->xid());
+        b_engine->inviteConfRoom(invitee);
+    }
+}
+
 /*! \brief handle double click
  *
  * dial or indirect transfer if left mouse button used
@@ -519,25 +527,13 @@ void BasePeerWidget::addInterceptMenu(QMenu * menu)
 
 /*!
  * Add an invite to meetme menu
- *
- * If the current user is part of a conference, he can invite other peers
  */
 void BasePeerWidget::addMeetmeMenu(QMenu * menu)
 {
-    const QStringList & my_channels = m_ui_local->xchannels();
-    foreach (const QString & meetmexid, b_engine->iterover("meetmes").keys()) {
-        if (const MeetmeInfo * m = b_engine->meetme(meetmexid)) {
-            foreach (const QString & key, m->channels().keys()) {
-                if (my_channels.contains(QString("%0/%1")
-                                         .arg(m->ipbxid()).arg(key))) {
-                    QAction * action = new QAction(tr("Invite in meetme room %0")
-                                                   .arg(m->name()), this);
-                    action->setProperty("number", m->number());
-                    connect(action, SIGNAL(triggered()), this, SLOT(peerdial()));
-                    menu->addAction(action);
-                }
-            }
-        }
+    if (m_ui_local && m_ui_local->isInMeetme()) {
+        QAction * action = new QAction(tr("Invite in conference room"), this);
+        connect(action, SIGNAL(triggered()), this, SLOT(inviteConfRoom()));
+        menu->addAction(action);
     }
 }
 
