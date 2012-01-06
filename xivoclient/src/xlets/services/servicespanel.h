@@ -61,7 +61,6 @@ class ServicesPanel : public XLet, public IPBXListener
 
     public slots:
         void syncOpt(const QString &);
-        void syncForward(const QString &);
         void updateUserConfig(const QString &, const QVariantMap &);
         void updatePhoneConfig(const QString &);
 
