@@ -53,6 +53,7 @@ MainWidget::MainWidget()
       m_withsystray(true),
       m_centralWidget(new QStackedWidget(this)),
       m_resizingHelper(0),
+      m_configwindow(NULL),
       m_clipboard(NULL)
 {
     b_engine->setParent(this); // take ownership of the engine object
@@ -529,9 +530,18 @@ void MainWidget::createSystrayIcon()
 void MainWidget::showConfDialog()
 {
     setConfig();
-    ConfigWidget *configwindow = new ConfigWidget(this);
-    configwindow->exec();
-    delete configwindow;
+    m_configwindow = new ConfigWidget(this);
+    m_configwindow->setModal(true);
+    m_configwindow->show();
+    connect(m_configwindow, SIGNAL(finished(int)),
+            this, SLOT(cleanConfDialog()));
+}
+
+void MainWidget::cleanConfDialog()
+{
+    disconnect(m_configwindow, SIGNAL(finished(int)),
+               this, SLOT(cleanConfDialog()));
+    m_configwindow = NULL;
 }
 
 void MainWidget::fetchConfig()

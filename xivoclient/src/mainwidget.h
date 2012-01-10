@@ -35,12 +35,14 @@
 #include <functests.h>
 
 class XLet;
+class ConfigWidget;
 
 /*! \brief Main window class
  */
 class MainWidget : public QMainWindow
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         MainWidget();
@@ -56,6 +58,7 @@ class MainWidget : public QMainWindow
         void clipselection();
         void clipdata();
         void showConfDialog();
+        void cleanConfDialog();
         void showLogin();
         void hideLogin();
         void engineStopped();
@@ -120,6 +123,8 @@ class MainWidget : public QMainWindow
 
         QByteArray m_defaultState;
 
+        ConfigWidget *m_configwindow;
+
         // Widgets for Xlets
         QTabWidget *m_tabwidget;        //!< Area to display messages, services and histories
         QSet<XLet *> m_xletlist;
@@ -164,10 +169,6 @@ class MainWidget : public QMainWindow
         QDateTime m_launchDateTime;
 
         QClipboard * m_clipboard;
-
-/* #ifdef FUNCTESTS */
-/*     friend class PyXiVOClient; */
-/* #endif */
 };
 
 #endif

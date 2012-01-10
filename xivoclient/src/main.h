@@ -35,11 +35,18 @@
 #include "powerawareapplication.h"
 #include "mainwidget.h"
 
+#ifdef FUNCTESTS
+class RemoteControl;
+#endif
+
 struct ExecObjects {
     PowerAwareApplication *app;
     MainWidget *win;
     BaseEngine *baseengine;
     bool initOK;
+#ifdef FUNCTESTS
+    RemoteControl *rc;
+#endif
 };
 
 ExecObjects init_xivoclient(int &, char **);

@@ -30,12 +30,12 @@
 #ifndef __FUNCTESTS_H__
 #define __FUNCTESTS_H__
 
-/* Gives access to all members to be able to control them from a PyXiVOClient
- * instance
- */
+class RemoteControl;
+
 #ifdef FUNCTESTS
-#define protected public
-#define private public
+    #define FUNCTESTED friend class RemoteControl;
+#else
+    #define FUNCTESTED
 #endif
 
 #endif

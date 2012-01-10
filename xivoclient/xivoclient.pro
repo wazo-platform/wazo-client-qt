@@ -1,6 +1,11 @@
 include(common-xivoclient.pri)
 include($${ROOT_DIR}/qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
 
+TEMPLATE = app
+# CONFIG += console # uncomment to get console on Win32
+
+TARGET = xivoclient
+
 CONFIG += uitools
 
 unix:LIBS += -lxivoclientxlets
@@ -22,8 +27,8 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_ja.ts
 
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src $${ROOT_DIR}/src/xletlib
-HEADERS += $$system(ls $${ROOT_DIR}/src/*.h)
-SOURCES += $$system(ls $${ROOT_DIR}/src/*.cpp)
+HEADERS += $${ROOT_DIR}/src/*.h
+SOURCES += $${ROOT_DIR}/src/*.cpp
 
 BUILTIN_DIRS += callcampaign-builtin
 BUILTIN_DIRS += customerinfo-builtin

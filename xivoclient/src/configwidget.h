@@ -36,6 +36,8 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 
+#include <functests.h>
+
 class QCheckBox;
 class QComboBox;
 class QDialogButtonBox;
@@ -58,11 +60,13 @@ class BaseEngine;
  * Then you can get every setting by typing a command like :
  * \code $ egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib \endcode
  * where variables stands for the list of the variables obtained by the 
- * previous command, separated by |*/
+ * previous command, separated by |
+ */
 
 class ConfigWidget: public QDialog
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         ConfigWidget(QWidget *parent=0);

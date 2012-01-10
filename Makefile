@@ -54,22 +54,14 @@ functests:
 	@$(MAKE) os-baselib FUNCTESTS=yes
 	@$(MAKE) os-xletlib FUNCTESTS=yes
 	@$(MAKE) os-xlets FUNCTESTS=yes
-	@$(MAKE) os-xivoclient-bin-dll FUNCTESTS=yes
-	ln -sf libpyxivoclient.so bin/_pyxivoclient.so
-	@echo
-	@echo "To use the Python module, do:"
-	@echo "$$ export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$$PWD/bin"
-	@echo "$$ export PYTHONPATH=\$$PYTHONPATH:$$PWD/bin"
-	@echo "$$ python"
-	@echo ">>> import _pyxivoclient as xivoclient"
-	@echo ">>> help(xivoclient)"
+	@$(MAKE) os-xivoclient FUNCTESTS=yes
 
 # Example : os-all -> linux-all
 os-%:
 	@$(MAKE) ${XC_UNAME}-$*
 
-clean distclean: clean-tests clean-baselib clean-xivoclient-bin-app clean-xletlib \
-                 clean-xlets clean-xivoclient-bin-dll
+clean distclean: clean-tests clean-baselib clean-xivoclient clean-xletlib \
+                 clean-xlets
 	rm -f ${VERSIONS_FILE}
 	rm -rf xivoclient/obj xivoclient/bin
 	rm -rf bin
@@ -94,7 +86,7 @@ clean-%:
 linux-all:
 	@$(MAKE) linux-baselib
 	@$(MAKE) linux-xletlib
-	@$(MAKE) linux-xivoclient-bin-app
+	@$(MAKE) linux-xivoclient
 	@$(MAKE) linux-xlets
 
 linux-tests:

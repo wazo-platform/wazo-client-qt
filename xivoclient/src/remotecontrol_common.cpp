@@ -27,42 +27,47 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ctime>
+#ifdef FUNCTESTS
 
-#include "pyxivoclientthread.h"
+#include "configwidget.h"
+#include "remotecontrol.h"
 
-PyXiVOClientThread::PyXiVOClientThread(int argc, char **argv) {
-    m_argc = argc;
-    m_argv = argv;
-}
-
-void PyXiVOClientThread::run()
+bool RemoteControl::i_go_to_the_xivo_client_configuration()
 {
-    m_exec_obj = init_xivoclient(m_argc, m_argv);
-    m_exec_obj.win->m_lab1->setText("bouh");
-    qDebug() << m_exec_obj.win->m_lab2->text();
-
-    exec();
-    // int ret = run_xivoclient(m_exec_obj);
-
-    clean_xivoclient(m_exec_obj);
-
-    // while(true) {
-    //     qDebug() << "loop";
-    //     m_exec_obj.app->syncX();
-    //     m_exec_obj.app->processEvents();
-    //     m_exec_obj.app->sendPostedEvents();
-    //     sleep(1);
-    // }
+    m_exec_obj.win->m_cfgact->trigger();
+    return true;
 }
 
-ExecObjects PyXiVOClientThread::execObjects()
+bool RemoteControl::i_close_the_xivo_client_configuration()
 {
-    return m_exec_obj;
+    m_exec_obj.win->m_configwindow->m_btnbox->button(QDialogButtonBox::Ok)->click();
+    return true;
 }
 
-void PyXiVOClientThread::updateApp()
+bool RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QStringList &args)
 {
-    m_exec_obj.app->processEvents();
-    m_exec_obj.app->sendPostedEvents();
+    i_go_to_the_xivo_client_configuration();
+
+    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(0);
+    m_exec_obj.win->m_configwindow->m_cti_address->setText(args[0]);
+
+    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(1);
+    m_exec_obj.win->m_configwindow->m_userid->setText(args[1]);
+    m_exec_obj.win->m_configwindow->m_password->setText(args[2]);
+
+    i_close_the_xivo_client_configuration();
+    m_exec_obj.win->m_ack->click();
+    pause(1000);
+    return true;
 }
+
+bool RemoteControl::i_stop_the_xivo_client()
+{
+    if (m_exec_obj.win->m_configwindow != NULL) {
+        m_exec_obj.win->m_configwindow->close();
+    }
+    m_exec_obj.win->m_quitact->trigger();
+    return true;
+}
+
+#endif

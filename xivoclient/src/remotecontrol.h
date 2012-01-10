@@ -27,23 +27,52 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PYXIVOCLIENT_H__
-#define __PYXIVOCLIENT_H__
+#ifndef __REMOTECONTROL_H__
+#define __REMOTECONTROL_H__
+
+#ifdef FUNCTESTS
+
+#include <QObject>
 
 #include "main.h"
-#include "pyxivoclientthread.h"
 
-class PyXiVOClient
+class QLocalServer;
+class QLocalSocket;
+
+class RemoteControl : public QObject
 {
+    Q_OBJECT
+
     public:
-        PyXiVOClient();
-        void launch(char * args = "");
-        void exit();
+        RemoteControl(ExecObjects);
+        void pause(unsigned);
+        ~RemoteControl();
+
+    public:
+        bool i_stop_the_xivo_client();
+        bool i_go_to_the_xivo_client_configuration();
+        bool i_close_the_xivo_client_configuration();
+        bool i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QStringList &);
+
+    public slots:
+        void error(const QString &);
+
+    private slots:
+        void newConnection();
+        void processCommands();
 
     private:
+        void ackCommand();
+
         ExecObjects m_exec_obj;
-        PyXiVOClientThread *m_thread;
-        QTimer *m_timer;
+        bool m_test_ok;
+        bool m_no_error;
+
+        QString m_socket_name;
+        QLocalServer *m_server;
+        QLocalSocket *m_client_cnx;
 };
 
-#endif
+#endif /* ifdef FUNCTESTS */
+
+#endif /* ifndef __FUNCTESTS_H__ */

@@ -61,6 +61,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     reboot_message = tr("You must restart the program for this setting to apply.");
     m_parent = parent;
     setWindowTitle(tr("Configuration"));
+    setAttribute(Qt::WA_DeleteOnClose);
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
     m_tabwidget = new QTabWidget();
@@ -255,7 +256,6 @@ void ConfigWidget::_insert_function_tab()
 
         layout_queues->addWidget(new QLabel(tr("Queue thresholds (waiting calls)"), this), line, 0);
         ncol = 1;
-        qDebug() << m_queue_colors.count();
         foreach(ColorLevelStruct color, m_queue_colors) {
             m_queuelevels[color.id] = new QSpinBox(this);
             m_queuelevels[color.id]->setRange(0, 100);

@@ -42,9 +42,20 @@
 #include "mainwidget.h"
 #include "powerawareapplication.h"
 
+#ifdef FUNCTESTS
+#include "remotecontrol.h"
+#endif
+
 #include "main.h"
 
-// argc has to be a reference, or QCoreApplication will segfault
+/*
+ * Set some static Qt parameters for using QSettings,
+ * instantiate a MainWidget window and a BaseEngine object.
+ *
+ * argc has to be a reference, or QCoreApplication will segfault
+ *
+ * \sa MainWidget, BaseEngine
+ */
 ExecObjects init_xivoclient(int & argc, char **argv)
 {
     ExecObjects ret;
@@ -68,7 +79,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         else
             msg = arg_str;
     }
-
 
     if (! msg.isEmpty()) {
         // send message if there is an argument.
@@ -144,6 +154,11 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     ret.win = window;
     ret.baseengine = b_engine;
     ret.initOK = true;
+
+#ifdef FUNCTESTS
+    ret.rc = new RemoteControl(ret);
+#endif
+
     return ret;
 }
 
@@ -158,16 +173,18 @@ int run_xivoclient(ExecObjects exec_obj)
 void clean_xivoclient(ExecObjects exec_obj)
 {
     delete exec_obj.win;
+
     // BaseEngine is already deleted by MainWidget
+
+#ifdef FUNCTESTS
+    delete exec_obj.rc;
+#endif
+
     delete exec_obj.app;
 }
 
 /*! \brief program entry point
  *
- * Set some static Qt parameters for using QSettings,
- * instantiate a MainWidget window and a BaseEngine object.
- *
- * \sa MainWidget, BaseEngine
  */
 int main(int argc, char **argv)
 {
