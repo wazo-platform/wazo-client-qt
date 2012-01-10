@@ -66,7 +66,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     m_tabwidget = new QTabWidget();
 
     m_config = b_engine->getConfig();
-
+    
     m_dblclick_actions["call"] = tr("Call");
     // XXX: disable atxfer until they work in asterisk 1.8
     // m_dblclick_actions["atxfer"] = "Indirect transfer";
@@ -166,7 +166,7 @@ void ConfigWidget::_insert_function_tab()
         QWidget * widget_presence = new QWidget() ;
         QFormLayout * layout_presence = new QFormLayout() ;
         widget_presence->setLayout(layout_presence);
-
+        
         m_presenceIndicatorSize = new QSpinBox(this);
         m_presenceIndicatorSize->setRange(1, 20);
         int presenceIndicatorSize = m_config["guioptions.presenceindicatorsize"].toInt();
@@ -174,28 +174,28 @@ void ConfigWidget::_insert_function_tab()
             presenceIndicatorSize = 5;
         m_presenceIndicatorSize->setValue(presenceIndicatorSize);
         layout_presence->addRow(tr("Presence indicator size (in pixels)"), m_presenceIndicatorSize);
-
+        
     m_function_tabwidget->addTab(widget_presence, tr("Presence reporting"));
 
         QWidget * widget_customerinfo = new QWidget() ;
         QFormLayout * layout_customerinfo = new QFormLayout() ;
         widget_customerinfo->setLayout(layout_customerinfo);
-
+        
         m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
         m_autourl_allowed->setChecked(m_config["guioptions.autourl_allowed"].toUInt() == Qt::Checked);
         layout_customerinfo->addRow(m_autourl_allowed);
-
+        
         m_tablimit_sbox = new QSpinBox(this);
         m_tablimit_sbox->setRange(0, 99);
         m_tablimit_sbox->setValue(m_config["guioptions.sheet-tablimit"].toUInt());
         layout_customerinfo->addRow(tr("Tab limit"), m_tablimit_sbox);
-
+        
     m_function_tabwidget->addTab(widget_customerinfo, tr("Customer Info"));
 
         QWidget * widget_dial = new QWidget() ;
         QFormLayout * layout_dial = new QFormLayout() ;
         widget_dial->setLayout(layout_dial);
-
+        
         m_dial_history_size = new QSpinBox(this);
         m_dial_history_size->setRange(0, 20);
         int dial_history_size = m_config["dialpanel.history_length"].toInt();
@@ -209,44 +209,43 @@ void ConfigWidget::_insert_function_tab()
         QWidget * widget_history = new QWidget() ;
         QFormLayout * layout_history = new QFormLayout() ;
         widget_history->setLayout(layout_history);
-
+        
         m_history_sbox = new QSpinBox(this);
         m_history_sbox->setRange(1, 20);
         m_history_sbox->setValue(m_config["historysize"].toUInt());
         layout_history->addRow(tr("History size"), m_history_sbox);
-
+        
     m_function_tabwidget->addTab(widget_history, tr("History"));
-
+        
         QWidget * widget_contacts = new QWidget() ;
         QFormLayout * layout_contacts = new QFormLayout() ;
         widget_contacts->setLayout(layout_contacts);
-
+        
         m_contactssize_sbox = new QSpinBox(this);
         m_contactssize_sbox->setRange(1, 500);
         m_contactssize_sbox->setValue(m_config["guioptions.contacts-max"].toUInt());
         layout_contacts->addRow(tr("Contacts' max number"), m_contactssize_sbox);
-
+        
         m_contactswidth_sbox = new QSpinBox(this);
         m_contactswidth_sbox->setRange(0, 20);
         m_contactswidth_sbox->setValue(m_config["guioptions.contacts-width"].toUInt());
         layout_contacts->addRow(tr("Contacts per row (0 = auto)"), m_contactswidth_sbox);
-
-        // To be re-enabled when transfer features will come back
-        /*m_contacts_dblclick = new QComboBox(this);
+        
+        m_contacts_dblclick = new QComboBox(this);
         foreach (QString key, m_dblclick_actions.keys()) {
             m_contacts_dblclick->addItem(m_dblclick_actions[key], key);
         }
         int i_contacts_dblclick = m_contacts_dblclick->findData (m_config["doubleclick.searchpanel"]);
         m_contacts_dblclick->setCurrentIndex(i_contacts_dblclick);
-        layout_contacts->addRow(tr("Double-click action"), m_contacts_dblclick);*/
-
+        layout_contacts->addRow(tr("Double-click action"), m_contacts_dblclick);
+        
     m_function_tabwidget->addTab(widget_contacts, tr("Contacts"));
 
         QWidget * widget_queues = new QWidget() ;
         QGridLayout * layout_queues = new QGridLayout() ;
         layout_queues->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
         widget_queues->setLayout(layout_queues);
-
+        
         int line = 0;
         int ncol = 1;
         foreach(ColorLevelStruct color, m_queue_colors) {
@@ -310,7 +309,7 @@ void ConfigWidget::_insert_function_tab()
             maxwidthwanted = 200;
         m_maxWidthWanted->setValue(maxwidthwanted);
         layout_switchboard->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
-
+        
         m_switchboard_dblclick = new QComboBox(this);
         foreach (QString key, m_dblclick_actions.keys()) {
             m_switchboard_dblclick->addItem(m_dblclick_actions[key], key);
@@ -402,7 +401,7 @@ void ConfigWidget::_insert_guisetting_tab()
     m_systrayed->setChecked(m_config["systrayed"].toBool());
     layout4->addRow(m_systrayed);
 
-    // The value displayed is the opposite of the bool in memory
+    // The value displayed is the inverse of the bool in memory
     m_unique = new QCheckBox(tr("Allow multiple instances of XiVO Client"), this);
     m_unique->setChecked(!m_config["uniqueinstance"].toBool());
     layout4->addRow(new WarningWidget<QCheckBox>(m_unique, reboot_message));
