@@ -27,25 +27,15 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __FUNCTESTS_H__
+#define __FUNCTESTS_H__
 
-#include <baseengine.h>
-
-#include "powerawareapplication.h"
-#include "mainwidget.h"
-
-struct ExecObjects {
-    PowerAwareApplication *app;
-    MainWidget *win;
-    BaseEngine *baseengine;
-    bool initOK;
-};
-
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
-
-int main(int, char **);
+/* Gives access to all members to be able to control them from a PyXiVOClient
+ * instance
+ */
+#ifdef FUNCTESTS
+#define protected public
+#define private public
+#endif
 
 #endif

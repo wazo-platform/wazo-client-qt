@@ -4,13 +4,17 @@ exists(versions.mak) {
     error(Missing file versions.mak. Please do 'make versions')
 }
 
-DEBUGON = $$(DEBUG)
-
+DEBUG_MODE = $$(DEBUG)
 CONFIG -= debug
-contains(DEBUGON, "yes" ) {
+contains(DEBUG_MODE, yes) {
     CONFIG += debug
     CONFIG -= release
     message(">> Debug Build <<")
+}
+
+FUNCTESTS_MODE = $$(FUNCTESTS)
+contains(FUNCTESTS_MODE, yes) {
+    DEFINES += FUNCTESTS
 }
 
 !build_pass:message('XiVO version    :' $${XIVOVER})

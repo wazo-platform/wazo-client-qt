@@ -30,15 +30,20 @@
 #ifndef __PYXIVOCLIENT_H__
 #define __PYXIVOCLIENT_H__
 
-#include <QString>
+#include "main.h"
+#include "pyxivoclientthread.h"
 
-class PyXiVOClient {
+class PyXiVOClient
+{
     public:
         PyXiVOClient();
-        void launch(const QString & args = "xivoclient");
+        void launch(char * args = "");
+        void exit();
 
     private:
-        void exit();
+        ExecObjects m_exec_obj;
+        PyXiVOClientThread *m_thread;
+        QTimer *m_timer;
 };
 
 #endif

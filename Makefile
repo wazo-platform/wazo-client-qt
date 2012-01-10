@@ -51,10 +51,10 @@ tests:
 
 functests:
 	@$(MAKE) -s versions
-	@$(MAKE) os-baselib
-	@$(MAKE) os-xletlib
-	@$(MAKE) os-xlets
-	@$(MAKE) os-xivoclient-bin-dll
+	@$(MAKE) os-baselib FUNCTESTS=yes
+	@$(MAKE) os-xletlib FUNCTESTS=yes
+	@$(MAKE) os-xlets FUNCTESTS=yes
+	@$(MAKE) os-xivoclient-bin-dll FUNCTESTS=yes
 	ln -sf libpyxivoclient.so bin/_pyxivoclient.so
 	@echo
 	@echo "To use the Python module, do:"
@@ -62,6 +62,7 @@ functests:
 	@echo "$$ export PYTHONPATH=\$$PYTHONPATH:$$PWD/bin"
 	@echo "$$ python"
 	@echo ">>> import _pyxivoclient as xivoclient"
+	@echo ">>> help(xivoclient)"
 
 # Example : os-all -> linux-all
 os-%:

@@ -27,25 +27,29 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __PYXIVOCLIENTTHREAD_H__
+#define __PYXIVOCLIENTTHREAD_H__
 
-#include <baseengine.h>
+#include <QThread>
 
-#include "powerawareapplication.h"
-#include "mainwidget.h"
+#include "main.h"
 
-struct ExecObjects {
-    PowerAwareApplication *app;
-    MainWidget *win;
-    BaseEngine *baseengine;
-    bool initOK;
+class PyXiVOClientThread : public QThread
+{
+    Q_OBJECT
+
+    public:
+        PyXiVOClientThread(int argc, char **argv);
+        void run();
+        ExecObjects execObjects();
+
+    public slots:
+        void updateApp();
+
+    private:
+        ExecObjects m_exec_obj;
+        int m_argc;
+        char **m_argv;
 };
-
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
-
-int main(int, char **);
 
 #endif

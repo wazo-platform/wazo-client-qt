@@ -27,17 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __MAINWIDGET_H__
 #define __MAINWIDGET_H__
 
 #include <QtGui>
 
-#include "xlet.h"
-#include "directorypanel.h"
+#include <functests.h>
+
+class XLet;
 
 /*! \brief Main window class
  */
@@ -167,6 +164,10 @@ class MainWidget : public QMainWindow
         QDateTime m_launchDateTime;
 
         QClipboard * m_clipboard;
+
+/* #ifdef FUNCTESTS */
+/*     friend class PyXiVOClient; */
+/* #endif */
 };
 
 #endif

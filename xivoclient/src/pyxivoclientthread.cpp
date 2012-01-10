@@ -27,25 +27,42 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#include <ctime>
 
-#include <baseengine.h>
+#include "pyxivoclientthread.h"
 
-#include "powerawareapplication.h"
-#include "mainwidget.h"
+PyXiVOClientThread::PyXiVOClientThread(int argc, char **argv) {
+    m_argc = argc;
+    m_argv = argv;
+}
 
-struct ExecObjects {
-    PowerAwareApplication *app;
-    MainWidget *win;
-    BaseEngine *baseengine;
-    bool initOK;
-};
+void PyXiVOClientThread::run()
+{
+    m_exec_obj = init_xivoclient(m_argc, m_argv);
+    m_exec_obj.win->m_lab1->setText("bouh");
+    qDebug() << m_exec_obj.win->m_lab2->text();
 
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
+    exec();
+    // int ret = run_xivoclient(m_exec_obj);
 
-int main(int, char **);
+    clean_xivoclient(m_exec_obj);
 
-#endif
+    // while(true) {
+    //     qDebug() << "loop";
+    //     m_exec_obj.app->syncX();
+    //     m_exec_obj.app->processEvents();
+    //     m_exec_obj.app->sendPostedEvents();
+    //     sleep(1);
+    // }
+}
+
+ExecObjects PyXiVOClientThread::execObjects()
+{
+    return m_exec_obj;
+}
+
+void PyXiVOClientThread::updateApp()
+{
+    m_exec_obj.app->processEvents();
+    m_exec_obj.app->sendPostedEvents();
+}

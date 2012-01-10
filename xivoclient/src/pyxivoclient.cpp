@@ -27,30 +27,65 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cstdlib>
+#include <ctime>
+
 #include <QString>
 #include <QStringList>
 
-#include <cstdlib>
-
 #include "main.h"
+
 #include "pyxivoclient.h"
 
 PyXiVOClient::PyXiVOClient()
 {
 }
 
-void PyXiVOClient::launch(const QString & args)
+void PyXiVOClient::launch(char *args)
 {
     // Parse args
-    QStringList arg_list = args.split(" ");
+    QStringList arg_list = QString(args).split(" ");
+    arg_list.push_front("xivoclient");
     char **argv = (char **) malloc(arg_list.size() * sizeof(char *));
     for (int i = 0 ; i < arg_list.size() ; i++) {
-        argv[i] = arg_list[i].toUtf8().data();
+        argv[i] = (char *) malloc((arg_list.at(i).size() +1) * sizeof(char));
+        strcpy(argv[i], arg_list.at(i).toUtf8().data());
     }
 
-    main(arg_list.size(), argv);
+    int argc = arg_list.size();
+
+    // m_exec_obj = init_xivoclient(argc, argv);
+    // m_exec_obj.win->m_lab1->setText("bouh");
+    // qDebug() << m_exec_obj.win->m_lab2->text();
+
+    // int ret = run_xivoclient(m_exec_obj);
+
+    // clean_xivoclient(m_exec_obj);
+
+    m_thread = new PyXiVOClientThread(argc, argv);
+    m_thread->start();
+
+    sleep(1);
+    m_thread->execObjects().win->hide();
+    qDebug() << "show";
+    m_thread->execObjects().win->show();
+
+    // m_timer = new QTimer();
+    // QObject::connect(m_timer, SIGNAL(timeout()),
+    //                  m_thread, SLOT(updateApp()));
+    // m_timer->start(100);
 }
 
 void PyXiVOClient::exit()
 {
+    qDebug() << "exit";
+    m_thread->execObjects().win->m_quitact->trigger();
+
+    // m_timer->stop();
+    // QObject::disconnect(m_timer, SIGNAL(timeout()),
+    //            m_thread, SLOT(updateApp));
+    while(m_thread->isRunning()) {
+        sleep(1);
+    }
+    delete m_thread;
 }

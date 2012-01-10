@@ -36,26 +36,18 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 
-#include "baseengine.h"
+#include <baseengine.h>
+#include <phonenumber.h>
+
 #include "mainwidget.h"
 #include "powerawareapplication.h"
-#include "phonenumber.h"
 
-struct ExecObjects {
-    PowerAwareApplication *app;
-    MainWidget *win;
-    BaseEngine *baseengine;
-};
+#include "main.h"
 
-/*! \brief program entry point
- *
- * Set some static Qt parameters for using QSettings,
- * instantiate a MainWidget window and a BaseEngine object.
- *
- * \sa MainWidget, BaseEngine
- */
-int main(int argc, char **argv)
+// argc has to be a reference, or QCoreApplication will segfault
+ExecObjects init_xivoclient(int & argc, char **argv)
 {
+    ExecObjects ret;
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
@@ -69,13 +61,14 @@ int main(int argc, char **argv)
 
     QString profile = "default-user";
     QString msg = "";
-    for (int argi = 0; argi < argc - 1 ; argi ++) {
-        QString argn(argv[argi + 1]);
-        if(! PhoneNumber::isURI(argn))
-            profile = argn;
+    for (int i = 1; i < argc; i ++) {
+        QString arg_str(argv[i]);
+        if(! PhoneNumber::isURI(arg_str))
+            profile = arg_str;
         else
-            msg = argn;
+            msg = arg_str;
     }
+
 
     if (! msg.isEmpty()) {
         // send message if there is an argument.
@@ -116,7 +109,8 @@ int main(int argc, char **argv)
     if (shallbeunique && app->isRunning()) {
         qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
         // do not create a new application, just activate the currently running one
-        return 0;
+        ret.initOK = false;
+        return ret;
     }
 
     settings->setValue("profile/lastused", profile);
@@ -146,10 +140,39 @@ int main(int argc, char **argv)
     QObject::connect(app, SIGNAL(messageReceived(const QString &)),
                      b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
 
-    int ret = app->exec();
+    ret.app = app;
+    ret.win = window;
+    ret.baseengine = b_engine;
+    ret.initOK = true;
+    return ret;
+}
 
-    delete window;
+int run_xivoclient(ExecObjects exec_obj)
+{
+    if (exec_obj.initOK == true)
+        return exec_obj.app->exec();
+    else
+        return 1;
+}
+
+void clean_xivoclient(ExecObjects exec_obj)
+{
+    delete exec_obj.win;
     // BaseEngine is already deleted by MainWidget
-    delete app;
+    delete exec_obj.app;
+}
+
+/*! \brief program entry point
+ *
+ * Set some static Qt parameters for using QSettings,
+ * instantiate a MainWidget window and a BaseEngine object.
+ *
+ * \sa MainWidget, BaseEngine
+ */
+int main(int argc, char **argv)
+{
+    ExecObjects exec_obj= init_xivoclient(argc, argv);
+    int ret = run_xivoclient(exec_obj);
+    clean_xivoclient(exec_obj);
     return ret;
 }
