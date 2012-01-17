@@ -84,27 +84,29 @@ ServicesPanel::ServicesPanel(QWidget * parent)
     groupBox2->setAlignment(Qt::AlignLeft);
     groupBox2->hide();
     QGridLayout *gridlayout2 = new QGridLayout(groupBox2);
+
+    QHBoxLayout * helplayout = new QHBoxLayout();
     QLabel * helpicon = new QLabel(this);
     helpicon->setPixmap(QPixmap(":/images/services/help.png").scaledToHeight(18, Qt::SmoothTransformation));
-    gridlayout2->addWidget(helpicon, line, 0);
-    gridlayout2->addWidget(new QLabel(
-        tr("Please enter a destination to activate the checkboxes")),
-        line++, 1, 1, -1);
-    gridlayout2->addItem(new QSpacerItem(0, 18, QSizePolicy::Fixed), line++, 0);
+    helplayout->addWidget(helpicon);
+    QLabel * helplabel = new QLabel(
+        tr("Please enter a destination to activate the checkboxes"));
+    helplayout->addWidget(helplabel,Qt::AlignLeft);
+    gridlayout2->addLayout(helplayout, line++, 0, 1, -1);
 
-    m_nofwd = new QRadioButton(tr("No call forward"), this);
-    m_uncfwd = new QRadioButton(m_capalegend["fwdunc"], this);
-    m_otherfwd = new QRadioButton(tr("Simple call forwards"), this);
+    gridlayout2->addItem(new QSpacerItem(0, 18, QSizePolicy::Fixed), line++, 0);
 
     m_fwdmode = new QButtonGroup(this);
     m_fwdmode->setExclusive(true);
-    m_fwdmode->addButton(m_nofwd);
 
+    m_nofwd = new QRadioButton(tr("No call forward"), this);
+    m_fwdmode->addButton(m_nofwd);
     gridlayout2->addWidget(m_nofwd, line++, 0, 1, 2);
 
     foreach (QString capa, fwdcapas) {
         if (m_capas.contains(capa)) {
             if (capa == "fwdunc") {
+                m_uncfwd = new QRadioButton(m_capalegend["fwdunc"], this);
                 m_fwdmode->addButton(m_uncfwd);
                 /* m_forward will have pointers (through WaitingWidget) to one
                  * QRadioButton and some QCheckBoxes.
@@ -114,6 +116,7 @@ ServicesPanel::ServicesPanel(QWidget * parent)
             } else {
                 // If the "simple forwarding calls" is not there yet
                 if (! m_fwdmode->buttons().contains(m_otherfwd)) {
+                    m_otherfwd = new QRadioButton(tr("Simple call forwards"), this);
                     m_fwdmode->addButton(m_otherfwd);
                     gridlayout2->addWidget(m_otherfwd, line++, 0, 1, 2);
                 }
@@ -138,18 +141,12 @@ ServicesPanel::ServicesPanel(QWidget * parent)
     forwardModeChanged();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
-    if (m_capas.contains("enablevoicemail") ||
-        m_capas.contains("incallfilter") ||
-        m_capas.contains("enablednd")) {
-        groupBox1->show();
-        vlayout->addWidget(groupBox1);
-    }
-    if (m_capas.contains("fwdrna") ||
-        m_capas.contains("fwdbusy") ||
-        m_capas.contains("fwdunc")) {
-        groupBox2->show();
-        vlayout->addWidget(groupBox2);
-    }
+    groupBox1->show();
+    vlayout->addWidget(groupBox1);
+
+    groupBox2->show();
+    vlayout->addWidget(groupBox2);
+
     vlayout->addStretch(1);
 
     // connect signals/slots
@@ -206,8 +203,9 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
         foreach (QString capa, fwdcapas) {
             QString enablecapa = "enable" + capa.mid(3);
             QString destcapa   = "dest"   + capa.mid(3);
-            if (deltaConfig.keys().contains(enablecapa)
-                || deltaConfig.keys().contains(destcapa)) {
+            if (m_capas.contains(capa)
+                && (deltaConfig.keys().contains(enablecapa)
+                    || deltaConfig.keys().contains(destcapa))) {
 
                 CallForwardStruct callforward = localCallForward(capa);
                 m_forward[capa]->widget()->setChecked(callforward.enabled);
@@ -328,8 +326,10 @@ void ServicesPanel::chkoptToggled(bool b)
 void ServicesPanel::forwardModeChanged()
 {
     foreach (QString capa, fwdcapas) {
-        updateCheckboxEnabled(capa);
-        updateTextboxEnabled(capa);
+        if (m_capas.contains(capa)) {
+            updateCheckboxEnabled(capa);
+            updateTextboxEnabled(capa);
+        }
     }
 }
 
