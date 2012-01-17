@@ -69,3 +69,9 @@ const ChannelInfo * MockBaseEngine::channel(const QString &xchannelid) const
 {
     return this->m_channels[xchannelid];
 }
+
+QHash<QString, XInfo *> MockBaseEngine::iterover(const QString &listname) const
+{
+    QHash<QString, XInfo *> ret;
+    return ret;
+}

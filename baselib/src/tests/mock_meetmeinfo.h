@@ -27,38 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __BASEENGINE_H__
-#define __BASEENGINE_H__
+#ifndef __MEETMEINFO_H__
+#define __MEETMEINFO_H__
 
-#include <QMap>
-#include <QHash>
+#include <QString>
+#include <QStringList>
+#include <QVariantMap>
 
-#include "mock_phoneinfo.h"
-#include "mock_channelinfo.h"
-
-class QString;
-class XInfo;
-
-class MockBaseEngine
+class MockMeetmeInfo : public XInfo
 {
     public:
-        MockBaseEngine();
-        void setPhone (const QString &, PhoneInfo *);
-        const PhoneInfo * phone(const QString &) const;
-        void setUser (const QString &, UserInfo *);
-        const UserInfo * user (const QString &) const;
-        void setChannel (const QString &, ChannelInfo *);
-        const ChannelInfo * channel (const QString &) const;
-        QHash<QString, XInfo *> iterover(const QString & listname) const;
+        MockMeetmeInfo(const QString &, const QString &);
+        void setConfig(const QVariantMap &);
+        const QVariantMap & channels() const;
 
     private:
-        QMap<QString, PhoneInfo *> m_phones;
-        QMap<QString, UserInfo *> m_users;
-        QMap<QString, ChannelInfo *> m_channels;
+        QVariantMap config;
 };
 
-typedef MockBaseEngine BaseEngine;
-
-extern MockBaseEngine * b_engine;
+typedef MockMeetmeInfo MeetmeInfo;
 
 #endif

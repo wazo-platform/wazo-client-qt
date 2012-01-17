@@ -23,4 +23,5 @@ SOURCES += $${ROOT_DIR}/src/tests/*.cpp
 # Mock classes inclusions can safely ignore this.
 QMAKE_CXXFLAGS += "-include tests/mock_baseengine.h" \
                   "-include tests/mock_phoneinfo.h" \
-                  "-include tests/mock_channelinfo.h"
+                  "-include tests/mock_channelinfo.h" \
+                  "-include tests/mock_meetmeinfo.h"
