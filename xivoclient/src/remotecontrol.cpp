@@ -35,6 +35,7 @@
 #include "remotecontrol.h"
 
 RemoteControl::RemoteControl(ExecObjects exec_obj)
+    : m_no_error(true)
 {
     m_exec_obj = exec_obj;
     m_server = new QLocalServer;
@@ -57,7 +58,6 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
 
 RemoteControl::~RemoteControl()
 {
-    m_client_cnx->flush();
     m_server->close();
 }
 
@@ -92,8 +92,9 @@ void RemoteControl::processCommands()
 
 void RemoteControl::ackCommand()
 {
-    QString ack = QString(m_test_ok && m_no_error ? "OK" : "KO");
+    QString ack = QString((m_test_ok && m_no_error) ? "OK" : "KO");
     m_client_cnx->write(ack.toUtf8().data());
+    m_client_cnx->flush();
 }
 
 void RemoteControl::error(const QString &error_string)
