@@ -51,21 +51,27 @@
 #include "searchdialog.h"
 #include "csvstream.h"
 
-QStringList contacts_index = ( QStringList()
-                               << "firstname"
-                               << "lastname"
-                               << "phonenumber"
-                               << "emailaddress"
-                               << "company"
-                               << "faxnumber"
-                               << "mobilenumber" );
-
 /*! \brief Constructor
  */
 MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
     : XLet(parent)
 {
     setTitle( tr("Personal Directory") );
+
+    m_headers << "firstname"
+              << "lastname"
+              << "phonenumber"
+              << "emailaddress"
+              << "company"
+              << "faxnumber"
+              << "mobilenumber";
+    m_max_lengths << 40
+                  << 40
+                  << 20
+                  << 60
+                  << 40
+                  << 20
+                  << 20;
 
     m_searchBox = new SearchDialog(this);
     connect(m_searchBox, SIGNAL(findNext()), this, SLOT(findNext()));
@@ -106,7 +112,7 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
     columnNames.append(tr("Company"));
     columnNames.append(tr("Fax Number"));
     columnNames.append(tr("Mobile Number"));
-    m_table->setColumnCount(contacts_index.size());
+    m_table->setColumnCount(m_headers.size());
     m_table->setHorizontalHeaderLabels(columnNames);
     m_table->setSortingEnabled(true);
     vlayout->addWidget(m_table);
@@ -233,13 +239,13 @@ void MyLocalDirPanel::saveToFile(QFile & file)
         return;
     CsvStream out(&file);
     // write header line
-    out << contacts_index;
+    out << m_headers;
 
     // write all entries
     for(int i = 0; i < m_table->rowCount(); i++)
     {
         QStringList records;
-        for(int j = 0; j < contacts_index.size(); j++)
+        for(int j = 0; j < m_headers.size(); j++)
         {
             QTableWidgetItem * item = m_table->item(i, j);
             QString text;
@@ -323,37 +329,44 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
         m_table->setRowCount( row + 1 );
         if(firstNameCol >= 0)
         {
-            QTableWidgetItem * itemFirstName = new QTableWidgetItem( record[firstNameCol] );
+            record[firstNameCol].truncate(m_max_lengths[firstNameCol]);
+            QTableWidgetItem * itemFirstName = new QTableWidgetItem(record[firstNameCol]);
             m_table->setItem( row, 0, itemFirstName );
         }
         if(lastNameCol >= 0)
         {
-            QTableWidgetItem * itemLastName = new QTableWidgetItem( record[lastNameCol] );
+            record[lastNameCol].truncate(m_max_lengths[lastNameCol]);
+            QTableWidgetItem * itemLastName = new QTableWidgetItem(record[lastNameCol]);
             m_table->setItem( row, 1, itemLastName );
         }
         if(phonenumberCol >= 0)
         {
-            QTableWidgetItem * itemPhoneNumber = new QTableWidgetItem( record[phonenumberCol] );
+            record[phonenumberCol].truncate(m_max_lengths[phonenumberCol]);
+            QTableWidgetItem * itemPhoneNumber = new QTableWidgetItem(record[phonenumberCol]);
             m_table->setItem( row, 2, itemPhoneNumber );
         }
         if(emailCol >= 0)
         {
-            QTableWidgetItem * itemEmail = new QTableWidgetItem( record[emailCol] );
+            record[emailCol].truncate(m_max_lengths[emailCol]);
+            QTableWidgetItem * itemEmail = new QTableWidgetItem(record[emailCol]);
             m_table->setItem( row, 3, itemEmail );
         }
         if(companyCol >= 0)
         {
-            QTableWidgetItem * itemCompany = new QTableWidgetItem( record[companyCol] );
+            record[companyCol].truncate(m_max_lengths[companyCol]);
+            QTableWidgetItem * itemCompany = new QTableWidgetItem(record[companyCol]);
             m_table->setItem( row, 4, itemCompany );
         }
         if(faxnumberCol >= 0)
         {
-            QTableWidgetItem * itemFaxNumber = new QTableWidgetItem( record[faxnumberCol] );
+            record[faxnumberCol].truncate(m_max_lengths[faxnumberCol]);
+            QTableWidgetItem * itemFaxNumber = new QTableWidgetItem(record[faxnumberCol]);
             m_table->setItem( row, 5, itemFaxNumber );
         }
         if(mobilenumberCol >= 0)
         {
-            QTableWidgetItem * itemMobileNumber = new QTableWidgetItem( record[mobilenumberCol] );
+            record[mobilenumberCol].truncate(m_max_lengths[mobilenumberCol]);
+            QTableWidgetItem * itemMobileNumber = new QTableWidgetItem(record[mobilenumberCol]);
             m_table->setItem( row, 6, itemMobileNumber );
         }
     }

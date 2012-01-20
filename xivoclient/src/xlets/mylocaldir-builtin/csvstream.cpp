@@ -37,8 +37,14 @@
  */
 CsvStream::CsvStream(QIODevice * device)
     : QTextStream(device),
-      fieldSeparator(','), textDelimiter('"')
+      fieldSeparator(','), textDelimiter('"'),
+      m_line_num(1)
 {
+    setCodec("UTF-8");
+}
+
+bool CsvStream::atEnd() {
+    return QTextStream::atEnd() || m_line_num > (max_line_num + 1);
 }
 
 /*! \brief read a line
@@ -96,6 +102,7 @@ QStringList CsvStream::readRecords()
         } while(i != line.end() && *i != fieldSeparator);
     }
     records.append(record);
+    m_line_num ++;
     return records;
 }
 
@@ -122,5 +129,3 @@ CsvStream & CsvStream::operator<< (const QStringList records)
     }
     return *this;
 }
-
-

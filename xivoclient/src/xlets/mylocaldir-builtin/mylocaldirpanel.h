@@ -72,6 +72,8 @@ class MyLocalDirPanel : public XLet
         QString getBackupFile() const;
         ExtendedTableWidget * m_table;  //!< Table widget to display contacts
         SearchDialog * m_searchBox;  //!< Search dialog box
+        QStringList m_headers;
+        QList<unsigned> m_max_lengths;
 };
 
 #endif /* __MYLOCALDIRPANEL_H__ */

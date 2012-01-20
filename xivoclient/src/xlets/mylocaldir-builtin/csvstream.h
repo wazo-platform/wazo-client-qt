@@ -43,13 +43,15 @@ class CsvStream : public QTextStream
 {
     public:
         CsvStream(QIODevice *device);
+        bool atEnd();
         QStringList readRecords();
         CsvStream& operator<< (const QStringList);
 
     private:
         QChar fieldSeparator;   //!< separator between fields (coma by default)
         QChar textDelimiter;    //!< string delimiter (double quote by default)
+        unsigned m_line_num;
+        static const unsigned max_line_num = 10000;
 };
 
 #endif
-
