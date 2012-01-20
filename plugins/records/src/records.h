@@ -117,6 +117,7 @@ class SearchWidget : public QWidget
         int m_nfilterlines;
 
         QLabel * m_filterstitle;
+        QLabel * m_filterstitle2;
         QPushButton * m_addbutton;
         QPushButton * m_andorbutton;
         QPushButton * m_requestbutton;

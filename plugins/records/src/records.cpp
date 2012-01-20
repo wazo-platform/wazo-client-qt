@@ -221,9 +221,7 @@ void XletRecords::recordResults(const QVariantMap & p)
         if (returncode == "ok")
             m_searchwidget->Lookup();
         else
-            QMessageBox::warning(NULL, tr("Tag"),
-                                 tr("You attempted to change tag for id %1.\n"
-                                    "The return code is %2.").arg(id).arg(returncode));
+            QMessageBox::warning(NULL, tr("Tag"), tr("Action not authorized"));
     } else if (function == "comment") {
         QString id = p.value("id").toString();
         QString returncode = p.value("returncode").toString();
@@ -395,7 +393,7 @@ void XletRecords::playRecord(bool state)
 void XletRecords::saveToFile(const QString &filename, void *data)
 {
     QString target = QDir::temp().absoluteFilePath(QFileInfo(filename).fileName());
-    //qDebug() << Q_FUNC_INFO << filename << target;
+    qDebug() << Q_FUNC_INFO << filename << target;
     b_engine->saveToFile(target);
 
     // stop playin any other record
@@ -454,6 +452,7 @@ SearchWidget::SearchWidget(QWidget * parent)
     // fetch last
 
     m_filterstitle = new QLabel(this);
+    m_filterstitle2 = new QLabel(this);
     m_addbutton = new QPushButton(this);
     m_andorbutton = new QPushButton(this);
     m_requestbutton = new QPushButton(this);
@@ -463,14 +462,16 @@ SearchWidget::SearchWidget(QWidget * parent)
     AddSearchField();
 
     m_searchlayout->addWidget(m_filterstitle, 0, 0);
+    m_searchlayout->addWidget(m_filterstitle2, 1, 0);
     m_searchlayout->addWidget(m_addbutton, 0, 1);
     m_searchlayout->addWidget(m_andorbutton, 1, 1);
     m_searchlayout->addWidget(m_requestbutton, 0, 5);
 
     m_filterstitle->setText(tr("Search Filter(s)"));
+    m_filterstitle2->setText(tr("Logic condition"));
     m_addbutton->setIcon(QIcon(":/images/add.png"));
     m_andorbutton->setFont(QFont("", 12));
-    m_andorbutton->setText("|");
+    m_andorbutton->setText(tr("OR"));
     m_andorbutton->setProperty("operator", "or");
     m_requestbutton->setText(tr("Lookup"));
 
@@ -500,11 +501,11 @@ void SearchWidget::DrawSearchFields()
 
 void SearchWidget::SwitchAndOrMode()
 {
-    if(m_andorbutton->text() == "|") {
-        m_andorbutton->setText("&&");
+    if(m_andorbutton->text() == tr("OR")) {
+        m_andorbutton->setText(tr("AND"));
         m_andorbutton->setProperty("operator", "and");
     } else {
-        m_andorbutton->setText("|");
+        m_andorbutton->setText(tr("OR"));
         m_andorbutton->setProperty("operator", "or");
     }
 }
@@ -562,6 +563,11 @@ void SearchWidget::Lookup()
 
     QVariantMap command;
     command["class"] = "records-campaign";
+    command["function"] = "getprops";
+    b_engine->sendJsonCommand(command);
+    command.clear();
+
+    command["class"] = "records-campaign";
     command["function"] = "search";
 
     QVariantList searchitems;
@@ -573,11 +579,6 @@ void SearchWidget::Lookup()
     }
     command["searchitems"] = searchitems;
     command["searchoperator"] = m_andorbutton->property("operator").toString();
-    b_engine->sendJsonCommand(command);
-
-    command.clear();
-    command["class"] = "records-campaign";
-    command["function"] = "getprops";
     b_engine->sendJsonCommand(command);
 }
 
