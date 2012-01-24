@@ -89,6 +89,7 @@ class XletRecords : public XLet
         CommonTableProperties * m_ctp;
         CommonTableWidget * m_ctwidget;
         QVariantMap m_tags;
+        QHash<QString,QString> m_filenames;
 
         // for records playing
         QPushButton  *m_clickbutton;

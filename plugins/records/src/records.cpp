@@ -133,7 +133,7 @@ void XletRecords::layoutChanged()
             QPushButton *btn = new QPushButton(QIcon(":/images/player_play.png"), "", this);
             btn->setFlat(true);
             btn->setProperty("id"      , model->row2id(i));
-            btn->setProperty("filename", idx.sibling(i,4).data());
+            btn->setProperty("filename", m_filenames[model->row2id(i)]);
             btn->setProperty("state"   , "stopped");
 
             connect(btn, SIGNAL(clicked(bool)), this, SLOT(playRecord(bool)));
@@ -199,9 +199,16 @@ void XletRecords::recordResults(const QVariantMap & p)
         QVariantList qvl = p.value("payload").toList();
         b_engine->tree()->rmPath("records");
         QVariantMap qvm;
+        m_filenames.clear();
+
         foreach (QVariant r, qvl) {
-            QString id = r.toMap().value("id").toString();
-            qvm[id] = r.toMap();
+            QString id  = r.toMap().value("id").toString();
+            QMap<QString,QVariant> val = r.toMap();
+
+            m_filenames[id] = val["filename"].toString();
+            val["filename"] = QFileInfo(val["filename"].toString()).fileName();
+		
+            qvm[id] = val;
         }
         b_engine->tree()->populate("records", qvm);
         emit update(qvl.size());
