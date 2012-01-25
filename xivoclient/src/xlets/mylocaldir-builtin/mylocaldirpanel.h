@@ -67,6 +67,7 @@ class MyLocalDirPanel : public XLet
     private:
         void loadFromFile(QFile & file);
         void saveToFile(QFile & file);
+        void addCell(int row, int col, const QString &data);
         int findCol(QStringList, QStringList);
         QString getSaveFile() const;
         QString getBackupFile() const;
