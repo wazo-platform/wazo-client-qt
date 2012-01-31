@@ -1711,14 +1711,6 @@ QString BaseEngine::servicePutForward(const QString & capa, bool b, const QStrin
     return sendJsonCommand(command);
 }
 
-/*! \brief send a featursget command to the cti server */
-void BaseEngine::askServices()
-{
-    QVariantMap command;
-    command["class"] = "featuresget";
-    sendJsonCommand(command);
-}
-
 void BaseEngine::fetchIPBXList()
 {
     QVariantMap command;

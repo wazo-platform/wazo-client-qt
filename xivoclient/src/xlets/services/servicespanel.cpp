@@ -175,8 +175,6 @@ ServicesPanel::ServicesPanel(QWidget * parent)
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(m_fwdmode, SIGNAL(buttonReleased(QAbstractButton *)),
             this, SLOT(forwardModeChanged()));
-
-    b_engine->askServices();
 }
 
 void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap & datamap)
