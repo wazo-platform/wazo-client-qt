@@ -15,7 +15,7 @@ fi
 XC_DIR=$1
 MINGW_DIR=$2
 QT_DIR=$3
-RES_DIR=./resources
+RES_DIR=$XC_DIR/cross/resources
 DEST_DIR=/tmp/xivoclient-win
 
 rm -rf $DEST_DIR
@@ -27,7 +27,7 @@ cp -r ${RES_DIR}/{gpl.txt,xivoicon.ico,xivoicon_un.ico,xivo.bmp} $DEST_DIR
 # Qt libs
 rm -rf $DEST_DIR/qtlibs
 mkdir $DEST_DIR/qtlibs
-cp $MINGW_DIR/bin/{libstdc++-6.dll,mingwm10.dll} $DEST_DIR/qtlibs
+cp $MINGW_DIR/bin/libstdc++-6.dll $DEST_DIR/qtlibs
 cp $QT_DIR/bin/\
 {QtCore4.dll,\
 QtGui4.dll,\
@@ -39,7 +39,8 @@ QtXml4.dll,\
 QtXmlPatterns4.dll,\
 libeay32.dll,\
 libgcc_s_dw2-1.dll,\
-ssleay32.dll} $DEST_DIR/qtlibs
+ssleay32.dll,\
+mingwm10.dll} $DEST_DIR/qtlibs
 rm -rf $DEST_DIR/qtlibs/{imageformats,sqldrivers}
 mkdir $DEST_DIR/qtlibs/{imageformats,sqldrivers}
 cp -r $QT_DIR/plugins/imageformats/*.dll $DEST_DIR/qtlibs/imageformats
@@ -80,7 +81,6 @@ SetCompressor /FINAL /SOLID lzma
 !define MUI_HEADERIMAGE
   !define MUI_HEADERIMAGE_BITMAP xivo.bmp
   !define MUI_HEADERIMAGE_UNBITMAP xivo.bmp
-
 
 Name "XiVO Client \${FULLVERSION}"
 OutFile "xivoclient-inst.exe"

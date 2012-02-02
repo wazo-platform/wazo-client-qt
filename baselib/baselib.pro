@@ -41,8 +41,9 @@ MOC_DIR = $$ROOT_DIR/obj
 OBJECTS_DIR = $$ROOT_DIR/obj
 RCC_DIR = $$ROOT_DIR/obj
 
-debug {
-    LIBS += -lgcov
-    QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 --coverage
-    QMAKE_LDFLAGS += -g -fprofile-arcs -ftest-coverage  -O0 --coverage
-}
+# This adds test-coverage infos
+# debug {
+#     LIBS += -lgcov
+#     QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 --coverage
+#     QMAKE_LDFLAGS += -g -fprofile-arcs -ftest-coverage  -O0 --coverage
+# }
