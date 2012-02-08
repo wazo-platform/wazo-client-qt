@@ -364,9 +364,8 @@ void ServicesPanel::forwardLostFocus()
 
     m_forward[capa]->lock();
     m_forwarddest[capa]->lock();
-    m_replyids[capa] = b_engine->servicePutForward(capa,
-                                                   m_forward[capa]->widget()->isChecked(),
-                                                   fdest);
+    bool status = fdest.isEmpty() ? false : m_forward[capa]->widget()->isChecked();
+    m_replyids[capa] = b_engine->servicePutForward(capa, status, fdest);
 }
 
 /*!
