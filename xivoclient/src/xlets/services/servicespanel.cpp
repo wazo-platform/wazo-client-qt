@@ -278,7 +278,7 @@ void ServicesPanel::updateCheckboxEnabled(const QString & capa)
 {
     if (m_forwarddest[capa]->locked()) { // Waiting server
         m_forwarddest[capa]->widget()->setEnabled(false);
-    } else if (localCallForward(capa).destination.isEmpty()) { // No destination
+    } else if (m_forwarddest[capa]->widget()->text().isEmpty()) { // No destination
         m_forward[capa]->widget()->setChecked(false);
         m_forward[capa]->widget()->setEnabled(false);
     } else if (capa == "fwdunc") { // Unconditional call forward
@@ -364,7 +364,7 @@ void ServicesPanel::forwardLostFocus()
 
     m_forward[capa]->lock();
     m_forwarddest[capa]->lock();
-    bool status = fdest.isEmpty() ? false : m_forward[capa]->widget()->isChecked();
+    bool status = m_forward[capa]->widget()->isChecked();
     m_replyids[capa] = b_engine->servicePutForward(capa, status, fdest);
 }
 
