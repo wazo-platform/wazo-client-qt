@@ -172,13 +172,16 @@ int run_xivoclient(ExecObjects exec_obj)
 
 void clean_xivoclient(ExecObjects exec_obj)
 {
-    delete exec_obj.win;
 
-    // BaseEngine is already deleted by MainWidget
+    if (exec_obj.initOK) {
+        delete exec_obj.win;
+
+        // BaseEngine is already deleted by MainWidget
 
 #ifdef FUNCTESTS
-    delete exec_obj.rc;
+        delete exec_obj.rc;
 #endif
+    }
 
     delete exec_obj.app;
 }
