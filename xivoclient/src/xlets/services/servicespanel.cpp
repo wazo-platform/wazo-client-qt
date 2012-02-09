@@ -212,9 +212,6 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
                 m_forward[capa]->unlock();
                 m_forwarddest[capa]->unlock();
 
-                updateCheckboxEnabled(capa);
-                updateTextboxEnabled(capa);
-
                 // Automatic change of mode
                 if (capa == "fwdunc") {
                     if (callforward.enabled) {
@@ -234,6 +231,8 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
                     forwardModeChanged();
                 }
             }
+            updateCheckboxEnabled(capa);
+            updateTextboxEnabled(capa);
         }
 
         // Reconnect signals
