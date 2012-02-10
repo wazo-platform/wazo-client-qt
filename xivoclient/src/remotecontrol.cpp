@@ -68,8 +68,8 @@ void RemoteControl::newConnection()
             this, SLOT(processCommands()));
 }
 
-#define RC_COMMAND(fct_name)     {if (command == #fct_name) m_test_ok = m_test_ok && fct_name();}
-#define RC_COMMAND_ARG(fct_name) {if (command == #fct_name) m_test_ok = m_test_ok && fct_name(command_words);}
+#define RC_COMMAND(fct_name)     {if (command == #fct_name) m_test_ok = m_test_ok || fct_name();}
+#define RC_COMMAND_ARG(fct_name) {if (command == #fct_name) m_test_ok = m_test_ok || fct_name(command_words);}
 
 void RemoteControl::processCommands()
 {
@@ -80,11 +80,14 @@ void RemoteControl::processCommands()
         QStringList command_words = command.split(",");
         command = command_words.takeFirst();
 
-        m_test_ok = true;
+        m_test_ok = false;
         RC_COMMAND(i_stop_the_xivo_client);
         RC_COMMAND(i_go_to_the_xivo_client_configuration);
         RC_COMMAND(i_close_the_xivo_client_configuration);
         RC_COMMAND_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3);
+        RC_COMMAND_ARG(then_the_xlet_identity_shows_name_as_1_2);
+        RC_COMMAND_ARG(then_the_xlet_identity_shows_server_name_as_field_1_modified);
+        RC_COMMAND_ARG(then_the_xlet_identity_shows_phone_number_as_1);
         ackCommand();
         m_no_error = true;
     }

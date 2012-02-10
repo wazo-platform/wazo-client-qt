@@ -27,55 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __REMOTECONTROL_H__
-#define __REMOTECONTROL_H__
-
 #ifdef FUNCTESTS
 
-#include <QObject>
+#include "xlets/identity/identity.h"
 
-#include "main.h"
+#include "remotecontrol.h"
 
-class QLocalServer;
-class QLocalSocket;
-
-class RemoteControl : public QObject
+bool RemoteControl::then_the_xlet_identity_shows_name_as_1_2(const QStringList &args)
 {
-    Q_OBJECT
+    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
+    QLabel *fullname = xlet->findChild<QLabel*>(QString("fullname"));
+    QString args_fullname = args.join(" ");
+    return fullname->text() == args_fullname;
+}
 
-    public:
-        RemoteControl(ExecObjects);
-        void pause(unsigned);
-        ~RemoteControl();
+bool RemoteControl::then_the_xlet_identity_shows_server_name_as_field_1_modified(const QStringList &args)
+{
+    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
+    QLabel *fullname = xlet->findChild<QLabel*>(QString("fullname"));
+    QString hostname = args[0];
+    return fullname->toolTip().endsWith(hostname);
+}
 
-    public:
-        bool i_stop_the_xivo_client();
-        bool i_go_to_the_xivo_client_configuration();
-        bool i_close_the_xivo_client_configuration();
-        bool i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QStringList &);
-        bool then_the_xlet_identity_shows_name_as_1_2(const QStringList &);
-        bool then_the_xlet_identity_shows_server_name_as_field_1_modified(const QStringList &);
-        bool then_the_xlet_identity_shows_phone_number_as_1(const QStringList &);
+bool RemoteControl::then_the_xlet_identity_shows_phone_number_as_1(const QStringList &args)
+{
+    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
+    QLabel *phonenum = xlet->findChild<QLabel*>(QString("phonenum"));
+    QString args_phonenum = args[0];
+    return phonenum->text() == args_phonenum;
+}
 
-    public slots:
-        void error(const QString &);
-
-    private slots:
-        void newConnection();
-        void processCommands();
-
-    private:
-        void ackCommand();
-
-        ExecObjects m_exec_obj;
-        bool m_test_ok;
-        bool m_no_error;
-
-        QString m_socket_name;
-        QLocalServer *m_server;
-        QLocalSocket *m_client_cnx;
-};
-
-#endif /* ifdef FUNCTESTS */
-
-#endif /* ifndef __FUNCTESTS_H__ */
+#endif

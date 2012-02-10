@@ -127,7 +127,7 @@ class MainWidget : public QMainWindow
 
         // Widgets for Xlets
         QTabWidget *m_tabwidget;        //!< Area to display messages, services and histories
-        QSet<XLet *> m_xletlist;
+        QHash<QString, XLet *> m_xletlist;
 
         bool m_presence;
 

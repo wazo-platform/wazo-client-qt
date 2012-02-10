@@ -734,7 +734,7 @@ void MainWidget::engineStarted()
             bool withscrollbar = m_dockoptions[xletid].contains("s");
             XLet *xlet = XLetFactory::spawn(xletid, this);
             if (xlet) {
-                m_xletlist.insert(xlet);
+                m_xletlist.insert(xletid, xlet);
                 xlet->doGUIConnects(this);
                 if (withscrollbar) {
                     QScrollArea *sa_ag = new QScrollArea(this);
@@ -891,10 +891,8 @@ void MainWidget::engineStopped()
     clearPresence();
 
     // delete all xlets
-    //qDebug() << "m_xletlist" << m_xletlist;
-    QSetIterator<XLet *> i(m_xletlist);
-    while (i.hasNext()) {
-        i.next()->deleteLater();
+    foreach (XLet *xlet, m_xletlist) {
+        xlet->deleteLater();
     }
     m_xletlist.clear();
 

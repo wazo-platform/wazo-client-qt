@@ -73,6 +73,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
     m_phonenum = new QLabel(this);
+    m_phonenum->setObjectName("phonenum");
     m_presencevalue = new QComboBox(this);
     m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_presencevalue->setProperty("function", "presence");
