@@ -87,10 +87,6 @@ void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
     }
     if (m_voicemailinfo == NULL)
         return;
-    qDebug() << b_engine->iterover("voicemails");
-    qDebug() << b_engine->voicemail("nothing");
-    qDebug() << b_engine->voicemail(ui->xvoicemailid());
-    qDebug() << Q_FUNC_INFO << m_voicemailinfo << m_voicemailinfo->id();
     if(svcstatus["enablevoicemail"].toBool()) {
         m_name->setText(tr("<b>VoiceMailBox %1</b>").arg(m_voicemailinfo->mailbox()));
         m_name->setToolTip(tr("VoiceMail activated on %1").arg(m_voicemailinfo->mailbox()));
