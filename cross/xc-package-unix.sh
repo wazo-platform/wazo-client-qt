@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
 function get_infos {
-    KERNEL="$(uname -r)"
-    ARCH="${KERNEL##*-}" # Gets i386 or amd64
+    UNAME_ARCH="$(uname -m)" # Gets i?86 or x86_64
+    case "$UNAME_ARCH" in
+        *86)
+            ARCH="i386"
+            ;;
+        *64)
+            ARCH="amd64"
+            ;;
+    esac
 
     LAST_GIT_TAG="$(git tag -l | tail -n 1)"
     LAST_GIT_TAG_COMMIT=$(git rev-list $LAST_GIT_TAG --max-count=1)
