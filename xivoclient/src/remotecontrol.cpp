@@ -88,6 +88,7 @@ void RemoteControl::processCommands()
         RC_COMMAND_ARG(then_the_xlet_identity_shows_name_as_1_2);
         RC_COMMAND_ARG(then_the_xlet_identity_shows_server_name_as_field_1_modified);
         RC_COMMAND_ARG(then_the_xlet_identity_shows_phone_number_as_1);
+        RC_COMMAND_ARG(then_the_xlet_identity_shows_a_voicemail_1);
         ackCommand();
         m_no_error = true;
     }

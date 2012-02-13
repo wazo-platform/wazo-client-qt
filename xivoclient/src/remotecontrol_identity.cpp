@@ -57,4 +57,25 @@ bool RemoteControl::then_the_xlet_identity_shows_phone_number_as_1(const QString
     return phonenum->text() == args_phonenum;
 }
 
+bool RemoteControl::then_the_xlet_identity_shows_a_voicemail_1(const QStringList &args)
+{
+    bool ret = true;
+
+    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
+    if (xlet == 0)
+        return false;
+    QLabel *vm_num = xlet->findChild<QLabel*>(QString("voicemail_num"));
+    if (vm_num == 0)
+        return false;
+    QString args_vm_num = args[0];
+
+    ret = ret && vm_num->text().endsWith(args_vm_num);
+
+    QPushButton * vm_button = xlet->findChild<QPushButton*>(QString("voicemail_button"));
+    QIcon vm_icon = vm_button->icon();
+    ret = ret && !vm_icon.isNull();
+
+    return ret;
+}
+
 #endif

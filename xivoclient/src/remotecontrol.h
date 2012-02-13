@@ -56,6 +56,7 @@ class RemoteControl : public QObject
         bool then_the_xlet_identity_shows_name_as_1_2(const QStringList &);
         bool then_the_xlet_identity_shows_server_name_as_field_1_modified(const QStringList &);
         bool then_the_xlet_identity_shows_phone_number_as_1(const QStringList &);
+        bool then_the_xlet_identity_shows_a_voicemail_1(const QStringList &);
 
     public slots:
         void error(const QString &);
