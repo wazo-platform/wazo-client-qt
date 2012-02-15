@@ -71,8 +71,8 @@
         <translation>Panel van huidige gebruikers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="286"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="306"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="287"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -83,7 +83,7 @@ Context: %2</source>
 Context: %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="336"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="337"/>
         <source>(Line %1)</source>
         <translation>(Lijn %1)</translation>
     </message>
@@ -219,33 +219,33 @@ Context: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="93"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Voicemailberichten %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="94"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="92"/>
         <source>VoiceMail activated on %1</source>
         <translation>Voicemail geactiveerd op %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="96"/>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="131"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="94"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="129"/>
         <source>VoiceMailBox %1</source>
         <translation>Voicemailberichten %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="97"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="95"/>
         <source>VoiceMail not activated on %1</source>
         <translation>Voicemail niet geactiveerd op %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="140"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="138"/>
         <source>%1 old</source>
         <translation>%1 oud</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="141"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="139"/>
         <source>%1 new</source>
         <translation>%1 nieuw</translation>
     </message>

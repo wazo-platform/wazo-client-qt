@@ -90,18 +90,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="91"/>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="132"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="93"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="135"/>
         <source>Please enter a destination to activate the checkboxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="95"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="102"/>
         <source>No call forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="97"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="119"/>
         <source>Simple call forwards</source>
         <translation type="unfinished"></translation>
     </message>

@@ -143,55 +143,59 @@ Gelieve uw versie te upgraden.</translation>
 <context>
     <name>BasePeerWidget</name>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="57"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="49"/>
         <source>&amp;Open a chat window</source>
         <translation>&amp;Open een gespreksvenster</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="58"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="50"/>
         <source>Open a chat window with this user</source>
         <translation>Open een gespreksvenster met deze gebruiker</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="64"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="56"/>
         <source>&amp;Remove</source>
         <translation>&amp;Verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="65"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="57"/>
         <source>Remove this peer from the panel</source>
         <translation>Verwijder deze gesprekspartner van het panel</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="69"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="61"/>
         <source>Re&amp;name</source>
         <translation>Her&amp;benoemen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="70"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="62"/>
         <source>Rename this peer</source>
         <translation>Deze gesprekspartner herbenoemen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="74"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="498"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="66"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="75"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="67"/>
         <source>Intercept call</source>
         <translation>Oproep onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="498"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
         <source>Cancel transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="524"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="534"/>
+        <source>Invite in conference room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Invite in meetme room %0</source>
-        <translation type="unfinished">Uitnodigen in de MMR %0</translation>
+        <translation type="obsolete">Uitnodigen in de MMR %0</translation>
     </message>
     <message>
         <source>Call this peer</source>
@@ -202,23 +206,23 @@ Gelieve uw versie te upgraden.</translation>
         <translation type="obsolete">&amp;Gsm bellen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="422"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="418"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="439"/>
         <source>&amp;Call</source>
         <translation>&amp;Bellen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="432"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="449"/>
         <source>Call &amp;mobile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="457"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="474"/>
         <source>&amp;Edit</source>
         <translation>&amp;Bewerken</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="474"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="491"/>
         <source>&amp;Hangup</source>
         <translation type="unfinished">&amp;Ophangen &amp;gesprek beëindigen</translation>
     </message>
@@ -243,7 +247,7 @@ Gelieve uw versie te upgraden.</translation>
         <translation type="obsolete">Uitnodigen in de MMR %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="559"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
         <source>Direct &amp;Transfer</source>
         <translation>Rechtstreeks &amp;Doorschakelen</translation>
     </message>
@@ -256,12 +260,12 @@ Gelieve uw versie te upgraden.</translation>
         <translation type="obsolete">Doorschakelen naar deze persoon</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="559"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
         <source>&amp;Indirect Transfer</source>
         <translation>&amp;Onrechtstreeks Doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="613"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="618"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
     </message>
@@ -270,24 +274,24 @@ Gelieve uw versie te upgraden.</translation>
         <translation type="obsolete">Doorschakelen naar voicemail</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="756"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="747"/>
         <source>XiVO Client - Removing %1 %2</source>
         <translation>XiVO Client - %1 %2 verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="757"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="748"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation> %1 %2 verwijderen
 Bent u zeker?</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="772"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="763"/>
         <source>Rename Item</source>
         <translation>Dit item herbenoemen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="772"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="763"/>
         <source>Rename %1 :</source>
         <translation>%1 herbenoemen:</translation>
     </message>
@@ -586,6 +590,14 @@ Busy lines: %6</source>
         <location filename="../src/xletlib/searchdialog.cpp" line="43"/>
         <source>Search :</source>
         <translation>Opzoeking:</translation>
+    </message>
+</context>
+<context>
+    <name>XLetExperimental</name>
+    <message>
+        <location filename="../src/xletlib/xlet.cpp" line="67"/>
+        <source>experimental</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
