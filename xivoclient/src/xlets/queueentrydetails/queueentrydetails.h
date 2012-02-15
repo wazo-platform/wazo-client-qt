@@ -42,7 +42,7 @@
 
 /*! \brief Display entries of a queue
  */
-class XLetQueueEntryDetails : public XLet
+class XLetQueueEntryDetails : public XLetExperimental
 {
     Q_OBJECT
 

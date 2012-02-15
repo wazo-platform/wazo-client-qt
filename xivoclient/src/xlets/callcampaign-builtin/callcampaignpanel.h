@@ -52,7 +52,7 @@
 
 /*! \brief CallCampaign Panel
  */
-class CallCampaignPanel : public XLet
+class CallCampaignPanel : public XLetExperimental
 {
     Q_OBJECT
 

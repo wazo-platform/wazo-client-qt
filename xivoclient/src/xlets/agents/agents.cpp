@@ -42,7 +42,7 @@ XLet* XLetAgentsPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletAgents::XletAgents(QWidget *parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     setTitle(tr("Agents' List (plain)"));
     m_gui_buttonsize = 10;

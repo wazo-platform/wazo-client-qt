@@ -47,7 +47,7 @@
  *
  * The agents in this queue and details are displayed
  */
-class XletQueueDetails : public XLet
+class XletQueueDetails : public XLetExperimental
 {
     Q_OBJECT
 

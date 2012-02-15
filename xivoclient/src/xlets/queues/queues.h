@@ -59,7 +59,7 @@ class XletQueuesConfigure : public QWidget
 
 /*! \brief Displays queues and their status
  */
-class XletQueues : public XLet, IPBXListener
+class XletQueues : public XLetExperimental, IPBXListener
 {
     Q_OBJECT
 

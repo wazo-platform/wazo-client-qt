@@ -36,7 +36,7 @@
 /*! \brief Constructor
  */
 CallCampaignPanel::CallCampaignPanel(QWidget *parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     qDebug() << Q_FUNC_INFO;
     setTitle(tr("Call Campaign"));

@@ -84,4 +84,15 @@ class XLETLIB_EXPORT XLet : public QWidget
         QString m_title;    //!< title of the XLet
 };
 
+class XLETLIB_EXPORT XLetExperimental : public XLet
+{
+    Q_OBJECT
+
+    public:
+        XLetExperimental(QWidget *parent=0);
+
+    protected:
+        void setTitle(const QString &title);
+};
+
 #endif

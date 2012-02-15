@@ -44,7 +44,7 @@
 
 /*! \brief Identity Display
  */
-class XletAgentsNext : public XLet
+class XletAgentsNext : public XLetExperimental
 {
     Q_OBJECT
 

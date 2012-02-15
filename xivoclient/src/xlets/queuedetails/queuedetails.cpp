@@ -43,7 +43,7 @@ XLet* XLetQueueDetailsPlugin::newXLetInstance(QWidget *parent)
 
 
 XletQueueDetails::XletQueueDetails(QWidget *parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     setTitle(tr("Members of a Queue"));
     m_gridlayout = new QGridLayout(this);

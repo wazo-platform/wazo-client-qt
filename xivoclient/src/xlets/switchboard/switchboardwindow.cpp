@@ -56,7 +56,7 @@ XLet* XLetSwitchboardPlugin::newXLetInstance(QWidget *parent)
  * initialize layout, attributes, etc.
  */
 XletSwitchBoard::XletSwitchBoard(QWidget *parent)
-    : XLet(parent), m_drawGrid(false),
+    : XLetExperimental(parent), m_drawGrid(false),
       m_trace_box(false), m_group_to_resize(0)
 {
     setTitle(tr("Switchboard"));

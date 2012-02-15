@@ -42,7 +42,7 @@ XLet* XLetQueueEntryDetailsPlugin::newXLetInstance(QWidget *parent)
 }
 
 XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     setTitle(tr("Calls of a Queue"));
     m_gridlayout = new QGridLayout(this);

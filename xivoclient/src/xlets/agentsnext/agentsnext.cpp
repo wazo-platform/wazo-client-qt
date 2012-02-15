@@ -56,7 +56,7 @@ XLet* XLetAgentsNextPlugin::newXLetInstance(QWidget *parent)
 #define NCOLS 3
 
 XletAgentsNext::XletAgentsNext(QWidget *parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     setTitle(tr("Agents' List (queue groups)"));
     m_glayout = new QGridLayout(this);

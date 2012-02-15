@@ -44,7 +44,7 @@
 
 /*! \brief Display details about an agent
  */
-class XletAgentDetails : public XLet
+class XletAgentDetails : public XLetExperimental
 {
     Q_OBJECT
 

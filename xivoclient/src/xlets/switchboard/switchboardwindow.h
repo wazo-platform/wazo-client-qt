@@ -48,7 +48,7 @@ class Group;
  *
  * This widget use a PeersLayout to display PeerItems in a grid.
  */
-class XletSwitchBoard : public XLet
+class XletSwitchBoard : public XLetExperimental
 {
     Q_OBJECT
 

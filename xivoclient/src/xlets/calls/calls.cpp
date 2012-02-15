@@ -43,7 +43,7 @@ XLet* XLetCallsPlugin::newXLetInstance(QWidget *parent)
 
 
 XletCalls::XletCalls(QWidget *parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     setTitle(tr("Calls"));
     QVBoxLayout *toplayout = new QVBoxLayout(this);

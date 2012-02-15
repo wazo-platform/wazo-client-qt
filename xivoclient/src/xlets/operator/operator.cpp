@@ -42,7 +42,7 @@ XLet* XLetOperatorPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletOperator::XletOperator(QWidget * parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     m_glayout = new QGridLayout(this);
     m_lbl = new QLabel( "", this );

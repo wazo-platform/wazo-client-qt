@@ -56,3 +56,13 @@ void XLet::monitoredUserInfoDefined()
 {
     m_monitored_ui = b_engine->getXivoClientMonitored();
 }
+
+XLetExperimental::XLetExperimental(QWidget *parent)
+    : XLet(parent)
+{
+}
+
+void XLetExperimental::setTitle(const QString &title)
+{
+    XLet::setTitle(title + QString(" (%1)").arg(tr("experimental")) );
+}

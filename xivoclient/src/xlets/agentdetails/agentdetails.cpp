@@ -42,7 +42,7 @@ XLet* XLetAgentDetailsPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletAgentDetails::XletAgentDetails(QWidget *parent)
-    : XLet(parent)
+    : XLetExperimental(parent)
 {
     setTitle(tr("Agent Details"));
     m_linenum = 0;

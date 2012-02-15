@@ -43,7 +43,7 @@
 
 /*! \brief Operator widget used to answer and transfer calls
  */
-class XletOperator : public XLet
+class XletOperator : public XLetExperimental
 {
     Q_OBJECT
 

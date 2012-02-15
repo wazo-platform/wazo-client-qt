@@ -45,7 +45,7 @@
 
 /*! \brief Widget displaying the current open channels for a phone line.
  */
-class XletCalls : public XLet
+class XletCalls : public XLetExperimental
 {
     Q_OBJECT
 
