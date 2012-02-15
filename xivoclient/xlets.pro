@@ -10,11 +10,8 @@ SUBDIRS  = \
     src/xlets/history \
     src/xlets/identity \
     src/xlets/operator \
-    src/xlets/popcaastra \
     src/xlets/queues \
     src/xlets/queuedetails \
     src/xlets/queueentrydetails \
     src/xlets/services \
     src/xlets/switchboard \
-    src/xlets/videoxlet \
-    src/xlets/xletweb
