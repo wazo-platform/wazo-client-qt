@@ -256,14 +256,16 @@ void ServicesPanel::updatePhoneConfig(const QString &)
  */
 void ServicesPanel::updateTextboxEnabled(const QString & capa)
 {
-    if (m_forwarddest[capa]->locked()) { // Waiting server
-        m_forwarddest[capa]->widget()->setEnabled(false);
-    } else if (capa == "fwdunc") { // Unconditional call forward
-        m_forwarddest[capa]->widget()->setEnabled(true);
-    } else if (m_fwdmode->checkedButton() == m_otherfwd) {
-        m_forwarddest[capa]->widget()->setEnabled(true);
-    } else {
-        m_forwarddest[capa]->widget()->setEnabled(false);
+    if (m_capas.contains(capa)) {
+        if (m_forwarddest[capa]->locked()) { // Waiting server
+            m_forwarddest[capa]->widget()->setEnabled(false);
+        } else if (capa == "fwdunc") { // Unconditional call forward
+            m_forwarddest[capa]->widget()->setEnabled(true);
+        } else if (m_fwdmode->checkedButton() == m_otherfwd) {
+            m_forwarddest[capa]->widget()->setEnabled(true);
+        } else {
+            m_forwarddest[capa]->widget()->setEnabled(false);
+        }
     }
 }
 
@@ -275,20 +277,22 @@ void ServicesPanel::updateTextboxEnabled(const QString & capa)
  */
 void ServicesPanel::updateCheckboxEnabled(const QString & capa)
 {
-    if (m_forwarddest[capa]->locked()) { // Waiting server
-        m_forwarddest[capa]->widget()->setEnabled(false);
-    } else if (m_forwarddest[capa]->widget()->text().isEmpty()) { // No destination
-        m_forward[capa]->widget()->setChecked(false);
-        m_forward[capa]->widget()->setEnabled(false);
-    } else if (capa == "fwdunc") { // Unconditional call forward
-        m_forward[capa]->widget()->setEnabled(true);
-    } else if (m_fwdmode->checkedButton() == m_otherfwd) {
-        m_forward[capa]->widget()->setEnabled(true);
-    } else {
-        if (m_fwdmode->checkedButton() == m_nofwd) {
+    if (m_capas.contains(capa)) {
+        if (m_forwarddest[capa]->locked()) { // Waiting server
+            m_forwarddest[capa]->widget()->setEnabled(false);
+        } else if (m_forwarddest[capa]->widget()->text().isEmpty()) { // No destination
             m_forward[capa]->widget()->setChecked(false);
+            m_forward[capa]->widget()->setEnabled(false);
+        } else if (capa == "fwdunc") { // Unconditional call forward
+            m_forward[capa]->widget()->setEnabled(true);
+        } else if (m_fwdmode->checkedButton() == m_otherfwd) {
+            m_forward[capa]->widget()->setEnabled(true);
+        } else {
+            if (m_fwdmode->checkedButton() == m_nofwd) {
+                m_forward[capa]->widget()->setChecked(false);
+            }
+            m_forward[capa]->widget()->setEnabled(false);
         }
-        m_forward[capa]->widget()->setEnabled(false);
     }
 }
 
