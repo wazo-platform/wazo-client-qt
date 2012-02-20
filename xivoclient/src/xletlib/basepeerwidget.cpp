@@ -566,7 +566,8 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
     QStringList numbers;
     foreach (const QString phonexid, m_ui_remote->phonelist()) {
         if (const PhoneInfo * p = b_engine->phone(phonexid)) {
-            numbers << p->number();
+            if (p->number().length() > 0)
+                numbers << p->number();
         }
     }
     if (! m_ui_remote->mobileNumber().isEmpty()) {
