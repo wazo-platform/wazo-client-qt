@@ -210,7 +210,7 @@ void Popup::saveandclose()
     QRegExp re_formentry("^XIVOFORM-");
 
     QVariantMap qv;
-    QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>(re_formentry);
+    QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>();
     for(int i = 0; i < lineedits.count(); i++) {
         qv[lineedits[i]->objectName()] = lineedits[i]->text();
     }
