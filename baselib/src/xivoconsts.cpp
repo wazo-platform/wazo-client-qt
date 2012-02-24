@@ -27,14 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include "xivoconsts.h"
 
 const char __datebuild_client__[] = DATEBUILD;
-const char __xivo_version__[] = XIVOVER;
+const char __xivo_version__[] = XC_VERSION;
 const char __git_hash__[] = GIT_HASH;
 const char __git_date__[] = GIT_DATE;
 const char __presence_on__[]  = "available";

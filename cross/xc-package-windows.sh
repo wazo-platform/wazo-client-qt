@@ -1,15 +1,23 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -e
 
 function usage {
-	echo $0 xivoclient_dir mingw_dir qt_dir
+    echo $0 xivoclient_dir mingw_dir qt_dir
 }
 
 if [ $# -lt 3 ]
 then
-	usage
-	exit
+    usage
+    exit
+fi
+
+if [ -r versions.mak ]
+then
+    source versions.mak
+else
+    echo "No versions.mak file found. Please run qmake."
+    exit 1
 fi
 
 XC_DIR=$1
@@ -59,16 +67,10 @@ cp -r $XC_DIR/bin/*.dll $XC_DIR/bin/*.exe $DEST_DIR/xivoclient
 mkdir $DEST_DIR/xivoclient/plugins
 cp -r $XC_DIR/bin/plugins/*.dll $DEST_DIR/xivoclient/plugins
 
-XIVO_VERSION=XIVO_VERSION
-GIT_HASH=GIT_HASH
-GIT_DATE=GIT_DATE
-FULLVERSION=FULLVERSION
-
 cat > $DEST_DIR/installer.nsi <<!
-!define XIVO_VERSION ${XIVO_VERSION}
+!define XC_VERSION ${XC_VERSION}
 !define GIT_HASH ${GIT_HASH}
 !define GIT_DATE ${GIT_DATE}
-!define FULLVERSION "${XIVO_VERSION} (git ${GIT_HASH})"
 
 SetCompressor /FINAL /SOLID lzma
 
@@ -82,7 +84,7 @@ SetCompressor /FINAL /SOLID lzma
   !define MUI_HEADERIMAGE_BITMAP xivo.bmp
   !define MUI_HEADERIMAGE_UNBITMAP xivo.bmp
 
-Name "XiVO Client \${FULLVERSION}"
+Name "XiVO Client \${XC_VERSION}"
 OutFile "xivoclient-inst.exe"
 
 InstallDir \$PROGRAMFILES\XiVO\
@@ -179,7 +181,7 @@ Section "XiVO client executable" XivoclientExe ; components page
 
   \${If} \$CheckboxShortcutDesktopState == \${BST_CHECKED}
   \${OrIf} \${Silent}
-    CreateShortCut "\$DESKTOP\xivoclient.lnk" "\$INSTDIR\xivoclient.exe"
+    CreateShortCut "\$DESKTOP\XiVO Client.lnk" "\$INSTDIR\xivoclient.exe"
   \${EndIf}
 
   \${If} \$CheckboxShortcutStartState == \${BST_CHECKED}
@@ -249,11 +251,11 @@ LangString SHORTCUT_DESKTOP \${LANG_FRENCH}  "Ajouter un raccourci sur le &Burea
 LangString SHORTCUT_STARTMENU \${LANG_ENGLISH} "Add a Shortcut in Start &Menu"
 LangString SHORTCUT_STARTMENU \${LANG_FRENCH}  "Ajouter un raccourci dans le &Menu Démarrer"
 
-LangString START_XIVOCLIENT \${LANG_ENGLISH} "Start XiVO Client \${FULLVERSION}.lnk"
-LangString START_XIVOCLIENT \${LANG_FRENCH}  "Lancer XiVO Client \${FULLVERSION}.lnk"
+LangString START_XIVOCLIENT \${LANG_ENGLISH} "Start XiVO Client \${XC_VERSION}.lnk"
+LangString START_XIVOCLIENT \${LANG_FRENCH}  "Lancer XiVO Client \${XC_VERSION}.lnk"
 
-LangString REMOVE_XIVOCLIENT \${LANG_ENGLISH} "Remove XiVO Client \${FULLVERSION}.lnk"
-LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller XiVO Client \${FULLVERSION}.lnk"
+LangString REMOVE_XIVOCLIENT \${LANG_ENGLISH} "Remove XiVO Client \${XC_VERSION}.lnk"
+LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller XiVO Client \${XC_VERSION}.lnk"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -266,7 +268,7 @@ VIAddVersionKey /LANG=\${LANG_ENGLISH} "ProductName" "XiVO client"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "Comments" "Computer Telephony Integration (CTI) client for XiVO"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "CompanyName" "Proformatique"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileDescription" "XiVO client installer"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileVersion" "${XIVO_VERSION}-${GIT_HASH}"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileVersion" "${XC_VERSION}-${GIT_HASH}"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "LegalCopyright" "© 2007-2011, Proformatique"
 !
 

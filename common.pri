@@ -24,7 +24,7 @@ contains(FUNCTESTS_MODE, yes) {
 
 # add everything correctly escaped as a string
 
-DEFINES += XIVOVER=\"\\\"$${XIVOVER}\\\"\"
+DEFINES += XC_VERSION=\"\\\"$${XC_VERSION}\\\"\"
 DEFINES += GIT_HASH=\"\\\"$${GIT_HASH}\\\"\"
 DEFINES += GIT_DATE=\"\\\"$${GIT_DATE}\\\"\"
 DEFINES += DATEBUILD=\"\\\"$${DATEBUILD}\\\"\"

@@ -60,7 +60,7 @@ MainWidget::MainWidget()
     
     fetchConfig();
     
-    m_appliname = tr("Client %1").arg(XIVOVER);
+    m_appliname = tr("Client %1").arg(XC_VERSION);
 
     m_profilename = new QLabel(this);
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
@@ -711,7 +711,7 @@ void MainWidget::engineStarted()
 {
     setAppearance(b_engine->getCapaXlets());
     m_appliname = tr("Client %1 (%2 profile)")
-        .arg(XIVOVER)
+        .arg(XC_VERSION)
         .arg(b_engine->getCapaApplication());
 
     updateAppliName();
@@ -910,7 +910,7 @@ void MainWidget::engineStopped()
         setSystrayIcon("xivo-black");
 
     clearAppearance();
-    m_appliname = tr("Client %1").arg(XIVOVER);
+    m_appliname = tr("Client %1").arg(XC_VERSION);
     updateAppliName();
 }
 
@@ -1031,7 +1031,7 @@ void MainWidget::keyPressEvent(QKeyEvent * event)
  */
 void MainWidget::about()
 {
-    QString applicationVersion(XIVOVER);
+    QString applicationVersion(XC_VERSION);
     QString fetchlastone = QString("<a href=http://downloads.xivo.fr/xivo_cti_client/") +
 #if defined(Q_WS_X11)
         "linux/debian"

@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+if [ -r versions.mak ]
+then
+    source versions.mak
+else
+    echo "No versions.mak file found. Please run qmake."
+    exit 1
+fi
+
 function get_infos {
     UNAME_ARCH="$(uname -m)" # Gets i?86 or x86_64
     case "$UNAME_ARCH" in
@@ -10,28 +18,11 @@ function get_infos {
             ARCH="amd64"
             ;;
     esac
-
-    LAST_GIT_TAG="$(git tag -l | tail -n 1)"
-    LAST_GIT_TAG_COMMIT=$(git rev-list $LAST_GIT_TAG --max-count=1)
-
-    MAJOR_VERSION="${LAST_GIT_TAG:12:3}" # Gets 1.2, 1.3, etc.
-
-    CURRENT_COMMIT=$(git rev-list HEAD --max-count=1)
-    COMMIT_HASH=$(git log -1 --pretty=%h ${CURRENT_COMMIT})
-    COMMIT_DATE=$(git log -1 --pretty=%ct ${CURRENT_COMMIT})
-
-    if [ $CURRENT_COMMIT = $LAST_GIT_TAG_COMMIT ]
-    then
-        FULL_VERSION="${LAST_GIT_TAG:12}"
-    else
-        FULL_VERSION="${MAJOR_VERSION}-dev-${COMMIT_DATE}-${COMMIT_HASH}"
-    fi
 }
 get_infos
 
 function package-content {
-    GITDIR="$(git rev-parse --show-toplevel)"
-    cd "$GITDIR"
+    cd "$GIT_DIR"
 
     PKGDIR=pkg
     PKGROOT=$PKGDIR/root
@@ -94,7 +85,7 @@ function package-control {
 
     cat > pkg/control/control <<EOF
 Package: xivoclient
-Version: ${FULL_VERSION}
+Version: ${XC_VERSION}
 Architecture: ${ARCH}
 Maintainer: Proformatique Maintainance Team <technique@proformatique.com>
 Installed-Size: ${PKGSIZE}
@@ -119,7 +110,7 @@ function package {
 
     echo "2.0" > debian-binary
 
-    PACKAGE_PATH="$GITDIR/xivoclient-${FULL_VERSION}-${ARCH}.deb"
+    PACKAGE_PATH="$GIT_DIR/xivoclient-${XC_VERSION}-${ARCH}.deb"
     rm -f "$PACKAGE_PATH"
     ar -r "$PACKAGE_PATH" debian-binary control.tar.gz data.tar.gz
 }

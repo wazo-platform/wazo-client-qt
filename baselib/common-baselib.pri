@@ -7,9 +7,8 @@ exists(../common.pri) {
     BIN_DIR = $${GIT_DIR}/bin
 } else {
     ROOT_DIR = .
-    XIVOVER = 1.2
 
-    DEFINES += XIVOVER=\"\\\"$${XIVOVER}\\\"\"
+    DEFINES += XC_VERSION=\"\\\"unknown\\\"\"
     DEFINES += GIT_HASH=\"\\\"unknown\\\"\"
     DEFINES += GIT_DATE=\"\\\"unknown\\\"\"
     DEFINES += DATEBUILD=\"\\\"unknown\\\"\"
