@@ -4,7 +4,7 @@ TEMPLATE    = lib
 # hide_symbols avoids exporting all symbols from dll with gcc
 CONFIG      += dll hide_symbols
 
-TARGET      = $$qtLibraryTarget(xivoclient)
+TARGET      = xivoclient
 
 JSON_JSONQT_DIR = $${ROOT_DIR}/json_jsonqt/lib
 

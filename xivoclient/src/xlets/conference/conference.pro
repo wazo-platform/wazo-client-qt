@@ -5,6 +5,6 @@ SOURCES     = *.cpp
 TRANSLATIONS = $$ROOT_DIR/i18n/conference_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_nl.ts
 
-TARGET      = $$qtLibraryTarget(conferenceplugin)
+TARGET      = conferenceplugin
 
 RESOURCES = conference.qrc

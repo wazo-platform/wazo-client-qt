@@ -5,7 +5,7 @@ SOURCES     = outlook*.cpp
 TRANSLATIONS = $$ROOT_DIR/i18n/outlook_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/outlook_nl.ts
 
-TARGET      = $$qtLibraryTarget(outlookplugin)
+TARGET      = outlookplugin
 
 win32:LIBS  += -luuid -lole32 -loleaut32
 

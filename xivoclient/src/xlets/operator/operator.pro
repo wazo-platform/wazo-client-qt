@@ -5,6 +5,6 @@ SOURCES     = *.cpp
 TRANSLATIONS = $$ROOT_DIR/i18n/operator_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/operator_nl.ts
 
-TARGET      = $$qtLibraryTarget(operatorplugin)
+TARGET      = operatorplugin
 
 RESOURCES = operator.qrc

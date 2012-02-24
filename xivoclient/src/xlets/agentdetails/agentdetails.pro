@@ -5,6 +5,6 @@ SOURCES     = *.cpp
 TRANSLATIONS = $$ROOT_DIR/i18n/agentdetails_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/agentdetails_nl.ts
 
-TARGET      = $$qtLibraryTarget(agentdetailsplugin)
+TARGET      = agentdetailsplugin
 
 RESOURCES = agentdetails.qrc

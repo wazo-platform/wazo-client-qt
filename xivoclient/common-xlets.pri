@@ -13,6 +13,6 @@ macx:DESTDIR = $${BIN_DIR}/xivoclient.app/Contents/Resources/plugins
 LIBS += -L$${BIN_DIR}
 unix:LIBS += -lxivoclientxlets
 win32 {
-    release:LIBS += -lxivoclientxlets1
-    debug:LIBS += -lxivoclientxletsd1
+    release:LIBS += -lxivoclientxlets
+    debug:LIBS += -lxivoclientxletsd
 }

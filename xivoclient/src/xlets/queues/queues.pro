@@ -5,6 +5,6 @@ SOURCES     = *.cpp
 TRANSLATIONS = $$ROOT_DIR/i18n/queues_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queues_nl.ts
 
-TARGET      = $$qtLibraryTarget(queuesplugin)
+TARGET      = queuesplugin
 
 RESOURCES = queues.qrc

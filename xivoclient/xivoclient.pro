@@ -10,8 +10,8 @@ CONFIG += uitools
 
 unix:LIBS += -lxivoclientxlets
 win32 {
-    debug:LIBS += -lxivoclientxletsd1
-    release:LIBS += -lxivoclientxlets1
+    debug:LIBS += -lxivoclientxletsd
+    release:LIBS += -lxivoclientxlets
 }
 
 QT += xml

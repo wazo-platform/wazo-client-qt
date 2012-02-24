@@ -7,6 +7,6 @@ TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_nl.ts
 
 include($${ROOT_DIR}/qtaddons/qtcolorpicker/src/qtcolorpicker.pri)
 
-TARGET      = $$qtLibraryTarget(switchboardplugin)
+TARGET      = switchboardplugin
 
 RESOURCES = switchboard.qrc

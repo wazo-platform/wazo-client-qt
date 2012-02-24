@@ -7,7 +7,7 @@ CONFIG   += dll hide_symbols
 VERSION = $${XIVOVER}
 DEFINES += XLETLIB_LIBRARY
 
-TARGET      = $$qtLibraryTarget(xivoclientxlets)
+TARGET      = xivoclientxlets
 
 INCLUDEPATH += $${BASELIB_DIR}/src
 
