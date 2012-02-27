@@ -2,7 +2,8 @@ include(../../../common-xlets.pri)
 
 HEADERS     = outlook*.h
 SOURCES     = outlook*.cpp
-TRANSLATIONS = $$ROOT_DIR/i18n/outlook_fr.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/outlook_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/outlook_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/outlook_nl.ts
 
 TARGET      = outlookplugin

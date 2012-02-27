@@ -24,7 +24,8 @@ DESTDIR     = $${BIN_DIR}
 
 QT += network
 
-TRANSLATIONS  = $${ROOT_DIR}/baselib_fr.ts
+TRANSLATIONS += $${ROOT_DIR}/baselib_en.ts
+TRANSLATIONS += $${ROOT_DIR}/baselib_fr.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_nl.ts
 
 QMAKE_EXTRA_COMPILERS += updateqm

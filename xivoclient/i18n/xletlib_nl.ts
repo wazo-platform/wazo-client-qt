@@ -265,7 +265,7 @@ Gelieve uw versie te upgraden.</translation>
         <translation>&amp;Onrechtstreeks Doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="618"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="619"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
     </message>
@@ -274,24 +274,24 @@ Gelieve uw versie te upgraden.</translation>
         <translation type="obsolete">Doorschakelen naar voicemail</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="747"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="748"/>
         <source>XiVO Client - Removing %1 %2</source>
         <translation>XiVO Client - %1 %2 verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="748"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="749"/>
         <source>Removing %1 %2.
 Are you sure ?</source>
         <translation> %1 %2 verwijderen
 Bent u zeker?</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="763"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="764"/>
         <source>Rename Item</source>
         <translation>Dit item herbenoemen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="763"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="764"/>
         <source>Rename %1 :</source>
         <translation>%1 herbenoemen:</translation>
     </message>

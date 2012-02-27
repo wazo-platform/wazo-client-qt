@@ -18,7 +18,8 @@ DESTDIR = $${BIN_DIR}
 
 QT += gui
 
-TRANSLATIONS = $$ROOT_DIR/i18n/xletlib_fr.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_nl.ts
 
 RESOURCES += xletlib.qrc
