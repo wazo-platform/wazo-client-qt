@@ -1332,7 +1332,7 @@ void BaseEngine::popupError(const QString & errorid)
         if (versionslist.size() >= 2)
             errormsg = tr("Your client's major version (%1)\n"
                           "is not the same as the server's (%2).")
-                .arg(__xivo_version__)
+                .arg(__cti_protocol_version__)
                 .arg(versionslist[1]);
     } else if (errorid.startsWith("version_server:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
