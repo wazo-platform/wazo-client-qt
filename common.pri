@@ -1,4 +1,4 @@
-exists(../versions.mak) {
+exists(versions.mak) {
     include(versions.mak)
 } else {
     error(Missing file versions.mak. Please do 'qmake'.)
