@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<TS version="2.0" language="nl">
 <context>
     <name>CallWidget</name>
     <message>
@@ -24,14 +24,6 @@
         <translation>Schakel het kanaal door naar het gekozen opgebeld nummer </translation>
     </message>
     <message>
-        <source>&amp;Park the call</source>
-        <translation type="obsolete">&amp;De oproep parkeren</translation>
-    </message>
-    <message>
-        <source>Park this call</source>
-        <translation type="obsolete">Deze oproep parkeren</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="136"/>
         <source>Unknown</source>
         <translation>Onbekend</translation>
@@ -40,18 +32,6 @@
         <location filename="../src/xlets/calls/callwidget.cpp" line="138"/>
         <source>Conference room number %1</source>
         <translation>Vergaderkamer nummer %1</translation>
-    </message>
-    <message>
-        <source>Parked call in %1</source>
-        <translation type="obsolete">Geparkeerde oproep in %1</translation>
-    </message>
-    <message>
-        <source>Parked call</source>
-        <translation type="obsolete">Geparkeerde oproep</translation>
-    </message>
-    <message>
-        <source>%1 : %2</source>
-        <translation type="obsolete">%1 : %2</translation>
     </message>
 </context>
 <context>

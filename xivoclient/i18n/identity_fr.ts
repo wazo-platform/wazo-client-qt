@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="fr">
 <context>
     <name>IdentityAgent</name>
     <message>
@@ -48,18 +48,23 @@
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="209"/>
-        <source>Pause</source>
-        <translation>Retrait</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="204"/>
         <source>Unpause</source>
         <translation>Prêt</translation>
     </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="209"/>
+        <source>Pause</source>
+        <translation>Retrait</translation>
+    </message>
 </context>
 <context>
     <name>IdentityDisplay</name>
+    <message>
+        <location filename="../src/xlets/identity/identity.cpp" line="64"/>
+        <source>Identity</source>
+        <translation>Identité</translation>
+    </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="65"/>
         <source>Current User Panel</source>
@@ -75,11 +80,6 @@
         <location filename="../src/xlets/identity/identity.cpp" line="337"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="64"/>
-        <source>Identity</source>
-        <translation>Identité</translation>
     </message>
 </context>
 <context>
@@ -202,6 +202,11 @@ Contexte : %4</translation>
 <context>
     <name>IdentityVoiceMail</name>
     <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="50"/>
+        <source>call your voicemail</source>
+        <translation>Appeler votre messagerie vocale.</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Boîte %1&lt;/b&gt;</translation>
@@ -231,11 +236,6 @@ Contexte : %4</translation>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="139"/>
         <source>%1 new</source>
         <translation>%1 nouveau(x)</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="50"/>
-        <source>call your voicemail</source>
-        <translation>Appeler votre messagerie vocale.</translation>
     </message>
 </context>
 </TS>

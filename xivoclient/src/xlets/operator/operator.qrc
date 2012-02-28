@@ -2,6 +2,9 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/operator_fr.qm</file>
+        <file>../../../obj/operator_de.qm</file>
+        <file>../../../obj/operator_ja.qm</file>
+        <file>../../../obj/operator_it.qm</file>
         <file>../../../obj/operator_nl.qm</file>
     </qresource>
 </RCC>

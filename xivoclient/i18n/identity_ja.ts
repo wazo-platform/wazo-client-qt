@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja_JP">
+<TS version="2.0" language="ja">
 <context>
     <name>IdentityAgent</name>
     <message>
@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="195"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ログイン</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="204"/>

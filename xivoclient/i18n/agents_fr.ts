@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="fr">
 <context>
     <name>XletAgents</name>
     <message>
@@ -82,12 +82,6 @@ Contexte: %2</translation>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="363"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="368"/>
-        <source>Paused queues : %1</source>
-        <translation>Files en pause : %1</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/agents/agents.cpp" line="355"/>
         <source>No</source>
         <translation>Non</translation>
@@ -96,6 +90,12 @@ Contexte: %2</translation>
         <location filename="../src/xlets/agents/agents.cpp" line="360"/>
         <source>Yes</source>
         <translation>Oui</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agents/agents.cpp" line="363"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="368"/>
+        <source>Paused queues : %1</source>
+        <translation>Files en pause : %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="365"/>

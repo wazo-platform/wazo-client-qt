@@ -2,8 +2,10 @@
 <RCC version="1.0">
     <qresource>
         <file>xivo.qss</file>
-        <file>obj/xivoclient_de.qm</file>
         <file>obj/xivoclient_fr.qm</file>
+        <file>obj/xivoclient_de.qm</file>
+        <file>obj/xivoclient_ja.qm</file>
+        <file>obj/xivoclient_it.qm</file>
         <file>obj/xivoclient_nl.qm</file>
         <file>obj/xivoclient_ja.qm</file>
         <file>images/xivoicon.png</file>

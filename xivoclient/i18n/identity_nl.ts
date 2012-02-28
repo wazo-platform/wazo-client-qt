@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<TS version="2.0" language="nl">
 <context>
     <name>IdentityAgent</name>
     <message>
@@ -48,14 +48,14 @@
         <translation>Inloggen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="209"/>
-        <source>Pause</source>
-        <translation>Pauzeren</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="204"/>
         <source>Unpause</source>
         <translation>Klaar</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="209"/>
+        <source>Pause</source>
+        <translation>Pauzeren</translation>
     </message>
 </context>
 <context>
@@ -77,12 +77,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Server: %1
-Context: %2</source>
-        <translation type="obsolete">Server: %1
-Context: %2</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/identity/identity.cpp" line="337"/>
         <source>(Line %1)</source>
         <translation>(Lijn %1)</translation>
@@ -101,12 +95,6 @@ Context: %2</translation>
         <location filename="../src/xlets/identity/identityphone.cpp" line="219"/>
         <source>Phone %1</source>
         <translation>Telefoon %1</translation>
-    </message>
-    <message>
-        <source>Server: %1
-Context: %2</source>
-        <translation type="obsolete">Server: %1
-Context: %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="221"/>
@@ -177,10 +165,6 @@ Context: %4</source>
         <location filename="../src/xlets/identity/identityphone.cpp" line="342"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Indien geen antwoord doorschakelen naar %1</translation>
-    </message>
-    <message>
-        <source>Call Rec</source>
-        <translation type="obsolete">Opn. Oproep</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="344"/>

@@ -25,6 +25,9 @@ DESTDIR     = $${BIN_DIR}
 QT += network
 
 TRANSLATIONS += $${ROOT_DIR}/baselib_en.ts
+TRANSLATIONS += $${ROOT_DIR}/baselib_ja.ts
+TRANSLATIONS += $${ROOT_DIR}/baselib_de.ts
+TRANSLATIONS += $${ROOT_DIR}/baselib_it.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_fr.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_nl.ts
 

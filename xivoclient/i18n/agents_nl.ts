@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<TS version="2.0" language="nl">
 <context>
     <name>XletAgents</name>
     <message>
@@ -12,10 +12,6 @@
         <location filename="../src/xlets/agents/agents.cpp" line="51"/>
         <source>Agent</source>
         <translation>Agent</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation type="obsolete"> Opname</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="52"/>
@@ -64,10 +60,6 @@ Context: %2</source>
 Context: %2</translation>
     </message>
     <message>
-        <source>online with %1 (%2)</source>
-        <translation type="obsolete">online met %1 (%2)</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/agents/agents.cpp" line="297"/>
         <location filename="../src/xlets/agents/agents.cpp" line="303"/>
         <source>Agent logged on %1</source>
@@ -89,12 +81,6 @@ Context: %2</translation>
         <translation>Gegroepeerde wachtrijen: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="363"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="368"/>
-        <source>Paused queues : %1</source>
-        <translation>Gepauzeerde wachtrijen: %1</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/agents/agents.cpp" line="355"/>
         <source>No</source>
         <translation>Nee</translation>
@@ -103,6 +89,12 @@ Context: %2</translation>
         <location filename="../src/xlets/agents/agents.cpp" line="360"/>
         <source>Yes</source>
         <translation>Ja</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agents/agents.cpp" line="363"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="368"/>
+        <source>Paused queues : %1</source>
+        <translation>Gepauzeerde wachtrijen: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="365"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<TS version="2.0" language="nl">
 <context>
     <name>XletOperator</name>
     <message>
@@ -42,10 +42,6 @@
         <location filename="../src/xlets/operator/operator.cpp" line="57"/>
         <source>I. Cancel</source>
         <translation>Annuleren</translation>
-    </message>
-    <message>
-        <source>Park</source>
-        <translation type="obsolete">Parkeren</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="58"/>

@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="fr">
 <context>
     <name>BasePeerWidget</name>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="56"/>
-        <source>&amp;Remove</source>
-        <translation>&amp;Enlever</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="57"/>
-        <source>Remove this peer from the panel</source>
-        <translation>Enlever ce poste du tableau</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="418"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="439"/>
-        <source>&amp;Call</source>
-        <translation>&amp;Appeler</translation>
-    </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="49"/>
         <source>&amp;Open a chat window</source>
@@ -30,52 +14,14 @@
         <translation>Ouvrir une fenêtre de discussion avec cet utilisateur</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="491"/>
-        <source>&amp;Hangup</source>
-        <translation>&amp;Raccrocher</translation>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="56"/>
+        <source>&amp;Remove</source>
+        <translation>&amp;Enlever</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="66"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
-        <source>&amp;Intercept</source>
-        <translation>&amp;Intercepter</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
-        <source>Direct &amp;Transfer</source>
-        <translation>&amp;Transfert direct</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
-        <source>&amp;Indirect Transfer</source>
-        <translation>Transfert &amp;Indirect</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="474"/>
-        <source>&amp;Edit</source>
-        <translation>&amp;Modifier</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="619"/>
-        <source>Transfer to &amp;voice mail</source>
-        <translation>Transfert vers boite &amp;vocale</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="67"/>
-        <source>Intercept call</source>
-        <translation>Intercepter l&apos;appel</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="748"/>
-        <source>XiVO Client - Removing %1 %2</source>
-        <translation>XiVO Client - Enlever %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="749"/>
-        <source>Removing %1 %2.
-Are you sure ?</source>
-        <translation>Enlever %1 %2.
-Etes-vous sûr ?</translation>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="57"/>
+        <source>Remove this peer from the panel</source>
+        <translation>Enlever ce poste du tableau</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="61"/>
@@ -88,9 +34,36 @@ Etes-vous sûr ?</translation>
         <translation>Renommer ce poste</translation>
     </message>
     <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="66"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
+        <source>&amp;Intercept</source>
+        <translation>&amp;Intercepter</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="67"/>
+        <source>Intercept call</source>
+        <translation>Intercepter l&apos;appel</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="418"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="439"/>
+        <source>&amp;Call</source>
+        <translation>&amp;Appeler</translation>
+    </message>
+    <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="449"/>
         <source>Call &amp;mobile</source>
         <translation>Appeler &amp;mobile</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="474"/>
+        <source>&amp;Edit</source>
+        <translation>&amp;Modifier</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="491"/>
+        <source>&amp;Hangup</source>
+        <translation>&amp;Raccrocher</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
@@ -101,6 +74,33 @@ Etes-vous sûr ?</translation>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="534"/>
         <source>Invite in conference room</source>
         <translation>Inviter à la conférence</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
+        <source>Direct &amp;Transfer</source>
+        <translation>&amp;Transfert direct</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
+        <source>&amp;Indirect Transfer</source>
+        <translation>Transfert &amp;Indirect</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="619"/>
+        <source>Transfer to &amp;voice mail</source>
+        <translation>Transfert vers boite &amp;vocale</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="748"/>
+        <source>XiVO Client - Removing %1 %2</source>
+        <translation>XiVO Client - Enlever %1 %2</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="749"/>
+        <source>Removing %1 %2.
+Are you sure ?</source>
+        <translation>Enlever %1 %2.
+Etes-vous sûr ?</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="764"/>
@@ -185,6 +185,16 @@ Extensions : %2</translation>
         <translation>&amp;Composer</translation>
     </message>
     <message>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="84"/>
+        <source>Direct &amp;Transfer</source>
+        <translation>&amp;Transfert direct</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="85"/>
+        <source>&amp;Indirect Transfer</source>
+        <translation>Transfert &amp;Indirect</translation>
+    </message>
+    <message>
         <location filename="../src/xletlib/extendedtablewidget.cpp" line="117"/>
         <source>Send an E-mail</source>
         <translation>Envoyer un E-mail</translation>
@@ -200,16 +210,6 @@ Extensions : %2</translation>
 Are you sure ?</source>
         <translation>Suppression du contact.
 Etes-vous sûr(e) ?</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="84"/>
-        <source>Direct &amp;Transfer</source>
-        <translation>&amp;Transfert direct</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="85"/>
-        <source>&amp;Indirect Transfer</source>
-        <translation>Transfert &amp;Indirect</translation>
     </message>
 </context>
 <context>
@@ -242,11 +242,6 @@ Extension : %2</translation>
 </context>
 <context>
     <name>PeerWidget</name>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="335"/>
-        <source>(No callerid yet)</source>
-        <translation>(Callerid en attente)</translation>
-    </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="215"/>
         <source>Agent Number : %1
@@ -297,6 +292,11 @@ IPBXid : %3
 Contexte : %4
 Statut : %5
 Lignes occupées : %6</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="335"/>
+        <source>(No callerid yet)</source>
+        <translation>(Callerid en attente)</translation>
     </message>
 </context>
 <context>

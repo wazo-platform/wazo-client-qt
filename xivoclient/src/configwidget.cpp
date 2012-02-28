@@ -384,6 +384,7 @@ void ConfigWidget::_insert_guisetting_tab()
     m_locale_cbox->addItem(tr("System Language"), QString("default"));
     m_locale_cbox->addItem(tr("English"), QString("en_US"));
     m_locale_cbox->addItem(tr("French"), QString("fr_FR"));
+    m_locale_cbox->addItem(tr("Italian"), QString("it_IT"));
     m_locale_cbox->addItem(tr("Nederlands") + QString(" (%1)").arg(tr("incomplete")), QString("nl_NL"));
     m_locale_cbox->addItem(tr("German") + QString(" (%1)").arg(tr("incomplete")), QString("de_DE"));
     m_locale_cbox->addItem(tr("Japanese") + QString(" (%1)").arg(tr("incomplete")), QString("ja_JP"));

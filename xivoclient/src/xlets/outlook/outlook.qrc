@@ -2,6 +2,9 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/outlook_fr.qm</file>
+        <file>../../../obj/outlook_de.qm</file>
+        <file>../../../obj/outlook_ja.qm</file>
+        <file>../../../obj/outlook_it.qm</file>
         <file>../../../obj/outlook_nl.qm</file>
     </qresource>
 </RCC>

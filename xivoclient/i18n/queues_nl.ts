@@ -1,149 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
-<context>
-    <name>QueueRow</name>
-    <message>
-        <source>na</source>
-        <translation type="obsolete">nb</translation>
-    </message>
-    <message>
-        <source>Available agents : %1</source>
-        <translation type="obsolete">Beschikbare agenten: %1</translation>
-    </message>
-    <message>
-        <source>Estimated
-Holdtime</source>
-        <translation type="obsolete">GeschatteWachttijd</translation>
-    </message>
-    <message>
-        <source>Average waiting time before getting an agent,calculated by asterisk</source>
-        <translation type="obsolete">Gemiddelde wachttijd voor contact met een agent, berekend door Asterisk</translation>
-    </message>
-    <message>
-        <source>Connected</source>
-        <translation type="obsolete">Verbonden</translation>
-    </message>
-    <message>
-        <source>Number of agents in this queue</source>
-        <translation type="obsolete">Aantal agenten in deze wachtrij</translation>
-    </message>
-    <message>
-        <source>Available</source>
-        <translation type="obsolete">Beschikbaar</translation>
-    </message>
-    <message>
-        <source>Number of available agents in this queue</source>
-        <translation type="obsolete">Aantal beschikbare agenten in deze wachtrij</translation>
-    </message>
-    <message>
-        <source>Currently
-Talking</source>
-        <translation type="obsolete">Momenteel In gesprek</translation>
-    </message>
-    <message>
-        <source>Number of agents in this queue, currently talking</source>
-        <translation type="obsolete">Aantal agenten in deze wachtrij, die momenteel spreken</translation>
-    </message>
-    <message>
-        <source>Average
-Holdtime</source>
-        <translation type="obsolete">GemiddeldeWachttijd</translation>
-    </message>
-    <message>
-        <source>Average waiting time before getting an agent</source>
-        <translation type="obsolete">Gemiddelde wachttijd voor contact met een agent</translation>
-    </message>
-    <message>
-        <source>Max
-Holdtime</source>
-        <translation type="obsolete">Maximum Wachttijd</translation>
-    </message>
-    <message>
-        <source>Maximum waiting time before getting an agent</source>
-        <translation type="obsolete">Maximale wachttijd voor contact met een agent Maximum</translation>
-    </message>
-    <message>
-        <source>Joined</source>
-        <translation type="obsolete">Gegroepeerd</translation>
-    </message>
-    <message>
-        <source>Number of calls this queue has received</source>
-        <translation type="obsolete">Aantal oproepen die  wachtrij heeft ontvangen</translation>
-    </message>
-    <message>
-        <source>Linked</source>
-        <translation type="obsolete">Gelinkt</translation>
-    </message>
-    <message>
-        <source>Number of calls that were answered on this queue</source>
-        <translation type="obsolete">Aantal oproepen die werden beantwoord in deze wachtrij</translation>
-    </message>
-    <message>
-        <source>Lost</source>
-        <translation type="obsolete">Verloren</translation>
-    </message>
-    <message>
-        <source>Number of calls where the caller has left before getting an answer from an agent</source>
-        <translation type="obsolete">Aantal oproepen waarbij de beller heeft afgehaakt vóór contact met een agent</translation>
-    </message>
-    <message>
-        <source>Efficiency
-(%)</source>
-        <translation type="obsolete">Doeltreffendheid
-(%)</translation>
-    </message>
-    <message>
-        <source>Ratio (Linked) / (Joined) (%)</source>
-        <translation type="obsolete">Verhouding (gelinkt) / (gecontacteerd) (%)</translation>
-    </message>
-    <message>
-        <source>Conversation
-Time</source>
-        <translation type="obsolete">Gespreksduur</translation>
-    </message>
-    <message>
-        <source>Average length of a conversation</source>
-        <translation type="obsolete">Gemiddelde gespreksduur</translation>
-    </message>
-    <message>
-        <source>Quality of
-Service
-(%)</source>
-        <translation type="obsolete">Dienstverleningskwaliteit
-(%)</translation>
-    </message>
-    <message>
-        <source>Ratio (Number of calls answered in less than X sec) / (Number of calls answered) (%)</source>
-        <translation type="obsolete">Verhouding (aantal oproepen beantwoord in minder dan X sec) / (aantal beantwoorde oproepen) (%)</translation>
-    </message>
-    <message>
-        <source>Queues</source>
-        <translation type="obsolete">Wachtrijen</translation>
-    </message>
-    <message>
-        <source>Number of agents</source>
-        <translation type="obsolete">Aantal agenten</translation>
-    </message>
-    <message>
-        <source>Stats on Slice</source>
-        <translation type="obsolete">Statistieken van de periode</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation type="obsolete">Bezet</translation>
-    </message>
-    <message>
-        <source>Longest Wait</source>
-        <translation type="obsolete">Langste wachttijd</translation>
-    </message>
-</context>
+<TS version="2.0" language="nl">
 <context>
     <name>QueuesModel</name>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
@@ -218,7 +81,7 @@ Service
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
         <source>Maximum waiting time before getting an agent</source>
-        <translation type="unfinished">Maximale wachttijd voor contact met een agent Maximum</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
@@ -283,28 +146,24 @@ queues parameters for the Stats on slice:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="187"/>
-        <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
-        <source>The window is the period of time used to compute the statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display Queue</source>
-        <translation type="obsolete">Wachtrij weergeven</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/queues/queues.cpp" line="186"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
+        <location filename="../src/xlets/queues/queues.cpp" line="187"/>
+        <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/xlets/queues/queues.cpp" line="191"/>
         <source>Window (s)</source>
         <translation>Venster(s)</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
+        <source>The window is the period of time used to compute the statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

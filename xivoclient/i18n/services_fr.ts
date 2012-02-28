@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="fr">
 <context>
     <name>ServicesPanel</name>
     <message>
@@ -40,6 +40,11 @@
         <translation>Renvoi &amp;inconditionnel vers</translation>
     </message>
     <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="83"/>
+        <source>Call Forwards</source>
+        <translation>Renvois d&apos;appel</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="93"/>
         <location filename="../src/xlets/services/servicespanel.cpp" line="135"/>
         <source>Please enter a destination to activate the checkboxes</source>
@@ -54,11 +59,6 @@
         <location filename="../src/xlets/services/servicespanel.cpp" line="119"/>
         <source>Simple call forwards</source>
         <translation>Renvois d&apos;appel simples</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="83"/>
-        <source>Call Forwards</source>
-        <translation>Renvois d&apos;appel</translation>
     </message>
 </context>
 </TS>

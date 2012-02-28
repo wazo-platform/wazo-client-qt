@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="fr">
 <context>
     <name>QueuesModel</name>
     <message>
@@ -149,11 +149,6 @@ ainsi que les paramètres pour les statistiques:</translation>
         <translation>File d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
-        <source>The window is the period of time used to compute the statistics</source>
-        <translation>La fenêtre est la durée sur laquelle les statistiques sont calculées</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/queues/queues.cpp" line="186"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
@@ -167,6 +162,11 @@ ainsi que les paramètres pour les statistiques:</translation>
         <location filename="../src/xlets/queues/queues.cpp" line="191"/>
         <source>Window (s)</source>
         <translation>Fenêtre (s)</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
+        <source>The window is the period of time used to compute the statistics</source>
+        <translation>La fenêtre est la durée sur laquelle les statistiques sont calculées</translation>
     </message>
 </context>
 </TS>

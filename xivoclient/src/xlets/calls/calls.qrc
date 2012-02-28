@@ -4,6 +4,9 @@
         <file>../../../images/calls/leftarrow.png</file>
         <file>../../../images/calls/rightarrow.png</file>
         <file>../../../obj/calls_fr.qm</file>
+        <file>../../../obj/calls_de.qm</file>
+        <file>../../../obj/calls_ja.qm</file>
+        <file>../../../obj/calls_it.qm</file>
         <file>../../../obj/calls_nl.qm</file>
     </qresource>
 </RCC>

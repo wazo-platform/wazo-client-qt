@@ -1,145 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
-<context>
-    <name>BaseEngine</name>
-    <message>
-        <source>Received Services Data</source>
-        <translation type="obsolete">Gegevens ontvangen van Services</translation>
-    </message>
-    <message>
-        <source>Could not modify the Services data.</source>
-        <translation type="obsolete">De gegevens voor Services konden niet worden gewijzigd.</translation>
-    </message>
-    <message>
-        <source>Maybe Asterisk is down.</source>
-        <translation type="obsolete">Misschien werkt Asterisk momenteel niet.</translation>
-    </message>
-    <message>
-        <source>Server has sent an Error.</source>
-        <translation type="obsolete">De server heeft een foutmelding teruggestuurd.</translation>
-    </message>
-    <message>
-        <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
-        <translation type="obsolete">Uw registratienaam &lt;%1@%2&gt; wordt niet herkend door de XiVO CTI server op %3:%4.</translation>
-    </message>
-    <message>
-        <source>You entered a wrong login / password.</source>
-        <translation type="obsolete">U hebt een verkeerd(e) login/paswoord ingevoerd.</translation>
-    </message>
-    <message>
-        <source>Your profile identifier &lt;%1&gt; is not defined.</source>
-        <translation type="obsolete">Uw profielidentificatie &lt;%1&gt; is niet gedefinieerd.</translation>
-    </message>
-    <message>
-        <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
-        <translation type="obsolete">De XiVO CTI-server op %1:%2 heeft de laatste keepalive niet beantwoord.</translation>
-    </message>
-    <message>
-        <source>You defined an IP address %1 that is probably an unresolved host name.</source>
-        <translation type="obsolete">U hebt een IP-adres %1 gedefinieerd dat waarschijnlijk een onbekende hostnaam is.</translation>
-    </message>
-    <message>
-        <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
-        <translation type="obsolete">Socket time-out (~ 60 s): u hebt waarschijnlijk via een gateway, een onbestaand IP-adres %1 proberen te bereiken.</translation>
-    </message>
-    <message>
-        <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
-        <translation type="obsolete">Er lijkt een machine te werken op dit IP-adres %1, maar ofwel is er geen CTI-server actief, ofwel is uw poort %2 verkeerd.</translation>
-    </message>
-    <message>
-        <source>An error occurred on the network while attempting to join the IP address %1 :
-- no external route defined to access this IP address (~ no timeout)
-- this IP address is routed but there is no machine (~ 5 s timeout)
-- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).</source>
-        <translation type="obsolete">Er heeft zich een fout voorgedaan op het netwerk tijdens de poging om het IP-adres %1 te bereiken:
-- er is geen externe route gedefinieerd voor toegang tot dit IP-adres (~ geen time-out)
-- dit IP-adres heeft een route, maar er is geen machine (time-out ~ 5 s)
-- er is een kabel losgeraakt op uw LAN op weg naar dit IP-adres (time-out ~ 30 s).</translation>
-    </message>
-    <message>
-        <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
-        <translation type="obsolete">Er heeft zich een onbekende socketfout voorgedaan tijdens de poging om het IP-adres te bereiken:poort %1:%2.</translation>
-    </message>
-    <message>
-        <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
-        <translation type="obsolete">Er heeft zich een onbeheerde socketfout (nummer %1) voorgedaan tijdens de poging om het IP-adres te bereiken: poort %1:%2.</translation>
-    </message>
-    <message>
-        <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
-        <translation type="obsolete">De XiVO CTI-server op %1:%2 heeft net de verbinding verbroken.</translation>
-    </message>
-    <message>
-        <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
-        <translation type="obsolete">De XiVO CTI-server op %1:%2 werd net stopgezet.</translation>
-    </message>
-    <message>
-        <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
-        <translation type="obsolete">De XiVO CTI-server op %1:%2 werd net terug opgeladen.</translation>
-    </message>
-    <message>
-        <source>You are already connected from %1:%2.</source>
-        <translation type="obsolete">U bent al verbonden sinds %1:%2.</translation>
-    </message>
-    <message>
-        <source>No capability allowed.</source>
-        <translation type="obsolete">Geen capaciteit toegestaan.</translation>
-    </message>
-    <message>
-        <source>Max number (%1) of XiVO Clients already reached.</source>
-        <translation type="obsolete">Max. aantal (%1) XiVO Clients bereikt.</translation>
-    </message>
-    <message>
-        <source>Missing Argument(s)</source>
-        <translation type="obsolete">Ontbrekend(e) argument(en)</translation>
-    </message>
-    <message>
-        <source>Your client version (%1) is too old for this server.
-Please upgrade it to %2 at least.</source>
-        <translation type="obsolete">Uw klantversie (%1) is te oud voor deze server.
-Gelieve op z&apos;n minst naar versie %2 te upgraden. </translation>
-    </message>
-    <message>
-        <source>Your client version (%1) is too old for this server.
-Please upgrade it.</source>
-        <translation type="obsolete">Uw klantversie (%1) is te oud voor deze server.
-Gelieve uw versie te upgraden.</translation>
-    </message>
-    <message>
-        <source>Your client&apos;s major version (%1)
-is not the same as the server&apos;s (%2).</source>
-        <translation type="obsolete">De hoofdversie  (%1) van uw klant
-is niet dezelfde als deze van de server (%2).</translation>
-    </message>
-    <message>
-        <source>Your server version (%1) is too old for this client.
-Please upgrade it to %2 at least.</source>
-        <translation type="obsolete">Uw serverversie (%1) is te oud voor deze klant.
-Gelieve op z&apos;n minst naar versie %2 te upgraden.</translation>
-    </message>
-    <message>
-        <source>Your server version (%1) is too old for this client.
-Please upgrade it.</source>
-        <translation type="obsolete">Uw serverversie (%1) is te oud voor deze klant.
-Gelieve uw versie te upgraden.</translation>
-    </message>
-    <message>
-        <source>You were disconnected by the server.</source>
-        <translation type="obsolete">Uw verbinding werd verbroken door de server.</translation>
-    </message>
-    <message>
-        <source>You were forced to disconnect by the server.</source>
-        <translation type="obsolete">Uw verbinding werd gedwongen afgebroken door de server.</translation>
-    </message>
-    <message>
-        <source>ERROR</source>
-        <translation type="obsolete">FOUT</translation>
-    </message>
-    <message>
-        <source>Attempting to reconnect to server</source>
-        <translation type="obsolete">Poging tot herverbinden met de server</translation>
-    </message>
-</context>
+<TS version="2.0" language="nl">
 <context>
     <name>BasePeerWidget</name>
     <message>
@@ -184,28 +45,6 @@ Gelieve uw versie te upgraden.</translation>
         <translation>Oproep onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
-        <source>Cancel transfer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="534"/>
-        <source>Invite in conference room</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invite in meetme room %0</source>
-        <translation type="obsolete">Uitnodigen in de MMR %0</translation>
-    </message>
-    <message>
-        <source>Call this peer</source>
-        <translation type="obsolete">Bel deze gesprekspartner</translation>
-    </message>
-    <message>
-        <source>&amp;Call mobile</source>
-        <translation type="obsolete">&amp;Gsm bellen</translation>
-    </message>
-    <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="418"/>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="439"/>
         <source>&amp;Call</source>
@@ -227,37 +66,19 @@ Gelieve uw versie te upgraden.</translation>
         <translation type="unfinished">&amp;Ophangen &amp;gesprek beëindigen</translation>
     </message>
     <message>
-        <source>Hangup this communication</source>
-        <translation type="obsolete">Beëindig dit gesprek</translation>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
+        <source>Cancel transfer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Intercept this communication</source>
-        <translation type="obsolete">Onderschep dit gesprek</translation>
-    </message>
-    <message>
-        <source>&amp;Park</source>
-        <translation type="obsolete">&amp;Parkeren</translation>
-    </message>
-    <message>
-        <source>Park this call</source>
-        <translation type="obsolete">Deze oproep parkeren</translation>
-    </message>
-    <message>
-        <source>Invite in meetme room %1</source>
-        <translation type="obsolete">Uitnodigen in de MMR %1</translation>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="534"/>
+        <source>Invite in conference room</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
         <source>Direct &amp;Transfer</source>
         <translation>Rechtstreeks &amp;Doorschakelen</translation>
-    </message>
-    <message>
-        <source>Transfer this communication</source>
-        <translation type="obsolete">Schakel dit gesprek door</translation>
-    </message>
-    <message>
-        <source>Transfer to this person</source>
-        <translation type="obsolete">Doorschakelen naar deze persoon</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
@@ -268,10 +89,6 @@ Gelieve uw versie te upgraden.</translation>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="619"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
-    </message>
-    <message>
-        <source>Transfer to voice mail</source>
-        <translation type="obsolete">Doorschakelen naar voicemail</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="748"/>
@@ -344,14 +161,6 @@ Phone Numbers : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chitchat - %0</source>
-        <translation type="obsolete">chitchat - %0</translation>
-    </message>
-    <message>
-        <source>chat window opened with user - </source>
-        <translation type="obsolete">gespreksvenster geopend met gebruiker - </translation>
-    </message>
-    <message>
         <location filename="../src/xletlib/chitchat.cpp" line="156"/>
         <source>you said: </source>
         <translation>U hebt gezegd: </translation>
@@ -360,13 +169,6 @@ Phone Numbers : %2</source>
         <location filename="../src/xletlib/chitchat.cpp" line="185"/>
         <source>system: </source>
         <translation>systeem: </translation>
-    </message>
-</context>
-<context>
-    <name>CtiConn</name>
-    <message>
-        <source>Connection lost with XiVO CTI server</source>
-        <translation type="obsolete">Verbinding verbroken met de XiVO CTI-server</translation>
     </message>
 </context>
 <context>
@@ -439,10 +241,6 @@ Phone Number : %2</source>
 <context>
     <name>PeerWidget</name>
     <message>
-        <source>Agent %1</source>
-        <translation type="obsolete">Agent %1</translation>
-    </message>
-    <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="215"/>
         <source>Agent Number : %1
 In Queues : %2</source>
@@ -486,102 +284,9 @@ Busy lines: %6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User : %1</source>
-        <translation type="obsolete">Gebruiker: %1</translation>
-    </message>
-    <message>
-        <source>Phone %1 : %2</source>
-        <translation type="obsolete">Telefoon %1: %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>Agent %1
-%n Queue(s) %2</source>
-        <translation type="obsolete">
-            <numerusform>Agent %1
-    %n Wachtrij(en) %2</numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="335"/>
         <source>(No callerid yet)</source>
         <translation>(Nog zonder callerid)</translation>
-    </message>
-    <message>
-        <source>%1 &lt;%2&gt;</source>
-        <translation type="obsolete">%1 &lt;%2&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message>
-        <source>Found property %1 with incompatible data type.</source>
-        <translation type="obsolete">Eigenschap %1 met onverenigbaar gegevenstype gevonden.</translation>
-    </message>
-    <message>
-        <source>string, number, object, array, bool, or null</source>
-        <translation type="obsolete">string, number, object, array, bool, of null lus, nummer, object, regio, bool? of nul</translation>
-    </message>
-    <message>
-        <source>Any unicode character except for &quot; or JSON escape sequences</source>
-        <translation type="obsolete">Elk unicodeteken behalve &quot; of JSON escapereeksen</translation>
-    </message>
-    <message>
-        <source>A parsing error occurred:
-	Got: &apos;%1&apos;
-	Expected: &apos;%2&apos;
-	At: &apos;%3&apos;</source>
-        <translation type="obsolete">Er heeft zich een parsingfout voorgedaan:
-	Ontvangen: &apos;%1&apos;
-	Verwacht: &apos;%2&apos;
-	Op: &apos;%3&apos;</translation>
-    </message>
-</context>
-<context>
-    <name>QueueAgentStatus</name>
-    <message>
-        <source>Dynamic membership</source>
-        <translation type="obsolete">Dynamisch lidmaatschap</translation>
-    </message>
-    <message>
-        <source>Static/RT membership</source>
-        <translation type="obsolete">Statisch/RT-lidmaatchap</translation>
-    </message>
-    <message>
-        <source>Agent not in Queue</source>
-        <translation type="obsolete">Agent niet in wachtrij</translation>
-    </message>
-    <message>
-        <source>Agent in Queue</source>
-        <translation type="obsolete">Agent in wachtrij</translation>
-    </message>
-    <message>
-        <source>Logged in</source>
-        <translation type="obsolete">Ingelogd</translation>
-    </message>
-    <message>
-        <source>Agent Called or Busy</source>
-        <translation type="obsolete">Agent opgeroepen of bezet</translation>
-    </message>
-    <message>
-        <source>Agent in Queue but Invalid</source>
-        <translation type="obsolete">Agent in wachtrij maar ongeldig</translation>
-    </message>
-    <message>
-        <source>Logged out</source>
-        <translation type="obsolete">Uitgelogd</translation>
-    </message>
-    <message>
-        <source>Not paused</source>
-        <translation type="obsolete">Niet gepauzeerd</translation>
-    </message>
-    <message>
-        <source>Paused</source>
-        <translation type="obsolete">Gepauzeerd</translation>
-    </message>
-    <message>
-        <source>Not relevant</source>
-        <translation type="obsolete">Niet relevant</translation>
     </message>
 </context>
 <context>

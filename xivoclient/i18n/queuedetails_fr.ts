@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="fr">
 <context>
     <name>XletQueueDetails</name>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="48"/>
         <source>Members of a Queue</source>
-        <oldsource>Agents of a Queue</oldsource>
         <translation>Membres d&apos;une File d&apos;Attente</translation>
     </message>
     <message>

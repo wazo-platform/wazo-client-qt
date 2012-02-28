@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="fr">
 <context>
     <name>ConfListModel</name>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
-        <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
-        <source>Yes</source>
-        <translation>Oui</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
-        <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
-        <source>No</source>
-        <translation>Non</translation>
-    </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="51"/>
         <source>Room UID</source>
@@ -49,6 +37,18 @@
         <location filename="../src/xlets/conference/conflist.cpp" line="57"/>
         <source>Started since</source>
         <translation>Commencée depuis</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
+        <source>Yes</source>
+        <translation>Oui</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
+        <source>No</source>
+        <translation>Non</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="142"/>
@@ -101,29 +101,54 @@
 <context>
     <name>ConfRoomModel</name>
     <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="54"/>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="55"/>
+        <source>Number</source>
+        <translation>Numéro</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="56"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="57"/>
+        <source>Since</source>
+        <translation>Depuis</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="58"/>
+        <source>Admin</source>
+        <translation>Admin</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="59"/>
         <source>K</source>
-        <translation type="unfinished"></translation>
+        <translation>K</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="60"/>
         <source>R</source>
-        <translation type="unfinished"></translation>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="61"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="62"/>
         <source>T</source>
-        <translation type="unfinished"></translation>
+        <translation>T</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="63"/>
         <source>M</source>
-        <translation type="unfinished"></translation>
+        <translation>M</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="252"/>
@@ -154,7 +179,6 @@
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="267"/>
         <source>Record conference until this user leaves</source>
-        <oldsource>Record conference untill this user leave</oldsource>
         <translation>Enregistrer la conférence jusqu&apos;à ce que l&apos;utilisateur la quitte</translation>
     </message>
     <message>
@@ -178,7 +202,6 @@
         <location filename="../src/xlets/conference/confroom.cpp" line="288"/>
         <location filename="../src/xlets/conference/confroom.cpp" line="292"/>
         <source>Yes</source>
-        <oldsource>yes</oldsource>
         <translation>Oui</translation>
     </message>
     <message>
@@ -187,31 +210,6 @@
         <location filename="../src/xlets/conference/confroom.cpp" line="292"/>
         <source>No</source>
         <translation>Non</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="54"/>
-        <source>ID</source>
-        <translation>ID</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="55"/>
-        <source>Number</source>
-        <translation>Numéro</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="56"/>
-        <source>Name</source>
-        <translation>Nom</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="57"/>
-        <source>Since</source>
-        <translation>Depuis</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="58"/>
-        <source>Admin</source>
-        <translation>Admin</translation>
     </message>
 </context>
 <context>

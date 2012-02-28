@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<TS version="2.0" language="nl">
 <context>
     <name>XletAgentDetails</name>
     <message>
@@ -22,10 +22,6 @@
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="54"/>
         <source>Paused</source>
         <translation>Gepauzeerd</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation type="obsolete"> Opname</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="58"/>
@@ -64,22 +60,6 @@
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="300"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
-    </message>
-    <message>
-        <source>Record files for this agent</source>
-        <translation type="obsolete">Voor deze agent opgenomen bestanden</translation>
-    </message>
-    <message>
-        <source>No Record for this agent</source>
-        <translation type="obsolete">Geen opname voor deze agent </translation>
-    </message>
-    <message>
-        <source>Save Sound File</source>
-        <translation type="obsolete">Geluidsbestand opslaan</translation>
-    </message>
-    <message>
-        <source>All Files (*)</source>
-        <translation type="obsolete">Alle bestanden (*)</translation>
     </message>
 </context>
 </TS>

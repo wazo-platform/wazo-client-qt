@@ -1,70 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<TS version="2.0" language="nl">
 <context>
     <name>CallCampaignPanel</name>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="42"/>
         <source>Call Campaign</source>
-        <translation type="unfinished">Oproepcampagne</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="49"/>
         <source>File to load</source>
-        <translation type="unfinished">Te laden bestand</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="53"/>
         <source>Browse</source>
-        <translation type="unfinished">Overlopen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="56"/>
         <source>Load</source>
-        <translation type="unfinished">Laden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="60"/>
         <source>Server</source>
-        <translation type="unfinished">Server</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="61"/>
         <source>Get</source>
-        <translation type="unfinished">Haal op</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="62"/>
         <source>Start</source>
-        <translation type="unfinished">Starten </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="63"/>
         <source>Stop</source>
-        <translation type="unfinished">Stoppen </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="64"/>
         <source>Clear</source>
-        <translation type="unfinished">Verwijderen </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="102"/>
         <source>Open PhoneList File</source>
-        <translation type="unfinished">Open het bestand met de telefoonlijst</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="104"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
-        <translation type="unfinished">CSV-bestanden (*.csv);;Alle bestanden (*)</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ConfigWidget</name>
     <message>
+        <location filename="../src/configwidget.cpp" line="61"/>
+        <source>You must restart the program for this setting to apply.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="63"/>
         <source>Configuration</source>
         <translation>Configuratie</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="71"/>
+        <source>Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="97"/>
+        <source>Green</source>
+        <translation type="unfinished">Groen</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="100"/>
+        <source>Orange</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="113"/>
@@ -80,6 +100,26 @@
         <location filename="../src/configwidget.cpp" line="124"/>
         <source>Encrypt Connection</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="130"/>
+        <source>Try to reconnect</source>
+        <translation>Verbinding herstellen</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="131"/>
+        <source>Checking this box disables the Error Popups</source>
+        <translation>Dit vakje aanvinken schakelt foutmeldingspop-ups uit.</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="138"/>
+        <source>Try to reconnect interval</source>
+        <translation>Duur voor verbindingsherstel</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="143"/>
+        <source>Keep alive interval</source>
+        <translation>Duur behoud verbinding</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="145"/>
@@ -99,9 +139,19 @@
         <translation>Klanteninfo</translation>
     </message>
     <message>
+        <location filename="../src/configwidget.cpp" line="177"/>
+        <source>Presence indicator size (in pixels)</source>
+        <translation>Grootte van de aanwezigheidsindicator (in pixels)</translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="185"/>
         <source>Allow the Automatic Opening of URL&apos;s</source>
         <translation>Automatisch openen van URL&apos;s toestaan</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="192"/>
+        <source>Tab limit</source>
+        <translation>Max. aantal tabbladen</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="206"/>
@@ -121,7 +171,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="219"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Historiek</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="228"/>
@@ -129,35 +179,80 @@
         <translation>Max. aantal contacten</translation>
     </message>
     <message>
-        <source>Contacts&apos; width</source>
-        <translation type="obsolete">Breedte van de contacten</translation>
+        <location filename="../src/configwidget.cpp" line="233"/>
+        <source>Contacts per row (0 = auto)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="241"/>
+        <location filename="../src/configwidget.cpp" line="319"/>
+        <source>Double-click action</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="243"/>
         <source>Contacts</source>
-        <translation type="unfinished">Contacten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Queue Display</source>
-        <translation type="obsolete">Weergave van de wachtrij</translation>
+        <location filename="../src/configwidget.cpp" line="257"/>
+        <source>Queue thresholds (waiting calls)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Queue Display (Longest Wait)</source>
-        <translation type="obsolete">Wachtrij weergeven (langste wachttijd)</translation>
+        <location filename="../src/configwidget.cpp" line="263"/>
+        <source>Thresholds to change the color of the queue, in number of waiting calls</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Queue Display number</source>
-        <translation type="obsolete">Wachtrijnummer weergeven </translation>
+        <location filename="../src/configwidget.cpp" line="268"/>
+        <source>Display queue&apos;s longest wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="274"/>
+        <source>Queue thresholds (longest wait)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="281"/>
+        <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="286"/>
+        <source>Display queue number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="290"/>
         <source>Queues</source>
+        <translation type="unfinished">Wachtrijen</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="297"/>
+        <source>Small</source>
+        <translation>Klein</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="298"/>
+        <source>Detailed</source>
+        <translation>Gedetailleerd</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="303"/>
+        <source>Appearance of SwitchBoard elements</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="311"/>
+        <source>Maximum width for small SwitchBoard elements</source>
+        <translation>Maximale breedte voor kleine SwitchBoardelementen</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="321"/>
         <source>Switchboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schakelbord</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="327"/>
@@ -183,6 +278,11 @@
         <location filename="../src/configwidget.cpp" line="347"/>
         <source>Keep Password</source>
         <translation>Paswoord behouden</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="351"/>
+        <source>Autoconnect at startup</source>
+        <translation>Verbinden bij het opstarten</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="355"/>
@@ -236,304 +336,185 @@ ones beneath) on first window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="394"/>
-        <source>Language</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="410"/>
-        <source>Default style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="431"/>
-        <source>Activate the window when calling from external application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="435"/>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="438"/>
-        <source>Reset docks position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="531"/>
-        <source>Operator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="351"/>
-        <source>Autoconnect at startup</source>
-        <translation>Verbinden bij het opstarten</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="130"/>
-        <source>Try to reconnect</source>
-        <translation>Verbinding herstellen</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="131"/>
-        <source>Checking this box disables the Error Popups</source>
-        <translation>Dit vakje aanvinken schakelt foutmeldingspop-ups uit.</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="138"/>
-        <source>Try to reconnect interval</source>
-        <translation>Duur voor verbindingsherstel</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="143"/>
-        <source>Keep alive interval</source>
-        <translation>Duur behoud verbinding</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="192"/>
-        <source>Tab limit</source>
-        <translation>Max. aantal tabbladen</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="233"/>
-        <source>Contacts per row (0 = auto)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="400"/>
-        <source>Systrayed at startup</source>
-        <translation>Minimaliseren bij het opstarten</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="297"/>
-        <source>Small</source>
-        <translation>Klein</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="298"/>
-        <source>Detailed</source>
-        <translation>Gedetailleerd</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="303"/>
-        <source>Appearance of SwitchBoard elements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="311"/>
-        <source>Maximum width for small SwitchBoard elements</source>
-        <translation>Maximale breedte voor kleine SwitchBoardelementen</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="177"/>
-        <source>Presence indicator size (in pixels)</source>
-        <translation>Grootte van de aanwezigheidsindicator (in pixels)</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="71"/>
-        <source>Call</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="61"/>
-        <source>You must restart the program for this setting to apply.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="97"/>
-        <source>Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="100"/>
-        <source>Orange</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="241"/>
-        <location filename="../src/configwidget.cpp" line="319"/>
-        <source>Double-click action</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="257"/>
-        <source>Queue thresholds (waiting calls)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="263"/>
-        <source>Thresholds to change the color of the queue, in number of waiting calls</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="268"/>
-        <source>Display queue&apos;s longest wait</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="274"/>
-        <source>Queue thresholds (longest wait)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="281"/>
-        <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="286"/>
-        <source>Display queue number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/configwidget.cpp" line="387"/>
+        <source>Italian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="388"/>
         <source>Nederlands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="387"/>
         <location filename="../src/configwidget.cpp" line="388"/>
         <location filename="../src/configwidget.cpp" line="389"/>
+        <location filename="../src/configwidget.cpp" line="390"/>
         <source>incomplete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="388"/>
+        <location filename="../src/configwidget.cpp" line="389"/>
         <source>German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="389"/>
+        <location filename="../src/configwidget.cpp" line="390"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="405"/>
+        <location filename="../src/configwidget.cpp" line="395"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="401"/>
+        <source>Systrayed at startup</source>
+        <translation>Minimaliseren bij het opstarten</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="406"/>
         <source>Allow multiple instances of XiVO Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="421"/>
+        <location filename="../src/configwidget.cpp" line="411"/>
+        <source>Default style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="422"/>
         <source>Interface style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="423"/>
+        <location filename="../src/configwidget.cpp" line="424"/>
         <source>Enable the clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="427"/>
+        <location filename="../src/configwidget.cpp" line="428"/>
         <source>Display the configuration profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="440"/>
+        <location filename="../src/configwidget.cpp" line="432"/>
+        <source>Activate the window when calling from external application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="436"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="439"/>
+        <source>Reset docks position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="441"/>
         <source>GUI Settings</source>
         <translation>GUI-instellingen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="450"/>
+        <location filename="../src/configwidget.cpp" line="451"/>
         <source>Enable logging of program actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="456"/>
+        <location filename="../src/configwidget.cpp" line="457"/>
         <source>Logfile name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="458"/>
+        <location filename="../src/configwidget.cpp" line="459"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="471"/>
+        <location filename="../src/configwidget.cpp" line="472"/>
         <source>(current: %0) use your keyboard</source>
         <translation>(momenteel %0) gebruik uw toetsenbord</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="475"/>
-        <location filename="../src/configwidget.cpp" line="512"/>
+        <location filename="../src/configwidget.cpp" line="476"/>
+        <location filename="../src/configwidget.cpp" line="513"/>
         <source>(current: %0) click to change</source>
         <translation>(momenteel %0) klik om te wijzigen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="485"/>
+        <location filename="../src/configwidget.cpp" line="486"/>
         <source>Answer</source>
         <translation>Antwoorden</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="487"/>
+        <location filename="../src/configwidget.cpp" line="488"/>
         <source>Hangup</source>
         <translation>Ophangen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="489"/>
+        <location filename="../src/configwidget.cpp" line="490"/>
         <source>D. Transfer</source>
         <translation>R. doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="491"/>
+        <location filename="../src/configwidget.cpp" line="492"/>
         <source>I. Transfer</source>
         <translation>O. doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="493"/>
+        <location filename="../src/configwidget.cpp" line="494"/>
         <source>I. Link</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="495"/>
+        <location filename="../src/configwidget.cpp" line="496"/>
         <source>I. Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <source>Park</source>
-        <translation type="obsolete">Parkeren</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="497"/>
+        <location filename="../src/configwidget.cpp" line="498"/>
         <source>Finalize Transfer</source>
         <translation>Doorschakeling voltooien</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="499"/>
+        <location filename="../src/configwidget.cpp" line="500"/>
         <source>Cancel Transfer</source>
         <translation>Doorschakeling annuleren</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="508"/>
+        <location filename="../src/configwidget.cpp" line="509"/>
         <source>Operator action</source>
         <translation>Handeling van de operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="509"/>
+        <location filename="../src/configwidget.cpp" line="510"/>
         <source>Key binding</source>
         <translation>Toets toekenning</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="525"/>
+        <location filename="../src/configwidget.cpp" line="526"/>
         <source>Display an answer action</source>
         <translation> Een antwoordactie weergeven</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="529"/>
+        <location filename="../src/configwidget.cpp" line="530"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Elke wijziging hier vereist een heropstarten van het programma/de toepassing om toegepast te worden</translation>
     </message>
     <message>
-        <source>Operator Xlet</source>
-        <translation type="obsolete">Xlet van de operator</translation>
+        <location filename="../src/configwidget.cpp" line="532"/>
+        <source>Operator</source>
+        <translation type="unfinished">Operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="557"/>
+        <location filename="../src/configwidget.cpp" line="558"/>
         <source>This key is already bound</source>
         <translation>Deze toets werd al toegekend</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="558"/>
+        <location filename="../src/configwidget.cpp" line="559"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Gelieve een andere toets in te drukken, deze toets werd al toegekend</translation>
     </message>
@@ -543,17 +524,17 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="41"/>
         <source>Contact</source>
-        <translation type="unfinished">Contact</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="44"/>
         <source>First Name</source>
-        <translation type="unfinished">Voornaam</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="46"/>
         <source>Last Name</source>
-        <translation type="unfinished">Familienaam</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
@@ -563,22 +544,22 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
         <source>Email Address</source>
-        <translation type="unfinished">E-mailadres</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="52"/>
         <source>Company</source>
-        <translation type="unfinished">Bedrijf</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="54"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Faxnummer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="56"/>
         <source>Mobile Number</source>
-        <translation type="unfinished">Gsm-nummer</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -586,7 +567,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="42"/>
         <source>Sheets</source>
-        <translation type="unfinished">Bladen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -594,22 +575,22 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
         <source>Dial</source>
-        <translation type="unfinished"> Voer opbelnummer in</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="44"/>
         <source>Dial Panel</source>
-        <translation type="unfinished">Opbelnummer-paneel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="47"/>
         <source>Enter &amp;Number :</source>
-        <translation type="unfinished">&amp;Nummer invoeren:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
         <source>Input here the phone number to dial</source>
-        <translation type="unfinished">Voer het op te bellen telefoonnummer hier in</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -617,7 +598,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation type="unfinished">Directory</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -625,32 +606,32 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="40"/>
         <source>Directory</source>
-        <translation type="unfinished">Directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="41"/>
         <source>Directory Panel</source>
-        <translation type="unfinished">Index Directory Directory-paneel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="44"/>
         <source>Di&amp;rectory</source>
-        <translation type="unfinished">Di&amp;rectory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="52"/>
         <source>Search</source>
-        <translation type="unfinished">Opzoeken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="145"/>
         <source>Double-click to send an E-mail to</source>
-        <translation type="unfinished">Dubbelklikken om een e-mail te verzenden aan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="147"/>
         <source>Double-click to call</source>
-        <translation type="unfinished">Dubbelklikken om te bellen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -658,76 +639,74 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="42"/>
         <source>Fax</source>
-        <translation type="unfinished">Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
         <source>1. Choose Destination Number</source>
-        <translation type="unfinished">1. Selecteer  het bestemmingsnummer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="51"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Faxnummer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="53"/>
         <source>Directory</source>
-        <translation type="unfinished">Directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="66"/>
         <source>2. Choose File to Send</source>
-        <translation type="unfinished">2. Kies het te verzenden bestand</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="72"/>
         <source>Browse</source>
-        <translation type="unfinished">Overlopen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="79"/>
         <source>3. Hide the Number ?</source>
-        <translation type="unfinished">3. Nummer verbergen?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="84"/>
         <source>Hide Number</source>
-        <translation type="unfinished">Nummer verbergen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="91"/>
         <source>4. Send your File</source>
-        <translation type="unfinished">4. Verzend uw bestand</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="95"/>
         <source>Send</source>
-        <translation type="unfinished">Verzenden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="161"/>
         <source>Open Fax File</source>
-        <translation type="unfinished">Faxbestand openen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="163"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
-        <translation type="unfinished">PDF-bestanden (*.pdf);;Alle bestanden (*)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="209"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
-        <translation type="unfinished">Uw fax (bestand %1)
-werd succesvol verzonden naar %2.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="213"/>
         <source>Your Fax (file %1)
 is being processed and will be sent soon.</source>
-        <translation type="unfinished">Uw fax (bestand %1)
-wordt verwerkt en wordt spoedig verzonden.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="218"/>
@@ -742,27 +721,27 @@ wordt verwerkt en wordt spoedig verzonden.</translation>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
         <source>Problem when dialing the number</source>
-        <translation type="unfinished">Probleem bij het kiezen/de invoering van het opbelnummer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="224"/>
         <source>Unable to convert your PDF to TIFF</source>
-        <translation type="unfinished">Uw PDF kan niet in TIFF worden omgezet</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="226"/>
         <source>Document not a PDF</source>
-        <translation type="unfinished">Dit document is geen PDF</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="228"/>
         <source>Dialog between CTI server and IPBX</source>
-        <translation type="unfinished">Dialoog tussen de CTI-server en de IPBX</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="230"/>
         <source>(Server) missing directory</source>
-        <translation type="unfinished">(Server) directory ontbreekt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="232"/>
@@ -779,9 +758,7 @@ wordt verwerkt en wordt spoedig verzonden.</translation>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>
-        <translation type="unfinished">Uw fax (bestand %1)
-werd NIET verzonden naar %2.
-(Gegeven) Reden: %3.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -928,10 +905,6 @@ werd NIET verzonden naar %2.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Client (%1 profile)</source>
-        <translation type="obsolete">Klant (profiel %1)</translation>
-    </message>
-    <message>
         <location filename="../src/mainwidget.cpp" line="725"/>
         <source>Tabs</source>
         <translation>Tabs</translation>
@@ -950,6 +923,16 @@ werd NIET verzonden naar %2.
         <location filename="../src/mainwidget.cpp" line="1043"/>
         <source>Fetch the last one</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="1050"/>
+        <source>About XiVO Client</source>
+        <translation>Over XiVO Client</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="1052"/>
+        <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
+        <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1057"/>
@@ -980,40 +963,6 @@ werd NIET verzonden naar %2.
         <location filename="../src/mainwidget.cpp" line="1064"/>
         <source>(Config File Location : %1)</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>last one</source>
-        <translation type="obsolete">laatste</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="1050"/>
-        <source>About XiVO Client</source>
-        <translation>Over XiVO Client</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="1052"/>
-        <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
-        <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
-    </message>
-    <message>
-        <source>Version : </source>
-        <translation type="obsolete">Versie: </translation>
-    </message>
-    <message>
-        <source>Advised Server Version : </source>
-        <translation type="obsolete">Aanbevolen serverversie: </translation>
-    </message>
-    <message>
-        <source>Application Built on : </source>
-        <translation type="obsolete">Toepassing gecreëerd op: </translation>
-    </message>
-    <message>
-        <source>Application Launched on : </source>
-        <translation type="obsolete">Toepassing gestart op: </translation>
-    </message>
-    <message>
-        <source>Config File Location : </source>
-        <translation type="obsolete">Locatie van het configuratiebestand: </translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1069"/>
@@ -1056,44 +1005,44 @@ werd NIET verzonden naar %2.
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="59"/>
         <source>Personal Directory</source>
-        <translation type="unfinished">Persoonlijke Directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="82"/>
         <source>&amp;New Contact</source>
-        <translation type="unfinished">&amp;Nieuw contact</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="86"/>
         <source>&amp;Export Contacts</source>
-        <translation type="unfinished">&amp;Contacten exporteren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="90"/>
         <source>&amp;Import Contacts</source>
-        <translation type="unfinished">&amp;Contacten importeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="94"/>
         <source>&amp;Search</source>
-        <translation type="unfinished">&amp;Opzoeken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="98"/>
         <source>&amp;Remove all Contacts</source>
-        <translation type="unfinished">&amp;Alle contacten verwijderen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="108"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="272"/>
         <source>First Name</source>
-        <translation type="unfinished">Voornaam</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="109"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="276"/>
         <source>Last Name</source>
-        <translation type="unfinished">Familienaam</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="110"/>
@@ -1105,41 +1054,41 @@ werd NIET verzonden naar %2.
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="111"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="288"/>
         <source>Email Address</source>
-        <translation type="unfinished">E-mailadres</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="112"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="298"/>
         <source>Company</source>
-        <translation type="unfinished">Bedrijf</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="113"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="303"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Faxnummer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="114"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="310"/>
         <source>Mobile Number</source>
-        <translation type="unfinished">Gsm-nummer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="199"/>
         <source>Open Contacts File</source>
-        <translation type="unfinished">Open het contactenbestand</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="201"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="217"/>
         <source>Comma Separated Value (*.csv)</source>
-        <translation type="unfinished">Comma Separated Value-bestand (*.csv)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="215"/>
         <source>Save Contacts File</source>
-        <translation type="unfinished">Contactbestand opslaan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="283"/>
@@ -1149,34 +1098,33 @@ werd NIET verzonden naar %2.
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="289"/>
         <source>E-mail Address</source>
-        <translation type="unfinished">E-mailadres</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="290"/>
         <source>Email</source>
-        <translation type="unfinished">E-mail</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="304"/>
         <source>Fax</source>
-        <translation type="unfinished">Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="311"/>
         <source>Mobile</source>
-        <translation type="unfinished">Gsm</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="403"/>
         <source>Removing all contacts</source>
-        <translation type="unfinished">Alle contacten worden verwijderd</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="404"/>
         <source>Removing all contacts.
 Are you sure ?</source>
-        <translation type="unfinished">Alle contacten zullen worden verwijderd.
-Bent u zeker?</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1184,7 +1132,7 @@ Bent u zeker?</translation>
     <message>
         <location filename="../src/xlets/customerinfo-builtin/remarkarea.cpp" line="67"/>
         <source>&amp;Submit</source>
-        <translation type="unfinished">&amp;Indienen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1192,12 +1140,12 @@ Bent u zeker?</translation>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="46"/>
         <source>Contacts</source>
-        <translation type="unfinished">Contacten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
         <source>N&amp;ame or number to search :</source>
-        <translation type="unfinished">Op te zoeken N&amp;aam of nummer:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

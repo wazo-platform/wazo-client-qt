@@ -3,6 +3,9 @@
     <qresource>
         <file>guioptions.json</file>
         <file>obj/baselib_fr.qm</file>
+        <file>obj/baselib_de.qm</file>
+        <file>obj/baselib_ja.qm</file>
+        <file>obj/baselib_it.qm</file>
         <file>obj/baselib_nl.qm</file>
     </qresource>
 </RCC>

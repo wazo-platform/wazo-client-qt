@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_NL">
+<TS version="2.0" language="nl">
 <context>
     <name>ConfListModel</name>
     <message>
@@ -41,14 +41,14 @@
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
         <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
-        <source>No</source>
-        <translation>Nee</translation>
+        <source>Yes</source>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
         <location filename="../src/xlets/conference/conflist.cpp" line="130"/>
-        <source>Yes</source>
-        <translation>Ja</translation>
+        <source>No</source>
+        <translation>Nee</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="142"/>
@@ -70,10 +70,6 @@
         <location filename="../src/xlets/conference/confroom.cpp" line="506"/>
         <source>&amp;Pause conference</source>
         <translation>&amp;Vergadering pauzeren</translation>
-    </message>
-    <message>
-        <source> Conference room </source>
-        <translation type="obsolete">Vergaderkamer</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="507"/>
@@ -214,10 +210,6 @@
         <location filename="../src/xlets/conference/confroom.cpp" line="292"/>
         <source>No</source>
         <translation>Nee</translation>
-    </message>
-    <message>
-        <source>nobody</source>
-        <translation type="obsolete">niemand</translation>
     </message>
 </context>
 <context>

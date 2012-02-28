@@ -5,6 +5,9 @@
         <file>../../../images/history/received_call.png</file>
         <file>../../../images/history/missed_call.png</file>
         <file>../../../obj/history_fr.qm</file>
+        <file>../../../obj/history_de.qm</file>
+        <file>../../../obj/history_ja.qm</file>
+        <file>../../../obj/history_it.qm</file>
         <file>../../../obj/history_nl.qm</file>
     </qresource>
 </RCC>
