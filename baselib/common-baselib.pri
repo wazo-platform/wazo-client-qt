@@ -2,11 +2,11 @@
 exists(../common.pri) {
     include(../common.pri)
     # GIT_DIR defined in common.pri
-    clear(ROOT_DIR)
     ROOT_DIR = $${GIT_DIR}/baselib
     CONFIG += xivoclient
     BIN_DIR = $${GIT_DIR}/bin
 } else {
+    clear(ROOT_DIR)
     ROOT_DIR = $${PWD}
 
     DEFINES += XC_VERSION=\"\\\"unknown\\\"\"
