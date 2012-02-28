@@ -57,5 +57,6 @@ BASELIB_EXPORT extern const char __git_hash__[];
 BASELIB_EXPORT extern const char __git_date__[];
 BASELIB_EXPORT extern const char __presence_on__[];
 BASELIB_EXPORT extern const char __presence_off__[];
+BASELIB_EXPORT extern const char __cti_protocol_version__[];
 
 #endif /* __XiVOCONSTS_H__ */

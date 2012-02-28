@@ -35,3 +35,4 @@ const char __git_hash__[] = GIT_HASH;
 const char __git_date__[] = GIT_DATE;
 const char __presence_on__[]  = "available";
 const char __presence_off__[] = "disconnected";
+const char __cti_protocol_version__[] = "1.2";

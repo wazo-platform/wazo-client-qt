@@ -642,9 +642,7 @@ void BaseEngine::ctiSocketConnected()
     command["company"] = m_config["company"].toString();
     command["ident"] = m_osname;
     command["version"] = "9999";
-    command["xivoversion"] = __xivo_version__;
-    command["git_hash"] = __git_hash__;
-    command["git_date"] = __git_date__;
+    command["xivoversion"] = __cti_protocol_version__;
 
     // for debuging purposes :
     command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
