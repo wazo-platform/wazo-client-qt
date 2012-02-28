@@ -1,7 +1,7 @@
-exists(versions.mak) {
+exists(../versions.mak) {
     include(versions.mak)
 } else {
-    error(Missing file versions.mak. Please do 'make versions')
+    error(Missing file versions.mak. Please do 'qmake'.)
 }
 
 DEBUG_MODE = $$(DEBUG)
