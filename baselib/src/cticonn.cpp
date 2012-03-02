@@ -51,28 +51,28 @@ void CtiConn::ctiSocketError(QAbstractSocket::SocketError socketError)
 
         // ~ when trying to connect
         case QAbstractSocket::ConnectionRefusedError:
-            b_engine->popupError("socket_error_connectionrefused");
+            emit failedToConnect("socket_error_connectionrefused");
             break;
         case QAbstractSocket::HostNotFoundError:
-            b_engine->popupError("socket_error_hostnotfound");
+            emit failedToConnect("socket_error_hostnotfound");
             break;
         case QAbstractSocket::NetworkError:
-            b_engine->popupError("socket_error_network");
+            emit failedToConnect("socket_error_network");
             break;
         case QAbstractSocket::SocketTimeoutError:
-            b_engine->popupError("socket_error_timeout");
+            emit failedToConnect("socket_error_timeout");
             break;
         case QAbstractSocket::SslHandshakeFailedError:
-            b_engine->popupError("socket_error_sslhandshake");
+            emit failedToConnect("socket_error_sslhandshake");
             break;
         case QAbstractSocket::UnknownSocketError:
-            b_engine->popupError("socket_error_unknown");
+            emit failedToConnect("socket_error_unknown");
             break;
 
         default:
             // see http://doc.trolltech.com/4.6/qabstractsocket.html#SocketError-enum
             // for unmanaged error cases
-            b_engine->popupError(QString("socket_error_unmanagedyet:%1").arg(socketError));
+            failedToConnect(QString("socket_error_unmanagedyet:%1").arg(socketError));
             break;
     }
 }
@@ -82,7 +82,7 @@ void CtiConn::ctiSocketClosedByRemote()
     qDebug() << Q_FUNC_INFO;
     b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
     b_engine->startTryAgainTimer();
-    b_engine->popupError("socket_error_remotehostclosed");
+    emit failedToConnect("socket_error_remotehostclosed");
 
     QTimer * timer = new QTimer(this);
     timer->setProperty("stopper", "connection_lost");

@@ -118,6 +118,8 @@ BaseEngine::BaseEngine(QSettings *settings,
             this, SLOT(ctiSocketConnected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
+    connect(m_ctiConn, SIGNAL(failedToConnect(const QString &)),
+            this, SLOT(popupError(const QString &)));
 
     // TCP connection for file transfer
     // (this could be moved to some other class)

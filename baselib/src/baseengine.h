@@ -329,6 +329,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void sheetSocketConnected();
 
+        void popupError(const QString &);
+
     signals:
         void settingsChanged();  //!< signal emitted when the setting are changed
         
@@ -412,8 +414,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void stopKeepAliveTimer();  //!< Stop the keep alive timer if running
         void startTryAgainTimer();  //!< Start the "try to reconnect" timer
         void stopTryAgainTimer();   //!< Stop the "try to reconnect" timer
-        
-        void popupError(const QString &);
         
         void initFeatureFields(const QString &);
         

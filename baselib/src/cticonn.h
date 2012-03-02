@@ -45,6 +45,8 @@ class CtiConn : public QObject
 
     public:
         CtiConn(QTcpSocket *s);
+    signals:
+        void failedToConnect(const QString &);
     private slots:
         void ctiSocketError(QAbstractSocket::SocketError);
         void ctiSocketClosedByRemote();
