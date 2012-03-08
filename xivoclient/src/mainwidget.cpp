@@ -1034,13 +1034,13 @@ void MainWidget::about()
     QString applicationVersion(XC_VERSION);
     QString fetchlastone = QString("<a href=http://downloads.xivo.fr/xivo_cti_client/") +
 #if defined(Q_WS_X11)
-        "linux/debian"
+        "linux"
 #elif defined(Q_WS_WIN)
         "win32"
 #elif defined(Q_WS_MAC)
         "macos"
 #endif
-        "/" + __xivo_version__ + ">" + tr("Fetch the last one") + "</a>";
+        ">" + tr("Fetch the last one") + "</a>";
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     QString gitdate_qs(__git_date__);
     QString gitdate(QDateTime::fromTime_t(gitdate_qs.toUInt()).toString());
