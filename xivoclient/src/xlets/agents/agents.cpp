@@ -121,29 +121,8 @@ void XletAgents::updateAgentConfig(const QString & xagentid)
     updateAgentDisplay(xagentid);
 }
 
-/*! \brief set agent presence status
- */
 void XletAgents::updateAgentStatus(const QString & xagentid)
 {
-    const AgentInfo * agentinfo = b_engine->agent(xagentid);
-    if (agentinfo == NULL)
-        return;
-
-    if (m_agent_presence.contains(xagentid)) {
-        foreach (QString xuserid, b_engine->iterover("users").keys()) {
-            const UserInfo *ui = b_engine->user(xuserid);
-            if (ui->xagentid() == xagentid) {
-                /*! \todo get the presence profile of the wanted user,
-                 * its availability state, the associated color and longname
-                 */
-                // QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-                // square.fill(QColor(presencestatus.toMap().value("color").toString()));
-                // m_agent_presence[xagentid]->setPixmap(square);
-                // m_agent_presence[xagentid]->setToolTip(presencestatus.toMap().value("longname").toString());
-            }
-        }
-    }
-
     updateAgentDisplay(xagentid);
 }
 
@@ -267,28 +246,13 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
     }
 
     QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-    QStringList ttips;
     if (link) {
         square.fill(Qt::green);
-        // XXX to review : the relation between agent and phones should be made on the server side
-//         QHashIterator<QString, PhoneInfo *> iter = QHashIterator<QString, PhoneInfo *>(b_engine->phones());
-//         while (iter.hasNext()) {
-//             iter.next();
-//             if ((iter.value()->number() == phonenum) &&
-//                 (iter.value()->ipbxid() == agentinfo->ipbxid())) {
-//                 foreach (const QString channel, iter.value()->channels()) {
-//                     const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-//                     if(channelinfo == NULL)
-//                         continue;
-//                     ttips << tr("online with %1").arg(channelinfo->peerdisplay());
-//                 }
-//             }
-//         }
-    } else
+    } else {
         square.fill(Qt::gray);
+    }
 
     m_agent_busy[xagentid]->setPixmap(square);
-    m_agent_busy[xagentid]->setToolTip(ttips.join("\n"));
 
     QString tooltip;
     if (agstatus == "AGENT_IDLE") {
@@ -429,7 +393,6 @@ void XletAgents::agentClicked()
  */
 void XletAgents::statusListen(const QString & xagentid, const QString & status)
 {
-    // qDebug() << Q_FUNC_INFO << xagentid << status;
     if (! m_agent_listen.contains(xagentid))
         return;
 
