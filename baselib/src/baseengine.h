@@ -38,8 +38,6 @@
 #include <QTime>
 #include <QSettings>
 
-#include "queue_agent_status.h"
-
 #include "channelinfo.h"
 #include "incallsinfo.h"
 #include "meetmeinfo.h"
@@ -50,6 +48,9 @@
 #include "groupinfo.h"
 #include "voicemailinfo.h"
 #include "userinfo.h"
+#include "queuememberinfo.h"
+#include "queue_agent_status.h"
+
 #include "baseconfig.h"
 #include "ipbxlistener.h"
 

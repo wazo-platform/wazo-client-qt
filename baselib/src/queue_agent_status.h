@@ -27,17 +27,12 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __QUEUE_AGENT_STATUS_H__
 #define __QUEUE_AGENT_STATUS_H__
 
 #include "baselib_export.h"
 #include <QColor>
 #include <QString>
-#include "xinfo.h"
 
 /*! \brief Store Queue Membership information
  */
@@ -54,14 +49,14 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         const QString & context() const;  //! context this queue/agent belongs to
         const QString & queueName() const;  //! queuename
 
-        const QColor &display_status_color() const;
-        const QString &display_status_queue() const;
-        const QString &display_status_logged() const;
-        const QString &display_status_membership() const;
-        const QString &display_status_paused() const;
-        const QColor &display_status_paused_color() const;
-        const QString &display_action_join() const;
-        const QString &display_action_pause() const;
+        const QColor &  display_status_color() const;
+        const QString & display_status_queue() const;
+        const QString & display_status_logged() const;
+        const QString & display_status_membership() const;
+        const QString & display_status_paused() const;
+        const QColor &  display_status_paused_color() const;
+        const QString & display_action_join() const;
+        const QString & display_action_pause() const;
 
     private:
         QString m_ipbxid;
@@ -79,31 +74,6 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         QColor m_display_status_color;
         QColor m_display_status_paused_color;
         int m_display_status_darkfactor;
-};
-
-/*! \brief Store Agent information
- */
-class BASELIB_EXPORT QueueMemberInfo : public XInfo
-{
-    public:
-        QueueMemberInfo(const QString &, const QString &); //! constructor
-        bool updateConfig(const QVariantMap &);  //! update config members
-        bool updateStatus(const QVariantMap &);  //! update status members
-
-        const QString & status() const { return m_status; };  //! 
-        const QString & paused() const { return m_paused; };  //! 
-        const QString & membership() const { return m_membership; };  //! 
-        const QString & callstaken() const { return m_callstaken; };  //! 
-        const QString & penalty() const { return m_penalty; };  //! 
-        int lastcall() const { return m_lastcall; };  //! 
-
-    private:
-        QString m_status;
-        QString m_paused;
-        QString m_membership;
-        QString m_callstaken;
-        QString m_penalty;
-        int m_lastcall;
 };
 
 #endif // __QUEUE_AGENT_STATUS_H__

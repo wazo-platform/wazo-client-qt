@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QDebug>
 #include "queue_agent_status.h"
 
@@ -170,30 +166,4 @@ const QString & QueueAgentStatus::context() const
 const QString & QueueAgentStatus::queueName() const
 {
     return m_queuename;
-}
-
-
-
-QueueMemberInfo::QueueMemberInfo(const QString & ipbxid,
-                                 const QString & id)
-    : XInfo(ipbxid, id)
-{
-}
-
-bool QueueMemberInfo::updateConfig(const QVariantMap &)
-{
-    bool haschanged = false;
-    return haschanged;
-}
-
-bool QueueMemberInfo::updateStatus(const QVariantMap & prop)
-{
-    bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "status", & m_status);
-    haschanged |= setIfChangeString(prop, "paused", & m_paused);
-    haschanged |= setIfChangeString(prop, "membership", & m_membership);
-    haschanged |= setIfChangeString(prop, "callstaken", & m_callstaken);
-    haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
-    haschanged |= setIfChangeInt(prop, "lastcall", & m_lastcall);
-    return haschanged;
 }
