@@ -54,51 +54,51 @@ queues</source>
 en pause</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="185"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="164"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="297"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="303"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="261"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="267"/>
         <source>Agent logged on %1</source>
         <translation>Agent loggé sur %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="307"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="271"/>
         <source>Agent NOT logged</source>
         <translation>Agent NON loggé</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="311"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="275"/>
         <source>Unknown %1</source>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="343"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="307"/>
         <source>Joined queues : %1</source>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="355"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="319"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="360"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="324"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="363"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="368"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="327"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="332"/>
         <source>Paused queues : %1</source>
         <translation>Files en pause : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="365"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="329"/>
         <source>Partial</source>
         <translation>Partielle</translation>
     </message>
