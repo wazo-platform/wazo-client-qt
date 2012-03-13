@@ -850,6 +850,8 @@ void BaseEngine::parseCommand(const QString &line)
                                 datamap.value("warning_string").toString());
             emit emitTextMessage("");
         }
+    } else if (thisclass == "ipbxcommand" && datamap.contains("error_string")) {
+        popupError(datamap.value("error_string").toString());
     } else if (thisclass == "login_id") {
         if (datamap.contains("error_string")) {
             stopConnection();
@@ -1351,6 +1353,8 @@ void BaseEngine::popupError(const QString & errorid)
         errormsg = tr("You were disconnected by the server.");
     } else if (errorid == "forcedisconnected") {
         errormsg = tr("You were forced to disconnect by the server.");
+    } else if (errorid == "invalid_exten") {
+        errormsg = tr("Invalid extension number");
     }
 
     // logs a message before sending any popup that would block
