@@ -39,22 +39,25 @@
 class QString;
 class XInfo;
 
+// Creates getter and setter for SomethingInfo
+#define ADD_GET_SET(type,Type) \
+    public: void set##Type (const QString & x##type##id, Type##Info * type) { \
+        this->m_##type##s[x##type##id] = type; \
+    } \
+    const Type##Info * type (const QString & x##type##id) { \
+        return this->m_##type##s[x##type##id]; \
+    } \
+    private : QMap<QString, Type##Info *> m_##type##s;
+
+
 class MockBaseEngine
 {
     public:
         MockBaseEngine();
-        void setPhone (const QString &, PhoneInfo *);
-        const PhoneInfo * phone(const QString &) const;
-        void setUser (const QString &, UserInfo *);
-        const UserInfo * user (const QString &) const;
-        void setChannel (const QString &, ChannelInfo *);
-        const ChannelInfo * channel (const QString &) const;
         QHash<QString, XInfo *> iterover(const QString & listname) const;
-
-    private:
-        QMap<QString, PhoneInfo *> m_phones;
-        QMap<QString, UserInfo *> m_users;
-        QMap<QString, ChannelInfo *> m_channels;
+        ADD_GET_SET(phone,Phone)
+        ADD_GET_SET(user,User)
+        ADD_GET_SET(channel,Channel)
 };
 
 typedef MockBaseEngine BaseEngine;

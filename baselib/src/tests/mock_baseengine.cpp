@@ -29,45 +29,12 @@
 
 #include <QtTest/QtTest>
 
-#include "mock_phoneinfo.h"
-#include "mock_channelinfo.h"
-
 #include "mock_baseengine.h"
 
 MockBaseEngine * b_engine;
 
 MockBaseEngine::MockBaseEngine()
 {
-}
-
-void MockBaseEngine::setPhone(const QString & xphoneid, PhoneInfo *phone)
-{
-    this->m_phones[xphoneid] = phone;
-}
-
-const PhoneInfo * MockBaseEngine::phone(const QString &xphoneid) const
-{
-    return this->m_phones[xphoneid];
-}
-
-void MockBaseEngine::setUser(const QString & xuserid, UserInfo *user)
-{
-    this->m_users[xuserid] = user;
-}
-
-const UserInfo * MockBaseEngine::user(const QString &xuserid) const
-{
-    return this->m_users[xuserid];
-}
-
-void MockBaseEngine::setChannel (const QString &xchannelid, ChannelInfo *channel)
-{
-    this->m_channels[xchannelid] = channel;
-}
-
-const ChannelInfo * MockBaseEngine::channel(const QString &xchannelid) const
-{
-    return this->m_channels[xchannelid];
 }
 
 QHash<QString, XInfo *> MockBaseEngine::iterover(const QString &listname) const
