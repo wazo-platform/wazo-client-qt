@@ -48,8 +48,8 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         const QString & membership() const { return m_membership; };
         const QString & callstaken() const { return m_callstaken; };
         const QString & penalty() const { return m_penalty; };
-        const QString & xqueueid() const { return m_xqueueid; };
-        const QString & xagentid() const { return m_xagentid; };
+        const QString & queue_xid() const { return m_queue_xid; };
+        const QString & agent_xid() const { return m_agent_xid; };
         int lastcall() const { return m_lastcall; };
 
     private:
@@ -58,8 +58,8 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         QString m_membership;
         QString m_callstaken;
         QString m_penalty;
-        QString m_xqueueid;
-        QString m_xagentid;
+        QString m_queue_xid;
+        QString m_agent_xid;
         int m_lastcall;
 };
 

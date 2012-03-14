@@ -1837,6 +1837,18 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
     return phonenumbers;
 }
 
+QStringList BaseEngine::queueListFromAgentId(const QString & agent_xid)
+{
+    QStringList ret;
+    foreach (QueueMemberInfo *queuememberinfo, this->m_queuemembers) {
+        if (queuememberinfo != NULL) {
+            if (queuememberinfo->agent_xid() == agent_xid) {
+                ret << queuememberinfo->queue_xid();
+            }
+        }
+    }
+    return ret;
+}
 
 /*!
  * Send a keep alive message to the login server.

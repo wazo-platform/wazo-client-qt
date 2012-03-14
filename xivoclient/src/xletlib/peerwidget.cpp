@@ -202,20 +202,23 @@ void PeerWidget::updateQueueStatus(const QString &)
 
 void PeerWidget::updateAgentToolTip()
 {
-    if (m_ui_remote && ! m_ui_remote->agentid().isEmpty()) {
-        if (const AgentInfo * a = b_engine->agent(m_ui_remote->xagentid())) {
-            QString agentnumber = a->agentNumber();
-            QStringList queues;
-            foreach (const QString & queuexid, a->xqueueids()) {
-                if (const QueueInfo * q = b_engine->queue(queuexid)) {
-                    queues << q->queueName();
+    if (m_ui_remote == NULL)
+        return;
+    QString agent_xid = m_ui_remote->xagentid();
+    if (! agent_xid.isEmpty()) {
+        if (const AgentInfo * agentinfo = b_engine->agent(agent_xid)) {
+            QString agentnumber = agentinfo->agentNumber();
+            QStringList queue_xid_list = b_engine->queueListFromAgentId(agent_xid);
+            QStringList queue_name_list;
+            foreach (const QString & queue_xid, queue_xid_list) {
+                if (const QueueInfo * queueinfo = b_engine->queue(queue_xid)) {
+                    queue_name_list << queueinfo->queueName();
                 }
             }
-            m_agentlbl->setToolTip(
-                    tr("Agent Number : %1\n"
-                            "In Queues : %2")
-                            .arg(agentnumber)
-                            .arg(queues.join(" ")));
+            m_agentlbl->setToolTip(tr("Agent Number : %1\n"
+                                      "In Queues : %2")
+                                   .arg(agentnumber)
+                                   .arg(queue_name_list.join(" ")));
         }
     }
 }

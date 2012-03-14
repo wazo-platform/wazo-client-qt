@@ -209,7 +209,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
                 { return m_channels; };      //!< Return the channels to any Xlet
         const QHash<QString, QueueMemberInfo *> & queuemembers() const
                 { return m_queuemembers; };  //!< Return the queue members to any Xlet
-        
+
         
         // public operations
         
@@ -220,6 +220,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString sendJsonCommand(const QVariantMap &);
 
         QStringList phonenumbers(const UserInfo *);
+        QStringList queueListFromAgentId(const QString & agent_xid);
 
         void registerTranslation(const QString &);
         void changeTranslation(QString locale = "");
