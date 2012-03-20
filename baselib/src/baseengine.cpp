@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Format:Commit hash: %h$
- * $Format:Commit date: %cd$
- */
-
 #include <QApplication>
 #include <QCryptographicHash>
 #include <QDateTime>
@@ -75,7 +71,7 @@ static const QStringList CheckFunctions = (QStringList() << "presence" << "custo
 static const QStringList GenLists = (QStringList()
                                      << "users" << "phones" << "trunks"
                                      << "agents" << "queues" << "groups" << "meetmes"
-                                     << "voicemails" << "incalls");
+                                     << "voicemails" << "incalls" << "queuemembers");
 static CtiConn * m_ctiConn;
 
 BaseEngine::BaseEngine(QSettings *settings,
@@ -104,6 +100,7 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("meetmes", newXInfo<MeetmeInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
     m_xinfoList.insert("incalls", newXInfo<InCallsInfo>);
+    m_xinfoList.insert("queuemembers", newXInfo<QueueMemberInfo>);
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
@@ -1024,7 +1021,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                         delete m_channels[xid];
                         m_channels.remove(xid);
                     }
-                } else if (listname == "queuemembers") {
+                }
+                if (listname == "queuemembers") {
                     if (m_queuemembers.contains(xid)) {
                         delete m_queuemembers[xid];
                         m_queuemembers.remove(xid);
@@ -1043,6 +1041,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     emit removeQueueConfig(xid);
                 else if (listname == "meetmes")
                     emit removeMeetmeConfig(xid);
+                else if (listname == "queuemembers")
+                    emit removeQueueMemberConfig(xid);
             }
 
         } else if (function == "updateconfig") {
@@ -1090,6 +1090,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateVoiceMailConfig(xid);
             else if (listname == "meetmes")
                 emit updateMeetmesConfig(xid);
+            else if (listname == "queuemembers")
+                emit updateQueueMembersConfig(xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1110,7 +1112,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (! m_channels.contains(xid))
                     m_channels[xid] = new ChannelInfo(ipbxid, id);
                 m_channels[xid]->updateStatus(status);
-            } else if (listname == "queuemembers") {
+            }
+            if (listname == "queuemembers") {
                 if (! m_queuemembers.contains(xid))
                     m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
                 m_queuemembers[xid]->updateStatus(status);
@@ -1742,10 +1745,7 @@ void BaseEngine::fetchLists()
     command["class"] = "getlist";
     command["function"] = "listid";
     QStringList getlists;
-    getlists = (QStringList()
-                << "users" << "phones" << "trunks"
-                << "agents" << "queues" << "groups" << "meetmes"
-                << "voicemails" << "incalls");
+    getlists = GenLists;
 
     foreach (QString ipbxid, m_ipbxlist) {
         command["tipbxid"] = ipbxid;
@@ -1840,10 +1840,11 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
 QStringList BaseEngine::queueListFromAgentId(const QString & agent_xid)
 {
     QStringList ret;
-    foreach (QueueMemberInfo *queuememberinfo, this->m_queuemembers) {
+    foreach (QString queuemember_id, this->iterover("queuemembers").keys()) {
+        const QueueMemberInfo *queuememberinfo = this->queuemember(queuemember_id);
         if (queuememberinfo != NULL) {
             if (queuememberinfo->agent_xid() == agent_xid) {
-                ret << queuememberinfo->queue_xid();
+                ret << queuememberinfo->queue_name();
             }
         }
     }

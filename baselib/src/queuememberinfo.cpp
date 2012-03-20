@@ -27,6 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+
 #include "queuememberinfo.h"
 
 QueueMemberInfo::QueueMemberInfo(const QString & ipbxid,
@@ -35,9 +37,11 @@ QueueMemberInfo::QueueMemberInfo(const QString & ipbxid,
 {
 }
 
-bool QueueMemberInfo::updateConfig(const QVariantMap &)
+bool QueueMemberInfo::updateConfig(const QVariantMap &prop)
 {
     bool haschanged = false;
+    haschanged |= setIfChangeString(prop, "queue_name", & m_queue_name);
+    haschanged |= setIfChangeString(prop, "interface", & m_interface);
     return haschanged;
 }
 
@@ -49,8 +53,22 @@ bool QueueMemberInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "membership", & m_membership);
     haschanged |= setIfChangeString(prop, "callstaken", & m_callstaken);
     haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
-    haschanged |= setIfChangeString(prop, "queue", & m_queue_xid);
-    haschanged |= setIfChangeString(prop, "agent", & m_agent_xid);
     haschanged |= setIfChangeInt(prop, "lastcall", & m_lastcall);
     return haschanged;
+}
+
+bool QueueMemberInfo::is_agent() const
+{
+    QStringList interface_split = m_interface.split("/");
+    return interface_split[0] == "Agent";
+}
+
+QString QueueMemberInfo::agent_xid() const
+{
+    QStringList interface_split = m_interface.split("/");
+    if (interface_split.size() < 2) {
+        return QString("");
+    } else {
+        return QString("%1/%2").arg(m_ipbxid).arg(interface_split[1]);
+    }
 }

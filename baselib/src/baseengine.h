@@ -204,6 +204,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
             { return (const MeetmeInfo *) m_anylist.value("meetmes").value(id); };
         const VoiceMailInfo * voicemail(const QString & id) const  //!< Return the voicemail to any Xlet
             { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };
+        const QueueMemberInfo * queuemember(const QString & id) const  //!< Return the queuemember to any Xlet
+            { return (const QueueMemberInfo *) m_anylist.value("queuemembers").value(id); };
 
         const QHash<QString, ChannelInfo *> & channels() const
                 { return m_channels; };      //!< Return the channels to any Xlet
@@ -376,11 +378,14 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateChannelStatus(const QString &);
         void updateMeetmesConfig(const QString &);
         void updateMeetmesStatus(const QString &);
+        void updateQueueMembersConfig(const QString &);
         void removePhoneConfig(const QString &);
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);
         void removeQueueConfig(const QString &);
         void removeMeetmeConfig(const QString &);
+        void removeQueueMemberConfig(const QString &);
+        void removeQueueMemberStatus(const QString &);
 
         void newQueueList(const QStringList &);
         void removeQueues(const QString &, const QStringList &);
