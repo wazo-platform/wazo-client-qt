@@ -38,6 +38,7 @@ class BASELIB_EXPORT QueueMemberDAO
         QueueMemberDAO();
         static QStringList queueListFromAgentId(const QString &);
         static QString queueIdFromQueueName(const QString &);
+        static QString agentIdFromAgentNumber(const QString &);
 };
 
 #endif

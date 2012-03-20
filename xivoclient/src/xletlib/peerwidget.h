@@ -65,6 +65,8 @@ class XLETLIB_EXPORT PeerWidget : public BasePeerWidget
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
         void updateQueueStatus(const QString &);
+        void updateQueueMemberConfig(const QString &);
+        void removeQueueMemberConfig(const QString &);
     protected:
         void updateChitChatButton();
     private:

@@ -115,7 +115,9 @@ PeerWidget::PeerWidget(const UserInfo * ui)
     connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
             this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
-            this, SLOT(updateAgentConfig(const QString &)));
+            this, SLOT(updateQueueMemberConfig(const QString &)));
+    connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
+            this, SLOT(removeQueueMemberConfig(const QString &)));
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(m_hLayout, 1, 2);
     setMaximumWidth(PeerWidget::max_width);
@@ -199,6 +201,23 @@ void PeerWidget::updateQueueStatus(const QString &)
     }
 }
 
+void PeerWidget::updateQueueMemberConfig(const QString & queuemember_xid)
+{
+    const QueueMemberInfo *queuememberinfo = b_engine->queuemember(queuemember_xid);
+    if (queuememberinfo == NULL)
+        return;
+    QString agent_number = queuememberinfo->agentNumber();
+    QString agent_id = QueueMemberDAO::agentIdFromAgentNumber(agent_number);
+    if (m_xagentid == agent_id) {
+        updateAgentToolTip();
+    }
+}
+
+void PeerWidget::removeQueueMemberConfig(const QString &)
+{
+    updateAgentToolTip();
+}
+
 void PeerWidget::updateAgentToolTip()
 {
     if (m_ui_remote == NULL)
@@ -207,12 +226,13 @@ void PeerWidget::updateAgentToolTip()
     if (! agent_xid.isEmpty()) {
         if (const AgentInfo * agentinfo = b_engine->agent(agent_xid)) {
             QString agentnumber = agentinfo->agentNumber();
-            QStringList queue_name_list = QueueMemberDAO::queueListFromAgentId(agent_xid);
+            QStringList queue_xid_list = QueueMemberDAO::queueListFromAgentId(agent_xid);
             QStringList queue_display_name_list;
-            foreach (const QString & queue_name, queue_name_list) {
-                /*if (const QueueInfo * queueinfo = b_engine->queue(queue_xid)) {
-                    queue_name_list << queueinfo->queueName();
-                    }*/
+            foreach (const QString & queue_xid, queue_xid_list) {
+                const QueueInfo * queueinfo = b_engine->queue(queue_xid);
+                if (queueinfo != NULL) {
+                    queue_display_name_list << queueinfo->queueDisplayName();
+                }
             }
             m_agentlbl->setToolTip(tr("Agent Number : %1\n"
                                       "In Queues : %2")

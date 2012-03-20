@@ -30,6 +30,12 @@
 #include "baseengine.h"
 #include "queuememberdao.h"
 
+QStringList uniquify(QStringList list)
+{
+    QStringList ret = list.toSet().toList();
+    return ret;
+}
+
 QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_xid)
 {
     QStringList ret;
@@ -38,25 +44,50 @@ QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_xid)
         return QStringList();
     }
     QString agent_number = agentinfo->agentNumber();
-    foreach (QString queuemember_id, b_engine->iterover("queuemembers").keys()) {
-        const QueueMemberInfo *queuememberinfo = b_engine->queuemember(queuemember_id);
-        if (queuememberinfo != NULL) {
-            if (queuememberinfo->agentNumber() == agent_number) {
-                ret << queuememberinfo->queueName();
+    foreach (QString queuemember_xid_config, b_engine->iterover("queuemembers").keys()) {
+        const QueueMemberInfo *queuememberinfo_config = b_engine->queuemember(queuemember_xid_config);
+        if (queuememberinfo_config != NULL) {
+            if (queuememberinfo_config->agentNumber() == agent_number) {
+                QString queue_name = queuememberinfo_config->queueName();
+                QString queue_xid = queueIdFromQueueName(queue_name);
+                ret << queue_xid;
             }
         }
     }
-    qDebug() << Q_FUNC_INFO << ret;
+    foreach (QString queue_xid, agentinfo->xqueueids()) {
+        const QueueInfo * queueinfo = b_engine->queue(queue_xid);
+        QString queuemember_xid_status = queueinfo->reference("agents", agent_xid);
+        const QueueMemberInfo * queuememberinfo_status = b_engine->queuemembers().value(queuemember_xid_status);
+        if (queuememberinfo_status != NULL) {
+            if (queuememberinfo_status->membership() != "static") {
+                ret << queue_xid;
+            }
+        }
+    }
+    ret = uniquify(ret);
     return ret;
 }
 
 QString QueueMemberDAO::queueIdFromQueueName(const QString & queue_name)
 {
-    foreach(const QString &queuemember_xid, b_engine->iterover("queuemembers").keys()) {
-        const QueueMemberInfo *queuememberinfo = b_engine->queuemember(queuemember_xid);
-        if (queuememberinfo != NULL) {
-            if (queuememberinfo->queueName() == queue_name) {
-                return queuemember_xid;
+    foreach(const QString &queue_xid, b_engine->iterover("queues").keys()) {
+        const QueueInfo *queueinfo = b_engine->queue(queue_xid);
+        if (queueinfo != NULL) {
+            if (queueinfo->queueName() == queue_name) {
+                return queue_xid;
+            }
+        }
+    }
+    return "";
+}
+
+QString QueueMemberDAO::agentIdFromAgentNumber(const QString & agent_number)
+{
+    foreach(const QString &agent_xid, b_engine->iterover("agents").keys()) {
+        const AgentInfo *agentinfo = b_engine->agent(agent_xid);
+        if (agentinfo != NULL) {
+            if (agentinfo->agentNumber() == agent_number) {
+                return agent_xid;
             }
         }
     }
