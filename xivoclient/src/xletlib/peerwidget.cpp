@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QHash>
@@ -46,6 +42,7 @@
 #include <xivoconsts.h>
 #include <userinfo.h>
 #include <phoneinfo.h>
+#include <queuememberdao.h>
 
 #include "peerwidget.h"
 
@@ -117,6 +114,8 @@ PeerWidget::PeerWidget(const UserInfo * ui)
             this, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
             this, SLOT(updateQueueStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(m_hLayout, 1, 2);
     setMaximumWidth(PeerWidget::max_width);
@@ -208,17 +207,17 @@ void PeerWidget::updateAgentToolTip()
     if (! agent_xid.isEmpty()) {
         if (const AgentInfo * agentinfo = b_engine->agent(agent_xid)) {
             QString agentnumber = agentinfo->agentNumber();
-            QStringList queue_xid_list = b_engine->queueListFromAgentId(agent_xid);
-            QStringList queue_name_list;
-            foreach (const QString & queue_xid, queue_xid_list) {
-                if (const QueueInfo * queueinfo = b_engine->queue(queue_xid)) {
+            QStringList queue_name_list = QueueMemberDAO::queueListFromAgentId(agent_xid);
+            QStringList queue_display_name_list;
+            foreach (const QString & queue_name, queue_name_list) {
+                /*if (const QueueInfo * queueinfo = b_engine->queue(queue_xid)) {
                     queue_name_list << queueinfo->queueName();
-                }
+                    }*/
             }
             m_agentlbl->setToolTip(tr("Agent Number : %1\n"
                                       "In Queues : %2")
                                    .arg(agentnumber)
-                                   .arg(queue_name_list.join(" ")));
+                                   .arg(queue_display_name_list.join(" ")));
         }
     }
 }

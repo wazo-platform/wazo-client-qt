@@ -42,6 +42,7 @@ bool QueueMemberInfo::updateConfig(const QVariantMap &prop)
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "queue_name", & m_queue_name);
     haschanged |= setIfChangeString(prop, "interface", & m_interface);
+    qDebug() << Q_FUNC_INFO << m_xid;
     return haschanged;
 }
 
@@ -63,12 +64,12 @@ bool QueueMemberInfo::is_agent() const
     return interface_split[0] == "Agent";
 }
 
-QString QueueMemberInfo::agent_xid() const
+QString QueueMemberInfo::agentNumber() const
 {
     QStringList interface_split = m_interface.split("/");
     if (interface_split.size() < 2) {
         return QString("");
     } else {
-        return QString("%1/%2").arg(m_ipbxid).arg(interface_split[1]);
+        return QString(interface_split[1]);
     }
 }

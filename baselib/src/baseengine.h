@@ -38,18 +38,18 @@
 #include <QTime>
 #include <QSettings>
 
-#include "channelinfo.h"
-#include "incallsinfo.h"
-#include "meetmeinfo.h"
-#include "phoneinfo.h"
-#include "queueinfo.h"
-#include "agentinfo.h"
-#include "trunkinfo.h"
-#include "groupinfo.h"
-#include "voicemailinfo.h"
-#include "userinfo.h"
-#include "queuememberinfo.h"
-#include "queue_agent_status.h"
+#include <channelinfo.h>
+#include <incallsinfo.h>
+#include <meetmeinfo.h>
+#include <phoneinfo.h>
+#include <queueinfo.h>
+#include <agentinfo.h>
+#include <trunkinfo.h>
+#include <groupinfo.h>
+#include <voicemailinfo.h>
+#include <userinfo.h>
+#include <queuememberinfo.h>
+#include <queue_agent_status.h>
 
 #include "baseconfig.h"
 #include "ipbxlistener.h"
@@ -378,7 +378,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateChannelStatus(const QString &);
         void updateMeetmesConfig(const QString &);
         void updateMeetmesStatus(const QString &);
-        void updateQueueMembersConfig(const QString &);
+        void updateQueueMemberConfig(const QString &);
+        void updateQueueMemberStatus(const QString &);
         void removePhoneConfig(const QString &);
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);

@@ -13,11 +13,17 @@ VERSION      = $${XIVOVER}
 DEFINES     += BASELIB_LIBRARY
 DEFINES     += QT_MAKEDLL
 INCLUDEPATH += $${JSON_JSONQT_DIR}
+INCLUDEPATH += $${ROOT_DIR}/src
+INCLUDEPATH += $${ROOT_DIR}/src/storage
 
 HEADERS     += $${ROOT_DIR}/src/*.h
+HEADERS     += $${ROOT_DIR}/src/storage/*.h
+HEADERS     += $${ROOT_DIR}/src/dao/*.h
 HEADERS     += $${JSON_JSONQT_DIR}/*.h
 
 SOURCES     += $${ROOT_DIR}/src/*.cpp
+SOURCES     += $${ROOT_DIR}/src/storage/*.cpp
+SOURCES     += $${ROOT_DIR}/src/dao/*.cpp
 SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 
 DESTDIR     = $${BIN_DIR}

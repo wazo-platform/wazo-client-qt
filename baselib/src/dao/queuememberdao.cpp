@@ -27,41 +27,38 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUE_MEMBER_INFO_H__
-#define __QUEUE_MEMBER_INFO_H__
+#include "baseengine.h"
+#include "queuememberdao.h"
 
-#include "xinfo.h"
-#include "baselib_export.h"
-#include <QString>
-
-/*! \brief Store Agent information
- */
-class BASELIB_EXPORT QueueMemberInfo : public XInfo
+QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_xid)
 {
-    public:
-        QueueMemberInfo(const QString &, const QString &); //! constructor
-        bool updateConfig(const QVariantMap &);  //! update config members
-        bool updateStatus(const QVariantMap &);  //! update status members
+    QStringList ret;
+    const AgentInfo * agentinfo = b_engine->agent(agent_xid);
+    if (agentinfo == NULL) {
+        return QStringList();
+    }
+    QString agent_number = agentinfo->agentNumber();
+    foreach (QString queuemember_id, b_engine->iterover("queuemembers").keys()) {
+        const QueueMemberInfo *queuememberinfo = b_engine->queuemember(queuemember_id);
+        if (queuememberinfo != NULL) {
+            if (queuememberinfo->agentNumber() == agent_number) {
+                ret << queuememberinfo->queueName();
+            }
+        }
+    }
+    qDebug() << Q_FUNC_INFO << ret;
+    return ret;
+}
 
-        const QString & status() const { return m_status; };
-        const QString & paused() const { return m_paused; };
-        const QString & membership() const { return m_membership; };
-        const QString & callstaken() const { return m_callstaken; };
-        const QString & penalty() const { return m_penalty; };
-        const QString & queue_name() const { return m_queue_name; };
-        QString agent_xid() const;
-        int lastcall() const { return m_lastcall; };
-        bool is_agent() const;
-
-    private:
-        QString m_status;
-        QString m_paused;
-        QString m_membership;
-        QString m_callstaken;
-        QString m_penalty;
-        QString m_queue_name;
-        QString m_interface;
-        int m_lastcall;
-};
-
-#endif
+QString QueueMemberDAO::queueIdFromQueueName(const QString & queue_name)
+{
+    foreach(const QString &queuemember_xid, b_engine->iterover("queuemembers").keys()) {
+        const QueueMemberInfo *queuememberinfo = b_engine->queuemember(queuemember_xid);
+        if (queuememberinfo != NULL) {
+            if (queuememberinfo->queueName() == queue_name) {
+                return queuemember_xid;
+            }
+        }
+    }
+    return "";
+}

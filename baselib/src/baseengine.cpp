@@ -1091,7 +1091,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             else if (listname == "meetmes")
                 emit updateMeetmesConfig(xid);
             else if (listname == "queuemembers")
-                emit updateQueueMembersConfig(xid);
+                emit updateQueueMemberConfig(xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1835,20 +1835,6 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
         }
     }
     return phonenumbers;
-}
-
-QStringList BaseEngine::queueListFromAgentId(const QString & agent_xid)
-{
-    QStringList ret;
-    foreach (QString queuemember_id, this->iterover("queuemembers").keys()) {
-        const QueueMemberInfo *queuememberinfo = this->queuemember(queuemember_id);
-        if (queuememberinfo != NULL) {
-            if (queuememberinfo->agent_xid() == agent_xid) {
-                ret << queuememberinfo->queue_name();
-            }
-        }
-    }
-    return ret;
 }
 
 /*!
