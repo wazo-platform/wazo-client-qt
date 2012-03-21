@@ -1,5 +1,19 @@
 TEMPLATE = subdirs
 
+# Generating versions.mak
+include(xivoclient-all.pri)
+VERSIONS_FILE = versions.mak
+PREMAKE_COMMAND = ./premake.sh $${VERSIONS_FILE} $${XIVO_MAJOR_VERSION}
+
+unix {
+    system($${PREMAKE_COMMAND})
+}
+win32 {
+    # Double quotes escapes && from cmd shell
+    # OLDPWD is the current directory of cmd
+    system($${CYGWIN_PATH}/bin/bash --login -c \"cd $OLDPWD && $${PREMAKE_COMMAND}\")
+}
+
 tests {
     SUBDIRS = tests
 
@@ -25,20 +39,6 @@ tests {
     xlets.file = xivoclient/xlets.pro
     xlets.makefile = Makefile_xlets
     xlets.depends = xletlib
-
-    # Generating versions.mak
-    include(xivoclient-all.pri)
-    VERSIONS_FILE = versions.mak
-    PREMAKE_COMMAND = ./premake.sh $${VERSIONS_FILE} $${XIVO_MAJOR_VERSION}
-
-    unix {
-        system($${PREMAKE_COMMAND})
-    }
-    win32 {
-        # Double quotes escapes && from cmd shell
-        # OLDPWD is the current directory of cmd
-        system($${CYGWIN_PATH}/bin/bash --login -c \"cd $OLDPWD && $${PREMAKE_COMMAND}\")
-    }
 
     # Pack rule
     win32 {

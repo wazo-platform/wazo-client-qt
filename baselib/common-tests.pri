@@ -10,12 +10,13 @@ OBJECTS_DIR = $$ROOT_DIR/obj
 DESTDIR = $${BIN_DIR}/tests
 
 # For mocks
-INCLUDEPATH += $${ROOT_DIR}/src/tests
+INCLUDEPATH += $${ROOT_DIR}/src/storage/tests
 # For tested classes
 INCLUDEPATH += $${ROOT_DIR}/src
+INCLUDEPATH += $${ROOT_DIR}/src/storage
 
-HEADERS += $${ROOT_DIR}/src/tests/*.h
-SOURCES += $${ROOT_DIR}/src/tests/*.cpp
+HEADERS += $${ROOT_DIR}/src/storage/tests/*.h
+SOURCES += $${ROOT_DIR}/src/storage/tests/*.cpp
 
 # This adds lines 'include "<file>"' at the very beginning of the cpp file,
 # thus overriding definitions of real classes by mock classes.
