@@ -251,11 +251,11 @@ LangString SHORTCUT_DESKTOP \${LANG_FRENCH}  "Ajouter un raccourci sur le &Burea
 LangString SHORTCUT_STARTMENU \${LANG_ENGLISH} "Add a Shortcut in Start &Menu"
 LangString SHORTCUT_STARTMENU \${LANG_FRENCH}  "Ajouter un raccourci dans le &Menu Démarrer"
 
-LangString START_XIVOCLIENT \${LANG_ENGLISH} "Start XiVO Client \${XC_VERSION}.lnk"
-LangString START_XIVOCLIENT \${LANG_FRENCH}  "Lancer XiVO Client \${XC_VERSION}.lnk"
+LangString START_XIVOCLIENT \${LANG_ENGLISH} "XiVO Client.lnk"
+LangString START_XIVOCLIENT \${LANG_FRENCH}  "XiVO Client.lnk"
 
-LangString REMOVE_XIVOCLIENT \${LANG_ENGLISH} "Remove XiVO Client \${XC_VERSION}.lnk"
-LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller XiVO Client \${XC_VERSION}.lnk"
+LangString REMOVE_XIVOCLIENT \${LANG_ENGLISH} "Uninstall XiVO Client.lnk"
+LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller XiVO Client.lnk"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
