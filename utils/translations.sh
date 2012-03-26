@@ -9,6 +9,7 @@
 # find . -name '*.pro' -exec sed -i -e 's|^TRANSLATIONS += $${\?ROOT_DIR}\?/i18n/\(.*\)_en.ts|\0\nTRANSLATIONS += $$ROOT_DIR/i18n/\1_it.ts|' {} \;
 # find . -name '*.qrc' -exec sed -i -e 's|^\\( *\\)<file>\\(.*\\)obj/\\(.*\\)_fr.qm</file>|\\0\\n\\1<file>\\2obj/\\3_de.qm</file>|' {} \\;
 
+LOCALES="en fr it de nl ja"
 
 function usage {
     echo "Usage : $0 [help|pull|update]"
@@ -43,8 +44,7 @@ function copy_from_transifex_to_git {
         done
     done
 
-    # Strip useless translations
-    lupdate_all
+    unmerge_translations
 }
 
 function lupdate_all {
@@ -52,31 +52,48 @@ function lupdate_all {
     lupdate baselib/baselib.pro -no-obsolete
 }
 
-function merge_all_translations {
+function unmerge_translations {
+    lupdate_all
+}
+
+function update_translations_from_source {
+    lupdate_all
+}
+
+function merge_translations {
     if hash lconvert
     then
-        rm xivoclient/i18n/all_en.ts
-        lconvert xivoclient/i18n/*_en.ts -o xivoclient/i18n/all_en.ts
+        for locale in ${LOCALES}
+        do
+            rm "xivoclient/i18n/all_$locale.ts"
+            find . \( -path './baselib/*'    -a -name "*_$locale.ts" \) \
+                -o \( -path './xivoclient/*' -a -name "*_$locale.ts" \) \
+            | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
+        done
     fi
 }
 
-if [ $# -eq 0 ]
-then
-    usage
-    exit 1
-fi
-
-case $1 in
-    pull)
-        pull_from_transifex
-        copy_from_transifex_to_git
-        ;;
-    update)
-        lupdate_all
-        merge_all_translations
-        ;;
-    *)
+function process_arguments {
+    if [ $# -eq 0 ]
+    then
         usage
         exit 1
-        ;;
-esac
+    fi
+
+    case $1 in
+        pull)
+            pull_from_transifex
+            copy_from_transifex_to_git
+            ;;
+        update)
+            update_translations_from_source
+            merge_translations
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+process_arguments $@
