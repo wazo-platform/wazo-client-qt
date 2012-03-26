@@ -16,6 +16,7 @@ function usage {
     echo
     echo "help : display this message"
     echo "pull : get translations from Transifex"
+    echo "push : upload transltations to Transifex"
     echo "update : update translation files from source"
 }
 
@@ -27,18 +28,19 @@ function pull_from_transifex {
 
     tx set --auto-remote  https://www.transifex.net/projects/p/xivo/
     tx pull -r xivo.xivo-client -a
-    tx pull -r xivo.xivo-client-baselib -a
+}
+
+function find_all_ts_files {
+    locale="$1"
+    find . \( -path './baselib/*'    -a -name "*_$locale.ts" \) \
+        -o \( -path './xivoclient/*' -a -name "*_$locale.ts" \) -print
 }
 
 function copy_from_transifex_to_git {
     # locale takes values as "fr.ts", "de.ts", "nl.ts" ...
-    for locale in $(ls translations/xivo.xivo-client-baselib)
-    do
-        cp "translations/xivo.xivo-client-baselib/$locale" "baselib/baselib_$locale"
-    done
     for locale in $(ls translations/xivo.xivo-client)
     do
-        for ts in $(find xivoclient -name "*_en.ts")
+        for ts in $(find_all_ts_files "en")
         do
             cp "translations/xivo.xivo-client/$locale" "${ts%en.ts}$locale"
         done
@@ -66,11 +68,16 @@ function merge_translations {
         for locale in ${LOCALES}
         do
             rm "xivoclient/i18n/all_$locale.ts"
-            find . \( -path './baselib/*'    -a -name "*_$locale.ts" \) \
-                -o \( -path './xivoclient/*' -a -name "*_$locale.ts" \) \
+            find_all_ts_files "$locale" \
             | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
         done
     fi
+}
+
+function push_to_transifex {
+    tx set --auto-local -r xivo.xivo-client 'xivoclient/i18n/all_<lang>.ts' \
+        --source-lang en --execute
+    tx push -st -r xivo.xivo-client
 }
 
 function process_arguments {
@@ -85,9 +92,12 @@ function process_arguments {
             pull_from_transifex
             copy_from_transifex_to_git
             ;;
+        push)
+            merge_translations
+            push_to_transifex
+            ;;
         update)
             update_translations_from_source
-            merge_translations
             ;;
         *)
             usage
