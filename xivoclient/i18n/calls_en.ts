@@ -26,7 +26,7 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="136"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unknown</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="138"/>

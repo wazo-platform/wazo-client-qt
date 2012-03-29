@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="232"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">History</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="242"/>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="198"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Number</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="200"/>

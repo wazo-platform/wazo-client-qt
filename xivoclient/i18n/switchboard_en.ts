@@ -40,7 +40,7 @@
         <location filename="../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="409"/>
         <location filename="../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="512"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Green</translation>
     </message>
     <message>
         <location filename="../qtaddons/qtcolorpicker/src/qtcolorpicker.cpp" line="410"/>
@@ -126,7 +126,7 @@
         <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="62"/>
         <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="65"/>
         <source>Switchboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Switchboard</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="206"/>

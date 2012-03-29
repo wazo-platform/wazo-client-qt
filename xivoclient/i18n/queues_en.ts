@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Number</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Queues</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>

@@ -339,7 +339,7 @@ que celles ci-dessous) à la connexion</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="387"/>
         <source>Italian</source>
-        <translation type="unfinished"></translation>
+        <translation>Italien</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="388"/>

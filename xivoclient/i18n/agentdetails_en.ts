@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Queues</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="53"/>
@@ -27,7 +27,7 @@
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="58"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Login</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="186"/>

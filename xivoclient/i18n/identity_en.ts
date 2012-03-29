@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="195"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Login</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="204"/>
@@ -182,7 +182,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="99"/>
         <source>Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hangup</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="105"/>

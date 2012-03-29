@@ -113,51 +113,51 @@ queues</source>
 en pause</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="185"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="164"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="297"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="303"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="261"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="267"/>
         <source>Agent logged on %1</source>
         <translation>Agent loggé sur %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="307"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="271"/>
         <source>Agent NOT logged</source>
         <translation>Agent NON loggé</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="311"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="275"/>
         <source>Unknown %1</source>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="343"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="307"/>
         <source>Joined queues : %1</source>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="355"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="319"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="360"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="324"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="363"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="368"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="327"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="332"/>
         <source>Paused queues : %1</source>
         <translation>Files en pause : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="365"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="329"/>
         <source>Partial</source>
         <translation>Partielle</translation>
     </message>
@@ -1766,179 +1766,184 @@ que celles ci-dessous) à la connexion</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="387"/>
+        <source>Italian</source>
+        <translation>Italien</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="388"/>
         <source>Nederlands</source>
         <translation>Néerlandais</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="387"/>
         <location filename="../src/configwidget.cpp" line="388"/>
         <location filename="../src/configwidget.cpp" line="389"/>
+        <location filename="../src/configwidget.cpp" line="390"/>
         <source>incomplete</source>
         <translation>incomplet</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="388"/>
+        <location filename="../src/configwidget.cpp" line="389"/>
         <source>German</source>
         <translation>Allemand</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="389"/>
+        <location filename="../src/configwidget.cpp" line="390"/>
         <source>Japanese</source>
         <translation>Japonais</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="394"/>
+        <location filename="../src/configwidget.cpp" line="395"/>
         <source>Language</source>
         <translation>Langue</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="400"/>
+        <location filename="../src/configwidget.cpp" line="401"/>
         <source>Systrayed at startup</source>
         <translation>Minimiser au démarrage</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="405"/>
+        <location filename="../src/configwidget.cpp" line="406"/>
         <source>Allow multiple instances of XiVO Client</source>
         <translation>Autoriser plusieurs instances simultanées du client XiVO</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="410"/>
+        <location filename="../src/configwidget.cpp" line="411"/>
         <source>Default style</source>
         <translation>Style par défaut</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="421"/>
+        <location filename="../src/configwidget.cpp" line="422"/>
         <source>Interface style</source>
         <translation>Style de l&apos;interface</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="423"/>
+        <location filename="../src/configwidget.cpp" line="424"/>
         <source>Enable the clipboard</source>
         <translation>Activer le presse-papiers</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="427"/>
+        <location filename="../src/configwidget.cpp" line="428"/>
         <source>Display the configuration profile</source>
         <translation>Afficher le profil de configuration</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="431"/>
+        <location filename="../src/configwidget.cpp" line="432"/>
         <source>Activate the window when calling from external application</source>
         <translation>Afficher la fenêtre lorsqu&apos;un appel est passé par une application externe</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="435"/>
+        <location filename="../src/configwidget.cpp" line="436"/>
         <source>Reset</source>
         <translation>Réinitialiser</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="438"/>
+        <location filename="../src/configwidget.cpp" line="439"/>
         <source>Reset docks position</source>
         <translation>Réinitialiser la position des docks</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="440"/>
+        <location filename="../src/configwidget.cpp" line="441"/>
         <source>GUI Settings</source>
         <translation>Réglages IHM</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="450"/>
+        <location filename="../src/configwidget.cpp" line="451"/>
         <source>Enable logging of program actions</source>
         <translation>Activer la journalisation des actions du programme</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="456"/>
+        <location filename="../src/configwidget.cpp" line="457"/>
         <source>Logfile name</source>
         <translation>Nom du fichier de journalisation</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="458"/>
+        <location filename="../src/configwidget.cpp" line="459"/>
         <source>Advanced</source>
         <translation>Avancé</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="471"/>
+        <location filename="../src/configwidget.cpp" line="472"/>
         <source>(current: %0) use your keyboard</source>
         <translation>(actuellement %0) utilisez votre clavier</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="475"/>
-        <location filename="../src/configwidget.cpp" line="512"/>
+        <location filename="../src/configwidget.cpp" line="476"/>
+        <location filename="../src/configwidget.cpp" line="513"/>
         <source>(current: %0) click to change</source>
         <translation>(actuellement %0) cliquer pour changer</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="485"/>
+        <location filename="../src/configwidget.cpp" line="486"/>
         <source>Answer</source>
         <translation>Répondre</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="487"/>
+        <location filename="../src/configwidget.cpp" line="488"/>
         <source>Hangup</source>
         <translation>Raccrocher</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="489"/>
+        <location filename="../src/configwidget.cpp" line="490"/>
         <source>D. Transfer</source>
         <translation>Transfert Direct</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="491"/>
+        <location filename="../src/configwidget.cpp" line="492"/>
         <source>I. Transfer</source>
         <translation>Transfert Indirect</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="493"/>
+        <location filename="../src/configwidget.cpp" line="494"/>
         <source>I. Link</source>
         <translation>Joindre</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="495"/>
+        <location filename="../src/configwidget.cpp" line="496"/>
         <source>I. Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="497"/>
+        <location filename="../src/configwidget.cpp" line="498"/>
         <source>Finalize Transfer</source>
         <translation>Finaliser</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="499"/>
+        <location filename="../src/configwidget.cpp" line="500"/>
         <source>Cancel Transfer</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="508"/>
+        <location filename="../src/configwidget.cpp" line="509"/>
         <source>Operator action</source>
         <translation>Action de l&apos;opérateur</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="509"/>
+        <location filename="../src/configwidget.cpp" line="510"/>
         <source>Key binding</source>
         <translation>Touche allouée</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="525"/>
+        <location filename="../src/configwidget.cpp" line="526"/>
         <source>Display an answer action</source>
         <translation>Afficher un bouton pour répondre</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="529"/>
+        <location filename="../src/configwidget.cpp" line="530"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Tout changement ici nécessite un redémarrage de l&apos;application pour être effectif</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="531"/>
+        <location filename="../src/configwidget.cpp" line="532"/>
         <source>Operator</source>
         <translation>Opérateur</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="557"/>
+        <location filename="../src/configwidget.cpp" line="558"/>
         <source>This key is already bound</source>
         <translation>Cette touche est déjà allouée</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="558"/>
+        <location filename="../src/configwidget.cpp" line="559"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Veuillez presser une autre touche, celle-ci est déjà allouée pour l&apos;action &apos;%0&apos;</translation>
     </message>
@@ -2819,19 +2824,19 @@ Extension : %2</translation>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="215"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
         <source>Agent Number : %1
 In Queues : %2</source>
         <translation>Numéro d&apos;agent : %1
 Dans les files : %2</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="226"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="248"/>
         <source>Mobile number : %1</source>
         <translation>Numéro de mobile : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="240"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="262"/>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
@@ -2840,22 +2845,22 @@ IPBXid : %2
 Statut : %3</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="299"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="321"/>
         <source>Status:%1</source>
         <translation>Statut : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="302"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="324"/>
         <source>No status (no phone number)</source>
         <translation>Pas de statut (pas de numéro)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="307"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="329"/>
         <source>&lt;EMPTY&gt;</source>
         <translation>&lt;VIDE&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="308"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
         <source>Phone Number: %1
 Order: %2
 IPBXid: %3
@@ -2870,7 +2875,7 @@ Statut : %5
 Lignes occupées : %6</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="335"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="357"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>

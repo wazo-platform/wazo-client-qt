@@ -243,19 +243,19 @@ Extension : %2</translation>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="215"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
         <source>Agent Number : %1
 In Queues : %2</source>
         <translation>Numéro d&apos;agent : %1
 Dans les files : %2</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="226"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="248"/>
         <source>Mobile number : %1</source>
         <translation>Numéro de mobile : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="240"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="262"/>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
@@ -264,22 +264,22 @@ IPBXid : %2
 Statut : %3</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="299"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="321"/>
         <source>Status:%1</source>
         <translation>Statut : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="302"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="324"/>
         <source>No status (no phone number)</source>
         <translation>Pas de statut (pas de numéro)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="307"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="329"/>
         <source>&lt;EMPTY&gt;</source>
         <translation>&lt;VIDE&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="308"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
         <source>Phone Number: %1
 Order: %2
 IPBXid: %3
@@ -294,7 +294,7 @@ Statut : %5
 Lignes occupées : %6</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="335"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="357"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>
