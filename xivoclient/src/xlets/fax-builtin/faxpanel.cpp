@@ -55,8 +55,6 @@ FaxPanel::FaxPanel(QWidget *parent)
             this, SLOT(dirLookup()));
     connect(m_destination, SIGNAL(textChanged(const QString &)),
             this, SLOT(destNumberChanged(const QString &)));
-    connect(m_destination, SIGNAL(selectionChanged()),
-            this, SLOT(destSelectionChanged()));
     hbox1->addWidget(lblfax);
     hbox1->addWidget(m_destination);
     hbox1->addWidget(directory);
@@ -116,15 +114,6 @@ FaxPanel::~FaxPanel()
 {
     // qDebug() << Q_FUNC_INFO;
     b_engine->getSettings()->setValue("faxhistory/hidenumber", m_maskornot->checkState());
-}
-
-void FaxPanel::destSelectionChanged()
-{
-    if(m_destination->selectedText() == m_destination->text()) {
-        QString dt = PhoneNumber::extract(m_destination->text());
-        if(m_destination->text() != dt)
-            m_destination->setText(dt);
-    }
 }
 
 void FaxPanel::destNumberChanged(const QString &/* ext*/)

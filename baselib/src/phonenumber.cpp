@@ -59,31 +59,8 @@ namespace PhoneNumber
      */
     bool BASELIB_EXPORT isURI(const QString &string)
     {
-        QRegExp re("^(tel|callto):" + phone_pattern, Qt::CaseInsensitive);
+        QRegExp re("^(tel|callto):", Qt::CaseInsensitive);
         return (! (re.indexIn(string) < 0));
     }
 
-    /*!
-     * \return the last contained phone number cleaned, i.e. with only numbers left
-     */
-    QString BASELIB_EXPORT extract(const QString &string, const QString &prefix, const QString &suffix)
-    {
-        QRegExp re(prefix + phone_pattern + suffix);
-        re.indexIn(string);                           // Apply the regexp
-        QString ret = re.cap(0);                      // Get the entire match
-        // qDebug() << string << re.pattern() << ret;
-        ret.truncate(ret.length() - suffix.length()); // Chop suffix
-        ret.remove(0, prefix.length());               // Chop prefix
-        ret.remove('.').remove(' ').remove('-');      // Whistle while you work
-        return ret;
-    }
-
-    /*!
-     * \return true if the parameter contains a phone number that can be extracted
-     */
-    bool BASELIB_EXPORT contains(const QString &string)
-    {
-        QRegExp re(phone_pattern);
-        return (re.indexIn(string) < 0);
-    }
 }

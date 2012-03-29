@@ -506,7 +506,7 @@ void PopcAastra::receiveNumber(const QString & number)
 void PopcAastra::targetChanged(const QString & text)
 {
     // qDebug() << Q_FUNC_INFO << text;
-    m_selected_number = PhoneNumber::extract(text);
+    m_selected_number = text;
 }
 
 void PopcAastra::fillCompleter()

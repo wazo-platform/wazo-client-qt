@@ -203,7 +203,7 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 
 void ExtendedTableWidget::dialNumber()
 {
-    QString number = PhoneNumber::extract(sender()->property("number").toString());
+    QString number = sender()->property("number").toString();
     if (! number.isEmpty()) {
         b_engine->actionDialNumber(number);
     }

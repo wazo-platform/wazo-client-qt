@@ -285,8 +285,6 @@ void LogTableView::onViewClick(const QModelIndex &model)
 {
     QString caller = model.sibling(model.row(), 0).data().toString();
 
-    caller = PhoneNumber::extract(caller);
-
     if (caller != "") {
         if (m_lastPressed & Qt::LeftButton) {
             b_engine->pasteToDial(caller);

@@ -103,12 +103,11 @@ void DialPanel::setNumberToDial(const QString & text)
 {
     // qDebug() << Q_FUNC_INFO << text;
     QString oldtext = m_input->currentText();
-    QString texttmp = PhoneNumber::extract(text);
 
-    if((! texttmp.isEmpty()) && texttmp != oldtext) {
-        addHistory(texttmp);
+    if((! text.isEmpty()) && text != oldtext) {
+        addHistory(text);
         // displays it
-        m_input->setEditText(texttmp);
+        m_input->setEditText(text);
     }
 }
 
@@ -127,7 +126,7 @@ void DialPanel::dropEvent(QDropEvent * event)
 {
     QString originator = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
     qDebug() << Q_FUNC_INFO << event << originator << m_input->currentText();
-    QString ext = PhoneNumber::extract(m_input->currentText());
+    QString ext = m_input->currentText();
     if (ext.isEmpty())        // do nothing if the string is empty
         return;
     b_engine->actionCall("originate",
@@ -143,7 +142,7 @@ void DialPanel::dropEvent(QDropEvent * event)
  */
 void DialPanel::inputValidated()
 {
-    QString ext = PhoneNumber::extract(m_input->currentText());
+    QString ext = m_input->currentText();
     if (ext.isEmpty()) // do nothing if the string is empty
         return;
     b_engine->actionDialNumber(ext);

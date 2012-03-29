@@ -66,7 +66,6 @@ class FaxPanel : public XLet
         void dirLookup();
         void popupMsg(const QString &, const QString &);
         void destNumberChanged(const QString &);
-        void destSelectionChanged();
         void fileNameChanged(const QString &);
 
     private:

@@ -1966,7 +1966,7 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     // callto://number is unofficial and used by Skype
     // we support tel:number and callto:number
     // todo : handle also other commands
-    QString phonenum = PhoneNumber::extract (msg);
+    QString phonenum = msg;
     qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
     actionDialNumber(phonenum);
 }
