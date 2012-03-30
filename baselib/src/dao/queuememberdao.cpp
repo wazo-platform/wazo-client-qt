@@ -27,6 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QStringList>
+
 #include "baseengine.h"
 #include "queuememberdao.h"
 
@@ -88,6 +90,25 @@ QString QueueMemberDAO::agentIdFromAgentNumber(const QString & agent_number)
         if (agentinfo != NULL) {
             if (agentinfo->agentNumber() == agent_number) {
                 return agent_xid;
+            }
+        }
+    }
+    return "";
+}
+
+QString QueueMemberDAO::queueMemberId(const QString & agent_xid,
+                                      const QString & queue_xid)
+{
+    const AgentInfo * agentinfo = b_engine->agent(agent_xid);
+    const QueueInfo * queueinfo = b_engine->queue(queue_xid);
+    if (agentinfo != NULL && queueinfo != NULL) {
+        QString agent_number = agentinfo->agentNumber();
+        QString queue_name = queueinfo->queueName();
+        foreach (const QString &queuemember_xid, b_engine->iterover("queuemembers").keys()) {
+            const QueueMemberInfo * queuememberinfo = b_engine->queuemember(queuemember_xid);
+            if (queuememberinfo->queueName() == queue_name
+                && queuememberinfo->agentNumber() == agent_number) {
+                return queuemember_xid;
             }
         }
     }

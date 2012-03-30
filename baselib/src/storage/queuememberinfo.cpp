@@ -42,7 +42,10 @@ bool QueueMemberInfo::updateConfig(const QVariantMap &prop)
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "queue_name", & m_queue_name);
     haschanged |= setIfChangeString(prop, "interface", & m_interface);
-    qDebug() << Q_FUNC_INFO << m_xid;
+    haschanged |= setIfChangeString(prop, "status", & m_status);
+    haschanged |= setIfChangeString(prop, "paused", & m_paused);
+    haschanged |= setIfChangeString(prop, "membership", & m_membership);
+    haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
     return haschanged;
 }
 

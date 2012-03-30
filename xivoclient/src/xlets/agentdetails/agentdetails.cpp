@@ -27,9 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
+#include <dao/queuememberdao.h>
 
 #include "agentdetails.h"
 
@@ -109,6 +107,10 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
             this, SLOT(updateQueueConfig(const QString &)));
     connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
             this, SLOT(updateQueueStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
+            this, SLOT(updateQueueMember()));
+    connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
+            this, SLOT(updateQueueMember()));
 
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
@@ -139,6 +141,11 @@ void XletAgentDetails::updateQueueStatus(const QString & xqueueid)
 {
     if (m_queue_labels.contains(xqueueid))
         updatePanel();
+}
+
+void XletAgentDetails::updateQueueMember()
+{
+    updatePanel();
 }
 
 void XletAgentDetails::monitorThisAgent(const QString & agentid)
@@ -257,7 +264,7 @@ void XletAgentDetails::updatePanel()
         setQueueLookProps(xqueueid);
         setQueueProps(xqueueid);
         if (queueinfo->ipbxid() == agentinfo->ipbxid()) {
-            QString refmember = queueinfo->reference("agents", agentinfo->xid());
+            QString refmember = QueueMemberDAO::queueMemberId(agentinfo->xid(), queueinfo->xid());
             setQueueAgentProps(xqueueid, refmember);
         }
 
@@ -318,7 +325,7 @@ void XletAgentDetails::setQueueAgentSignals(const QString & xqueueid)
 
 void XletAgentDetails::setQueueAgentProps(const QString & xqueueid, const QString & xqueuemember)
 {
-    const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+    const QueueMemberInfo * qmi = b_engine->queuemember(xqueuemember);
     if ((qmi == NULL) && (! xqueuemember.isEmpty()))
         return;
     m_queue_join_action[xqueueid]->setProperty("xqueueid", xqueueid);
@@ -410,8 +417,8 @@ void XletAgentDetails::queueClicked()
     QString action  = sender()->property("action").toString();
     QString queuename = queueinfo->queueName();
 
-    QString xqueuemember = queueinfo->reference("agents", m_monitored_agentid);
-    const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
+    QString xqueuemember = QueueMemberDAO::queueMemberId(m_monitored_agentid, xqueueid);
+    const QueueMemberInfo * qmi = b_engine->queuemember(xqueuemember);
 
     QVariantMap ipbxcommand;
     ipbxcommand["member"] = QString("agent:%0").arg(m_monitored_agentid);

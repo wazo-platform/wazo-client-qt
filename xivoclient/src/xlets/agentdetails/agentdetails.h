@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __AGENTDETAILSPANEL_H__
 #define __AGENTDETAILSPANEL_H__
 
@@ -59,6 +55,7 @@ class XletAgentDetails : public XLetExperimental
         void updateAgentStatus(const QString &);
         void updateQueueConfig(const QString &);
         void updateQueueStatus(const QString &);
+        void updateQueueMember();
         void monitorThisAgent(const QString &);
         void statusListen(const QString &, const QString &, const QString &);
 
