@@ -53,19 +53,16 @@ class XletAgentDetails : public XLetExperimental
     public slots:
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
-        void updateQueueConfig(const QString &);
-        void updateQueueStatus(const QString &);
-        void updateQueueMember();
         void monitorThisAgent(const QString &);
         void statusListen(const QString &, const QString &, const QString &);
 
     private slots:
         void queueClicked();
         void actionClicked();
+        void updatePanel();
 
     private:
         void clearPanel();
-        void updatePanel();
         void setQueueLookProps(const QString &);
         void setQueueAgentProps(const QString &, const QString &);
         void setQueueProps(const QString &);

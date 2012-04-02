@@ -104,13 +104,13 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
-            this, SLOT(updateQueueConfig(const QString &)));
+            this, SLOT(updatePanel()));
     connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
-            this, SLOT(updateQueueStatus(const QString &)));
+            this, SLOT(updatePanel()));
     connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
-            this, SLOT(updateQueueMember()));
+            this, SLOT(updatePanel()));
     connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
-            this, SLOT(updateQueueMember()));
+            this, SLOT(updatePanel()));
 
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
@@ -129,23 +129,6 @@ void XletAgentDetails::updateAgentStatus(const QString & xagentid)
 {
     if (xagentid == m_monitored_agentid)
         updatePanel();
-}
-
-void XletAgentDetails::updateQueueConfig(const QString & xqueueid)
-{
-    if (m_queue_labels.contains(xqueueid))
-        updatePanel();
-}
-
-void XletAgentDetails::updateQueueStatus(const QString & xqueueid)
-{
-    if (m_queue_labels.contains(xqueueid))
-        updatePanel();
-}
-
-void XletAgentDetails::updateQueueMember()
-{
-    updatePanel();
 }
 
 void XletAgentDetails::monitorThisAgent(const QString & agentid)
