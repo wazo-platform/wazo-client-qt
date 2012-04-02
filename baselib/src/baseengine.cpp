@@ -1853,6 +1853,7 @@ void BaseEngine::disconnectNoKeepAlive()
 {
     disconnectAndClean();
     popupError("no_keepalive_from_server");
+    m_pendingkeepalivemsg = 0;
     startTryAgainTimer();
 }
 
