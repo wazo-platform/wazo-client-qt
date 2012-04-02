@@ -422,6 +422,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void stopKeepAliveTimer();  //!< Stop the keep alive timer if running
         void startTryAgainTimer();  //!< Start the "try to reconnect" timer
         void stopTryAgainTimer();   //!< Stop the "try to reconnect" timer
+        void sendKeepAliveMsg();
+        void disconnectNoKeepAlive();
+        void disconnectAndClean();
         
         void initFeatureFields(const QString &);
         

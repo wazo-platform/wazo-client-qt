@@ -426,8 +426,8 @@ void BaseEngine::start()
  */
 void BaseEngine::clearInternalData()
 {
-    QString stopper = sender()->property("stopper").toString();
     if (m_attempt_loggedin) {
+        QString stopper = sender() ? sender()->property("stopper").toString() : "unknown";
         QVariantMap command;
         command["class"] = "logout";
         command["stopper"] = stopper;
@@ -436,7 +436,7 @@ void BaseEngine::clearInternalData()
         m_settings->setValue("lastlogout/datetime",
                              QDateTime::currentDateTime().toString(Qt::ISODate));
         m_settings->beginGroup(m_profilename_write);
-            m_settings->setValue("availstate", m_availstate);
+        m_settings->setValue("availstate", m_availstate);
         m_settings->endGroup();
         m_attempt_loggedin = false;
     }
@@ -462,9 +462,7 @@ void BaseEngine::stop()
 {
     QString stopper = sender()->property("stopper").toString();
     qDebug() << Q_FUNC_INFO << "stopper = " << stopper;
-    stopConnection();
-    clearInternalData();
-    setState(ENotLogged);
+    disconnectAndClean();
 }
 
 void BaseEngine::stopConnection()
@@ -739,9 +737,13 @@ void BaseEngine::parseCommand(const QString &line)
     if (forwardToListeners(thisclass, datamap))  // a class callback was called,
         return;                                  // so zap the 500 loc of if-else soup
 
-    if ((thisclass == "keepalive") || (thisclass == "availstate"))
+    if ((thisclass == "keepalive") || (thisclass == "availstate")) {
+        if (thisclass == "keepalive") {
+            --m_pendingkeepalivemsg;
+        }
         // ack from the keepalive and availstate commands previously sent
         return;
+    }
     if (thisclass == "callcampaign") {
         emit requestFileListResult(datamap.value("payload"));
     } else if (thisclass == "sheet") {
@@ -851,9 +853,7 @@ void BaseEngine::parseCommand(const QString &line)
         popupError(datamap.value("error_string").toString());
     } else if (thisclass == "login_id") {
         if (datamap.contains("error_string")) {
-            stopConnection();
-            clearInternalData();
-            setState(ENotLogged);
+            disconnectAndClean();
             popupError(datamap.value("error_string").toString());
         } else {
             m_sessionid = datamap.value("sessionid").toString();
@@ -867,9 +867,7 @@ void BaseEngine::parseCommand(const QString &line)
         }
     } else if (thisclass == "login_pass") {
         if (datamap.contains("error_string")) {
-            stopConnection();
-            clearInternalData();
-            setState(ENotLogged);
+            disconnectAndClean();
             popupError(datamap.value("error_string").toString());
         } else {
             QStringList capas = datamap.value("capalist").toStringList();
@@ -957,9 +955,7 @@ void BaseEngine::parseCommand(const QString &line)
     } else if (thisclass == "disconnect") {
         qDebug() << thisclass << datamap;
         QString type = datamap.value("type").toString();
-        stopConnection();
-        clearInternalData();
-        setState(ENotLogged);
+        disconnectAndClean();
         if (type=="force") {
             m_forced_to_disconnect = true; // disable autoreconnect
             popupError("forcedisconnected");
@@ -1837,11 +1833,30 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
     return phonenumbers;
 }
 
-/*!
- * Send a keep alive message to the login server.
- * The message is sent in a datagram through m_udpsocket
- */
 void BaseEngine::keepLoginAlive()
+{
+    if (m_pendingkeepalivemsg > 0) {
+        disconnectNoKeepAlive();
+    } else {
+        sendKeepAliveMsg();
+    }
+}
+
+void BaseEngine::disconnectAndClean()
+{
+    stopConnection();
+    clearInternalData();
+    setState(ENotLogged);
+}
+
+void BaseEngine::disconnectNoKeepAlive()
+{
+    disconnectAndClean();
+    popupError("no_keepalive_from_server");
+    startTryAgainTimer();
+}
+
+void BaseEngine::sendKeepAliveMsg()
 {
     QVariantMap command;
     command["class"] = "keepalive";
@@ -1853,6 +1868,7 @@ void BaseEngine::keepLoginAlive()
         m_rate_msec = 0;
         m_rate_samples = 0;
     }
+    ++m_pendingkeepalivemsg;
     sendJsonCommand(command);
 }
 
