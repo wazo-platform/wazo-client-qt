@@ -41,7 +41,7 @@
 
 /*! \brief Display a list of agents
  */
-class XletAgents : public XLetExperimental
+class XletAgents : public XLet
 {
     Q_OBJECT
     public:

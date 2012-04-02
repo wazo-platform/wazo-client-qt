@@ -51,7 +51,7 @@ XLet* XLetQueuesPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletQueues::XletQueues(QWidget *parent)
-    : XLetExperimental(parent),
+    : XLet(parent),
       m_configureWindow(NULL)
 {
     setTitle(tr("Queues' List"));
