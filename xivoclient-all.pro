@@ -5,13 +5,12 @@ include(xivoclient-all.pri)
 VERSIONS_FILE = versions.mak
 PREMAKE_COMMAND = ./premake.sh $${VERSIONS_FILE} $${XIVO_MAJOR_VERSION}
 
-unix {
-    system($${PREMAKE_COMMAND})
-}
 win32 {
     # Double quotes escapes && from cmd shell
     # OLDPWD is the current directory of cmd
     system($${CYGWIN_PATH}/bin/bash --login -c \"cd $OLDPWD && $${PREMAKE_COMMAND}\")
+} else {
+    system($${PREMAKE_COMMAND})
 }
 
 tests {
@@ -73,10 +72,12 @@ tests {
     QMAKE_EXTRA_TARGETS += pack
 
     # Clean rules
-    QMAKE_DISTCLEAN += versions.mak
-    unix:QMAKE_DISTCLEAN += -r bin
+    FILES_TO_CLEAN = versions.mak
+    DIRS_TO_CLEAN = bin
     win32 {
-        DIRS_TO_CLEAN = bin $${CYGWIN_PATH}\\tmp\\xivoclient-win
-        QMAKE_DISTCLEAN += /s /f /q $${DIRS_TO_CLEAN} && rd /s /q $${DIRS_TO_CLEAN}
+        DIRS_TO_CLEAN += $${CYGWIN_PATH}\\tmp\\xivoclient-win
+        QMAKE_DISTCLEAN += $${FILES_TO_CLEAN} /s /f /q $${DIRS_TO_CLEAN} && rd /s /q $${DIRS_TO_CLEAN}
+    } else {
+        QMAKE_DISTCLEAN += -r $${FILES_TO_CLEAN} $${DIRS_TO_CLEAN}
     }
 }
