@@ -69,6 +69,13 @@ tests {
                      cross/resources/xivoclient.desktop
         pack.commands = cross/xc-package-unix.sh
     }
+    mac {
+        pack.target = pack
+        pack.input = cross/resources/macos-info.plist
+        pack.commands = cross/xc-package-macos.sh \
+            $${MAC_QT_PATH} \
+            .
+    }
     QMAKE_EXTRA_TARGETS += pack
 
     # Clean rules

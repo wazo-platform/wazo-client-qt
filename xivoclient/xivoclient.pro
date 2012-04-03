@@ -13,11 +13,18 @@ win32 {
     debug:LIBS += -lxivoclientxletsd
     release:LIBS += -lxivoclientxlets
 }
+mac {
+    QMAKE_INFO_PLIST = ../cross/resources/macos-info.plist
+}
 
 QT += xml
 
 RESOURCES += xivoclient.qrc
-RC_FILE = xivoclient.rc
+mac {
+    ICON = ../cross/resources/xivoicon-mac.icns
+} else {
+    RC_FILE = xivoclient.rc
+}
 
 # this should just tell lrelease to compile these files
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
