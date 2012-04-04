@@ -125,7 +125,12 @@ void AgentInfo::pauseQueue(const QString & queuexid, bool pause) const
 
 void AgentInfo::pauseAllQueue(bool pause) const
 {
-    foreach (const QString & queue, xqueueids()) {
-        pauseQueue(queue, pause);
-    }
+    const AgentInfo * agentinfo = b_engine->agent(xid());
+    QString ipbxid = agentinfo->ipbxid();
+    QVariantMap ipbxcommand;
+
+    ipbxcommand["command"] = pause ? "queuepause" : "queueunpause";
+    ipbxcommand["member"] = QString("agent:%0").arg(xid());
+    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
+    b_engine->ipbxCommand(ipbxcommand);
 }

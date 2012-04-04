@@ -319,17 +319,17 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
         if (npaused == 0) {
             m_agent_paused_status[xagentid]->setText(tr("No"));
             m_agent_paused_action[xagentid]->setIcon(QIcon(":/images/cancel.png"));
-            m_agent_paused_action[xagentid]->setProperty("action", "pause");
+            m_agent_paused_action[xagentid]->setProperty("action", "unpause");
             tooltip = "";
         } else if (npaused == njoined) {
             m_agent_paused_status[xagentid]->setText(tr("Yes"));
             m_agent_paused_action[xagentid]->setIcon(QIcon(":/images/button_ok.png"));
-            m_agent_paused_action[xagentid]->setProperty("action", "unpause");
+            m_agent_paused_action[xagentid]->setProperty("action", "pause");
             tooltip = tr("Paused queues : %1").arg(paused_queues.join(sep));
         } else {
             m_agent_paused_status[xagentid]->setText(tr("Partial"));
             m_agent_paused_action[xagentid]->setIcon(QIcon(":/images/button_ok.png"));
-            m_agent_paused_action[xagentid]->setProperty("action", "unpause");
+            m_agent_paused_action[xagentid]->setProperty("action", "pause");
             tooltip = tr("Paused queues : %1").arg(paused_queues.join(sep));
         }
         m_agent_paused_status[xagentid]->setToolTip(tooltip);
@@ -371,12 +371,12 @@ void XletAgents::agentClicked()
                                 QString("agentid %1 action %2 status %3")
                                 .arg(xagentid).arg(action).arg(status));
     } else if (action == "unpause") {
-        ipbxcommand["command"] = "agentunpausequeue";
-        ipbxcommand["member"] = xagentid;
+        ipbxcommand["command"] = "queuepause";
+        ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
         ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
     } else if (action == "pause") {
-        ipbxcommand["command"] = "agentpausequeue";
-        ipbxcommand["member"] = xagentid;
+        ipbxcommand["command"] = "queueunpause";
+        ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
         ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
     } else if (action.endsWith("listen")) {
         ipbxcommand["command"] = action;
