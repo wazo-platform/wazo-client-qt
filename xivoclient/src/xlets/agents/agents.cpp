@@ -378,13 +378,9 @@ void XletAgents::agentClicked()
         ipbxcommand["command"] = "agentpausequeue";
         ipbxcommand["member"] = xagentid;
         ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    } else if (action == "listen") {
-        ipbxcommand["command"] = "listen";
-        ipbxcommand["source"] = "user:special:me";
-        ipbxcommand["destination"] = xagentid;
-    } else if (action == "stoplisten") {
-        ipbxcommand["command"] = "stoplisten";
-        ipbxcommand["source"] = "user:special:me";
+    } else if (action.endsWith("listen")) {
+        ipbxcommand["command"] = action;
+        ipbxcommand["subcommand"] = action == "listen" ? "start" : "stop";
         ipbxcommand["destination"] = xagentid;
     }
     emit ipbxCommand(ipbxcommand);
