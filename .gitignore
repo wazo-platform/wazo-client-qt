@@ -21,3 +21,4 @@ unit-tests/*.xml
 
 # Local tests
 /test-*
+Makefile
