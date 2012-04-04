@@ -59,8 +59,8 @@ XletAgents::XletAgents(QWidget *parent)
 
     m_gridlayout->addWidget(m_title_agent, 0, 0, 1, 2, Qt::AlignLeft);
     m_gridlayout->addWidget(m_title_listen, 0, 3, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_online, 0, 4, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_presence, 0, 6, 1, 1, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_title_online, 0, 5, 1, 1, Qt::AlignCenter);
+    m_gridlayout->addWidget(m_title_presence, 0, 7, 1, 1, Qt::AlignCenter);
     m_gridlayout->addWidget(m_title_logged, 0, 8, 1, 2, Qt::AlignCenter);
     m_gridlayout->addWidget(m_title_njoined, 0, 10, 1, 1, Qt::AlignCenter);
     m_gridlayout->addWidget(m_title_paused, 0, 12, 1, 2, Qt::AlignCenter);
@@ -214,11 +214,12 @@ void XletAgents::displayLine(const QString & xagentid, int linenum)
     m_gridlayout->addWidget(qvline2, linenum, colnum++, Qt::AlignHCenter);
     m_gridlayout->addWidget(m_agent_logged_status[xagentid], linenum, colnum++, Qt::AlignCenter);
     m_gridlayout->addWidget(m_agent_logged_action[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_joined_number[xagentid], linenum, colnum++, Qt::AlignRight);
+    ++colnum;
+    m_gridlayout->addWidget(m_agent_joined_number[xagentid], linenum, colnum++, Qt::AlignCenter);
     m_gridlayout->addWidget(qvline3, linenum, colnum++, Qt::AlignHCenter);
     m_gridlayout->addWidget(m_agent_paused_status[xagentid], linenum, colnum++, Qt::AlignCenter);
     m_gridlayout->addWidget(m_agent_paused_action[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_paused_number[xagentid], linenum, colnum++, Qt::AlignRight);
+    m_gridlayout->addWidget(m_agent_paused_number[xagentid], linenum, colnum++, Qt::AlignCenter);
 }
 
 void XletAgents::updateAgentDisplay(const QString & xagentid)
