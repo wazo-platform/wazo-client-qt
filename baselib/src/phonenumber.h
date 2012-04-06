@@ -47,6 +47,7 @@ namespace PhoneNumber
     QRegExp phone_re();
     bool isURI(const QString &);
     bool contains(const QString &);
+    QString BASELIB_EXPORT extract(const QString &, const QString & = "", const QString & = "");
 }
 
 #endif /* __PHONENUMBER_H__ */

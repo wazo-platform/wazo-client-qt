@@ -77,7 +77,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         if(! PhoneNumber::isURI(arg_str))
             profile = arg_str;
         else
-            msg = arg_str;
+            msg = PhoneNumber::extract(arg_str);
     }
 
     if (! msg.isEmpty()) {
