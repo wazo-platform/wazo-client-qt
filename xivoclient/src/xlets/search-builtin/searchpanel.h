@@ -63,6 +63,9 @@ class SearchPanel : public XLet
         void updatePhoneStatus(const QString &);
         void removePhoneConfig(const QString &);
     private:
+        BasePeerWidget *findWidgetByPhoneXid(const QString &);
+        bool isShown(const QString &) const;
+        unsigned int maxDisplay() const { return b_engine->getConfig("guioptions.contacts-max").toUInt(); };
         QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
         QGridLayout *m_peerlayout;
         ExtendedLineEdit *m_input; //!< widget for search string input

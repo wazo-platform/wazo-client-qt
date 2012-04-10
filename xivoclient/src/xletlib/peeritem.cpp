@@ -59,6 +59,25 @@ PeerItem::PeerItem(const PeerItem &peer)
     m_peerwidget = peer.m_peerwidget;
 }
 
+bool PeerItem::matchPattern(const QString &pattern) const
+{
+    bool match = false;
+    if (m_ui) {
+        match = m_ui->fullname().contains(pattern, Qt::CaseInsensitive);
+        if (!match) {
+            foreach(const QString &phonexid, m_ui->phonelist()) {
+                if (const PhoneInfo *phone = b_engine->phone(phonexid)) {
+                    if (phone->number().contains(pattern)) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return match;
+}
+
 /*! \brief update status of the peer
  *
  * Change what is displayed according to new status values.

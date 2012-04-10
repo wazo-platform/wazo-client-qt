@@ -60,6 +60,7 @@ class XLETLIB_EXPORT PeerItem
         void updateAgentStatus(const QVariant &);
         void updateDisplayedStatus();
         void updateDisplayedName();
+        bool matchPattern(const QString &) const;
     private:
         BasePeerWidget *m_peerwidget;  //!< related PeerWidget
 
