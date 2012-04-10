@@ -181,9 +181,8 @@ void clean_xivoclient(ExecObjects exec_obj)
 #ifdef FUNCTESTS
         delete exec_obj.rc;
 #endif
+	delete exec_obj.app;
     }
-
-    delete exec_obj.app;
 }
 
 /*! \brief program entry point
