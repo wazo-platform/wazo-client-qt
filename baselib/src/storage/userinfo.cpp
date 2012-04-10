@@ -74,8 +74,9 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
 
     if (prop.contains("linelist")) {
         QStringList lid;
-        foreach (QString id, prop.value("linelist").toStringList())
-            lid << QString("%1/%2").arg(m_ipbxid).arg(id);
+        foreach (const QString &phone_id, prop.value("linelist").toStringList())
+            lid << QString("%1/%2").arg(m_ipbxid).arg(phone_id);
+        lid.sort();
         if (lid != m_phoneidlist) {
             haschanged = true;
             setPhoneIdList(lid);
