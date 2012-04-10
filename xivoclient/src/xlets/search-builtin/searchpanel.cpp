@@ -196,10 +196,16 @@ void SearchPanel::updateUserConfig(const QString & xuserid)
 
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
+        if (isShown(xuserid))
+            updateDisplay();
     } else {
         const UserInfo * ui = b_engine->user(xuserid);
         peeritem = new PeerItem(ui);
         m_peerhash.insert(xuserid, peeritem);
+        if (peeritem && (((unsigned int) m_peerlayout->count() < maxDisplay())
+                         && peeritem->matchPattern(m_searchpattern))) {
+            updateDisplay();
+        }
     }
     peeritem->updateStatus();
 }
@@ -215,11 +221,6 @@ void SearchPanel::updateUserStatus(const QString & xuserid)
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
         peeritem->updateStatus();
-        if (isShown(xuserid)
-            || (((unsigned int) m_peerlayout->count() < maxDisplay())
-                && peeritem->matchPattern(m_searchpattern))) {
-            updateDisplay();
-        }
     }
 }
 
@@ -273,7 +274,7 @@ void SearchPanel::removePeer(const QString & xuserid)
 
 void SearchPanel::removePeers()
 {
-    foreach (QString peerkey, m_peerhash.keys()) {
+    foreach (const QString &peerkey, m_peerhash.keys()) {
         PeerItem * peeritem = m_peerhash[peerkey];
         BasePeerWidget * peerwidget = peeritem->getWidget();
         if (peerwidget) {
