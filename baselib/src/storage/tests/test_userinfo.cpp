@@ -49,6 +49,7 @@ void TestUserInfo::initTestCase()
     m_phoneidlist.append(QString("%0/%1").arg(m_ipbxid).arg("23"));
     m_linelist.append("42");
     m_phoneidlist.append(QString("%0/%1").arg(m_ipbxid).arg("42"));
+    m_phoneidlist.sort();
 
     m_prop1["fullname"] = "testfullname";
     m_prop1["voicemailid"] = "2345";
