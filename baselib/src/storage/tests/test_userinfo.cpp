@@ -191,6 +191,7 @@ void TestUserInfo::updateConfig()
             << QString("%0/%1").arg(m_ipbxid).arg(23)
             << QString("%0/%1").arg(m_ipbxid).arg(42)
             << QString("%0/%1").arg(m_ipbxid).arg(101);
+        expected.sort();
         QVariantMap prop;
         prop["linelist"] = newlist;
         bool res = u.updateConfig(prop);
