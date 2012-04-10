@@ -710,6 +710,7 @@ void BaseEngine::emitMessage(const QString & msg)
 /*! \brief parse JSON and then process command */
 void BaseEngine::parseCommand(const QString &line)
 {
+    m_pendingkeepalivemsg = 0;
     QVariant data;
     try {
         QTime jsondecodetime;
@@ -738,9 +739,6 @@ void BaseEngine::parseCommand(const QString &line)
         return;                                  // so zap the 500 loc of if-else soup
 
     if ((thisclass == "keepalive") || (thisclass == "availstate")) {
-        if (thisclass == "keepalive") {
-            --m_pendingkeepalivemsg;
-        }
         // ack from the keepalive and availstate commands previously sent
         return;
     }
