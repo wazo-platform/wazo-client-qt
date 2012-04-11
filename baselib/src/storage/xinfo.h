@@ -44,6 +44,7 @@ class BASELIB_EXPORT XInfo
 {
     public:
         XInfo(const QString &, const QString &);  //!< constructor
+        virtual ~XInfo() {};
         bool setIfChangeString(const QVariantMap &, const char * const, QString * const);
         bool setIfChangeBool(const QVariantMap &, const char * const, bool * const);
         bool setIfChangeInt(const QVariantMap &, const char * const, int * const);
