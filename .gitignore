@@ -10,8 +10,6 @@ bin
 
 # Every Makefile (and Makefile.{Debug,Release})
 Makefile*
-# But not the main one
-!/Makefile
 
 # Backup files
 *~
@@ -22,3 +20,8 @@ unit-tests/*.xml
 # Local tests
 /test-*
 Makefile
+
+# Packaging
+*.deb
+*.exe
+*.dmg
