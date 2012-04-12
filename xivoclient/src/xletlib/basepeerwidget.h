@@ -36,6 +36,7 @@
 
 #include <baseengine.h>
 #include "chitchat.h"
+#include "xivoconsts.h"
 
 class UserInfo;
 
@@ -57,10 +58,10 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         virtual void removePhoneConfig(const QString &) {}
         virtual void updatePresence() = 0;  //! update presence information displayed
 
-        virtual const QString& number() const { return m_number; };  //! Phone number
-        virtual QString name() const;  //! Name
+        virtual const QString& number() const { return m_number; }  //! Phone number
+        virtual QString name() const { return m_ui_remote ? m_ui_remote->fullname() : QString(); }
         virtual QString id() const;  //! return a unique id for the item
-        int maxWidthWanted() const { return m_maxWidthWanted; };  //! maximum width for "small" items
+        int maxWidthWanted() const { return m_maxWidthWanted; }  //! maximum width for "small" items
         void reloadSavedName();  //! reload the saved name
 
     protected:
@@ -88,7 +89,12 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void addTxferVmMenu(QMenu *);
     private:
         QList<const ChannelInfo *> loopOverChannels(const UserInfo *);
-        bool canDrag(const QMouseEvent *) const;
+        bool canDrag(const QMouseEvent *event) const {
+          return (isLeftClick(event) && isme() && isSwitchBoard()); }
+        bool canTransfer(const ChannelInfo & channel) const {
+          return ((channel.commstatus() == CHAN_STATUS_LINKED_CALLER ||
+                   channel.commstatus() == CHAN_STATUS_LINKED_CALLED) &&
+                  (! channel.talkingto_kind().contains("meetme"))); }
         bool isLeftClick(const QMouseEvent *) const;
         bool isSwitchBoard() const;
     signals:

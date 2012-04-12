@@ -302,13 +302,6 @@ void BasePeerWidget::mousePressEvent(QMouseEvent *event)
     }
 }
 
-bool BasePeerWidget::canDrag(const QMouseEvent *event) const
-{
-    if (! isLeftClick(event)) return false;
-    if (! isme() && ! isSwitchBoard()) return false;
-    return true;
-}
-
 bool BasePeerWidget::isSwitchBoard() const
 {
     return (m_ui_local && m_ui_local->isSwitchBoard());
@@ -351,15 +344,13 @@ QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * use
 {
     QList<const ChannelInfo *> channels;
     QString ipbxid = userinfo->ipbxid();
-    foreach (const QString xphoneid, userinfo->phonelist()) {
-        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
-        if (phoneinfo == NULL)
-            continue;
-        foreach (const QString xchannel, phoneinfo->xchannels()) {
-            const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
-            if (channelinfo == NULL)
-                continue;
-            channels << channelinfo;
+    foreach (const QString &xphoneid, userinfo->phonelist()) {
+        if (const PhoneInfo * phoneinfo = b_engine->phone(xphoneid)) {
+            foreach (const QString xchannel, phoneinfo->xchannels()) {
+                if (const ChannelInfo * channelinfo = b_engine->channels().value(xchannel)) {
+                    channels << channelinfo;
+                }
+            }
         }
     }
     return channels;
@@ -482,7 +473,8 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
 {
     static QStringList can_hangup = QStringList()
         << CHAN_STATUS_LINKED_CALLER
-        << CHAN_STATUS_LINKED_CALLED;
+        << CHAN_STATUS_LINKED_CALLED
+        << CHAN_STATUS_RINGING;
     const QStringList & channels = m_ui_local->xchannels();
     foreach (const QString & channelxid, channels) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
@@ -557,8 +549,6 @@ void BasePeerWidget::addSwitchboardMenu(QMenu * menu)
  */
 void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 {
-    // XXX (pcm) We are ignoring attended transfers until they work properlly
-    if (! blind) return;
     if (! m_ui_local->xchannels().size()) return;
     if (m_ui_remote->isTalkingTo(m_ui_local->xid())) return;
     QString string = blind ? tr("Direct &Transfer") : tr("&Indirect Transfer");
@@ -576,9 +566,7 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 
     foreach (const QString & chanxid, m_ui_local->xchannels()) {
         if (const ChannelInfo * c = b_engine->channel(chanxid)) {
-            if ((c->commstatus() == CHAN_STATUS_LINKED_CALLER ||
-                 c->commstatus() == CHAN_STATUS_LINKED_CALLED)
-                && ! c->talkingto_kind().contains("meetme")) {
+            if (canTransfer(*c)) {
                 QMenu * submenu = 0;
                 if (numbers.size() > 1) {
                     submenu = new QMenu(string, menu);
@@ -648,20 +636,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 
     if (! contextMenu.isEmpty()) {
         contextMenu.exec(event->globalPos());
-    }
-}
-
-/*!
- *
- * This method would be subclassed by subclasses
- * which don't have m_ui_remote valid.
- */
-QString BasePeerWidget::name() const
-{
-    if (m_ui_remote) {
-        return m_ui_remote->fullname();
-    } else {
-        return QString();
     }
 }
 
