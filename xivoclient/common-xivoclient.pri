@@ -25,3 +25,6 @@ win32 {
     release:LIBS += -lxivoclient
     LIBS += -lole32 -loleaut32 -luuid
 }
+
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O1
