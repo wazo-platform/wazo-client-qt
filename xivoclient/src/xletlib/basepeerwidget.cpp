@@ -560,6 +560,7 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
                 numbers << p->number();
         }
     }
+
     if (! m_ui_remote->mobileNumber().isEmpty()) {
         numbers << m_ui_remote->mobileNumber();
     }
@@ -589,6 +590,7 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
                         submenu->addAction(action);
                     }
                 }
+                break;
             }
         }
     }
@@ -602,7 +604,7 @@ void BasePeerWidget::addTxferVmMenu(QMenu * menu)
     if (! m_ui_remote->voicemailid().isEmpty()) {
         foreach (const QString channelxid, m_ui_local->xchannels()) {
             if (const ChannelInfo * c = b_engine->channel(channelxid)) {
-                if (! c->talkingto_kind().contains("meetme")) {
+                if (canTransfer(*c)) {
                     if (QAction * action = new QAction(
                             tr("Transfer to &voice mail"), this)) {
                         QString chan_to_transfer = QString("%0/%1")
@@ -611,6 +613,7 @@ void BasePeerWidget::addTxferVmMenu(QMenu * menu)
                         connect(action, SIGNAL(triggered()),
                                 this, SLOT(vmtransfer()));
                         menu->addAction(action);
+                        break;
                     }
                 }
             }
