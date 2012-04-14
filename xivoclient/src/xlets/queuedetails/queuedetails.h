@@ -60,6 +60,7 @@ class XletQueueDetails : public XLet
         void updateQueueConfig(const QString &);
         void updateQueueStatus(const QString &);
         void monitorThisQueue(const QString &);
+        void removeQueueMember(const QString &);
 
     private slots:
         void agentClicked();

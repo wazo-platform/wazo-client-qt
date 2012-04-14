@@ -81,9 +81,17 @@ XletQueueDetails::XletQueueDetails(QWidget *parent)
             this, SLOT(updateQueueConfig(const QString &)));
     connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
             this, SLOT(updateQueueStatus(const QString &)));
-
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(monitorThisQueue(const QString &)));
+    connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
+            this, SLOT(removeQueueMember(const QString &)));
+
+}
+
+void XletQueueDetails::removeQueueMember(const QString & queueMemberxId)
+{
+    clearPanel();
+    updatePanel();
 }
 
 void XletQueueDetails::updateAgentConfig(const QString & xagentid)
@@ -112,7 +120,7 @@ void XletQueueDetails::updateQueueStatus(const QString & xqueueid)
 
 void XletQueueDetails::monitorThisQueue(const QString & xqueueid)
 {
-    qDebug() << Q_FUNC_INFO << xqueueid;
+    //qDebug() << Q_FUNC_INFO << xqueueid;
     if (b_engine->hasQueue(xqueueid)) {
         m_monitored_queueid = xqueueid;
         clearPanel();
@@ -169,14 +177,15 @@ void XletQueueDetails::updatePanel()
         m_queuelegend_penalty->show();
     }
 
-    // qDebug() << Q_FUNC_INFO << m_monitored_queueid << queueinfo->xagentids() << queueinfo->xphoneids();
+    //qDebug() << Q_FUNC_INFO << m_monitored_queueid << queueinfo->xagentids() << m_agent_more << queueinfo->xphoneids();
 
     int i = 0;
     QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(b_engine->iterover("agents"));
-    while (iter.hasNext()) {
-        iter.next();
-        QString xagentid = iter.key();
-        AgentInfo * agentinfo = (AgentInfo *) iter.value();
+    foreach(const QString &xagentid, queueinfo->xagentids() ) {
+
+      //qDebug() << Q_FUNC_INFO << xagentid;
+
+        const AgentInfo * agentinfo = b_engine->agent(xagentid);
 
         bool isnewagent = false;
         if (! m_agent_more.contains(xagentid))
