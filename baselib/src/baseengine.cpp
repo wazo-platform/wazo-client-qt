@@ -225,7 +225,7 @@ void BaseEngine::loadSettings()
         m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 120*1000).toUInt();
         m_availstate = m_settings->value("availstate", "available").toString();
         m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
-        m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 0).toInt();
+        m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 10).toInt();
         
         m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
         m_config["doubleclick.switchboard"] = m_settings->value("doubleclick.switchboard", "call").toString();
