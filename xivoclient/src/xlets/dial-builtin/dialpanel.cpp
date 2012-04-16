@@ -52,7 +52,7 @@ DialPanel::DialPanel(QWidget *parent)
     m_input->setDuplicatesEnabled(false);
     m_input->setInsertPolicy(QComboBox::InsertAtTop);
     m_input->setMinimumContentsLength(15);
-    m_input->lineEdit()->setMaxLength(20);
+    m_input->lineEdit()->setMaxLength(30);
     loadHistory();
     m_input->clearEditText();
     //m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
