@@ -6,6 +6,7 @@ unix:CONFIG  += plugin
 
 INCLUDEPATH += $${BASELIB_DIR}/src
 INCLUDEPATH += $${BASELIB_DIR}/src/storage
+INCLUDEPATH += $${BASELIB_DIR}/src/dao
 INCLUDEPATH += $${ROOT_DIR}/src/xletlib
 
 DESTDIR      = $${BIN_DIR}/plugins

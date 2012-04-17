@@ -45,38 +45,21 @@ XletAgents::XletAgents(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Agents' List (plain)"));
-    m_gui_buttonsize = 10;
 
-    m_gridlayout = new QGridLayout(this);
-    m_title_agent = new QLabel(tr("Agent"), this);
-    m_title_listen = new QLabel(tr("Listen"), this);
-    m_title_online = new QLabel(tr("On Line"), this);
-    m_title_presence = new QLabel(tr("Presence"), this);
-    m_title_logged  = new QLabel(tr("Logged"), this);
-    m_title_njoined = new QLabel(tr("Joined\nqueues"), this);
-    m_title_paused  = new QLabel(tr("Paused"), this);
-    m_title_npaused = new QLabel(tr("Paused\nqueues"), this);
+    QVBoxLayout *xletLayout = new QVBoxLayout();
+    setLayout(xletLayout);
+    xletLayout->setSpacing(0);
+    // Model
+    m_model = new AgentsModel(this);
 
-    m_gridlayout->addWidget(m_title_agent, 0, 0, 1, 2, Qt::AlignLeft);
-    m_gridlayout->addWidget(m_title_listen, 0, 3, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_online, 0, 5, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_presence, 0, 7, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_logged, 0, 8, 1, 2, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_njoined, 0, 10, 1, 1, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_paused, 0, 12, 1, 2, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_title_npaused, 0, 14, 1, 1, Qt::AlignCenter);
-    m_gridlayout->setColumnStretch(15, 1);
-    m_gridlayout->setRowStretch(100, 1);
-    m_gridlayout->setVerticalSpacing(0);
+    AgentsView *view = new AgentsView(this);
+    view->setModel(m_model);
+    view->hideColumn(AgentsModel::ID);
+    view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
 
-    setGuiOptions();
-    // connect signals/slots with engine
-    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
-            this, SLOT(updateAgentConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
-            this, SLOT(updateAgentStatus(const QString &)));
-    connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
-            this, SLOT(statusListen(const QString &, const QString &, const QString &)));
+    // Layout
+    xletLayout->addWidget(view);
+
 }
 
 /*! \brief set font

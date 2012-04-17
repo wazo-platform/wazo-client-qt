@@ -39,6 +39,9 @@
 #include <xletinterface.h>
 #include <xlet.h>
 
+#include "agentsmodel.h"
+#include "agentsview.h"
+
 /*! \brief Display a list of agents
  */
 class XletAgents : public XLet
@@ -94,6 +97,8 @@ class XletAgents : public XLet
         QLabel *m_title_paused;    //!< "Paused"
         QLabel *m_title_njoined;   //!< "Joined queues"
         QLabel *m_title_npaused;   //!< "paused queues"
+
+        AgentsModel *m_model;
 };
 
 class XLetAgentsPlugin : public QObject, XLetInterface

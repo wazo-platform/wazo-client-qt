@@ -50,8 +50,10 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         bool updateStatus(const QVariantMap &);  //! update status members
 
         const QString & context() const;  //! context this agent belongs to
-        const QString & agentNumber() const;  //! agent number
-        const QString & fullname() const;  //! agent fullname
+        const QString & agentNumber() const;
+        const QString & fullname() const;
+        const QString & firstName() const { return m_firstname; };
+        const QString & lastName() const { return m_lastname; };
 
         //! agent statuses
         const QString & status() const { return m_status; };  //! access to the status values of this agent
