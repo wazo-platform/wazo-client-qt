@@ -16,7 +16,7 @@ function usage {
     echo
     echo "help : display this message"
     echo "pull : get translations from Transifex"
-    echo "push : upload transltations to Transifex"
+    echo "push : upload translations to Transifex"
     echo "update : update translation files from source"
 }
 
