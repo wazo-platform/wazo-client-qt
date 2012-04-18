@@ -7,9 +7,9 @@
 
 # To add a new translation :
 # find . -name '*.pro' -exec sed -i -e 's|^TRANSLATIONS += $${\?ROOT_DIR}\?/i18n/\(.*\)_en.ts|\0\nTRANSLATIONS += $$ROOT_DIR/i18n/\1_it.ts|' {} \;
-# find . -name '*.qrc' -exec sed -i -e 's|^\\( *\\)<file>\\(.*\\)obj/\\(.*\\)_fr.qm</file>|\\0\\n\\1<file>\\2obj/\\3_de.qm</file>|' {} \\;
+# find . -name '*.qrc' -exec sed -i -e 's|^\( *\)<file>\(.*\)obj/\(.*\)_fr.qm</file>|\0\n\1<file>\2obj/\3_de.qm</file>|' {} \;
 
-LOCALES="en fr it de nl ja"
+LOCALES="en fr it de nl ja hu pt_BR"
 
 function usage {
     echo "Usage : $0 [help|pull|update]"
@@ -38,11 +38,11 @@ function find_all_ts_files {
 
 function copy_from_transifex_to_git {
     # locale takes values as "fr.ts", "de.ts", "nl.ts" ...
-    for locale in $(ls translations/xivo.xivo-client)
+    for locale in ${LOCALES}
     do
         for ts in $(find_all_ts_files "en")
         do
-            cp "translations/xivo.xivo-client/$locale" "${ts%en.ts}$locale"
+            cp "translations/xivo.xivo-client/$locale.ts" "${ts%en.ts}${locale}.ts"
         done
     done
 
