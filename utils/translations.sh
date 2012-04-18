@@ -71,6 +71,9 @@ function merge_translations {
             find_all_ts_files "$locale" \
             | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
         done
+    else
+        echo "You need to install Qt tool lconvert !"
+        exit 1
     fi
 }
 
