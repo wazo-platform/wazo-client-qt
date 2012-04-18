@@ -57,44 +57,44 @@ Context: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="261"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="267"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="262"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="268"/>
         <source>Agent logged on %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="271"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="272"/>
         <source>Agent NOT logged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="275"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="276"/>
         <source>Unknown %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="307"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="308"/>
         <source>Joined queues : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="319"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="320"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="324"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="325"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="327"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="332"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="328"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="333"/>
         <source>Paused queues : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="329"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="330"/>
         <source>Partial</source>
         <translation type="unfinished"></translation>
     </message>

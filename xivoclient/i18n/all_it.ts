@@ -1761,7 +1761,7 @@ riportato di seguito) nella prima finestra</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="387"/>
         <source>Italian</source>
-        <translation type="unfinished"/>
+        <translation>Italiano</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="388"/>
