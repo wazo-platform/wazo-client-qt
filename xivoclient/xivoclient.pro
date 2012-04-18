@@ -32,6 +32,8 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_nl.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_de.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_pt_BR.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_hu.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_it.ts
 
 # Input

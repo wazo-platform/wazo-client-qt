@@ -2,6 +2,8 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/switchboard_fr.qm</file>
+        <file>../../../obj/switchboard_pt_BR.qm</file>
+        <file>../../../obj/switchboard_hu.qm</file>
         <file>../../../obj/switchboard_de.qm</file>
         <file>../../../obj/switchboard_ja.qm</file>
         <file>../../../obj/switchboard_it.qm</file>

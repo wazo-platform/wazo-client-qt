@@ -2,6 +2,8 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/agentdetails_fr.qm</file>
+        <file>../../../obj/agentdetails_pt_BR.qm</file>
+        <file>../../../obj/agentdetails_hu.qm</file>
         <file>../../../obj/agentdetails_de.qm</file>
         <file>../../../obj/agentdetails_ja.qm</file>
         <file>../../../obj/agentdetails_it.qm</file>

@@ -2,6 +2,8 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/queueentrydetails_fr.qm</file>
+        <file>../../../obj/queueentrydetails_pt_BR.qm</file>
+        <file>../../../obj/queueentrydetails_hu.qm</file>
         <file>../../../obj/queueentrydetails_de.qm</file>
         <file>../../../obj/queueentrydetails_ja.qm</file>
         <file>../../../obj/queueentrydetails_it.qm</file>
