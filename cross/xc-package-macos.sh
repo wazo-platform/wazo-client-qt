@@ -65,11 +65,14 @@ function link_xletlib_from_app {
 }
 
 function deploy_webkit() {
-    cp -r ${QT_PATH}/lib/QtWebKit.framework ${PACK_CONTENTS}/Frameworks
+    LIB_PATH_IN_PACK=Frameworks/QtWebKit.framework/Versions/4
+    mkdir -p ${PACK_CONTENTS}/${LIB_PATH_IN_PACK}
+    cp -r ${QT_PATH}/lib/QtWebKit.framework/Versions/4/QtWebKit \
+          ${PACK_CONTENTS}/${LIB_PATH_IN_PACK}
     install_name_tool -id \
-        @executable_path/../Frameworks/QtWebKit.framework/Versions/4/QtWebKit \
-        ${PACK_CONTENTS}/Frameworks/QtWebKit.framework/Versions/4/QtWebKit
-    link_qt ${PACK_CONTENTS}/Frameworks/QtWebKit.framework/Versions/4/QtWebKit
+        @executable_path/../${LIB_PATH_IN_PACK}/QtWebKit \
+        ${PACK_CONTENTS}/${LIB_PATH_IN_PACK}/QtWebKit
+    link_qt ${PACK_CONTENTS}/${LIB_PATH_IN_PACK}/QtWebKit
 }
 
 function package {
