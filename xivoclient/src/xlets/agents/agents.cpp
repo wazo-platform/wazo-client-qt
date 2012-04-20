@@ -32,6 +32,7 @@
  */
 
 #include "agents.h"
+#include "agentstatusdelegate.h"
 
 Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
 
@@ -56,6 +57,7 @@ XletAgents::XletAgents(QWidget *parent)
     view->setModel(m_model);
     view->hideColumn(AgentsModel::ID);
     view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
+    view->setItemDelegateForColumn(AgentsModel::LOGGED_STATUS, new AgentStatusDelegate());
 
     // Layout
     xletLayout->addWidget(view);

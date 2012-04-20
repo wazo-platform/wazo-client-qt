@@ -146,6 +146,8 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
                 return njoined;
             case PAUSED_QUEUES :
                 return npaused;
+            case LOGGED_STATUS:
+                return agentinfo->status();
             default :
                 return not_available;
         }
