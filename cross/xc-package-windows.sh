@@ -35,7 +35,10 @@ cp -r ${RES_DIR}/{gpl.txt,xivoicon.ico,xivoicon_un.ico,xivo.bmp} $DEST_DIR
 # Qt libs
 rm -rf $DEST_DIR/qtlibs
 mkdir $DEST_DIR/qtlibs
-cp $MINGW_DIR/bin/libstdc++-6.dll $DEST_DIR/qtlibs
+cp $MINGW_DIR/bin/\
+{libstdc++-6.dll,\
+libgcc_s_dw2-1.dll,\
+mingwm10.dll} $DEST_DIR/qtlibs
 cp $QT_DIR/bin/\
 {QtCore4.dll,\
 QtGui4.dll,\
@@ -46,9 +49,7 @@ QtWebKit4.dll,\
 QtXml4.dll,\
 QtXmlPatterns4.dll,\
 libeay32.dll,\
-libgcc_s_dw2-1.dll,\
-ssleay32.dll,\
-mingwm10.dll} $DEST_DIR/qtlibs
+ssleay32.dll} $DEST_DIR/qtlibs
 rm -rf $DEST_DIR/qtlibs/{imageformats,sqldrivers}
 mkdir $DEST_DIR/qtlibs/{imageformats,sqldrivers}
 cp -r $QT_DIR/plugins/imageformats/*.dll $DEST_DIR/qtlibs/imageformats
@@ -66,6 +67,10 @@ mkdir $DEST_DIR/xivoclient
 cp -r $XC_DIR/bin/*.dll $XC_DIR/bin/*.exe $DEST_DIR/xivoclient
 mkdir $DEST_DIR/xivoclient/plugins
 cp -r $XC_DIR/bin/plugins/*.dll $DEST_DIR/xivoclient/plugins
+
+# Reset permissions in case they are broken by ACL
+find $DEST_DIR -type d -exec chmod 0755 {} \;
+find $DEST_DIR -type f -exec chmod 0644 {} \;
 
 cat > $DEST_DIR/installer.nsi <<!
 !define XC_VERSION ${XC_VERSION}
