@@ -163,7 +163,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QVariantMap & getOptionsUserStatus() const;
         const QVariantMap & getOptionsPhoneStatus() const;
         const QVariantMap & getOptionsChannelStatus() const;
-        const QVariantMap & getOptionsAgentStatus() const;
 
         const QString & getCapaApplication() const;
         const QString osname() const { return m_osname; };
@@ -469,7 +468,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QVariantMap m_options_userstatus;    //!< Display Options for User statuses (presence)
         QVariantMap m_options_phonestatus;   //!< Display Options for Phone statuses
         QVariantMap m_options_channelstatus; //!< Display Options for Channel statuses
-        QVariantMap m_options_agentstatus;   //!< Display Options for Agent statuses
         QStringList m_capas_regcommands;  //!< Capabilities for regular commands
         QStringList m_capas_ipbxcommands; //!< Capabilities for IPBX commands
 
