@@ -72,12 +72,18 @@
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="287"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1</source>
         <translation>IPBXid : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="337"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="307"/>
+        <source>IPBXid: %1
+Context: %2</source>
+        <translation>IPBXid : %1
+Contexte : %2</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.cpp" line="339"/>
         <source>(Line %1)</source>
         <translation>(Ligne %1)</translation>
     </message>

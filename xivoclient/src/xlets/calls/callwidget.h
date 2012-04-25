@@ -72,12 +72,15 @@ class CallWidget : public QWidget
     signals:
         void doHangUp(const QString &);  //!< hang up the channel
         void doTransferToNumber(const QString &);  //!< transfers the channel
+        void doParkCall(const QString &);  //!< parks the channel
     public slots:
         void hangUp();
         void transferToNumber();
+        void parkCall();
     private:
         const UserInfo * m_ui;  //!< monitored user infos
         QString m_xchannel;  //!< channel identifier
+        bool m_parkedCall;  //!< Is it a parked call ?
 
         QPoint m_dragstartpos;  //!< used for drag
         QGridLayout * m_gridlayout;  //!< monitored user infos
@@ -89,6 +92,7 @@ class CallWidget : public QWidget
 
         QAction * m_hangUpAction;  //!< Hang Up Action
         QAction * m_transferToNumberAction;  //!< Transfer to Number Action
+        QAction * m_parkCall;  //!< Park the Call Action
 };
 
 #endif

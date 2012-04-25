@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2011, Proformatique
  *
  * This file is part of XiVO Client.
  *
@@ -27,54 +27,58 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CHANNELINFO_H__
-#define __CHANNELINFO_H__
-
-#include "baselib_export.h"
-#include "xinfo.h"
-
-#include <QMap>
-
-/*! \brief Store Channel information
+/* $Revision$
+ * $Date$
  */
-class BASELIB_EXPORT ChannelInfo : public XInfo
+
+#ifndef __PARKINGPANEL_H__
+#define __PARKINGPANEL_H__
+
+#include <QtGui>
+#include "xlet.h"
+#include "xletinterface.h"
+
+#include "baseengine.h"
+
+class ParkingInfo;
+class ParkingWidget;
+class PeerChannel;
+
+/*! \brief Displays the parking slots.
+ */
+class XletParking : public XLet
 {
+    Q_OBJECT
+
     public:
-        ChannelInfo(const QString &, const QString &);
-        bool updateStatus(const QVariantMap &);
-
-        const QString & talkingto_kind() const;
-        const QString & talkingto_id() const;
-        const QString & direction() const;
-        const QString & commstatus() const;
-        double timestamp() const;
-
-        const QString thisdisplay() const;
-        const QString peerdisplay() const;
-        int linenumber() const;
-        bool ismonitored() const;
-        bool isspied() const;
-        bool isholded() const;
-        bool isparked() const;
-        const QString & agent() const;
-        QString toString() const;
-
+        XletParking(QWidget *parent=0);
+        ~XletParking();
+    protected:
+        void timerEvent(QTimerEvent *);  //!< receive timer events
+    public slots:
+        void setGuiOptions(const QVariantMap &) {};
+        void updateParkinglotConfig(const QString &);
+        void updateParkinglotStatus(const QString &);
+    private slots:
+        void itemClicked(const QString &);
+        void itemDoubleClicked(const QString &, const QString &);
+        void parkinglotClicked(const QString &);
     private:
-        QString m_thisdisplay;
-
-        QString m_peerdisplay;
-        QString m_direction;
-        QString m_commstatus;
-        QString m_talkingto_kind;
-        QString m_talkingto_id;
-        double m_timestamp;
-
-        int m_linenumber;
-        bool m_ismonitored;
-        bool m_isspied;
-        bool m_isholded;
-        // XXX atxfer currently in progress ?
-        // XXX time informations
+        QVBoxLayout * m_parkinglayout;
+        int m_timerid;  //!< id of the timer
+        double m_deltasec;  //!< timer period
+        // QList<PeerChannel *> m_mychannels;  //!< "my channels" list for transfer menu
+        QHash<QString, ParkingWidget *> m_parkinglots; //!< Parkinglots widgets
 };
+
+class XLetParkingPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif

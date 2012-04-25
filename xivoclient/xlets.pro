@@ -10,6 +10,7 @@ SUBDIRS  = \
     src/xlets/history \
     src/xlets/identity \
     src/xlets/operator \
+    src/xlets/parking \
     src/xlets/queues \
     src/xlets/queuedetails \
     src/xlets/queueentrydetails \

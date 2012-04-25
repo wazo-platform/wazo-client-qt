@@ -58,6 +58,7 @@ class XletCalls : public XLetExperimental
         void updateChannelStatus(const QString &);
         void hupchan(const QString &);
         void transftonumberchan(const QString &);
+        void parkcall(const QString &);
         void monitorPeerChanged();
 
     protected:

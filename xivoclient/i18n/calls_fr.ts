@@ -29,9 +29,14 @@
         <translation>Inconnu</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="138"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
         <translation>Salle de conférence numero %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
+        <source>Parked call in %1</source>
+        <translation>Appel parqué sur le %1</translation>
     </message>
 </context>
 <context>
@@ -42,7 +47,7 @@
         <translation>Appels</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="169"/>
+        <location filename="../src/xlets/calls/calls.cpp" line="258"/>
         <source>Monitoring : %1</source>
         <translation>Surveillance : %1</translation>
     </message>

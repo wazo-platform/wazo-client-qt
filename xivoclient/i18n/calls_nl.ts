@@ -29,7 +29,7 @@
         <translation>Onbekend</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="138"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
         <translation>Vergaderkamer nummer %1</translation>
     </message>
@@ -42,7 +42,7 @@
         <translation>Oproepen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="169"/>
+        <location filename="../src/xlets/calls/calls.cpp" line="258"/>
         <source>Monitoring : %1</source>
         <translation>Monitoring: %1</translation>
     </message>

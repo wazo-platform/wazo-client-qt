@@ -71,6 +71,7 @@ QString ChannelInfo::toString() const
     s += "Direction(" + m_direction + ") " ;
     s += "Talking to kind(" + m_talkingto_kind + ") ";
     s += "Talking to id(" + m_talkingto_id + ") ";
+    s += "Parked(" + QString(isparked() ? "true" : "false")  + ")";
     s += "Held(" + QString(m_isholded ? "true" : "false") + ")";
     return s;
 }
@@ -130,4 +131,16 @@ bool ChannelInfo::isspied() const
 bool ChannelInfo::isholded() const
 {
     return m_isholded;
+}
+
+/*! \brief Check if this call is parked */
+bool ChannelInfo::isparked() const
+{
+    foreach (const XInfo * p, b_engine->iterover("parkinglots")) {
+        const QString & xid = this->xid();
+        if ((static_cast<const ParkingInfo *>(p))->parkedHere(xid)) {
+            return true;
+        }
+    }
+    return false;
 }

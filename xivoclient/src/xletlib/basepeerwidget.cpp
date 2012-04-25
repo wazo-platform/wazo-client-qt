@@ -196,6 +196,17 @@ void BasePeerWidget::itransfercancel()
     }
 }
 
+void BasePeerWidget::parkcall()
+{
+    if (m_ui_remote) {
+        QString xchannel = sender()->property("xchannel").toString();
+        QString parking_id = sender()->property("id").toString();
+        b_engine->actionCall("parking",
+                             QString("chan:%1").arg(xchannel),
+                             QString("parking:%1").arg(parking_id));
+    }
+}
+
 /*! \brief transfer to voice mail
  */
 void BasePeerWidget::vmtransfer()
@@ -530,6 +541,54 @@ void BasePeerWidget::addMeetmeMenu(QMenu * menu)
 }
 
 /*!
+ * Add a parking action to the contextual menu
+ *
+ * A call can be parked if it's our correspondant only
+ */
+void BasePeerWidget::addParkingMenu(QMenu * menu)
+{
+    static QStringList can_park = QStringList()
+        << CHAN_STATUS_RINGING
+        << CHAN_STATUS_LINKED_CALLED
+        << CHAN_STATUS_LINKED_CALLER;
+
+    bool park = false;
+    const QStringList & channels = m_ui_local->xchannels();
+    QString string;
+    if (isme()) {
+        foreach (const QString & channelxid, channels) {
+            if (const ChannelInfo * c = b_engine->channel(channelxid)) {
+                if (can_park.contains(c->commstatus())) {
+                    string = tr("&Park correspondant");
+                    park = true;
+                    break;
+                }
+            }
+        }
+    } else if (m_ui_remote->isTalkingTo(m_ui_local->xid())) {
+        string = tr("&Park");
+        park = true;
+    }
+
+    if (park) {
+        QMenu * parkMenu = new QMenu(string, menu);
+        foreach (XInfo * x, b_engine->iterover("parkinglots")) {
+            ParkingInfo * p = static_cast<ParkingInfo *>(x);
+            QAction * action = new QAction(p->name(), this);
+            action->setProperty("id", p->xid());
+            if (const ChannelInfo * c = b_engine->channel(channels.value(0))) {
+                QString peers_chan = QString("%1/%2")
+                    .arg(b_engine->ipbxid()).arg(c->talkingto_id());
+                action->setProperty("xchannel", peers_chan);
+                connect (action, SIGNAL(triggered()), this, SLOT(parkcall()));
+                parkMenu->addAction(action);
+            }
+        }
+        menu->addMenu(parkMenu);
+    }
+}
+
+/*!
  * Add switchboard entries to the contextual menu
  */
 void BasePeerWidget::addSwitchboardMenu(QMenu * menu)
@@ -633,6 +692,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     } else {
         updateMenuPeer(&contextMenu, event);
     }
+    addParkingMenu(&contextMenu);
     addEditMenu(&contextMenu);
     addSwitchboardMenu(&contextMenu);
     addTxferVmMenu(&contextMenu);
