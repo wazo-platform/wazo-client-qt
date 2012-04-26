@@ -166,6 +166,7 @@ class ConfigWidget: public QDialog
             ICANCEL,
             ATXFER_FINAL,
             CANCEL_TXFER,
+            PARK,
             NB_OP_ACTIONS
         };
 
