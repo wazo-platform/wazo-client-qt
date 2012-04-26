@@ -104,6 +104,18 @@ XletQueues::XletQueues(QWidget *parent)
 
     connect(m_model, SIGNAL(askForQueueStats()),
             this, SLOT(askForQueueStats()));
+
+
+    subscribeToQueuesStats();
+}
+
+void XletQueues::subscribeToQueuesStats()
+{
+    QVariantMap command;
+    command["class"] = "subscribetoqueuesstats";
+
+    b_engine->sendJsonCommand(command);
+
 }
 
 void XletQueues::parseCommand(const QVariantMap &map)

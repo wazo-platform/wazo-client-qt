@@ -72,6 +72,7 @@ class XletQueues : public XLet, IPBXListener
 
     private:
         void openConfigureWindow();
+        void subscribeToQueuesStats();
 
     public slots:
         void askForQueueStats();
