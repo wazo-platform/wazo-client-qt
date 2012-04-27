@@ -50,6 +50,8 @@ QueuesModel::QueuesModel(QObject *parent)
     m_headers[WAITING_CALLS].tooltip = tr("Number of waiting calls");
     m_headers[CURRENT_MAX_WAIT].label = tr("Longest wait");
     m_headers[CURRENT_MAX_WAIT].tooltip = tr("Longest waiting call");
+    m_headers[LOGGEDAGENTS].label = tr("Logged");
+    m_headers[LOGGEDAGENTS].tooltip = tr("number of logged agents");
     m_headers[RECEIVED].label = tr("Received");
     m_headers[RECEIVED].tooltip = tr("Number of received calls");
     m_headers[ANSWERED].label = tr("Answered");
@@ -313,6 +315,8 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
                 return QString::number(queue_data.waiting_calls);
             case CURRENT_MAX_WAIT :
                 return formatTime(queue_data.max_wait);
+            case LOGGEDAGENTS:
+                return queue_data.stats.value("Xivo-LoggedAgents", not_available);
             case RECEIVED :
                 return queue_data.stats.value("Xivo-Join", not_available);
             case ANSWERED :
@@ -376,17 +380,8 @@ void QueuesModel::eatQueuesStats(const QVariantMap &p)
             if (statsInPercent.contains(stat_name)) {
                 field = formatPercent(qvm.value(stat_name)).toString();
             }
-            // if (statsOfDurationType.contains(stat_name)) {
-                // bool data_is_int;
-                // int sec_total = qvm.value(stat_name).toInt(data_is_int);
-                // if (data_is_int) {
-                    // field = QString::number(sec_total);
-                // } else {
-                    // field = qvm.value(stat_name).toString();
-                // }
-            // } else {
-                field = qvm.value(stat_name).toString();
-            // }
+            field = qvm.value(stat_name).toString();
+            qDebug() << stat_name << field;
             m_queues_data[xqueueid].stats[stat_name] = field;
         }
         

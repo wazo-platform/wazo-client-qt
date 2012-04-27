@@ -80,7 +80,7 @@ class QueuesModel : public QAbstractTableModel
     // Attributes
     public:
         enum Columns {
-            ID, NUMBER, NAME, WAITING_CALLS, CURRENT_MAX_WAIT, RECEIVED,
+            ID, NUMBER, NAME, WAITING_CALLS, CURRENT_MAX_WAIT, LOGGEDAGENTS, RECEIVED,
             ANSWERED, ABANDONNED, TOTAL_MAX_WAIT, EFFICIENCY, QOS, NB_COL
         };
 
