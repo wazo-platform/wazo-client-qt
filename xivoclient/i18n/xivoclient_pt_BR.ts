@@ -660,8 +660,8 @@ ones beneath) on first window</source>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
-        <source>1. Choose Destination Number</source>
-        <translation>1. Selecione um Numero de Destino</translation>
+        <source>Choose Destination Number</source>
+        <translation>Selecione um Numero de Destino</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="51"/>
@@ -675,8 +675,8 @@ ones beneath) on first window</source>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="64"/>
-        <source>2. Choose File to Send</source>
-        <translation>2. Selecione um arquivo para enviar</translation>
+        <source>Choose File to Send</source>
+        <translation>Selecione um arquivo para enviar</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="70"/>
@@ -685,94 +685,94 @@ ones beneath) on first window</source>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="77"/>
-        <source>3. Hide the Number ?</source>
-        <translation>3. Ocultar numero?</translation>
+        <source>Hide the Number ?</source>
+        <translation>Ocultar numero?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="82"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="81"/>
         <source>Hide Number</source>
         <translation>Ocultar numero</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="89"/>
-        <source>4. Send your File</source>
-        <translation>4. Enviar seu arquivo</translation>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="90"/>
+        <source>Send your File</source>
+        <translation>Enviar seu arquivo</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="93"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="94"/>
         <source>Send</source>
         <translation>Enviar</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="150"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="151"/>
         <source>Open Fax File</source>
         <translation>Abrir arquivo de Fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="152"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="153"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>Arquivo PDF (*.pdf);; Todos arquivos (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="198"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="199"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
         <translation>Seu Fax (arquivo %1)⏎
 foi enviado com sucesso para %2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="202"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="203"/>
         <source>Your Fax (file %1)
 is being processed and will be sent soon.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="207"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="208"/>
         <source>File not found</source>
         <translation>Arquivo não encontrado</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="209"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="210"/>
         <source>Empty file</source>
         <translation>Arquivo vazio</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="211"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="212"/>
         <source>Problem when dialing the number</source>
         <translation>Problema enquanto discava o numero</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="213"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="214"/>
         <source>Unable to convert your PDF to TIFF</source>
         <translation>Não é possível converter seu PDF para TIFF</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="215"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="216"/>
         <source>Document not a PDF</source>
         <translation>Documento não é um PDF</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="217"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="218"/>
         <source>Dialog between CTI server and IPBX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="219"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="220"/>
         <source>(Server) missing directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="221"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
         <source>Unknown</source>
         <translation>Desconhecido</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="223"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="224"/>
         <source>Not given</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="225"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="226"/>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>

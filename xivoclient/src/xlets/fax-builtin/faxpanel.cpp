@@ -44,7 +44,7 @@ FaxPanel::FaxPanel(QWidget *parent)
     QVBoxLayout * vlayout = new QVBoxLayout(this);
 
     //
-    QGroupBox * groupBox1 = new QGroupBox( tr("1. Choose Destination Number") );
+    QGroupBox * groupBox1 = new QGroupBox( tr("Choose Destination Number") );
     groupBox1->setAlignment( Qt::AlignLeft );
     QHBoxLayout * hbox1 = new QHBoxLayout( groupBox1 );
 
@@ -61,7 +61,7 @@ FaxPanel::FaxPanel(QWidget *parent)
     lblfax->setObjectName("fax");
 
     //
-    QGroupBox * groupBox2 = new QGroupBox( tr("2. Choose File to Send") );
+    QGroupBox * groupBox2 = new QGroupBox( tr("Choose File to Send") );
     groupBox2->setAlignment( Qt::AlignLeft );
     QHBoxLayout * hbox2 = new QHBoxLayout( groupBox2 );
     m_openFileNameLabel = new FileNameLineEdit(this);
@@ -74,19 +74,20 @@ FaxPanel::FaxPanel(QWidget *parent)
     hbox2->addWidget(openFileNamesButton);
 
     //
-    QGroupBox * groupBox3 = new QGroupBox( tr("3. Hide the Number ?") );
+    QGroupBox * groupBox3 = new QGroupBox( tr("Hide the Number ?") );
     groupBox3->setAlignment( Qt::AlignLeft );
     QHBoxLayout * hbox3 = new QHBoxLayout( groupBox3 );
 
-    int previous_hide = b_engine->getSettings()->value("faxhistory/hidenumber", 0).toUInt();
     m_maskornot = new QCheckBox(tr("Hide Number"), this);
-    m_maskornot->setCheckState((Qt::CheckState)previous_hide);
+    //int previous_hide = b_engine->getSettings()->value("faxhistory/hidenumber", 0).toUInt();
+    //m_maskornot->setCheckState((Qt::CheckState)previous_hide);
+    m_maskornot->setCheckState(Qt::Unchecked);
     hbox3->addStretch(1);
     hbox3->addWidget(m_maskornot);
     hbox3->addStretch(1);
 
     //
-    QGroupBox * groupBox4 = new QGroupBox( tr("4. Send your File") );
+    QGroupBox * groupBox4 = new QGroupBox( tr("Send your File") );
     groupBox4->setAlignment( Qt::AlignLeft );
     QHBoxLayout * hbox4 = new QHBoxLayout( groupBox4 );
 
@@ -100,7 +101,7 @@ FaxPanel::FaxPanel(QWidget *parent)
 
     vlayout->addWidget(groupBox1);
     vlayout->addWidget(groupBox2);
-    vlayout->addWidget(groupBox3);
+    //vlayout->addWidget(groupBox3);
     vlayout->addWidget(groupBox4);
     vlayout->addStretch(1);
 

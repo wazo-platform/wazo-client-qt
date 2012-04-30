@@ -25,39 +25,39 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="186"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="184"/>
         <source>Login</source>
         <translation type="unfinished">Login</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="176"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="174"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="181"/>
         <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="195"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="186"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
         <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="198"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="189"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="288"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="284"/>
         <source>Server: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="290"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="286"/>
         <source>Context: %1</source>
         <translation type="unfinished"></translation>
     </message>
