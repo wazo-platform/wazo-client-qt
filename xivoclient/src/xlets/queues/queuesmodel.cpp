@@ -381,7 +381,6 @@ void QueuesModel::eatQueuesStats(const QVariantMap &p)
                 field = formatPercent(qvm.value(stat_name)).toString();
             }
             field = qvm.value(stat_name).toString();
-            qDebug() << stat_name << field;
             m_queues_data[xqueueid].stats[stat_name] = field;
         }
         

@@ -161,7 +161,7 @@ void XletQueueDetails::updatePanel()
     if (queueinfo == NULL)
         return;
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) : %5 agents and %6 phones")
-                                .arg(queueinfo->queueName())
+                                .arg(queueinfo->queueDisplayName())
                                 .arg(queueinfo->queueNumber())
                                 .arg(queueinfo->ipbxid())
                                 .arg(queueinfo->context())

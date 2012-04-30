@@ -115,8 +115,6 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
 
-    connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
-            this, SLOT(statusListen(const QString &, const QString &, const QString &)));
 }
 
 void XletAgentDetails::updateAgentConfig(const QString & xagentid)
@@ -196,8 +194,7 @@ void XletAgentDetails::updatePanel()
         m_action["agentlogin"]->setProperty("function", "agentlogout");
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
-    } else
-        qDebug() << Q_FUNC_INFO << "unknown status" << m_monitored_agentid << lstatus;
+    }
 
     m_agentstatus->setText(agent_descriptions.join(" "));
 
@@ -222,7 +219,6 @@ void XletAgentDetails::updatePanel()
         iter.next();
         QString xqueueid = iter.key();
         QueueInfo * queueinfo = (QueueInfo *) iter.value();
-        // newQueue(queueinfo->ipbxid(), queueinfo->queueName(), queueinfo->properties());
         xqueueids << xqueueid;
         bool isnewqueue = false;
         if (! m_queue_labels.contains(xqueueid))
@@ -279,7 +275,7 @@ void XletAgentDetails::setQueueProps(const QString & xqueueid)
     bool showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
     if (showNumber)
         m_queue_labels[xqueueid]->setText(QString("%1 (%2)")
-                                          .arg(queueinfo->queueName())
+                                          .arg(queueinfo->queueDisplayName())
                                           .arg(queueinfo->queueNumber()));
     else
         m_queue_labels[xqueueid]->setText(queueinfo->queueName());
@@ -324,17 +320,11 @@ void XletAgentDetails::setQueueAgentProps(const QString & xqueueid, const QStrin
     QString status = "";
     QString paused = "";
     QString membership = "";
-    QString callstaken = "";
-    QString penalty = "";
-    int lastcall = 0;
 
     if (qmi != NULL) {
         status = qmi->status();
         paused = qmi->paused();
         membership = qmi->membership();
-        callstaken = qmi->callstaken();
-        penalty = qmi->penalty();
-        lastcall = qmi->lastcall();
     }
 
     QueueAgentStatus * qas = new QueueAgentStatus();
@@ -419,9 +409,7 @@ void XletAgentDetails::queueClicked()
             ipbxcommand["command"] = "queueremove";
         } else if (smstatus == "") {
             ipbxcommand["command"] = "queueadd";
-        } else
-            qDebug() << Q_FUNC_INFO << queuename << m_monitored_agentid << smstatus << pmstatus;
-        // join the queue in the previously recorded paused status (to manage on the server side)
+        }
     } else if (action == "pause") {
         if (qmi == NULL)
             return;
@@ -431,10 +419,8 @@ void XletAgentDetails::queueClicked()
             ipbxcommand["command"] = "queuepause";
         } else if (pmstatus == "1") {
             ipbxcommand["command"] = "queueunpause";
-        } else
-            qDebug() << Q_FUNC_INFO << queuename << m_monitored_agentid << smstatus << pmstatus;
-    } else
-        qDebug() << Q_FUNC_INFO << "unknown action" << action;
+        }
+    }
 
     emit ipbxCommand(ipbxcommand);
 }
@@ -442,7 +428,6 @@ void XletAgentDetails::queueClicked()
 /*! \brief left click actions (login, logout) */
 void XletAgentDetails::actionClicked()
 {
-    // qDebug() << Q_FUNC_INFO << sender()->property("function").toString() << m_monitored_agentid;
     QString function = sender()->property("function").toString();
     QVariantMap ipbxcommand;
     if (function == "agentlogin") {
@@ -454,11 +439,4 @@ void XletAgentDetails::actionClicked()
         ipbxcommand["agentids"] = m_monitored_agentid;
         emit ipbxCommand(ipbxcommand);
     }
-}
-
-/*! \brief update Listen/Stop Listen buttons
- */
-void XletAgentDetails::statusListen(const QString &astid, const QString &agentid, const QString &status)
-{
-    qDebug() << Q_FUNC_INFO << astid << agentid << status;
 }

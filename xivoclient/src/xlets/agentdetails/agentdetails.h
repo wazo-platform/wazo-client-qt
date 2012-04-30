@@ -54,7 +54,6 @@ class XletAgentDetails : public XLet
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
         void monitorThisAgent(const QString &);
-        void statusListen(const QString &, const QString &, const QString &);
 
     private slots:
         void queueClicked();

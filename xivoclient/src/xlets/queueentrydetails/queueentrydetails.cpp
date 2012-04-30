@@ -116,7 +116,7 @@ void XLetQueueEntryDetails::updatePanel()
 
     // qDebug() << Q_FUNC_INFO << queueinfo->queueName() << queueinfo->xincalls();
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
-                                .arg(queueinfo->queueName())
+                                .arg(queueinfo->queueDisplayName())
                                 .arg(queueinfo->queueNumber())
                                 .arg(queueinfo->ipbxid())
                                 .arg(queueinfo->context())
