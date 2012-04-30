@@ -78,4 +78,31 @@ bool RemoteControl::then_the_xlet_identity_shows_a_voicemail_1(const QStringList
     return ret;
 }
 
+bool RemoteControl::then_the_xlet_identity_shows_an_agent_1(const QStringList &args)
+{
+    QString expected_agent_number = args[0];
+    bool ret = true;
+    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
+    if (xlet == 0)
+        return false;
+
+    QLabel *agent_number_label = xlet->findChild<QLabel*>(QString("agent_number"));
+    ret = ret && agent_number_label->text().endsWith(expected_agent_number);
+
+    return ret;
+}
+
+bool RemoteControl::then_the_xlet_identity_does_not_show_any_agent()
+{
+    bool ret = true;
+    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
+    if (xlet == 0)
+        return false;
+
+    QLabel *agent_number_label = xlet->findChild<QLabel*>(QString("agent_number"));
+    ret = ret && agent_number_label->text().isEmpty();
+
+    return ret;
+}
+
 #endif

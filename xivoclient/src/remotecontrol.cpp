@@ -68,8 +68,14 @@ void RemoteControl::newConnection()
             this, SLOT(processCommands()));
 }
 
-#define RC_COMMAND(fct_name)     {if (command == #fct_name) m_test_ok = m_test_ok || fct_name();}
-#define RC_COMMAND_ARG(fct_name) {if (command == #fct_name) m_test_ok = m_test_ok || fct_name(command_words);}
+#define RC_EXECUTE(fct_name)     {\
+if (command == #fct_name)\
+    m_test_ok = m_test_ok || fct_name();\
+}
+#define RC_EXECUTE_ARG(fct_name) {\
+if (command == #fct_name)\
+    m_test_ok = m_test_ok || fct_name(command_args);    \
+}
 
 void RemoteControl::processCommands()
 {
@@ -77,18 +83,22 @@ void RemoteControl::processCommands()
         QByteArray data  = m_client_cnx->readLine();
         QString command = QString::fromUtf8(data);
         command.chop(1);
-        QStringList command_words = command.split(",");
-        command = command_words.takeFirst();
+        QStringList command_args = command.split(",");
+        command = command_args.takeFirst();
 
         m_test_ok = false;
-        RC_COMMAND(i_stop_the_xivo_client);
-        RC_COMMAND(i_go_to_the_xivo_client_configuration);
-        RC_COMMAND(i_close_the_xivo_client_configuration);
-        RC_COMMAND_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3);
-        RC_COMMAND_ARG(then_the_xlet_identity_shows_name_as_1_2);
-        RC_COMMAND_ARG(then_the_xlet_identity_shows_server_name_as_field_1_modified);
-        RC_COMMAND_ARG(then_the_xlet_identity_shows_phone_number_as_1);
-        RC_COMMAND_ARG(then_the_xlet_identity_shows_a_voicemail_1);
+        RC_EXECUTE(i_stop_the_xivo_client);
+        RC_EXECUTE(i_go_to_the_xivo_client_configuration);
+        RC_EXECUTE(i_close_the_xivo_client_configuration);
+        RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3);
+        RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent);
+        RC_EXECUTE(i_log_out_of_the_xivo_client);
+        RC_EXECUTE_ARG(then_the_xlet_identity_shows_name_as_1_2);
+        RC_EXECUTE_ARG(then_the_xlet_identity_shows_server_name_as_field_1_modified);
+        RC_EXECUTE_ARG(then_the_xlet_identity_shows_phone_number_as_1);
+        RC_EXECUTE_ARG(then_the_xlet_identity_shows_a_voicemail_1);
+        RC_EXECUTE_ARG(then_the_xlet_identity_shows_an_agent_1);
+        RC_EXECUTE(then_the_xlet_identity_does_not_show_any_agent);
         ackCommand();
         m_no_error = true;
     }
