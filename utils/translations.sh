@@ -32,8 +32,7 @@ function pull_from_transifex {
 
 function find_all_ts_files {
     locale="$1"
-    find . \( -path './baselib/*'    -a -name "*_$locale.ts" \) \
-        -o \( -path './xivoclient/*' -a -name "*_$locale.ts" \) -print
+    find baselib xivoclient -name "*_$locale.ts" -print
 }
 
 function copy_from_transifex_to_git {
