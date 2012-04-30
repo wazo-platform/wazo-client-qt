@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/datetime/datetime.cpp" line="54"/>
         <source>Date and Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Datum und Zeit</translation>
     </message>
 </context>
 </TS>

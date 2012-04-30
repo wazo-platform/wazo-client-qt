@@ -263,7 +263,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="98"/>
         <source>Not relevant</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Irrelevante</translation>
     </message>
 </context>
 </TS>

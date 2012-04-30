@@ -63,7 +63,7 @@
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="494"/>
         <source>&amp;Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Auflegen</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="518"/>
@@ -269,7 +269,7 @@ Status: %3</source>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="321"/>
         <source>Status:%1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Status:%1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="324"/>

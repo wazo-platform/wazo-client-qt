@@ -42,7 +42,7 @@ queues</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="57"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">一時停止中</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="58"/>

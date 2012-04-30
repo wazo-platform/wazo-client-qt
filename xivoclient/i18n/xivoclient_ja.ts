@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="290"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">キュー</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="297"/>

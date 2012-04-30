@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">キュー</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>

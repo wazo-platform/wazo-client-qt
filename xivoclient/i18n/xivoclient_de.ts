@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="219"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Anruferliste</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="228"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="290"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Warteschlange</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="297"/>
@@ -524,7 +524,7 @@ auf der ersten Seite</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="535"/>
         <source>Operator</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Telefonzentralebetreiber</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="561"/>
@@ -764,7 +764,7 @@ is being processed and will be sent soon.</source>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="221"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">unbekannt</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="223"/>
@@ -1111,7 +1111,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="283"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="289"/>

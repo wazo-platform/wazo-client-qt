@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja_JP">
+<TS version="2.0" language="ja">
 <context>
     <name>BaseEngine</name>
     <message>
@@ -258,7 +258,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="94"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">一時停止中</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="98"/>

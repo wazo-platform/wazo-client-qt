@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Warteschlange</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
@@ -31,7 +31,8 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
         <source>Number of waiting calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Status⏎
+(keine Telefonnummer)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
@@ -46,7 +47,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">eingeloggt</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>

@@ -353,17 +353,17 @@ que celles ci-dessous) à la connexion</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="388"/>
         <source>Portuguese</source>
-        <translation type="unfinished"></translation>
+        <translation>Portugais</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="389"/>
         <source>Dutch</source>
-        <translation type="unfinished"></translation>
+        <translation>Néerlandais</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="390"/>
         <source>Hungarian</source>
-        <translation type="unfinished"></translation>
+        <translation>Hongrois</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="391"/>
@@ -499,7 +499,7 @@ que celles ci-dessous) à la connexion</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="504"/>
         <source>Park</source>
-        <translation type="unfinished"></translation>
+        <translation>Parquer</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="512"/>

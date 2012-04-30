@@ -100,6 +100,7 @@ function process_arguments {
             ;;
         update)
             update_translations_from_source
+            merge_translations
             ;;
         *)
             usage

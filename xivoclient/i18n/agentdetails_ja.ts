@@ -6,55 +6,55 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="45"/>
         <source>Agent Details</source>
-        <translation type="unfinished"></translation>
+        <translation>エージェントの詳細</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="50"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation>キュー</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="51"/>
         <source>Joined</source>
-        <translation type="unfinished"></translation>
+        <translation>入社</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>一時停止中</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="186"/>
         <source>Login</source>
-        <translation type="unfinished">ログイン</translation>
+        <translation>ログイン</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="176"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>上の &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
         <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>ログオフ &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="195"/>
         <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>電話番号にログオン &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="198"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>ログアウト</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="288"/>
         <source>Server: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>サーバ: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="290"/>

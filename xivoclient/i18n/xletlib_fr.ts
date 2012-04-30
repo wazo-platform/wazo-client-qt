@@ -78,12 +78,12 @@
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="562"/>
         <source>&amp;Park correspondant</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Parquer le correspondant</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="569"/>
         <source>&amp;Park</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Parquer</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="613"/>

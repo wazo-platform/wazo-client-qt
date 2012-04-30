@@ -46,7 +46,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gelogd</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
