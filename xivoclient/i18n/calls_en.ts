@@ -24,13 +24,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="136"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="95"/>
+        <source>&amp;Park the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="96"/>
+        <source>Park this call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="142"/>
         <source>Unknown</source>
         <translation type="unfinished">Unknown</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="138"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
+        <source>Parked call in %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -42,7 +57,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="169"/>
+        <location filename="../src/xlets/calls/calls.cpp" line="180"/>
         <source>Monitoring : %1</source>
         <translation type="unfinished"></translation>
     </message>

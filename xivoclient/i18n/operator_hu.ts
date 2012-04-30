@@ -45,21 +45,26 @@
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="58"/>
-        <source>Finalize Transfer</source>
+        <source>Park</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="59"/>
+        <source>Finalize Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/operator/operator.cpp" line="60"/>
         <source>Cancel Transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="357"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="363"/>
         <source>%1 Ringing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="372"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="378"/>
         <source>Link %1</source>
         <translation>Kapcsolat %1</translation>
     </message>

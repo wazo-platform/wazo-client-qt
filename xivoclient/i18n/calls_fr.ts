@@ -24,7 +24,17 @@
         <translation>Transférer vers le numéro composé</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="136"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="95"/>
+        <source>&amp;Park the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="96"/>
+        <source>Park this call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="142"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
@@ -47,7 +57,7 @@
         <translation>Appels</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="258"/>
+        <location filename="../src/xlets/calls/calls.cpp" line="180"/>
         <source>Monitoring : %1</source>
         <translation>Surveillance : %1</translation>
     </message>

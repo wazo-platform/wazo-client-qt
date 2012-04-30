@@ -451,7 +451,7 @@ ones beneath) on first window</source>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="478"/>
-        <location filename="../src/configwidget.cpp" line="515"/>
+        <location filename="../src/configwidget.cpp" line="516"/>
         <source>(current: %0) click to change</source>
         <translation type="unfinished"></translation>
     </message>
@@ -496,37 +496,42 @@ ones beneath) on first window</source>
         <translation>Cancelar Transferência</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="511"/>
+        <location filename="../src/configwidget.cpp" line="504"/>
+        <source>Park</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="512"/>
         <source>Operator action</source>
         <translation>Ação do Operador</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="512"/>
+        <location filename="../src/configwidget.cpp" line="513"/>
         <source>Key binding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="528"/>
+        <location filename="../src/configwidget.cpp" line="529"/>
         <source>Display an answer action</source>
         <translation>Visualizar ação ao atender</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="532"/>
+        <location filename="../src/configwidget.cpp" line="533"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="534"/>
+        <location filename="../src/configwidget.cpp" line="535"/>
         <source>Operator</source>
         <translation>Operador</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="560"/>
+        <location filename="../src/configwidget.cpp" line="561"/>
         <source>This key is already bound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="561"/>
+        <location filename="../src/configwidget.cpp" line="562"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation type="unfinished"></translation>
     </message>

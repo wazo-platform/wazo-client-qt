@@ -452,7 +452,7 @@ ones beneath) on first window</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="478"/>
-        <location filename="../src/configwidget.cpp" line="515"/>
+        <location filename="../src/configwidget.cpp" line="516"/>
         <source>(current: %0) click to change</source>
         <translation>(current: %0) click to change</translation>
     </message>
@@ -497,37 +497,42 @@ ones beneath) on first window</translation>
         <translation>Cancel Transfer</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="511"/>
+        <location filename="../src/configwidget.cpp" line="504"/>
+        <source>Park</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="512"/>
         <source>Operator action</source>
         <translation>Operator action</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="512"/>
+        <location filename="../src/configwidget.cpp" line="513"/>
         <source>Key binding</source>
         <translation>Key binding</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="528"/>
+        <location filename="../src/configwidget.cpp" line="529"/>
         <source>Display an answer action</source>
         <translation>Display an answer action</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="532"/>
+        <location filename="../src/configwidget.cpp" line="533"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Any change here requires an application restart to be effective</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="534"/>
+        <location filename="../src/configwidget.cpp" line="535"/>
         <source>Operator</source>
         <translation>Operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="560"/>
+        <location filename="../src/configwidget.cpp" line="561"/>
         <source>This key is already bound</source>
         <translation>This key is already bound</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="561"/>
+        <location filename="../src/configwidget.cpp" line="562"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Please press another key, this one has already been bound for action &apos;%0&apos;</translation>
     </message>

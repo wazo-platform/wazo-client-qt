@@ -4,17 +4,17 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="839"/>
+        <location filename="src/baseengine.cpp" line="836"/>
         <source>Received Services Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="844"/>
+        <location filename="src/baseengine.cpp" line="841"/>
         <source>Could not modify the Services data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="844"/>
+        <location filename="src/baseengine.cpp" line="841"/>
         <source>Maybe Asterisk is down.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -167,7 +167,7 @@ Please upgrade it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1670"/>
+        <location filename="src/baseengine.cpp" line="1674"/>
         <source>Attempting to reconnect to server</source>
         <translation type="unfinished"></translation>
     </message>
