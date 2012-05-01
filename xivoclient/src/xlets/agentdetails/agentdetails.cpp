@@ -272,19 +272,28 @@ void XletAgentDetails::setQueueProps(const QString & xqueueid)
     const QueueInfo * queueinfo = b_engine->queue(xqueueid);
     if (queueinfo == NULL)
         return;
-    bool showNumber = b_engine->getConfig("guioptions.queue_displaynu").toBool();
-    if (showNumber)
-        m_queue_labels[xqueueid]->setText(QString("%1 (%2)")
-                                          .arg(queueinfo->queueDisplayName())
-                                          .arg(queueinfo->queueNumber()));
-    else
-        m_queue_labels[xqueueid]->setText(queueinfo->queueName());
+
+    m_queue_labels[xqueueid]->setText(getQueueLabelText(xqueueid));
     QStringList tooltips;
     if (! b_engine->getConfig("guioptions.xlet.agentdetails.hideastid").toBool())
         tooltips << tr("Server: %1").arg(queueinfo->ipbxid());
     if (! b_engine->getConfig("guioptions.xlet.agentdetails.hidecontext").toBool())
         tooltips << tr("Context: %1").arg(queueinfo->context());
     m_queue_labels[xqueueid]->setToolTip(tooltips.join("\n"));
+}
+
+QString XletAgentDetails::getQueueLabelText(const QString & queue_xid)
+{
+    const QueueInfo * queueinfo = b_engine->queue(queue_xid);
+    if (queueinfo == NULL) {
+        return QString();
+    }
+
+    bool show_number = b_engine->getConfig("guioptions.queue_displaynu").toBool();
+    QString display_name = queueinfo->queueDisplayName();
+    if (show_number)
+        display_name += QString(" (%1)").arg(queueinfo->queueNumber());
+    return display_name;
 }
 
 void XletAgentDetails::setQueueAgentSignals(const QString & xqueueid)

@@ -67,6 +67,7 @@ class XletAgentDetails : public XLet
         void setQueueProps(const QString &);
         void setQueueAgentSignals(const QString &);
         void fillQueue(int, const QString &);
+        QString getQueueLabelText(const QString &);
 
         QGridLayout *m_gridlayout; //!< layout
         int m_linenum;  //!< line number ?
