@@ -169,11 +169,9 @@ void XletAgentDetails::updatePanel()
         return;
 
     QStringList agent_descriptions;
-    agent_descriptions << QString("<b>%1</b> (%2)").arg(agentinfo->fullname()).arg(agentinfo->agentNumber());
-    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hideastid").toBool())
-        agent_descriptions << tr("on <b>%1</b>").arg(agentinfo->ipbxid());
-    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hidecontext").toBool())
-        agent_descriptions << QString("(%1)").arg(agentinfo->context());
+    agent_descriptions << QString("<b>%1</b> (%2)").arg(agentinfo->fullname()).arg(agentinfo->agentNumber())
+                       << tr("on <b>%1</b>").arg(agentinfo->ipbxid())
+                       << QString("(%1)").arg(agentinfo->context());
     QString lstatus = agentinfo->status();
     QString phonenum = b_engine->getConfig()["agentphonenumber"].toString();
 
@@ -275,10 +273,8 @@ void XletAgentDetails::setQueueProps(const QString & xqueueid)
 
     m_queue_labels[xqueueid]->setText(getQueueLabelText(xqueueid));
     QStringList tooltips;
-    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hideastid").toBool())
-        tooltips << tr("Server: %1").arg(queueinfo->ipbxid());
-    if (! b_engine->getConfig("guioptions.xlet.agentdetails.hidecontext").toBool())
-        tooltips << tr("Context: %1").arg(queueinfo->context());
+    tooltips << tr("Server: %1").arg(queueinfo->ipbxid())
+             << tr("Context: %1").arg(queueinfo->context());
     m_queue_labels[xqueueid]->setToolTip(tooltips.join("\n"));
 }
 
