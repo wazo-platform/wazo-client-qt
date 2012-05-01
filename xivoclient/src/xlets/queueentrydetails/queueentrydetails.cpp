@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -64,6 +64,8 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
 
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(monitorThisQueue(const QString &)));
+    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+            this, SLOT(subscribeQueueEntry(const QString &)));
 }
 
 void XLetQueueEntryDetails::updateAgentConfig(const QString & /*xagentid*/)
@@ -90,10 +92,23 @@ void XLetQueueEntryDetails::updateQueueStatus(const QString & xqueueid)
 
 void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
 {
-    // qDebug() << Q_FUNC_INFO << queueid;
     if(b_engine->hasQueue(queueid)) {
         m_monitored_queueid = queueid;
         updatePanel();
+    }
+}
+
+void XLetQueueEntryDetails::subscribeQueueEntry(const QString &queue_xid)
+{
+    qDebug() << Q_FUNC_INFO << "Queue ID" << queue_xid;
+
+    if (const QueueInfo *queue = b_engine->queue(queue_xid)) {
+        QVariantMap subscribe_command;
+        subscribe_command["class"] = "subscribe";
+        subscribe_command["message"] = "queueentryupdate";
+        subscribe_command["queueid"] = queue->id();
+
+        b_engine->sendJsonCommand(subscribe_command);
     }
 }
 

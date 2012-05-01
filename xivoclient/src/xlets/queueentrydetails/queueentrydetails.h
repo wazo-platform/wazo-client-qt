@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -62,6 +62,7 @@ class XLetQueueEntryDetails : public XLet
         void updateQueueConfig(const QString &);
         void updateQueueStatus(const QString &);
         void monitorThisQueue(const QString &);
+        void subscribeQueueEntry(const QString &);
 
     private:
         void updateEntryChannel(const QString &);
