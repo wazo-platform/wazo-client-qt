@@ -114,6 +114,8 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
 
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),
             this, SLOT(monitorThisAgent(const QString &)));
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(updatePanel()));
 
 }
 
