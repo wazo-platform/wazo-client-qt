@@ -71,9 +71,11 @@ void XLetQueueEntryDetails::updateQueueConfig(const QString & xqueueid)
 
 void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
 {
-    if(b_engine->hasQueue(queueid)) {
+    if(m_monitored_queueid != queueid && b_engine->hasQueue(queueid)) {
         m_monitored_queueid = queueid;
         updatePanel();
+        clearPanel();
+        m_queue_entries.clear();
     }
 }
 
