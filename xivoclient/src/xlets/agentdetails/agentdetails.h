@@ -59,6 +59,7 @@ class XletAgentDetails : public XLet
         void queueClicked();
         void actionClicked();
         void updatePanel();
+        void onRemoveQueueConfig();
 
     private:
         void clearPanel();
