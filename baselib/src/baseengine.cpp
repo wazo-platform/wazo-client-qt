@@ -959,6 +959,12 @@ void BaseEngine::parseCommand(const QString &line)
     } else if (thisclass == "getipbxlist") {
         m_ipbxlist = datamap.value("ipbxlist").toStringList();
         fetchLists();
+    } else if (thisclass == "queueentryupdate") {
+        const QVariantMap &state = datamap.value("state").toMap();
+        const QString &queue_id = state["queue_id"].toString();
+        const QVariantList &entry_list = state["entries"].toList();
+
+        emit queueEntryUpdate(queue_id, entry_list);
     } else {
         if (replyid.isEmpty())
             qDebug() << "Unknown server command received:" << thisclass << datamap;

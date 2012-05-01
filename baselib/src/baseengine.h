@@ -426,6 +426,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void sheetEntryAdded(const QString &id, const QVariantMap &);  //!< sheet data added by a user.
         
         void broadcastNumberSelection(const QStringList &);  //!< numbers for a selected peer
+        void queueEntryUpdate(const QString &, const QVariantList &);
 
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events
