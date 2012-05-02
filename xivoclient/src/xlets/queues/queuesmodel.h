@@ -76,7 +76,7 @@ class QueuesModel : public QAbstractTableModel
     private:
         QVariant formatTime(const QVariant &) const;
         QVariant formatPercent(const QVariant &) const;
-
+        void refreshQueueDisplay(const QString &queue_xid);
     // Attributes
     public:
         enum Columns {
@@ -96,7 +96,6 @@ class QueuesModel : public QAbstractTableModel
 
         struct QueueDataStruct {
             unsigned waiting_calls;
-            unsigned max_wait;
             QMap<QString, QString> stats;
         };
 

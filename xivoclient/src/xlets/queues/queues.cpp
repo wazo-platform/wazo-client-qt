@@ -92,11 +92,6 @@ XletQueues::XletQueues(QWidget *parent)
     QTimer * timer_display = new QTimer(this);
     QTimer * timer_request = new QTimer(this);
     connect(timer_request, SIGNAL(timeout()), this, SLOT(askForQueueStats()));
-    /* timer_display is not very precise : the server specifies the time only
-     * in seconds, then there could be a gap of maximum one second
-     * (or slightly more, depending on the ping to the server) between the real
-     * waiting time and the waiting time displayed.
-     */
     connect(timer_display, SIGNAL(timeout()),
             m_model, SLOT(increaseWaitTime()));
     timer_request->start(nsecs * 1000);

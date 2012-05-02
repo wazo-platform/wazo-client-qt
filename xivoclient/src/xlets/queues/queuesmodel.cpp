@@ -33,10 +33,6 @@
 
 #include "queuesmodel.h"
 
-static QStringList statsOfDurationType;
-static QStringList statsInPercent;
-static QStringList statsToRequest;
-
 QueuesModel::QueuesModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
@@ -76,12 +72,6 @@ QueuesModel::QueuesModel(QObject *parent)
     // In case the option "show queue numbers" is toggled
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateQueueNames()));
-
-    statsOfDurationType << "Xivo-Holdtime-max";
-    statsToRequest << "Xivo-Holdtime-max" << "Xivo-Qos"
-                   << "Xivo-Join" << "Xivo-Lost"
-                   << "Xivo-Rate" << "Xivo-Link";
-    statsInPercent << "Xivo-Rate" << "Xivo-Qos";
 }
 
 void QueuesModel::updateQueueConfig(const QString &xid)
@@ -90,7 +80,6 @@ void QueuesModel::updateQueueConfig(const QString &xid)
         int insertedRow = m_row2id.size();
         beginInsertRows(QModelIndex(), insertedRow, insertedRow);
         m_row2id.append(xid);
-        m_queues_data[xid].max_wait = 0;
         m_queues_data[xid].waiting_calls = 0;
         endInsertRows();
 
@@ -126,38 +115,9 @@ void QueuesModel::updateQueueStatus(const QString &xid)
     {
         m_queues_data[xid].waiting_calls = queueinfo->xincalls().count();
         QModelIndex cellChanged = createIndex(m_row2id.indexOf(xid), WAITING_CALLS);
-        // sends signal to proxy/view that the data should be refreshed
         emit dataChanged(cellChanged, cellChanged);
     }
     
-    // Current max wait
-    {
-        uint oldest = 0;
-        bool first_item = true;
-        uint current_entrytime;
-
-        foreach (QString xchannel, queueinfo->xincalls()) {
-            const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
-            if (channelinfo == NULL) continue;
-            
-            current_entrytime = uint(channelinfo->timestamp());
-            if (first_item) {
-                oldest = current_entrytime;
-                first_item = false;
-            }
-            oldest = (oldest < current_entrytime) ? oldest : current_entrytime ;
-        }
-
-        if (oldest == 0) { // There are no waiting calls
-            m_queues_data[xid].max_wait = 0;
-        } else {
-            m_queues_data[xid].max_wait = b_engine->timeServer() - oldest;
-        }
-        
-        QModelIndex cellChanged = createIndex(m_row2id.indexOf(xid), CURRENT_MAX_WAIT);
-        // sends signal to proxy/view that the data should be refreshed
-        emit dataChanged(cellChanged, cellChanged);
-    }
 }
 
 /*! \brief Increase max waiting times of one second and tells the view to
@@ -168,7 +128,12 @@ void QueuesModel::increaseWaitTime()
     foreach(QString xqueueid, m_queues_data.keys()) {
         // Do not update if no one is waiting in the queue
         if (m_queues_data[xqueueid].waiting_calls > 0) {
-            m_queues_data[xqueueid].max_wait ++;
+            unsigned nsecs = m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"].toInt();
+            nsecs++;
+            m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"] = QString("%1").arg(nsecs);
+        }
+        else {
+                m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"] = "0";
         }
     }
     
@@ -284,7 +249,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
             case CURRENT_MAX_WAIT :
                 greenlevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("green").toUInt() - 1;
                 orangelevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("orange").toUInt() - 1;
-                value = queue_data.max_wait;
+                value = m_queues_data[xqueueid].stats.value("Xivo-LongestWaitTime").toInt();
                 break ;
             default :
                 return QVariant();
@@ -314,7 +279,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
             case WAITING_CALLS :
                 return QString::number(queue_data.waiting_calls);
             case CURRENT_MAX_WAIT :
-                return formatTime(queue_data.max_wait);
+                return formatTime(queue_data.stats.value("Xivo-LongestWaitTime", not_available));
             case LOGGEDAGENTS:
                 return queue_data.stats.value("Xivo-LoggedAgents", not_available);
             case RECEIVED :
@@ -376,16 +341,18 @@ void QueuesModel::eatQueuesStats(const QVariantMap &p)
         QString xqueueid = QString("%0/%1").arg(b_engine->ipbxid()).arg(queueid);
         QVariantMap qvm = p.value("stats").toMap().value(queueid).toMap();
         foreach (QString stat_name, qvm.keys()) {
-            QString field;
-            if (statsInPercent.contains(stat_name)) {
-                field = formatPercent(qvm.value(stat_name)).toString();
-            }
-            field = qvm.value(stat_name).toString();
+            QString field = qvm.value(stat_name).toString();
             m_queues_data[xqueueid].stats[stat_name] = field;
         }
-        
-        QModelIndex cellChanged1 = createIndex(m_row2id.indexOf(xqueueid), RECEIVED);
-        QModelIndex cellChanged2 = createIndex(m_row2id.indexOf(xqueueid), QOS);
-        emit dataChanged(cellChanged1, cellChanged2);
+        refreshQueueDisplay(xqueueid);
     }
 }
+
+void QueuesModel::refreshQueueDisplay(const QString &queue_xid)
+{
+    QModelIndex cellChanged1 = createIndex(m_row2id.indexOf(queue_xid), ID);
+    QModelIndex cellChanged2 = createIndex(m_row2id.indexOf(queue_xid), QOS);
+    emit dataChanged(cellChanged1, cellChanged2);
+
+}
+
