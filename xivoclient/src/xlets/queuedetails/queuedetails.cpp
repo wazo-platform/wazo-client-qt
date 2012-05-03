@@ -186,6 +186,9 @@ void XletQueueDetails::updatePanel()
       //qDebug() << Q_FUNC_INFO << xagentid;
 
         const AgentInfo * agentinfo = b_engine->agent(xagentid);
+        if (agentinfo == NULL) {
+            continue;
+        }
 
         bool isnewagent = false;
         if (! m_agent_more.contains(xagentid))
