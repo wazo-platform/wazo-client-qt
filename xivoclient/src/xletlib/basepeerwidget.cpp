@@ -692,7 +692,7 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     } else {
         updateMenuPeer(&contextMenu, event);
     }
-    addParkingMenu(&contextMenu);
+    //    addParkingMenu(&contextMenu);
     addEditMenu(&contextMenu);
     addSwitchboardMenu(&contextMenu);
     addTxferVmMenu(&contextMenu);
