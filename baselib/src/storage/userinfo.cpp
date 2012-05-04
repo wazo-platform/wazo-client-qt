@@ -90,7 +90,6 @@ bool UserInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "availstate", & m_availstate);
-    haschanged |= setIfChangeString(prop, "connection", & m_connection);
     return haschanged;
 }
 

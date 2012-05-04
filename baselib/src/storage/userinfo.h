@@ -38,6 +38,7 @@
 
 #include "baselib_export.h"
 #include "xinfo.h"
+#include "xivoconsts.h"
 
 /*! \brief Store User information
  */
@@ -74,7 +75,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
             // Status
             const QString & availstate() const;
-            bool connected() const { return m_connection == "yes"; };
+            bool connected() const { return m_availstate != __presence_off__; };
             bool isInMeetme() const;
         //! @}
 
@@ -128,7 +129,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         //! \name Status
         //! @{
             QString m_availstate; //!< availability state
-            QString m_connection;
         //! @}
 };
 
