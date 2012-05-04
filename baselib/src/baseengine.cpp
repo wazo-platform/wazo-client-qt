@@ -1950,8 +1950,16 @@ const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const
 {
     foreach (const QString xuid, b_engine->iterover("users").keys()) {
         const UserInfo * user = b_engine->user(xuid);
+        if (user == NULL) {
+            qDebug() << Q_FUNC_INFO << "unknown user" << xuid;
+            continue;
+        }
         foreach (const QString pid, user->phonelist()) {
             const PhoneInfo * phone = b_engine->phone(pid);
+            if (phone == NULL) {
+                qDebug() << Q_FUNC_INFO << "unknown phone" << pid << "for user" << xuid;
+                continue;
+            }
             foreach (const QString xchan, phone->xchannels()) {
                 if (xchan.endsWith(xcid))
                     return user;
