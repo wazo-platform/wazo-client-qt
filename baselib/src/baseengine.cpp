@@ -1049,17 +1049,18 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (m_anylist.value(listname).value(xid) != NULL) {
                     haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
                 } else {
-                    qDebug() << "null for" << listname << xid;
+                    qDebug() << "received updateconfig for inexisting" << listname << xid;
                 }
                 if ((xid == m_xuserid) && (listname == "users")) {
                     emit localUserInfoDefined();
                 }
             } else {
-                qDebug() << function << listname << xid << haschanged;
+                qDebug() << "received " << function << "for unknown list" << listname << "id" << xid;
             }
 
-            if (! haschanged)
-                qDebug() << "got an unchanged" << function << listname << xid;
+            if (! haschanged) {
+                // qDebug() << "got an unchanged" << function << listname << xid;
+            }
 
             // updating relations ...
             if (listname == "phones") {
