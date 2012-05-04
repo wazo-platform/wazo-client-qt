@@ -296,8 +296,10 @@ void PeerWidget::updatePhoneConfig(const QString & xphoneid)
 void PeerWidget::updatePhoneStatus(const QString & xphoneid)
 {
     const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
-    if (phoneinfo == NULL)
+    if (phoneinfo == NULL) {
+        qDebug() << Q_FUNC_INFO << "unknown phone xid :" << xphoneid;
         return;
+    }
     if (m_ui_remote->id() != phoneinfo->iduserfeatures())
         return;
 
@@ -323,11 +325,16 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     if (phonenumber.isEmpty())
         longname = tr("No status (no phone number)");
     QColor c = QColor(color);
-    m_lblphones[xphoneid]->setPixmap( \
+    QLabel * phone_label = m_lblphones.value(xphoneid, NULL);
+    if (phone_label == NULL) {
+        qDebug() << Q_FUNC_INFO << "unknown phone" << xphoneid << "for user" << iduserfeatures;
+        return;
+    }
+    phone_label->setPixmap( \
               TaintedPixmap(QString(":/images/phone-trans.png"), c).getPixmap());
     if (phonenumber.isEmpty())
         phonenumber = tr("<EMPTY>");
-    m_lblphones[xphoneid]->setToolTip(tr("Phone Number: %1\n"
+    phone_label->setToolTip(tr("Phone Number: %1\n"
                                          "Order: %2\n"
                                          "IPBXid: %3\n"
                                          "Context: %4\n"
