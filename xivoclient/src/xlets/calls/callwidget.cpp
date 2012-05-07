@@ -157,16 +157,9 @@ void CallWidget::setActionPixmap()
     if (channelinfo == NULL)
         return;
     QString status = channelinfo->commstatus();
-    QString color;
-    QString tooltip;
+    QString color("white");
+    QString tooltip("unknown status");
     qDebug() << status;
-    if (b_engine->getOptionsChannelStatus().contains(status)) {
-        color = b_engine->getOptionsChannelStatus().value(status).toMap().value("color").toString();
-        tooltip = b_engine->getOptionsChannelStatus().value(status).toMap().value("longname").toString();
-    } else {
-        color = "white";
-        tooltip = "unknown status";
-    }
     TaintedPixmap tp = TaintedPixmap(QString(":/images/phone-trans.png"), QColor(color));
     m_lbl_status->setPixmap(tp.getPixmap());
     setToolTip(tooltip);
