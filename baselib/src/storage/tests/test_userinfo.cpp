@@ -134,7 +134,7 @@ void TestUserInfo::constructor()
 
     QCOMPARE(u.phonelist(), emptylist);
 
-    QCOMPARE(u.availstate(), empty);
+    QCOMPARE(u.availstate(), QString(__presence_off__));
     QCOMPARE(u.connected(), false);
 
     QCOMPARE(u.identitylist(), emptylist);
@@ -204,7 +204,7 @@ void TestUserInfo::updateStatus()
 {
     UserInfo u(m_ipbxid, "1234");
     {
-        QCOMPARE(u.availstate(), QString());
+        QCOMPARE(u.availstate(), QString(__presence_off__));
         bool res = u.updateStatus(m_prop1);
         QCOMPARE(res, true);
 
@@ -220,7 +220,7 @@ void TestUserInfo::updateStatus()
 void TestUserInfo::setAvailState()
 {
     UserInfo u(m_ipbxid, "1234");
-    QCOMPARE(u.availstate(), QString());
+    QCOMPARE(u.availstate(), QString(__presence_off__));
     QString teststate("teststate");
     u.setAvailState(teststate);
     QCOMPARE(u.availstate(), teststate);

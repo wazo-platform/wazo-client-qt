@@ -45,7 +45,8 @@ UserInfo::UserInfo(const QString & ipbxid,
     m_enablednd(false),
     m_enableunc(false),
     m_enablerna(false),
-    m_enablebusy(false)
+    m_enablebusy(false),
+    m_availstate(__presence_off__)
 {
 }
 
