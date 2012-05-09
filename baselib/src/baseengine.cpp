@@ -467,6 +467,13 @@ void BaseEngine::stop()
     disconnectAndClean();
 }
 
+void BaseEngine::disconnectAndClean()
+{
+    clearInternalData();
+    stopConnection();
+    setState(ENotLogged);
+}
+
 void BaseEngine::stopConnection()
 {
     qDebug() << Q_FUNC_INFO;
@@ -1843,13 +1850,6 @@ void BaseEngine::keepLoginAlive()
     } else {
         sendKeepAliveMsg();
     }
-}
-
-void BaseEngine::disconnectAndClean()
-{
-    stopConnection();
-    clearInternalData();
-    setState(ENotLogged);
 }
 
 void BaseEngine::disconnectNoKeepAlive()
