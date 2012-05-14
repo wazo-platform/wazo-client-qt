@@ -47,7 +47,9 @@ QueuesModel::QueuesModel(QObject *parent)
     m_headers[CURRENT_MAX_WAIT].label = tr("Longest wait");
     m_headers[CURRENT_MAX_WAIT].tooltip = tr("Longest waiting call");
     m_headers[LOGGEDAGENTS].label = tr("Logged");
-    m_headers[LOGGEDAGENTS].tooltip = tr("number of logged agents");
+    m_headers[LOGGEDAGENTS].tooltip = tr("Number of logged agents");
+    m_headers[AVAILABLE_AGENTS].label = tr("Available");
+    m_headers[AVAILABLE_AGENTS].tooltip = tr("Number of agents ready to take a call");
     m_headers[RECEIVED].label = tr("Received");
     m_headers[RECEIVED].tooltip = tr("Number of received calls");
     m_headers[ANSWERED].label = tr("Answered");
@@ -282,6 +284,8 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
                 return formatTime(queue_data.stats.value("Xivo-LongestWaitTime", not_available));
             case LOGGEDAGENTS:
                 return queue_data.stats.value("Xivo-LoggedAgents", not_available);
+            case AVAILABLE_AGENTS:
+                return queue_data.stats.value("Xivo-AvailableAgents", not_available);
             case RECEIVED :
                 return queue_data.stats.value("Xivo-Join", not_available);
             case ANSWERED :
