@@ -36,44 +36,46 @@ DialPanel::DialPanel(QWidget *parent)
 {
     setTitle(tr("Dial"));
     setAccessibleName(tr("Dial Panel"));
-    QHBoxLayout * vlayout = new QHBoxLayout(this);
-    vlayout->setMargin(0);
-    m_lbl = new QLabel(tr("Enter &Number :"), this);
+
+    setAcceptDrops(true);
+
     m_input = new QComboBox(this);
-    m_lbl->setBuddy(m_input);
     m_input->setToolTip(tr("Input here the phone number to dial"));
     m_input->setEditable(true);
     m_input->setDuplicatesEnabled(false);
     m_input->setInsertPolicy(QComboBox::InsertAtTop);
     m_input->setMinimumContentsLength(15);
     m_input->lineEdit()->setMaxLength(30);
+
+    m_lbl = new QLabel(tr("Enter &Number :"), this);
+    m_lbl->setBuddy(m_input);
+
     loadHistory();
     m_input->clearEditText();
-    connect(m_input->lineEdit(), SIGNAL(returnPressed()),
-            this, SLOT(inputValidated()));
-    connect(m_input, SIGNAL(editTextChanged(const QString &)),
-            this, SIGNAL(textEdited(const QString &)));
 
     QPixmap pmphone = QPixmap(":/images/sipphone.png");
     QPushButton * dialButton = new QPushButton(this);
     dialButton->setIcon(pmphone);
     dialButton->setIconSize(pmphone.size());
 
-    connect(dialButton, SIGNAL(clicked()),
-            m_input->lineEdit(), SIGNAL(returnPressed()));
-
-    setAcceptDrops(true);
-
+    QHBoxLayout * vlayout = new QHBoxLayout(this);
+    vlayout->setMargin(0);
     vlayout->addStretch(1);
     vlayout->addWidget(m_lbl, 0, Qt::AlignCenter);
     vlayout->addWidget(m_input, 0, Qt::AlignCenter);
     vlayout->addWidget(dialButton, 0, Qt::AlignCenter);
     vlayout->addStretch(1);
 
+    connect(dialButton, SIGNAL(clicked()),
+            m_input->lineEdit(), SIGNAL(returnPressed()));
     connect(b_engine, SIGNAL(pasteToXlets(const QString &)),
             this, SLOT(setNumberToDial(const QString &)));
     connect(this, SIGNAL(textEdited(const QString &)),
             b_engine, SLOT(textEdited(const QString &)));
+    connect(m_input->lineEdit(), SIGNAL(returnPressed()),
+            this, SLOT(inputValidated()));
+    connect(m_input, SIGNAL(editTextChanged(const QString &)),
+            this, SIGNAL(textEdited(const QString &)));
 }
 
 DialPanel::~DialPanel()
