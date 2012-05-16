@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>obj/xletlib_fr.qm</file>
+        <file>obj/xletlib_es_ES.qm</file>
         <file>obj/xletlib_pt_BR.qm</file>
         <file>obj/xletlib_hu.qm</file>
         <file>obj/xletlib_de.qm</file>

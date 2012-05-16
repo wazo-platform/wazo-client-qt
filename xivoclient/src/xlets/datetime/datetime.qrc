@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/datetime_fr.qm</file>
+        <file>../../../obj/datetime_es_ES.qm</file>
         <file>../../../obj/datetime_pt_BR.qm</file>
         <file>../../../obj/datetime_hu.qm</file>
         <file>../../../obj/datetime_de.qm</file>

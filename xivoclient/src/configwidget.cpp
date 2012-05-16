@@ -390,6 +390,7 @@ void ConfigWidget::_insert_guisetting_tab()
     m_locale_cbox->addItem(tr("Hungarian")  + QString(" (%1)").arg(tr("incomplete")), QString("hu_HU"));
     m_locale_cbox->addItem(tr("German")     + QString(" (%1)").arg(tr("incomplete")), QString("de_DE"));
     m_locale_cbox->addItem(tr("Japanese")   + QString(" (%1)").arg(tr("incomplete")), QString("ja_JP"));
+    m_locale_cbox->addItem(tr("Spanish")    + QString(" (%1)").arg(tr("incomplete")), QString("es_ES"));
     for (int i = 0; i < m_locale_cbox->count(); i++) {
         if (m_config["forcelocale"].toString() == m_locale_cbox->itemData(i))
             m_locale_cbox->setCurrentIndex(i);

@@ -3,6 +3,7 @@ include(../../../common-xlets.pri)
 HEADERS     = *.h
 SOURCES     = *.cpp
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_hu.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_de.ts

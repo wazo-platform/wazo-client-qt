@@ -3,6 +3,7 @@ include(../../../common-xlets.pri)
 HEADERS     = *.h
 SOURCES     = *.cpp
 TRANSLATIONS += $$ROOT_DIR/i18n/identity_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/identity_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/identity_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/identity_hu.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/identity_de.ts

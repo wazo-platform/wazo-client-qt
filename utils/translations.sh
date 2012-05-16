@@ -9,7 +9,7 @@
 # find . -name '*.pro' -exec sed -i -e 's|^TRANSLATIONS += $${\?ROOT_DIR}\?/i18n/\(.*\)_en.ts|\0\nTRANSLATIONS += $$ROOT_DIR/i18n/\1_it.ts|' {} \;
 # find . -name '*.qrc' -exec sed -i -e 's|^\( *\)<file>\(.*\)obj/\(.*\)_fr.qm</file>|\0\n\1<file>\2obj/\3_de.qm</file>|' {} \;
 
-LOCALES="en fr it de nl ja hu pt_BR"
+LOCALES="en fr it de nl ja hu pt_BR es_ES"
 
 function usage {
     echo "Usage : $0 [help|pull|update]"

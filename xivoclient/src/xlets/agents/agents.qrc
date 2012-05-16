@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/agents_fr.qm</file>
+        <file>../../../obj/agents_es_ES.qm</file>
         <file>../../../obj/agents_pt_BR.qm</file>
         <file>../../../obj/agents_hu.qm</file>
         <file>../../../obj/agents_de.qm</file>

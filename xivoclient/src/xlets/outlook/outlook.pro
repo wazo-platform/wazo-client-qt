@@ -3,6 +3,7 @@ include(../../../common-xlets.pri)
 HEADERS     = outlook*.h
 SOURCES     = outlook*.cpp
 TRANSLATIONS += $$ROOT_DIR/i18n/outlook_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/outlook_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/outlook_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/outlook_hu.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/outlook_de.ts
