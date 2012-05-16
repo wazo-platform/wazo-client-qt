@@ -48,7 +48,7 @@ Ligação</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; (%2) em &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agentes e %6 telefones</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="235"/>
+        <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="238"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Servidor: %1

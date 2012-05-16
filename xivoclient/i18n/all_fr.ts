@@ -2,62 +2,62 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="836"/>
+        <location filename="src/baseengine.cpp" line="838"/>
         <source>Received Services Data</source>
         <translation>Reçu les Informations de Services</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="841"/>
+        <location filename="src/baseengine.cpp" line="843"/>
         <source>Could not modify the Services data.</source>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="841"/>
+        <location filename="src/baseengine.cpp" line="843"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Asterisk est peut-être arrêté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1249"/>
+        <location filename="src/baseengine.cpp" line="1257"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1253"/>
+        <location filename="src/baseengine.cpp" line="1261"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu par le serveur CTI XiVO sur %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1258"/>
+        <location filename="src/baseengine.cpp" line="1266"/>
         <source>You entered a wrong login / password.</source>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1261"/>
+        <location filename="src/baseengine.cpp" line="1269"/>
         <source>Your profile identifier &lt;%1&gt; is not defined.</source>
         <translation>Votre identifieur de profil &lt;%1&gt; n&apos;est pas défini.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1265"/>
+        <location filename="src/baseengine.cpp" line="1273"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 n&apos;a pas répondu au dernier keepalive.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1270"/>
+        <location filename="src/baseengine.cpp" line="1278"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation>Vous avez défini une adresse IP %1 qui est probablement un nom d&apos;hôte non résolu.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1273"/>
+        <location filename="src/baseengine.cpp" line="1281"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation>Timeout de socket (~ 60 s) : vous avez probablement essayé de joindre, via une passerelle, une adresse IP %1 qui n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1277"/>
+        <location filename="src/baseengine.cpp" line="1285"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation>Il semble qu&apos;une machine soit présente à cette adresse IP %1, mais il n&apos;y a pas de serveur CTI, ou votre port %2 est faux.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1281"/>
+        <location filename="src/baseengine.cpp" line="1289"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -68,112 +68,112 @@
 - un câble a été débranché sur votre réseau local, sur le chemin vers cette adresse IP (~ 30 s de timeout).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1287"/>
+        <location filename="src/baseengine.cpp" line="1295"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation>Il semble que le serveur à l&apos;adresse IP %1 n&apos;accepte pas le chiffrage sur son port %2. Changez soit le port soit la configuration de chiffrage.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1291"/>
+        <location filename="src/baseengine.cpp" line="1299"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Une erreur de socket inconnue s&apos;est produite en essayant de joindre l&apos;IP %1:%2 (adresse:port).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1295"/>
+        <location filename="src/baseengine.cpp" line="1303"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Une erreur de socket non gérée (numéro %1) s&apos;est produite en essayant de joindre l&apos;IP %1:%2 (adresse:port).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1300"/>
+        <location filename="src/baseengine.cpp" line="1308"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient de fermer la connexion.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1304"/>
+        <location filename="src/baseengine.cpp" line="1312"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être arrêté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1307"/>
+        <location filename="src/baseengine.cpp" line="1315"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être rechargé.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1311"/>
+        <location filename="src/baseengine.cpp" line="1319"/>
         <source>You are already connected from %1:%2.</source>
         <translation>Vous êtes déjà connecté depuis %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1313"/>
+        <location filename="src/baseengine.cpp" line="1321"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1316"/>
+        <location filename="src/baseengine.cpp" line="1324"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XiVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1318"/>
+        <location filename="src/baseengine.cpp" line="1326"/>
         <source>Missing Argument(s)</source>
         <translation>Argument(s) manquant(s)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1322"/>
+        <location filename="src/baseengine.cpp" line="1330"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1327"/>
+        <location filename="src/baseengine.cpp" line="1335"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1334"/>
+        <location filename="src/baseengine.cpp" line="1342"/>
         <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>La version majeure de votre client (%1)
 est différente de celle du serveur (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1341"/>
+        <location filename="src/baseengine.cpp" line="1349"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1346"/>
+        <location filename="src/baseengine.cpp" line="1354"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1350"/>
+        <location filename="src/baseengine.cpp" line="1358"/>
         <source>You were disconnected by the server.</source>
         <translation>Vous avez été déconnecté par le serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1352"/>
+        <location filename="src/baseengine.cpp" line="1360"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Vous avez été déconnecté de force par le serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1354"/>
+        <location filename="src/baseengine.cpp" line="1362"/>
         <source>Invalid extension number</source>
         <translation>Extension invalide</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1358"/>
+        <location filename="src/baseengine.cpp" line="1366"/>
         <source>ERROR</source>
         <translation>ERREUR</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1674"/>
+        <location filename="src/baseengine.cpp" line="1682"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -2184,7 +2184,7 @@ Appel</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agents et %6 téléphones</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="235"/>
+        <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="238"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Serveur: %1
@@ -2199,7 +2199,7 @@ Contexte: %2</translation>
         <translation>Appels dans une File d&apos;Attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queueentrydetails/queueentrydetails.cpp" line="118"/>
+        <location filename="../src/xlets/queueentrydetails/queueentrydetails.cpp" line="133"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4) (%5 call(s))</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (%2) sur &lt;b&gt;%3&lt;/b&gt; (%4) (%5 appel(s))</translation>
     </message>
@@ -2207,119 +2207,129 @@ Contexte: %2</translation>
 <context>
     <name>QueuesModel</name>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="41"/>
         <source>Number</source>
         <translation>Numéro</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="42"/>
         <source>Phone number of the queue</source>
         <translation>Numéro d&apos;appel de la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="43"/>
         <source>Queues</source>
         <translation>Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="44"/>
         <source>Queue names</source>
         <translation>Noms des files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
         <source>Waiting calls</source>
         <translation>Appels en
 attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
         <source>Number of waiting calls</source>
         <translation>Nombre d&apos;appels en attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
         <source>Longest wait</source>
         <translation>Plus longue
 attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
         <source>Longest waiting call</source>
         <translation>Plus longue attente des appels en cours</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Logged</source>
         <translation>Logués</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
-        <source>number of logged agents</source>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
+        <source>Number of logged agents</source>
         <translation>Nombre d&apos;agents logués</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
+        <source>Available</source>
+        <translation>Disponibles</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
+        <source>Number of agents ready to take a call</source>
+        <translation>Nombre d&apos;agents prêts à recevoir un appel</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Received</source>
         <translation>Reçus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
         <source>Number of received calls</source>
         <translation>Nombre d&apos;appels reçus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Answered</source>
         <translation>Répondus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Number of answered calls</source>
         <translation>Nombre d&apos;appels répondus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Abandonned</source>
         <translation>Abandonnés</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
         <source>Number of abandonned calls</source>
         <translation>Nombre d&apos;appels abandonnés</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
         <source>Max Waiting Time</source>
         <translation>Tps Attente Max</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
         <source>Maximum waiting time before getting an agent</source>
         <translation>Plus grand temps d&apos;attente avant d&apos;obtenir un agent</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
         <source>Efficiency</source>
         <translation>Efficacité</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
         <source>Ratio (Answered) / (Received)</source>
         <translation>Ratio répondus / reçus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
         <source>QOS</source>
         <translation>QOS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
         <translation>Ratio (Appels répondus en moins de X sec) / (Nombre d&apos;appels reçus)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="305"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="272"/>
         <source>N/A</source>
         <translation>N/D</translation>
     </message>
@@ -2332,7 +2342,7 @@ attente</translation>
         <translation>Liste des Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="134"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="129"/>
         <source>Configure</source>
         <translation>Configurer</translation>
     </message>
@@ -2340,44 +2350,44 @@ attente</translation>
 <context>
     <name>XletQueuesConfigure</name>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="171"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="166"/>
         <source>Queues configuration</source>
         <translation>Configuration des files</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="173"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="168"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
         <translation>Choisissez quelles files d&apos;attente doivent être affichées, 
 ainsi que les paramètres pour les statistiques:</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="184"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="179"/>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="197"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
         <source>Queue</source>
         <translation>File d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="198"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="193"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="199"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="194"/>
         <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
         <translation>Ceci est le seuil en secondes de la durée d&apos;attente pour considérer la réponse à un appel comme étant trop tardive pour être de qualité.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="203"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="198"/>
         <source>Window (s)</source>
         <translation>Fenêtre (s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="204"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="199"/>
         <source>The window is the period of time used to compute the statistics</source>
         <translation>La fenêtre est la durée sur laquelle les statistiques sont calculées</translation>
     </message>
@@ -2715,22 +2725,22 @@ IPBXid : %2
 Statut : %3</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="321"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="323"/>
         <source>Status:%1</source>
         <translation>Statut : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="324"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="326"/>
         <source>No status (no phone number)</source>
         <translation>Pas de statut (pas de numéro)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="329"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="336"/>
         <source>&lt;EMPTY&gt;</source>
         <translation>&lt;VIDE&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="337"/>
         <source>Phone Number: %1
 Order: %2
 IPBXid: %3
@@ -2745,7 +2755,7 @@ Statut : %5
 Lignes occupées : %6</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="357"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="364"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>
@@ -2790,39 +2800,39 @@ Lignes occupées : %6</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="184"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="192"/>
         <source>Login</source>
         <translation>Logger</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="174"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>sur &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="181"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="189"/>
         <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>déloggé de &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="186"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="194"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>
         <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>loggé sur le téléphone &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="189"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="197"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="204"/>
         <source>Logout</source>
         <translation>Délogger</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="284"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="286"/>
         <source>Server: %1</source>
         <translation>Serveur: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="286"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="287"/>
         <source>Context: %1</source>
         <translation>Contexte: %1</translation>
     </message>

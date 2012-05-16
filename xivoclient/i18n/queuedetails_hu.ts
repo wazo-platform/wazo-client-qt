@@ -48,7 +48,7 @@ Hívás</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; (%2) -en &lt;b&gt;%3&lt;/b&gt; (%4) : %5 ügynök és %6 telefon</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="235"/>
+        <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="238"/>
         <source>Server: %1
 Context: %2</source>
         <translation>Szerver: %1

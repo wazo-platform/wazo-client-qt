@@ -274,22 +274,22 @@ IPBXid : %2
 Statut : %3</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="321"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="323"/>
         <source>Status:%1</source>
         <translation>Statut : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="324"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="326"/>
         <source>No status (no phone number)</source>
         <translation>Pas de statut (pas de numéro)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="329"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="336"/>
         <source>&lt;EMPTY&gt;</source>
         <translation>&lt;VIDE&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="337"/>
         <source>Phone Number: %1
 Order: %2
 IPBXid: %3
@@ -304,7 +304,7 @@ Statut : %5
 Lignes occupées : %6</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="357"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="364"/>
         <source>(No callerid yet)</source>
         <translation>(Callerid en attente)</translation>
     </message>
