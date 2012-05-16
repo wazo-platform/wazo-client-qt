@@ -27,16 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 
 #include "dialpanel.h"
 #include "phonenumber.h"
 
-/*! \brief Constructor
- */
 DialPanel::DialPanel(QWidget *parent)
     : XLet(parent)
 {
@@ -55,7 +49,6 @@ DialPanel::DialPanel(QWidget *parent)
     m_input->lineEdit()->setMaxLength(30);
     loadHistory();
     m_input->clearEditText();
-    //m_input->setSizeAdjustPolicy( QComboBox::AdjustToContents );
     connect(m_input->lineEdit(), SIGNAL(returnPressed()),
             this, SLOT(inputValidated()));
     connect(m_input, SIGNAL(editTextChanged(const QString &)),
@@ -63,30 +56,20 @@ DialPanel::DialPanel(QWidget *parent)
 
     QPixmap pmphone = QPixmap(":/images/sipphone.png");
     QPushButton * dialButton = new QPushButton(this);
-    // dialButton->setStyleSheet("QPushButton {border: 0px}");
     dialButton->setIcon(pmphone);
     dialButton->setIconSize(pmphone.size());
-    
-    // That way, we're sure to have the same behavior when enter is pressed and 
-    // when the button is pressed
+
     connect(dialButton, SIGNAL(clicked()),
             m_input->lineEdit(), SIGNAL(returnPressed()));
-
-    // QPushButton * clearButton = new QPushButton(this);
-    // clearButton->setIcon(QIcon(":/images/cancel.png"));
-    // connect( clearButton, SIGNAL(clicked()),
-    // this, SLOT(clearlist()) );
 
     setAcceptDrops(true);
 
     vlayout->addStretch(1);
-    // vlayout->addWidget( clearButton, 0, Qt::AlignCenter );
     vlayout->addWidget(m_lbl, 0, Qt::AlignCenter);
     vlayout->addWidget(m_input, 0, Qt::AlignCenter);
     vlayout->addWidget(dialButton, 0, Qt::AlignCenter);
     vlayout->addStretch(1);
 
-    // connect signals/slots
     connect(b_engine, SIGNAL(pasteToXlets(const QString &)),
             this, SLOT(setNumberToDial(const QString &)));
     connect(this, SIGNAL(textEdited(const QString &)),
@@ -98,16 +81,12 @@ DialPanel::~DialPanel()
     saveHistory();
 }
 
-/*! \brief fills the input field
- */
 void DialPanel::setNumberToDial(const QString & text)
 {
-    // qDebug() << Q_FUNC_INFO << text;
     QString oldtext = m_input->currentText();
 
     if((! text.isEmpty()) && text != oldtext) {
         addHistory(text);
-        // displays it
         m_input->setEditText(text);
     }
 }
@@ -119,16 +98,12 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
         event->acceptProposedAction();
 }
 
-/*! \brief handle drop events
- *
- * This method processes data from the drop event and makes the call
- */
 void DialPanel::dropEvent(QDropEvent * event)
 {
     QString originator = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
     qDebug() << Q_FUNC_INFO << event << originator << m_input->currentText();
     QString ext = m_input->currentText();
-    if (ext.isEmpty())        // do nothing if the string is empty
+    if (ext.isEmpty())
         return;
     b_engine->actionCall("originate",
                          "user:" + originator,
@@ -137,41 +112,28 @@ void DialPanel::dropEvent(QDropEvent * event)
     m_input->clearEditText();
 }
 
-/*! \brief the input was validated
- *
- * check the input and call actionCall() if ok.
- */
 void DialPanel::inputValidated()
 {
     QString ext = m_input->currentText();
-    if (ext.isEmpty()) // do nothing if the string is empty
+    if (ext.isEmpty())
         return;
     b_engine->actionDialNumber(ext);
     addHistory(ext);
     m_input->clearEditText();
 }
 
-/*! \brief clear the input list
- */
 void DialPanel::clearlist()
 {
     m_input->clear();
 }
 
-/*!
- * \brief Loads the call history from BaseEngine
- */
 void DialPanel::loadHistory()
 {
-    // qDebug() << Q_FUNC_INFO;
     int nb_to_load = b_engine->getConfig("dialpanel.history_length").toInt();
     QStringList history = b_engine->getProfileSetting("dialpanel/history").toStringList();
     m_input->addItems(history.mid(0, nb_to_load));
 }
 
-/*!
- * \brief Saves the call history in BaseEngine
- */
 void DialPanel::saveHistory()
 {
     int nb_to_save = b_engine->getConfig("dialpanel.history_length").toInt();
@@ -186,15 +148,9 @@ void DialPanel::saveHistory()
     b_engine->setProfileSetting("dialpanel/history", savedHistory);
 }
 
-/*!
- * \brief inserts the new entry in the combobox, on top and removes duplicates
- */
-// It's almost possible to do the same with setInsertPolicy and setDuplicatesEnabled
-// but it lacks the "go on top if already existing" feature
 void DialPanel::addHistory(const QString &ext)
 {
-    m_input->insertItem(0, ext); // add to history
-    // remove the older items related to the same number
+    m_input->insertItem(0, ext);
     for(int i=1; i<m_input->count(); ) {
         if(ext == m_input->itemText(i)) {
             m_input->removeItem(i);
