@@ -2,7 +2,6 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/parking_fr.qm</file>
-        <file>../../../obj/parking_es_ES.qm</file>
         <file>../../../obj/parking_nl.qm</file>
     </qresource>
 </RCC>
