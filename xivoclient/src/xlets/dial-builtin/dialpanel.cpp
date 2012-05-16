@@ -86,7 +86,6 @@ void DialPanel::setNumberToDial(const QString & text)
     QString oldtext = m_input->currentText();
 
     if((! text.isEmpty()) && text != oldtext) {
-        addHistory(text);
         m_input->setEditText(text);
     }
 }
