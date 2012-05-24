@@ -81,7 +81,7 @@ class QueuesModel : public QAbstractTableModel
     public:
         enum Columns {
             ID, NUMBER, NAME, WAITING_CALLS, CURRENT_MAX_WAIT, LOGGEDAGENTS, AVAILABLE_AGENTS,
-            RECEIVED, ANSWERED, ABANDONNED, TOTAL_MAX_WAIT, EFFICIENCY, QOS, NB_COL
+            RECEIVED, ANSWERED, ABANDONED, TOTAL_MAX_WAIT, EFFICIENCY, QOS, NB_COL
         };
 
     signals:
