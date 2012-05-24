@@ -263,10 +263,11 @@ void SearchPanel::removePeer(const QString & xuserid)
     if (m_peerhash.contains(xuserid)) {
         PeerItem * peeritem = m_peerhash.value(xuserid);
         BasePeerWidget * peerwidget = peeritem->getWidget();
-        if (m_peerlayout->indexOf(peerwidget) > -1) {
-            m_peerlayout->removeWidget(peerwidget);
-        }
         m_peerhash.remove(xuserid);
+        if (this->isShown(xuserid)) {
+            m_peerlayout->removeWidget(peerwidget);
+            this->updateDisplay();
+        }
         delete peerwidget;
         delete peeritem;
     }
