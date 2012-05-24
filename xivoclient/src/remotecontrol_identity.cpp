@@ -33,76 +33,65 @@
 
 #include "remotecontrol.h"
 
-bool RemoteControl::then_the_xlet_identity_shows_name_as_1_2(const QStringList &args)
+void RemoteControl::then_the_xlet_identity_shows_name_as_1_2(const QStringList &args)
 {
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
     QLabel *fullname = xlet->findChild<QLabel*>(QString("fullname"));
     QString args_fullname = args.join(" ");
-    return fullname->text() == args_fullname;
+    this->assert(fullname->text() == args_fullname);
 }
 
-bool RemoteControl::then_the_xlet_identity_shows_server_name_as_field_1_modified(const QStringList &args)
+void RemoteControl::then_the_xlet_identity_shows_server_name_as_field_1_modified(const QStringList &args)
 {
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
     QLabel *fullname = xlet->findChild<QLabel*>(QString("fullname"));
     QString hostname = args[0];
-    return fullname->toolTip().endsWith(hostname);
+    this->assert(fullname->toolTip().endsWith(hostname));
 }
 
-bool RemoteControl::then_the_xlet_identity_shows_phone_number_as_1(const QStringList &args)
+void RemoteControl::then_the_xlet_identity_shows_phone_number_as_1(const QStringList &args)
 {
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
     QLabel *phonenum = xlet->findChild<QLabel*>(QString("phonenum"));
     QString args_phonenum = args[0];
-    return phonenum->text() == args_phonenum;
+    this->assert(phonenum->text() == args_phonenum);
 }
 
-bool RemoteControl::then_the_xlet_identity_shows_a_voicemail_1(const QStringList &args)
+void RemoteControl::then_the_xlet_identity_shows_a_voicemail_1(const QStringList &args)
 {
-    bool ret = true;
-
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
-    if (xlet == 0)
-        return false;
+    this->assert(xlet != NULL);
+
     QLabel *vm_num = xlet->findChild<QLabel*>(QString("voicemail_num"));
-    if (vm_num == 0)
-        return false;
+    this->assert(vm_num != NULL);
+
     QString args_vm_num = args[0];
 
-    ret = ret && vm_num->text().endsWith(args_vm_num);
+    this->assert(vm_num->text().endsWith(args_vm_num));
 
     QPushButton * vm_button = xlet->findChild<QPushButton*>(QString("voicemail_button"));
     QIcon vm_icon = vm_button->icon();
-    ret = ret && !vm_icon.isNull();
-
-    return ret;
+    this->assert(!vm_icon.isNull());
 }
 
-bool RemoteControl::then_the_xlet_identity_shows_an_agent_1(const QStringList &args)
+void RemoteControl::then_the_xlet_identity_shows_an_agent_1(const QStringList &args)
 {
     QString expected_agent_number = args[0];
-    bool ret = true;
+
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
-    if (xlet == 0)
-        return false;
+    this->assert(xlet != NULL);
 
     QLabel *agent_number_label = xlet->findChild<QLabel*>(QString("agent_number"));
-    ret = ret && agent_number_label->text().endsWith(expected_agent_number);
-
-    return ret;
+    this->assert(agent_number_label->text().endsWith(expected_agent_number));
 }
 
-bool RemoteControl::then_the_xlet_identity_does_not_show_any_agent()
+void RemoteControl::then_the_xlet_identity_does_not_show_any_agent()
 {
-    bool ret = true;
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
-    if (xlet == 0)
-        return false;
+    this->assert(xlet != 0);
 
     QLabel *agent_number_label = xlet->findChild<QLabel*>(QString("agent_number"));
-    ret = ret && agent_number_label->text().isEmpty();
-
-    return ret;
+    this->assert(agent_number_label->text().isEmpty());
 }
 
 #endif

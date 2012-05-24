@@ -47,11 +47,10 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
 
     if (! m_server->isListening()) {
         qDebug() << "No more sockets available for remote control";
-        m_no_error = false;
     }
 
     connect(m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)),
-            this, SLOT(error(const QString &)));
+            this, SLOT(on_error(const QString &)));
     disconnect(m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)),
                m_exec_obj.win, SLOT(showMessageBox(const QString &)));
 }
@@ -68,50 +67,92 @@ void RemoteControl::newConnection()
             this, SLOT(processCommands()));
 }
 
-#define RC_EXECUTE(fct_name)     {\
-if (command == #fct_name)\
-    m_test_ok = m_test_ok || fct_name();\
-}
-#define RC_EXECUTE_ARG(fct_name) {\
-if (command == #fct_name)\
-    m_test_ok = m_test_ok || fct_name(command_args);    \
+#define RC_EXECUTE(fct_name) { \
+    if (this->commandMatches(command, #fct_name)) \
+        fct_name(); \
+    }
+#define RC_EXECUTE_ARG(fct_name) { \
+    if (this->commandMatches(command, #fct_name)) \
+        fct_name(command.arguments); \
+    }
+
+bool RemoteControl::commandMatches(RemoteControlCommand command, std::string function_name)
+{
+    if (command.action == function_name.c_str()) {
+        this->m_command_found = true;
+        return true;
+    }
+    return false;
 }
 
 void RemoteControl::processCommands()
 {
     while (m_client_cnx->canReadLine()) {
-        QByteArray data  = m_client_cnx->readLine();
-        QString command = QString::fromUtf8(data);
-        command.chop(1);
-        QStringList command_args = command.split(",");
-        command = command_args.takeFirst();
+        QByteArray raw_command = m_client_cnx->readLine();
+        RemoteControlCommand command = this->parseCommand(raw_command);
 
-        m_test_ok = false;
-        RC_EXECUTE(i_stop_the_xivo_client);
-        RC_EXECUTE(i_go_to_the_xivo_client_configuration);
-        RC_EXECUTE(i_close_the_xivo_client_configuration);
-        RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3);
-        RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent);
-        RC_EXECUTE(i_log_out_of_the_xivo_client);
-        RC_EXECUTE_ARG(then_the_xlet_identity_shows_name_as_1_2);
-        RC_EXECUTE_ARG(then_the_xlet_identity_shows_server_name_as_field_1_modified);
-        RC_EXECUTE_ARG(then_the_xlet_identity_shows_phone_number_as_1);
-        RC_EXECUTE_ARG(then_the_xlet_identity_shows_a_voicemail_1);
-        RC_EXECUTE_ARG(then_the_xlet_identity_shows_an_agent_1);
-        RC_EXECUTE(then_the_xlet_identity_does_not_show_any_agent);
-        ackCommand();
         m_no_error = true;
+        m_command_found = false;
+
+        try {
+            RC_EXECUTE(i_stop_the_xivo_client);
+            RC_EXECUTE(i_go_to_the_xivo_client_configuration);
+            RC_EXECUTE(i_close_the_xivo_client_configuration);
+            RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3);
+            RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent);
+            RC_EXECUTE(i_log_out_of_the_xivo_client);
+            RC_EXECUTE_ARG(then_the_xlet_identity_shows_name_as_1_2);
+            RC_EXECUTE_ARG(then_the_xlet_identity_shows_server_name_as_field_1_modified);
+            RC_EXECUTE_ARG(then_the_xlet_identity_shows_phone_number_as_1);
+            RC_EXECUTE_ARG(then_the_xlet_identity_shows_a_voicemail_1);
+            RC_EXECUTE_ARG(then_the_xlet_identity_shows_an_agent_1);
+            RC_EXECUTE(then_the_xlet_identity_does_not_show_any_agent);
+
+            if (this->m_no_error == false) {
+                this->sendResponse(TEST_FAILED);
+            } else if (this->m_command_found) {
+                this->sendResponse(TEST_PASSED);
+            } else {
+                this->sendResponse(TEST_UNKNOWN);
+            }
+        } catch (TestFailedException) {
+            this->sendResponse(TEST_FAILED);
+        }
     }
 }
 
-void RemoteControl::ackCommand()
+RemoteControlCommand RemoteControl::parseCommand(const QByteArray & raw_command)
 {
-    QString ack = QString((m_test_ok && m_no_error) ? "OK" : "KO");
-    m_client_cnx->write(ack.toUtf8().data());
+    QString command_string = QString::fromUtf8(raw_command);
+    command_string.chop(1);
+    QStringList command_list = command_string.split(",");
+
+    RemoteControlCommand return_command;
+    return_command.action = command_list.takeFirst();
+    return_command.arguments = command_list;
+    return return_command;
+}
+
+void RemoteControl::sendResponse(RemoteControlResponse response)
+{
+    QString response_string;
+    switch (response) {
+    case TEST_FAILED:
+        response_string = "KO";
+        break;
+    case TEST_UNKNOWN:
+        response_string = "test unknown";
+        break;
+    case TEST_PASSED:
+        response_string = "OK";
+        break;
+    }
+
+    m_client_cnx->write(response_string.toUtf8().data());
     m_client_cnx->flush();
 }
 
-void RemoteControl::error(const QString &error_string)
+void RemoteControl::on_error(const QString &error_string)
 {
     qDebug() << Q_FUNC_INFO << error_string;
     m_no_error = false ;
@@ -127,6 +168,13 @@ void RemoteControl::pause(unsigned millisec)
 
     tT.start(millisec);
     q.exec();
+}
+
+void RemoteControl::assert(bool condition)
+{
+    if (!condition) {
+        throw TestFailedException();
+    }
 }
 
 #endif

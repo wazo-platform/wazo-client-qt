@@ -32,19 +32,17 @@
 #include "configwidget.h"
 #include "remotecontrol.h"
 
-bool RemoteControl::i_go_to_the_xivo_client_configuration()
+void RemoteControl::i_go_to_the_xivo_client_configuration()
 {
     m_exec_obj.win->m_cfgact->trigger();
-    return true;
 }
 
-bool RemoteControl::i_close_the_xivo_client_configuration()
+void RemoteControl::i_close_the_xivo_client_configuration()
 {
     m_exec_obj.win->m_configwindow->m_btnbox->button(QDialogButtonBox::Ok)->click();
-    return true;
 }
 
-bool RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QStringList &args)
+void RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QStringList &args)
 {
     i_go_to_the_xivo_client_configuration();
 
@@ -58,10 +56,9 @@ bool RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QString
     i_close_the_xivo_client_configuration();
     m_exec_obj.win->m_ack->click();
     pause(1000);
-    return true;
 }
 
-bool RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent(const QStringList &args)
+void RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent(const QStringList &args)
 {
     i_go_to_the_xivo_client_configuration();
 
@@ -77,26 +74,22 @@ bool RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agen
     i_close_the_xivo_client_configuration();
     m_exec_obj.win->m_ack->click();
     pause(1000);
-    return true;
 }
 
-bool RemoteControl::i_log_out_of_the_xivo_client()
+void RemoteControl::i_log_out_of_the_xivo_client()
 {
     if (m_exec_obj.win->m_configwindow != NULL) {
         m_exec_obj.win->m_configwindow->close();
     }
     m_exec_obj.win->m_disconnectact->trigger();
-    qDebug() << "logged out";
-    return true;
 }
 
-bool RemoteControl::i_stop_the_xivo_client()
+void RemoteControl::i_stop_the_xivo_client()
 {
     if (m_exec_obj.win->m_configwindow != NULL) {
         m_exec_obj.win->m_configwindow->close();
     }
     m_exec_obj.win->m_quitact->trigger();
-    return true;
 }
 
 #endif

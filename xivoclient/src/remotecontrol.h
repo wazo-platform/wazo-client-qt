@@ -33,11 +33,26 @@
 #ifdef FUNCTESTS
 
 #include <QObject>
+#include <string>
 
 #include "main.h"
 
 class QLocalServer;
 class QLocalSocket;
+
+struct RemoteControlCommand {
+    QString action;
+    QStringList arguments;
+};
+
+enum RemoteControlResponse {
+    TEST_FAILED,
+    TEST_UNKNOWN,
+    TEST_PASSED
+};
+
+class TestFailedException {
+};
 
 class RemoteControl : public QObject
 {
@@ -49,31 +64,34 @@ class RemoteControl : public QObject
         ~RemoteControl();
 
     public:
-        bool i_stop_the_xivo_client();
-        bool i_go_to_the_xivo_client_configuration();
-        bool i_close_the_xivo_client_configuration();
-        bool i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QStringList &);
-        bool i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent(const QStringList &);
-        bool i_log_out_of_the_xivo_client();
-        bool then_the_xlet_identity_shows_name_as_1_2(const QStringList &);
-        bool then_the_xlet_identity_shows_server_name_as_field_1_modified(const QStringList &);
-        bool then_the_xlet_identity_shows_phone_number_as_1(const QStringList &);
-        bool then_the_xlet_identity_shows_a_voicemail_1(const QStringList &);
-        bool then_the_xlet_identity_shows_an_agent_1(const QStringList &);
-        bool then_the_xlet_identity_does_not_show_any_agent();
+        void i_stop_the_xivo_client();
+        void i_go_to_the_xivo_client_configuration();
+        void i_close_the_xivo_client_configuration();
+        void i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QStringList &);
+        void i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent(const QStringList &);
+        void i_log_out_of_the_xivo_client();
+        void then_the_xlet_identity_shows_name_as_1_2(const QStringList &);
+        void then_the_xlet_identity_shows_server_name_as_field_1_modified(const QStringList &);
+        void then_the_xlet_identity_shows_phone_number_as_1(const QStringList &);
+        void then_the_xlet_identity_shows_a_voicemail_1(const QStringList &);
+        void then_the_xlet_identity_shows_an_agent_1(const QStringList &);
+        void then_the_xlet_identity_does_not_show_any_agent();
 
     public slots:
-        void error(const QString &);
+        void on_error(const QString &);
 
     private slots:
         void newConnection();
         void processCommands();
 
     private:
-        void ackCommand();
+        RemoteControlCommand parseCommand(const QByteArray & raw_command);
+        void sendResponse(RemoteControlResponse response);
+        void assert(bool condition);
+        bool commandMatches(RemoteControlCommand, std::string);
 
         ExecObjects m_exec_obj;
-        bool m_test_ok;
+        bool m_command_found;
         bool m_no_error;
 
         QString m_socket_name;
@@ -83,4 +101,4 @@ class RemoteControl : public QObject
 
 #endif /* ifdef FUNCTESTS */
 
-#endif /* ifndef __FUNCTESTS_H__ */
+#endif /* ifndef __REMOTECONTROL_H__ */
