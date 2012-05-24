@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="96"/>
         <source>Park this call</source>
-        <translation type="unfinished"></translation>
+        <translation>Perkeer deze oproep</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="142"/>
@@ -46,7 +46,7 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
         <source>Parked call in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Geparkeerde oproep in %1</translation>
     </message>
 </context>
 <context>

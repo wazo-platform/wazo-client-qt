@@ -17,48 +17,48 @@
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="58"/>
         <source>Call &amp;Filtering</source>
-        <translation type="unfinished"></translation>
+        <translation>Oproep &amp;Filter</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="59"/>
         <source>Do Not &amp;Disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet &amp;Storen</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="60"/>
         <source>Forward on &amp;No Answer to</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorschakelen bij &amp;geen antwoord naar</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="61"/>
         <source>Forward on &amp;Busy to</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorschakelen bij &amp;bezet naar</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="62"/>
         <source>&amp;Unconditional Forward to</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Alle oproepen doorschakelen naar</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="83"/>
         <source>Call Forwards</source>
-        <translation type="unfinished"></translation>
+        <translation>Oproep Doorschakelingen</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="93"/>
         <location filename="../src/xlets/services/servicespanel.cpp" line="135"/>
         <source>Please enter a destination to activate the checkboxes</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelieve een bestemming op te geven om de checkbox te activeren</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="102"/>
         <source>No call forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen doorschakeling</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="119"/>
         <source>Simple call forwards</source>
-        <translation type="unfinished"></translation>
+        <translation>Eénvoudige doorschakeling</translation>
     </message>
 </context>
 </TS>

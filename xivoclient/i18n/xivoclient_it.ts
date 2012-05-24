@@ -597,24 +597,24 @@ riportato di seguito) nella prima finestra</translation>
 <context>
     <name>DialPanel</name>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="37"/>
         <source>Dial</source>
         <translation>Chiama</translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="44"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="38"/>
         <source>Dial Panel</source>
         <translation>Pannello di chiamata</translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="47"/>
-        <source>Enter &amp;Number :</source>
-        <translation>Inserire &amp;numero:</translation>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
+        <source>Input here the phone number to dial</source>
+        <translation>Inserire qui il numero di telefono da chiamare</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
-        <source>Input here the phone number to dial</source>
-        <translation>Inserire qui il numero di telefono da chiamare</translation>
+        <source>Enter &amp;Number :</source>
+        <translation>Inserire &amp;numero:</translation>
     </message>
 </context>
 <context>

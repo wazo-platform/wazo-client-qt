@@ -379,7 +379,7 @@ que celles ci-dessous) à la connexion</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="393"/>
         <source>Spanish</source>
-        <translation type="unfinished"></translation>
+        <translation>Espagnol</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="398"/>
@@ -597,24 +597,24 @@ que celles ci-dessous) à la connexion</translation>
 <context>
     <name>DialPanel</name>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="37"/>
         <source>Dial</source>
         <translation>Composer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="44"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="38"/>
         <source>Dial Panel</source>
         <translation>Panneau de composition de numéro</translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="47"/>
-        <source>Enter &amp;Number :</source>
-        <translation>&amp;Numéro :</translation>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
+        <source>Input here the phone number to dial</source>
+        <translation>Entrer ici le numéro à appeler</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
-        <source>Input here the phone number to dial</source>
-        <translation>Entrer ici le numéro à appeler</translation>
+        <source>Enter &amp;Number :</source>
+        <translation>&amp;Numéro :</translation>
     </message>
 </context>
 <context>

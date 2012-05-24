@@ -597,23 +597,23 @@ auf der ersten Seite</translation>
 <context>
     <name>DialPanel</name>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="37"/>
         <source>Dial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="44"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="38"/>
         <source>Dial Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="47"/>
-        <source>Enter &amp;Number :</source>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
+        <source>Input here the phone number to dial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
-        <source>Input here the phone number to dial</source>
+        <source>Enter &amp;Number :</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

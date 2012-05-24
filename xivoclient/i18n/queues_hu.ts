@@ -85,13 +85,13 @@
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
-        <source>Abandonned</source>
-        <translation>Elhagyott</translation>
+        <source>Abandoned</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
-        <source>Number of abandonned calls</source>
-        <translation>Fel nem vett hívások száma</translation>
+        <source>Number of abandoned calls</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>

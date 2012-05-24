@@ -6,42 +6,42 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="41"/>
         <source>Number</source>
-        <translation type="unfinished">Nummer</translation>
+        <translation>Nummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="42"/>
         <source>Phone number of the queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonnummer van de wachtrij</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="43"/>
         <source>Queues</source>
-        <translation type="unfinished">Wachtrijen</translation>
+        <translation>Wachtrijen</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="44"/>
         <source>Queue names</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachtrij namen</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
         <source>Waiting calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Oproepen in wacht</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
         <source>Number of waiting calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantal oproepen in wacht</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
         <source>Longest wait</source>
-        <translation type="unfinished"></translation>
+        <translation>Langste wachttijd</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
         <source>Longest waiting call</source>
-        <translation type="unfinished"></translation>
+        <translation>Oproep met langste wachttijd</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
@@ -51,82 +51,82 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
         <source>Number of logged agents</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantal ingelogde agenten</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
         <source>Number of agents ready to take a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantal agenten beschikbaar om oproepen te beantwoorden</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>ontvangen</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
         <source>Number of received calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantal ontvangen oproepen</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Answered</source>
-        <translation type="unfinished"></translation>
+        <translation>Beantwoord</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Number of answered calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantal beantwoorde oproepen</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
-        <source>Abandonned</source>
+        <source>Abandoned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
-        <source>Number of abandonned calls</source>
+        <source>Number of abandoned calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
         <source>Max Waiting Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximum wachttijd</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
         <source>Maximum waiting time before getting an agent</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximum wachttijd om een agent te bereiken</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
         <source>Efficiency</source>
-        <translation type="unfinished"></translation>
+        <translation>Doeltreffendheid</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
         <source>Ratio (Answered) / (Received)</source>
-        <translation type="unfinished"></translation>
+        <translation>Verhouding (Beantwoord) / (Ontvangen)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
         <source>QOS</source>
-        <translation type="unfinished"></translation>
+        <translation>QOS</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
-        <translation type="unfinished"></translation>
+        <translation>Verhouding (Oproepen beantwoord in minder dan X seconden / Aantal beantwoorde oproepen)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="272"/>
         <source>N/A</source>
-        <translation type="unfinished"></translation>
+        <translation>N.v.t.</translation>
     </message>
 </context>
 <context>
@@ -163,7 +163,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="192"/>
         <source>Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachtrij</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="193"/>
@@ -183,7 +183,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="199"/>
         <source>The window is the period of time used to compute the statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>De tijdspanne is de periode die gebruikt wordt om statistieken te berekenen</translation>
     </message>
 </context>
 </TS>

@@ -68,22 +68,22 @@
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="518"/>
         <source>Cancel transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorschakeling annuleren</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="537"/>
         <source>Invite in conference room</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitnodigen voor conference gesprek</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="562"/>
         <source>&amp;Park correspondant</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Park correspondent</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="569"/>
         <source>&amp;Park</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Parkeer</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="613"/>
@@ -128,7 +128,7 @@ Bent u zeker?</translation>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="56"/>
         <source>Phone Numbers : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonnummers: %1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="60"/>
@@ -139,12 +139,13 @@ Bent u zeker?</translation>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="117"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersnaam: %1
+Telefoonnummers: %2</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="125"/>
         <source>Status : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Status: %1</translation>
     </message>
 </context>
 <context>
@@ -162,13 +163,13 @@ Phone Numbers : %2</source>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="99"/>
         <source>chitchat - %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>chitchat - %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <location filename="../src/xletlib/chitchat.cpp" line="182"/>
         <source>chat window opened with &quot;%1&quot; (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>chat venster geopend met &quot;%1&quot; (%2</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="156"/>
@@ -245,7 +246,8 @@ Bent u zeker?</translation>
         <location filename="../src/xletlib/externalphonepeerwidget.cpp" line="49"/>
         <source>Label : %1
 Phone Number : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Label: %1
+Telefoonnumber: %2</translation>
     </message>
 </context>
 <context>
@@ -254,7 +256,8 @@ Phone Number : %2</source>
         <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
         <source>Agent Number : %1
 In Queues : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent Nummer: %1
+In Wachtrijen: %2</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="248"/>
@@ -266,17 +269,19 @@ In Queues : %2</source>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersnaam: %1
+IPBXid: %2
+Status: %3</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="323"/>
         <source>Status:%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Status: %1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="326"/>
         <source>No status (no phone number)</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen status (geen telefoonnummer)</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="336"/>
@@ -312,7 +317,7 @@ Busy lines: %6</source>
     <message>
         <location filename="../src/xletlib/xlet.cpp" line="67"/>
         <source>experimental</source>
-        <translation type="unfinished"></translation>
+        <translation>experimenteel</translation>
     </message>
 </context>
 </TS>

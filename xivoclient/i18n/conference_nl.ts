@@ -53,7 +53,7 @@
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="142"/>
         <source>Not started</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet gestart</translation>
     </message>
 </context>
 <context>
@@ -80,7 +80,7 @@
         <location filename="../src/xlets/conference/confroom.cpp" line="508"/>
         <location filename="../src/xlets/conference/confroom.cpp" line="509"/>
         <source>unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>onbekend</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="549"/>
@@ -195,7 +195,7 @@
         <location filename="../src/xlets/conference/confroom.cpp" line="284"/>
         <location filename="../src/xlets/conference/confroom.cpp" line="290"/>
         <source>unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>onbekend</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="286"/>

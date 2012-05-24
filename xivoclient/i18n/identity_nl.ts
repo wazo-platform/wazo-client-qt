@@ -74,7 +74,7 @@
         <location filename="../src/xlets/identity/identity.cpp" line="287"/>
         <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>IPBXid: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="337"/>
@@ -112,13 +112,14 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="253"/>
         <source>Status:%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Status: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="256"/>
         <source>No status
 (no phone number)</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen status
+(geen telefoonnummer)</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="286"/>
@@ -200,7 +201,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="50"/>
         <source>call your voicemail</source>
-        <translation type="unfinished"></translation>
+        <translation>bel uw voicemail</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>

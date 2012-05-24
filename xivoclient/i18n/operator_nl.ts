@@ -46,7 +46,7 @@
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="58"/>
         <source>Park</source>
-        <translation type="unfinished"></translation>
+        <translation>Parkeer</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="59"/>

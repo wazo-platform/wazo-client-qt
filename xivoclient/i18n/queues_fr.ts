@@ -87,12 +87,12 @@ attente</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
-        <source>Abandonned</source>
+        <source>Abandoned</source>
         <translation>Abandonnés</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
-        <source>Number of abandonned calls</source>
+        <source>Number of abandoned calls</source>
         <translation>Nombre d&apos;appels abandonnés</translation>
     </message>
     <message>
