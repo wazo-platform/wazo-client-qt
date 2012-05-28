@@ -56,6 +56,8 @@ QueuesModel::QueuesModel(QObject *parent)
     m_headers[ANSWERED].tooltip = tr("Number of answered calls");
     m_headers[ABANDONED].label = tr("Abandoned");
     m_headers[ABANDONED].tooltip = tr("Number of abandoned calls");
+    m_headers[MEAN_WAIT].label = tr("Mean Waiting Time");
+    m_headers[MEAN_WAIT].tooltip = tr("Mean waiting time before getting an agent");
     m_headers[TOTAL_MAX_WAIT].label = tr("Max Waiting Time");
     m_headers[TOTAL_MAX_WAIT].tooltip = tr("Maximum waiting time before getting an agent");
     m_headers[EFFICIENCY].label = tr("Efficiency");
@@ -292,6 +294,8 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
                 return queue_data.stats.value("Xivo-Link", not_available);
             case ABANDONED :
                 return queue_data.stats.value("Xivo-Lost", not_available);
+            case MEAN_WAIT :
+                return not_available;
             case TOTAL_MAX_WAIT :
                 return formatTime(queue_data.stats.value("Xivo-Holdtime-max", not_available));
             case EFFICIENCY :
