@@ -295,7 +295,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
             case ABANDONED :
                 return queue_data.stats.value("Xivo-Lost", not_available);
             case MEAN_WAIT :
-                return not_available;
+                return formatTime(queue_data.stats.value("Xivo-Holdtime-avg", not_available));
             case TOTAL_MAX_WAIT :
                 return formatTime(queue_data.stats.value("Xivo-Holdtime-max", not_available));
             case EFFICIENCY :
