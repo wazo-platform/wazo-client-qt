@@ -4,56 +4,56 @@
 <context>
     <name>IdentityAgent</name>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="141"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="142"/>
         <source>Connected to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="144"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="145"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="157"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="158"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="159"/>
         <source>Paused</source>
         <translation type="unfinished">一時停止中</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="162"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="163"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="164"/>
         <source>Unpaused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="170"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="171"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="172"/>
         <source>Partially paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="175"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="176"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="177"/>
         <source>Not relevant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="192"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="193"/>
         <source>Logout</source>
         <translation type="unfinished">ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="196"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="197"/>
         <source>Login</source>
         <translation type="unfinished">ログイン</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="205"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="206"/>
         <source>Unpause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="210"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="211"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>

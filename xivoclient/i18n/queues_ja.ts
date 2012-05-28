@@ -95,36 +95,46 @@
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
-        <source>Max Waiting Time</source>
+        <source>Mean Waiting Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
-        <source>Maximum waiting time before getting an agent</source>
+        <source>Mean waiting time before getting an agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
-        <source>Efficiency</source>
+        <source>Max Waiting Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
-        <source>Ratio (Answered) / (Received)</source>
+        <source>Maximum waiting time before getting an agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
-        <source>QOS</source>
+        <source>Efficiency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
+        <source>Ratio (Answered) / (Received)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
+        <source>QOS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="272"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="274"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>

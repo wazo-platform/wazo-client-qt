@@ -948,82 +948,82 @@ Reason given : %3.</translation>
         <translation>Disconnected</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1043"/>
+        <location filename="../src/mainwidget.cpp" line="1036"/>
         <source>Fetch the last one</source>
         <translation>Fetch the last one</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1050"/>
+        <location filename="../src/mainwidget.cpp" line="1043"/>
         <source>About XiVO Client</source>
         <translation>About XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1052"/>
+        <location filename="../src/mainwidget.cpp" line="1045"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1057"/>
+        <location filename="../src/mainwidget.cpp" line="1050"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Version Information&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1058"/>
+        <location filename="../src/mainwidget.cpp" line="1051"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1059"/>
+        <location filename="../src/mainwidget.cpp" line="1052"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1062"/>
+        <location filename="../src/mainwidget.cpp" line="1055"/>
         <source>(Application Built on : %1)</source>
         <translation>(Application Built on : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1063"/>
+        <location filename="../src/mainwidget.cpp" line="1056"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Application Launched on : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1064"/>
+        <location filename="../src/mainwidget.cpp" line="1057"/>
         <source>(Config File Location : %1)</source>
         <translation>(Config File Location : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1069"/>
+        <location filename="../src/mainwidget.cpp" line="1060"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1070"/>
+        <location filename="../src/mainwidget.cpp" line="1061"/>
         <source>Phone : </source>
         <translation>Phone : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1071"/>
+        <location filename="../src/mainwidget.cpp" line="1062"/>
         <source>Authors : </source>
         <translation>Authors : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1071"/>
+        <location filename="../src/mainwidget.cpp" line="1062"/>
         <source>Avencall Development Team</source>
         <translation>Avencall Development Team</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1073"/>
+        <location filename="../src/mainwidget.cpp" line="1064"/>
         <source>License : </source>
         <translation>License : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1075"/>
+        <location filename="../src/mainwidget.cpp" line="1066"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>with a special exception allowing you to link it with OpenSSL, under some conditions.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1081"/>
+        <location filename="../src/mainwidget.cpp" line="1072"/>
         <source>Credits</source>
         <translation>Credits</translation>
     </message>

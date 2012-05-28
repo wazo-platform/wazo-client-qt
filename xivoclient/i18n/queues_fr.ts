@@ -97,36 +97,46 @@ attente</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
+        <source>Mean Waiting Time</source>
+        <translation>Tps Moy Attente </translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
+        <source>Mean waiting time before getting an agent</source>
+        <translation>Temps moyen d&apos;attente avant d&apos;être en communication avec un agent</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
         <source>Max Waiting Time</source>
         <translation>Tps Attente Max</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
         <source>Maximum waiting time before getting an agent</source>
         <translation>Plus grand temps d&apos;attente avant d&apos;obtenir un agent</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
         <source>Efficiency</source>
         <translation>Efficacité</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Ratio (Answered) / (Received)</source>
         <translation>Ratio répondus / reçus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>QOS</source>
         <translation>QOS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
         <translation>Ratio (Appels répondus en moins de X sec) / (Nombre d&apos;appels reçus)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="272"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="274"/>
         <source>N/A</source>
         <translation>N/D</translation>
     </message>

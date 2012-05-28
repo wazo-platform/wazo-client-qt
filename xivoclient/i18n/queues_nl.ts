@@ -95,36 +95,46 @@
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
+        <source>Mean Waiting Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
+        <source>Mean waiting time before getting an agent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
         <source>Max Waiting Time</source>
         <translation>Maximum wachttijd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
         <source>Maximum waiting time before getting an agent</source>
         <translation>Maximum wachttijd om een agent te bereiken</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
         <source>Efficiency</source>
         <translation>Doeltreffendheid</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Ratio (Answered) / (Received)</source>
         <translation>Verhouding (Beantwoord) / (Ontvangen)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>QOS</source>
         <translation>QOS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
         <translation>Verhouding (Oproepen beantwoord in minder dan X seconden / Aantal beantwoorde oproepen)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="272"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="274"/>
         <source>N/A</source>
         <translation>N.v.t.</translation>
     </message>
