@@ -1033,13 +1033,6 @@ void MainWidget::about()
 {
     QString applicationVersion(XC_VERSION);
     QString fetchlastone = QString("<a href=http://downloads.xivo.fr/xivo_cti_client/") +
-#if defined(Q_WS_X11)
-        "linux"
-#elif defined(Q_WS_WIN)
-        "win32"
-#elif defined(Q_WS_MAC)
-        "macos"
-#endif
         ">" + tr("Fetch the last one") + "</a>";
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     QString gitdate_qs(__git_date__);
@@ -1062,11 +1055,9 @@ void MainWidget::about()
                        tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
                        tr("(Application Launched on : %1)").arg(m_launchDateTime.toString()) + "<br>" +
                        tr("(Config File Location : %1)").arg(b_engine->getSettings()->fileName()) + "<hr>" +
-                       "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Avencall</b></a>"
+                       "Copyright (C) 2007-2012 <a href=http://www.avencall.com><b>Avencall</b></a>"
                        "<br>"
-                       "10 bis rue Lucien Voilin - 92800 Puteaux - FRANCE"
-                       "<p>"
-                       "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
+                       "<b>" + tr("E-mail : ") + "</b><a href=mailto:contact@avencall.com>contact@avencall.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
                        "<b>" + tr("Authors : ") + "</b>" + tr("Avencall Development Team") +
                        "<hr>"

@@ -128,6 +128,7 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     }
 
     int njoined = joined.size();
+    qDebug() << Q_FUNC_INFO << joined;
     setPausedColors(njoined, njoined - unpaused);
 }
 
