@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="48"/>
         <source>Members of a Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Los miembros de una cola</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="52"/>

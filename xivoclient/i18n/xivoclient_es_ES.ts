@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="290"/>
         <source>Queues</source>
-        <translation type="unfinished">Colas de espera</translation>
+        <translation>Colas</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="297"/>
@@ -272,12 +272,12 @@
     <message>
         <location filename="../src/configwidget.cpp" line="345"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="347"/>
         <source>Keep Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantener la contraseña</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="351"/>
@@ -313,7 +313,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="369"/>
         <source>Phone Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="373"/>
@@ -562,7 +562,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
         <source>Phone Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
@@ -608,7 +608,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
         <source>Input here the phone number to dial</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrada de aquí el número para marcar</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
@@ -795,22 +795,22 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="169"/>
         <source>Login</source>
-        <translation type="unfinished">iniciar sesión</translation>
+        <translation type="unfinished">Iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="171"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="173"/>
         <source>Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Teléfono</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="189"/>
         <source>Keep Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantener la contraseña</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="193"/>
@@ -995,7 +995,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="1061"/>
         <source>Phone : </source>
-        <translation type="unfinished"></translation>
+        <translation>Teléfono :</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1062"/>
@@ -1071,7 +1071,7 @@ Reason given : %3.</source>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="110"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="281"/>
         <source>Phone Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="111"/>
@@ -1116,7 +1116,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="283"/>
         <source>Number</source>
-        <translation type="unfinished">número</translation>
+        <translation type="unfinished">Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="289"/>

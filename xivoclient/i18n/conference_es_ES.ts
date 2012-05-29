@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="52"/>
         <source>Number</source>
-        <translation>número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="53"/>
@@ -26,7 +26,7 @@
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="55"/>
         <source>Member count</source>
-        <translation type="unfinished"></translation>
+        <translation>Los miembros cuentan</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="56"/>
@@ -108,7 +108,7 @@
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="55"/>
         <source>Number</source>
-        <translation>número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="56"/>

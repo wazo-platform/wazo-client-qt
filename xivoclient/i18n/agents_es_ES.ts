@@ -37,7 +37,7 @@
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>
         <source>Joined
 queues</source>
-        <translation>colas
+        <translation>Colas
 unidas</translation>
     </message>
     <message>
@@ -73,12 +73,12 @@ Contexto: %2</translation>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="276"/>
         <source>Unknown %1</source>
-        <translation>desconocido %1</translation>
+        <translation>Desconocido %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="308"/>
         <source>Joined queues : %1</source>
-        <translation>colas unidas: %1</translation>
+        <translation>Colas unidas: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="320"/>
@@ -94,7 +94,7 @@ Contexto: %2</translation>
         <location filename="../src/xlets/agents/agents.cpp" line="328"/>
         <location filename="../src/xlets/agents/agents.cpp" line="333"/>
         <source>Paused queues : %1</source>
-        <translation>colas en pausa: %1</translation>
+        <translation>Colas en pausa: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="330"/>

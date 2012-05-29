@@ -127,7 +127,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="56"/>
         <source>Phone Numbers : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Los números de teléfono : %1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="60"/>
@@ -138,7 +138,8 @@ Are you sure ?</source>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="117"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario: %1
+Los números de teléfono : %2</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="125"/>
@@ -224,7 +225,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xletlib/externalphonedialog.cpp" line="50"/>
         <source>External phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de teléfono externo</translation>
     </message>
     <message>
         <location filename="../src/xletlib/externalphonedialog.cpp" line="53"/>
@@ -234,7 +235,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xletlib/externalphonedialog.cpp" line="55"/>
         <source>Phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de teléfono</translation>
     </message>
 </context>
 <context>

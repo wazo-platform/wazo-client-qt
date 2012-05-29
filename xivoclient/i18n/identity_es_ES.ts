@@ -40,12 +40,12 @@
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="193"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cierre de sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="197"/>
         <source>Login</source>
-        <translation type="unfinished">iniciar sesión</translation>
+        <translation type="unfinished">Iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="206"/>
@@ -94,12 +94,12 @@
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="219"/>
         <source>Phone %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Teléfono %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="221"/>
         <source>Phone &lt;EMPTY&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Teléfono &lt;EMPTY&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="223"/>

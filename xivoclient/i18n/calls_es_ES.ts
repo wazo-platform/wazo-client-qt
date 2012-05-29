@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
-        <translation>sala de conferencias número %1</translation>
+        <translation>Sala de conferencias número %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>

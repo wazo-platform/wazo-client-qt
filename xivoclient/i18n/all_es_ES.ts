@@ -4,7 +4,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="837"/>
         <source>Received Services Data</source>
-        <translation type="unfinished"/>
+        <translation>Recibieron servicios de datos</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="842"/>
@@ -29,7 +29,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1265"/>
         <source>You entered a wrong login / password.</source>
-        <translation type="unfinished"/>
+        <translation>Que ha introducido un nombre de usuario incorrecta / contraseña</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1268"/>
@@ -209,12 +209,12 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="48"/>
         <source>Dynamic membership</source>
-        <translation type="unfinished"/>
+        <translation>Miembros dinámico</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="53"/>
         <source>Static/RT membership</source>
-        <translation type="unfinished"/>
+        <translation>Miembros estático</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="65"/>
@@ -274,22 +274,23 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="42"/>
         <source>Phone number of the queue</source>
-        <translation type="unfinished"/>
+        <translation>Número de teléfono de la cola</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="43"/>
         <source>Queues</source>
-        <translation type="unfinished"/>
+        <translation>Colas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="44"/>
         <source>Queue names</source>
-        <translation type="unfinished"/>
+        <translation>Nombres de las colas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
         <source>Waiting calls</source>
-        <translation>Ilamadas en espera</translation>
+        <translation>Ilamadas 
+en espera</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
@@ -304,12 +305,14 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
         <source>Estimated Waiting Time</source>
-        <translation>Tiempo Estimado de Espera</translation>
+        <translation>Tiempo Estimado 
+de Espera</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Longest wait</source>
-        <translation>Espera más larga</translation>
+        <translation>Espera 
+más larga</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
@@ -324,52 +327,53 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
         <source>Number of logged agents</source>
-        <translation type="unfinished"/>
+        <translation>Número de agente se conectó</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Available</source>
-        <translation type="unfinished"/>
+        <translation>Disponible</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
         <source>Number of agents ready to take a call</source>
-        <translation type="unfinished"/>
+        <translation>Número de agentes dispuestos para atender una llamada</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Received</source>
-        <translation type="unfinished"/>
+        <translation>Recibidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Number of received calls</source>
-        <translation type="unfinished"/>
+        <translation>Número de llamadas recibidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Answered</source>
-        <translation type="unfinished"/>
+        <translation>Respuesta</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
         <source>Number of answered calls</source>
-        <translation type="unfinished"/>
+        <translation>Número de llamadas atendidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
         <source>Abandoned</source>
-        <translation type="unfinished"/>
+        <translation>Abandonadas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
         <source>Number of abandoned calls</source>
-        <translation type="unfinished"/>
+        <translation>Número de llamadas abandonadas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
         <source>Mean Waiting Time</source>
-        <translation>Tiempo Medio de Espera</translation>
+        <translation>Tiempo Medio 
+de Espera</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
@@ -379,7 +383,8 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
         <source>Max Waiting Time</source>
-        <translation>tiempo máximo de espera</translation>
+        <translation>Tiempo máximo 
+de espera</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
@@ -389,22 +394,22 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>Efficiency</source>
-        <translation type="unfinished"/>
+        <translation>Eficiencia</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
         <source>Ratio (Answered) / (Received)</source>
-        <translation type="unfinished"/>
+        <translation>Ratio (contestó / recibidos)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="67"/>
         <source>QOS</source>
-        <translation type="unfinished"/>
+        <translation>CDS</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="68"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
-        <translation type="unfinished"/>
+        <translation>Ratio (llamadas contestadas en menos de X segundos / número de llamadas atendidas)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="276"/>
@@ -417,7 +422,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="57"/>
         <source>Queues&apos; List</source>
-        <translation type="unfinished"/>
+        <translation>Lista de las colas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="129"/>
@@ -446,12 +451,12 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="192"/>
         <source>Queue</source>
-        <translation type="unfinished"/>
+        <translation>Cola</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="193"/>
         <source>Qos - X (s)</source>
-        <translation type="unfinished"/>
+        <translation>CDS - X(s)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="194"/>
@@ -474,7 +479,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queueentrydetails/queueentrydetails.cpp" line="47"/>
         <source>Calls of a Queue</source>
-        <translation type="unfinished"/>
+        <translation>Las llamadas de una cola</translation>
     </message>
     <message>
         <location filename="../src/xlets/queueentrydetails/queueentrydetails.cpp" line="133"/>
@@ -575,12 +580,12 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="219"/>
         <source>Phone %1</source>
-        <translation type="unfinished"/>
+        <translation>Teléfono %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="221"/>
         <source>Phone &lt;EMPTY&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Teléfono &lt;EMPTY&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="223"/>
@@ -720,7 +725,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="48"/>
         <source>Members of a Queue</source>
-        <translation type="unfinished"/>
+        <translation>Los miembros de una cola</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="52"/>
@@ -806,7 +811,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
-        <translation>sala de conferencias número %1</translation>
+        <translation>Sala de conferencias número %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
@@ -842,7 +847,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="51"/>
         <source>Joined</source>
-        <translation>unido</translation>
+        <translation>Unido</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
@@ -853,7 +858,7 @@ Context: %2</source>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
         <source>Login</source>
-        <translation>iniciar sesión</translation>
+        <translation>Iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
@@ -873,7 +878,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Logout</source>
-        <translation>cierre de sesión</translation>
+        <translation>Cierre de sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="278"/>
@@ -883,7 +888,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
         <source>Context: %1</source>
-        <translation>contexto: %1</translation>
+        <translation>Contexto: %1</translation>
     </message>
 </context>
 <context>
@@ -1148,17 +1153,17 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="388"/>
         <source>%1 hr %2 min %3 sec</source>
-        <translation>%1 hr %2 min %3 sec</translation>
+        <translation>%1 hr %2 min %3 seg</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="390"/>
         <source>%1 min %2 sec</source>
-        <translation>%1 min %2 sec</translation>
+        <translation>%1 min %2 seg</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="392"/>
         <source>%1 sec</source>
-        <translation>%1 sec</translation>
+        <translation>%1 seg</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="407"/>
@@ -1168,7 +1173,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="409"/>
         <source>New Name</source>
-        <translation>nuevo nombre</translation>
+        <translation>Nuevo nombre</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="511"/>
@@ -1312,7 +1317,7 @@ Are you sure ?</source>
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>
         <source>Joined
 queues</source>
-        <translation>colas
+        <translation>Colas
 unidas</translation>
     </message>
     <message>
@@ -1348,12 +1353,12 @@ Contexto: %2</translation>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="276"/>
         <source>Unknown %1</source>
-        <translation>desconocido %1</translation>
+        <translation>Desconocido %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="308"/>
         <source>Joined queues : %1</source>
-        <translation>colas unidas: %1</translation>
+        <translation>Colas unidas: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="320"/>
@@ -1369,7 +1374,7 @@ Contexto: %2</translation>
         <location filename="../src/xlets/agents/agents.cpp" line="328"/>
         <location filename="../src/xlets/agents/agents.cpp" line="333"/>
         <source>Paused queues : %1</source>
-        <translation>colas en pausa: %1</translation>
+        <translation>Colas en pausa: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="330"/>
@@ -1603,7 +1608,7 @@ Contexto: %2</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="290"/>
         <source>Queues</source>
-        <translation type="unfinished"/>
+        <translation>Colas</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="297"/>
@@ -1648,12 +1653,12 @@ Contexto: %2</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="345"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="347"/>
         <source>Keep Password</source>
-        <translation type="unfinished"/>
+        <translation>Mantener la contraseña</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="351"/>
@@ -1689,7 +1694,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="369"/>
         <source>Phone Number</source>
-        <translation type="unfinished"/>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="373"/>
@@ -1938,7 +1943,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
         <source>Phone Number</source>
-        <translation type="unfinished"/>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
@@ -1984,7 +1989,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
         <source>Input here the phone number to dial</source>
-        <translation type="unfinished"/>
+        <translation>Entrada de aquí el número para marcar</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
@@ -2176,17 +2181,17 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="171"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="173"/>
         <source>Phone</source>
-        <translation type="unfinished"/>
+        <translation>Teléfono</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="189"/>
         <source>Keep Password</source>
-        <translation type="unfinished"/>
+        <translation>Mantener la contraseña</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="193"/>
@@ -2371,7 +2376,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="1061"/>
         <source>Phone : </source>
-        <translation type="unfinished"/>
+        <translation>Teléfono :</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1062"/>
@@ -2447,7 +2452,7 @@ Reason given : %3.</source>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="110"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="281"/>
         <source>Phone Number</source>
-        <translation type="unfinished"/>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="111"/>
@@ -2673,7 +2678,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="56"/>
         <source>Phone Numbers : %1</source>
-        <translation type="unfinished"/>
+        <translation>Los números de teléfono : %1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="60"/>
@@ -2684,7 +2689,8 @@ Are you sure ?</source>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="117"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario: %1
+Los números de teléfono : %2</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="125"/>
@@ -2770,7 +2776,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xletlib/externalphonedialog.cpp" line="50"/>
         <source>External phone number</source>
-        <translation type="unfinished"/>
+        <translation>Número de teléfono externo</translation>
     </message>
     <message>
         <location filename="../src/xletlib/externalphonedialog.cpp" line="53"/>
@@ -2780,7 +2786,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xletlib/externalphonedialog.cpp" line="55"/>
         <source>Phone number</source>
-        <translation type="unfinished"/>
+        <translation>Número de teléfono</translation>
     </message>
 </context>
 <context>
@@ -2958,7 +2964,7 @@ Busy lines: %6</source>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="243"/>
         <source>Received calls</source>
-        <translation type="unfinished"/>
+        <translation>Las llamadas recibidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="244"/>
@@ -3009,7 +3015,7 @@ Busy lines: %6</source>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="52"/>
         <source>Number</source>
-        <translation>número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="53"/>
@@ -3024,7 +3030,7 @@ Busy lines: %6</source>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="55"/>
         <source>Member count</source>
-        <translation type="unfinished"/>
+        <translation>Los miembros cuentan</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="56"/>
@@ -3106,7 +3112,7 @@ Busy lines: %6</source>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="55"/>
         <source>Number</source>
-        <translation>número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="56"/>

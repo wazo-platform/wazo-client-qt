@@ -64,17 +64,17 @@
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="388"/>
         <source>%1 hr %2 min %3 sec</source>
-        <translation>%1 hr %2 min %3 sec</translation>
+        <translation>%1 hr %2 min %3 seg</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="390"/>
         <source>%1 min %2 sec</source>
-        <translation>%1 min %2 sec</translation>
+        <translation>%1 min %2 seg</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="392"/>
         <source>%1 sec</source>
-        <translation>%1 sec</translation>
+        <translation>%1 seg</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="407"/>
@@ -84,7 +84,7 @@
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="409"/>
         <source>New Name</source>
-        <translation>nuevo nombre</translation>
+        <translation>Nuevo nombre</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="511"/>

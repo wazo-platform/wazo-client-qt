@@ -6,7 +6,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="837"/>
         <source>Received Services Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Recibieron servicios de datos</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="842"/>
@@ -31,7 +31,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1265"/>
         <source>You entered a wrong login / password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Que ha introducido un nombre de usuario incorrecta / contraseña</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1268"/>
@@ -211,12 +211,12 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="48"/>
         <source>Dynamic membership</source>
-        <translation type="unfinished"></translation>
+        <translation>Miembros dinámico</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="53"/>
         <source>Static/RT membership</source>
-        <translation type="unfinished"></translation>
+        <translation>Miembros estático</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="65"/>

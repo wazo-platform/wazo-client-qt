@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="51"/>
         <source>Joined</source>
-        <translation>unido</translation>
+        <translation>Unido</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
@@ -27,7 +27,7 @@
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
         <source>Login</source>
-        <translation>iniciar sesión</translation>
+        <translation>Iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Logout</source>
-        <translation>cierre de sesión</translation>
+        <translation>Cierre de sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="278"/>
@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
         <source>Context: %1</source>
-        <translation>contexto: %1</translation>
+        <translation>Contexto: %1</translation>
     </message>
 </context>
 </TS>
