@@ -183,22 +183,14 @@ void XletAgentDetails::updatePanel()
                        << tr("on <b>%1</b>").arg(agentinfo->ipbxid())
                        << QString("(%1)").arg(agentinfo->context());
     QString lstatus = agentinfo->status();
-    QString phonenum = b_engine->getConfig()["agentphonenumber"].toString();
 
     if (lstatus == "AGENT_LOGGEDOFF") {
-        agent_descriptions << tr("logged off <b>%1</b>").arg(phonenum);
+        agent_descriptions << tr("logged off");
         m_action["agentlogin"]->setProperty("function", "agentlogin");
         m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
         m_actionlegends["agentlogin"]->setText(tr("Login"));
-    } else if (lstatus == "AGENT_IDLE") {
-        agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
-        m_action["agentlogin"]->setProperty("function", "agentlogout");
-        m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
-        m_actionlegends["agentlogin"]->setText(tr("Logout"));
-    } else if (lstatus == "AGENT_ONCALL") {
-        // QString talkingto = agentstats.toMap().value("talkingto").toString();
-        // agent_status = tr("logged (busy with %1) on phone number <b>%2</b>").arg(talkingto).arg(phonenum);
-        agent_descriptions << tr("logged on phone number <b>%1</b>").arg(phonenum);
+    } else if (lstatus == "AGENT_IDLE" or lstatus == "AGENT_ONCALL") {
+        agent_descriptions << tr("logged in");
         m_action["agentlogin"]->setProperty("function", "agentlogout");
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
