@@ -35,106 +35,116 @@
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
+        <source>EWT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
+        <source>Estimated Waiting Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Longest wait</source>
         <translation>Leghosszabb várakozás</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
         <source>Longest waiting call</source>
         <translation>Leghosszabban várakozó hívás</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
         <source>Logged</source>
         <translation type="unfinished">Rögzített</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
         <source>Number of logged agents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
         <source>Number of agents ready to take a call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Received</source>
         <translation>Fogadva</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Number of received calls</source>
         <translation>Fogadott hívások száma</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Answered</source>
         <translation>Felvéve</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
         <source>Number of answered calls</source>
         <translation>Felvett hívások száma</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
         <source>Abandoned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
         <source>Number of abandoned calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
         <source>Mean Waiting Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
         <source>Mean waiting time before getting an agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
         <source>Max Waiting Time</source>
         <translation>Maximum várakozási idő</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Maximum waiting time before getting an agent</source>
         <translation>Maximum várakozási idő ügynökhoz kapcsolásra</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>Efficiency</source>
         <translation>Hatásfok</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
         <source>Ratio (Answered) / (Received)</source>
         <translation>Arány (Megválaszolt) / (Fogadott)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="67"/>
         <source>QOS</source>
         <translation>QoS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="68"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
         <translation>Arány ( Megválaszolt hívások kevesebb mint X mp/Megválaszolt hívások számaÖ</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="274"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="276"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>

@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="52"/>
         <source>Agent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Agente</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="53"/>
@@ -49,7 +49,8 @@ Call</source>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="238"/>
         <source>Server: %1
 Context: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Servidor: %1
+Contexto: %2</translation>
     </message>
 </context>
 </TS>

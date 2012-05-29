@@ -32,7 +32,7 @@ discrète</translation>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="55"/>
         <source>Logged</source>
-        <translation>Loggé</translation>
+        <translation>Logué</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>
@@ -64,12 +64,12 @@ Contexte: %2</translation>
         <location filename="../src/xlets/agents/agents.cpp" line="262"/>
         <location filename="../src/xlets/agents/agents.cpp" line="268"/>
         <source>Agent logged on %1</source>
-        <translation>Agent loggé sur %1</translation>
+        <translation>Agent logué sur %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="272"/>
         <source>Agent NOT logged</source>
-        <translation>Agent NON loggé</translation>
+        <translation>Agent NON logué</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="276"/>

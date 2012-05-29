@@ -299,12 +299,12 @@ que celles ci-dessous) à la connexion</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="361"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (non loggé)</translation>
+        <translation>Agent (non logué)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="362"/>
         <source>Agent (logged)</source>
-        <translation>Agent (loggé)</translation>
+        <translation>Agent (logué)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="364"/>
@@ -825,12 +825,12 @@ Raison donnée : %3.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="194"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (non loggé)</translation>
+        <translation>Agent (non logué)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="195"/>
         <source>Agent (logged)</source>
-        <translation>Agent (loggé)</translation>
+        <translation>Agent (logué)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="346"/>

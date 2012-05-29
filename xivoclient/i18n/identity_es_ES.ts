@@ -17,7 +17,7 @@
         <location filename="../src/xlets/identity/identityagent.cpp" line="158"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="159"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">En pausa</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="163"/>
@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="197"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="206"/>

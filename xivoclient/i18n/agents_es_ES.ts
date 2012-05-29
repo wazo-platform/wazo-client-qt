@@ -6,76 +6,79 @@
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="47"/>
         <source>Agents&apos; List (plain)</source>
-        <translation type="unfinished"></translation>
+        <translation>Listado de agentes</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="51"/>
         <source>Agent</source>
-        <translation type="unfinished"></translation>
+        <translation>Agente</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="52"/>
         <source>Listen</source>
-        <translation type="unfinished"></translation>
+        <translation>Escuchar</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="53"/>
         <source>On Line</source>
-        <translation type="unfinished"></translation>
+        <translation>En linea</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="54"/>
         <source>Presence</source>
-        <translation type="unfinished"></translation>
+        <translation>Presencia</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="55"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation>Sesión</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>
         <source>Joined
 queues</source>
-        <translation type="unfinished"></translation>
+        <translation>colas
+unidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="57"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>En pausa</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="58"/>
         <source>Paused
 queues</source>
-        <translation type="unfinished"></translation>
+        <translation>Cola de espera
+en pausa</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="164"/>
         <source>Server: %1
 Context: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Servidor: %1
+Contexto: %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="262"/>
         <location filename="../src/xlets/agents/agents.cpp" line="268"/>
         <source>Agent logged on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Agente conectado %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="272"/>
         <source>Agent NOT logged</source>
-        <translation type="unfinished"></translation>
+        <translation>Agente no registrado</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="276"/>
         <source>Unknown %1</source>
-        <translation type="unfinished"></translation>
+        <translation>desconocido %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="308"/>
         <source>Joined queues : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>colas unidas: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="320"/>
@@ -91,12 +94,12 @@ Context: %2</source>
         <location filename="../src/xlets/agents/agents.cpp" line="328"/>
         <location filename="../src/xlets/agents/agents.cpp" line="333"/>
         <source>Paused queues : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>colas en pausa: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="330"/>
         <source>Partial</source>
-        <translation type="unfinished"></translation>
+        <translation>Parcial</translation>
     </message>
 </context>
 </TS>

@@ -197,27 +197,27 @@
     <message>
         <location filename="../src/configwidget.cpp" line="257"/>
         <source>Queue thresholds (waiting calls)</source>
-        <translation type="unfinished"></translation>
+        <translation>Umbrales de cola (llamada en espera)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="263"/>
         <source>Thresholds to change the color of the queue, in number of waiting calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Los umbrales para cambiar el color de la cola, en número de llamadas en espera</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="268"/>
         <source>Display queue&apos;s longest wait</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar espera más larga la cola</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="274"/>
         <source>Queue thresholds (longest wait)</source>
-        <translation type="unfinished"></translation>
+        <translation>Umbrales de cola (Espera más larga)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="281"/>
         <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
-        <translation type="unfinished"></translation>
+        <translation>Los umbrales para cambiar el color de la cola, en segundo, espera más larga</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="286"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="290"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Colas de espera</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="297"/>
@@ -795,7 +795,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="169"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="171"/>

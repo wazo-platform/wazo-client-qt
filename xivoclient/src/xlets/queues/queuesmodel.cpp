@@ -44,6 +44,8 @@ QueuesModel::QueuesModel(QObject *parent)
     m_headers[NAME].tooltip = tr("Queue names");
     m_headers[WAITING_CALLS].label = tr("Waiting calls");
     m_headers[WAITING_CALLS].tooltip = tr("Number of waiting calls");
+    m_headers[EWT].label = tr("EWT");
+    m_headers[EWT].tooltip = tr("Estimated Waiting Time");
     m_headers[CURRENT_MAX_WAIT].label = tr("Longest wait");
     m_headers[CURRENT_MAX_WAIT].tooltip = tr("Longest waiting call");
     m_headers[LOGGEDAGENTS].label = tr("Logged");
@@ -282,6 +284,8 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
                 return queueinfo->queueDisplayName();
             case WAITING_CALLS :
                 return QString::number(queue_data.waiting_calls);
+            case EWT :
+                return formatTime(queue_data.stats.value("Xivo-EWT", not_available));
             case CURRENT_MAX_WAIT :
                 return formatTime(queue_data.stats.value("Xivo-LongestWaitTime", not_available));
             case LOGGEDAGENTS:

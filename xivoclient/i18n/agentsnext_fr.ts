@@ -114,7 +114,7 @@
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="549"/>
         <source>Logout</source>
-        <translation>Délogger</translation>
+        <translation>Déloguer</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="557"/>

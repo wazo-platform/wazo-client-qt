@@ -6,22 +6,22 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="85"/>
         <source>&amp;Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Colgar</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="86"/>
         <source>Hang up/Close the channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Colgar</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="90"/>
         <source>&amp;Transfer to number</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Transferir al número</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="91"/>
         <source>Transfer the channel to the dialed number</source>
-        <translation type="unfinished"></translation>
+        <translation>Transferir el canal con el número marcado</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="95"/>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
-        <translation type="unfinished"></translation>
+        <translation>sala de conferencias número %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/xlets/calls/calls.cpp" line="48"/>
         <source>Calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Las llamadas</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/calls.cpp" line="180"/>

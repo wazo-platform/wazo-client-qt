@@ -63,7 +63,7 @@
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="494"/>
         <source>&amp;Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Colgar</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="518"/>

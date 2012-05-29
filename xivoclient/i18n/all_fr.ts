@@ -240,7 +240,7 @@ Merci de mettre à jour votre serveur.</translation>
         <location filename="src/storage/queue_agent_status.cpp" line="70"/>
         <location filename="src/storage/queue_agent_status.cpp" line="74"/>
         <source>Logged in</source>
-        <translation>Loggé</translation>
+        <translation>Logué</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="73"/>
@@ -255,7 +255,7 @@ Merci de mettre à jour votre serveur.</translation>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="82"/>
         <source>Logged out</source>
-        <translation>Dé-loggé</translation>
+        <translation>Dé-logué</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="90"/>
@@ -308,107 +308,117 @@ attente</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
+        <source>EWT</source>
+        <translation>TAE</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
+        <source>Estimated Waiting Time</source>
+        <translation>Temps d&apos;attente estimée</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Longest wait</source>
         <translation>Plus longue
 attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
         <source>Longest waiting call</source>
         <translation>Plus longue attente des appels en cours</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
         <source>Logged</source>
         <translation>Logués</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
         <source>Number of logged agents</source>
         <translation>Nombre d&apos;agents logués</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Available</source>
         <translation>Disponibles</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
         <source>Number of agents ready to take a call</source>
         <translation>Nombre d&apos;agents prêts à recevoir un appel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Received</source>
         <translation>Reçus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Number of received calls</source>
         <translation>Nombre d&apos;appels reçus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Answered</source>
         <translation>Répondus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
         <source>Number of answered calls</source>
         <translation>Nombre d&apos;appels répondus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
         <source>Abandoned</source>
         <translation>Abandonnés</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
         <source>Number of abandoned calls</source>
         <translation>Nombre d&apos;appels abandonnés</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
         <source>Mean Waiting Time</source>
         <translation>Tps Moy Attente </translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
         <source>Mean waiting time before getting an agent</source>
         <translation>Temps moyen d&apos;attente avant d&apos;être en communication avec un agent</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
         <source>Max Waiting Time</source>
         <translation>Tps Attente Max</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Maximum waiting time before getting an agent</source>
         <translation>Plus grand temps d&apos;attente avant d&apos;obtenir un agent</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>Efficiency</source>
         <translation>Efficacité</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
         <source>Ratio (Answered) / (Received)</source>
         <translation>Ratio répondus / reçus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="67"/>
         <source>QOS</source>
         <translation>QOS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="68"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
         <translation>Ratio (Appels répondus en moins de X sec) / (Nombre d&apos;appels reçus)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="274"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="276"/>
         <source>N/A</source>
         <translation>N/D</translation>
     </message>
@@ -860,9 +870,9 @@ Contexte: %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="192"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
         <source>Login</source>
-        <translation>Logger</translation>
+        <translation>Loguer</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
@@ -870,29 +880,27 @@ Contexte: %2</translation>
         <translation>sur &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="189"/>
-        <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>déloggé de &lt;b&gt;%1&lt;/b&gt;</translation>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
+        <source>logged off</source>
+        <translation>non logué</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="194"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>
-        <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>loggé sur le téléphone &lt;b&gt;%1&lt;/b&gt;</translation>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
+        <source>logged in</source>
+        <translation>logué</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="197"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="204"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Logout</source>
-        <translation>Délogger</translation>
+        <translation>Déloguer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="286"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="278"/>
         <source>Server: %1</source>
         <translation>Serveur: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="287"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
         <source>Context: %1</source>
         <translation>Contexte: %1</translation>
     </message>
@@ -1209,7 +1217,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="549"/>
         <source>Logout</source>
-        <translation>Délogger</translation>
+        <translation>Déloguer</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="557"/>
@@ -1318,7 +1326,7 @@ discrète</translation>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="55"/>
         <source>Logged</source>
-        <translation>Loggé</translation>
+        <translation>Logué</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>
@@ -1350,12 +1358,12 @@ Contexte: %2</translation>
         <location filename="../src/xlets/agents/agents.cpp" line="262"/>
         <location filename="../src/xlets/agents/agents.cpp" line="268"/>
         <source>Agent logged on %1</source>
-        <translation>Agent loggé sur %1</translation>
+        <translation>Agent logué sur %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="272"/>
         <source>Agent NOT logged</source>
-        <translation>Agent NON loggé</translation>
+        <translation>Agent NON logué</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="276"/>
@@ -1687,12 +1695,12 @@ que celles ci-dessous) à la connexion</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="361"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (non loggé)</translation>
+        <translation>Agent (non logué)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="362"/>
         <source>Agent (logged)</source>
-        <translation>Agent (loggé)</translation>
+        <translation>Agent (logué)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="364"/>
@@ -2213,12 +2221,12 @@ Raison donnée : %3.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="194"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (non loggé)</translation>
+        <translation>Agent (non logué)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="195"/>
         <source>Agent (logged)</source>
-        <translation>Agent (loggé)</translation>
+        <translation>Agent (logué)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="346"/>

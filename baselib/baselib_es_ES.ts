@@ -258,7 +258,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="94"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">En pausa</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="98"/>

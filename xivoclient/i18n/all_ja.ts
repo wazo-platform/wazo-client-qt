@@ -298,106 +298,116 @@ Please upgrade it.</source>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
-        <source>Longest wait</source>
+        <source>EWT</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
-        <source>Longest waiting call</source>
+        <source>Estimated Waiting Time</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
-        <source>Logged</source>
+        <source>Longest wait</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
-        <source>Number of logged agents</source>
+        <source>Longest waiting call</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
-        <source>Available</source>
+        <source>Logged</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
-        <source>Number of agents ready to take a call</source>
+        <source>Number of logged agents</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
-        <source>Received</source>
+        <source>Available</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
-        <source>Number of received calls</source>
+        <source>Number of agents ready to take a call</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
-        <source>Answered</source>
+        <source>Received</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
-        <source>Number of answered calls</source>
+        <source>Number of received calls</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
-        <source>Abandoned</source>
+        <source>Answered</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
-        <source>Number of abandoned calls</source>
+        <source>Number of answered calls</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
-        <source>Mean Waiting Time</source>
+        <source>Abandoned</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
-        <source>Mean waiting time before getting an agent</source>
+        <source>Number of abandoned calls</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
-        <source>Max Waiting Time</source>
+        <source>Mean Waiting Time</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="62"/>
-        <source>Maximum waiting time before getting an agent</source>
+        <source>Mean waiting time before getting an agent</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="63"/>
-        <source>Efficiency</source>
+        <source>Max Waiting Time</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
-        <source>Ratio (Answered) / (Received)</source>
+        <source>Maximum waiting time before getting an agent</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
-        <source>QOS</source>
+        <source>Efficiency</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
+        <source>Ratio (Answered) / (Received)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="67"/>
+        <source>QOS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="68"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="274"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="276"/>
         <source>N/A</source>
         <translation type="unfinished"/>
     </message>
@@ -841,7 +851,7 @@ Context: %2</source>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="192"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
         <source>Login</source>
         <translation>ログイン</translation>
     </message>
@@ -851,29 +861,27 @@ Context: %2</source>
         <translation>上の &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="189"/>
-        <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>ログオフ &lt;b&gt;%1&lt;/b&gt;</translation>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
+        <source>logged off</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="194"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>
-        <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>電話番号にログオン &lt;b&gt;%1&lt;/b&gt;</translation>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
+        <source>logged in</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="197"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="204"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Logout</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="286"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="278"/>
         <source>Server: %1</source>
         <translation>サーバ: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="287"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
         <source>Context: %1</source>
         <translation type="unfinished"/>
     </message>
