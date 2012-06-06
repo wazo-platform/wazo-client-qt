@@ -66,8 +66,6 @@ void ConfListModel::timerEvent(QTimerEvent *)
 
 void ConfListModel::updateRoomConfigs(const QVariantMap &configs)
 {
-    qDebug() << Q_FUNC_INFO << configs;
-
     beginResetModel();
 
     m_room_configs = configs;
@@ -186,18 +184,16 @@ ConfListView::ConfListView(QWidget *parent)
 
 void ConfListView::onViewClick(const QModelIndex &model)
 {
-    qDebug() << Q_FUNC_INFO;
-    return;
-    QString roomId = model.sibling(model.row(), ID).data().toString();
+    QString number = model.sibling(model.row(), ID).data().toString();
     QString roomName = model.sibling(model.row(), NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
 
-    if (roomId != "") {
+    if (number != "") {
         if (lastPressed & Qt::LeftButton) {
             b_engine->pasteToDial(roomNumber);
             QTimer *timer = new QTimer(this);
             timer->setSingleShot(true);
-            timer->setProperty("id", roomId);
+            timer->setProperty("number", number);
             connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
             timer->start(10);
         } else {
@@ -206,7 +202,7 @@ void ConfListView::onViewClick(const QModelIndex &model)
             QAction *action = new QAction(
                 tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
 
-            action->setProperty("id", roomId);
+            action->setProperty("number", number);
             connect(action, SIGNAL(triggered(bool)),
                     parentWidget(), SLOT(openConfRoom()));
             connect(action, SIGNAL(triggered(bool)),
@@ -220,8 +216,6 @@ void ConfListView::onViewClick(const QModelIndex &model)
 
 void ConfListView::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << Q_FUNC_INFO;
-    return;
     lastPressed = event->button();
     QTableView::mousePressEvent(event);
 }
@@ -259,7 +253,7 @@ ConfList::ConfList(XletConference *parent)
 
 void ConfList::phoneConfRoom()
 {
-    QString roomNumber = sender()->property("id").toString();
+    QString roomNumber = sender()->property("number").toString();
 
     b_engine->actionDialNumber(roomNumber);
     m_manager->openConfRoom(roomNumber, true);
@@ -267,5 +261,5 @@ void ConfList::phoneConfRoom()
 
 void ConfList::openConfRoom()
 {
-    m_manager->openConfRoom(sender()->property("id").toString());
+    m_manager->openConfRoom(sender()->property("number").toString());
 }

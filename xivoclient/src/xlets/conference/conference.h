@@ -75,7 +75,7 @@ class XletConference : public XLet
         XletConference(QWidget *parent=0);
 
     public slots:
-        void openConfRoom(const QString &id, bool force=false);
+        void openConfRoom(const QString &number, bool force=false);
     private:
         void registerMeetmeUpdate() const;
         ConfTab *m_tab;
