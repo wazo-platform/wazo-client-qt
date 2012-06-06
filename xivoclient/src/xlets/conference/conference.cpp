@@ -73,7 +73,6 @@ int ConfTab::addClosableTab(QWidget *w, const QString &title)
  */
 void ConfTab::showConfRoom(const QString & meetme_id, bool force)
 {
-    // qDebug() << Q_FUNC_INFO << meetme_id;
     int index = indexOf(meetme_id);
     if (index == -1) {
         const MeetmeInfo * m = b_engine->meetme(meetme_id);
@@ -111,7 +110,6 @@ XLet* XLetConferencePlugin::newXLetInstance(QWidget *parent)
 XletConference::XletConference(QWidget *parent)
     : XLet(parent)
 {
-    // qDebug() << Q_FUNC_INFO;
     setTitle(tr("Conference"));
 
     QVBoxLayout *vLayout = new QVBoxLayout();
@@ -121,8 +119,19 @@ XletConference::XletConference(QWidget *parent)
     m_tab->addTab(new ConfList(this), tr("Conference room list"));
     vLayout->addWidget(m_tab);
 
-    connect(b_engine, SIGNAL(updateMeetmesStatus(const QString &)),
-            this, SLOT(updateMeetmesStatus(const QString &)));
+    registerMeetmeUpdate();
+}
+
+void XletConference::registerMeetmeUpdate() const
+{
+    qDebug() << "Registering to meetme updates";
+
+    QVariantMap command;
+
+    command["class"] = "subscribe";
+    command["message"] = "meetme_update";
+
+    b_engine->sendJsonCommand(command);
 }
 
 void XletConference::openConfRoom(const QString &id, bool force)
@@ -130,16 +139,16 @@ void XletConference::openConfRoom(const QString &id, bool force)
     m_tab->showConfRoom(id, force);
 }
 
-void XletConference::updateMeetmesStatus(const QString & meetme_id)
-{
-    // qDebug() << Q_FUNC_INFO << meetme_id;
-    const MeetmeInfo * m = b_engine->meetme(meetme_id);
-    if (m) {
-        foreach (const QString & xcid, m->channels().keys()) {
-            const UserInfo * chan_owner = b_engine->getUserForXChannelId(xcid);
-            if (chan_owner && chan_owner->xid() == b_engine->getFullId()) {
-                openConfRoom(meetme_id);
-            }
-        }
-    }
-}
+// void XletConference::updateMeetmesStatus(const QString & meetme_id)
+// {
+//     // qDebug() << Q_FUNC_INFO << meetme_id;
+//     const MeetmeInfo * m = b_engine->meetme(meetme_id);
+//     if (m) {
+//         foreach (const QString & xcid, m->channels().keys()) {
+//             const UserInfo * chan_owner = b_engine->getUserForXChannelId(xcid);
+//             if (chan_owner && chan_owner->xid() == b_engine->getFullId()) {
+//                 openConfRoom(meetme_id);
+//             }
+//         }
+//     }
+// }

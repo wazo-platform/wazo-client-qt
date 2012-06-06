@@ -965,6 +965,8 @@ void BaseEngine::parseCommand(const QString &line)
         const QVariantList &entry_list = state["entries"].toList();
 
         emit queueEntryUpdate(queue_id, entry_list);
+    } else if (thisclass == "meetme_update") {
+        emit meetmeUpdate(datamap.value("config").toMap());
     } else {
         if (replyid.isEmpty())
             qDebug() << "Unknown server command received:" << thisclass << datamap;

@@ -76,10 +76,8 @@ class XletConference : public XLet
 
     public slots:
         void openConfRoom(const QString &id, bool force=false);
-    private slots:
-        // void checkJoiningPeople(const QString &room, DStoreEvent e);
-        void updateMeetmesStatus(const QString &);
     private:
+        void registerMeetmeUpdate() const;
         ConfTab *m_tab;
 };
 
