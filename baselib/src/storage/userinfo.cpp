@@ -208,17 +208,3 @@ bool UserInfo::isTalkingTo(const QString & rhs) const
     }
     return false;
 }
-
-bool UserInfo::isInMeetme() const
-{
-    QStringList channels = xchannels();
-    if (channels.size() < 1) return false;
-    foreach (const XInfo * meetme, b_engine->iterover("meetmes")) {
-        foreach (const QString &channelid, static_cast<const MeetmeInfo *>(meetme)->channels().keys()) {
-            if (channels.contains(QString("%0/%1").arg(meetme->ipbxid()).arg(channelid))) {
-                return true;
-            }
-        }
-    }
-    return false;
-}

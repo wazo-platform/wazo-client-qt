@@ -40,7 +40,6 @@
 
 #include <channelinfo.h>
 #include <incallsinfo.h>
-#include <meetmeinfo.h>
 #include "parkinginfo.h"
 #include <phoneinfo.h>
 #include <queueinfo.h>
@@ -199,9 +198,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
             { return (const QueueInfo *) m_anylist.value("queues").value(id); };
         const GroupInfo * group(const QString & id) const          //!< Return the group to any Xlet
             { return (const GroupInfo *) m_anylist.value("groups").value(id); };
-        const MeetmeInfo * meetme(const QString & id) const        //!< Return the meetme to any Xlet
-            { return (const MeetmeInfo *) m_anylist.value("meetmes").value(id); };
-        const ParkingInfo * parkinglot(const QString & id) const   //!< Return the meetme to any Xlet
+        const ParkingInfo * parkinglot(const QString & id) const
             { return (const ParkingInfo *) m_anylist.value("parkinglots").value(id); }
         const VoiceMailInfo * voicemail(const QString & id) const  //!< Return the voicemail to any Xlet
             { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };
@@ -386,8 +383,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateVoiceMailConfig(const QString &);
         void updateVoiceMailStatus(const QString &);
         void updateChannelStatus(const QString &);
-        void updateMeetmesConfig(const QString &);
-        void updateMeetmesStatus(const QString &);
         void updateQueueMemberConfig(const QString &);
         void updateQueueMemberStatus(const QString &);
         void updateParkinglotConfig(const QString &);
@@ -396,7 +391,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);
         void removeQueueConfig(const QString &);
-        void removeMeetmeConfig(const QString &);
         void removeQueueMemberConfig(const QString &);
         void removeQueueMemberStatus(const QString &);
 

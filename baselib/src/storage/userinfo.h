@@ -76,7 +76,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
             // Status
             const QString & availstate() const;
             bool connected() const { return m_availstate != __presence_off__; };
-            bool isInMeetme() const;
         //! @}
 
         //! \name Setters

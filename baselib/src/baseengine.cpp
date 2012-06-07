@@ -70,7 +70,7 @@ BASELIB_EXPORT BaseEngine * b_engine;
 static const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
 static const QStringList GenLists = (QStringList()
                                      << "users" << "phones"
-                                     << "agents" << "queues" << "groups" << "meetmes"
+                                     << "agents" << "queues" << "groups"
                                      << "voicemails" << "incalls" << "queuemembers" << "parkinglots");
 static CtiConn * m_ctiConn;
 
@@ -96,7 +96,6 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("agents", newXInfo<AgentInfo>);
     m_xinfoList.insert("queues", newXInfo<QueueInfo>);
     m_xinfoList.insert("groups", newXInfo<GroupInfo>);
-    m_xinfoList.insert("meetmes", newXInfo<MeetmeInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
     m_xinfoList.insert("incalls", newXInfo<InCallsInfo>);
     m_xinfoList.insert("queuemembers", newXInfo<QueueMemberInfo>);
@@ -1050,8 +1049,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     emit removeAgentConfig(xid);
                 else if (listname == "queues")
                     emit removeQueueConfig(xid);
-                else if (listname == "meetmes")
-                    emit removeMeetmeConfig(xid);
                 else if (listname == "queuemembers")
                     emit removeQueueMemberConfig(xid);
             }
@@ -1100,8 +1097,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateQueueConfig(xid);
             else if (listname == "voicemails")
                 emit updateVoiceMailConfig(xid);
-            else if (listname == "meetmes")
-                emit updateMeetmesConfig(xid);
             else if (listname == "queuemembers")
                 emit updateQueueMemberConfig(xid);
             else if (listname == "parkinglots")
@@ -1183,8 +1178,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateVoiceMailStatus(xid);
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
-            else if (listname == "meetmes")
-                emit updateMeetmesStatus(xid);
 
         } else if (function == "addconfig") {
             QStringList listid = datamap.value("list").toStringList();
@@ -1748,7 +1741,7 @@ void BaseEngine::fetchIPBXList()
 /*! \brief send a lot of getlist commands to the CTI server
  *
  * send getlist for "users", "queues", "agents", "phones",
- * "meetme", "users", "endinit"
+ * "users", "endinit"
  */
 void BaseEngine::fetchLists()
 {

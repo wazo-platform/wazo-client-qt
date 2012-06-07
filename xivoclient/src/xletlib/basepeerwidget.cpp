@@ -533,7 +533,7 @@ void BasePeerWidget::addInterceptMenu(QMenu * menu)
  */
 void BasePeerWidget::addMeetmeMenu(QMenu * menu)
 {
-    if (m_ui_local && m_ui_local->isInMeetme()) {
+    if (m_ui_local && b_engine->isInMeetme()) {
         QAction * action = new QAction(tr("Invite in conference room"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(inviteConfRoom()));
         menu->addAction(action);
