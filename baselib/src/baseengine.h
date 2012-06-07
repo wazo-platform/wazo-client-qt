@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -215,7 +215,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         
         // public operations
-        
+
+        bool isInMeetme() const { return m_meetme_membership.size() > 0; }
+        bool isMeetmeMember(const QString &room, int number) const;
         void pasteToDial(const QString &);
         
         void registerListener(const QString &, IPBXListener *); //!< Register an XLet wanting to listen IPBX messages
@@ -337,6 +339,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void popupError(const QString &);
 
     signals:
+        void meetmeMembershipUpdated();
+
         void settingsChanged();  //!< signal emitted when the setting are changed
         
         void logged();    //!< signal emitted when the state becomes ELogged
@@ -530,6 +534,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
         QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
+        QVariantList m_meetme_membership;
 
     friend class CtiConn;
 };

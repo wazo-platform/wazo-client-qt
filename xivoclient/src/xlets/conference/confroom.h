@@ -63,6 +63,7 @@ class ConfRoomModel : public QAbstractTableModel
         int isAuthed() { return m_authed; };
     public slots:
         void updateMeetmeConfig(const QVariantMap &);
+        void updateMembership() { reset(); }
     private slots:
         void extractRow2IdMap();
         void updateMeetmesStatus(const QString &);

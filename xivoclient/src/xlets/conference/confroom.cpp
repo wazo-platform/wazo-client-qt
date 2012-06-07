@@ -47,6 +47,8 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &numbe
 {
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateMeetmeConfig(const QVariantMap &)));
+    connect(b_engine, SIGNAL(meetmeMembershipUpdated()),
+            this, SLOT(updateMembership()));
 
     extractRow2IdMap();
     startTimer(1000);
@@ -156,8 +158,9 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     int row = index.row();
     int col = index.column();
     const QString &number = m_row2number[row];
-    bool my_channel = false;
     const QVariantMap &member = m_members[number].toMap();
+    int join_sequence = member["join_order"].toInt();
+    bool isMe = b_engine->isMeetmeMember(m_number, join_sequence);
 
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole) {
@@ -168,14 +171,9 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
             } else if (col == ACTION_ALLOW_IN) {
                 return QVariant();
             } else if (col == ACTION_TALK_TO) {
-                return QPixmap(":images/conference/speak.png").scaledToHeight(16,
-                               Qt::SmoothTransformation);
-            } else if (col == ACTION_MUTE) {
-                if (my_channel) {
-                    return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
-                } else {
-                    return QVariant();
-                }
+                return QPixmap(":images/conference/speak.png").scaledToHeight(16, Qt::SmoothTransformation);
+            } else if (col == ACTION_MUTE && isMe) {
+                return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
             }
         } else if (role == Qt::ToolTipRole) {
             if (col == ACTION_KICK) {
@@ -239,10 +237,11 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
     int row = index.row();
     const QString &number = m_row2number[row];
     const QVariantMap &member = m_members[number].toMap();
-    bool my_channel = false;
-    bool is_muted = member["muted"] == "Yes";
+    bool isMuted = member["muted"] == "Yes";
+    bool isMe = b_engine->isMeetmeMember(m_number, number.toInt());
 
-    if (my_channel && col == ACTION_MUTE && is_muted) {
+    if (isMe && col == ACTION_MUTE && isMuted) {
+        qDebug() << "Enabling mute button";
         return Qt::ItemIsEnabled;
     }
     return Qt::NoItemFlags;
@@ -267,7 +266,7 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
                         ACTION_KICK };
 
     for(int i = 0; i < nelem(ActionCol); i++) {
-        setColumnWidth(ActionCol[i], 24);
+        setColumnWidth(ActionCol[i], 32);
         horizontalHeader()->setResizeMode(ActionCol[i], QHeaderView::Fixed);
     }
 

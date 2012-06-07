@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -967,10 +967,23 @@ void BaseEngine::parseCommand(const QString &line)
         emit queueEntryUpdate(queue_id, entry_list);
     } else if (thisclass == "meetme_update") {
         emit meetmeUpdate(datamap.value("config").toMap());
+    } else if (thisclass == "meetme_user") {
+        m_meetme_membership = datamap["list"].toList();
+        emit meetmeMembershipUpdated();
     } else {
         if (replyid.isEmpty())
             qDebug() << "Unknown server command received:" << thisclass << datamap;
     }
+}
+
+bool BaseEngine::isMeetmeMember(const QString &room, int number) const
+{
+    foreach (const QVariant &item, m_meetme_membership) {
+        const QVariantMap &map = item.toMap();
+        if (map["room_number"].toString() == room && map["user_number"].toInt() == number)
+            return true;
+    }
+    return false;
 }
 
 void BaseEngine::configsLists(const QString & thisclass, const QString & function,
