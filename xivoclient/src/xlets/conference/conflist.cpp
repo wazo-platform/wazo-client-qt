@@ -228,11 +228,11 @@ ConfList::ConfList(XletConference *parent)
     QHBoxLayout *hBox = new QHBoxLayout();
     
     // this contains the data, unordered
-    ConfListModel *model = new ConfListModel(this);
+    m_model = new ConfListModel(this);
     
     // this maps the indexes between the sorted view and the unordered model
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
-    proxyModel->setSourceModel(model);
+    proxyModel->setSourceModel(m_model);
     proxyModel->setDynamicSortFilter(true); /* sorts right on insertion, instead
     of half a second after the window has appeared */
     
@@ -253,13 +253,17 @@ ConfList::ConfList(XletConference *parent)
 
 void ConfList::phoneConfRoom()
 {
-    QString roomNumber = sender()->property("number").toString();
+    const QString &roomNumber = sender()->property("number").toString();
+    QVariantMap members = m_model->getMembers(roomNumber);
 
     b_engine->actionDialNumber(roomNumber);
-    m_manager->openConfRoom(roomNumber, true);
+    m_manager->openConfRoom(roomNumber, members, true);
 }
 
 void ConfList::openConfRoom()
 {
-    m_manager->openConfRoom(sender()->property("number").toString());
+    const QString &number = sender()->property("number").toString();
+    QVariantMap members = m_model->getMembers(number);
+
+    m_manager->openConfRoom(number, members);
 }

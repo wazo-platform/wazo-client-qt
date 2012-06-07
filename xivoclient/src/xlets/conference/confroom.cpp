@@ -41,9 +41,9 @@ enum ColOrder {
 
 static QVariant COL_TITLE[NB_COL];
 
-ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &number)
+ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &number, const QVariantMap &members)
     : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0),
-      m_authed(0), m_number(number), m_view(NULL)
+      m_authed(0), m_number(number), m_view(NULL), m_members(members)
 {
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateMeetmeConfig(const QVariantMap &)));
@@ -387,13 +387,13 @@ void ConfRoomView::mousePressEvent(QMouseEvent *event)
 }
 
 
-ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &number)
+ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &number, const QVariantMap &members)
     : QWidget(parent), m_number(number)
 {
     QVBoxLayout *vBox = new QVBoxLayout(this);
     setLayout(vBox);
     QHBoxLayout *hBox = new QHBoxLayout();
-    m_model = new ConfRoomModel(tab, this, number);
+    m_model = new ConfRoomModel(tab, this, number, members);
     QLabel *redondant = new QLabel(tr(" Conference room %1").arg(number));
     setProperty("id", number);
 

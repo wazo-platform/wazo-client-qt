@@ -69,12 +69,12 @@ int ConfTab::addClosableTab(QWidget *w, const QString &number)
     return index;
 }
 
-void ConfTab::showConfRoom(const QString &number, bool force)
+void ConfTab::showConfRoom(const QString &number, const QVariantMap &members, bool force)
 {
     int index = indexOf(number);
 
     if (index == -1) {
-        index = addClosableTab(new ConfRoom(this, this, number), number);
+        index = addClosableTab(new ConfRoom(this, this, number, members), number);
     }
 
     setCurrentIndex(index);
@@ -121,7 +121,7 @@ void XletConference::registerMeetmeUpdate() const
     b_engine->sendJsonCommand(command);
 }
 
-void XletConference::openConfRoom(const QString &number, bool force)
+void XletConference::openConfRoom(const QString &number, const QVariantMap &members, bool force)
 {
-    m_tab->showConfRoom(number, force);
+    m_tab->showConfRoom(number, members, force);
 }

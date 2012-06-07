@@ -56,6 +56,7 @@ class ConfListModel : public QAbstractTableModel
 
     public:
         ConfListModel(QWidget *parent = NULL);
+        QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
     public slots:
         void updateRoomConfigs(const QVariantMap &);
     protected:
@@ -97,7 +98,8 @@ class ConfList : public QWidget
         void openConfRoom();
         void phoneConfRoom();
     private:
-        XletConference * m_manager;
+        XletConference *m_manager;
+        ConfListModel *m_model;
 };
 
 #endif

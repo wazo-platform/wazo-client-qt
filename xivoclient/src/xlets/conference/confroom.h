@@ -55,7 +55,7 @@ class ConfRoomModel : public QAbstractTableModel
     Q_OBJECT
 
     public:
-        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &);
+        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &, const QVariantMap &);
         void setView(ConfRoomView *m_view);
         QString number() const { return m_number; }
         QString row2participantId(int row) const { return m_row2number[row]; }
@@ -106,7 +106,7 @@ class ConfRoom : public QWidget
     Q_OBJECT
 
     public:
-        ConfRoom(QWidget *parent, ConfTab *tab, const QString &number);
+        ConfRoom(QWidget *parent, ConfTab *tab, const QString &, const QVariantMap &);
     private:
         QString m_number;
         ConfRoomModel *m_model;
