@@ -169,30 +169,18 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
         if (role == Qt::TextAlignmentRole) {
             return Qt::AlignCenter;
         } else if (role == Qt::DecorationRole) {
-            if (col == ACTION_KICK) {
-                return QVariant();
-            } else if (col == ACTION_ALLOW_IN) {
-                return QVariant();
-            } else if (col == ACTION_TALK_TO) {
-                return QPixmap(":images/conference/speak.png").scaledToHeight(16, Qt::SmoothTransformation);
-            } else if (col == ACTION_MUTE && isMe) {
+            if (col == ACTION_MUTE && isMe) {
                 return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
             }
         } else if (role == Qt::ToolTipRole) {
-            if (col == ACTION_KICK) {
-                return tr("Kick");
-            } else if (col == ACTION_ALLOW_IN) {
-                return tr("Allow in");
-            } else if (col == ACTION_TALK_TO) {
-                return tr("Talk to");
-            } else if (col == ACTION_RECORD) {
-                return tr("Record conference until this user leaves");
-            } else if (col == ACTION_MUTE) {
+            if (col == ACTION_MUTE) {
                 return tr("Mute/UnMute");
             }
         }
         return QVariant();
     }
+
+    int started_since = member["join_time"].toInt();
 
     switch (col) {
     case ID:
@@ -208,9 +196,13 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     case ACTION_ALLOW_IN:
         return tr("Yes");
     case SINCE:
+        if (started_since == -1) 
+            return tr("Unknown");
+        else if (started_since == 0)
+            return tr("Not started");
         return QDateTime::fromTime_t(
             QDateTime::currentDateTime().toTime_t()
-            - member["join_time"].toInt()
+            - started_since
             - b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
     default:
         break;
@@ -318,7 +310,6 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
             QString user_number = QString("%0").arg(model->userNumberFromRow(row));
             QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
             QString param = QString("%0 %1").arg(room_number).arg(user_number);
-            qDebug() << action << param;
             b_engine->meetmeAction(action, param);
             break;
         }
