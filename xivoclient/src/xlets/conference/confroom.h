@@ -59,8 +59,11 @@ class ConfRoomModel : public QAbstractTableModel
         void setView(ConfRoomView *m_view);
         QString number() const { return m_number; }
         QString row2participantId(int row) const { return m_row2number[row]; }
-        int isAdmin() { return m_admin; };
-        int isAuthed() { return m_authed; };
+        int isAdmin() { return m_admin; }
+        int isAuthed() { return m_authed; }
+        bool isRowMuted(int row) const;
+        const QString &roomNumber() const { return m_number; }
+        int userNumberFromRow(int row) const;
     public slots:
         void updateMeetmeConfig(const QVariantMap &);
         void updateMembership() { reset(); }

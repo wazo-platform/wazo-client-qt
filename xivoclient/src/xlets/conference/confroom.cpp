@@ -83,28 +83,19 @@ void ConfRoomModel::updateView()
                              ACTION_KICK,
                              ACTION_ALLOW_IN,
                              ACTION_TALK_TO };
-    if (m_view) {
-        if (m_admin) {
-            for (int i = 0; i < nelem(actions); ++i) {
-                m_view->showColumn(actions[i]);
-            }
-        } else {
-            for (int i = 0; i < nelem(actions); ++i) {
-                m_view->hideColumn(actions[i]);
-            }
-        }
-    }
+    if (m_view)
+        for (int i = 0; i < nelem(actions); ++i)
+            m_view->hideColumn(actions[i]);
+
 }
 
 void ConfRoomModel::updateMeetmeConfig(const QVariantMap &config)
 {
     m_members = config[m_number].toMap()["members"].toMap();
-    qDebug() << Q_FUNC_INFO << "number" << m_number << "members" << m_members;
     extractRow2IdMap();
     reset();
 }
 
-/*! \brief Refresh the map between row and meetme channel ids */
 void ConfRoomModel::extractRow2IdMap()
 {
     m_row2number = m_members.keys();
@@ -151,6 +142,18 @@ int ConfRoomModel::rowCount(const QModelIndex &) const
 int ConfRoomModel::columnCount(const QModelIndex&) const
 {
     return NB_COL;
+}
+
+bool ConfRoomModel::isRowMuted(int row) const
+{
+    const QVariantMap &member = m_members[m_row2number[row]].toMap();
+    return member["muted"].toString() == "Yes";
+}
+
+int ConfRoomModel::userNumberFromRow(int row) const
+{
+    const QString &number = m_row2number[row];
+    return number.toInt();
 }
 
 QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
@@ -241,7 +244,6 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
     bool isMe = b_engine->isMeetmeMember(m_number, number.toInt());
 
     if (isMe && col == ACTION_MUTE && isMuted) {
-        qDebug() << "Enabling mute button";
         return Qt::ItemIsEnabled;
     }
     return Qt::NoItemFlags;
@@ -306,77 +308,24 @@ void ConfRoomView::sectionHeaderClicked(int index)
 
 void ConfRoomView::onViewClick(const QModelIndex &index)
 {
-    return;
-    // const MeetmeInfo * m = b_engine->meetme(meetme_id);
-    // const QVariantMap & channels = (m ? m->channels() : QVariantMap());
-    // const QVariantMap & user_chan = channels.value(channel_id).toMap();
-
-    // const QString & usernum = user_chan.value("usernum").toString();
-    // QString adminnum;
-
-    // foreach (const QString & key, channels.keys()) {
-    //     if (my_userinfo && channels.value(key).toMap().value("isadmin").toBool()
-    //         && my_userinfo == b_engine->getUserForXChannelId(key)) {
-    //         adminnum = channels.value(key).toMap().value("usernum").toString();
-    //     }
-    // }
-
-    // switch (index.column()) {
-    //     case ACTION_MUTE:
-    //     {
-    //         qDebug() << Q_FUNC_INFO << "Mute/unmute";
-    //         bool is_muted = user_chan.value("ismuted").toBool();
-    //         if (is_muted) {
-    //             b_engine->meetmeAction("MeetmeUnmute", meetme_id + " "
-    //                                    + usernum);
-    //         } else {
-    //             b_engine->meetmeAction("MeetmeMute", meetme_id + " "
-    //                                    + usernum);
-    //         }
-    //         break;
-    //     }
-    //     case ACTION_KICK:
-    //         qDebug() << Q_FUNC_INFO << "Kick/MeetmeKick";
-    //         if (! adminnum.isEmpty()) {
-    //             // bool is_authed = user_chan.value("isauthed").toBool();
-    //             b_engine->meetmeAction("MeetmeKick", meetme_id + " " +
-    //                                    usernum + " " + adminnum);
-    //             // if (! is_authed) {
-    //             //     b_engine->meetmeAction("MeetmeKick", meetme_id + " " + 
-    //             //                            usernum + " " + adminnum);
-    //             // } else {
-    //             //     b_engine->meetmeAction("kick", meetme_id + " " +
-    //             //                            usernum + " " + adminnum);
-    //             // }
-    //         }
-    //         break;
-    //     case ACTION_TALK_TO:
-    //         qDebug() << Q_FUNC_INFO << "Talk";
-    //         if (! adminnum.isEmpty()) {
-    //             b_engine->meetmeAction("MeetmeTalk", meetme_id + " " + usernum
-    //                                    + " " + adminnum);
-    //         }
-    //         break;
-    //     case ACTION_RECORD:
-    //     {
-    //         qDebug() << Q_FUNC_INFO << "Record";
-    //         bool is_recorded = (c && c->ismonitored());
-    //         b_engine->meetmeAction("record", meetme_id + " " +
-    //                                          usernum + " " +
-    //                                          ( is_recorded ? "stop" : "start"));
-    //         break;
-    //     }
-    //     case ACTION_ALLOW_IN:
-    //         qDebug() << Q_FUNC_INFO << "Accept";
-    //         if (! adminnum.isEmpty()) {
-    //             b_engine->meetmeAction("MeetmeAccept", meetme_id + " " + usernum
-    //                                    + " " + adminnum);
-    //         }
-    //         break;
-    //     default:
-    //         qDebug() << Q_FUNC_INFO << "No Action";
-    //         break;
-    // }
+    switch (index.column()) {
+        case ACTION_MUTE:
+        {
+            int row = index.row();
+            ConfRoomModel *model = static_cast<ConfRoomModel *>(this->model());
+            bool isMuted = model->isRowMuted(row);
+            QString room_number = model->roomNumber();
+            QString user_number = QString("%0").arg(model->userNumberFromRow(row));
+            QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
+            QString param = QString("%0 %1").arg(room_number).arg(user_number);
+            qDebug() << action << param;
+            b_engine->meetmeAction(action, param);
+            break;
+        }
+        default:
+            qDebug() << Q_FUNC_INFO << "No Action";
+            break;
+    }
 }
 
 void ConfRoomView::mousePressEvent(QMouseEvent *event)
