@@ -43,6 +43,7 @@
 #include <QFormLayout>
 #include <QPixmap>
 #include <QDir>
+#include <QFrame>
 
 #include <baseengine.h>
 #include <xivoconsts.h>
@@ -104,45 +105,75 @@ void ConfigWidget::createColors()
 /*! \brief connection config tab */
 void ConfigWidget::_insert_connection_tab()
 {
-    QFormLayout * layout1 = new QFormLayout;
-    QWidget * widget_connection = new QWidget;
+    QGridLayout * servers_layout = new QGridLayout;
+    servers_layout->setHorizontalSpacing(5);
+    servers_layout->setVerticalSpacing(5);
 
-    widget_connection->setLayout(layout1);
+    // Headers
+    servers_layout->addWidget(new QLabel(tr("Host address")), 0, 1);
+    servers_layout->addWidget(new QLabel(tr("CTI port")), 0, 2);
 
-    m_cti_address = new QLineEdit(m_config["cti_address"].toString(), this);
-    layout1->addRow(tr("Server Host"), m_cti_address);
+    // Main server
+    servers_layout->addWidget(new QLabel(tr("Main server")), 1, 0);
 
-    m_cti_port = new QSpinBox(this);
-    m_cti_port->setRange(1, 65535);
-    if (! m_config["cti_encrypt"].toBool()) {
-        m_cti_port->setValue(m_config["cti_port"].toUInt());
-    } else {
-        m_cti_port->setValue(m_config["cti_port_encrypted"].toUInt());
-    }
-    layout1->addRow(tr("Login Port"), m_cti_port);
+    m_main_server_address_input = new QLineEdit(m_config["cti_address"].toString(), this);
+    servers_layout->addWidget(m_main_server_address_input, 1, 1);
 
-    m_cti_encrypt = new QCheckBox(tr("Encrypt Connection"));
-    m_cti_encrypt->setChecked(m_config["cti_encrypt"].toBool());
-    connect(m_cti_encrypt, SIGNAL(toggled(bool)),
-            this, SLOT(changeEncrypted(bool)));
-    layout1->addRow(m_cti_encrypt);
+    m_main_server_port_input = new QSpinBox(this);
+    m_main_server_port_input->setRange(1, 65535);
+    m_main_server_port_input->setValue(m_config["cti_port"].toUInt());
+    servers_layout->addWidget(m_main_server_port_input, 1, 2);
+
+    m_main_server_encrypt_input = new QCheckBox(tr("Encrypt Connection"));
+    m_main_server_encrypt_input->setChecked(m_config["cti_encrypt"].toBool());
+    servers_layout->addWidget(m_main_server_encrypt_input, 1, 3);
+
+    // Backup server
+    servers_layout->addWidget(new QLabel(tr("Backup server")), 2, 0);
+
+    m_backup_server_address_input = new QLineEdit(m_config["cti_backup_address"].toString(), this);
+    servers_layout->addWidget(m_backup_server_address_input, 2, 1);
+
+    m_backup_server_port_input = new QSpinBox(this);
+    m_backup_server_port_input->setRange(1, 65535);
+    m_backup_server_port_input->setValue(m_config["cti_backup_port"].toUInt());
+    servers_layout->addWidget(m_backup_server_port_input, 2, 2);
+
+    m_backup_server_encrypt_input = new QCheckBox(tr("Encrypt Connection"));
+    m_backup_server_encrypt_input->setChecked(m_config["cti_backup_encrypt"].toBool());
+    servers_layout->addWidget(m_backup_server_encrypt_input, 2, 3);
+
+    // Rest of the widget
+    QFormLayout * form_layout = new QFormLayout;
 
     m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                      tr("Checking this box disables the Error Popups"), this);
     m_trytoreconnect->setChecked(m_config["trytoreconnect"].toBool());
-    layout1->addRow(m_trytoreconnect);
+    form_layout->addRow(m_trytoreconnect);
 
     m_tryinterval_sbox = new QSpinBox(this);
     m_tryinterval_sbox->setRange(1, 120);
     m_tryinterval_sbox->setValue(m_config["trytoreconnectinterval"].toUInt() / 1000);
-    layout1->addRow(tr("Try to reconnect interval"), m_tryinterval_sbox);
+    form_layout->addRow(tr("Try to reconnect interval"), m_tryinterval_sbox);
 
-    m_kainterval_sbox = new QSpinBox(this);
-    m_kainterval_sbox->setRange(1, 999);
-    m_kainterval_sbox->setValue(m_config["keepaliveinterval"].toUInt() / 1000);
-    layout1->addRow(tr("Keep alive interval"), m_kainterval_sbox);
+    m_keepalive_input = new QSpinBox(this);
+    m_keepalive_input->setRange(1, 999);
+    m_keepalive_input->setValue(m_config["keepaliveinterval"].toUInt() / 1000);
+    form_layout->addRow(tr("Keep alive interval"), m_keepalive_input);
 
-    m_tabwidget->addTab(widget_connection, tr("Connection"));
+    QVBoxLayout * connection_layout = new QVBoxLayout;
+    connection_layout->addItem(servers_layout);
+    QFrame* horizontal_separator = new QFrame();
+    horizontal_separator->setFrameShape(QFrame::HLine);
+    horizontal_separator->setFrameShadow(QFrame::Sunken);
+    connection_layout->addWidget(horizontal_separator);
+    connection_layout->addItem(form_layout);
+    connection_layout->addStretch();
+
+    QWidget * connection_widget = new QWidget;
+    connection_widget->setLayout(connection_layout);
+
+    m_tabwidget->addTab(connection_widget, tr("Connection"));
 }
 
 /*! \brief function config tab */
@@ -581,19 +612,6 @@ void ConfigWidget::loginKindChanged(int index)
     }
 }
 
-/*! \brief change the port value according to cti_encrypted
-*/
-void ConfigWidget::changeEncrypted(bool encrypted)
-{
-    if(encrypted) {
-        m_config["cti_port"] = m_cti_port->value();
-        m_cti_port->setValue(m_config["cti_port_encrypted"].toInt());
-    } else {
-        m_config["cti_port_encrypted"] = m_cti_port->value();
-        m_cti_port->setValue(m_config["cti_port"].toInt());
-    }
-}
-
 /*!
  * This slot saves the configuration (which is stored in displayed
  * widgets) to the BaseEngine object
@@ -602,14 +620,12 @@ void ConfigWidget::changeEncrypted(bool encrypted)
 void ConfigWidget::saveAndClose()
 {
     int i;
-    // qDebug() << Q_FUNC_INFO;
-    m_config["cti_address"] = m_cti_address->text();
-    if (! m_cti_encrypt->isChecked()) {
-        m_config["cti_port"] = m_cti_port->value();
-    } else {
-        m_config["cti_port_encrypted"] = m_cti_port->value();
-    }
-    m_config["cti_encrypt"] = m_cti_encrypt->isChecked();
+    m_config["cti_address"] = m_main_server_address_input->text();
+    m_config["cti_port"] = m_main_server_port_input->value();
+    m_config["cti_encrypt"] = m_main_server_encrypt_input->isChecked();
+    m_config["cti_backup_address"] = m_backup_server_address_input->text();
+    m_config["cti_backup_port"] = m_backup_server_port_input->value();
+    m_config["cti_backup_encrypt"] = m_backup_server_encrypt_input->isChecked();
     m_config["company"] = m_context->text();
     m_config["keeppass"] = m_keeppass->isChecked();
     m_config["showagselect"] = m_showagselect->isChecked();
@@ -620,7 +636,7 @@ void ConfigWidget::saveAndClose()
     m_config["autoconnect"] = m_autoconnect->isChecked();
     m_config["trytoreconnect"] = m_trytoreconnect->isChecked();
     m_config["trytoreconnectinterval"] = m_tryinterval_sbox->value() * 1000;
-    m_config["keepaliveinterval"] = m_kainterval_sbox->value() * 1000;
+    m_config["keepaliveinterval"] = m_keepalive_input->value() * 1000;
     m_config["historysize"] = m_history_sbox->value();
     m_config["systrayed"] = m_systrayed->isChecked();
     m_config["uniqueinstance"] = !m_unique->isChecked();

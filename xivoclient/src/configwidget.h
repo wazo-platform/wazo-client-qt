@@ -80,7 +80,6 @@ class ConfigWidget: public QDialog
         //! Save the configuration to the BaseEngine object and close
         void saveAndClose();
         void changeOperatorKey(bool);
-        void changeEncrypted(bool);
         void loginKindChanged(int);
     protected:
         virtual void keyPressEvent(QKeyEvent *);
@@ -106,12 +105,16 @@ class ConfigWidget: public QDialog
 
         QMap<QString, QString> m_dblclick_actions;
 
-        QLineEdit * m_cti_address;      //!< IP/hostname of the server
-        QSpinBox  * m_cti_port;         //!< server port
-        QCheckBox * m_cti_encrypt;      //!< encrypt connection
-        QCheckBox * m_trytoreconnect;   //!< "Try to reconnect" Checkbox
-        QSpinBox  * m_tryinterval_sbox; //!< "Try to reconnect" interval
-        QSpinBox  * m_kainterval_sbox;  //!< Keep alive interval
+        QLineEdit * m_main_server_address_input;
+        QSpinBox  * m_main_server_port_input;
+        QCheckBox * m_main_server_encrypt_input;
+        QCheckBox * m_backup_server_enabled;
+        QLineEdit * m_backup_server_address_input;
+        QSpinBox  * m_backup_server_port_input;
+        QCheckBox * m_backup_server_encrypt_input;
+        QCheckBox * m_trytoreconnect;
+        QSpinBox  * m_tryinterval_sbox;
+        QSpinBox  * m_keepalive_input;
 
         QLineEdit * m_context;          //!< context name (related to the company)
         QLineEdit * m_userid;           //!< user login

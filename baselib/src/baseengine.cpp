@@ -206,8 +206,10 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup(m_profilename_read);
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
-        m_config["cti_port_encrypted"]    = m_settings->value("serverport_encrypted", 5013).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
+        m_config["cti_backup_address"] = m_settings->value("backup_server_host", "demo.xivo.fr").toString();
+        m_config["cti_backup_port"]    = m_settings->value("backup_server_port", 5003).toUInt();
+        m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
         m_config["company"] = m_settings->value("company", "default").toString();
@@ -308,8 +310,10 @@ void BaseEngine::saveSettings()
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
         m_settings->setValue("serverport", m_config["cti_port"].toUInt());
-        m_settings->setValue("serverport_encrypted", m_config["cti_port_encrypted"].toUInt());
         m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
+        m_settings->setValue("backup_server_host", m_config["cti_backup_address"].toString());
+        m_settings->setValue("backup_server_port", m_config["cti_backup_port"].toUInt());
+        m_settings->setValue("backup_server_encryption", m_config["cti_backup_encrypt"].toBool());
         m_settings->setValue("userid", m_config["userloginsimple"].toString());
         m_settings->setValue("useridopt", m_config["userloginopt"].toString());
         m_settings->setValue("company", m_config["company"].toString());
