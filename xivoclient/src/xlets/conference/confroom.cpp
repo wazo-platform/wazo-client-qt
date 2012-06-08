@@ -83,10 +83,11 @@ void ConfRoomModel::updateView()
                              ACTION_KICK,
                              ACTION_ALLOW_IN,
                              ACTION_TALK_TO };
-    if (m_view)
+    if (m_view) {
         for (int i = 0; i < nelem(actions); ++i)
             m_view->hideColumn(actions[i]);
-
+        m_view->hideColumn(ADMIN);
+    }
 }
 
 void ConfRoomModel::updateMeetmeConfig(const QVariantMap &config)
