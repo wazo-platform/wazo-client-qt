@@ -207,7 +207,7 @@ void BaseEngine::loadSettings()
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
-        m_config["cti_backup_address"] = m_settings->value("backup_server_host", "demo.xivo.fr").toString();
+        m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();
         m_config["cti_backup_port"]    = m_settings->value("backup_server_port", 5003).toUInt();
         m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
 
