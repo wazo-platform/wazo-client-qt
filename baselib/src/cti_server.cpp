@@ -34,8 +34,6 @@ CTIServer::CTIServer(QSslSocket * socket)
 {
     connect(socket, SIGNAL(disconnected()),
             this, SLOT(ctiSocketDisconnected()));
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),
-            this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
 }
 
 void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
@@ -49,30 +47,33 @@ void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
 
         // ~ when trying to connect
         case QAbstractSocket::ConnectionRefusedError:
-            emit failedToConnect("socket_error_connectionrefused");
+            sendError("socket_error_connectionrefused");
             break;
         case QAbstractSocket::HostNotFoundError:
-            emit failedToConnect("socket_error_hostnotfound");
+            sendError("socket_error_hostnotfound");
             break;
         case QAbstractSocket::NetworkError:
-            emit failedToConnect("socket_error_network");
+            sendError("socket_error_network");
             break;
         case QAbstractSocket::SocketTimeoutError:
-            emit failedToConnect("socket_error_timeout");
+            sendError("socket_error_timeout");
             break;
         case QAbstractSocket::SslHandshakeFailedError:
-            emit failedToConnect("socket_error_sslhandshake");
+            sendError("socket_error_sslhandshake");
             break;
         case QAbstractSocket::UnknownSocketError:
-            emit failedToConnect("socket_error_unknown");
+            sendError("socket_error_unknown");
             break;
 
         default:
-            // see http://doc.trolltech.com/4.6/qabstractsocket.html#SocketError-enum
-            // for unmanaged error cases
-            failedToConnect(QString("socket_error_unmanagedyet:%1").arg(socketError));
+            sendError(QString("socket_error_unmanagedyet:%1").arg(socketError));
             break;
     }
+}
+
+void CTIServer::sendError(const QString & message)
+{
+    emit failedToConnect(message, m_last_address, QString::number(m_last_port));
 }
 
 void CTIServer::ctiSocketClosedByRemote()
@@ -80,7 +81,7 @@ void CTIServer::ctiSocketClosedByRemote()
     qDebug() << Q_FUNC_INFO;
     b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
     b_engine->startTryAgainTimer();
-    emit failedToConnect("socket_error_remotehostclosed");
+    sendError("socket_error_remotehostclosed");
 
     QTimer * timer = new QTimer(this);
     timer->setProperty("stopper", "connection_lost");
@@ -99,15 +100,42 @@ void CTIServer::ctiSocketDisconnected()
 
 void CTIServer::connectToServer(ConnectionConfig config)
 {
+    if (config.backup_address.isEmpty()) {
+        catchSocketError();
+    } else {
+        ignoreSocketError();
+    }
+
     this->connectSocket(config.main_address,
                         config.main_port,
                         config.main_encrypt);
+    if (m_socket->waitForConnected(3000) == false
+        && config.backup_address.isEmpty() == false) {
+        catchSocketError();
+        this->connectSocket(config.backup_address,
+                            config.backup_port,
+                            config.backup_encrypt);
+    }
+}
+
+void CTIServer::catchSocketError()
+{
+    connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
+}
+
+void CTIServer::ignoreSocketError()
+{
+    disconnect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)),
+               this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
 }
 
 void CTIServer::connectSocket(const QString & address,
                               unsigned port,
                               bool encrypted)
 {
+    m_last_address = address;
+    m_last_port = port;
     m_socket->abort();
     if (encrypted) {
         m_socket->connectToHostEncrypted(address, port);

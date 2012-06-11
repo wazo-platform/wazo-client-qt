@@ -113,8 +113,8 @@ BaseEngine::BaseEngine(QSettings *settings,
             this, SLOT(ctiSocketConnected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
-    connect(m_cti_server, SIGNAL(failedToConnect(const QString &)),
-            this, SLOT(popupError(const QString &)));
+    connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
+            this, SLOT(popupError(const QString &, const QString &, const QString &)));
 
     // TCP connection for file transfer
     // (this could be moved to some other class)
@@ -1236,7 +1236,9 @@ void BaseEngine::sendFaxCommand(const QString & filename,
  *
  * TODO : replace string errorids by an enum ?
  */
-void BaseEngine::popupError(const QString & errorid)
+void BaseEngine::popupError(const QString & errorid,
+                            const QString & server_address,
+                            const QString & server_port)
 {
     QString errormsg = QString(tr("Server has sent an Error."));
 
@@ -1245,7 +1247,7 @@ void BaseEngine::popupError(const QString & errorid)
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
             .arg(m_config["userloginsimple"].toString()).arg(m_config["company"].toString())
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
     } else if (errorid.startsWith("capaid_undefined:")) {
@@ -1255,49 +1257,49 @@ void BaseEngine::popupError(const QString & errorid)
     // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
         errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
 
     // socket errors - while attempting to connect
     } else if (errorid.toLower() == "socket_error_hostnotfound") {
         errormsg = tr("You defined an IP address %1 that is probably an unresolved host name.")
-            .arg(m_config["cti_address"].toString());
+            .arg(server_address);
     } else if (errorid.toLower() == "socket_error_timeout") {
         errormsg = tr("Socket timeout (~ 60 s) : you probably attempted to reach, "
                       "via a gateway, an IP address %1 that does not exist.")
-            .arg(m_config["cti_address"].toString());
+            .arg(server_address);
     } else if (errorid.toLower() == "socket_error_connectionrefused") {
         errormsg = tr("There seems to be a machine running on this IP address %1, "
                       "and either no CTI server is running, or your port %2 is wrong.")
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "socket_error_network") {
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
                       "- no external route defined to access this IP address (~ no timeout)\n"
                       "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
                       "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
-            .arg(m_config["cti_address"].toString());
+            .arg(server_address);
     } else if (errorid.toLower() == "socket_error_sslhandshake") {
         errormsg = tr("It seems that the server with IP address %1 does not accept encryption on "
                       "its port %2. Please change either your port or your encryption setting.")
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "socket_error_unknown") {
         errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
     } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(ipinfo[1]).arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(ipinfo[1]).arg(server_address).arg(server_port);
 
     // socket errors - once connected
     } else if (errorid.toLower() == "socket_error_remotehostclosed") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
 
     } else if (errorid.toLower() == "server_stopped") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "server_reloaded") {
         errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
-            .arg(m_config["cti_address"].toString()).arg(port_to_use());
+            .arg(server_address).arg(server_port);
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);

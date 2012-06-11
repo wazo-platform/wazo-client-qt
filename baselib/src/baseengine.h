@@ -333,7 +333,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void sheetSocketConnected();
 
-        void popupError(const QString &);
+        void popupError(const QString & message,
+                        const QString & server_address = "",
+                        const QString & server_port = "");
 
     signals:
         void meetmeMembershipUpdated();

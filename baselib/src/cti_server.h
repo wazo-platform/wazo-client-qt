@@ -51,7 +51,7 @@ class CTIServer : public QObject
         bool connected();
 
     signals:
-        void failedToConnect(const QString &);
+        void failedToConnect(const QString &, const QString &, const QString &);
 
     private slots:
         void ctiSocketError(QAbstractSocket::SocketError);
@@ -62,8 +62,13 @@ class CTIServer : public QObject
         void connectSocket(const QString & address,
                            unsigned port,
                            bool encrypt);
+        void catchSocketError();
+        void ignoreSocketError();
+        void sendError(const QString & message);
 
     private:
         QSslSocket * m_socket;
+        QString m_last_address;
+        unsigned m_last_port;
 };
 #endif
