@@ -29,15 +29,13 @@
 
 #include "cti_server.h"
 
-CTIServer::CTIServer(QTcpSocket * s)
-    : QObject(NULL)
+CTIServer::CTIServer(QSslSocket * socket)
+    : QObject(NULL), m_socket(socket)
 {
-    connect(s, SIGNAL(disconnected()),
+    connect(socket, SIGNAL(disconnected()),
             this, SLOT(ctiSocketDisconnected()));
-    connect(s, SIGNAL(error(QAbstractSocket::SocketError)),
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),
             this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
-    connect(s, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-            this, SLOT(ctiSocketStateChanged(QAbstractSocket::SocketState)));
 }
 
 void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
@@ -99,13 +97,26 @@ void CTIServer::ctiSocketDisconnected()
     qDebug() << Q_FUNC_INFO;
 }
 
-void CTIServer::ctiSocketStateChanged(QAbstractSocket::SocketState /*socketState*/)
+void CTIServer::connectToServer(ConnectionConfig config)
 {
-    // qDebug() << Q_FUNC_INFO << socketState;
-    // QAbstractSocket::HostLookupState
-    // QAbstractSocket::ConnectingState
-    // QAbstractSocket::ConnectedState
-    // ...
-    // QAbstractSocket::ClosingState
-    // QAbstractSocket::UnconnectedState
+    this->connectSocket(config.main_address,
+                        config.main_port,
+                        config.main_encrypt);
+}
+
+void CTIServer::connectSocket(const QString & address,
+                              unsigned port,
+                              bool encrypted)
+{
+    m_socket->abort();
+    if (encrypted) {
+        m_socket->connectToHostEncrypted(address, port);
+    } else {
+        m_socket->connectToHost(address, port);
+    }
+}
+
+bool CTIServer::connected()
+{
+    return m_socket->state() == QAbstractSocket::ConnectedState;
 }

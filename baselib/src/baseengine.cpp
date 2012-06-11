@@ -47,8 +47,8 @@
 
 #include <JsonToVariant.h>
 #include <VariantToJson.h>
-#include "xivoconsts.h"
 
+#include "xivoconsts.h"
 #include "baseengine.h"
 #include "cti_server.h"
 #include "phonenumber.h"
@@ -417,18 +417,8 @@ void BaseEngine::start()
             << port_to_use() << m_config["cti_encrypt"].toBool()
             << m_config.getSubSet("checked_function");
 
-    connectToServer();
-}
-
-void BaseEngine::connectToServer()
-{
-    m_ctiserversocket->abort();
-    if (m_config["cti_encrypt"].toBool())
-        m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(),
-                                                  m_config["cti_port_encrypted"].toUInt());
-    else
-        m_ctiserversocket->connectToHost(m_config["cti_address"].toString(),
-                                         m_config["cti_port"].toUInt());
+    ConnectionConfig connection_config = m_config.getConnectionConfig();
+    m_cti_server->connectToServer(connection_config);
 }
 
 /*! \brief Closes the connection to the server

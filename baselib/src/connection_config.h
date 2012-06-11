@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,43 +27,16 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
+#ifndef __CONNECTION_CONFIG__
+#define __CONNECTION_CONFIG__
 
-#ifndef __CTISERVER_H__
-#define __CTISERVER_H__
-
-#include <QSslSocket>
-#include <QObject>
-#include <QTimer>
-
-#include "baseengine.h"
-#include "connection_config.h"
-
-class CTIServer : public QObject
-{
-    Q_OBJECT
-
-    public:
-        CTIServer(QSslSocket * socket);
-        void connectToServer(ConnectionConfig config);
-        bool connected();
-
-    signals:
-        void failedToConnect(const QString &);
-
-    private slots:
-        void ctiSocketError(QAbstractSocket::SocketError);
-        void ctiSocketClosedByRemote();
-        void ctiSocketDisconnected();
-
-    private:
-        void connectSocket(const QString & address,
-                           unsigned port,
-                           bool encrypt);
-
-    private:
-        QSslSocket * m_socket;
+struct ConnectionConfig {
+    QString main_address;
+    unsigned main_port;
+    bool main_encrypt;
+    QString backup_address;
+    unsigned backup_port;
+    bool backup_encrypt;
 };
+
 #endif

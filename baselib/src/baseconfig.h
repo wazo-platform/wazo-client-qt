@@ -38,6 +38,8 @@
 #include <QVariantMap>
 #include <QStringList>
 
+#include "connection_config.h"
+
 /*! \brief Stores the config of BaseEngine
  *
  * BaseConfig is similar to QVariantMap, as it indexes QVariant (values) with QStrings (keys).\n
@@ -68,7 +70,8 @@ class BaseConfig: public QObject
         bool contains(const QString &);
         QString toString(ReadMode = Masked);
         QStringList keys();
-        
+        ConnectionConfig getConnectionConfig();
+
     private:
     
         QVariant & mask(const QString &);
