@@ -50,7 +50,7 @@
 #include "xivoconsts.h"
 
 #include "baseengine.h"
-#include "cticonn.h"
+#include "cti_server.h"
 #include "phonenumber.h"
 
 
@@ -72,7 +72,7 @@ static const QStringList GenLists = (QStringList()
                                      << "users" << "phones"
                                      << "agents" << "queues" << "groups"
                                      << "voicemails" << "incalls" << "queuemembers" << "parkinglots");
-static CtiConn * m_ctiConn;
+static CTIServer * m_cti_server;
 
 BaseEngine::BaseEngine(QSettings *settings,
                        const QString &osInfo)
@@ -103,7 +103,7 @@ BaseEngine::BaseEngine(QSettings *settings,
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
     m_ctiserversocket->setProtocol(QSsl::TlsV1);
-    m_ctiConn = new CtiConn(m_ctiserversocket);
+    m_cti_server = new CTIServer(m_ctiserversocket);
 
     connect(m_ctiserversocket, SIGNAL(encrypted()),
             this, SLOT(encryptedSsl()));
@@ -113,7 +113,7 @@ BaseEngine::BaseEngine(QSettings *settings,
             this, SLOT(ctiSocketConnected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
-    connect(m_ctiConn, SIGNAL(failedToConnect(const QString &)),
+    connect(m_cti_server, SIGNAL(failedToConnect(const QString &)),
             this, SLOT(popupError(const QString &)));
 
     // TCP connection for file transfer

@@ -31,20 +31,20 @@
  * $Date$
  */
 
-#ifndef __CTICONN_H__
-#define __CTICONN_H__
+#ifndef __CTISERVER_H__
+#define __CTISERVER_H__
 
 #include <QTcpSocket>
 #include <QObject>
 #include <QTimer>
 #include "baseengine.h"
 
-class CtiConn : public QObject
+class CTIServer : public QObject
 {
     Q_OBJECT
 
     public:
-        CtiConn(QTcpSocket *s);
+        CTIServer(QTcpSocket *s);
     signals:
         void failedToConnect(const QString &);
     private slots:

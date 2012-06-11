@@ -525,7 +525,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
         QVariantList m_meetme_membership;
 
-    friend class CtiConn;
+    friend class CTIServer;
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;

@@ -27,9 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cticonn.h"
+#include "cti_server.h"
 
-CtiConn::CtiConn(QTcpSocket * s)
+CTIServer::CTIServer(QTcpSocket * s)
     : QObject(NULL)
 {
     connect(s, SIGNAL(disconnected()),
@@ -40,7 +40,7 @@ CtiConn::CtiConn(QTcpSocket * s)
             this, SLOT(ctiSocketStateChanged(QAbstractSocket::SocketState)));
 }
 
-void CtiConn::ctiSocketError(QAbstractSocket::SocketError socketError)
+void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
 {
     qDebug() << Q_FUNC_INFO << socketError;
     switch (socketError) {
@@ -77,7 +77,7 @@ void CtiConn::ctiSocketError(QAbstractSocket::SocketError socketError)
     }
 }
 
-void CtiConn::ctiSocketClosedByRemote()
+void CTIServer::ctiSocketClosedByRemote()
 {
     qDebug() << Q_FUNC_INFO;
     b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
@@ -94,12 +94,12 @@ void CtiConn::ctiSocketClosedByRemote()
 
 /*! \brief called when the socket is closed, whatever reason
  */
-void CtiConn::ctiSocketDisconnected()
+void CTIServer::ctiSocketDisconnected()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void CtiConn::ctiSocketStateChanged(QAbstractSocket::SocketState /*socketState*/)
+void CTIServer::ctiSocketStateChanged(QAbstractSocket::SocketState /*socketState*/)
 {
     // qDebug() << Q_FUNC_INFO << socketState;
     // QAbstractSocket::HostLookupState
