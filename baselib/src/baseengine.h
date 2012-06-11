@@ -513,12 +513,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QByteArray m_downloaded;    //!< downloaded data
         QFile * m_logfile;
         
-        int m_byte_counter; //!< byte counter for calculating network throughput
-        QTime m_time;       //!< time counter for calculating network throughput
         bool m_attempt_loggedin;
-        int m_rate_bytes;   //!< byte counter to calculate Json decode throughput
-        int m_rate_msec;    //!< time counter to calculate Json decode throughput
-        int m_rate_samples; //!< number of Json decode
         bool m_forced_to_disconnect;    //!< set to true when disconnected by server
         
         QMultiHash<QString, IPBXListener*> m_listeners;

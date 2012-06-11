@@ -79,8 +79,7 @@ BaseEngine::BaseEngine(QSettings *settings,
     : QObject(NULL),
       m_sessionid(""), m_state(ENotLogged),
       m_pendingkeepalivemsg(0), m_logfile(NULL),
-      m_byte_counter(0), m_attempt_loggedin(false),
-      m_rate_bytes(0), m_rate_msec(0), m_rate_samples(0),
+      m_attempt_loggedin(false),
       m_forced_to_disconnect(false)
 {
     settings->setParent(this);
@@ -421,8 +420,6 @@ void BaseEngine::start()
     // (In case the TCP sockets were attempting to connect ...) aborts them first
     m_ctiserversocket->abort();
     connectSocket();
-    m_byte_counter = 0;
-    m_time.start();
 }
 
 /*! \brief Closes the connection to the server
@@ -449,14 +446,6 @@ void BaseEngine::clearInternalData()
 
     clearLists();
     clearChannelList();
-
-    if (m_time.isValid()) {
-        int elapsed = m_time.elapsed();
-        qDebug() << Q_FUNC_INFO
-                 << m_byte_counter << "bytes received in" << elapsed << "ms : "
-                 << (elapsed?QString::number((1000*m_byte_counter)/elapsed):QString("infinite"))
-                 << "Bytes/Second";
-    }
 
     /* cleaning the registered listeners */
     m_listeners.clear();
@@ -516,8 +505,6 @@ void BaseEngine::clearChannelList()
     m_queuemembers.clear();
 }
 
-/*! \brief initiates connection to the server
- */
 void BaseEngine::connectSocket()
 {
     if (m_config["userloginsimple"].toString().length()) {
@@ -717,9 +704,6 @@ void BaseEngine::parseCommand(const QString &line)
         QTime jsondecodetime;
         jsondecodetime.start();
         data = JsonQt::JsonToVariant::parse(line.trimmed());
-        m_rate_msec += jsondecodetime.elapsed();
-        m_rate_bytes += line.trimmed().size();
-        m_rate_samples ++;
     } catch(JsonQt::ParseException) {
         qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         data = QVariant(QVariant::Invalid);
@@ -1399,7 +1383,6 @@ void BaseEngine::ctiSocketReadyRead()
 {
     while (m_ctiserversocket->canReadLine()) {
         QByteArray data  = m_ctiserversocket->readLine();
-        m_byte_counter += data.size();
         QString line = QString::fromUtf8(data);
 
         if (line.startsWith("<ui version=")) {
@@ -1875,14 +1858,6 @@ void BaseEngine::sendKeepAliveMsg()
 {
     QVariantMap command;
     command["class"] = "keepalive";
-    if (m_rate_bytes > 100000) {
-        command["rate-bytes"] = m_rate_bytes;
-        command["rate-msec"] = m_rate_msec;
-        command["rate-samples"] = m_rate_samples;
-        m_rate_bytes = 0;
-        m_rate_msec = 0;
-        m_rate_samples = 0;
-    }
     ++m_pendingkeepalivemsg;
     sendJsonCommand(command);
 }
