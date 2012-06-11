@@ -145,6 +145,8 @@ void ConfigWidget::_insert_connection_tab()
 
     // Rest of the widget
     QFormLayout * form_layout = new QFormLayout;
+    form_layout->setHorizontalSpacing(5);
+    form_layout->setVerticalSpacing(5);
 
     m_trytoreconnect = new QCheckBox(tr("Try to reconnect") + "\n" + \
                                      tr("Checking this box disables the Error Popups"), this);
