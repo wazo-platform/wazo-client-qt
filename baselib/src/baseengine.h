@@ -435,7 +435,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void initFeatureFields(const QString &);
         
-        void connectSocket();
+        void connectToServer();
         void sendCommand(const QString &);
         void parseCommand(const QString &);
         void configsLists(const QString &, const QString &, const QVariantMap &);

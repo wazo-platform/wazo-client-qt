@@ -417,9 +417,18 @@ void BaseEngine::start()
             << port_to_use() << m_config["cti_encrypt"].toBool()
             << m_config.getSubSet("checked_function");
 
-    // (In case the TCP sockets were attempting to connect ...) aborts them first
+    connectToServer();
+}
+
+void BaseEngine::connectToServer()
+{
     m_ctiserversocket->abort();
-    connectSocket();
+    if (m_config["cti_encrypt"].toBool())
+        m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(),
+                                                  m_config["cti_port_encrypted"].toUInt());
+    else
+        m_ctiserversocket->connectToHost(m_config["cti_address"].toString(),
+                                         m_config["cti_port"].toUInt());
 }
 
 /*! \brief Closes the connection to the server
@@ -503,16 +512,6 @@ void BaseEngine::clearChannelList()
         delete iterq.value();
     }
     m_queuemembers.clear();
-}
-
-void BaseEngine::connectSocket()
-{
-    if (m_config["userloginsimple"].toString().length()) {
-        if (m_config["cti_encrypt"].toBool())
-            m_ctiserversocket->connectToHostEncrypted(m_config["cti_address"].toString(), m_config["cti_port_encrypted"].toUInt());
-        else
-            m_ctiserversocket->connectToHost(m_config["cti_address"].toString(), m_config["cti_port"].toUInt());
-    }
 }
 
 /*! \brief gets m_capaxlets */
