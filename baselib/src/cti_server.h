@@ -48,15 +48,16 @@ class CTIServer : public QObject
     public:
         CTIServer(QSslSocket * socket);
         void connectToServer(ConnectionConfig config);
+        void disconnectFromServer();
         bool connected();
 
     signals:
         void failedToConnect(const QString &, const QString &, const QString &);
+        void disconnected();
 
     private slots:
         void ctiSocketError(QAbstractSocket::SocketError);
-        void ctiSocketClosedByRemote();
-        void ctiSocketDisconnected();
+        void onSocketDisconnected();
 
     private:
         void connectSocket(const QString & address,

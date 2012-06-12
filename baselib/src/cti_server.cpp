@@ -32,8 +32,6 @@
 CTIServer::CTIServer(QSslSocket * socket)
     : QObject(NULL), m_socket(socket)
 {
-    connect(socket, SIGNAL(disconnected()),
-            this, SLOT(ctiSocketDisconnected()));
 }
 
 void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
@@ -42,7 +40,7 @@ void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
     switch (socketError) {
         // ~ once connected
         case QAbstractSocket::RemoteHostClosedError:
-            ctiSocketClosedByRemote();
+            onSocketDisconnected();
             break;
 
         // ~ when trying to connect
@@ -76,31 +74,19 @@ void CTIServer::sendError(const QString & message)
     emit failedToConnect(message, m_last_address, QString::number(m_last_port));
 }
 
-void CTIServer::ctiSocketClosedByRemote()
-{
-    qDebug() << Q_FUNC_INFO;
-    b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
-    b_engine->startTryAgainTimer();
-    sendError("socket_error_remotehostclosed");
-
-    QTimer * timer = new QTimer(this);
-    timer->setProperty("stopper", "connection_lost");
-    timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()),
-            b_engine, SLOT(stop()));
-    timer->start();
-}
-
 /*! \brief called when the socket is closed, whatever reason
  */
-void CTIServer::ctiSocketDisconnected()
+void CTIServer::onSocketDisconnected()
 {
-    qDebug() << Q_FUNC_INFO;
-    ctiSocketClosedByRemote();
+    emit disconnected();
+    this->sendError("socket_error_remotehostclosed");
 }
 
 void CTIServer::connectToServer(ConnectionConfig config)
 {
+    connect(m_socket, SIGNAL(disconnected()),
+            this, SLOT(onSocketDisconnected()));
+
     if (config.backup_address.isEmpty()) {
         catchSocketError();
     } else {
@@ -117,6 +103,13 @@ void CTIServer::connectToServer(ConnectionConfig config)
                             config.backup_port,
                             config.backup_encrypt);
     }
+}
+
+void CTIServer::disconnectFromServer() {
+    m_socket->flush();
+    disconnect(m_socket, SIGNAL(disconnected()),
+               this, SLOT(onSocketDisconnected()));
+    m_socket->disconnectFromHost();
 }
 
 void CTIServer::catchSocketError()

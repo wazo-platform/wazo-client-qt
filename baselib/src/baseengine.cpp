@@ -113,6 +113,8 @@ BaseEngine::BaseEngine(QSettings *settings,
             this, SLOT(ctiSocketConnected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
+    connect(m_cti_server, SIGNAL(disconnected()),
+            this, SLOT(onCTIServerDisconnected()));
     connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
             this, SLOT(popupError(const QString &, const QString &, const QString &)));
 
@@ -452,8 +454,6 @@ void BaseEngine::clearInternalData()
 
 void BaseEngine::stop()
 {
-    QString stopper = sender()->property("stopper").toString();
-    qDebug() << Q_FUNC_INFO << "stopper = " << stopper;
     disconnectAndClean();
 }
 
@@ -467,9 +467,15 @@ void BaseEngine::disconnectAndClean()
 void BaseEngine::stopConnection()
 {
     qDebug() << Q_FUNC_INFO;
-    m_ctiserversocket->flush();
-    m_ctiserversocket->disconnectFromHost();
+    m_cti_server->disconnectFromServer();
     stopKeepAliveTimer();
+}
+
+void BaseEngine::onCTIServerDisconnected()
+{
+    b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
+    b_engine->startTryAgainTimer();
+    this->stop();
 }
 
 /*! \brief clear the content of m_users
