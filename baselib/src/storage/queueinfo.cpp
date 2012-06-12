@@ -75,26 +75,6 @@ bool QueueInfo::updateStatus(const QVariantMap & prop)
         }
         haschanged = true;
     }
-    if (prop.contains("trunkmembers")) {
-        m_xtrunkids.clear();
-        m_trunkmembers.clear();
-        foreach (QString trunkid, prop.value("trunkmembers").toStringList()) {
-            QString xtrunkid = QString("%1/%2").arg(m_ipbxid).arg(trunkid); // to match against trunk membership
-            QString trunkmember = QString("qt:%1-%2").arg(m_id).arg(trunkid); // for requests to server
-            m_xtrunkids.append(xtrunkid);
-            m_trunkmembers.append(trunkmember);
-        }
-        haschanged = true;
-    }
-    if (prop.contains("incalls")) {
-        m_xincalls.clear();
-        // here it is meaningful to have them set in the right order
-        foreach (QString incall, prop.value("incalls").toStringList()) {
-            QString xincall = QString("%1/%2").arg(m_ipbxid).arg(incall);
-            m_xincalls.append(xincall);
-        }
-        haschanged = true;
-    }
     return haschanged;
 }
 

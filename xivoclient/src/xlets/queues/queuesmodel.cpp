@@ -72,9 +72,6 @@ QueuesModel::QueuesModel(QObject *parent)
             this, SLOT(updateQueueConfig(const QString &)));
     connect(b_engine, SIGNAL(removeQueueConfig(const QString &)),
             this, SLOT(removeQueueConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
-            this, SLOT(updateQueueStatus(const QString &)));
-
     // In case the option "show queue numbers" is toggled
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateQueueNames()));
@@ -86,7 +83,6 @@ void QueuesModel::updateQueueConfig(const QString &xid)
         int insertedRow = m_row2id.size();
         beginInsertRows(QModelIndex(), insertedRow, insertedRow);
         m_row2id.append(xid);
-        m_queues_data[xid].waiting_calls = 0;
         endInsertRows();
 
         /* Ask for stats once now, to avoid waiting the first update (default
@@ -108,24 +104,6 @@ void QueuesModel::removeQueueConfig(const QString &xid)
     }
 }
 
-void QueuesModel::updateQueueStatus(const QString &xid)
-{
-    if (!m_row2id.contains(xid)) {
-        return;
-    }
-
-    const QueueInfo * queueinfo = b_engine->queue(xid);
-    if (queueinfo == NULL) return;
-    
-    // Waiting calls
-    {
-        m_queues_data[xid].waiting_calls = queueinfo->xincalls().count();
-        QModelIndex cellChanged = createIndex(m_row2id.indexOf(xid), WAITING_CALLS);
-        emit dataChanged(cellChanged, cellChanged);
-    }
-    
-}
-
 /*! \brief Increase max waiting times of one second and tells the view to
  * refresh
  */
@@ -133,7 +111,7 @@ void QueuesModel::increaseWaitTime()
 {
     foreach(QString xqueueid, m_queues_data.keys()) {
         // Do not update if no one is waiting in the queue
-        if (m_queues_data[xqueueid].waiting_calls > 0) {
+        if (m_queues_data[xqueueid].stats.value("Xivo-WaitingCalls",0).toInt() > 0) {
             unsigned nsecs = m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"].toInt();
             nsecs++;
             m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"] = QString("%1").arg(nsecs);
@@ -250,7 +228,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
             case WAITING_CALLS :
                 greenlevel = b_engine->getConfig("guioptions.queuelevels").toMap().value("green").toUInt() - 1;
                 orangelevel = b_engine->getConfig("guioptions.queuelevels").toMap().value("orange").toUInt() - 1;
-                value = queue_data.waiting_calls;
+                value = m_queues_data[xqueueid].stats.value("Xivo-WaitingCalls").toInt();
                 break ;
             case CURRENT_MAX_WAIT :
                 greenlevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("green").toUInt() - 1;
@@ -283,7 +261,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
             case NAME :
                 return queueinfo->queueDisplayName();
             case WAITING_CALLS :
-                return QString::number(queue_data.waiting_calls);
+                return queue_data.stats.value("Xivo-WaitingCalls", "--");
             case EWT :
                 return formatTime(queue_data.stats.value("Xivo-EWT", not_available));
             case CURRENT_MAX_WAIT :

@@ -69,7 +69,6 @@ class QueuesModel : public QAbstractTableModel
     public slots:
         void updateQueueConfig(const QString &);
         void removeQueueConfig(const QString &);
-        void updateQueueStatus(const QString &);
         void increaseWaitTime();
         void updateQueueNames();
 
@@ -95,7 +94,6 @@ class QueuesModel : public QAbstractTableModel
         };
 
         struct QueueDataStruct {
-            unsigned waiting_calls;
             QMap<QString, QString> stats;
         };
 

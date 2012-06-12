@@ -53,14 +53,11 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         const QString & queueName() const  { return m_name; };  //! queue name
         const QString & queueDisplayName() const  { return m_displayname; };  //! queue name
 
-        const QStringList & xincalls() const { return m_xincalls; };  //! incoming channel calls
-
         const QStringList & xagentids() const { return m_xagentids; };  //! agent members of this queue
         const QStringList & agentmembers() const { return m_agentmembers; };  //! agent members of this queue
         const QStringList & xphoneids() const { return m_xphoneids; };  //! phone members of this queue
         const QStringList & phonemembers() const { return m_phonemembers; };  //! phone members of this queue
         const QStringList & xtrunkids() const { return m_xtrunkids; };  //! trunk members of this queue
-        const QStringList & trunkmembers() const { return m_trunkmembers; };  //! trunk members of this queue
         QString reference(const QString &, const QString &) const;
 
     private:
