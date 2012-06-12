@@ -96,6 +96,7 @@ void CTIServer::ctiSocketClosedByRemote()
 void CTIServer::ctiSocketDisconnected()
 {
     qDebug() << Q_FUNC_INFO;
+    ctiSocketClosedByRemote();
 }
 
 void CTIServer::connectToServer(ConnectionConfig config)
