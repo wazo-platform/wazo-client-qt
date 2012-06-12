@@ -45,6 +45,7 @@ QueuesView::QueuesView(QWidget *parent)
 
     verticalHeader()->setMovable(true);
     verticalHeader()->setFixedWidth(50);
+    verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
     horizontalHeader()->setMovable(true);
     horizontalHeader()->setSortIndicatorShown(false);
