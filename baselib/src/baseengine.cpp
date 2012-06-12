@@ -105,8 +105,6 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_ctiserversocket->setProtocol(QSsl::TlsV1);
     m_cti_server = new CTIServer(m_ctiserversocket);
 
-    connect(m_ctiserversocket, SIGNAL(encrypted()),
-            this, SLOT(encryptedSsl()));
     connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
             this, SLOT(sslErrors(const QList<QSslError> & )));
     connect(m_ctiserversocket, SIGNAL(connected()),
@@ -134,11 +132,6 @@ BaseEngine::BaseEngine(QSettings *settings,
                        << ":/obj/xletlib_%1"
                        << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
     changeTranslation();
-}
-
-void BaseEngine::encryptedSsl()
-{
-    qDebug() << Q_FUNC_INFO;
 }
 
 void BaseEngine::sslErrors(const QList<QSslError> & qlse)

@@ -315,8 +315,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         
         void actionFromFiche(const QVariant &);
 
-        // ssl-related slots
-        void encryptedSsl();
         // void sslSocketReadyRead();
         void sslErrors(const QList<QSslError> &);
 
