@@ -188,10 +188,10 @@ ConnectionConfig BaseConfig::getConnectionConfig()
     ConnectionConfig ret = {
         this->value("cti_address").toString(),
         this->value("cti_port").toUInt(),
-        this->value("cti_encrypted").toBool(),
+        this->value("cti_encrypt").toBool(),
         this->value("cti_backup_address").toString(),
         this->value("cti_backup_port").toUInt(),
-        this->value("cti_backup_encrypted").toBool()
+        this->value("cti_backup_encrypt").toBool()
     };
     return ret;
 }
