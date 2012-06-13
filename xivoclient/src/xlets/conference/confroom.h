@@ -69,7 +69,6 @@ class ConfRoomModel : public QAbstractTableModel
         void updateMembership() { reset(); }
     private slots:
         void extractRow2IdMap();
-        void updateMeetmesStatus(const QString &);
     protected:
         void timerEvent(QTimerEvent *event);
     private:
