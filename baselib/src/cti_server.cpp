@@ -84,20 +84,16 @@ void CTIServer::onSocketDisconnected()
 
 void CTIServer::connectToServer(ConnectionConfig config)
 {
-    connect(m_socket, SIGNAL(disconnected()),
-            this, SLOT(onSocketDisconnected()));
-
+    ignoreSocketError();
     if (config.backup_address.isEmpty()) {
         catchSocketError();
-    } else {
-        ignoreSocketError();
     }
 
     this->connectSocket(config.main_address,
                         config.main_port,
                         config.main_encrypt);
-    if (m_socket->waitForConnected(3000) == false
-        && config.backup_address.isEmpty() == false) {
+    if (config.backup_address.isEmpty() == false &&
+        m_socket->waitForConnected(3000) == false) {
         catchSocketError();
         this->connectSocket(config.backup_address,
                             config.backup_port,
@@ -110,6 +106,8 @@ void CTIServer::disconnectFromServer() {
     disconnect(m_socket, SIGNAL(disconnected()),
                this, SLOT(onSocketDisconnected()));
     m_socket->disconnectFromHost();
+    connect(m_socket, SIGNAL(disconnected()),
+            this, SLOT(onSocketDisconnected()));
 }
 
 void CTIServer::catchSocketError()
