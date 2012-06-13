@@ -77,28 +77,28 @@ Contexte: %2</translation>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="308"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="310"/>
         <source>Joined queues : %1</source>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="320"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="322"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="325"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="327"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="328"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="333"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="330"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="335"/>
         <source>Paused queues : %1</source>
         <translation>Files en pause : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="330"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="332"/>
         <source>Partial</source>
         <translation>Partielle</translation>
     </message>

@@ -144,7 +144,7 @@
         <translation>Arány ( Megválaszolt hívások kevesebb mint X mp/Megválaszolt hívások számaÖ</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="276"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="254"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>

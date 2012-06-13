@@ -45,7 +45,7 @@ oproep</translation>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="163"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agents and %6 phones</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; (%2) op &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agenten en %6 telefoontoestellen</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="238"/>

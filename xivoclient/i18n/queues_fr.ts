@@ -146,7 +146,7 @@ attente</translation>
         <translation>Ratio (Appels répondus en moins de X sec) / (Nombre d&apos;appels reçus)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="276"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="254"/>
         <source>N/A</source>
         <translation>N/D</translation>
     </message>

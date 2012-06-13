@@ -149,7 +149,7 @@ de espera</translation>
         <translation>Ratio (llamadas contestadas en menos de X segundos / número de llamadas atendidas)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="276"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="254"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>

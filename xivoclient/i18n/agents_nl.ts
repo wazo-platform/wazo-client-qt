@@ -76,28 +76,28 @@ Context: %2</translation>
         <translation>Onbekend %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="308"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="310"/>
         <source>Joined queues : %1</source>
         <translation>Gegroepeerde wachtrijen: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="320"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="322"/>
         <source>No</source>
         <translation>Nee</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="325"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="327"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="328"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="333"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="330"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="335"/>
         <source>Paused queues : %1</source>
         <translation>Gepauzeerde wachtrijen: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="330"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="332"/>
         <source>Partial</source>
         <translation>Gedeeltelijk Onvolledig?</translation>
     </message>

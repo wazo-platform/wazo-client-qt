@@ -107,7 +107,10 @@
 Order: %2
 IPBXid: %3
 Context: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Protocol: %1
+Volgorde: %2
+IPBXid: %3
+Context: %4</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="253"/>
