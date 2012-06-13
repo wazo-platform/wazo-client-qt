@@ -45,7 +45,6 @@ QtGui4.dll,\
 QtMultimedia4.dll,\
 QtNetwork4.dll,\
 QtSql4.dll,\
-QtWebKit4.dll,\
 QtXml4.dll,\
 QtXmlPatterns4.dll,\
 libeay32.dll,\

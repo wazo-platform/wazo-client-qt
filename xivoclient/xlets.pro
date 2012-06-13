@@ -15,5 +15,4 @@ SUBDIRS  = \
     src/xlets/queuedetails \
     src/xlets/queueentrydetails \
     src/xlets/services \
-    src/xlets/switchboard \
-    src/xlets/xletweb
+    src/xlets/switchboard
