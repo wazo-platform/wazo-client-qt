@@ -28,3 +28,18 @@ DEFINES += XC_VERSION=\"\\\"$${XC_VERSION}\\\"\"
 DEFINES += GIT_HASH=\"\\\"$${GIT_HASH}\\\"\"
 DEFINES += GIT_DATE=\"\\\"$${GIT_DATE}\\\"\"
 DEFINES += DATEBUILD=\"\\\"$${DATEBUILD}\\\"\"
+
+# Raise error on link if symbols are undefined
+
+QMAKE_LFLAGS += -Wl,-z,defs
+
+# Some useful warnings
+
+QMAKE_CXXFLAGS += -Wall \
+                  -Wextra \
+                  -Wundef \
+                  -Wcast-qual \
+                  -Wcast-align \
+                  -Wwrite-strings \
+                  -Winit-self \
+                  -Wstrict-aliasing
