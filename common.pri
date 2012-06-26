@@ -30,7 +30,7 @@ DEFINES += GIT_DATE=\"\\\"$${GIT_DATE}\\\"\"
 DEFINES += DATEBUILD=\"\\\"$${DATEBUILD}\\\"\"
 
 # Raise error on link if symbols are undefined
-unix {
+linux-g++ {
     QMAKE_LFLAGS += -Wl,-z,defs
 }
 

@@ -63,7 +63,7 @@ tests {
            $${CYGWIN_PATH}\\tmp\\xivoclient-win\\xivoclient-inst.exe \
            %CD%\\xivoclient-$${XIVO_MAJOR_VERSION}.-x86.exe
     }
-    unix {
+    linux-g++ {
         pack.target = pack
         pack.input = cross/resources/xivoclient.png \
                      cross/resources/xivoclient.desktop
