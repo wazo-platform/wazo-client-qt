@@ -43,7 +43,7 @@ namespace PhoneNumber
      * \li [-0-9\\. +]*[0-9]
      * \li "\\+?[0-9\\s\\.]+"
      */
-    const QString phone_pattern = "[-0-9#*\\. ]*[0-9#*]";
+    const QString phone_pattern = "[-0-9#*+\\. ]*[0-9#*+]";
     QRegExp phone_re();
     bool isURI(const QString &);
     bool contains(const QString &);
