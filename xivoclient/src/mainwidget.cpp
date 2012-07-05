@@ -1032,8 +1032,9 @@ void MainWidget::keyPressEvent(QKeyEvent * event)
 void MainWidget::about()
 {
     QString applicationVersion(XC_VERSION);
-    QString fetchlastone = QString("<a href=http://downloads.xivo.fr/xivo_cti_client/") +
-        ">" + tr("Fetch the last one") + "</a>";
+    QString fetchlastone = QString("<a href=http://mirror.xivo.fr/iso>"
+                                   "%1"
+                                   "</a>").arg(tr("Fetch the last one"));
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     QString gitdate_qs(__git_date__);
     QString gitdate(QDateTime::fromTime_t(gitdate_qs.toUInt()).toString());
