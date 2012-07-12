@@ -37,12 +37,12 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
         <source>logged off</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitgelogd</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
         <source>logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingelogd</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>

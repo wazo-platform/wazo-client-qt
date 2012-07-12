@@ -53,7 +53,7 @@
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="451"/>
         <source>Call &amp;mobile</source>
-        <translation type="unfinished"></translation>
+        <translation>Bel &amp;mobiel</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="476"/>
@@ -63,7 +63,7 @@
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="494"/>
         <source>&amp;Hangup</source>
-        <translation type="unfinished">&amp;Ophangen &amp;gesprek beëindigen</translation>
+        <translation>Op&amp;hangen</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="518"/>
@@ -286,7 +286,7 @@ Status: %3</translation>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="336"/>
         <source>&lt;EMPTY&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;LEEG&gt;</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="337"/>
@@ -296,7 +296,12 @@ IPBXid: %3
 Context: %4
 Status: %5
 Busy lines: %6</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoon Nummer: %1
+Volgorde: %2
+IPBXid: %3
+Context: %4
+Status: %5
+Bezette lijnen: %6</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="364"/>

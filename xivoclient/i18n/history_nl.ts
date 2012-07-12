@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="242"/>
         <source>Sent calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Gemaakte oproepen</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="243"/>

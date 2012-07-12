@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="55"/>
         <source>Logged</source>
-        <translation>Gelogd</translation>
+        <translation>Ingelogd</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>

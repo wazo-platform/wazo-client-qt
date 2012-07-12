@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="221"/>
         <source>Phone &lt;EMPTY&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoon &lt;LEEG&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="223"/>

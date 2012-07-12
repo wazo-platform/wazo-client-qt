@@ -6,7 +6,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="469"/>
         <source>Connection lost with XiVO CTI server</source>
-        <translation type="unfinished"></translation>
+        <translation>De verbinding met de Xivo CTI server is verbroken</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="812"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1280"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
-        <translation type="unfinished"></translation>
+        <translation>De server met IP adres %1 accepteert geen geëncrypteerde  verbindingen op poort %2. Gelieve de poort of de encryptie instellingen aan te passen.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1284"/>
@@ -172,7 +172,7 @@ Gelieve uw versie te upgraden.</translation>
     <message>
         <location filename="src/baseengine.cpp" line="1347"/>
         <source>Invalid extension number</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldig extensie nummer</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1351"/>

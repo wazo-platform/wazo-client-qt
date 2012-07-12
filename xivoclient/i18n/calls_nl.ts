@@ -26,7 +26,7 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="95"/>
         <source>&amp;Park the call</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Parkeer de oproep</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="96"/>

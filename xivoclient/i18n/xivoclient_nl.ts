@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="61"/>
         <source>Get</source>
-        <translation type="unfinished"></translation>
+        <translation>Ophalen</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="62"/>
@@ -51,12 +51,12 @@
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="102"/>
         <source>Open PhoneList File</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonlijst bestand openen</translation>
     </message>
     <message>
         <location filename="../src/xlets/callcampaign-builtin/callcampaignpanel.cpp" line="104"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV Bestanden (*.csv);;Alle Bestanden (*)</translation>
     </message>
 </context>
 <context>
@@ -74,7 +74,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="72"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Oproep</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="98"/>
@@ -89,17 +89,17 @@
     <message>
         <location filename="../src/configwidget.cpp" line="113"/>
         <source>Host address</source>
-        <translation type="unfinished"></translation>
+        <translation>Computer adres</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="114"/>
         <source>CTI port</source>
-        <translation type="unfinished"></translation>
+        <translation>CTI poort</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="117"/>
         <source>Main server</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoofd server</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="127"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="132"/>
         <source>Backup server</source>
-        <translation type="unfinished"></translation>
+        <translation>Backup server</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="151"/>
@@ -253,7 +253,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="336"/>
         <source>Appearance of SwitchBoard elements</source>
-        <translation type="unfinished"></translation>
+        <translation>Voorstelling van de schakelbord elementen</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="344"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="354"/>
         <source>Switchboard</source>
-        <translation type="unfinished">Schakelbord</translation>
+        <translation>Schakelbord</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="360"/>
@@ -309,12 +309,12 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="394"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (niet gelogd)</translation>
+        <translation>Agent (niet ingelogd)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="395"/>
         <source>Agent (logged)</source>
-        <translation>Agent (gelogd)</translation>
+        <translation>Agent (ingelogd)</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="397"/>
@@ -364,17 +364,17 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="421"/>
         <source>Portuguese</source>
-        <translation type="unfinished"></translation>
+        <translation>Portugees</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="422"/>
         <source>Dutch</source>
-        <translation type="unfinished"></translation>
+        <translation>Nederlands</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="423"/>
         <source>Hungarian</source>
-        <translation type="unfinished"></translation>
+        <translation>Hongaars</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="424"/>
@@ -389,7 +389,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="426"/>
         <source>Spanish</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaans</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="431"/>
@@ -419,7 +419,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="460"/>
         <source>Enable the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Het klembord activeren</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="464"/>
@@ -439,7 +439,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="475"/>
         <source>Reset docks position</source>
-        <translation type="unfinished"></translation>
+        <translation>De locatie van de vakken herstellen</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="477"/>
@@ -449,7 +449,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="487"/>
         <source>Enable logging of program actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeer het loggen van programma handelingen</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="493"/>
@@ -515,7 +515,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/configwidget.cpp" line="538"/>
         <source>Park</source>
-        <translation type="unfinished">Parkeer</translation>
+        <translation>Parkeer</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="546"/>
@@ -601,7 +601,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="42"/>
         <source>Sheets</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabbladen</translation>
     </message>
 </context>
 <context>
@@ -609,12 +609,12 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="37"/>
         <source>Dial</source>
-        <translation type="unfinished"></translation>
+        <translation>Bel</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="38"/>
         <source>Dial Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Bel paneel</translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
@@ -624,7 +624,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
         <source>Enter &amp;Number :</source>
-        <translation type="unfinished"></translation>
+        <translation>Geef een &amp;nummer op:</translation>
     </message>
 </context>
 <context>
@@ -632,7 +632,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonlijst</translation>
     </message>
 </context>
 <context>
@@ -640,17 +640,17 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="40"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonlijst</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="41"/>
         <source>Directory Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonlijst Paneel</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="44"/>
         <source>Di&amp;rectory</source>
-        <translation type="unfinished"></translation>
+        <translation>Te&amp;lefoonlijst</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="52"/>
@@ -688,7 +688,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="53"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonlijst</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="64"/>
@@ -728,7 +728,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="153"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF Bestanden (*.pdf);;Alle Bestanden (*)</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="199"/>
@@ -772,12 +772,12 @@ wordt verwerkt en wordt weldra verstuurd.</translation>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="218"/>
         <source>Dialog between CTI server and IPBX</source>
-        <translation type="unfinished"></translation>
+        <translation>Communicatie tussen CTI server en IPBX</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="220"/>
         <source>(Server) missing directory</source>
-        <translation type="unfinished"></translation>
+        <translation>(server) ontbrekende telefoonlijst</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
@@ -787,7 +787,7 @@ wordt verwerkt en wordt weldra verstuurd.</translation>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="224"/>
         <source>Not given</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet opgegeven</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="226"/>
@@ -835,12 +835,12 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="194"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (niet gelogd)</translation>
+        <translation>Agent (niet ingelogd)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="195"/>
         <source>Agent (logged)</source>
-        <translation>Agent (gelogd)</translation>
+        <translation>Agent (ingelogd)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="346"/>
@@ -958,82 +958,82 @@ Reden: %3.</translation>
         <translation>Verbinding verbroken</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1036"/>
+        <location filename="../src/mainwidget.cpp" line="1037"/>
         <source>Fetch the last one</source>
-        <translation type="unfinished"></translation>
+        <translation>De laatste ophalen</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1043"/>
+        <location filename="../src/mainwidget.cpp" line="1044"/>
         <source>About XiVO Client</source>
         <translation>Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1045"/>
+        <location filename="../src/mainwidget.cpp" line="1046"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1050"/>
+        <location filename="../src/mainwidget.cpp" line="1051"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Versie Informatie&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1051"/>
+        <location filename="../src/mainwidget.cpp" line="1052"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Major: &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1052"/>
+        <location filename="../src/mainwidget.cpp" line="1053"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Minor : git hash &lt;b&gt;%1&lt;/b&gt; van : %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1055"/>
-        <source>(Application Built on : %1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwidget.cpp" line="1056"/>
-        <source>(Application Launched on : %1)</source>
-        <translation type="unfinished"></translation>
+        <source>(Application Built on : %1)</source>
+        <translation>(Applicatie Gecompileerd op : %1)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1057"/>
-        <source>(Config File Location : %1)</source>
-        <translation type="unfinished"></translation>
+        <source>(Application Launched on : %1)</source>
+        <translation>(Applicatie gestart op: %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1060"/>
+        <location filename="../src/mainwidget.cpp" line="1058"/>
+        <source>(Config File Location : %1)</source>
+        <translation>(Locatie Configuratie Bestand : %1)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="1061"/>
         <source>E-mail : </source>
         <translation>E-mail: </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1061"/>
+        <location filename="../src/mainwidget.cpp" line="1062"/>
         <source>Phone : </source>
         <translation>Tel. : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1062"/>
+        <location filename="../src/mainwidget.cpp" line="1063"/>
         <source>Authors : </source>
         <translation>Auteurs: </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1062"/>
+        <location filename="../src/mainwidget.cpp" line="1063"/>
         <source>Avencall Development Team</source>
         <translation>Avencall Development Team</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1064"/>
+        <location filename="../src/mainwidget.cpp" line="1065"/>
         <source>License : </source>
         <translation>Licentie: </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1066"/>
+        <location filename="../src/mainwidget.cpp" line="1067"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>met een speciale uitzondering om het te koppelen met OpenSSL, onder bepaalde voorwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1072"/>
+        <location filename="../src/mainwidget.cpp" line="1073"/>
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
@@ -1171,7 +1171,7 @@ Bent u zeker ?</translation>
     <message>
         <location filename="../src/xlets/customerinfo-builtin/remarkarea.cpp" line="67"/>
         <source>&amp;Submit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verstuur</translation>
     </message>
 </context>
 <context>
@@ -1184,7 +1184,7 @@ Bent u zeker ?</translation>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
         <source>N&amp;ame or number to search :</source>
-        <translation type="unfinished"></translation>
+        <translation>N&amp;aam of nummer om op te zoeken:</translation>
     </message>
 </context>
 </TS>

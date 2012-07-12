@@ -7,12 +7,12 @@
         <location filename="../src/xlets/services/servicespanel.cpp" line="56"/>
         <location filename="../src/xlets/services/servicespanel.cpp" line="68"/>
         <source>Services</source>
-        <translation type="unfinished"></translation>
+        <translation>Diensten</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="57"/>
         <source>Voice &amp;Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice&amp;mail</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="58"/>
