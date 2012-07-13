@@ -220,7 +220,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
     const QueueInfo * queueinfo = b_engine->queue(xqueueid);
     if (queueinfo == NULL) return QVariant();
 
-    if (! m_queues_data.contains(xqueueid)) return QVariant();
+    if (! m_queues_data.contains(xqueueid) && col != NAME && col != NUMBER && col != ID) return QVariant();
     QueueDataStruct queue_data = m_queues_data[xqueueid];
 
     // Background color
@@ -257,7 +257,7 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         switch (col) {
             case ID :
-                return queueinfo->xid();
+              return xqueueid;
             case NUMBER :
                 return queueinfo->queueNumber();
             case NAME :
