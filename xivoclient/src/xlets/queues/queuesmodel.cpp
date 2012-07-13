@@ -220,8 +220,10 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
     const QueueInfo * queueinfo = b_engine->queue(xqueueid);
     if (queueinfo == NULL) return QVariant();
 
-    if (! m_queues_data.contains(xqueueid) && col != NAME && col != NUMBER && col != ID) return QVariant();
-    QueueDataStruct queue_data = m_queues_data[xqueueid];
+    QueueDataStruct queue_data;
+    if (m_queues_data.contains(xqueueid)) {
+        queue_data = m_queues_data.value(xqueueid);
+    }
 
     // Background color
     if (role == Qt::BackgroundRole) {
@@ -230,12 +232,12 @@ QVariant QueuesModel::data(const QModelIndex &index, int role) const
             case WAITING_CALLS :
                 greenlevel = b_engine->getConfig("guioptions.queuelevels").toMap().value("green").toUInt() - 1;
                 orangelevel = b_engine->getConfig("guioptions.queuelevels").toMap().value("orange").toUInt() - 1;
-                value = m_queues_data[xqueueid].stats.value("Xivo-WaitingCalls").toInt();
+                value = queue_data.stats.value("Xivo-WaitingCalls").toInt();
                 break ;
             case CURRENT_MAX_WAIT :
                 greenlevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("green").toUInt() - 1;
                 orangelevel = b_engine->getConfig("guioptions.queuelevels_wait").toMap().value("orange").toUInt() - 1;
-                value = m_queues_data[xqueueid].stats.value("Xivo-LongestWaitTime").toInt();
+                value = queue_data.stats.value("Xivo-LongestWaitTime").toInt();
                 break ;
             default :
                 return QVariant();
