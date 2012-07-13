@@ -415,14 +415,14 @@ void ConfigWidget::_insert_guisetting_tab()
 
     m_locale_cbox = new QComboBox(this);
     m_locale_cbox->addItem(tr("System Language"), QString("default"));
+    m_locale_cbox->addItem(tr("Dutch"), QString("nl_NL"));
     m_locale_cbox->addItem(tr("English"), QString("en_US"));
     m_locale_cbox->addItem(tr("French"), QString("fr_FR"));
     m_locale_cbox->addItem(tr("Italian"), QString("it_IT"));
-    m_locale_cbox->addItem(tr("Portuguese") + QString(" (%1)").arg(tr("incomplete")), QString("pt_BR"));
-    m_locale_cbox->addItem(tr("Dutch")      + QString(" (%1)").arg(tr("incomplete")), QString("nl_NL"));
-    m_locale_cbox->addItem(tr("Hungarian")  + QString(" (%1)").arg(tr("incomplete")), QString("hu_HU"));
     m_locale_cbox->addItem(tr("German")     + QString(" (%1)").arg(tr("incomplete")), QString("de_DE"));
+    m_locale_cbox->addItem(tr("Hungarian")  + QString(" (%1)").arg(tr("incomplete")), QString("hu_HU"));
     m_locale_cbox->addItem(tr("Japanese")   + QString(" (%1)").arg(tr("incomplete")), QString("ja_JP"));
+    m_locale_cbox->addItem(tr("Portuguese") + QString(" (%1)").arg(tr("incomplete")), QString("pt_BR"));
     m_locale_cbox->addItem(tr("Spanish")    + QString(" (%1)").arg(tr("incomplete")), QString("es_ES"));
     for (int i = 0; i < m_locale_cbox->count(); i++) {
         if (m_config["forcelocale"].toString() == m_locale_cbox->itemData(i))
