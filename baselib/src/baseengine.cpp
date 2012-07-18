@@ -75,7 +75,6 @@ static const QStringList GenLists = (QStringList()
                                      << "phones"
                                      << "agents"
                                      << "queues"
-                                     << "groups"
                                      << "voicemails"
                                      << "queuemembers"
                                      << "parkinglots");
@@ -101,7 +100,6 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("phones", newXInfo<PhoneInfo>);
     m_xinfoList.insert("agents", newXInfo<AgentInfo>);
     m_xinfoList.insert("queues", newXInfo<QueueInfo>);
-    m_xinfoList.insert("groups", newXInfo<GroupInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
     m_xinfoList.insert("queuemembers", newXInfo<QueueMemberInfo>);
     m_xinfoList.insert("parkinglots", newXInfo<ParkingInfo>);

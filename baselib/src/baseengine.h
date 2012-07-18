@@ -43,7 +43,6 @@
 #include <phoneinfo.h>
 #include <queueinfo.h>
 #include <agentinfo.h>
-#include <groupinfo.h>
 #include <voicemailinfo.h>
 #include <userinfo.h>
 #include <queuememberinfo.h>
@@ -195,8 +194,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
             { return (const AgentInfo *) m_anylist.value("agents").value(id); };
         const QueueInfo * queue(const QString & id) const         //!< Return the queue to any Xlet
             { return (const QueueInfo *) m_anylist.value("queues").value(id); };
-        const GroupInfo * group(const QString & id) const          //!< Return the group to any Xlet
-            { return (const GroupInfo *) m_anylist.value("groups").value(id); };
         const ParkingInfo * parkinglot(const QString & id) const
             { return (const ParkingInfo *) m_anylist.value("parkinglots").value(id); }
         const VoiceMailInfo * voicemail(const QString & id) const  //!< Return the voicemail to any Xlet
