@@ -67,11 +67,18 @@
  */
 
 BASELIB_EXPORT BaseEngine * b_engine;
-static const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
+static const QStringList CheckFunctions = (QStringList()
+                                           << "presence"
+                                           << "customerinfo");
 static const QStringList GenLists = (QStringList()
-                                     << "users" << "phones"
-                                     << "agents" << "queues" << "groups"
-                                     << "voicemails" << "incalls" << "queuemembers" << "parkinglots");
+                                     << "users"
+                                     << "phones"
+                                     << "agents"
+                                     << "queues"
+                                     << "groups"
+                                     << "voicemails"
+                                     << "queuemembers"
+                                     << "parkinglots");
 static CTIServer * m_cti_server;
 
 BaseEngine::BaseEngine(QSettings *settings,
@@ -96,7 +103,6 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_xinfoList.insert("queues", newXInfo<QueueInfo>);
     m_xinfoList.insert("groups", newXInfo<GroupInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
-    m_xinfoList.insert("incalls", newXInfo<InCallsInfo>);
     m_xinfoList.insert("queuemembers", newXInfo<QueueMemberInfo>);
     m_xinfoList.insert("parkinglots", newXInfo<ParkingInfo>);
 

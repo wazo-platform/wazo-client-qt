@@ -39,7 +39,6 @@
 #include <QSettings>
 
 #include <channelinfo.h>
-#include <incallsinfo.h>
 #include "parkinginfo.h"
 #include <phoneinfo.h>
 #include <queueinfo.h>
