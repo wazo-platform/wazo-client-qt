@@ -8,10 +8,12 @@ TARGET = xivoclient
 
 CONFIG += uitools
 
-unix:LIBS += -lxivoclientxlets
-win32 {
-    debug:LIBS += -lxivoclientxletsd
-    release:LIBS += -lxivoclientxlets
+!profiling {
+    unix:LIBS += -lxivoclientxlets
+    win32 {
+        debug:LIBS += -lxivoclientxletsd
+        release:LIBS += -lxivoclientxlets
+    }
 }
 mac {
     QMAKE_INFO_PLIST = ../cross/resources/macos-info.plist

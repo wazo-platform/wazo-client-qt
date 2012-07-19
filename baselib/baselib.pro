@@ -11,6 +11,7 @@ JSON_JSONQT_DIR = $${ROOT_DIR}/json_jsonqt/lib
 # Library version
 VERSION      = $${XIVOVER}
 DEFINES     += BASELIB_LIBRARY
+
 INCLUDEPATH += $${JSON_JSONQT_DIR}
 INCLUDEPATH += $${ROOT_DIR}/src
 INCLUDEPATH += $${ROOT_DIR}/src/storage
@@ -47,7 +48,7 @@ updateqm.commands = lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_OUT}
 # target_predep = will be compiled before the executable
 updateqm.CONFIG += no_link target_predeps
 
-RESOURCES += $${ROOT_DIR}/baselib.qrc
+RESOURCES += $${ROOT_DIR}/baselib.qrc $${ROOT_DIR}/translations.qrc
 
 MOC_DIR = $$ROOT_DIR/obj
 OBJECTS_DIR = $$ROOT_DIR/obj

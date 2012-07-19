@@ -2,13 +2,5 @@
 <RCC version="1.0">
     <qresource>
         <file>guioptions.json</file>
-        <file>obj/baselib_fr.qm</file>
-        <file>obj/baselib_es_ES.qm</file>
-        <file>obj/baselib_pt_BR.qm</file>
-        <file>obj/baselib_hu.qm</file>
-        <file>obj/baselib_de.qm</file>
-        <file>obj/baselib_ja.qm</file>
-        <file>obj/baselib_it.qm</file>
-        <file>obj/baselib_nl.qm</file>
     </qresource>
 </RCC>

@@ -39,6 +39,15 @@ tests {
     xlets.makefile = Makefile_xlets
     xlets.depends = xletlib
 
+    profiling {
+        SUBDIRS = staticlib xivoclient
+
+        staticlib.file = xivoclient/staticlib.pro
+        staticlib.makefile = Makefile_staticlib
+
+        xivoclient.depends = staticlib
+    }
+
     # Pack rule
     win32 {
         pack.target = pack
