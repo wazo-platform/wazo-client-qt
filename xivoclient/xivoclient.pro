@@ -76,3 +76,8 @@ isEmpty( PLUGINDIR ) {
     PLUGINDIR = /usr/share/xivoclient/plugins
 }
 DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"
+
+profiling {
+    QMAKE_CXXFLAGS += -g -pg
+    QMAKE_LFLAGS += -g -pg
+}

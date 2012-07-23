@@ -44,8 +44,3 @@ QMAKE_CXXFLAGS += -Wall \
                   -Wwrite-strings \
                   -Winit-self \
                   -Wstrict-aliasing
-
-debug {
-    QMAKE_CXXFLAGS += -g -pg
-    QMAKE_LFLAGS += -g -pg
-}

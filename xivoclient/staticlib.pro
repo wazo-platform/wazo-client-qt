@@ -62,3 +62,6 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_nl.ts
+
+QMAKE_CXXFLAGS += -g -pg
+QMAKE_LFLAGS += -g -pg
