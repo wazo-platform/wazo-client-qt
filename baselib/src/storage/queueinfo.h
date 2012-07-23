@@ -45,19 +45,18 @@
 class BASELIB_EXPORT QueueInfo : public XInfo
 {
     public:
-        QueueInfo(const QString &, const QString &);  //! constructor
-        bool updateConfig(const QVariantMap &);  //! update config members
-        bool updateStatus(const QVariantMap &);  //! update status members
-        const QString & context() const { return m_context; };  //! context this queue belongs to
-        const QString & queueNumber() const { return m_number; };  //! queue number
-        const QString & queueName() const  { return m_name; };  //! queue name
-        const QString & queueDisplayName() const  { return m_displayname; };  //! queue name
+        QueueInfo(const QString &, const QString &);
+        bool updateConfig(const QVariantMap &);
+        bool updateStatus(const QVariantMap &);
+        const QString & context() const;
+        const QString & queueNumber() const;
+        const QString & queueName() const;
+        const QString & queueDisplayName() const;
 
-        const QStringList & xagentids() const { return m_xagentids; };  //! agent members of this queue
-        const QStringList & agentmembers() const { return m_agentmembers; };  //! agent members of this queue
-        const QStringList & xphoneids() const { return m_xphoneids; };  //! phone members of this queue
-        const QStringList & phonemembers() const { return m_phonemembers; };  //! phone members of this queue
-        const QStringList & xtrunkids() const { return m_xtrunkids; };  //! trunk members of this queue
+        const QStringList & xagentids() const;
+        const QStringList & agentmembers() const;
+        const QStringList & xphoneids() const;
+        const QStringList & phonemembers() const;
         QString reference(const QString &, const QString &) const;
 
     private:
@@ -70,7 +69,6 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         QStringList m_agentmembers;
         QStringList m_xphoneids;
         QStringList m_phonemembers;
-        QStringList m_xtrunkids;
         QStringList m_trunkmembers;
 
         QStringList m_xincalls;

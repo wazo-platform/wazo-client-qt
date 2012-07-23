@@ -78,6 +78,46 @@ bool QueueInfo::updateStatus(const QVariantMap & prop)
     return haschanged;
 }
 
+const QString & QueueInfo::context() const
+{
+    return m_context;
+}
+
+const QString & QueueInfo::queueNumber() const
+{
+    return m_number;
+}
+
+const QString & QueueInfo::queueName() const
+{
+    return m_name;
+}
+
+const QString & QueueInfo::queueDisplayName() const
+{
+    return m_displayname;
+}
+
+const QStringList & QueueInfo::xagentids() const
+{
+    return m_xagentids;
+}
+
+const QStringList & QueueInfo::agentmembers() const
+{
+    return m_agentmembers;
+}
+
+const QStringList & QueueInfo::xphoneids() const
+{
+    return m_xphoneids;
+}
+
+const QStringList & QueueInfo::phonemembers() const
+{
+    return m_phonemembers;
+}
+
 QString QueueInfo::reference(const QString & where, const QString & xmemberid) const
 {
     QString ref = "";
