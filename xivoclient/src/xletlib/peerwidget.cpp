@@ -202,9 +202,14 @@ void PeerWidget::updateQueueMemberConfig(const QString & queuemember_xid)
     const QueueMemberInfo *queuememberinfo = b_engine->queuemember(queuemember_xid);
     if (queuememberinfo == NULL)
         return;
-    QString agent_number = queuememberinfo->agentNumber();
-    QString agent_id = QueueMemberDAO::agentIdFromAgentNumber(agent_number);
-    if (m_xagentid == agent_id) {
+    QString updated_agent_number = queuememberinfo->agentNumber();
+
+    const AgentInfo * current_agent_info = b_engine->agent(m_xagentid);
+    if (current_agent_info == NULL) {
+        return;
+    }
+    QString current_agent_number = current_agent_info->agentNumber();
+    if (updated_agent_number == current_agent_number) {
         updateAgentToolTip();
     }
 }
