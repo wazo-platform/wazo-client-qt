@@ -89,7 +89,7 @@ SetCompressor /FINAL /SOLID lzma
   !define MUI_HEADERIMAGE_UNBITMAP xivo.bmp
 
 Name "XiVO Client \${XC_VERSION}"
-OutFile "xivoclient-inst.exe"
+OutFile "xivoclient-\${XC_VERSION}-x86.exe"
 
 InstallDir \$PROGRAMFILES\XiVO\
 

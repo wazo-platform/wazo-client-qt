@@ -4,7 +4,7 @@
 # If you use advanced shell features, please check that Cygwin accepts them
 # as well.
 
-if [ ! $# -eq 2 ] ; then
+if [ $# -lt 1 ] ; then
     echo "Usage : $0 <versions_file>"
     echo "Example : $0 versions.mak"
     exit
@@ -23,7 +23,7 @@ CURRENT_COMMIT="$(git rev-list HEAD --max-count=1)"
 COMMIT_HASH="$(git log -1 --pretty=%h $CURRENT_COMMIT)"
 COMMIT_DATE="$(git log -1 --pretty=%ct $CURRENT_COMMIT)"
 GIT_DESCRIBE="$(git describe)"
-XC_VERSION="${GIT_DESCRIBE:12}" # Gets 1.2.1, 1.2.2, ...
+XC_VERSION="${GIT_DESCRIBE:12}" # Strip "xivo-client-" from tag name
 DATEBUILD="$(LANG= date +%Y-%m-%dT%H:%M:%S)"
 
 
