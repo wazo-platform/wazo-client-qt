@@ -53,7 +53,6 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "talkingto_kind", & m_talkingto_kind);
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
-    haschanged |= setIfChangeString(prop, "thisdisplay", & m_thisdisplay);
     haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
 
@@ -65,7 +64,6 @@ QString ChannelInfo::toString() const
 {
     QString s;
     s += "Xid(" + xid() + ") ";
-    s += "This display(" + m_thisdisplay + ") ";
     s += "Peer display(" + m_peerdisplay + ") ";
     s += "Comm status(" + m_commstatus + ") ";
     s += "Direction(" + m_direction + ") " ;
@@ -99,12 +97,6 @@ const QString & ChannelInfo::commstatus() const
 double ChannelInfo::timestamp() const
 {
     return m_timestamp;
-}
-
-const QString ChannelInfo::thisdisplay() const
-{
-    // go fetch information about 'relations ?'
-    return m_thisdisplay;
 }
 
 const QString ChannelInfo::peerdisplay() const
