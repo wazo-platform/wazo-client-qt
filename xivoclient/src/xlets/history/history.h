@@ -56,7 +56,7 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
     Q_OBJECT
 
     public:
-        LogWidgetModel(int);
+        LogWidgetModel(int, QWidget * parent = NULL);
         void parseCommand(const QVariantMap &);
 
     protected:
