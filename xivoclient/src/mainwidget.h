@@ -31,6 +31,7 @@
 #define __MAINWIDGET_H__
 
 #include <QtGui>
+#include <QList>
 
 #include <functests.h>
 
@@ -138,7 +139,7 @@ class MainWidget : public QMainWindow
         QStringList m_allnames;
 
 
-        QHash<QString, QDockWidget *> m_docks;
+        QHash<QString, QList<QDockWidget *>* > m_docks;
 
         // actions :
         QAction *m_cfgact;  //!< Configuration Action

@@ -106,7 +106,7 @@ void CTIServer::disconnectFromServer() {
     disconnect(m_socket, SIGNAL(disconnected()),
                this, SLOT(onSocketDisconnected()));
     m_socket->disconnectFromHost();
-    if (m_socket->isEncrypted())
+    if (m_socket->isEncrypted() && m_socket->state() != QAbstractSocket::UnconnectedState)
       m_socket->waitForDisconnected();
     connect(m_socket, SIGNAL(disconnected()),
             this, SLOT(onSocketDisconnected()));
