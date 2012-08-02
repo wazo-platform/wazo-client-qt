@@ -101,7 +101,10 @@ class MainWidget : public QMainWindow
         void makeLoginWidget();
         void setConfig();
         void setMenuAvailabilityEnabled(bool);
-
+        QDockWidget* createDockXlet(const QString& name,
+                                    const QString& title,
+                                    QDockWidget::DockWidgetFeatures features,
+                                    QWidget *widget);
         QSystemTrayIcon *m_systrayIcon;  //!< System Tray Icon
         QIcon m_icon_transp;  //!< Icon Objects
         QIcon m_icon_red;

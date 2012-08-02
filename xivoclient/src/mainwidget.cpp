@@ -87,7 +87,6 @@ MainWidget::MainWidget()
 
     createActions();
     createMenus();
-
     if (m_withsystray && QSystemTrayIcon::isSystemTrayAvailable())
         createSystrayIcon();
 
@@ -635,6 +634,20 @@ void MainWidget::showWidgetOnTop(QWidget * widget)
     if (m_tabwidget)
         m_tabwidget->setCurrentWidget(widget);
 }
+QDockWidget* MainWidget::createDockXlet(const QString& name,
+                                        const QString& title,
+                                        QDockWidget::DockWidgetFeatures features,
+                                        QWidget *widget)
+{
+    QDockWidget* tmpDockWidget = new QDockWidget(title);
+    tmpDockWidget->setFeatures(features);
+    tmpDockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
+    tmpDockWidget->setObjectName(name);
+    addDockWidget(Qt::BottomDockWidgetArea, tmpDockWidget);
+    tmpDockWidget->hide();
+    tmpDockWidget->setWidget(widget);
+    return tmpDockWidget;
+}
 
 void MainWidget::addPanel(const QString &name, const QString &title, QWidget *widget)
 {
@@ -647,24 +660,10 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
             features |= QDockWidget::DockWidgetFloatable;
         if (m_dockoptions[name].contains("m"))
             features |= QDockWidget::DockWidgetMovable;
-	
-	QDockWidget* tmpDockWidget = new QDockWidget(title);
-	tmpDockWidget->setFeatures(features);
-	tmpDockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
-	tmpDockWidget->setObjectName(name);
-	addDockWidget(Qt::BottomDockWidgetArea, tmpDockWidget);
-	tmpDockWidget->hide();
-	tmpDockWidget->setWidget(widget);
-	if(! m_docks.contains(name))
-	  m_docks[name] = new QList<QDockWidget *>();
-	m_docks[name]->prepend(tmpDockWidget);
-	// m_docks[name] = new QDockWidget(title);
-	// m_docks[name]->setFeatures(features);
-        // m_docks[name]->setAllowedAreas(Qt::BottomDockWidgetArea); // restrain the area to Bottom region
-        // m_docks[name]->setObjectName(name); // compulsory to allow a proper state's saving
-        // addDockWidget(Qt::BottomDockWidgetArea, m_docks[name]);
-        // m_docks[name]->hide();
-        // m_docks[name]->setWidget(widget);
+        if(! m_docks.contains(name)) {
+            m_docks[name] = new QList<QDockWidget *>();
+        }
+        m_docks[name]->prepend(createDockXlet(name, title, features, widget));
     } else if (m_gridnames.contains(name)) {
         qDebug() << Q_FUNC_INFO << "(grid)" << name << m_dockoptions[name] << title << m_dockoptions[name].toInt();
         qDebug() << Q_FUNC_INFO << "inserting" << m_dockoptions[name].toInt();
@@ -744,8 +743,7 @@ void MainWidget::engineStarted()
         if (! QStringList("tabber").contains(xletid)) {
             bool withscrollbar = m_dockoptions[xletid].contains("s");
             XLet *xlet = XLetFactory::spawn(xletid, this);
-	    // HERE detect m_xletlist is empty or not and delete remaining xlets
-	    if (xlet) {
+            if (xlet) {
                 m_xletlist.insert(xletid, xlet);
                 xlet->doGUIConnects(this);
                 if (withscrollbar) {
@@ -768,8 +766,6 @@ void MainWidget::engineStarted()
     foreach (QString name, m_docks.keys())
       for(QList<QDockWidget *>::iterator i = m_docks[name]->begin(); i != m_docks[name]->end(); i++)
         (*i)->show();
-        // m_docks[name]->show();
-
     m_defaultState = saveState();
     // restore the saved state AFTER showing the docks
     restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
@@ -828,11 +824,6 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
         removeDockWidget(*i);
         (*i)->deleteLater();
       }
-      // delete m_docks[name];
-      // m_docks.remove(name);
-        // removeDockWidget(m_docks[name]);
-        // m_docks[name]->deleteLater();
-        // m_docks.remove(name);
     }
     if (m_tabnames.contains(name)) {
         int thisindex = m_tabwidget->indexOf(widget);
@@ -913,7 +904,6 @@ void MainWidget::engineStopped()
         delete m_docks[dname];
         m_docks.remove(dname);
       }
-        // removePanel(dname, m_docks.value(dname));
     }
     clearPresence();
 
