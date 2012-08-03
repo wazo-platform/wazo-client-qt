@@ -34,10 +34,26 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QSettings>
+#include <QtAlgorithms>
 
 #include "basepeerwidget.h"
 #include "baseengine.h"
 #include "xivoconsts.h"
+
+static
+bool channelTimestampLessThan(const QString channelxid1, const QString channelxid2)
+{
+    const ChannelInfo * channel1 , * channel2;
+    channel1 = b_engine->channel(channelxid1);
+    channel2 = b_engine->channel(channelxid2);
+    if (channel1 && channel2) {
+        return channel1->timestamp() < channel2->timestamp();
+    }
+    
+    return false;
+    
+}
+
 
 BasePeerWidget::BasePeerWidget(const UserInfo * ui)
     : m_ui_remote(ui), m_editable(false), m_transfered(false)
@@ -486,17 +502,20 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
         << CHAN_STATUS_LINKED_CALLER
         << CHAN_STATUS_LINKED_CALLED
         << CHAN_STATUS_RINGING;
-    const QStringList & channels = m_ui_local->xchannels();
+    QStringList channels = m_ui_local->xchannels();
+    qSort(channels.begin(), channels.end(), channelTimestampLessThan); 
+    int callorder = 1;
     foreach (const QString & channelxid, channels) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
             if (can_hangup.contains(c->commstatus())
                 || c->talkingto_kind().contains("meetme")) {
-                QAction * action = new QAction(tr("&Hangup"), this);
+                QAction * action = new QAction(tr("&Hangup call") + " " + QString::number(callorder), this);
                 action->setProperty("xchannel", c->xid());
                 menu->addAction(action);
                 connect(action, SIGNAL(triggered()), this, SLOT(hangup()));
             }
         }
+        ++callorder;
     }
 }
 
