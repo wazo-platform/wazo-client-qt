@@ -154,7 +154,7 @@
         <translation>Rapporto (Chiamate risposte in meno di X sec / Numero di chiamate risposte)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="256"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="258"/>
         <source>N/A</source>
         <translation>N / D</translation>
     </message>

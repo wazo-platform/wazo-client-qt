@@ -338,21 +338,25 @@ ones beneath) on first window</source>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="418"/>
+        <source>Dutch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="419"/>
         <source>English</source>
         <translation>Inglês</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="419"/>
+        <location filename="../src/configwidget.cpp" line="420"/>
         <source>French</source>
         <translation>Frances</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="420"/>
+        <location filename="../src/configwidget.cpp" line="421"/>
         <source>Italian</source>
         <translation>Italiano</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="421"/>
         <location filename="../src/configwidget.cpp" line="422"/>
         <location filename="../src/configwidget.cpp" line="423"/>
         <location filename="../src/configwidget.cpp" line="424"/>
@@ -362,14 +366,9 @@ ones beneath) on first window</source>
         <translation>incompleto</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="421"/>
-        <source>Portuguese</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/configwidget.cpp" line="422"/>
-        <source>Dutch</source>
-        <translation type="unfinished"></translation>
+        <source>German</source>
+        <translation>Alemão</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="423"/>
@@ -378,13 +377,13 @@ ones beneath) on first window</source>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="424"/>
-        <source>German</source>
-        <translation>Alemão</translation>
+        <source>Japanese</source>
+        <translation>Japonês</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="425"/>
-        <source>Japanese</source>
-        <translation>Japonês</translation>
+        <source>Portuguese</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="426"/>
@@ -802,237 +801,237 @@ Pelo seguinte motivo : %3.</translation>
     <name>MainWidget</name>
     <message>
         <location filename="../src/mainwidget.cpp" line="63"/>
-        <location filename="../src/mainwidget.cpp" line="913"/>
+        <location filename="../src/mainwidget.cpp" line="930"/>
         <source>Client %1</source>
         <translation>Cliente %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="169"/>
+        <location filename="../src/mainwidget.cpp" line="168"/>
         <source>Login</source>
         <translation>Entrar</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="171"/>
+        <location filename="../src/mainwidget.cpp" line="170"/>
         <source>Password</source>
         <translation>Senha</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="173"/>
+        <location filename="../src/mainwidget.cpp" line="172"/>
         <source>Phone</source>
         <translation>Telefone</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="189"/>
+        <location filename="../src/mainwidget.cpp" line="188"/>
         <source>Keep Password</source>
         <translation>Salvar Senha</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="193"/>
+        <location filename="../src/mainwidget.cpp" line="192"/>
         <source>No Agent</source>
         <translation>Não sou agente</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="194"/>
+        <location filename="../src/mainwidget.cpp" line="193"/>
         <source>Agent (unlogged)</source>
         <translation>Agente (deslogado)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="195"/>
+        <location filename="../src/mainwidget.cpp" line="194"/>
         <source>Agent (logged)</source>
         <translation>Agente (logado)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="346"/>
+        <location filename="../src/mainwidget.cpp" line="345"/>
         <source>Confi&amp;gure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="348"/>
+        <location filename="../src/mainwidget.cpp" line="347"/>
         <source>Configure account and connection options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="352"/>
+        <location filename="../src/mainwidget.cpp" line="351"/>
         <source>&amp;Quit</source>
         <translation>&amp;Sair</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="354"/>
+        <location filename="../src/mainwidget.cpp" line="353"/>
         <source>Close the application</source>
         <translation>Fechar aplicação</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="355"/>
+        <location filename="../src/mainwidget.cpp" line="354"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="362"/>
+        <location filename="../src/mainwidget.cpp" line="361"/>
         <source>To S&amp;ystray</source>
         <translation>Para &amp;Bandeja</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="363"/>
+        <location filename="../src/mainwidget.cpp" line="362"/>
         <source>Enter the system tray</source>
         <translation>Enviar para bandeja do Windows</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="368"/>
+        <location filename="../src/mainwidget.cpp" line="367"/>
         <source>&amp;Show window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="369"/>
+        <location filename="../src/mainwidget.cpp" line="368"/>
         <source>Leave the system tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="379"/>
+        <location filename="../src/mainwidget.cpp" line="378"/>
         <source>&amp;Connect</source>
         <translation>&amp;Conectar</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="380"/>
+        <location filename="../src/mainwidget.cpp" line="379"/>
         <source>Connect to the server</source>
         <translation>Conectar com o Servidor</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="384"/>
+        <location filename="../src/mainwidget.cpp" line="383"/>
         <source>&amp;Disconnect</source>
         <translation>&amp;Desconectar</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="386"/>
+        <location filename="../src/mainwidget.cpp" line="385"/>
         <source>Disconnect from the server</source>
         <translation>Desconectar do Servidor</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="473"/>
+        <location filename="../src/mainwidget.cpp" line="472"/>
         <source>&amp;Availability</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="476"/>
+        <location filename="../src/mainwidget.cpp" line="475"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="477"/>
+        <location filename="../src/mainwidget.cpp" line="476"/>
         <source>&amp;About XiVO Client</source>
         <translation>&amp;Sobre Cliente XiVO</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="478"/>
+        <location filename="../src/mainwidget.cpp" line="477"/>
         <source>About &amp;Qt</source>
         <translation>Sobre &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="479"/>
+        <location filename="../src/mainwidget.cpp" line="478"/>
         <source>&amp;Credits</source>
         <translation>&amp;Créditos</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="614"/>
+        <location filename="../src/mainwidget.cpp" line="613"/>
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI Erro</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="713"/>
+        <location filename="../src/mainwidget.cpp" line="723"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Cliente %1 (%2 perfil)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="725"/>
+        <location filename="../src/mainwidget.cpp" line="735"/>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="834"/>
+        <location filename="../src/mainwidget.cpp" line="845"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="843"/>
+        <location filename="../src/mainwidget.cpp" line="854"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1037"/>
+        <location filename="../src/mainwidget.cpp" line="1054"/>
         <source>Fetch the last one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1044"/>
+        <location filename="../src/mainwidget.cpp" line="1061"/>
         <source>About XiVO Client</source>
         <translation>Sobre cliente XiVO</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1046"/>
+        <location filename="../src/mainwidget.cpp" line="1063"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1051"/>
+        <location filename="../src/mainwidget.cpp" line="1068"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Informação da Versão&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1052"/>
+        <location filename="../src/mainwidget.cpp" line="1069"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1053"/>
+        <location filename="../src/mainwidget.cpp" line="1070"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1056"/>
+        <location filename="../src/mainwidget.cpp" line="1073"/>
         <source>(Application Built on : %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1057"/>
+        <location filename="../src/mainwidget.cpp" line="1074"/>
         <source>(Application Launched on : %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1058"/>
+        <location filename="../src/mainwidget.cpp" line="1075"/>
         <source>(Config File Location : %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1061"/>
+        <location filename="../src/mainwidget.cpp" line="1078"/>
         <source>E-mail : </source>
         <translation>E-mail:</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1062"/>
+        <location filename="../src/mainwidget.cpp" line="1079"/>
         <source>Phone : </source>
         <translation>Telefone:</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1063"/>
+        <location filename="../src/mainwidget.cpp" line="1080"/>
         <source>Authors : </source>
         <translation>Autores:</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1063"/>
+        <location filename="../src/mainwidget.cpp" line="1080"/>
         <source>Avencall Development Team</source>
         <translation>Equipe de Desenvolvimento Avencall</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1065"/>
+        <location filename="../src/mainwidget.cpp" line="1082"/>
         <source>License : </source>
         <translation>Licença:</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1067"/>
+        <location filename="../src/mainwidget.cpp" line="1084"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1073"/>
+        <location filename="../src/mainwidget.cpp" line="1090"/>
         <source>Credits</source>
         <translation>Créditos</translation>
     </message>

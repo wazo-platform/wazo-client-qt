@@ -155,7 +155,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="256"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="258"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
