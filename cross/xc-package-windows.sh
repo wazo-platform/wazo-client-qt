@@ -199,7 +199,7 @@ SectionEnd ; end the section
 Section "Uninstall"
   SetShellVarContext all
   ; remove any shortcut
-  Delete "\$DESKTOP\xivoclient.lnk"
+  Delete "\$DESKTOP\XiVO Client.lnk"
   Delete "\$SMPROGRAMS\XiVO\*"
   RmDir "\$SMPROGRAMS\XiVO"
   ; remove the uri association
