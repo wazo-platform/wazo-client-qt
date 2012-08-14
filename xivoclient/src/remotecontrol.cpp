@@ -34,6 +34,20 @@
 
 #include "remotecontrol.h"
 
+TestFailedException::TestFailedException(const QString & message)
+{
+    this->message = message;
+}
+
+TestFailedException::~TestFailedException() throw()
+{
+}
+
+const char* TestFailedException::what() const throw()
+{
+    return this->message.toUtf8().data();
+}
+
 RemoteControl::RemoteControl(ExecObjects exec_obj)
     : m_no_error(true)
 {
@@ -115,8 +129,8 @@ void RemoteControl::processCommands()
             } else {
                 this->sendResponse(TEST_UNKNOWN);
             }
-        } catch (TestFailedException) {
-            this->sendResponse(TEST_FAILED);
+        } catch (TestFailedException & e) {
+            this->sendResponse(TEST_FAILED, e.what());
         }
     }
 }
@@ -133,12 +147,12 @@ RemoteControlCommand RemoteControl::parseCommand(const QByteArray & raw_command)
     return return_command;
 }
 
-void RemoteControl::sendResponse(RemoteControlResponse response)
+void RemoteControl::sendResponse(RemoteControlResponse response, const char * message)
 {
     QString response_string;
     switch (response) {
     case TEST_FAILED:
-        response_string = "KO";
+        response_string = QString("KO ") + message;
         break;
     case TEST_UNKNOWN:
         response_string = "test unknown";
@@ -170,10 +184,10 @@ void RemoteControl::pause(unsigned millisec)
     q.exec();
 }
 
-void RemoteControl::assert(bool condition)
+void RemoteControl::assert(bool condition, const QString & message)
 {
     if (!condition) {
-        throw TestFailedException();
+        throw TestFailedException(message);
     }
 }
 

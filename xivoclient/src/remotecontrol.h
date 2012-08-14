@@ -34,6 +34,9 @@
 
 #include <QObject>
 #include <string>
+#include <exception>
+
+using namespace std;
 
 #include "main.h"
 
@@ -51,7 +54,15 @@ enum RemoteControlResponse {
     TEST_PASSED
 };
 
-class TestFailedException {
+class TestFailedException : public exception {
+    public:
+        TestFailedException(const QString & message = "");
+        ~TestFailedException() throw();
+
+        virtual const char* what() const throw();
+
+    private:
+        QString message;
 };
 
 class RemoteControl : public QObject
@@ -86,8 +97,8 @@ class RemoteControl : public QObject
 
     private:
         RemoteControlCommand parseCommand(const QByteArray & raw_command);
-        void sendResponse(RemoteControlResponse response);
-        void assert(bool condition);
+        void sendResponse(RemoteControlResponse response, const char * message = "");
+        void assert(bool condition, const QString & message = "");
         bool commandMatches(RemoteControlCommand, std::string);
 
         ExecObjects m_exec_obj;

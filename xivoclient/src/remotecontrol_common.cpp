@@ -31,6 +31,7 @@
 
 #include "configwidget.h"
 #include "remotecontrol.h"
+#include <baseengine.h>
 
 void RemoteControl::i_go_to_the_xivo_client_configuration()
 {

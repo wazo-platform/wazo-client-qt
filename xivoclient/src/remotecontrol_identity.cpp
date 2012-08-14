@@ -60,18 +60,18 @@ void RemoteControl::then_the_xlet_identity_shows_phone_number_as_1(const QString
 void RemoteControl::then_the_xlet_identity_shows_a_voicemail_1(const QStringList &args)
 {
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
-    this->assert(xlet != NULL);
+    this->assert(xlet != NULL, "xlet null");
 
     QLabel *vm_num = xlet->findChild<QLabel*>(QString("voicemail_num"));
-    this->assert(vm_num != NULL);
+    this->assert(vm_num != NULL, "no vm num label");
 
     QString args_vm_num = args[0];
 
-    this->assert(vm_num->text().endsWith(args_vm_num));
+    this->assert(vm_num->text().endsWith(args_vm_num), QString("vm num is ") + vm_num->text());
 
     QPushButton * vm_button = xlet->findChild<QPushButton*>(QString("voicemail_button"));
     QIcon vm_icon = vm_button->icon();
-    this->assert(!vm_icon.isNull());
+    this->assert(!vm_icon.isNull(), "no vm icon");
 }
 
 void RemoteControl::then_the_xlet_identity_shows_an_agent_1(const QStringList &args)
