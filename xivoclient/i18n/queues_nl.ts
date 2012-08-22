@@ -76,12 +76,12 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Talking</source>
-        <translation type="unfinished"></translation>
+        <translation>In gesprek</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Number of agents talking</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantal agenten in gesprek</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>

@@ -338,6 +338,11 @@ ones beneath) on first window</translation>
         <translation>System Language</translation>
     </message>
     <message>
+        <location filename="../src/configwidget.cpp" line="418"/>
+        <source>Dutch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/configwidget.cpp" line="419"/>
         <source>English</source>
         <translation>English</translation>
@@ -362,14 +367,9 @@ ones beneath) on first window</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="425"/>
-        <source>Portuguese</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="418"/>
-        <source>Dutch</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/configwidget.cpp" line="422"/>
+        <source>German</source>
+        <translation type="unfinished">German</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="423"/>
@@ -377,14 +377,14 @@ ones beneath) on first window</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="422"/>
-        <source>German</source>
-        <translation type="unfinished">German</translation>
-    </message>
-    <message>
         <location filename="../src/configwidget.cpp" line="424"/>
         <source>Japanese</source>
         <translation type="unfinished">Japanese</translation>
+    </message>
+    <message>
+        <location filename="../src/configwidget.cpp" line="425"/>
+        <source>Portuguese</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="426"/>

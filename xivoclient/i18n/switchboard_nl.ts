@@ -1304,12 +1304,12 @@ Context: %2</translation>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>In gesprek</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Number of agents talking</source>
-        <translation type="unfinished"/>
+        <translation>Aantal agenten in gesprek</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
@@ -2951,7 +2951,7 @@ Bent u zeker ?</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="512"/>
         <source>&amp;Hangup call</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Oproep beëindigen</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="537"/>
