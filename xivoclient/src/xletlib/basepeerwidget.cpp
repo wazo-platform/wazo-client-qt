@@ -40,6 +40,7 @@
 #include "baseengine.h"
 #include "xivoconsts.h"
 
+
 static
 bool channelTimestampLessThan(const QString channelxid1, const QString channelxid2)
 {
@@ -56,7 +57,7 @@ bool channelTimestampLessThan(const QString channelxid1, const QString channelxi
 
 
 BasePeerWidget::BasePeerWidget(const UserInfo * ui)
-    : m_ui_remote(ui), m_editable(false), m_transfered(false)
+    : m_ui_remote(ui), m_editable(false), m_transfered(false), m_contextMenu(NULL)
 {
     m_ui_local = b_engine->getXivoClientUser();
     if (m_ui_remote) {
@@ -447,7 +448,8 @@ void BasePeerWidget::addDialMenu(QMenu * menu)
                 }
             }
             if (! submenu->isEmpty()) {
-                menu->addMenu(submenu);
+                m_submenus.append(submenu);
+                menu->addMenu(m_submenus.last());
             }
         }
     } else {
@@ -603,7 +605,8 @@ void BasePeerWidget::addParkingMenu(QMenu * menu)
                 parkMenu->addAction(action);
             }
         }
-        menu->addMenu(parkMenu);
+        m_submenus.append(parkMenu);
+        menu->addMenu(m_submenus.last());
     }
 }
 
@@ -649,7 +652,8 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
                 QMenu * submenu = 0;
                 if (numbers.size() > 1) {
                     submenu = new QMenu(string, menu);
-                    menu->addMenu(submenu);
+                    m_submenus.append(submenu);
+                    menu->addMenu(m_submenus.last());
                 } else {
                     submenu = menu;
                 }
@@ -705,19 +709,26 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 {
     if (! m_ui_local || ! m_ui_remote) return;
 
-    QMenu contextMenu(this);
+    if(! m_contextMenu)
+        m_contextMenu = new QMenu(this);
+    else{
+        m_contextMenu->clear();
+        foreach(QMenu* submenu, m_submenus)
+            delete submenu;
+        m_submenus.erase(m_submenus.begin(), m_submenus.end());
+    }
     if (isme()) {
-        updateMenuSelf(&contextMenu, event);
+        updateMenuSelf(m_contextMenu, event);
     } else {
-        updateMenuPeer(&contextMenu, event);
+        updateMenuPeer(m_contextMenu, event);
     }
     //    addParkingMenu(&contextMenu);
-    addEditMenu(&contextMenu);
-    addSwitchboardMenu(&contextMenu);
-    addTxferVmMenu(&contextMenu);
+    addEditMenu(m_contextMenu);
+    addSwitchboardMenu(m_contextMenu);
+    addTxferVmMenu(m_contextMenu);
 
-    if (! contextMenu.isEmpty()) {
-        contextMenu.exec(event->globalPos());
+    if (! m_contextMenu->isEmpty()) {
+        m_contextMenu->popup(event->globalPos());
     }
 }
 

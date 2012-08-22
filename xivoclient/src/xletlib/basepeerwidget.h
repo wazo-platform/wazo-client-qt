@@ -33,6 +33,7 @@
 #include "xletlib_export.h"
 
 #include <QtGui>
+#include <QList>
 
 #include <baseengine.h>
 #include "chitchat.h"
@@ -129,6 +130,8 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         bool m_editable;  //!< editable from a user point of view
         bool m_transfered;  //!< if this call was transfered
         int m_maxWidthWanted;  //!< maximum width for "small" items
+        QMenu * m_contextMenu;
+        QList<QMenu *> m_submenus;
 };
 
 #include "peerwidget.h"
