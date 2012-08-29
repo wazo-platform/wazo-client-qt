@@ -55,6 +55,7 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
     haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
+    haschanged |= setIfChangeBool(prop, "holded", & m_isholded);
 
     return haschanged;
 }

@@ -94,9 +94,10 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         bool canDrag(const QMouseEvent *event) const {
           return (isLeftClick(event) && isme() && isSwitchBoard()); }
         bool canTransfer(const ChannelInfo & channel) const {
-          return ((channel.commstatus() == CHAN_STATUS_LINKED_CALLER ||
+          return ((channel.commstatus() == CHAN_STATUS_LINKED_CALLER  ||
                    channel.commstatus() == CHAN_STATUS_LINKED_CALLED) &&
-                  (! channel.talkingto_kind().contains("meetme"))); }
+                  (! channel.talkingto_kind().contains("meetme"))     &&
+                  (! channel.isholded())); }
         bool isLeftClick(const QMouseEvent *) const;
         bool isSwitchBoard() const;
     signals:
