@@ -550,6 +550,13 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
     }
 }
 
+void BaseEngine::restoreAvailState()
+{
+    changeState();
+    disconnect(m_ctiserversocket, SIGNAL(connected()),
+               this, SLOT(restoreAvailState()));
+}
+
 /*!
  * Returns the availstate of the current user
  */
@@ -1668,6 +1675,8 @@ void BaseEngine::timerEvent(QTimerEvent *event)
         keepLoginAlive();
     } else if (timerId == m_timerid_tryreconnect) {
         emit emitTextMessage(tr("Attempting to reconnect to server"));
+        connect(m_ctiserversocket, SIGNAL(connected()),
+                this, SLOT(restoreAvailState()));
         start();
     } else if (timerId == m_timerid_changestate) {
         if (m_availstate == m_changestate_oldstate)
