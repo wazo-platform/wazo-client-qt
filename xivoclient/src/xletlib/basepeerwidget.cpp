@@ -646,35 +646,37 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
         numbers << m_ui_remote->mobileNumber();
     }
 
-    foreach (const QString & chanxid, m_ui_local->xchannels()) {
-        if (const ChannelInfo * c = b_engine->channel(chanxid)) {
-            if (canTransfer(*c)) {
-                QMenu * submenu = 0;
-                if (numbers.size() > 1) {
-                    submenu = new QMenu(string, menu);
-                    m_submenus.append(submenu);
-                    menu->addMenu(m_submenus.last());
-                } else {
-                    submenu = menu;
-                }
-                foreach (const QString & number, numbers) {
-                    if (QAction * action = new QAction(numbers.size() == 1 ? string : number, this)) {
-                        action->setProperty("number", number);
-                        if (blind) {
-                            action->setProperty("xchannel", QString("%0/%1").arg(c->ipbxid()).arg(c->talkingto_id()));
-                            connect(action, SIGNAL(triggered()),
-                                    this, SLOT(transfer()));
-                        } else  {
-                            action->setProperty("xchannel", c->xid());
-                            connect(action, SIGNAL(triggered()),
-                                    this, SLOT(itransfer()));
-                        }
-                        submenu->addAction(action);
-                    }
-                }
-                break;
-            }
-        }
+    if(m_ui_local->enablexfer()) {
+	foreach (const QString & chanxid, m_ui_local->xchannels()) {
+	    if (const ChannelInfo * c = b_engine->channel(chanxid)) {
+		if (canTransfer(*c)) {
+		    QMenu * submenu = 0;
+		    if (numbers.size() > 1) {
+			submenu = new QMenu(string, menu);
+			m_submenus.append(submenu);
+			menu->addMenu(m_submenus.last());
+		    } else {
+			submenu = menu;
+		    }
+		    foreach (const QString & number, numbers) {
+			if (QAction * action = new QAction(numbers.size() == 1 ? string : number, this)) {
+			    action->setProperty("number", number);
+			    if (blind) {
+				action->setProperty("xchannel", QString("%0/%1").arg(c->ipbxid()).arg(c->talkingto_id()));
+				connect(action, SIGNAL(triggered()),
+					this, SLOT(transfer()));
+			    } else  {
+				action->setProperty("xchannel", c->xid());
+				connect(action, SIGNAL(triggered()),
+					this, SLOT(itransfer()));
+			    }
+			    submenu->addAction(action);
+			}
+		    }
+		    break;
+		}
+	    }
+	}
     }
 }
 
