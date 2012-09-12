@@ -1842,7 +1842,7 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
 
 void BaseEngine::keepLoginAlive()
 {
-    if (m_pendingkeepalivemsg > 0) {
+    if (m_pendingkeepalivemsg > 1) {
         disconnectNoKeepAlive();
     } else {
         sendKeepAliveMsg();
