@@ -546,7 +546,6 @@ void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
     if (m_availstate != newstate && !comesFromServer) {
         m_availstate = newstate;
         changeState();
-        keepLoginAlive();
     }
 }
 
@@ -1842,7 +1841,7 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
 
 void BaseEngine::keepLoginAlive()
 {
-    if (m_pendingkeepalivemsg > 1) {
+    if (m_pendingkeepalivemsg > 0) {
         disconnectNoKeepAlive();
     } else {
         sendKeepAliveMsg();
