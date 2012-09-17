@@ -68,7 +68,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
             bool enablerna() const { return m_enablerna; };
             const QString & destrna() const { return m_destrna; };
             bool enablebusy() const { return m_enablebusy; };
-	    bool enablexfer() const { return m_enablexfer; };
+            bool enablexfer() const { return m_enablexfer; };
             const QString & destbusy() const { return m_destbusy; };
             const QString & mobileNumber() const { return m_mobilenumber; };
 
