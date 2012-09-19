@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="51"/>
         <source>Joined</source>
-        <translation>入社</translation>
+        <translation>参加</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>上の &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt;上で</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
         <source>Context: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Context: %1</translation>
     </message>
 </context>
 </TS>

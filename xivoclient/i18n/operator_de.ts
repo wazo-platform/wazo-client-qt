@@ -36,7 +36,7 @@
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="56"/>
         <source>I. Link</source>
-        <translation type="unfinished">hinzufügen</translation>
+        <translation>I. Link</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="57"/>
@@ -61,12 +61,12 @@
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="363"/>
         <source>%1 Ringing</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Klingelt</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="378"/>
         <source>Link %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Link %1</translation>
     </message>
 </context>
 </TS>

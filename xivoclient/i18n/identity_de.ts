@@ -23,29 +23,29 @@
         <location filename="../src/xlets/identity/identityagent.cpp" line="163"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="164"/>
         <source>Unpaused</source>
-        <translation type="unfinished"></translation>
+        <translation>Entpausen</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="171"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="172"/>
         <source>Partially paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Partiell gepaust</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="176"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="177"/>
         <source>Not relevant</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht relevant</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="193"/>
         <source>Logout</source>
-        <translation type="unfinished">Ausloggen</translation>
+        <translation>Ausloggen</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="197"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Einloggen</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="206"/>
@@ -63,23 +63,23 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="64"/>
         <source>Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Identität</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="65"/>
         <source>Current User Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktueller Benutzer Panel</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="287"/>
         <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>IPBXid: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="337"/>
         <source>(Line %1)</source>
-        <translation type="unfinished">(Telefonleitung %1)</translation>
+        <translation>(Linie %1)</translation>
     </message>
 </context>
 <context>
@@ -107,7 +107,7 @@
 Order: %2
 IPBXid: %3
 Context: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Protokoll: %1⏎ Reihenfolge: %2⏎ IPBXid: %3⏎ Kontext: %4</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="253"/>
@@ -140,12 +140,12 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="335"/>
         <source>UNC %1</source>
-        <translation type="unfinished"></translation>
+        <translation>UNC %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="336"/>
         <source>Unconditional Forward towards %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bedingungslose Weiterleitung zu %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="338"/>
@@ -155,22 +155,22 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="339"/>
         <source>Busy Forward towards %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiterleitung bei besetzt zu %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="341"/>
         <source>FNA %1</source>
-        <translation type="unfinished"></translation>
+        <translation>FNA %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="342"/>
         <source>Non-Answer Forward towards %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine-Antwort Weiterleitung zu %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="344"/>
         <source>Call Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf Filter</translation>
     </message>
 </context>
 <context>
@@ -178,7 +178,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="57"/>
         <source>(Line %1)</source>
-        <translation type="unfinished">(Telefonleitung %1)</translation>
+        <translation>(Linie %1)</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="99"/>

@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="52"/>
         <source>Agent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">エージェント</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="53"/>

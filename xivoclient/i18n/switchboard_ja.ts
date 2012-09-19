@@ -276,7 +276,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="51"/>
         <source>Joined</source>
-        <translation>入社</translation>
+        <translation>参加</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
@@ -292,7 +292,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>上の &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt;上で</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
@@ -317,7 +317,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
         <source>Context: %1</source>
-        <translation type="unfinished"/>
+        <translation>Context: %1</translation>
     </message>
 </context>
 <context>
@@ -330,17 +330,17 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="51"/>
         <source>Agent</source>
-        <translation type="unfinished"/>
+        <translation>エージェント</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="52"/>
         <source>Listen</source>
-        <translation type="unfinished"/>
+        <translation>Listen</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="53"/>
         <source>On Line</source>
-        <translation type="unfinished"/>
+        <translation>回線接続</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="54"/>
@@ -361,13 +361,14 @@ queues</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="57"/>
         <source>Paused</source>
-        <translation type="unfinished"/>
+        <translation>保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="58"/>
         <source>Paused
 queues</source>
-        <translation type="unfinished"/>
+        <translation>保留済
+一覧</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="164"/>
@@ -379,17 +380,17 @@ Context: %2</source>
         <location filename="../src/xlets/agents/agents.cpp" line="262"/>
         <location filename="../src/xlets/agents/agents.cpp" line="268"/>
         <source>Agent logged on %1</source>
-        <translation type="unfinished"/>
+        <translation>%1にエージェントログイン中</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="272"/>
         <source>Agent NOT logged</source>
-        <translation type="unfinished"/>
+        <translation>エージェントは未ログイン</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="276"/>
         <source>Unknown %1</source>
-        <translation type="unfinished"/>
+        <translation>不明 %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="310"/>
@@ -399,18 +400,18 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="322"/>
         <source>No</source>
-        <translation type="unfinished"/>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="327"/>
         <source>Yes</source>
-        <translation type="unfinished"/>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="330"/>
         <location filename="../src/xlets/agents/agents.cpp" line="335"/>
         <source>Paused queues : %1</source>
-        <translation type="unfinished"/>
+        <translation>保留キュー : %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="332"/>
@@ -429,84 +430,84 @@ Context: %2</source>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="101"/>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="189"/>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>新しいグループ</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="116"/>
         <source>Rename this Group</source>
-        <translation type="unfinished"/>
+        <translation>グループ名変更</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="124"/>
         <source>Remove this Group</source>
-        <translation type="unfinished"/>
+        <translation>グループ削除</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="134"/>
         <source>Remove a Queue</source>
-        <translation type="unfinished"/>
+        <translation>キューを削除</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="146"/>
         <source>Remove them all</source>
-        <translation type="unfinished"/>
+        <translation>全て削除</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="158"/>
         <source>Add a Queue</source>
-        <translation type="unfinished"/>
+        <translation>キューを追加</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="170"/>
         <source>Add them all</source>
-        <translation type="unfinished"/>
+        <translation>全て追加</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="191"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="193"/>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="412"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="194"/>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="413"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>中止</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="388"/>
         <source>%1 hr %2 min %3 sec</source>
-        <translation type="unfinished"/>
+        <translation>%1 時間 %2 分 %3 秒</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="390"/>
         <source>%1 min %2 sec</source>
-        <translation type="unfinished"/>
+        <translation>%1 分 %2 秒</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="392"/>
         <source>%1 sec</source>
-        <translation type="unfinished"/>
+        <translation>%1 秒</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="407"/>
         <source>Rename a Group</source>
-        <translation type="unfinished"/>
+        <translation>グループ名変更</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="409"/>
         <source>New Name</source>
-        <translation type="unfinished"/>
+        <translation>新しい名前</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="511"/>
         <source>Agent %1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 上の %1 エージェント</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="519"/>
@@ -521,22 +522,22 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="535"/>
         <source>Cancel Pause</source>
-        <translation type="unfinished"/>
+        <translation>保留中止</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="538"/>
         <source>Pause</source>
-        <translation type="unfinished"/>
+        <translation>保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="549"/>
         <source>Logout</source>
-        <translation type="unfinished"/>
+        <translation>ログアウト</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="557"/>
         <source>Transfer</source>
-        <translation type="unfinished"/>
+        <translation>転送</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="563"/>
@@ -546,7 +547,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="571"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -559,12 +560,12 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="86"/>
         <source>Hang up/Close the channel</source>
-        <translation type="unfinished"/>
+        <translation>通話を終了</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="90"/>
         <source>&amp;Transfer to number</source>
-        <translation type="unfinished"/>
+        <translation>番号へ転送(&amp;T)</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="91"/>
@@ -584,12 +585,12 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="142"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>未知な</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
-        <translation type="unfinished"/>
+        <translation>会議室番号 %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
@@ -607,7 +608,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/calls/calls.cpp" line="180"/>
         <source>Monitoring : %1</source>
-        <translation type="unfinished"/>
+        <translation>監視中 : %1</translation>
     </message>
 </context>
 <context>
@@ -615,47 +616,47 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="50"/>
         <source>Room UID</source>
-        <translation type="unfinished"/>
+        <translation>ルーム番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="51"/>
         <source>Number</source>
-        <translation type="unfinished"/>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="52"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="53"/>
         <source>Pin code</source>
-        <translation type="unfinished"/>
+        <translation>Pinコード</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="54"/>
         <source>Member count</source>
-        <translation type="unfinished"/>
+        <translation>メンバー数</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="55"/>
         <source>Moderated</source>
-        <translation type="unfinished"/>
+        <translation>管理</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="56"/>
         <source>Started since</source>
-        <translation type="unfinished"/>
+        <translation>から開始</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="128"/>
         <source>No</source>
-        <translation type="unfinished"/>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="143"/>
         <source>Not started</source>
-        <translation type="unfinished"/>
+        <translation>開始していません</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="145"/>
@@ -668,7 +669,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="203"/>
         <source>Get in room %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation> %1 (%2) ルームに入りました</translation>
     </message>
 </context>
 <context>
@@ -684,52 +685,52 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="57"/>
         <source>ID</source>
-        <translation type="unfinished"/>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="58"/>
         <source>Number</source>
-        <translation type="unfinished"/>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="59"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="60"/>
         <source>Since</source>
-        <translation type="unfinished"/>
+        <translation>から</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="61"/>
         <source>Admin</source>
-        <translation type="unfinished"/>
+        <translation>管理者</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="62"/>
         <source>K</source>
-        <translation type="unfinished"/>
+        <translation>K</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="63"/>
         <source>R</source>
-        <translation type="unfinished"/>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="64"/>
         <source>A</source>
-        <translation type="unfinished"/>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="65"/>
         <source>T</source>
-        <translation type="unfinished"/>
+        <translation>T</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="66"/>
         <source>M</source>
-        <translation type="unfinished"/>
+        <translation>M</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="178"/>
@@ -740,12 +741,12 @@ Context: %2</source>
         <location filename="../src/xlets/conference/confroom.cpp" line="192"/>
         <location filename="../src/xlets/conference/confroom.cpp" line="194"/>
         <source>No</source>
-        <translation type="unfinished"/>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="198"/>
         <source>Yes</source>
-        <translation type="unfinished"/>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="201"/>
@@ -763,12 +764,12 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="102"/>
         <source>Conference</source>
-        <translation type="unfinished"/>
+        <translation>同時通話会議</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="108"/>
         <source>Conference room list</source>
-        <translation type="unfinished"/>
+        <translation>同時通話会議室一覧</translation>
     </message>
 </context>
 <context>
@@ -776,7 +777,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/datetime/datetime.cpp" line="54"/>
         <source>Date and Time</source>
-        <translation type="unfinished"/>
+        <translation>日時</translation>
     </message>
 </context>
 <context>
@@ -784,7 +785,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="294"/>
         <source>Call %1</source>
-        <translation type="unfinished"/>
+        <translation>呼び出し %1</translation>
     </message>
 </context>
 <context>
@@ -792,22 +793,22 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="232"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>履歴</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="242"/>
         <source>Sent calls</source>
-        <translation type="unfinished"/>
+        <translation>呼び出し</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="243"/>
         <source>Received calls</source>
-        <translation type="unfinished"/>
+        <translation>受話</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="244"/>
         <source>Missed calls</source>
-        <translation type="unfinished"/>
+        <translation>不通</translation>
     </message>
 </context>
 <context>
@@ -815,32 +816,32 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="129"/>
         <source>%1 hr %2 min %3 s</source>
-        <translation type="unfinished"/>
+        <translation>%1 時間 %2 分 %3 秒</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="131"/>
         <source>%1 min %2 s</source>
-        <translation type="unfinished"/>
+        <translation>%1 分 %2 秒</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="133"/>
         <source>%1 s</source>
-        <translation type="unfinished"/>
+        <translation>%1 秒</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="198"/>
         <source>Number</source>
-        <translation type="unfinished"/>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="200"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>日付</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="203"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>期間</translation>
     </message>
 </context>
 <context>
@@ -848,30 +849,30 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="142"/>
         <source>Connected to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 に接続</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="145"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 から切断</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="158"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="159"/>
         <source>Paused</source>
-        <translation type="unfinished"/>
+        <translation>保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="163"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="164"/>
         <source>Unpaused</source>
-        <translation type="unfinished"/>
+        <translation>保留解除</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="171"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="172"/>
         <source>Partially paused</source>
-        <translation type="unfinished"/>
+        <translation>部分保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="176"/>
@@ -882,22 +883,22 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="193"/>
         <source>Logout</source>
-        <translation type="unfinished"/>
+        <translation>ログアウト</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="197"/>
         <source>Login</source>
-        <translation type="unfinished"/>
+        <translation>ログイン</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="206"/>
         <source>Unpause</source>
-        <translation type="unfinished"/>
+        <translation>保留解除</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="211"/>
         <source>Pause</source>
-        <translation type="unfinished"/>
+        <translation>保留</translation>
     </message>
 </context>
 <context>
@@ -916,12 +917,12 @@ Context: %2</source>
         <location filename="../src/xlets/identity/identity.cpp" line="287"/>
         <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1</source>
-        <translation type="unfinished"/>
+        <translation>IPBXid: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="337"/>
         <source>(Line %1)</source>
-        <translation type="unfinished"/>
+        <translation>(線番号 %1)</translation>
     </message>
 </context>
 <context>
@@ -954,7 +955,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="253"/>
         <source>Status:%1</source>
-        <translation type="unfinished"/>
+        <translation>ステータス:%1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="256"/>
@@ -966,7 +967,7 @@ Context: %4</source>
         <location filename="../src/xlets/identity/identityphone.cpp" line="286"/>
         <location filename="../src/xlets/identity/identityphone.cpp" line="300"/>
         <source>(Line %1)</source>
-        <translation type="unfinished"/>
+        <translation>(線番号 %1)</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="332"/>
@@ -976,7 +977,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="333"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished"/>
+        <translation>割り込み禁止</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="335"/>
@@ -991,7 +992,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="338"/>
         <source>Busy %1</source>
-        <translation type="unfinished"/>
+        <translation>通話中 %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="339"/>
@@ -1011,7 +1012,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="344"/>
         <source>Call Filter</source>
-        <translation type="unfinished"/>
+        <translation>呼び出しフィルタ</translation>
     </message>
 </context>
 <context>
@@ -1019,7 +1020,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="57"/>
         <source>(Line %1)</source>
-        <translation type="unfinished"/>
+        <translation>(線番号 %1)</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="99"/>
@@ -1029,12 +1030,12 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="105"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>返信</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="111"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>拒否</translation>
     </message>
 </context>
 <context>
@@ -1042,7 +1043,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="50"/>
         <source>call your voicemail</source>
-        <translation type="unfinished"/>
+        <translation>留守録呼び出し</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
@@ -1213,7 +1214,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="41"/>
         <source>Number</source>
-        <translation type="unfinished"/>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="42"/>
@@ -1223,12 +1224,12 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="43"/>
         <source>Queues</source>
-        <translation type="unfinished"/>
+        <translation>キュー</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="44"/>
         <source>Queue names</source>
-        <translation type="unfinished"/>
+        <translation>キュー名</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
@@ -1253,12 +1254,12 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Longest wait</source>
-        <translation type="unfinished"/>
+        <translation>最長</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
         <source>Longest waiting call</source>
-        <translation type="unfinished"/>
+        <translation>最長保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
@@ -1293,7 +1294,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Received</source>
-        <translation type="unfinished"/>
+        <translation>受話</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
@@ -1353,7 +1354,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="69"/>
         <source>QOS</source>
-        <translation type="unfinished"/>
+        <translation>サービスの質</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="70"/>
@@ -1363,7 +1364,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="258"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>無し</translation>
     </message>
 </context>
 <context>
@@ -1376,7 +1377,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="129"/>
         <source>Configure</source>
-        <translation type="unfinished"/>
+        <translation>設定</translation>
     </message>
 </context>
 <context>
@@ -1395,7 +1396,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="179"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="192"/>
@@ -2304,7 +2305,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
         <source>Enter &amp;Number :</source>
-        <translation>番号の入力</translation>
+        <translation>番号入力(&amp;N) :</translation>
     </message>
 </context>
 <context>
@@ -2312,7 +2313,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation>ディレクトリに</translation>
+        <translation>ディレクトリ</translation>
     </message>
 </context>
 <context>
@@ -2320,7 +2321,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="40"/>
         <source>Directory</source>
-        <translation>ディレクトリに</translation>
+        <translation>ディレクトリ</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="41"/>
@@ -2330,12 +2331,12 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="44"/>
         <source>Di&amp;rectory</source>
-        <translation>ディレクトリに</translation>
+        <translation>ディレクトリ(&amp;R)</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="52"/>
         <source>Search</source>
-        <translation>を検索</translation>
+        <translation>検索</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="145"/>
@@ -2481,7 +2482,7 @@ Reason given : %3.</source>
         <location filename="../src/mainwidget.cpp" line="63"/>
         <location filename="../src/mainwidget.cpp" line="930"/>
         <source>Client %1</source>
-        <translation>クライアントの %1</translation>
+        <translation>クライアント %1</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="168"/>
@@ -2586,12 +2587,12 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="472"/>
         <source>&amp;Availability</source>
-        <translation>利用可能</translation>
+        <translation>利用可能(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="475"/>
         <source>&amp;Help</source>
-        <translation>お手伝い</translation>
+        <translation>ヘルプ(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="476"/>
@@ -2616,7 +2617,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="723"/>
         <source>Client %1 (%2 profile)</source>
-        <translation>Client %1 (%2 プロファイル)</translation>
+        <translation>クライアント %1 (%2 プロファイル)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="735"/>
@@ -2859,7 +2860,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
         <source>N&amp;ame or number to search :</source>
-        <translation>名前・番号の検索</translation>
+        <translation>名前・番号で検索:</translation>
     </message>
 </context>
 <context>

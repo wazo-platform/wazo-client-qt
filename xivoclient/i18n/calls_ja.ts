@@ -11,12 +11,12 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="86"/>
         <source>Hang up/Close the channel</source>
-        <translation type="unfinished"></translation>
+        <translation>通話を終了</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="90"/>
         <source>&amp;Transfer to number</source>
-        <translation type="unfinished"></translation>
+        <translation>番号へ転送(&amp;T)</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="91"/>
@@ -36,12 +36,12 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="142"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>未知な</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
-        <translation type="unfinished"></translation>
+        <translation>会議室番号 %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/xlets/calls/calls.cpp" line="180"/>
         <source>Monitoring : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>監視中 : %1</translation>
     </message>
 </context>
 </TS>

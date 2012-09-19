@@ -6,30 +6,30 @@
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="142"/>
         <source>Connected to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 に接続</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="145"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 から切断</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="158"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="159"/>
         <source>Paused</source>
-        <translation type="unfinished">一時停止中</translation>
+        <translation>保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="163"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="164"/>
         <source>Unpaused</source>
-        <translation type="unfinished"></translation>
+        <translation>保留解除</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="171"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="172"/>
         <source>Partially paused</source>
-        <translation type="unfinished"></translation>
+        <translation>部分保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="176"/>
@@ -40,22 +40,22 @@
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="193"/>
         <source>Logout</source>
-        <translation type="unfinished">ログアウト</translation>
+        <translation>ログアウト</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="197"/>
         <source>Login</source>
-        <translation type="unfinished">ログイン</translation>
+        <translation>ログイン</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="206"/>
         <source>Unpause</source>
-        <translation type="unfinished"></translation>
+        <translation>保留解除</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="211"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>保留</translation>
     </message>
 </context>
 <context>
@@ -74,12 +74,12 @@
         <location filename="../src/xlets/identity/identity.cpp" line="287"/>
         <location filename="../src/xlets/identity/identity.cpp" line="307"/>
         <source>IPBXid: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>IPBXid: %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="337"/>
         <source>(Line %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>(線番号 %1)</translation>
     </message>
 </context>
 <context>
@@ -112,7 +112,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="253"/>
         <source>Status:%1</source>
-        <translation type="unfinished"></translation>
+        <translation>ステータス:%1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="256"/>
@@ -124,7 +124,7 @@ Context: %4</source>
         <location filename="../src/xlets/identity/identityphone.cpp" line="286"/>
         <location filename="../src/xlets/identity/identityphone.cpp" line="300"/>
         <source>(Line %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>(線番号 %1)</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="332"/>
@@ -134,7 +134,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="333"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>割り込み禁止</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="335"/>
@@ -149,7 +149,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="338"/>
         <source>Busy %1</source>
-        <translation type="unfinished"></translation>
+        <translation>通話中 %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="339"/>
@@ -169,7 +169,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="344"/>
         <source>Call Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>呼び出しフィルタ</translation>
     </message>
 </context>
 <context>
@@ -177,7 +177,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="57"/>
         <source>(Line %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>(線番号 %1)</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="99"/>
@@ -187,12 +187,12 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="105"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>返信</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="111"/>
         <source>Refuse</source>
-        <translation type="unfinished"></translation>
+        <translation>拒否</translation>
     </message>
 </context>
 <context>
@@ -200,7 +200,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="50"/>
         <source>call your voicemail</source>
-        <translation type="unfinished"></translation>
+        <translation>留守録呼び出し</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>

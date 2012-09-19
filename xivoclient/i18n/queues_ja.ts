@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="41"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="42"/>
@@ -16,12 +16,12 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="43"/>
         <source>Queues</source>
-        <translation type="unfinished">キュー</translation>
+        <translation>キュー</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="44"/>
         <source>Queue names</source>
-        <translation type="unfinished"></translation>
+        <translation>キュー名</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
@@ -46,12 +46,12 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Longest wait</source>
-        <translation type="unfinished"></translation>
+        <translation>最長</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
         <source>Longest waiting call</source>
-        <translation type="unfinished"></translation>
+        <translation>最長保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>受話</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="69"/>
         <source>QOS</source>
-        <translation type="unfinished"></translation>
+        <translation>サービスの質</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="70"/>
@@ -156,7 +156,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="258"/>
         <source>N/A</source>
-        <translation type="unfinished"></translation>
+        <translation>無し</translation>
     </message>
 </context>
 <context>
@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="129"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
 </context>
 <context>
@@ -188,7 +188,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="179"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="192"/>

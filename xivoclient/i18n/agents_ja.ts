@@ -11,17 +11,17 @@
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="51"/>
         <source>Agent</source>
-        <translation type="unfinished"></translation>
+        <translation>エージェント</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="52"/>
         <source>Listen</source>
-        <translation type="unfinished"></translation>
+        <translation>Listen</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="53"/>
         <source>On Line</source>
-        <translation type="unfinished"></translation>
+        <translation>回線接続</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="54"/>
@@ -42,13 +42,14 @@ queues</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="57"/>
         <source>Paused</source>
-        <translation type="unfinished">一時停止中</translation>
+        <translation>保留</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="58"/>
         <source>Paused
 queues</source>
-        <translation type="unfinished"></translation>
+        <translation>保留済
+一覧</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="164"/>
@@ -60,17 +61,17 @@ Context: %2</source>
         <location filename="../src/xlets/agents/agents.cpp" line="262"/>
         <location filename="../src/xlets/agents/agents.cpp" line="268"/>
         <source>Agent logged on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1にエージェントログイン中</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="272"/>
         <source>Agent NOT logged</source>
-        <translation type="unfinished"></translation>
+        <translation>エージェントは未ログイン</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="276"/>
         <source>Unknown %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不明 %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="310"/>
@@ -80,18 +81,18 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="322"/>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="327"/>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="330"/>
         <location filename="../src/xlets/agents/agents.cpp" line="335"/>
         <source>Paused queues : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>保留キュー : %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="332"/>

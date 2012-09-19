@@ -182,7 +182,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="252"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">履歴</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="261"/>
@@ -623,7 +623,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
         <source>Enter &amp;Number :</source>
-        <translation>番号の入力</translation>
+        <translation>番号入力(&amp;N) :</translation>
     </message>
 </context>
 <context>
@@ -631,7 +631,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation>ディレクトリに</translation>
+        <translation>ディレクトリ</translation>
     </message>
 </context>
 <context>
@@ -639,7 +639,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="40"/>
         <source>Directory</source>
-        <translation>ディレクトリに</translation>
+        <translation>ディレクトリ</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="41"/>
@@ -649,12 +649,12 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="44"/>
         <source>Di&amp;rectory</source>
-        <translation>ディレクトリに</translation>
+        <translation>ディレクトリ(&amp;R)</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="52"/>
         <source>Search</source>
-        <translation>を検索</translation>
+        <translation>検索</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="145"/>
@@ -687,7 +687,7 @@ ones beneath) on first window</source>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="53"/>
         <source>Directory</source>
-        <translation type="unfinished">ディレクトリに</translation>
+        <translation type="unfinished">ディレクトリ</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="64"/>
@@ -779,7 +779,7 @@ is being processed and will be sent soon.</source>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">未知な</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="224"/>
@@ -800,7 +800,7 @@ Reason given : %3.</source>
         <location filename="../src/mainwidget.cpp" line="63"/>
         <location filename="../src/mainwidget.cpp" line="930"/>
         <source>Client %1</source>
-        <translation>クライアントの %1</translation>
+        <translation>クライアント %1</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="168"/>
@@ -905,12 +905,12 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="472"/>
         <source>&amp;Availability</source>
-        <translation>利用可能</translation>
+        <translation>利用可能(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="475"/>
         <source>&amp;Help</source>
-        <translation>お手伝い</translation>
+        <translation>ヘルプ(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="476"/>
@@ -935,7 +935,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/mainwidget.cpp" line="723"/>
         <source>Client %1 (%2 profile)</source>
-        <translation>Client %1 (%2 プロファイル)</translation>
+        <translation>クライアント %1 (%2 プロファイル)</translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="735"/>
@@ -1126,7 +1126,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="283"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="289"/>
@@ -1178,7 +1178,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
         <source>N&amp;ame or number to search :</source>
-        <translation>名前・番号の検索</translation>
+        <translation>名前・番号で検索:</translation>
     </message>
 </context>
 </TS>

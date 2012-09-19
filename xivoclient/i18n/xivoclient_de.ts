@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="323"/>
         <source>Queues</source>
-        <translation type="unfinished">Warteschlange</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="330"/>

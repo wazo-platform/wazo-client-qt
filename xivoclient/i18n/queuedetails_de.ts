@@ -6,51 +6,50 @@
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="48"/>
         <source>Members of a Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Mitglieder einer Warteschlange</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="52"/>
         <source>Agent</source>
-        <translation type="unfinished">Agent</translation>
+        <translation>Agent</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="53"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="54"/>
         <source>Paused ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Gepaust?</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="55"/>
         <source>Calls
 Taken</source>
-        <translation type="unfinished"></translation>
+        <translation>Anrufe⏎ Angenommen</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="56"/>
         <source>Last
 Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Letzter⏎ Anruf</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="57"/>
         <source>Penalty</source>
-        <translation type="unfinished"></translation>
+        <translation>Penalty</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="163"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4) : %5 agents and %6 phones</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; (%2) auf &lt;b&gt;%3&lt;/b&gt; (%4) : %5 Angenten und %6 Telefone</translation>
     </message>
     <message>
         <location filename="../src/xlets/queuedetails/queuedetails.cpp" line="238"/>
         <source>Server: %1
 Context: %2</source>
-        <translation type="unfinished">Server: %1⏎
-Kontext: %2</translation>
+        <translation>Server: %1⏎ Kontext: %2</translation>
     </message>
 </context>
 </TS>
