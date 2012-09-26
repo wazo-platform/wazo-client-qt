@@ -42,6 +42,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_it.ts
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src
 INCLUDEPATH += $$BASELIB_DIR/src/storage
+INCLUDEPATH += $${BASELIB_DIR}/json_jsonqt/lib
 INCLUDEPATH += $${ROOT_DIR}/src/xletlib
 HEADERS += $${ROOT_DIR}/src/*.h
 SOURCES += $${ROOT_DIR}/src/*.cpp

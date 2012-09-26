@@ -87,6 +87,8 @@ class RemoteControl : public QObject
         void then_the_xlet_identity_shows_a_voicemail_1(const QStringList &);
         void then_the_xlet_identity_shows_an_agent_1(const QStringList &);
         void then_the_xlet_identity_does_not_show_any_agent();
+        void when_i_enable_screen_pop_up();
+        void then_i_see_a_sheet_with_variables_and_values(const QStringList &);
 
     public slots:
         void on_error(const QString &);

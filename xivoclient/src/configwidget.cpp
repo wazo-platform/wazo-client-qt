@@ -185,15 +185,18 @@ void ConfigWidget::_insert_function_tab()
     QWidget *widget_functions = new QWidget();
     widget_functions->setLayout(layout2);
 
-    // Please don't split this loop, because it is much simpler to add new functions this way
     func_legend["presence"] = tr("Presence reporting");
     func_legend["customerinfo"] = tr("Customer Info");
 
-    foreach(QString function, func_legend.keys()) {
-        m_function[function] = new QCheckBox(func_legend[function]);
-        m_function[function]->setChecked(m_config["checked_function." + function].toBool());
-        layout2->addWidget(m_function[function]);
-    }
+    m_function["presence"] = new QCheckBox(func_legend["presence"]);
+    m_function["presence"]->setChecked(m_config["checked_function.presence"].toBool());
+    layout2->addWidget(m_function["presence"]);
+
+    m_function["customerinfo"] = new QCheckBox(func_legend["customerinfo"]);
+    m_function["customerinfo"]->setChecked(m_config["checked_function.customerinfo"].toBool());
+    m_function["customerinfo"]->setObjectName("enable_customer_info");
+    layout2->addWidget(m_function["customerinfo"]);
+
 
     m_function_tabwidget = new QTabWidget();
 

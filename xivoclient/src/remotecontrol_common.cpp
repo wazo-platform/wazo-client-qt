@@ -93,4 +93,16 @@ void RemoteControl::i_stop_the_xivo_client()
     m_exec_obj.win->m_quitact->trigger();
 }
 
+void RemoteControl::when_i_enable_screen_pop_up()
+{
+    i_go_to_the_xivo_client_configuration();
+
+    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(3);
+
+    QCheckBox *customer_info_box = m_exec_obj.win->m_configwindow->findChild<QCheckBox*>(QString("enable_customer_info"));
+    customer_info_box->setChecked(true);
+    i_close_the_xivo_client_configuration();
+}
+
+
 #endif

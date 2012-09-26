@@ -48,6 +48,7 @@
 #include <xlet.h>
 #include <popup.h>
 #include <baseengine.h>
+#include "functests.h"
 
 
 class Popup;
@@ -83,6 +84,8 @@ class CustomerInfoPanel : public XLet
         QList<Popup *> m_popups;
         quint32 m_tablimit;
         bool m_autourl_allowed;
+
+    FUNCTESTED
 };
 
 #endif /* __CUSTOMERINFOPANEL_H__ */
