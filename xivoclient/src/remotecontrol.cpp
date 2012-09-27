@@ -56,7 +56,7 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
     connect(m_server, SIGNAL(newConnection()),
             this, SLOT(newConnection()));
 
-    m_socket_name = "xivoclient";
+    m_socket_name = "/tmp/xivoclient";
     m_server->listen(m_socket_name);
 
     if (! m_server->isListening()) {
@@ -176,14 +176,14 @@ void RemoteControl::on_error(const QString &error_string)
 
 void RemoteControl::pause(unsigned millisec)
 {
-    QEventLoop q;
-    QTimer tT;
+    QEventLoop loop;
+    QTimer timer;
 
-    tT.setSingleShot(true);
-    connect(&tT, SIGNAL(timeout()), &q, SLOT(quit()));
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
-    tT.start(millisec);
-    q.exec();
+    timer.start(millisec);
+    loop.exec();
 }
 
 void RemoteControl::assert(bool condition, const QString & message)
