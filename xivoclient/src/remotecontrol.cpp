@@ -31,6 +31,7 @@
 
 #include <QLocalServer>
 #include <QLocalSocket>
+#include <QFile>
 
 #include "remotecontrol.h"
 
@@ -57,6 +58,7 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
             this, SLOT(newConnection()));
 
     m_socket_name = "/tmp/xivoclient";
+    QFile::remove(m_socket_name);
     m_server->listen(m_socket_name);
 
     if (! m_server->isListening()) {
