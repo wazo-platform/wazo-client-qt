@@ -32,6 +32,7 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QFile>
+#include <JsonToVariant.h>
 
 #include "remotecontrol.h"
 
@@ -141,13 +142,24 @@ void RemoteControl::processCommands()
 
 RemoteControlCommand RemoteControl::parseCommand(const QByteArray & raw_command)
 {
-    QString command_string = QString::fromUtf8(raw_command);
-    command_string.chop(1);
-    QStringList command_list = command_string.split(",");
+    QString encoded_command = QString::fromUtf8(raw_command);
+
+    // remove trailing newline
+    encoded_command.chop(1);
+
+    QVariant decoded_command_plain;
+    try {
+        decoded_command_plain = JsonQt::JsonToVariant::parse(encoded_command);
+    } catch(JsonQt::ParseException) {
+        qDebug() << "Failed to decode args";
+        throw;
+    }
+
+    QVariantMap decoded_command_map = decoded_command_plain.toMap();
 
     RemoteControlCommand return_command;
-    return_command.action = command_list.takeFirst();
-    return_command.arguments = command_list;
+    return_command.action = decoded_command_map["function_name"].toString();
+    return_command.arguments = decoded_command_map["arguments"].toList();
     return return_command;
 }
 

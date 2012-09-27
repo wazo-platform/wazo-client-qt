@@ -33,16 +33,9 @@
 #include <JsonToVariant.h>
 #include "customerinfopanel.h"
 
-void RemoteControl::then_i_see_a_sheet_with_variables_and_values(const QStringList& args)
+void RemoteControl::then_i_see_a_sheet_with_variables_and_values(const QVariantList& args)
 {
-    QString encoded_json = args.join(", ");
-
-    QVariant variables;
-    try {
-        variables = JsonQt::JsonToVariant::parse(encoded_json);
-    } catch(JsonQt::ParseException) {
-        qDebug() << "Failed to decode args";
-    }
+    const QVariantList & variables = args[0].toList();
 
     CustomerInfoPanel *xlet = static_cast<CustomerInfoPanel*>(m_exec_obj.win->m_xletlist.value("customerinfo"));
     this->assert(xlet != NULL, "xlet null");
@@ -57,7 +50,7 @@ void RemoteControl::then_i_see_a_sheet_with_variables_and_values(const QStringLi
 
     int widget_index = layout_header_offset;
 
-    foreach (const QVariant &variable, variables.toList()) {
+    foreach (const QVariant &variable, variables) {
         QVariantMap variable_map = variable.toMap();
 
         const QString &expected_variable_name = variable_map["Variable"].toString();
