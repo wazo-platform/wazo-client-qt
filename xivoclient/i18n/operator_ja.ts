@@ -6,42 +6,42 @@
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="49"/>
         <source>Operator panel</source>
-        <translation type="unfinished"></translation>
+        <translation>オペレーターパネル</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="50"/>
         <source>Operator</source>
-        <translation type="unfinished"></translation>
+        <translation>オペレータ</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="52"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation>回答</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="53"/>
         <source>Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>通話終了</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="54"/>
         <source>D. Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>D. 転送</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="55"/>
         <source>I. Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>I. 転送</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="56"/>
         <source>I. Link</source>
-        <translation type="unfinished"></translation>
+        <translation>I. リンク</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="57"/>
         <source>I. Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>I. 中止</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="58"/>
@@ -51,22 +51,22 @@
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="59"/>
         <source>Finalize Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>転送確定</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="60"/>
         <source>Cancel Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>転送中止</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="363"/>
         <source>%1 Ringing</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 呼び出し中</translation>
     </message>
     <message>
         <location filename="../src/xlets/operator/operator.cpp" line="378"/>
         <source>Link %1</source>
-        <translation type="unfinished"></translation>
+        <translation>リンク %1</translation>
     </message>
 </context>
 </TS>

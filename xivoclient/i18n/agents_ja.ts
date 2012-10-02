@@ -26,18 +26,19 @@
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="54"/>
         <source>Presence</source>
-        <translation type="unfinished"></translation>
+        <translation>ログイン状態</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="55"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation>記録済</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>
         <source>Joined
 queues</source>
-        <translation type="unfinished"></translation>
+        <translation>キュー
+追加済</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="57"/>
@@ -55,7 +56,8 @@ queues</source>
         <location filename="../src/xlets/agents/agents.cpp" line="164"/>
         <source>Server: %1
 Context: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>サーバー: %1
+コンテクスト: %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="262"/>
@@ -76,7 +78,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="310"/>
         <source>Joined queues : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>キューに追加 : %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="322"/>
@@ -97,7 +99,7 @@ Context: %2</source>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="332"/>
         <source>Partial</source>
-        <translation type="unfinished"></translation>
+        <translation>部分的</translation>
     </message>
 </context>
 </TS>

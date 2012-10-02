@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="85"/>
         <source>&amp;Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>通話終了(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="86"/>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/xlets/calls/calls.cpp" line="48"/>
         <source>Calls</source>
-        <translation type="unfinished"></translation>
+        <translation>呼び出し</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/calls.cpp" line="180"/>

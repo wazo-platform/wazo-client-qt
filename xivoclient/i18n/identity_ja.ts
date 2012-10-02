@@ -68,7 +68,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="65"/>
         <source>Current User Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>現在の利用者一覧</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="287"/>
@@ -182,7 +182,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="99"/>
         <source>Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>通話終了</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="105"/>
@@ -205,7 +205,7 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;留守電ボックス %1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="92"/>
@@ -226,12 +226,12 @@ Context: %4</source>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="138"/>
         <source>%1 old</source>
-        <translation type="unfinished"></translation>
+        <translation>旧 %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="139"/>
         <source>%1 new</source>
-        <translation type="unfinished"></translation>
+        <translation>新 %1</translation>
     </message>
 </context>
 </TS>

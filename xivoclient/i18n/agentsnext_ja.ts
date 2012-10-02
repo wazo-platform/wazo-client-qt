@@ -94,12 +94,12 @@
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="519"/>
         <source>%1 calls received since connection</source>
-        <translation type="unfinished"></translation>
+        <translation>接続後 %1 回着信</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="520"/>
         <source>%1 calls lost since connection</source>
-        <translation type="unfinished"></translation>
+        <translation>接続後 %1 回不在着信</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="535"/>
@@ -124,7 +124,7 @@
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="563"/>
         <source>Available Queues</source>
-        <translation type="unfinished"></translation>
+        <translation>利用可能なキュー</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="571"/>

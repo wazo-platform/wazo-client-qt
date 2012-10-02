@@ -26,12 +26,12 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="45"/>
         <source>Waiting calls</source>
-        <translation type="unfinished"></translation>
+        <translation>受信待ち</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="46"/>
         <source>Number of waiting calls</source>
-        <translation type="unfinished"></translation>
+        <translation>受信待ち数</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="47"/>
@@ -56,7 +56,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">記録済</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
@@ -91,17 +91,17 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
         <source>Number of received calls</source>
-        <translation type="unfinished"></translation>
+        <translation>受信済数</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="59"/>
         <source>Answered</source>
-        <translation type="unfinished"></translation>
+        <translation>通話</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="60"/>
         <source>Number of answered calls</source>
-        <translation type="unfinished"></translation>
+        <translation>着信通話数</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="61"/>
@@ -126,22 +126,22 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>Max Waiting Time</source>
-        <translation type="unfinished"></translation>
+        <translation>最大待ち時間</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
         <source>Maximum waiting time before getting an agent</source>
-        <translation type="unfinished"></translation>
+        <translation>担当者が出るまでの最大待ち時間</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="67"/>
         <source>Efficiency</source>
-        <translation type="unfinished"></translation>
+        <translation>効率</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="68"/>
         <source>Ratio (Answered) / (Received)</source>
-        <translation type="unfinished"></translation>
+        <translation>比率 (受話)/(着信)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="69"/>
@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="70"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>
-        <translation type="unfinished"></translation>
+        <translation>比率 (X秒以下で電話を取ることが出来た数 / 着信通話数)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="258"/>
