@@ -41,6 +41,7 @@
 
 #include "mainwidget.h"
 #include "powerawareapplication.h"
+#include "fileopeneventhandler.h"
 
 #ifdef FUNCTESTS
 #include "remotecontrol.h"
@@ -63,6 +64,9 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
     PowerAwareApplication *app = new PowerAwareApplication(argc, argv);
+
+    FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app);
+    app->installEventFilter(fileOpenHandler);
 
     QSettings * settings = new QSettings(QSettings::IniFormat,
                                          QSettings::UserScope,
@@ -148,6 +152,8 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QObject::connect(app, SIGNAL(powerEvent(const QString &)),
                      b_engine, SLOT(powerEvent(const QString &)));
     QObject::connect(app, SIGNAL(messageReceived(const QString &)),
+                     b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
+    QObject::connect(fileOpenHandler, SIGNAL(dialNumber(QString)),
                      b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
 
     ret.app = app;
