@@ -35,6 +35,7 @@
 #define __PHONENUMBER_H__
 
 #include <QString>
+#include "baselib_export.h"
 
 namespace PhoneNumber
 {
