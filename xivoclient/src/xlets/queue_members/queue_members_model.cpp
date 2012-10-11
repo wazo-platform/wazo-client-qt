@@ -75,9 +75,7 @@ void QueueMembersModel::updateQueueMemberConfig(const QString &queue_member_id)
         m_row2id.append(queue_member_id);
         endInsertRows();
     } else {
-        // QModelIndex cellChanged = createIndex(m_row2id.indexOf(xid), NAME);
-        // // sends signal to proxy/view that the data should be refreshed
-        // emit dataChanged(cellChanged, cellChanged);
+        this->refreshQueueMemberRow(queue_member_id);
     }
 }
 
@@ -219,12 +217,12 @@ QVariant QueueMembersModel::headerData(int index,
     }
 
     switch(role) {
-        case Qt::DisplayRole :
-            return m_headers[index].label;
-        case Qt::ToolTipRole :
-            return m_headers[index].tooltip;
-        default :
-            return QVariant();
+    case Qt::DisplayRole :
+        return m_headers[index].label;
+    case Qt::ToolTipRole :
+        return m_headers[index].tooltip;
+    default :
+        return QVariant();
     }
 }
 
