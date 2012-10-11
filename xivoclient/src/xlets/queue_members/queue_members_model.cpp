@@ -43,6 +43,8 @@ QueueMembersModel::QueueMembersModel(QObject *parent)
             this, SLOT(updateQueueMemberConfig(const QString &)));
     connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
             this, SLOT(removeQueueMemberConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
 }
 
 void QueueMembersModel::fillHeaders()
@@ -84,6 +86,16 @@ void QueueMembersModel::removeQueueMemberConfig(const QString &xid)
     if (m_row2id.contains(xid)) {
         int removedRow = m_row2id.indexOf(xid);
         removeRow(removedRow);
+    }
+}
+
+void QueueMembersModel::updateAgentConfig(const QString & agent_id)
+{
+    QStringList queue_member_ids = QueueMemberDAO::queueMembersFromAgentId(agent_id);
+    foreach (QString queue_member_id, queue_member_ids) {
+        if (m_row2id.contains(queue_member_id)) {
+            this->refreshQueueMemberRow(queue_member_id);
+        }
     }
 }
 
@@ -130,13 +142,13 @@ QVariant QueueMembersModel::data(const QModelIndex &index, int role) const
     }
 }
 
-QVariant QueueMembersModel::dataDisplay(unsigned row, unsigned column) const
+QVariant QueueMembersModel::dataDisplay(int row, int column) const
 {
     QString not_available = tr("N/A");
 
     QString queue_member_id;
 
-    if (m_row2id.size() > (int) row) {
+    if (m_row2id.size() > row) {
         queue_member_id = m_row2id[row];
     }
 
@@ -173,7 +185,7 @@ QVariant QueueMembersModel::dataDisplay(unsigned row, unsigned column) const
     }
 }
 
-QVariant QueueMembersModel::dataBackground(unsigned row, unsigned column) const
+QVariant QueueMembersModel::dataBackground(int row, int column) const
 {
     QueueAgentStatus agent_status = this->getAgentStatus(row);
     QColor agent_status_color = agent_status.display_status_color();
@@ -186,7 +198,7 @@ QVariant QueueMembersModel::dataBackground(unsigned row, unsigned column) const
     }
 }
 
-QueueAgentStatus QueueMembersModel::getAgentStatus(unsigned row) const
+QueueAgentStatus QueueMembersModel::getAgentStatus(int row) const
 {
     QueueAgentStatus agent_status;
 

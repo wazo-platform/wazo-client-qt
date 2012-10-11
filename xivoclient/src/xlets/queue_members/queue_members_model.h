@@ -54,13 +54,14 @@ class QueueMembersModel : public QAbstractTableModel
     public slots:
         void updateQueueMemberConfig(const QString &);
         void removeQueueMemberConfig(const QString &);
+        void updateAgentConfig(const QString &);
 
     private:
         void refreshQueueMemberRow(const QString &agent_xid);
         void fillHeaders();
-        QVariant dataDisplay(unsigned row, unsigned column) const;
-        QVariant dataBackground(unsigned row, unsigned column) const;
-        QueueAgentStatus getAgentStatus(unsigned row) const;
+        QVariant dataDisplay(int row, int column) const;
+        QVariant dataBackground(int row, int column) const;
+        QueueAgentStatus getAgentStatus(int row) const;
 
     public:
         enum Columns {

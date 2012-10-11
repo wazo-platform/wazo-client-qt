@@ -34,6 +34,7 @@
 #include <xletinterface.h>
 
 #include "queue_members_model.h"
+#include "queue_members_sort_filter_proxy_model.h"
 #include "queue_members_view.h"
 
 class XletQueueMembers : public XLet
@@ -45,7 +46,7 @@ class XletQueueMembers : public XLet
 
     private:
         QueueMembersModel *m_model;
-        //QueueMembersSortFilterProxyModel *m_proxy_model;
+        QueueMembersSortFilterProxyModel *m_proxy_model;
 };
 
 class XLetQueueMembersPlugin : public QObject, XLetInterface

@@ -52,13 +52,12 @@ XletQueueMembers::XletQueueMembers(QWidget *parent)
 
     m_model = new QueueMembersModel(this);
 
-    // m_proxy_model = new QueueMemberSortFilterProxyModel(this);
-    // m_proxy_model->setSourceModel(m_model);
-    // m_proxy_model->setDynamicSortFilter(true);
-    // m_proxy_model->updateFilter();
+    m_proxy_model = new QueueMembersSortFilterProxyModel(this);
+    m_proxy_model->setSourceModel(m_model);
+    m_proxy_model->setDynamicSortFilter(true);
 
     QueueMembersView *view = new QueueMembersView(this);
-    view->setModel(m_model);
+    view->setModel(m_proxy_model);
     view->hideColumn(QueueMembersModel::ID);
     view->sortByColumn(QueueMembersModel::NUMBER, Qt::AscendingOrder);
 

@@ -73,8 +73,8 @@ QueueMembersView::QueueMembersView(QWidget *parent)
 void QueueMembersView::changeWatchedAgent(const QModelIndex &index)
 {
     QModelIndex queue_member_id_index = model()->index(index.row(),
-                                          QueueMembersModel::ID,
-                                          index.parent());
+                                                       QueueMembersModel::ID,
+                                                       index.parent());
     QString queue_member_id = model()->data(queue_member_id_index).toString();
     const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
     if (queue_member == NULL) {
