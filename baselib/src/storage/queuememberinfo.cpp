@@ -46,6 +46,8 @@ bool QueueMemberInfo::updateConfig(const QVariantMap &prop)
     haschanged |= setIfChangeString(prop, "paused", & m_paused);
     haschanged |= setIfChangeString(prop, "membership", & m_membership);
     haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
+    haschanged |= setIfChangeString(prop, "callstaken", & m_callstaken);
+    haschanged |= setIfChangeString(prop, "lastcall", & m_lastcall);
     return haschanged;
 }
 
@@ -57,7 +59,7 @@ bool QueueMemberInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "membership", & m_membership);
     haschanged |= setIfChangeString(prop, "callstaken", & m_callstaken);
     haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
-    haschanged |= setIfChangeInt(prop, "lastcall", & m_lastcall);
+    haschanged |= setIfChangeString(prop, "lastcall", & m_lastcall);
     return haschanged;
 }
 

@@ -31,6 +31,7 @@
 #include <QStyleFactory>
 
 #include <baseengine.h>
+#include <dao/queuememberdao.h>
 
 #include "queue_members_view.h"
 #include "queue_members_model.h"
@@ -71,10 +72,16 @@ QueueMembersView::QueueMembersView(QWidget *parent)
 
 void QueueMembersView::changeWatchedAgent(const QModelIndex &index)
 {
-    QModelIndex id_index = model()->index(index.row(),
+    QModelIndex queue_member_id_index = model()->index(index.row(),
                                           QueueMembersModel::ID,
                                           index.parent());
-    QString id_string = model()->data(id_index).toString();
+    QString queue_member_id = model()->data(queue_member_id_index).toString();
+    const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+    if (queue_member == NULL) {
+        qDebug() << Q_FUNC_INFO << queue_member_id;
+        return;
+    }
+    QString agent_id = QueueMemberDAO::agentIdFromAgentNumber(queue_member->agentNumber());
 
-    b_engine->changeWatchedAgent(id_string, false);
+    b_engine->changeWatchedAgent(agent_id, false);
 }

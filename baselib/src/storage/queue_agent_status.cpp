@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -49,7 +49,6 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_status_darkfactor = 100;
         m_display_action_join = ":/images/cancel.png";
     } else if ((dynstatus == "static") || (dynstatus == "realtime")) {
-        // XXX common handling, before finding out why there is actually 2 memberships
         m_display_status_membership = tr("Static/RT membership");
         m_display_status_darkfactor = 150;
         m_display_action_join = "";

@@ -32,6 +32,7 @@
 
 #include <QAbstractTableModel>
 #include <QStringList>
+#include <queue_agent_status.h>
 
 class QueueMembersModel : public QAbstractTableModel
 {
@@ -57,6 +58,9 @@ class QueueMembersModel : public QAbstractTableModel
     private:
         void refreshQueueMemberRow(const QString &agent_xid);
         void fillHeaders();
+        QVariant dataDisplay(unsigned row, unsigned column) const;
+        QVariant dataBackground(unsigned row, unsigned column) const;
+        QueueAgentStatus getAgentStatus(unsigned row) const;
 
     public:
         enum Columns {
@@ -64,7 +68,7 @@ class QueueMembersModel : public QAbstractTableModel
             NUMBER,
             FIRSTNAME,
             LASTNAME,
-            STATUS,
+            LOGGED,
             PAUSED,
             ANSWERED_CALLS,
             LAST_CALL_DATE,

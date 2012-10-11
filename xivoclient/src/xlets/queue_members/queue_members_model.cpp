@@ -30,6 +30,8 @@
 #include <QBrush>
 
 #include <baseengine.h>
+#include <queuememberinfo.h>
+#include <dao/queuememberdao.h>
 
 #include "queue_members_model.h"
 
@@ -45,16 +47,16 @@ QueueMembersModel::QueueMembersModel(QObject *parent)
 
 void QueueMembersModel::fillHeaders()
 {
-    m_headers[ID].label = "ID";
-    m_headers[ID].tooltip = "ID";
+    m_headers[ID].label = tr("ID");
+    m_headers[ID].tooltip = tr("ID");
     m_headers[NUMBER].label = tr("Number");
     m_headers[NUMBER].tooltip = tr("Phone number of the queue");
     m_headers[FIRSTNAME].label = tr("Firstname");
     m_headers[FIRSTNAME].tooltip = tr("Queue member's firstname");
     m_headers[LASTNAME].label = tr("Lastname");
     m_headers[LASTNAME].tooltip = tr("Queue member's lastname");
-    m_headers[STATUS].label = tr("Status");
-    m_headers[STATUS].tooltip = tr("Queue member login status");
+    m_headers[LOGGED].label = tr("Logged");
+    m_headers[LOGGED].tooltip = tr("Queue member login status");
     m_headers[PAUSED].label = tr("Paused");
     m_headers[PAUSED].tooltip = tr("Queue member pause status");
     m_headers[ANSWERED_CALLS].label = tr("Answered calls");
@@ -65,12 +67,12 @@ void QueueMembersModel::fillHeaders()
     m_headers[PENALTY].tooltip = tr("Queue member's penalty");
 }
 
-void QueueMembersModel::updateQueueMemberConfig(const QString &xid)
+void QueueMembersModel::updateQueueMemberConfig(const QString &queue_member_id)
 {
-    if (! m_row2id.contains(xid)) {
+    if (! m_row2id.contains(queue_member_id)) {
         int insertedRow = m_row2id.size();
         beginInsertRows(QModelIndex(), insertedRow, insertedRow);
-        m_row2id.append(xid);
+        m_row2id.append(queue_member_id);
         endInsertRows();
     } else {
         // QModelIndex cellChanged = createIndex(m_row2id.indexOf(xid), NAME);
@@ -113,24 +115,99 @@ int QueueMembersModel::columnCount(const QModelIndex&) const
 
 QVariant QueueMembersModel::data(const QModelIndex &index, int role) const
 {
-    if (role == Qt::TextAlignmentRole) {
+    int row = index.row(), column = index.column();
+
+    switch(role) {
+    case Qt::TextAlignmentRole:
         return Qt::AlignCenter;
+        break;
+    case  Qt::DisplayRole:
+        return this->dataDisplay(row, column);
+        break;
+    case Qt::BackgroundRole:
+        return this->dataBackground(row, column);
+        break;
+    default:
+        return QVariant();
     }
+}
 
+QVariant QueueMembersModel::dataDisplay(unsigned row, unsigned column) const
+{
     QString not_available = tr("N/A");
-    if (role == Qt::DisplayRole) {
-    return QString("Bidon");
-    //     switch (index.column()) {
-    //         case ID :
-    //         case NUMBER :
-    //         case FIRSTNAME :
-    //         case LASTNAME :
-    //         default :
-    //             return not_available;
-    //     }
+
+    QString queue_member_id;
+
+    if (m_row2id.size() > (int) row) {
+        queue_member_id = m_row2id[row];
     }
 
-    return QVariant();
+    const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+    if (queue_member == NULL) return QVariant();
+
+    QString agent_id = QueueMemberDAO::agentIdFromAgentNumber(queue_member->agentNumber());
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) return QVariant();
+
+    QueueAgentStatus agent_status = this->getAgentStatus(row);
+
+    switch (column) {
+    case ID :
+        return queue_member_id;
+    case NUMBER :
+        return queue_member->agentNumber();
+    case FIRSTNAME :
+        return agent->firstname();
+    case LASTNAME :
+        return agent->lastname();
+    case LOGGED :
+        return agent_status.display_status_logged();
+    case PAUSED :
+        return agent_status.display_status_paused();
+    case ANSWERED_CALLS:
+        return queue_member->callstaken();
+    case LAST_CALL_DATE:
+        return queue_member->lastcall();
+    case PENALTY:
+        return queue_member->penalty();
+    default :
+        return not_available;
+    }
+}
+
+QVariant QueueMembersModel::dataBackground(unsigned row, unsigned column) const
+{
+    QueueAgentStatus agent_status = this->getAgentStatus(row);
+    QColor agent_status_color = agent_status.display_status_color();
+
+    switch (column) {
+    case LOGGED:
+        return agent_status_color;
+    default:
+        return QVariant();
+    }
+}
+
+QueueAgentStatus QueueMembersModel::getAgentStatus(unsigned row) const
+{
+    QueueAgentStatus agent_status;
+
+    QString queue_member_id;
+    if (m_row2id.size() > row) {
+        queue_member_id = m_row2id[row];
+    }
+
+    const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+    if (queue_member == NULL) {
+        return agent_status;
+    }
+
+    QString membership = queue_member->membership();
+    QString status = queue_member->status();
+    QString paused = queue_member->paused();
+    agent_status.update(membership, status, paused);
+
+    return agent_status;
 }
 
 QVariant QueueMembersModel::headerData(int index,
@@ -153,9 +230,10 @@ QVariant QueueMembersModel::headerData(int index,
 
 void QueueMembersModel::refreshQueueMemberRow(const QString &queue_member_id)
 {
+    unsigned first_column_index = 0;
     unsigned last_column_index = NB_COL - 1;
     unsigned queue_member_row_id = m_row2id.indexOf(queue_member_id);
-    QModelIndex cell_changed_start = createIndex(queue_member_row_id, ID);
+    QModelIndex cell_changed_start = createIndex(queue_member_row_id, first_column_index);
     QModelIndex cell_changed_end = createIndex(queue_member_row_id, last_column_index);
     emit dataChanged(cell_changed_start, cell_changed_end);
 }
