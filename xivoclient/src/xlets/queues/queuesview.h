@@ -38,6 +38,7 @@ class QueuesView : public AbstractTableView
 
     public:
         QueuesView(QWidget *parent = NULL);
+        ~QueuesView();
         void init();
     public slots:
         void updateColumnHidden();

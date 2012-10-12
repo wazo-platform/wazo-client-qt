@@ -38,6 +38,7 @@ class QueueMembersView : public AbstractTableView
 
     public:
         QueueMembersView(QWidget *parent = NULL);
+        ~QueueMembersView();
     private slots:
         void changeWatchedAgent(const QModelIndex &);
 };

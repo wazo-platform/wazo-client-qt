@@ -42,6 +42,10 @@ QueuesView::QueuesView(QWidget *parent)
             this, SLOT(updateColumnHidden()));
 }
 
+QueuesView::~QueuesView()
+{
+}
+
 void QueuesView::init()
 {
     updateColumnHidden();

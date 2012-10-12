@@ -40,6 +40,10 @@ QueueMembersView::QueueMembersView(QWidget *parent)
             this, SLOT(changeWatchedAgent(const QModelIndex &)));
 }
 
+QueueMembersView::~QueueMembersView()
+{
+}
+
 void QueueMembersView::changeWatchedAgent(const QModelIndex &index)
 {
     QModelIndex queue_member_id_index = model()->index(index.row(),

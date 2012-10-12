@@ -38,7 +38,7 @@ Q_EXPORT_PLUGIN2(xletqueuememberplugin, XLetQueueMembersPlugin);
 
 XLet* XLetQueueMembersPlugin::newXLetInstance(QWidget *parent)
 {
-    b_engine->registerTranslation(":/obj/queue_member_%1");
+    b_engine->registerTranslation(":/obj/queue_members_%1");
     return new XletQueueMembers(parent);
 }
 

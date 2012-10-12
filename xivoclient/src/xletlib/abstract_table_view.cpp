@@ -71,3 +71,7 @@ AbstractTableView::AbstractTableView(QWidget * parent)
     this->horizontalHeader()->setStyle(plastique);
     this->verticalHeader()->setStyle(plastique);
 }
+
+AbstractTableView::~AbstractTableView()
+{
+}
