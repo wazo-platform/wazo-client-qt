@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -25,10 +25,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/* $Revision$
- * $Date$
  */
 
 #include "agentinfo.h"
@@ -63,7 +59,7 @@ bool AgentInfo::updateStatus(const QVariantMap & prop)
     if (prop.contains("queues")) {
         m_xqueueids.clear();
         foreach (QString queueid, prop.value("queues").toStringList()) {
-            QString xqueueid = QString("%1/%2").arg(m_ipbxid).arg(queueid); // to match against queue membership
+            QString xqueueid = QString("%1/%2").arg(m_ipbxid).arg(queueid);
             m_xqueueids.append(xqueueid);
         }
         haschanged = true;
@@ -72,7 +68,7 @@ bool AgentInfo::updateStatus(const QVariantMap & prop)
     if (prop.contains("groups")) {
         m_xgroupids.clear();
         foreach (QString groupid, prop.value("groups").toStringList()) {
-            QString xgroupid = QString("%1/%2").arg(m_ipbxid).arg(groupid); // to match against group membership
+            QString xgroupid = QString("%1/%2").arg(m_ipbxid).arg(groupid);
             m_xgroupids.append(xgroupid);
         }
         haschanged = true;
@@ -94,6 +90,16 @@ const QString & AgentInfo::agentNumber() const
 const QString & AgentInfo::fullname() const
 {
     return m_fullname;
+}
+
+const QString & AgentInfo::firstname() const
+{
+    return m_firstname;
+}
+
+const QString & AgentInfo::lastname() const
+{
+    return m_lastname;
 }
 
 bool AgentInfo::paused() const

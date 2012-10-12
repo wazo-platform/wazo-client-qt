@@ -11,6 +11,6 @@ SUBDIRS  = \
     src/xlets/identity \
     src/xlets/operator \
     src/xlets/queues \
-    src/xlets/queuedetails \
+    src/xlets/queue_members \
     src/xlets/queueentrydetails \
     src/xlets/services \

@@ -50,7 +50,7 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         const QString & penalty() const { return m_penalty; };
         const QString & queueName() const { return m_queue_name; };
         QString agentNumber() const;
-        int lastcall() const { return m_lastcall; };
+        QString lastcall() const { return m_lastcall; };
         bool is_agent() const;
 
     private:
@@ -61,7 +61,7 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         QString m_penalty;
         QString m_queue_name;
         QString m_interface;
-        int m_lastcall;
+        QString m_lastcall;
 };
 
 #endif

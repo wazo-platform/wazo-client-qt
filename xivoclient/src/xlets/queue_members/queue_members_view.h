@@ -27,52 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENTINFO_H__
-#define __AGENTINFO_H__
+#ifndef __QUEUE_MEMBER_VIEW_H__
+#define __QUEUE_MEMBER_VIEW_H__
 
-#include "baselib_export.h"
-#include <QString>
-#include <QVariant>
-#include <QMap>
-#include "xinfo.h"
+#include <QTableView>
 
-class BASELIB_EXPORT AgentInfo : public XInfo
+class QueueMembersView : public QTableView
 {
+    Q_OBJECT
+
     public:
-        AgentInfo(const QString &, const QString &);
-        bool updateConfig(const QVariantMap &);
-        bool updateStatus(const QVariantMap &);
-
-        const QString & context() const;
-        const QString & agentNumber() const;
-        const QString & fullname() const;
-        const QString & firstname() const;
-        const QString & lastname() const;
-
-        const QString & status() const { return m_status; };
-        const QString & phonenumber() const { return m_phonenumber; };
-        const QVariantMap & properties() const { return m_properties; } ;
-
-        const QStringList & xqueueids() const { return m_xqueueids; };
-        const QStringList & xgroupids() const { return m_xgroupids; };
-
-        bool paused() const;
-        void pauseQueue(const QString &, bool) const;
-        void pauseAllQueue(bool) const;
-    private:
-        QString m_context;
-        QString m_agentnumber;
-        QString m_firstname;
-        QString m_lastname;
-
-        QString m_fullname;
-
-        QString m_status;
-        QString m_phonenumber;
-        QVariantMap m_properties;
-
-        QStringList m_xqueueids;
-        QStringList m_xgroupids;
+        QueueMembersView(QWidget *parent = NULL);
+    private slots:
+        void changeWatchedAgent(const QModelIndex &);
 };
 
 #endif

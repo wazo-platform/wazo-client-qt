@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,23 +27,39 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUEMEMBERDAO_H__
-#define __QUEUEMEMBERDAO_H__
+#include <QVBoxLayout>
 
-#include "baselib_export.h"
+#include <baseengine.h>
 
-class QStringList;
+#include "queue_members.h"
 
-class BASELIB_EXPORT QueueMemberDAO
+Q_EXPORT_PLUGIN2(xletqueuememberplugin, XLetQueueMembersPlugin);
+
+XLet* XLetQueueMembersPlugin::newXLetInstance(QWidget *parent)
 {
-    public:
-        QueueMemberDAO();
-        static QStringList queueListFromAgentId(const QString &);
-        static QString queueIdFromQueueName(const QString &);
-        static QString agentIdFromAgentNumber(const QString &);
-        static QString agentNumberFromAgentId(const QString &);
-        static QString queueMemberId(const QString &, const QString &);
-        static QStringList queueMembersFromAgentId(const QString &);
-};
+    b_engine->registerTranslation(":/obj/queue_member_%1");
+    return new XletQueueMembers(parent);
+}
 
-#endif
+XletQueueMembers::XletQueueMembers(QWidget *parent)
+    : XLet(parent)
+{
+    setTitle(tr("Queue_Member' List"));
+
+    QVBoxLayout *xletLayout = new QVBoxLayout();
+    setLayout(xletLayout);
+    xletLayout->setSpacing(0);
+
+    m_model = new QueueMembersModel(this);
+
+    m_proxy_model = new QueueMembersSortFilterProxyModel(this);
+    m_proxy_model->setSourceModel(m_model);
+    m_proxy_model->setDynamicSortFilter(true);
+
+    QueueMembersView *view = new QueueMembersView(this);
+    view->setModel(m_proxy_model);
+    view->hideColumn(QueueMembersModel::ID);
+    view->sortByColumn(QueueMembersModel::NUMBER, Qt::AscendingOrder);
+
+    xletLayout->addWidget(view);
+}

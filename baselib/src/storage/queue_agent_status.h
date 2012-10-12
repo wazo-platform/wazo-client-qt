@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -34,20 +34,19 @@
 #include <QColor>
 #include <QString>
 
-/*! \brief Store Queue Membership information
- */
 class BASELIB_EXPORT QueueAgentStatus: public QObject
 {
     Q_OBJECT
 
     public:
         QueueAgentStatus();
+        QueueAgentStatus(const QueueAgentStatus &);
 
-        bool update(const QString &, const QString &, const QString &);  //! update attribute members
-        const QString & ipbxid() const;  //! IPBX this queue/agent belongs to
-        const QString & id() const;  //! reference id of this queue/agent on the server
-        const QString & context() const;  //! context this queue/agent belongs to
-        const QString & queueName() const;  //! queuename
+        bool update(const QString &, const QString &, const QString &);
+        const QString & ipbxid() const;
+        const QString & id() const;
+        const QString & context() const;
+        const QString & queueName() const;
 
         const QColor &  display_status_color() const;
         const QString & display_status_queue() const;
@@ -76,4 +75,4 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         int m_display_status_darkfactor;
 };
 
-#endif // __QUEUE_AGENT_STATUS_H__
+#endif

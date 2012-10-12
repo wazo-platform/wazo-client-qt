@@ -27,52 +27,36 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENTINFO_H__
-#define __AGENTINFO_H__
+#ifndef __QUEUE_MEMBERS_PANEL_H__
+#define __QUEUE_MEMBERS_PANEL_H__
 
-#include "baselib_export.h"
-#include <QString>
-#include <QVariant>
-#include <QMap>
-#include "xinfo.h"
+#include <xlet.h>
+#include <xletinterface.h>
 
-class BASELIB_EXPORT AgentInfo : public XInfo
+#include "queue_members_model.h"
+#include "queue_members_sort_filter_proxy_model.h"
+#include "queue_members_view.h"
+
+class XletQueueMembers : public XLet
 {
+    Q_OBJECT
+
     public:
-        AgentInfo(const QString &, const QString &);
-        bool updateConfig(const QVariantMap &);
-        bool updateStatus(const QVariantMap &);
+        XletQueueMembers(QWidget *parent=0);
 
-        const QString & context() const;
-        const QString & agentNumber() const;
-        const QString & fullname() const;
-        const QString & firstname() const;
-        const QString & lastname() const;
-
-        const QString & status() const { return m_status; };
-        const QString & phonenumber() const { return m_phonenumber; };
-        const QVariantMap & properties() const { return m_properties; } ;
-
-        const QStringList & xqueueids() const { return m_xqueueids; };
-        const QStringList & xgroupids() const { return m_xgroupids; };
-
-        bool paused() const;
-        void pauseQueue(const QString &, bool) const;
-        void pauseAllQueue(bool) const;
     private:
-        QString m_context;
-        QString m_agentnumber;
-        QString m_firstname;
-        QString m_lastname;
-
-        QString m_fullname;
-
-        QString m_status;
-        QString m_phonenumber;
-        QVariantMap m_properties;
-
-        QStringList m_xqueueids;
-        QStringList m_xgroupids;
+        QueueMembersModel *m_model;
+        QueueMembersSortFilterProxyModel *m_proxy_model;
 };
+
+class XLetQueueMembersPlugin : public QObject, XLetInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(XLetInterface)
+
+    public:
+        XLet *newXLetInstance(QWidget *parent=0);
+};
+
 
 #endif
