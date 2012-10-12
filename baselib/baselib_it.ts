@@ -222,55 +222,55 @@ Per favore aggiornala.</translation>
         <translation>Membership dinamica</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="53"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="52"/>
         <source>Static/RT membership</source>
         <translation>Membership statica/RT
 </translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="65"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="64"/>
         <source>Agent not in Queue</source>
         <translation>Agente non in Coda</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="69"/>
-        <location filename="src/storage/queue_agent_status.cpp" line="81"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="68"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="80"/>
         <source>Agent in Queue</source>
         <translation>Agente in coda</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="70"/>
-        <location filename="src/storage/queue_agent_status.cpp" line="74"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="69"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="73"/>
         <source>Logged in</source>
         <translation>Loggato</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="73"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="72"/>
         <source>Agent Called or Busy</source>
         <translation>Agente in chiamata o occupato</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="77"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="76"/>
         <source>Agent in Queue but Invalid</source>
         <translation>Agente in Coda ma Invalido</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="82"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="81"/>
         <source>Logged out</source>
         <translation>Disconnesso</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="90"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="89"/>
         <source>Not paused</source>
         <translation>Non in pausa</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="94"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="93"/>
         <source>Paused</source>
         <translation>In pausa</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="98"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="97"/>
         <source>Not relevant</source>
         <translation>Non rilevante</translation>
     </message>
