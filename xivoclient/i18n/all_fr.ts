@@ -697,12 +697,12 @@ Lignes occupées : %6</translation>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="535"/>
         <source>Cancel Pause</source>
-        <translation>Annuler Pause</translation>
+        <translation>Annuler le retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="538"/>
         <source>Pause</source>
-        <translation>Mettre en Pause</translation>
+        <translation>Mettre en Retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentsnext/agentsnext.cpp" line="549"/>
@@ -2587,7 +2587,7 @@ ainsi que les paramètres pour les statistiques:</translation>
         <location filename="../src/xlets/identity/identityagent.cpp" line="171"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="172"/>
         <source>Partially paused</source>
-        <translation>Pause partielle</translation>
+        <translation>Retrait partiel</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="176"/>
@@ -2839,14 +2839,14 @@ jointes</translation>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="57"/>
         <source>Paused</source>
-        <translation>En pause</translation>
+        <translation>En retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="58"/>
         <source>Paused
 queues</source>
         <translation>Files
-en pause</translation>
+en retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="164"/>
@@ -2890,7 +2890,7 @@ Contexte: %2</translation>
         <location filename="../src/xlets/agents/agents.cpp" line="330"/>
         <location filename="../src/xlets/agents/agents.cpp" line="335"/>
         <source>Paused queues : %1</source>
-        <translation>Files en pause : %1</translation>
+        <translation>Files en retrait : %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="332"/>
@@ -3036,12 +3036,12 @@ Contexte: %2</translation>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
         <source>Paused</source>
-        <translation>En pause</translation>
+        <translation>En retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
         <source>Queue member pause status</source>
-        <translation>État en pause du membre de la file</translation>
+        <translation>Retrait du membre de la file</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
