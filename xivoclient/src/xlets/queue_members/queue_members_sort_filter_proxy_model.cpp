@@ -27,65 +27,38 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESPANEL_H__
-#define __QUEUESPANEL_H__
+#include <baseengine.h>
+#include <dao/queuememberdao.h>
 
-#include <xlet.h>
-#include <xletinterface.h>
-#include <ipbxlistener.h>
+#include "queue_members_sort_filter_proxy_model.h"
+#include "queue_members_model.h"
 
-#include "queuesmodel.h"
-#include "queuessortfilterproxymodel.h"
-#include "queuesview.h"
-
-class UserInfo;
-class XletQueues;
-class QueueInfo;
-
-class XletQueuesConfigure : public QWidget
+QueueMembersSortFilterProxyModel::QueueMembersSortFilterProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent), m_current_queue_id("")
 {
-    Q_OBJECT
+    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+            this, SLOT(changeWatchedQueue(const QString &)));
+}
 
-    public:
-        XletQueuesConfigure(XletQueues *xlet);
-        QWidget* buildConfigureQueueList(QWidget *);
-
-    private slots:
-        void changeQueueStatParam(int);
-};
-
-class XletQueues : public XLet, IPBXListener
+void QueueMembersSortFilterProxyModel::changeWatchedQueue(const QString & queue_id)
 {
-    Q_OBJECT
+    m_current_queue_id = queue_id;
+    this->invalidateFilter();
+}
 
-    public:
-        XletQueues(QWidget *parent=0);
-        void parseCommand(const QVariantMap &);
-
-    protected:
-        virtual void contextMenuEvent(QContextMenuEvent *);
-
-    private:
-        void openConfigureWindow();
-        void subscribeToQueuesStats();
-
-    public slots:
-        void askForQueueStats();
-
-    private:
-        XletQueuesConfigure *m_configureWindow;
-
-        QueuesModel *m_model;
-        QueuesSortFilterProxyModel *m_proxyModel;
-};
-
-class XLetQueuesPlugin : public QObject, XLetInterface
+bool QueueMembersSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+    QModelIndex queue_member_id_index = sourceModel()->index(sourceRow,
+                                                             QueueMembersModel::ID,
+                                                             sourceParent);
+    QString queue_member_id = sourceModel()->data(queue_member_id_index).toString();
+    const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+    if (queue_member == NULL) {
+        qDebug() << Q_FUNC_INFO << queue_member_id;
+        return false;
+    }
+    QString queue_name = queue_member->queueName();
+    QString queue_id = QueueMemberDAO::queueIdFromQueueName(queue_name);
 
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-#endif
+    return m_current_queue_id == queue_id;
+}

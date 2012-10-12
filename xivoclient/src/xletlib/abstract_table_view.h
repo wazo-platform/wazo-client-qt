@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,23 +27,20 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESVIEW_H__
-#define __QUEUESVIEW_H__
+#ifndef __ABSTRACT_TABLE_VIEW_H__
+#define __ABSTRACT_TABLE_VIEW_H__
 
-#include <abstract_table_view.h>
+#include <QTableView>
 
-class QueuesView : public AbstractTableView
+#include "xletlib_export.h"
+
+class XLETLIB_EXPORT AbstractTableView : public QTableView
 {
     Q_OBJECT
 
     public:
-        QueuesView(QWidget *parent = NULL);
-        void init();
-    public slots:
-        void updateColumnHidden();
-    private slots:
-        void changeWatchedQueue(const QModelIndex &);
-    private:
+        AbstractTableView(QWidget *parent = NULL);
+        virtual ~AbstractTableView() = 0;
 };
 
 #endif

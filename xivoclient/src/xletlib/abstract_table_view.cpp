@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,23 +27,47 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESVIEW_H__
-#define __QUEUESVIEW_H__
+#include <QHeaderView>
+#include <QStyleFactory>
 
-#include <abstract_table_view.h>
+#include "abstract_table_view.h"
 
-class QueuesView : public AbstractTableView
+AbstractTableView::AbstractTableView(QWidget * parent)
+    : QTableView(parent)
 {
-    Q_OBJECT
+    this->setSortingEnabled(true);
+    this->setShowGrid(0);
 
-    public:
-        QueuesView(QWidget *parent = NULL);
-        void init();
-    public slots:
-        void updateColumnHidden();
-    private slots:
-        void changeWatchedQueue(const QModelIndex &);
-    private:
-};
+    this->horizontalHeader()->setMovable(true);
+    this->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
-#endif
+    this->verticalHeader()->hide();
+
+    this->setAlternatingRowColors(true);
+    this->setSelectionMode(QAbstractItemView::NoSelection);
+
+    this->setStyleSheet(
+
+        // No decoration of the view itself
+        "AbstractTableView {"
+            "border: none;"
+            "background: transparent;"
+        "}"
+
+        // Remove corner
+        "AbstractTableView QTableCornerButton::section {"
+            "background: transparent;"
+            "border: none;"
+        "}"
+    );
+
+    // Necessary to make the tooltip visible, we can't see the text without this
+    this->horizontalHeader()->setStyleSheet(
+        "QToolTip {"
+            "color: #000;"
+        "}");
+
+    QStyle *plastique = QStyleFactory::create("plastique");
+    this->horizontalHeader()->setStyle(plastique);
+    this->verticalHeader()->setStyle(plastique);
+}

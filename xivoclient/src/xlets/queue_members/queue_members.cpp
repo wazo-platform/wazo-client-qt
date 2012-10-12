@@ -32,6 +32,7 @@
 #include <baseengine.h>
 
 #include "queue_members.h"
+#include "queue_members_header.h"
 
 Q_EXPORT_PLUGIN2(xletqueuememberplugin, XLetQueueMembersPlugin);
 
@@ -44,7 +45,7 @@ XLet* XLetQueueMembersPlugin::newXLetInstance(QWidget *parent)
 XletQueueMembers::XletQueueMembers(QWidget *parent)
     : XLet(parent)
 {
-    setTitle(tr("Queue_Member' List"));
+    setTitle(tr("Queue Members"));
 
     QVBoxLayout *xletLayout = new QVBoxLayout();
     setLayout(xletLayout);
@@ -61,5 +62,8 @@ XletQueueMembers::XletQueueMembers(QWidget *parent)
     view->hideColumn(QueueMembersModel::ID);
     view->sortByColumn(QueueMembersModel::NUMBER, Qt::AscendingOrder);
 
+    QueueMembersHeader *header = new QueueMembersHeader(this);
+
+    xletLayout->addWidget(header);
     xletLayout->addWidget(view);
 }

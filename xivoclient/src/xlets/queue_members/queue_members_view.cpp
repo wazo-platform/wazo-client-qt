@@ -27,9 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QHeaderView>
-#include <QStyleFactory>
-
 #include <baseengine.h>
 #include <dao/queuememberdao.h>
 
@@ -37,37 +34,10 @@
 #include "queue_members_model.h"
 
 QueueMembersView::QueueMembersView(QWidget *parent)
-    : QTableView(parent)
+    : AbstractTableView(parent)
 {
-    setSortingEnabled(true);
-
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(changeWatchedAgent(const QModelIndex &)));
-
-    verticalHeader()->setMovable(true);
-
-    setAlternatingRowColors(true);
-    setSelectionMode(QAbstractItemView::NoSelection);
-    setStyleSheet(
-
-        // No decoration of the view itself
-        "QueuesView {"
-            "border: none;"
-            "background: transparent;"
-        "}"
-
-        // Remove corner
-        "QueuesView QTableCornerButton::section {"
-            "background: transparent;"
-            "border: none;"
-        "}"
-    );
-
-    // Necessary to make the tooltip visible, we can't see the text without this
-    horizontalHeader()->setStyleSheet(
-        "QToolTip {"
-            "color: #000;"
-        "}");
 }
 
 void QueueMembersView::changeWatchedAgent(const QModelIndex &index)

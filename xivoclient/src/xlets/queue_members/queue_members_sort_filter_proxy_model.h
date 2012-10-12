@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,23 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESVIEW_H__
-#define __QUEUESVIEW_H__
+#ifndef __QUEUESSORTFILTERPROXYMODEL_H__
+#define __QUEUESSORTFILTERPROXYMODEL_H__
 
-#include <abstract_table_view.h>
+#include <QSortFilterProxyModel>
+#include <QStringList>
 
-class QueuesView : public AbstractTableView
+class QueueMembersSortFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
     public:
-        QueuesView(QWidget *parent = NULL);
-        void init();
+        QueueMembersSortFilterProxyModel(QObject *parent = NULL);
     public slots:
-        void updateColumnHidden();
-    private slots:
-        void changeWatchedQueue(const QModelIndex &);
+        void changeWatchedQueue(const QString & queue_id);
+    protected:
+        bool filterAcceptsRow(int , const QModelIndex &) const;
     private:
+        QString m_current_queue_id;
 };
 
 #endif

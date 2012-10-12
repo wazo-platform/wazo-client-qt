@@ -30,9 +30,9 @@
 #ifndef __QUEUE_MEMBER_VIEW_H__
 #define __QUEUE_MEMBER_VIEW_H__
 
-#include <QTableView>
+#include <abstract_table_view.h>
 
-class QueueMembersView : public QTableView
+class QueueMembersView : public AbstractTableView
 {
     Q_OBJECT
 
