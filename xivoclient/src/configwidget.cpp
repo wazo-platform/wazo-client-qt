@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -54,7 +54,6 @@
 QHash<QString, QString> func_legend;
 QString reboot_message;
 
-/*! \brief constructor */
 ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent),
       m_currentKeyChange(-1)
@@ -68,10 +67,8 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     m_tabwidget = new QTabWidget();
 
     m_config = b_engine->getConfig();
-    
+
     m_dblclick_actions["call"] = tr("Call");
-    // XXX: disable atxfer until they work in asterisk 1.8
-    // m_dblclick_actions["atxfer"] = "Indirect transfer";
 
     createColors();
 
@@ -91,6 +88,10 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     vlayout->addWidget(m_btnbox);
 }
 
+ConfigWidget::~ConfigWidget()
+{
+}
+
 void ConfigWidget::createColors()
 {
     ColorLevelStruct color;
@@ -102,18 +103,15 @@ void ConfigWidget::createColors()
     m_queue_colors.append(color);
 }
 
-/*! \brief connection config tab */
 void ConfigWidget::_insert_connection_tab()
 {
     QGridLayout * servers_layout = new QGridLayout;
     servers_layout->setHorizontalSpacing(5);
     servers_layout->setVerticalSpacing(5);
 
-    // Headers
     servers_layout->addWidget(new QLabel(tr("Host address")), 0, 1);
     servers_layout->addWidget(new QLabel(tr("CTI port")), 0, 2);
 
-    // Main server
     servers_layout->addWidget(new QLabel(tr("Main server")), 1, 0);
 
     m_main_server_address_input = new QLineEdit(m_config["cti_address"].toString(), this);
@@ -128,7 +126,6 @@ void ConfigWidget::_insert_connection_tab()
     m_main_server_encrypt_input->setChecked(m_config["cti_encrypt"].toBool());
     servers_layout->addWidget(m_main_server_encrypt_input, 1, 3);
 
-    // Backup server
     servers_layout->addWidget(new QLabel(tr("Backup server")), 2, 0);
 
     m_backup_server_address_input = new QLineEdit(m_config["cti_backup_address"].toString(), this);
@@ -143,7 +140,6 @@ void ConfigWidget::_insert_connection_tab()
     m_backup_server_encrypt_input->setChecked(m_config["cti_backup_encrypt"].toBool());
     servers_layout->addWidget(m_backup_server_encrypt_input, 2, 3);
 
-    // Rest of the widget
     QFormLayout * form_layout = new QFormLayout;
     form_layout->setHorizontalSpacing(5);
     form_layout->setVerticalSpacing(5);
@@ -178,7 +174,6 @@ void ConfigWidget::_insert_connection_tab()
     m_tabwidget->addTab(connection_widget, tr("Connection"));
 }
 
-/*! \brief function config tab */
 void ConfigWidget::_insert_function_tab()
 {
     QVBoxLayout *layout2 = new QVBoxLayout();
@@ -203,7 +198,7 @@ void ConfigWidget::_insert_function_tab()
         QWidget * widget_presence = new QWidget() ;
         QFormLayout * layout_presence = new QFormLayout() ;
         widget_presence->setLayout(layout_presence);
-        
+
         m_presenceIndicatorSize = new QSpinBox(this);
         m_presenceIndicatorSize->setRange(1, 20);
         int presenceIndicatorSize = m_config["guioptions.presenceindicatorsize"].toInt();
@@ -211,28 +206,28 @@ void ConfigWidget::_insert_function_tab()
             presenceIndicatorSize = 5;
         m_presenceIndicatorSize->setValue(presenceIndicatorSize);
         layout_presence->addRow(tr("Presence indicator size (in pixels)"), m_presenceIndicatorSize);
-        
+
     m_function_tabwidget->addTab(widget_presence, tr("Presence reporting"));
 
         QWidget * widget_customerinfo = new QWidget() ;
         QFormLayout * layout_customerinfo = new QFormLayout() ;
         widget_customerinfo->setLayout(layout_customerinfo);
-        
+
         m_autourl_allowed = new QCheckBox(tr("Allow the Automatic Opening of URL's"));
         m_autourl_allowed->setChecked(m_config["guioptions.autourl_allowed"].toUInt() == Qt::Checked);
         layout_customerinfo->addRow(m_autourl_allowed);
-        
+
         m_tablimit_sbox = new QSpinBox(this);
         m_tablimit_sbox->setRange(0, 99);
         m_tablimit_sbox->setValue(m_config["guioptions.sheet-tablimit"].toUInt());
         layout_customerinfo->addRow(tr("Tab limit"), m_tablimit_sbox);
-        
+
     m_function_tabwidget->addTab(widget_customerinfo, tr("Customer Info"));
 
         QWidget * widget_dial = new QWidget() ;
         QFormLayout * layout_dial = new QFormLayout() ;
         widget_dial->setLayout(layout_dial);
-        
+
         m_dial_history_size = new QSpinBox(this);
         m_dial_history_size->setRange(0, 20);
         int dial_history_size = m_config["dialpanel.history_length"].toInt();
@@ -246,28 +241,28 @@ void ConfigWidget::_insert_function_tab()
         QWidget * widget_history = new QWidget() ;
         QFormLayout * layout_history = new QFormLayout() ;
         widget_history->setLayout(layout_history);
-        
+
         m_history_sbox = new QSpinBox(this);
         m_history_sbox->setRange(1, 20);
         m_history_sbox->setValue(m_config["historysize"].toUInt());
         layout_history->addRow(tr("History size"), m_history_sbox);
-        
+
     m_function_tabwidget->addTab(widget_history, tr("History"));
-        
+
         QWidget * widget_contacts = new QWidget() ;
         QFormLayout * layout_contacts = new QFormLayout() ;
         widget_contacts->setLayout(layout_contacts);
-        
+
         m_contactssize_sbox = new QSpinBox(this);
         m_contactssize_sbox->setRange(1, 500);
         m_contactssize_sbox->setValue(m_config["guioptions.contacts-max"].toUInt());
         layout_contacts->addRow(tr("Contacts' max number"), m_contactssize_sbox);
-        
+
         m_contactswidth_sbox = new QSpinBox(this);
         m_contactswidth_sbox->setRange(0, 20);
         m_contactswidth_sbox->setValue(m_config["guioptions.contacts-width"].toUInt());
         layout_contacts->addRow(tr("Contacts per row (0 = auto)"), m_contactswidth_sbox);
-        
+
         m_contacts_dblclick = new QComboBox(this);
         foreach (QString key, m_dblclick_actions.keys()) {
             m_contacts_dblclick->addItem(m_dblclick_actions[key], key);
@@ -275,14 +270,14 @@ void ConfigWidget::_insert_function_tab()
         int i_contacts_dblclick = m_contacts_dblclick->findData (m_config["doubleclick.searchpanel"]);
         m_contacts_dblclick->setCurrentIndex(i_contacts_dblclick);
         layout_contacts->addRow(tr("Double-click action"), m_contacts_dblclick);
-        
+
     m_function_tabwidget->addTab(widget_contacts, tr("Contacts"));
 
         QWidget * widget_queues = new QWidget() ;
         QGridLayout * layout_queues = new QGridLayout() ;
         layout_queues->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
         widget_queues->setLayout(layout_queues);
-        
+
         int line = 0;
         int ncol = 1;
         foreach(ColorLevelStruct color, m_queue_colors) {
@@ -356,7 +351,7 @@ void ConfigWidget::_insert_function_tab()
             maxwidthwanted = 200;
         m_maxWidthWanted->setValue(maxwidthwanted);
         layout_switchboard->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
-        
+
         m_switchboard_dblclick = new QComboBox(this);
         foreach (QString key, m_dblclick_actions.keys()) {
             m_switchboard_dblclick->addItem(m_dblclick_actions[key], key);
@@ -374,7 +369,6 @@ void ConfigWidget::_insert_function_tab()
     m_tabwidget->addTab(widget_functions, tr("Functions"));
 }
 
-/*! \brief account config tab */
 void ConfigWidget::_insert_account_tab()
 {
     QFormLayout *layout3 = new QFormLayout();
@@ -420,7 +414,6 @@ void ConfigWidget::_insert_account_tab()
     m_tabwidget->addTab(widget_user, tr("Account"));
 }
 
-/*! \brief gui settings config tab */
 void ConfigWidget::_insert_guisetting_tab()
 {
     QFormLayout *layout4 = new QFormLayout();
@@ -491,7 +484,6 @@ void ConfigWidget::_insert_guisetting_tab()
     m_tabwidget->addTab(widget_gui, tr("GUI Settings"));
 }
 
-/*! \brief advanced config tab */
 void ConfigWidget::_insert_advanced_tab()
 {
     QFormLayout * layout5 = new QFormLayout();
@@ -529,7 +521,6 @@ void ConfigWidget::changeOperatorKey(bool a)
   }
 }
 
-/*! \brief operator xlet config tab */
 void ConfigWidget::_insert_operator_functiontab()
 {
      m_operator_action[ANSWER].action = QString("answer");
@@ -584,11 +575,6 @@ void ConfigWidget::_insert_operator_functiontab()
 }
 
 
-ConfigWidget::~ConfigWidget()
-{
-//    qDebug() << Q_FUNC_INFO << b_engine;
-}
-
 void ConfigWidget::keyPressEvent(QKeyEvent *e)
 {
     if ((m_currentKeyChange == -1) || (e->modifiers() != Qt::NoModifier))
@@ -617,10 +603,8 @@ void ConfigWidget::keyPressEvent(QKeyEvent *e)
     m_operator_action[m_currentKeyChange].button->toggle();
 }
 
-/*! \brief hide/show agentphonenumber input according to loginKind */
 void ConfigWidget::loginKindChanged(int index)
 {
-    // qDebug() << Q_FUNC_INFO << index;
     if (index == 0) {
         m_agentphonenumber->setEnabled(false);
     } else {
@@ -628,11 +612,6 @@ void ConfigWidget::loginKindChanged(int index)
     }
 }
 
-/*!
- * This slot saves the configuration (which is stored in displayed
- * widgets) to the BaseEngine object
- * and also to the main window object and then call close()
- */
 void ConfigWidget::saveAndClose()
 {
     int i;
@@ -656,7 +635,7 @@ void ConfigWidget::saveAndClose()
     m_config["historysize"] = m_history_sbox->value();
     m_config["systrayed"] = m_systrayed->isChecked();
     m_config["uniqueinstance"] = !m_unique->isChecked();
-    m_config["qss"] = m_qss->itemData(m_qss->currentIndex()); // not currentText()
+    m_config["qss"] = m_qss->itemData(m_qss->currentIndex());
     m_config["enableclipboard"] = m_clipboard->isChecked();
     m_config["logtofile"] = m_logtofile->isChecked();
     m_config["logfilename"] = m_logfilename->text();
@@ -689,13 +668,11 @@ void ConfigWidget::saveAndClose()
     m_config["guioptions.contacts-max"] = m_contactssize_sbox->value();
     m_config["guioptions.contacts-width"] = m_contactswidth_sbox->value();
     m_config["guioptions.sheet-tablimit"] = m_tablimit_sbox->value();
-    /*!
-     * \todo Store autourl_allowed as bool in m_config, not int
-     */
+
     m_config["guioptions.autourl_allowed"] = m_autourl_allowed->checkState();
     m_config["guioptions.queue_longestwait"] = m_queue_longestwait->isChecked();
     m_config["guioptions.queue_displaynu"] = m_queue_displaynu->isChecked();
-    m_config["guioptions.switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex()); // not currentText()
+    m_config["guioptions.switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex());
     m_config["guioptions.maxwidthwanted"] = m_maxWidthWanted->value();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
 
@@ -703,10 +680,6 @@ void ConfigWidget::saveAndClose()
 
     close();
 }
-
-/*!
- * Save the current tab and close
- */
 
 bool ConfigWidget::close()
 {
