@@ -48,6 +48,8 @@ void QueueMembersSortFilterProxyModel::changeWatchedQueue(const QString & queue_
 
 bool QueueMembersSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+    if (m_current_queue_id == "")
+        return false;
     QModelIndex queue_member_id_index = sourceModel()->index(sourceRow,
                                                              QueueMembersModel::ID,
                                                              sourceParent);
