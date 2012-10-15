@@ -78,7 +78,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_status_queue = tr("Agent in Queue but Invalid");
         m_display_status_logged = "";
     } else if (sstatus == this->logged_out_status) {
-        basecolor = Qt::blue;
+        basecolor = Qt::cyan;
         m_display_status_queue = tr("Agent in Queue");
         m_display_status_logged = tr("Logged out");
     } else {
