@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="328"/>
         <source>Hide unlogged agents</source>
-        <translation>Masquer les agent délogués.</translation>
+        <translation>Masquer les agent délogués</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="332"/>
