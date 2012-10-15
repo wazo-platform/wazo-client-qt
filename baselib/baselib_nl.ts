@@ -217,59 +217,59 @@ Gelieve uw versie te upgraden.</translation>
 <context>
     <name>QueueAgentStatus</name>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="48"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="50"/>
         <source>Dynamic membership</source>
         <translation>Dynamisch lidmaatschap</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="52"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="54"/>
         <source>Static/RT membership</source>
         <translation>Statisch/RT-lidmaatchap</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="64"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="66"/>
         <source>Agent not in Queue</source>
         <translation>Agent niet in wachtrij</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="68"/>
-        <location filename="src/storage/queue_agent_status.cpp" line="80"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="70"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="82"/>
         <source>Agent in Queue</source>
         <translation>Agent in wachtrij</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="69"/>
-        <location filename="src/storage/queue_agent_status.cpp" line="73"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="71"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="75"/>
         <source>Logged in</source>
         <translation>Ingelogd</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="72"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="74"/>
         <source>Agent Called or Busy</source>
         <translation>Agent opgeroepen of bezet</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="76"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="78"/>
         <source>Agent in Queue but Invalid</source>
         <translation>Agent in wachtrij maar ongeldig</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="81"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="83"/>
         <source>Logged out</source>
         <translation>Uitgelogd</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="89"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="91"/>
         <source>Not paused</source>
         <translation>Niet gepauzeerd</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="93"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="95"/>
         <source>Paused</source>
         <translation>Gepauzeerd</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="97"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="99"/>
         <source>Not relevant</source>
         <translation>Niet relevant</translation>
     </message>
