@@ -38,11 +38,18 @@ QueueMembersSortFilterProxyModel::QueueMembersSortFilterProxyModel(QObject *pare
 {
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(changeWatchedQueue(const QString &)));
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(settingsChanged()));
 }
 
 void QueueMembersSortFilterProxyModel::changeWatchedQueue(const QString & queue_id)
 {
     m_current_queue_id = queue_id;
+    this->invalidateFilter();
+}
+
+void QueueMembersSortFilterProxyModel::settingsChanged()
+{
     this->invalidateFilter();
 }
 
@@ -59,6 +66,30 @@ bool QueueMembersSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QMo
         qDebug() << Q_FUNC_INFO << queue_member_id;
         return false;
     }
+
+    if (! this->isMemberOfThisQueue(queue_member)) return false;
+
+    if (queue_member->is_agent() && this->hideUnloggedAgents()) {
+        if (! this->isLogged(queue_member)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool QueueMembersSortFilterProxyModel::isLogged(const QueueMemberInfo *queue_member) const
+{
+    QueueAgentStatus agent_status = QueueMemberDAO::getAgentStatus(queue_member);
+    return agent_status.is_logged();
+}
+
+bool QueueMembersSortFilterProxyModel::hideUnloggedAgents() const
+{
+    return b_engine->getConfig("guioptions.queue_members_hide_unlogged_agents").toBool();
+}
+
+bool QueueMembersSortFilterProxyModel::isMemberOfThisQueue(const QueueMemberInfo * queue_member) const
+{
     QString queue_name = queue_member->queueName();
     QString queue_id = QueueMemberDAO::queueIdFromQueueName(queue_name);
 

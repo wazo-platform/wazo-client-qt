@@ -57,6 +57,8 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         const QString & display_action_join() const;
         const QString & display_action_pause() const;
 
+        bool is_logged() const;
+
     private:
         QString m_ipbxid;
         QString m_id;
@@ -73,6 +75,9 @@ class BASELIB_EXPORT QueueAgentStatus: public QObject
         QColor m_display_status_color;
         QColor m_display_status_paused_color;
         int m_display_status_darkfactor;
+        QString m_status;
+
+        static QString logged_out_status;
 };
 
 #endif

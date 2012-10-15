@@ -31,6 +31,7 @@
 #include "queue_agent_status.h"
 
 const QColor Orange = QColor(255, 128, 0);
+QString QueueAgentStatus::logged_out_status = "5";
 
 QueueAgentStatus::QueueAgentStatus()
 {
@@ -40,6 +41,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
                               const QString & sstatus,
                               const QString & pstatus)
 {
+    m_status = sstatus;
     if(dynstatus == "") {
         m_display_status_membership = "";
         m_display_status_darkfactor = 100;
@@ -75,7 +77,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         basecolor = Qt::red;
         m_display_status_queue = tr("Agent in Queue but Invalid");
         m_display_status_logged = "";
-    } else if (sstatus == "5") {
+    } else if (sstatus == this->logged_out_status) {
         basecolor = Qt::blue;
         m_display_status_queue = tr("Agent in Queue");
         m_display_status_logged = tr("Logged out");
@@ -165,4 +167,9 @@ const QString & QueueAgentStatus::context() const
 const QString & QueueAgentStatus::queueName() const
 {
     return m_queuename;
+}
+
+bool QueueAgentStatus::is_logged() const
+{
+    return m_status != this->logged_out_status;
 }

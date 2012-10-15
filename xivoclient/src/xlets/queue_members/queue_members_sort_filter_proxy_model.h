@@ -33,6 +33,8 @@
 #include <QSortFilterProxyModel>
 #include <QStringList>
 
+class QueueMemberInfo;
+
 class QueueMembersSortFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -40,9 +42,13 @@ class QueueMembersSortFilterProxyModel : public QSortFilterProxyModel
     public:
         QueueMembersSortFilterProxyModel(QObject *parent = NULL);
     public slots:
+        void settingsChanged();
         void changeWatchedQueue(const QString & queue_id);
     protected:
         bool filterAcceptsRow(int , const QModelIndex &) const;
+        bool isLogged(const QueueMemberInfo * queue_member) const;
+        bool hideUnloggedAgents() const;
+        bool isMemberOfThisQueue(const QueueMemberInfo *queue_member) const;
     private:
         QString m_current_queue_id;
 };

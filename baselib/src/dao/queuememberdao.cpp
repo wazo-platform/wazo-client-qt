@@ -31,6 +31,7 @@
 
 #include "baseengine.h"
 #include "queuememberdao.h"
+#include "queue_agent_status.h"
 
 QStringList uniquify(QStringList list)
 {
@@ -137,4 +138,16 @@ QStringList QueueMemberDAO::queueMembersFromAgentId(const QString & agent_id)
         }
     }
     return ret;
+}
+
+QueueAgentStatus QueueMemberDAO::getAgentStatus(const QueueMemberInfo *queue_member)
+{
+    QueueAgentStatus agent_status;
+    QString membership = queue_member->membership();
+    QString status = queue_member->status();
+    QString paused = queue_member->paused();
+
+    agent_status.update(membership, status, paused);
+
+    return agent_status;
 }

@@ -260,8 +260,6 @@ QVariant QueueMembersModel::phoneDataBackground(int row, int column, const Queue
 
 QueueAgentStatus QueueMembersModel::getAgentStatus(int row) const
 {
-    QueueAgentStatus agent_status;
-
     QString queue_member_id;
     if (m_row2id.size() > row) {
         queue_member_id = m_row2id[row];
@@ -269,15 +267,10 @@ QueueAgentStatus QueueMembersModel::getAgentStatus(int row) const
 
     const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
     if (queue_member == NULL) {
-        return agent_status;
+        return QueueAgentStatus();
     }
 
-    QString membership = queue_member->membership();
-    QString status = queue_member->status();
-    QString paused = queue_member->paused();
-    agent_status.update(membership, status, paused);
-
-    return agent_status;
+    return QueueMemberDAO::getAgentStatus(queue_member);
 }
 
 QVariant QueueMembersModel::headerData(int index,

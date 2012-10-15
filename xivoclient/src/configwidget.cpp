@@ -676,6 +676,8 @@ void ConfigWidget::saveAndClose()
     m_config["guioptions.maxwidthwanted"] = m_maxWidthWanted->value();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
 
+    m_config["guioptions.queue_members_hide_unlogged_agents"] = m_hide_unlogged_agents->isChecked();
+
     b_engine->setConfig(m_config);
 
     close();
