@@ -35,6 +35,8 @@
 
 #include "queue_members_model.h"
 
+QString QueueMembersModel::not_available = tr("N/A");
+
 QueueMembersModel::QueueMembersModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
@@ -144,8 +146,6 @@ QVariant QueueMembersModel::data(const QModelIndex &index, int role) const
 
 QVariant QueueMembersModel::dataDisplay(int row, int column) const
 {
-    QString not_available = tr("N/A");
-
     QString queue_member_id;
 
     if (m_row2id.size() > row) {
@@ -155,6 +155,44 @@ QVariant QueueMembersModel::dataDisplay(int row, int column) const
     const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
     if (queue_member == NULL) return QVariant();
 
+    if (queue_member->is_agent())
+      return this->agentDataDisplay(row, column, queue_member);
+    else
+      return this->phoneDataDisplay(row, column, queue_member);
+}
+
+QVariant QueueMembersModel::phoneDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const
+{
+  const PhoneInfo * phone = phone::findByIdentity(queue_member->interface());
+  if (phone == NULL) return QVariant();
+  const UserInfo * user = b_engine->user(phone->xid_user_features());
+  if (user == NULL) return QVariant();
+
+  switch(column) {
+  case ID:
+    return queue_member->xid();
+  case NUMBER:
+    return phone->number();
+  case FIRSTNAME:
+    return user->firstname();
+  case LASTNAME:
+    return user->lastname();
+  case ANSWERED_CALLS:
+    return queue_member->callstaken();
+  case LAST_CALL_DATE:
+    return queue_member->lastcall();
+  case PENALTY:
+    return queue_member->penalty();
+  case LOGGED:
+  case PAUSED:
+    return QVariant();
+  default:
+      return this->not_available;
+  }
+}
+
+QVariant QueueMembersModel::agentDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const
+{
     QString agent_id = QueueMemberDAO::agentIdFromAgentNumber(queue_member->agentNumber());
     const AgentInfo * agent = b_engine->agent(agent_id);
     if (agent == NULL) return QVariant();
@@ -163,7 +201,7 @@ QVariant QueueMembersModel::dataDisplay(int row, int column) const
 
     switch (column) {
     case ID :
-        return queue_member_id;
+        return queue_member->xid();
     case NUMBER :
         return queue_member->agentNumber();
     case FIRSTNAME :
@@ -181,11 +219,28 @@ QVariant QueueMembersModel::dataDisplay(int row, int column) const
     case PENALTY:
         return queue_member->penalty();
     default :
-        return not_available;
+        return this->not_available;
     }
 }
 
 QVariant QueueMembersModel::dataBackground(int row, int column) const
+{
+    QString queue_member_id;
+
+    if (m_row2id.size() > row) {
+        queue_member_id = m_row2id[row];
+    }
+
+    const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+    if (queue_member == NULL) return QVariant();
+
+    if (queue_member->is_agent())
+      return this->agentDataBackground(row, column, queue_member);
+    else
+      return this->phoneDataBackground(row, column, queue_member);
+}
+
+QVariant QueueMembersModel::agentDataBackground(int row, int column, const QueueMemberInfo * queue_member) const
 {
     QueueAgentStatus agent_status = this->getAgentStatus(row);
     QColor agent_status_color = agent_status.display_status_color();
@@ -196,6 +251,11 @@ QVariant QueueMembersModel::dataBackground(int row, int column) const
     default:
         return QVariant();
     }
+}
+
+QVariant QueueMembersModel::phoneDataBackground(int row, int column, const QueueMemberInfo * queue_member) const
+{
+    return QVariant();
 }
 
 QueueAgentStatus QueueMembersModel::getAgentStatus(int row) const

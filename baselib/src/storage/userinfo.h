@@ -52,6 +52,8 @@ class BASELIB_EXPORT UserInfo : public XInfo
         //! @{
             // Config
             const QString & fullname() const { return m_fullname; };
+            const QString & firstname() const { return m_firstname; };
+            const QString & lastname() const { return m_lastname; };
             const QString & voicemailid() const { return m_voicemailid; };
             const QString & xvoicemailid() const { return m_xvoicemailid; };
             const QString & agentid() const { return m_agentid; };
@@ -103,6 +105,8 @@ class BASELIB_EXPORT UserInfo : public XInfo
         //! \name Config
         //! @{
             QString m_fullname; //!< user full name
+            QString m_firstname;
+            QString m_lastname;
             QString m_voicemailid;              //!< voice mail box id
             QString m_xvoicemailid;             //!< ipbxid + voice mail box id
             QString m_agentid;                  //!< agent id

@@ -110,16 +110,7 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
     return haschanged;
 }
 
-/*! \brief Returns the string representation of a PhoneInfo */
-QString PhoneInfo::toString() const
+QString PhoneInfo::xid_user_features() const
 {
-    QString s;
-    s += "xid(" + xid() + ") ";
-    s += "Protocol(" + m_protocol + ") ";
-    s += "Context(" + m_context + ") ";
-    s += "Number(" + m_number + ") ";
-    s += "Identity(" + m_identity + ") ";
-    s += "Channels(" + QString("%1").arg(m_channels.size()) + ") ";
-
-    return s;
+    return QString("%1/%2").arg(this->ipbxid()).arg(this->iduserfeatures());
 }

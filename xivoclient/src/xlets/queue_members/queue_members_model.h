@@ -34,6 +34,8 @@
 #include <QStringList>
 #include <queue_agent_status.h>
 
+class QueueMemberInfo;
+
 class QueueMembersModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -60,7 +62,11 @@ class QueueMembersModel : public QAbstractTableModel
         void refreshQueueMemberRow(const QString &agent_xid);
         void fillHeaders();
         QVariant dataDisplay(int row, int column) const;
+        QVariant agentDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const;
+        QVariant phoneDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const;
         QVariant dataBackground(int row, int column) const;
+        QVariant agentDataBackground(int row, int column, const QueueMemberInfo * queue_member) const;
+        QVariant phoneDataBackground(int row, int column, const QueueMemberInfo * queue_member) const;
         QueueAgentStatus getAgentStatus(int row) const;
 
     public:
@@ -86,6 +92,7 @@ class QueueMembersModel : public QAbstractTableModel
 
         HeaderStruct m_headers[NB_COL];
         QStringList m_row2id;
+        static QString not_available ;
 };
 
 #endif
