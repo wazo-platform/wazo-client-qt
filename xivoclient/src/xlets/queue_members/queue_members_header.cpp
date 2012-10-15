@@ -47,12 +47,21 @@ QueueMembersHeader::QueueMembersHeader(QWidget * parent)
 
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(changeWatchedQueue(const QString &)));
+    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
+            this, SLOT(updateQueueStatus(const QString &)));
 }
 
 void QueueMembersHeader::changeWatchedQueue(const QString & queue_id)
 {
     this->m_queue_id = queue_id;
     this->updateContent();
+}
+
+void QueueMembersHeader::updateQueueStatus(const QString & queue_id)
+{
+    if (queue_id == this->m_queue_id) {
+        this->updateContent();
+    }
 }
 
 void QueueMembersHeader::updateContent()

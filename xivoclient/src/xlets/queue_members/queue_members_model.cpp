@@ -139,6 +139,9 @@ QVariant QueueMembersModel::data(const QModelIndex &index, int role) const
     case Qt::BackgroundRole:
         return this->dataBackground(row, column);
         break;
+    case Qt::ToolTipRole:
+        return this->dataTooltip(row, column);
+        break;
     default:
         return QVariant();
     }
@@ -256,6 +259,20 @@ QVariant QueueMembersModel::agentDataBackground(int row, int column, const Queue
 QVariant QueueMembersModel::phoneDataBackground(int row, int column, const QueueMemberInfo * queue_member) const
 {
     return QVariant();
+}
+
+QVariant QueueMembersModel::dataTooltip(int row, int column) const
+{
+    QueueAgentStatus agent_status = this->getAgentStatus(row);
+    QString agent_status_tooltip = agent_status.display_status_membership();
+    switch (column) {
+    case LOGGED:
+        return agent_status_tooltip;
+        break;
+    default:
+        return QVariant();
+    }
+
 }
 
 QueueAgentStatus QueueMembersModel::getAgentStatus(int row) const

@@ -67,6 +67,7 @@ class QueueMembersModel : public QAbstractTableModel
         QVariant dataBackground(int row, int column) const;
         QVariant agentDataBackground(int row, int column, const QueueMemberInfo * queue_member) const;
         QVariant phoneDataBackground(int row, int column, const QueueMemberInfo * queue_member) const;
+        QVariant dataTooltip(int row, int column) const;
         QueueAgentStatus getAgentStatus(int row) const;
 
     public:

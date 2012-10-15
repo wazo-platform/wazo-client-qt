@@ -46,6 +46,7 @@ class QueueMembersHeader : public QWidget
 
     public slots:
         void changeWatchedQueue(const QString & queue_id);
+        void updateQueueStatus(const QString & queue_id);
 
     private:
         void updateContent();
