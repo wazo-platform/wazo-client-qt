@@ -147,6 +147,7 @@ class ConfigWidget: public QDialog
         QSpinBox  * m_contactssize_sbox;  //!< Displayed contacts' size
         QSpinBox  * m_contactswidth_sbox; //!< Number of contacts displayed on one line
         QComboBox * m_contacts_dblclick;  //!< Action to do when a contact is double clicked
+        QCheckBox * m_hide_unlogged_agents;
 
         QHash<QString, QSpinBox *> m_queuelevels;      //!< For queue display
         QHash<QString, QSpinBox *> m_queuelevels_wait; //!< For queue display

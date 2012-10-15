@@ -325,6 +325,17 @@ void ConfigWidget::_insert_function_tab()
 
     m_function_tabwidget->addTab(widget_queues, tr("Queues"));
 
+        QWidget * widget_queue_members = new QWidget() ;
+        QGridLayout * layout_queue_members = new QGridLayout() ;
+        layout_queue_members->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
+        widget_queue_members->setLayout(layout_queue_members);
+
+        m_hide_unlogged_agents = new QCheckBox(tr("Hide unlogged agents"), this);
+        m_hide_unlogged_agents->setChecked(m_config["guioptions.queue_members_hide_unlogged_agents"].toBool());
+        layout_queue_members->addWidget(m_hide_unlogged_agents, line, 0);
+
+    m_function_tabwidget->addTab(widget_queue_members, tr("Queue Members"));
+
         QWidget * widget_switchboard = new QWidget() ;
         QFormLayout * layout_switchboard = new QFormLayout() ;
         widget_switchboard->setLayout(layout_switchboard);
