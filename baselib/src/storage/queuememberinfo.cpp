@@ -78,3 +78,8 @@ QString QueueMemberInfo::agentNumber() const
         return QString(interface_split[1]);
     }
 }
+
+QString QueueMemberInfo::agent_or_phone() const
+{
+    return this->is_agent() ? QObject::tr("Agent") : QObject::tr("Phone");
+}

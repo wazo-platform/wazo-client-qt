@@ -63,10 +63,10 @@ class QueueMembersModel : public QAbstractTableModel
         void fillHeaders();
         QVariant dataDisplay(int row, int column) const;
         QVariant agentDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const;
-        QVariant phoneDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const;
+        QVariant phoneDataDisplay(int column, const QueueMemberInfo * queue_member) const;
         QVariant dataBackground(int row, int column) const;
-        QVariant agentDataBackground(int row, int column, const QueueMemberInfo * queue_member) const;
-        QVariant phoneDataBackground(int row, int column, const QueueMemberInfo * queue_member) const;
+        QVariant agentDataBackground(int row, int column) const;
+        QVariant phoneDataBackground() const;
         QVariant dataTooltip(int row, int column) const;
         QueueAgentStatus getAgentStatus(int row) const;
 

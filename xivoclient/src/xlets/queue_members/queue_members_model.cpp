@@ -132,16 +132,12 @@ QVariant QueueMembersModel::data(const QModelIndex &index, int role) const
     switch(role) {
     case Qt::TextAlignmentRole:
         return Qt::AlignCenter;
-        break;
     case  Qt::DisplayRole:
         return this->dataDisplay(row, column);
-        break;
     case Qt::BackgroundRole:
         return this->dataBackground(row, column);
-        break;
     case Qt::ToolTipRole:
         return this->dataTooltip(row, column);
-        break;
     default:
         return QVariant();
     }
@@ -161,10 +157,10 @@ QVariant QueueMembersModel::dataDisplay(int row, int column) const
     if (queue_member->is_agent())
       return this->agentDataDisplay(row, column, queue_member);
     else
-      return this->phoneDataDisplay(row, column, queue_member);
+      return this->phoneDataDisplay(column, queue_member);
 }
 
-QVariant QueueMembersModel::phoneDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const
+QVariant QueueMembersModel::phoneDataDisplay(int column, const QueueMemberInfo * queue_member) const
 {
   const PhoneInfo * phone = phone::findByIdentity(queue_member->interface());
   if (phone == NULL) return QVariant();
@@ -187,8 +183,9 @@ QVariant QueueMembersModel::phoneDataDisplay(int row, int column, const QueueMem
   case PENALTY:
     return queue_member->penalty();
   case LOGGED:
+    return tr("Always");
   case PAUSED:
-    return QVariant();
+    return tr("Never");
   default:
       return this->not_available;
   }
@@ -238,12 +235,12 @@ QVariant QueueMembersModel::dataBackground(int row, int column) const
     if (queue_member == NULL) return QVariant();
 
     if (queue_member->is_agent())
-      return this->agentDataBackground(row, column, queue_member);
+      return this->agentDataBackground(row, column);
     else
-      return this->phoneDataBackground(row, column, queue_member);
+      return this->phoneDataBackground();
 }
 
-QVariant QueueMembersModel::agentDataBackground(int row, int column, const QueueMemberInfo * queue_member) const
+QVariant QueueMembersModel::agentDataBackground(int row, int column) const
 {
     QueueAgentStatus agent_status = this->getAgentStatus(row);
     QColor agent_status_color = agent_status.display_status_color();
@@ -256,19 +253,28 @@ QVariant QueueMembersModel::agentDataBackground(int row, int column, const Queue
     }
 }
 
-QVariant QueueMembersModel::phoneDataBackground(int row, int column, const QueueMemberInfo * queue_member) const
+QVariant QueueMembersModel::phoneDataBackground() const
 {
     return QVariant();
 }
 
 QVariant QueueMembersModel::dataTooltip(int row, int column) const
 {
+    QString queue_member_id;
+    if (m_row2id.size() > row) {
+        queue_member_id = m_row2id[row];
+    }
+    const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+    if (queue_member == NULL)
+        return QVariant();
+
     QueueAgentStatus agent_status = this->getAgentStatus(row);
     QString agent_status_tooltip = agent_status.display_status_membership();
     switch (column) {
+    case NUMBER:
+        return queue_member->agent_or_phone();
     case LOGGED:
         return agent_status_tooltip;
-        break;
     default:
         return QVariant();
     }

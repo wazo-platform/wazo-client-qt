@@ -48,6 +48,7 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         const QString & penalty() const { return m_penalty; };
         const QString & queueName() const { return m_queue_name; };
         const QString & interface() const { return m_interface; };
+        QString agent_or_phone() const;
         QString agentNumber() const;
         QString lastcall() const { return m_lastcall; };
         bool is_agent() const;
