@@ -118,6 +118,16 @@
         <source>Queue member&apos;s penalty</source>
         <translation>Pénalité du membre de la file</translation>
     </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="186"/>
+        <source>Always</source>
+        <translation>Toujours</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="188"/>
+        <source>Never</source>
+        <translation>Jamais</translation>
+    </message>
 </context>
 <context>
     <name>XletQueueMembers</name>

@@ -202,6 +202,16 @@ Please upgrade it.</source>
 	At: &apos;%3&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="src/storage/queuememberinfo.cpp" line="84"/>
+        <source>Agent</source>
+        <translation type="unfinished">Ügynök</translation>
+    </message>
+    <message>
+        <location filename="src/storage/queuememberinfo.cpp" line="84"/>
+        <source>Phone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QueueAgentStatus</name>

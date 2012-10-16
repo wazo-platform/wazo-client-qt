@@ -211,6 +211,16 @@ Merci de mettre à jour votre serveur.</translation>
         <translation>Erreur de parsing :	Attendu :&apos; %2&apos;	Obtenu : &apos;%1&apos;
 	À : %3</translation>
     </message>
+    <message>
+        <location filename="src/storage/queuememberinfo.cpp" line="84"/>
+        <source>Agent</source>
+        <translation>Agent</translation>
+    </message>
+    <message>
+        <location filename="src/storage/queuememberinfo.cpp" line="84"/>
+        <source>Phone</source>
+        <translation>Téléphone</translation>
+    </message>
 </context>
 <context>
     <name>QueueAgentStatus</name>

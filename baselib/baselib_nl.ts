@@ -213,6 +213,16 @@ Gelieve uw versie te upgraden.</translation>
 	Verwacht: &apos;%2&apos;
 	Op: &apos;%3&apos;</translation>
     </message>
+    <message>
+        <location filename="src/storage/queuememberinfo.cpp" line="84"/>
+        <source>Agent</source>
+        <translation type="unfinished">Agent</translation>
+    </message>
+    <message>
+        <location filename="src/storage/queuememberinfo.cpp" line="84"/>
+        <source>Phone</source>
+        <translation type="unfinished">Tel.</translation>
+    </message>
 </context>
 <context>
     <name>QueueAgentStatus</name>
