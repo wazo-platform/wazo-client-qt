@@ -75,17 +75,17 @@
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
-        <source>Queue member login status</source>
+        <source>Queue member&apos;s login status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
+        <source>Queue member&apos;s pause status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
-        <source>Queue member pause status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -132,7 +132,7 @@
 <context>
     <name>XletQueueMembers</name>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members.cpp" line="48"/>
+        <location filename="../src/xlets/queue_members/queue_members.cpp" line="51"/>
         <source>Queue Members</source>
         <translation type="unfinished"></translation>
     </message>
