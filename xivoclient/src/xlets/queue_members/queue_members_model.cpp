@@ -60,9 +60,9 @@ void QueueMembersModel::fillHeaders()
     m_headers[LASTNAME].label = tr("Lastname");
     m_headers[LASTNAME].tooltip = tr("Queue member's lastname");
     m_headers[LOGGED].label = tr("Logged");
-    m_headers[LOGGED].tooltip = tr("Queue member login status");
+    m_headers[LOGGED].tooltip = tr("Queue member's login status");
     m_headers[PAUSED].label = tr("Paused");
-    m_headers[PAUSED].tooltip = tr("Queue member pause status");
+    m_headers[PAUSED].tooltip = tr("Queue member's pause status");
     m_headers[ANSWERED_CALLS].label = tr("Answered calls");
     m_headers[ANSWERED_CALLS].tooltip = tr("Number of answered calls");
     m_headers[LAST_CALL_DATE].label = tr("Last call");
