@@ -25,3 +25,7 @@ Makefile
 *.deb
 *.exe
 *.dmg
+
+# Translations
+.tx
+translations
