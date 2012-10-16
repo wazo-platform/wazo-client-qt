@@ -27,7 +27,7 @@ function pull_from_transifex {
     fi
 
     tx set --auto-remote  https://www.transifex.net/projects/p/xivo/
-    tx pull -r xivo.xivo-client -a
+    tx pull -r xivo.xivo-client -a -s -f
 }
 
 function find_all_ts_files {
@@ -76,12 +76,6 @@ function merge_translations {
     fi
 }
 
-function push_to_transifex {
-    tx set --auto-local -r xivo.xivo-client 'xivoclient/i18n/all_<lang>.ts' \
-        --source-lang en --execute
-    tx push -st -r xivo.xivo-client
-}
-
 function process_arguments {
     if [ $# -eq 0 ]
     then
@@ -93,10 +87,6 @@ function process_arguments {
         pull)
             pull_from_transifex
             copy_from_transifex_to_git
-            ;;
-        push)
-            merge_translations
-            push_to_transifex
             ;;
         update)
             update_translations_from_source

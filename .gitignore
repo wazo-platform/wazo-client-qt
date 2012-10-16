@@ -5,8 +5,6 @@ bin
 
 # Generated files
 *.mak
-*.o
-*.qm
 
 # Every Makefile (and Makefile.{Debug,Release})
 Makefile*

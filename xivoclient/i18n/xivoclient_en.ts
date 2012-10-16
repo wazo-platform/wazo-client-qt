@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.0" language="en">
 <context>
     <name>CallCampaignPanel</name>
     <message>
@@ -89,17 +89,17 @@
     <message>
         <location filename="../src/configwidget.cpp" line="112"/>
         <source>Host address</source>
-        <translation type="unfinished"></translation>
+        <translation>Host address</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="113"/>
         <source>CTI port</source>
-        <translation type="unfinished"></translation>
+        <translation>CTI port</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="115"/>
         <source>Main server</source>
-        <translation type="unfinished"></translation>
+        <translation>Main server</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="125"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/configwidget.cpp" line="129"/>
         <source>Backup server</source>
-        <translation type="unfinished"></translation>
+        <translation>Backup server</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="147"/>
@@ -243,12 +243,12 @@
     <message>
         <location filename="../src/configwidget.cpp" line="328"/>
         <source>Hide unlogged agents</source>
-        <translation type="unfinished"></translation>
+        <translation>Hide unlogged agents</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="332"/>
         <source>Queue Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Queue Members</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="339"/>
@@ -350,7 +350,7 @@ ones beneath) on first window</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="425"/>
         <source>Dutch</source>
-        <translation type="unfinished"></translation>
+        <translation>Dutch</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="426"/>
@@ -365,7 +365,7 @@ ones beneath) on first window</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="428"/>
         <source>Italian</source>
-        <translation type="unfinished"></translation>
+        <translation>Italian</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="429"/>
@@ -374,32 +374,32 @@ ones beneath) on first window</translation>
         <location filename="../src/configwidget.cpp" line="432"/>
         <location filename="../src/configwidget.cpp" line="433"/>
         <source>incomplete</source>
-        <translation type="unfinished"></translation>
+        <translation>incomplete</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="429"/>
         <source>German</source>
-        <translation type="unfinished">German</translation>
+        <translation>German</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="430"/>
         <source>Hungarian</source>
-        <translation type="unfinished"></translation>
+        <translation>Hungarian</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="431"/>
         <source>Japanese</source>
-        <translation type="unfinished">Japanese</translation>
+        <translation>Japanese</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="432"/>
         <source>Portuguese</source>
-        <translation type="unfinished"></translation>
+        <translation>Portuguese</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="433"/>
         <source>Spanish</source>
-        <translation type="unfinished"></translation>
+        <translation>Spanish</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="438"/>
@@ -525,7 +525,7 @@ ones beneath) on first window</translation>
     <message>
         <location filename="../src/configwidget.cpp" line="543"/>
         <source>Park</source>
-        <translation type="unfinished"></translation>
+        <translation>Park</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="551"/>
@@ -627,14 +627,14 @@ ones beneath) on first window</translation>
         <translation>Dial Panel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
-        <source>Enter &amp;Number :</source>
-        <translation>Enter &amp;Number :</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
         <source>Input here the phone number to dial</source>
         <translation>Input here the phone number to dial</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
+        <source>Enter &amp;Number :</source>
+        <translation>Enter &amp;Number :</translation>
     </message>
 </context>
 <context>
@@ -686,6 +686,11 @@ ones beneath) on first window</translation>
         <translation>Fax</translation>
     </message>
     <message>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
+        <source>Choose Destination Number</source>
+        <translation>Choose Destination Number</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="51"/>
         <source>Fax Number</source>
         <translation>Fax Number</translation>
@@ -696,9 +701,19 @@ ones beneath) on first window</translation>
         <translation>Directory</translation>
     </message>
     <message>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="64"/>
+        <source>Choose File to Send</source>
+        <translation>Choose File to Send</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="70"/>
         <source>Browse</source>
         <translation>Browse</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="77"/>
+        <source>Hide the Number ?</source>
+        <translation>Hide the Number ?</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="81"/>
@@ -706,24 +721,9 @@ ones beneath) on first window</translation>
         <translation>Hide Number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
-        <source>Choose Destination Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="64"/>
-        <source>Choose File to Send</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="77"/>
-        <source>Hide the Number ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="90"/>
         <source>Send your File</source>
-        <translation type="unfinished"></translation>
+        <translation>Send your File</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="94"/>
