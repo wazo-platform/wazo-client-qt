@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2012, Avencall
+ * Copyright (C) 2007-2011, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,41 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUE_MEMBERS_PANEL_H__
-#define __QUEUE_MEMBERS_PANEL_H__
+#ifdef FUNCTESTS
 
-#include <xlet.h>
-#include <xletinterface.h>
+#include "remotecontrol.h"
 
-#include "functests.h"
+#include "xlets/queue_members/queue_members.h"
+#include "xlets/queue_members/queue_members_view.h"
+#include "xlets/queue_members/queue_members_sort_filter_proxy_model.h"
 
-class QueueMembersView;
-class QueueMembersModel;
-class QueueMembersSortFilterProxyModel;
-
-class XletQueueMembers : public XLet
+void RemoteControl::then_the_queue_members_xlet_is_empty()
 {
-    Q_OBJECT
+	XletQueueMembers *xlet = static_cast<XletQueueMembers *>(m_exec_obj.win->m_xletlist.value("queuemembers"));
+	this->assert(xlet != NULL, "Queue members xlet is null");
 
-    public:
-        XletQueueMembers(QWidget *parent=0);
+	QueueMembersView *view = xlet->m_view;
+	this->assert(view != NULL, "The view is null");
 
-    private:
-        QueueMembersModel *m_model;
-        QueueMembersSortFilterProxyModel *m_proxy_model;
-        QueueMembersView *m_view;
-
-    FUNCTESTED
-};
-
-class XLetQueueMembersPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
+	QAbstractItemModel * model = view->model();
+	this->assert(model != NULL, "The model is null");
+	this->assert(model->rowCount() == 0, "The view is not empty");
+}
 
 #endif

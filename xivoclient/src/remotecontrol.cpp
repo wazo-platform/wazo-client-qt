@@ -124,6 +124,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_a_voicemail_1);
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_an_agent_1);
             RC_EXECUTE(then_the_xlet_identity_does_not_show_any_agent);
+            RC_EXECUTE(then_the_queue_members_xlet_is_empty);
             RC_EXECUTE(when_i_enable_screen_pop_up);
             RC_EXECUTE_ARG(then_i_see_a_sheet_with_variables_and_values);
 

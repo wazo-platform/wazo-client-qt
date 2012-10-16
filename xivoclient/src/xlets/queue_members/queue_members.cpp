@@ -33,6 +33,9 @@
 
 #include "queue_members.h"
 #include "queue_members_header.h"
+#include "queue_members_view.h"
+#include "queue_members_model.h"
+#include "queue_members_sort_filter_proxy_model.h"
 
 Q_EXPORT_PLUGIN2(xletqueuememberplugin, XLetQueueMembersPlugin);
 
@@ -57,13 +60,13 @@ XletQueueMembers::XletQueueMembers(QWidget *parent)
     m_proxy_model->setSourceModel(m_model);
     m_proxy_model->setDynamicSortFilter(true);
 
-    QueueMembersView *view = new QueueMembersView(this);
-    view->setModel(m_proxy_model);
-    view->hideColumn(QueueMembersModel::ID);
-    view->sortByColumn(QueueMembersModel::NUMBER, Qt::AscendingOrder);
+    m_view = new QueueMembersView(this);
+    m_view->setModel(m_proxy_model);
+    m_view->hideColumn(QueueMembersModel::ID);
+    m_view->sortByColumn(QueueMembersModel::NUMBER, Qt::AscendingOrder);
 
     QueueMembersHeader *header = new QueueMembersHeader(this);
 
     xletLayout->addWidget(header);
-    xletLayout->addWidget(view);
+    xletLayout->addWidget(m_view);
 }

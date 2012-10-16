@@ -89,6 +89,7 @@ class RemoteControl : public QObject
         void then_the_xlet_identity_does_not_show_any_agent();
         void when_i_enable_screen_pop_up();
         void then_i_see_a_sheet_with_variables_and_values(const QVariantList &);
+        void then_the_queue_members_xlet_is_empty();
 
     public slots:
         void on_error(const QString &);
