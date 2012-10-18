@@ -34,7 +34,7 @@
 #include "queue_members_model.h"
 
 QueueMembersSortFilterProxyModel::QueueMembersSortFilterProxyModel(QObject *parent)
-    : QSortFilterProxyModel(parent), m_current_queue_id("")
+    : AbstractSortFilterProxyModel(parent), m_current_queue_id("")
 {
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(changeWatchedQueue(const QString &)));

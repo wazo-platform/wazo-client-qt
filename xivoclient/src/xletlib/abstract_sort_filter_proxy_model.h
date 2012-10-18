@@ -27,31 +27,20 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESSORTFILTERPROXYMODEL_H__
-#define __QUEUESSORTFILTERPROXYMODEL_H__
+#ifndef __ABSTRACT_SORT_FILTER_PROXY_MODEL_H__
+#define __ABSTRACT_SORT_FILTER_PROXY_MODEL_H__
 
-#include <QStringList>
+#include <QSortFilterProxyModel>
 
-#include <abstract_sort_filter_proxy_model.h>
+#include "xletlib_export.h"
 
-class QueueMemberInfo;
-
-class QueueMembersSortFilterProxyModel : public AbstractSortFilterProxyModel
+class XLETLIB_EXPORT AbstractSortFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
     public:
-        QueueMembersSortFilterProxyModel(QObject *parent = NULL);
-    public slots:
-        void settingsChanged();
-        void changeWatchedQueue(const QString & queue_id);
-    protected:
-        bool filterAcceptsRow(int , const QModelIndex &) const;
-        bool isLogged(const QueueMemberInfo * queue_member) const;
-        bool hideUnloggedAgents() const;
-        bool isMemberOfThisQueue(const QueueMemberInfo *queue_member) const;
-    private:
-        QString m_current_queue_id;
+        AbstractSortFilterProxyModel(QObject *parent = NULL);
+        virtual ~AbstractSortFilterProxyModel() = 0;
 };
 
 #endif

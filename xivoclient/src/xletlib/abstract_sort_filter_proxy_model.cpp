@@ -27,31 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUESSORTFILTERPROXYMODEL_H__
-#define __QUEUESSORTFILTERPROXYMODEL_H__
+#include "abstract_sort_filter_proxy_model.h"
 
-#include <QStringList>
-
-#include <abstract_sort_filter_proxy_model.h>
-
-class QueueMemberInfo;
-
-class QueueMembersSortFilterProxyModel : public AbstractSortFilterProxyModel
+AbstractSortFilterProxyModel::AbstractSortFilterProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent)
 {
-    Q_OBJECT
+    this->setSortLocaleAware(true);
+}
 
-    public:
-        QueueMembersSortFilterProxyModel(QObject *parent = NULL);
-    public slots:
-        void settingsChanged();
-        void changeWatchedQueue(const QString & queue_id);
-    protected:
-        bool filterAcceptsRow(int , const QModelIndex &) const;
-        bool isLogged(const QueueMemberInfo * queue_member) const;
-        bool hideUnloggedAgents() const;
-        bool isMemberOfThisQueue(const QueueMemberInfo *queue_member) const;
-    private:
-        QString m_current_queue_id;
-};
-
-#endif
+AbstractSortFilterProxyModel::~AbstractSortFilterProxyModel()
+{
+}
