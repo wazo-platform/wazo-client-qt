@@ -113,18 +113,26 @@ void RemoteControl::processCommands()
 
         try {
             RC_EXECUTE(i_stop_the_xivo_client);
+
             RC_EXECUTE(i_go_to_the_xivo_client_configuration);
             RC_EXECUTE(i_close_the_xivo_client_configuration);
+
             RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3);
             RC_EXECUTE_ARG(i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent);
             RC_EXECUTE(i_log_out_of_the_xivo_client);
+
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_name_as_1_2);
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_server_name_as_field_1_modified);
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_phone_number_as_1);
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_a_voicemail_1);
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_an_agent_1);
             RC_EXECUTE(then_the_xlet_identity_does_not_show_any_agent);
+
             RC_EXECUTE(then_the_queue_members_xlet_is_empty);
+            RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_is_empty_);
+            RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_displays_agents);
+            RC_EXECUTE(when_i_enable_the_hide_unlogged_agents_option);
+
             RC_EXECUTE(when_i_enable_screen_pop_up);
             RC_EXECUTE_ARG(then_i_see_a_sheet_with_variables_and_values);
 

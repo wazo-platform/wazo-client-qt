@@ -29,23 +29,51 @@
 
 #ifdef FUNCTESTS
 
-#include "remotecontrol.h"
+#include "configwidget.h"
 
 #include "xlets/queue_members/queue_members.h"
 #include "xlets/queue_members/queue_members_view.h"
 #include "xlets/queue_members/queue_members_sort_filter_proxy_model.h"
 
+#include "remotecontrol.h"
+
+void RemoteControl::when_i_enable_the_hide_unlogged_agents_option()
+{
+    this->i_go_to_the_xivo_client_configuration();
+
+    m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
+
+    this->i_close_the_xivo_client_configuration();
+}
+
 void RemoteControl::then_the_queue_members_xlet_is_empty()
 {
-	XletQueueMembers *xlet = static_cast<XletQueueMembers *>(m_exec_obj.win->m_xletlist.value("queuemembers"));
-	this->assert(xlet != NULL, "Queue members xlet is null");
+    this->queue_members_xlet_is_empty();
+}
 
-	QueueMembersView *view = xlet->m_view;
-	this->assert(view != NULL, "The view is null");
+void RemoteControl::then_the_queue_members_xlet_for_queue_1_is_empty_(const QVariantList & args)
+{
+    QString queue_id = args[0].toString();
+    emit select_queue(queue_id);
+    this->queue_members_xlet_is_empty();
+}
 
-	QAbstractItemModel * model = view->model();
-	this->assert(model != NULL, "The model is null");
-	this->assert(model->rowCount() == 0, "The view is not empty");
+void RemoteControl::queue_members_xlet_is_empty()
+{
+    XletQueueMembers *xlet = static_cast<XletQueueMembers *>(m_exec_obj.win->m_xletlist.value("queuemembers"));
+    this->assert(xlet != NULL, "Queue members xlet is null");
+
+    QueueMembersView *view = xlet->m_view;
+    this->assert(view != NULL, "The view is null");
+
+    QAbstractItemModel * model = view->model();
+    this->assert(model != NULL, "The model is null");
+    this->assert(model->rowCount() == 0, "The view is not empty");
+}
+
+void RemoteControl::then_the_queue_members_xlet_for_queue_1_displays_agents(const QVariantList & args)
+{
+    this->assert(false);
 }
 
 #endif

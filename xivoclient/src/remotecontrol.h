@@ -76,20 +76,35 @@ class RemoteControl : public QObject
 
     public:
         void i_stop_the_xivo_client();
+
         void i_go_to_the_xivo_client_configuration();
         void i_close_the_xivo_client_configuration();
+
         void i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QVariantList &);
         void i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent(const QVariantList &);
         void i_log_out_of_the_xivo_client();
+
         void then_the_xlet_identity_shows_name_as_1_2(const QVariantList &);
         void then_the_xlet_identity_shows_server_name_as_field_1_modified(const QVariantList &);
         void then_the_xlet_identity_shows_phone_number_as_1(const QVariantList &);
         void then_the_xlet_identity_shows_a_voicemail_1(const QVariantList &);
         void then_the_xlet_identity_shows_an_agent_1(const QVariantList &);
         void then_the_xlet_identity_does_not_show_any_agent();
+
+        void when_i_enable_the_hide_unlogged_agents_option();
+
         void when_i_enable_screen_pop_up();
         void then_i_see_a_sheet_with_variables_and_values(const QVariantList &);
+
         void then_the_queue_members_xlet_is_empty();
+        void then_the_queue_members_xlet_for_queue_1_is_empty_(const QVariantList &);
+        void then_the_queue_members_xlet_for_queue_1_displays_agents(const QVariantList &);
+
+    signals:
+        void select_queue(const QString & queue_id);
+
+    private:
+        void queue_members_xlet_is_empty();
 
     public slots:
         void on_error(const QString &);
