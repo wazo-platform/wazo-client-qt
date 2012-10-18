@@ -72,7 +72,6 @@ XletQueues::XletQueues(QWidget *parent)
 
     m_proxyModel = new QueuesSortFilterProxyModel(this);
     m_proxyModel->setSourceModel(m_model);
-    m_proxyModel->setDynamicSortFilter(true);
     m_proxyModel->updateFilter();
 
     QueuesView *view = new QueuesView(this);

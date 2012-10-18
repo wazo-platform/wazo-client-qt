@@ -33,6 +33,7 @@ AbstractSortFilterProxyModel::AbstractSortFilterProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
     this->setSortLocaleAware(true);
+    this->setDynamicSortFilter(true);
 }
 
 AbstractSortFilterProxyModel::~AbstractSortFilterProxyModel()
