@@ -43,9 +43,12 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_it.ts
 INCLUDEPATH += $$BASELIB_DIR/src
 INCLUDEPATH += $$BASELIB_DIR/src/storage
 INCLUDEPATH += $${BASELIB_DIR}/json_jsonqt/lib
+INCLUDEPATH += $${ROOT_DIR}/src
 INCLUDEPATH += $${ROOT_DIR}/src/xletlib
 HEADERS += $${ROOT_DIR}/src/*.h
 SOURCES += $${ROOT_DIR}/src/*.cpp
+HEADERS += $${ROOT_DIR}/src/remote_control/*.h
+SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 
 BUILTIN_DIRS += callcampaign-builtin
 BUILTIN_DIRS += customerinfo-builtin

@@ -31,7 +31,7 @@
 
 #include "xlets/identity/identity.h"
 
-#include "remotecontrol.h"
+#include "remote_control.h"
 
 void RemoteControl::then_the_xlet_identity_shows_name_as_1_2(const QVariantList &args)
 {

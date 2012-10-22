@@ -29,9 +29,16 @@
 
 #ifdef FUNCTESTS
 
-#include "configwidget.h"
-#include "remotecontrol.h"
 #include <baseengine.h>
+#include <configwidget.h>
+
+#include "remote_control.h"
+
+void RemoteControl::create_signals()
+{
+    connect(this, SIGNAL(select_queue(const QString &)),
+            b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)));
+}
 
 void RemoteControl::i_go_to_the_xivo_client_configuration()
 {

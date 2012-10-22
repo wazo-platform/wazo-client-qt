@@ -44,7 +44,7 @@
 #include "fileopeneventhandler.h"
 
 #ifdef FUNCTESTS
-#include "remotecontrol.h"
+#include "remote_control/remote_control.h"
 #endif
 
 #include "main.h"

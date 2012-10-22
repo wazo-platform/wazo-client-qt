@@ -34,7 +34,7 @@
 #include <QFile>
 #include <JsonToVariant.h>
 
-#include "remotecontrol.h"
+#include "remote_control.h"
 
 TestFailedException::TestFailedException(const QString & message)
 {
@@ -70,6 +70,8 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
             this, SLOT(on_error(const QString &)));
     disconnect(m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)),
                m_exec_obj.win, SLOT(showMessageBox(const QString &)));
+
+    this->create_signals();
 }
 
 RemoteControl::~RemoteControl()
@@ -128,10 +130,11 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(then_the_xlet_identity_shows_an_agent_1);
             RC_EXECUTE(then_the_xlet_identity_does_not_show_any_agent);
 
+            RC_EXECUTE(when_i_enable_the_hide_unlogged_agents_option);
+            RC_EXECUTE(when_i_disable_the_hide_unlogged_agents_option);
             RC_EXECUTE(then_the_queue_members_xlet_is_empty);
             RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_is_empty_);
             RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_displays_agents);
-            RC_EXECUTE(when_i_enable_the_hide_unlogged_agents_option);
 
             RC_EXECUTE(when_i_enable_screen_pop_up);
             RC_EXECUTE_ARG(then_i_see_a_sheet_with_variables_and_values);

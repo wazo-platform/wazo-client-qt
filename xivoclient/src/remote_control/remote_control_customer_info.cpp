@@ -29,9 +29,11 @@
 
 #ifdef FUNCTESTS
 
-#include "remotecontrol.h"
 #include <JsonToVariant.h>
+
 #include "customerinfopanel.h"
+
+#include "remote_control.h"
 
 void RemoteControl::then_i_see_a_sheet_with_variables_and_values(const QVariantList& args)
 {

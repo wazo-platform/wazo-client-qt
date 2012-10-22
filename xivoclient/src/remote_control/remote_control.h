@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __REMOTECONTROL_H__
-#define __REMOTECONTROL_H__
+#ifndef __REMOTE_CONTROL_H__
+#define __REMOTE_CONTROL_H__
 
 #ifdef FUNCTESTS
 
@@ -36,9 +36,9 @@
 #include <string>
 #include <exception>
 
-using namespace std;
+#include <main.h>
 
-#include "main.h"
+using namespace std;
 
 class QLocalServer;
 class QLocalSocket;
@@ -91,11 +91,11 @@ class RemoteControl : public QObject
         void then_the_xlet_identity_shows_an_agent_1(const QVariantList &);
         void then_the_xlet_identity_does_not_show_any_agent();
 
-        void when_i_enable_the_hide_unlogged_agents_option();
-
         void when_i_enable_screen_pop_up();
         void then_i_see_a_sheet_with_variables_and_values(const QVariantList &);
 
+        void when_i_enable_the_hide_unlogged_agents_option();
+        void when_i_disable_the_hide_unlogged_agents_option();
         void then_the_queue_members_xlet_is_empty();
         void then_the_queue_members_xlet_for_queue_1_is_empty_(const QVariantList &);
         void then_the_queue_members_xlet_for_queue_1_displays_agents(const QVariantList &);
@@ -104,7 +104,10 @@ class RemoteControl : public QObject
         void select_queue(const QString & queue_id);
 
     private:
+        void create_signals();
         void queue_members_xlet_is_empty();
+        QStringList _extract_agent_numbers(const QVariantList & agents);
+        QStringList _get_agent_numbers_from_queue_members();
 
     public slots:
         void on_error(const QString &);
@@ -130,4 +133,4 @@ class RemoteControl : public QObject
 
 #endif /* ifdef FUNCTESTS */
 
-#endif /* ifndef __REMOTECONTROL_H__ */
+#endif /* ifndef __REMOTE_CONTROL_H__ */
