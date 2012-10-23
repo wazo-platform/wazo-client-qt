@@ -65,4 +65,4 @@ class TestUserInfo: public QObject
     QStringList m_phoneidlist;
 };
 
-#endif 
+#endif

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
@@ -40,17 +36,12 @@
 #include "xinfo.h"
 #include "xivoconsts.h"
 
-/*! \brief Store User information
- */
 class BASELIB_EXPORT UserInfo : public XInfo
 {
     public:
         UserInfo(const QString &, const QString &);
         QString toString() const;
 
-        //! \name Getters
-        //! @{
-            // Config
             const QString & fullname() const { return m_fullname; };
             const QString & firstname() const { return m_firstname; };
             const QString & lastname() const { return m_lastname; };
@@ -61,7 +52,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
             int simultcalls() const { return m_simultcalls; };
             bool enableclient() const { return m_enableclient; };
             bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
-            const QString & ctilogin() const { return m_ctilogin; };
             bool enablevoicemail() const { return m_enablevoicemail; };
             bool incallfilter() const { return m_incallfilter; };
             bool enablednd() const { return m_enablednd; };
@@ -76,35 +66,25 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
             const QStringList & phonelist() const { return m_phoneidlist; };
 
-            // Status
             const QString & availstate() const;
             bool connected() const { return m_availstate != __presence_off__; };
-        //! @}
 
-        //! \name Setters
-        //! @{
             bool updateConfig(const QVariantMap &);
             bool updateStatus(const QVariantMap &);
 
             void setAvailState(const QString & availstate) {m_availstate = availstate;};
 
             void setPhoneIdList(const QStringList &);
-        //! @}
 
-        //! \name Helpers
-        //! @{
             bool hasPhoneId(const QString &) const;
             bool hasChannelId(const QString &) const;
             QString findNumberForXChannel(const QString &) const;
             QStringList xchannels() const;
             bool isTalkingTo(const QString &) const;
             const QStringList & identitylist() const;
-        //! @}
-            
     private:
-        //! \name Config
-        //! @{
-            QString m_fullname; //!< user full name
+
+            QString m_fullname;
             QString m_firstname;
             QString m_lastname;
             QString m_voicemailid;              //!< voice mail box id
@@ -114,7 +94,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
             int m_simultcalls;
             bool m_enableclient;
             QString m_profileclient;
-            QString m_ctilogin;                 //!< user login on cti
             bool m_enablevoicemail;
             bool m_incallfilter;
             bool m_enablednd;

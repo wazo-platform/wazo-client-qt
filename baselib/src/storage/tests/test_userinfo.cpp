@@ -56,7 +56,6 @@ void TestUserInfo::initTestCase()
     m_prop1["agentid"] = "1234";
     m_prop1["simultcalls"] = 5;
     m_prop1["enableclient"] = true;
-    m_prop1["loginclient"] = "testlogin";
     m_prop1["enablevoicemail"] = true;
     m_prop1["incallfilter"] = false;
     m_prop1["enablednd"] = false;
@@ -120,7 +119,6 @@ void TestUserInfo::constructor()
     QCOMPARE(u.xagentid(), empty);
     QCOMPARE(u.simultcalls(), 0);
     QCOMPARE(u.enableclient(), false);
-    QCOMPARE(u.ctilogin(), empty);
     QCOMPARE(u.enablevoicemail(), false);
     QCOMPARE(u.incallfilter(), false);
     QCOMPARE(u.enablednd(), false);
@@ -168,7 +166,6 @@ void TestUserInfo::updateConfig()
         QCOMPARE(u.xagentid(), axid);
         QCOMPARE(u.simultcalls(), m_prop1["simultcalls"].toInt());
         QCOMPARE(u.enableclient(), m_prop1["enableclient"].toBool());
-        QCOMPARE(u.ctilogin(), m_prop1["loginclient"].toString());
         QCOMPARE(u.enablevoicemail(), m_prop1["enablevoicemail"].toBool());
         QCOMPARE(u.incallfilter(), m_prop1["incallfilter"].toBool());
         QCOMPARE(u.enablednd(), m_prop1["enablednd"].toBool());

@@ -62,7 +62,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
     haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
     haschanged |= setIfChangeBool(prop, "enableclient", & m_enableclient);
-    haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
     haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
     haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
     haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
