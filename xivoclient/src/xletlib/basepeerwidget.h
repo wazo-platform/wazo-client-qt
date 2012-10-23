@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -41,9 +41,6 @@
 
 class UserInfo;
 
-/*! \brief Abstract class for "Peer" Widgets
- *
- */
 class XLETLIB_EXPORT BasePeerWidget : public QWidget
 {
     Q_OBJECT
@@ -51,19 +48,19 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
     public:
         BasePeerWidget(const UserInfo *);
 
-        virtual void setName(const QString &) = 0;  //! change username to be displayed
+        virtual void setName(const QString &) = 0;
         virtual void updateAgentConfig(const QString &) = 0;
         virtual void updateAgentStatus(const QString &) = 0;
         virtual void updatePhoneConfig(const QString &) = 0;
         virtual void updatePhoneStatus(const QString &) = 0;
         virtual void removePhoneConfig(const QString &) {}
-        virtual void updatePresence() = 0;  //! update presence information displayed
+        virtual void updatePresence() = 0;
 
-        virtual const QString& number() const { return m_number; }  //! Phone number
+        virtual const QString& number() const { return m_number; }
         virtual QString name() const { return m_ui_remote ? m_ui_remote->fullname() : QString(); }
-        virtual QString id() const;  //! return a unique id for the item
-        int maxWidthWanted() const { return m_maxWidthWanted; }  //! maximum width for "small" items
-        void reloadSavedName();  //! reload the saved name
+        virtual QString id() const;
+        int maxWidthWanted() const { return m_maxWidthWanted; }
+        void reloadSavedName();
 
     protected:
         void mouseDoubleClickEvent(QMouseEvent *);
@@ -74,7 +71,7 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void dragMoveEvent(QDragMoveEvent *);
         void dropEvent(QDropEvent *);
         QString xletName() const;
-        // Menu helper functions
+
         bool isme() const;
         void updateMenuSelf(QMenu *, QContextMenuEvent *);
         void updateMenuPeer(QMenu *, QContextMenuEvent *);
@@ -99,7 +96,7 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         bool isLeftClick(const QMouseEvent *) const;
         bool isSwitchBoard() const;
     signals:
-        void removeFromPanel(); //! hide the widget from the containing window
+        void removeFromPanel();
         void selectedNumber(const QStringList &);
     protected slots:
         void dial();
@@ -117,18 +114,18 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void rename();
 
     protected:
-        const UserInfo * m_ui_local;  //!< user info structure for the current operator
-        const UserInfo * m_ui_remote;  //!< user info structure for the widget
-        QPoint m_dragstartpos;  //!< drag start position
+        const UserInfo * m_ui_local;
+        const UserInfo * m_ui_remote;
+        QPoint m_dragstartpos;
 
-        QAction *m_removeAction;  //!< action to remove this peer from the window
-        QAction *m_interceptAction;  //!< action to intercept ringing calls to this number
-        QAction *m_renameAction;  //<! action to rename the user
-        QAction *m_chitchatAction;  //!< action to speak with an user
-        QString m_number;  //!< phone number (filled if m_ui is NULL)
-        bool m_editable;  //!< editable from a user point of view
-        bool m_transfered;  //!< if this call was transfered
-        int m_maxWidthWanted;  //!< maximum width for "small" items
+        QAction *m_removeAction;
+        QAction *m_interceptAction;
+        QAction *m_renameAction;
+        QAction *m_chitchatAction;
+        QString m_number;
+        bool m_editable;
+        bool m_transfered;
+        int m_maxWidthWanted;
         QMenu * m_contextMenu;
         QList<QMenu *> m_submenus;
 };

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -99,7 +99,6 @@ BasePeerWidget::BasePeerWidget(const UserInfo * ui)
 
 void BasePeerWidget::reloadSavedName()
 {
-    // retrieve saved name
     QSettings *settings = b_engine->getSettings();
     settings->beginGroup("renamed_items");
     QVariant value = settings->value(id());
@@ -147,10 +146,6 @@ void BasePeerWidget::peerdial()
     }
 }
 
-/*! \brief hangup a channel
- *
- * uses "channel" property of the sender
- */
 void BasePeerWidget::hangup()
 {
     if (m_ui_remote) {
@@ -160,10 +155,6 @@ void BasePeerWidget::hangup()
     }
 }
 
-/*! \brief intercept a call
- *
- * uses "channel" property of the sender
- */
 void BasePeerWidget::intercept()
 {
     if (m_ui_remote) {
@@ -174,10 +165,6 @@ void BasePeerWidget::intercept()
     }
 }
 
-/*! \brief Direct transfer
- *
- * uses "channel" property of the sender
- */
 void BasePeerWidget::transfer()
 {
     QString xchannel = sender()->property("xchannel").toString();
@@ -189,8 +176,6 @@ void BasePeerWidget::transfer()
     m_transfered = true;
 }
 
-/*! \brief Indirect Transfer
- */
 void BasePeerWidget::itransfer()
 {
     QString xchannel = sender()->property("xchannel").toString();
@@ -202,8 +187,6 @@ void BasePeerWidget::itransfer()
     b_engine->actionCall("atxfer", src, dst);
 }
 
-/*! \brief Cancel an Indirect Transfer
- */
 void BasePeerWidget::itransfercancel()
 {
     if (m_ui_remote) {
@@ -224,8 +207,6 @@ void BasePeerWidget::parkcall()
     }
 }
 
-/*! \brief transfer to voice mail
- */
 void BasePeerWidget::vmtransfer()
 {
     if (m_ui_remote) {
@@ -244,10 +225,6 @@ void BasePeerWidget::inviteConfRoom()
     }
 }
 
-/*! \brief handle double click
- *
- * dial or indirect transfer if left mouse button used
- */
 void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (! m_ui_remote)
@@ -272,7 +249,6 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                     } else {
                         to = "ext:" + m_number;
                     }
-                    // Initiate an indirect transfer.
                     b_engine->actionCall("atxfer",
                                          QString("chan:%1").arg(channelinfo->xid()),
                                          to);
@@ -296,17 +272,11 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
         if (subwidgetkind == "mobile") {
             b_engine->actionDialNumber(m_ui_remote->mobileNumber());
         } else {
-            // just dial the person
             dial();
         }
     }
 }
 
-/*! \brief handle mouse press
- *
- * store mouse position for further processing
- * signals a QStringList of numbers for the selected peer
- */
 void BasePeerWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
@@ -335,8 +305,6 @@ bool BasePeerWidget::isLeftClick(const QMouseEvent *event) const
     return (event->buttons() & Qt::LeftButton) == true;
 }
 
-/*! \brief start drag if necessary
- */
 void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (! canDrag(event)) {
@@ -351,7 +319,6 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(this);
     QMimeData * mimeData = new QMimeData;
     if (m_ui_remote) {
-        // XXX mimeData->setText(m_ui_remote->phoneNumber());
         mimeData->setData(XUSERID_MIMETYPE, m_ui_remote->xid().toAscii());
         mimeData->setData(XPHONEID_MIMETYPE, m_ui_remote->phonelist().join("").toAscii());
     } else {
@@ -379,29 +346,16 @@ QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * use
     return channels;
 }
 
-/*!
- * Check if this peer is the current user
- */
 bool BasePeerWidget::isme() const
 {
     return m_ui_local && m_ui_remote && m_ui_local == m_ui_remote;
 }
 
-/*!
- * Add items to the contextual menu for self click
- * \param menu The contextual menu to modify
- * \param event The click event that was received
- */
 void BasePeerWidget::updateMenuSelf(QMenu * menu, QContextMenuEvent * /*event*/)
 {
     addHangupMenu(menu);
 }
 
-/*!
- * Add items to the contextual menu for clicked peers
- * \param menu The contextual menu to modify
- * \param event The click event that was received
- */
 void BasePeerWidget::updateMenuPeer(QMenu * menu, QContextMenuEvent * /*event*/)
 {
     addDialMenu(menu);
@@ -412,13 +366,6 @@ void BasePeerWidget::updateMenuPeer(QMenu * menu, QContextMenuEvent * /*event*/)
     addTxferMenu(menu, false);
 }
 
-/*!
- * Add a dial entry to the contextual menu
- *
- * Will also check if the user has a mobile number to add the call mobile action
- *
- * \param menu The contextual menu to modify
- */
 void BasePeerWidget::addDialMenu(QMenu * menu)
 {
     if (m_ui_remote->phonelist().size() > 1) {
@@ -462,10 +409,6 @@ void BasePeerWidget::addDialMenu(QMenu * menu)
     }
 }
 
-/*!
- * Add a chat entry to the contextual menu
- * \param menu The menu to modify
- */
 void BasePeerWidget::addChitChatMenu(QMenu * menu)
 {
     if (m_ui_remote->enableclient() && m_ui_remote->connected()) {
@@ -473,9 +416,6 @@ void BasePeerWidget::addChitChatMenu(QMenu * menu)
     }
 }
 
-/*!
- * Add an edit entry to the contextual menu
- */
 void BasePeerWidget::addEditMenu(QMenu * menu)
 {
     if (m_editable) {
@@ -483,9 +423,6 @@ void BasePeerWidget::addEditMenu(QMenu * menu)
     }
 }
 
-/*!
- * Add an hang up action to the contextual menu
- */
 void BasePeerWidget::addHangupMenu(QMenu * menu)
 {
     static QStringList can_hangup = QStringList()
@@ -509,9 +446,6 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
     }
 }
 
-/*!
- * Add an intercept entry in the contextual menu
- */
 void BasePeerWidget::addInterceptMenu(QMenu * menu)
 {
     if (! b_engine->getCapasIpbxCommands().contains("intercept")
@@ -521,9 +455,6 @@ void BasePeerWidget::addInterceptMenu(QMenu * menu)
     foreach (const QString & channelxid, m_ui_remote->xchannels()) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
             if (c->commstatus() == CHAN_STATUS_RINGING) {
-                /* tr() can't be factorised, e.g. tr(..?..:..), because lupdate
-                 * can't evaluate the ternary operator and will not detect the
-                 * strings */
                 QString s = m_transfered ? tr("Cancel transfer") : tr("&Intercept");
                 QAction * action = new QAction(s, this);
                 action->setProperty("xchannel",
@@ -537,9 +468,6 @@ void BasePeerWidget::addInterceptMenu(QMenu * menu)
     }
 }
 
-/*!
- * Add an invite to meetme menu
- */
 void BasePeerWidget::addMeetmeMenu(QMenu * menu)
 {
     if (m_ui_local && b_engine->isInMeetme()) {
@@ -549,11 +477,6 @@ void BasePeerWidget::addMeetmeMenu(QMenu * menu)
     }
 }
 
-/*!
- * Add a parking action to the contextual menu
- *
- * A call can be parked if it's our correspondant only
- */
 void BasePeerWidget::addParkingMenu(QMenu * menu)
 {
     static QStringList can_park = QStringList()
@@ -598,14 +521,6 @@ void BasePeerWidget::addParkingMenu(QMenu * menu)
     }
 }
 
-/*!
- * Add a transfer entry to the contextual menu
- *
- * This entry is shown when the user has an active line
- *
- * \param menu The menu to modify
- * \param blind True for blind transfer, false for attended transfer
- */
 void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 {
     if (! m_ui_local->xchannels().size()) return;
@@ -656,9 +571,6 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
     }
 }
 
-/*!
- * Add a menu entry to transfer to voicemail
- */
 void BasePeerWidget::addTxferVmMenu(QMenu * menu)
 {
     if (! m_ui_remote->voicemailid().isEmpty()) {
@@ -681,8 +593,6 @@ void BasePeerWidget::addTxferVmMenu(QMenu * menu)
     }
 }
 
-/*! \brief open a context menu
- */
 void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
 {
     if (! m_ui_local || ! m_ui_remote) return;
@@ -700,7 +610,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     } else {
         updateMenuPeer(m_contextMenu, event);
     }
-    //    addParkingMenu(&contextMenu);
     addEditMenu(m_contextMenu);
     addTxferVmMenu(m_contextMenu);
 
@@ -709,10 +618,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     }
 }
 
-/*! \brief
- *
- * filters the acceptable drag on the mime type.
- */
 void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)  ||
@@ -725,10 +630,6 @@ void BasePeerWidget::dragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-/*! \brief drag move event
- *
- * filter based on the mimeType.
- */
 void BasePeerWidget::dragMoveEvent(QDragMoveEvent *event)
 {
     event->accept(rect());
@@ -737,10 +638,6 @@ void BasePeerWidget::dragMoveEvent(QDragMoveEvent *event)
     }
 }
 
-/*! \brief receive drop events
- *
- * initiate an originate or transfer
- */
 void BasePeerWidget::dropEvent(QDropEvent *event)
 {
     QString userid_from = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
@@ -754,10 +651,9 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
 
     switch(event->proposedAction()) {
     case Qt::CopyAction:
-        // transfer the call to the peer "to"
         if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
             event->acceptProposedAction();
-            b_engine->actionCall("transfer", "chan:" + userid_from + ":" + channel_from, to); // Call
+            b_engine->actionCall("transfer", "chan:" + userid_from + ":" + channel_from, to);
         } else if (event->mimeData()->hasFormat(XUSERID_MIMETYPE)) {
             event->acceptProposedAction();
             b_engine->actionCall("originate", "user:" + userid_from, to);
@@ -767,7 +663,6 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
         }
         break;
     case Qt::MoveAction:
-        // can be reached with the shift button
         event->acceptProposedAction();
         b_engine->actionCall("atxfer",
                              QString("chan:%1").arg(channel_from),
@@ -779,8 +674,6 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     }
 }
 
-/** First ask the user and send the signal if the user accepts
- */
 void BasePeerWidget::tryRemoveFromPanel()
 {
     QString _number = number();
@@ -799,17 +692,13 @@ void BasePeerWidget::tryRemoveFromPanel()
     }
 }
 
-/** rename the element
- */
 void BasePeerWidget::rename()
 {
-    // open a prompt to change the name
     bool ok = false;
     QString text = QInputDialog::getText(this, tr("Rename Item"), tr("Rename %1 :").arg(name()),
                                          QLineEdit::Normal, name(), &ok);
     if (ok && !text.isEmpty()) {
         setName(text);
-        // save the name
         QSettings *settings = b_engine->getSettings();
         settings->beginGroup("renamed_items");
         settings->setValue(id(), text);
@@ -817,8 +706,6 @@ void BasePeerWidget::rename()
     }
 }
 
-/** Return a unique id for the item
- */
 QString BasePeerWidget::id() const
 {
     if (m_ui_remote) {
@@ -828,9 +715,6 @@ QString BasePeerWidget::id() const
     }
 }
 
-/*!
- * Returns the name of the parent Xlet
- */
 QString BasePeerWidget::xletName() const
 {
     return parentWidget()->metaObject()->className();
