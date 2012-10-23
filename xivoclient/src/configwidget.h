@@ -48,17 +48,12 @@ class QTabWidget;
 
 class BaseEngine;
 
-/*! \brief Configuration Window
- *
- * This Widget enables the user to edit the connection
- * parameters to the identification server.
- *
- * If you want to update the settings window, you need to look for every
+/*If you want to update the settings window, you need to look for every
  * setting wanted in the application.
  * First you can get every QSettings variable with a command like :
- * \code $ grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib \endcode
+ *     grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib
  * Then you can get every setting by typing a command like :
- * \code $ egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib \endcode
+ *     egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib
  * where variables stands for the list of the variables obtained by the
  * previous command, separated by |
  */
@@ -153,10 +148,6 @@ class ConfigWidget: public QDialog
         QHash<QString, QSpinBox *> m_queuelevels_wait;
         QCheckBox * m_queue_longestwait;
         QCheckBox * m_queue_displaynu;
-
-        QComboBox * m_comboswitchboard;
-        QSpinBox * m_maxWidthWanted;
-        QComboBox * m_switchboard_dblclick;
 
         QDialogButtonBox * m_btnbox;
         QTabWidget * m_tabwidget;

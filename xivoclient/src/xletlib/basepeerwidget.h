@@ -78,7 +78,6 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         bool isme() const;
         void updateMenuSelf(QMenu *, QContextMenuEvent *);
         void updateMenuPeer(QMenu *, QContextMenuEvent *);
-        void updateMenuSwitchboard(QMenu *);
         void addChitChatMenu(QMenu *);
         void addDialMenu(QMenu *);
         void addEditMenu(QMenu *);
@@ -86,7 +85,6 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void addInterceptMenu(QMenu *);
         void addMeetmeMenu(QMenu *);
         void addParkingMenu(QMenu *);
-        void addSwitchboardMenu(QMenu *);
         void addTxferMenu(QMenu *, bool);
         void addTxferVmMenu(QMenu *);
     private:

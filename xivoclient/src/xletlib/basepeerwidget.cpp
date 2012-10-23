@@ -50,9 +50,9 @@ bool channelTimestampLessThan(const QString channelxid1, const QString channelxi
     if (channel1 && channel2) {
         return channel1->timestamp() < channel2->timestamp();
     }
-    
+
     return false;
-    
+
 }
 
 
@@ -264,12 +264,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             const QString status = channelinfo->commstatus();
             if ((status == CHAN_STATUS_LINKED_CALLER) ||
                 (status == CHAN_STATUS_LINKED_CALLED)) {
-                QString action ;
-                if (parentWidget()->metaObject()->className() == QString("XletSwitchBoard")) {
-                    action = b_engine->getConfig("doubleclick.switchboard").toString();
-                } else {
-                    action = b_engine->getConfig("doubleclick.searchpanel").toString();
-                }
+                QString action = b_engine->getConfig("doubleclick.searchpanel").toString();
                 if (action == "atxfer") {
                     QString to;
                     if (m_ui_remote) {
@@ -285,7 +280,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 } else {
                     // Do nothing, get out of the loop, and eventually dial
                 }
-                
+
             }
         }
         // "I" have no current communications, intercept if the person is being called
@@ -417,13 +412,6 @@ void BasePeerWidget::updateMenuPeer(QMenu * menu, QContextMenuEvent * /*event*/)
     addTxferMenu(menu, false);
 }
 
-void BasePeerWidget::updateMenuSwitchboard(QMenu * menu)
-{
-    menu->addSeparator();
-    menu->addAction(m_removeAction);
-    menu->addAction(m_renameAction);
-}
-
 /*!
  * Add a dial entry to the contextual menu
  *
@@ -505,7 +493,7 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
         << CHAN_STATUS_LINKED_CALLED
         << CHAN_STATUS_RINGING;
     QStringList channels = m_ui_local->xchannels();
-    qSort(channels.begin(), channels.end(), channelTimestampLessThan); 
+    qSort(channels.begin(), channels.end(), channelTimestampLessThan);
     int callorder = 1;
     foreach (const QString & channelxid, channels) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
@@ -607,16 +595,6 @@ void BasePeerWidget::addParkingMenu(QMenu * menu)
         }
         m_submenus.append(parkMenu);
         menu->addMenu(m_submenus.last());
-    }
-}
-
-/*!
- * Add switchboard entries to the contextual menu
- */
-void BasePeerWidget::addSwitchboardMenu(QMenu * menu)
-{
-    if (xletName() == QString("XletSwitchBoard")) {
-        updateMenuSwitchboard(menu);
     }
 }
 
@@ -724,7 +702,6 @@ void BasePeerWidget::contextMenuEvent(QContextMenuEvent *event)
     }
     //    addParkingMenu(&contextMenu);
     addEditMenu(m_contextMenu);
-    addSwitchboardMenu(m_contextMenu);
     addTxferVmMenu(m_contextMenu);
 
     if (! m_contextMenu->isEmpty()) {

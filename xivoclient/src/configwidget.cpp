@@ -331,37 +331,6 @@ void ConfigWidget::_insert_function_tab()
 
     m_function_tabwidget->addTab(widget_queue_members, tr("Queue Members"));
 
-        QWidget * widget_switchboard = new QWidget() ;
-        QFormLayout * layout_switchboard = new QFormLayout() ;
-        widget_switchboard->setLayout(layout_switchboard);
-
-        m_comboswitchboard = new QComboBox(this);
-        m_comboswitchboard->addItem(tr("Small"), QString("small"));
-        m_comboswitchboard->addItem(tr("Detailed"), QString("detailed"));
-        for(int i = 0; i < m_comboswitchboard->count(); i++) {
-            if(m_config["guioptions.switchboard-elt-type"] == m_comboswitchboard->itemData(i))
-                m_comboswitchboard->setCurrentIndex(i);
-        }
-        layout_switchboard->addRow(tr("Appearance of SwitchBoard elements"), m_comboswitchboard);
-
-        m_maxWidthWanted = new QSpinBox(this);
-        m_maxWidthWanted->setRange(50, 250);
-        int maxwidthwanted = m_config["guioptions.maxwidthwanted"].toInt();
-        if(maxwidthwanted < 50)
-            maxwidthwanted = 200;
-        m_maxWidthWanted->setValue(maxwidthwanted);
-        layout_switchboard->addRow(tr("Maximum width for small SwitchBoard elements"), m_maxWidthWanted);
-
-        m_switchboard_dblclick = new QComboBox(this);
-        foreach (QString key, m_dblclick_actions.keys()) {
-            m_switchboard_dblclick->addItem(m_dblclick_actions[key], key);
-        }
-        int i_switchboard_dblclick = m_switchboard_dblclick->findData (m_config["doubleclick.switchboard"].toString());
-        m_switchboard_dblclick->setCurrentIndex(i_switchboard_dblclick);
-        layout_switchboard->addRow(tr("Double-click action"), m_switchboard_dblclick);
-
-    m_function_tabwidget->addTab(widget_switchboard, tr("Switchboard"));
-
     _insert_operator_functiontab();
 
     layout2->addWidget(m_function_tabwidget);
@@ -643,7 +612,6 @@ void ConfigWidget::saveAndClose()
     m_config["activate_on_tel"] = m_activate_on_tel->isChecked();
     m_config["dialpanel.history_length"] = m_dial_history_size->value();
     m_config["doubleclick.searchpanel"] = m_contacts_dblclick->itemData(m_contacts_dblclick->currentIndex());
-    m_config["doubleclick.switchboard"] = m_switchboard_dblclick->itemData(m_switchboard_dblclick->currentIndex());
 
     foreach(QString function, func_legend.keys())
         m_config["checked_function." + function] = m_function[function]->isChecked();
@@ -672,8 +640,6 @@ void ConfigWidget::saveAndClose()
     m_config["guioptions.autourl_allowed"] = m_autourl_allowed->checkState();
     m_config["guioptions.queue_longestwait"] = m_queue_longestwait->isChecked();
     m_config["guioptions.queue_displaynu"] = m_queue_displaynu->isChecked();
-    m_config["guioptions.switchboard-elt-type"] = m_comboswitchboard->itemData(m_comboswitchboard->currentIndex());
-    m_config["guioptions.maxwidthwanted"] = m_maxWidthWanted->value();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
 
     m_config["guioptions.queue_members_hide_unlogged_agents"] = m_hide_unlogged_agents->isChecked();
