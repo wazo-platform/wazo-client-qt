@@ -2,67 +2,67 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="473"/>
+        <location filename="src/baseengine.cpp" line="471"/>
         <source>Connection lost with XiVO CTI server</source>
         <translation>De verbinding met de Xivo CTI server is verbroken</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="822"/>
+        <location filename="src/baseengine.cpp" line="820"/>
         <source>Received Services Data</source>
         <translation>Gegevens ontvangen van Services</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="827"/>
+        <location filename="src/baseengine.cpp" line="825"/>
         <source>Could not modify the Services data.</source>
         <translation>De gegevens voor Services konden niet worden gewijzigd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="827"/>
+        <location filename="src/baseengine.cpp" line="825"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Misschien werkt Asterisk momenteel niet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1252"/>
+        <location filename="src/baseengine.cpp" line="1250"/>
         <source>Server has sent an Error.</source>
         <translation>De server heeft een foutmelding teruggestuurd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1256"/>
+        <location filename="src/baseengine.cpp" line="1254"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Uw registratienaam &lt;%1@%2&gt; wordt niet herkend door de XiVO CTI server op %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1261"/>
+        <location filename="src/baseengine.cpp" line="1259"/>
         <source>You entered a wrong login / password.</source>
         <translation>U hebt een verkeerd(e) login/paswoord ingevoerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1264"/>
+        <location filename="src/baseengine.cpp" line="1262"/>
         <source>Your profile identifier &lt;%1&gt; is not defined.</source>
         <translation>Uw profielidentificatie &lt;%1&gt; is niet gedefinieerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1268"/>
+        <location filename="src/baseengine.cpp" line="1266"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft de laatste keepalive niet beantwoord.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1273"/>
+        <location filename="src/baseengine.cpp" line="1271"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation>U hebt een IP-adres %1 gedefinieerd dat waarschijnlijk een onbekende hostnaam is.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1276"/>
+        <location filename="src/baseengine.cpp" line="1274"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation>Socket time-out (~ 60 s): u hebt waarschijnlijk via een gateway, een onbestaand IP-adres %1 proberen te bereiken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1280"/>
+        <location filename="src/baseengine.cpp" line="1278"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation>Er lijkt een machine te werken op dit IP-adres %1, maar ofwel is er geen CTI-server actief, ofwel is uw poort %2 verkeerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1284"/>
+        <location filename="src/baseengine.cpp" line="1282"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -73,112 +73,112 @@
 - er is een kabel losgeraakt op uw LAN op weg naar dit IP-adres (time-out ~ 30 s).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1290"/>
+        <location filename="src/baseengine.cpp" line="1288"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation>De server met IP adres %1 accepteert geen geëncrypteerde  verbindingen op poort %2. Gelieve de poort of de encryptie instellingen aan te passen.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1294"/>
+        <location filename="src/baseengine.cpp" line="1292"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbekende socketfout voorgedaan tijdens de poging om het IP-adres te bereiken:poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1298"/>
+        <location filename="src/baseengine.cpp" line="1296"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbeheerde socketfout (nummer %1) voorgedaan tijdens de poging om het IP-adres te bereiken: poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1303"/>
+        <location filename="src/baseengine.cpp" line="1301"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft net de verbinding verbroken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1307"/>
+        <location filename="src/baseengine.cpp" line="1305"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net stopgezet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1310"/>
+        <location filename="src/baseengine.cpp" line="1308"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net terug opgeladen.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1314"/>
+        <location filename="src/baseengine.cpp" line="1312"/>
         <source>You are already connected from %1:%2.</source>
         <translation>U bent al verbonden sinds %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1316"/>
+        <location filename="src/baseengine.cpp" line="1314"/>
         <source>No capability allowed.</source>
         <translation>Geen capaciteit toegestaan.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1319"/>
+        <location filename="src/baseengine.cpp" line="1317"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Max. aantal (%1) XiVO Clients bereikt.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1321"/>
+        <location filename="src/baseengine.cpp" line="1319"/>
         <source>Missing Argument(s)</source>
         <translation>Ontbrekend(e) argument(en)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1325"/>
+        <location filename="src/baseengine.cpp" line="1323"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve op z&apos;n minst naar versie %2 te upgraden. </translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1330"/>
+        <location filename="src/baseengine.cpp" line="1328"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1337"/>
+        <location filename="src/baseengine.cpp" line="1335"/>
         <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>De hoofdversie  (%1) van uw klant
 is niet dezelfde als deze van de server (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1344"/>
+        <location filename="src/baseengine.cpp" line="1342"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve op z&apos;n minst naar versie %2 te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1349"/>
+        <location filename="src/baseengine.cpp" line="1347"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1353"/>
+        <location filename="src/baseengine.cpp" line="1351"/>
         <source>You were disconnected by the server.</source>
         <translation>Uw verbinding werd verbroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1355"/>
+        <location filename="src/baseengine.cpp" line="1353"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Uw verbinding werd gedwongen afgebroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1357"/>
+        <location filename="src/baseengine.cpp" line="1355"/>
         <source>Invalid extension number</source>
         <translation>Ongeldig extensie nummer</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1361"/>
+        <location filename="src/baseengine.cpp" line="1359"/>
         <source>ERROR</source>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1676"/>
+        <location filename="src/baseengine.cpp" line="1674"/>
         <source>Attempting to reconnect to server</source>
         <translation>Poging tot herverbinden met de server</translation>
     </message>
@@ -296,112 +296,70 @@ Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="73"/>
-        <source>&amp;Remove</source>
-        <translation>&amp;Verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="74"/>
-        <source>Remove this peer from the panel</source>
-        <translation>Verwijder deze gesprekspartner van het panel</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="78"/>
-        <source>Re&amp;name</source>
-        <translation>Her&amp;benoemen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="79"/>
-        <source>Rename this peer</source>
-        <translation>Deze gesprekspartner herbenoemen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="83"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="539"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="444"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="84"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="74"/>
         <source>Intercept call</source>
         <translation>Oproep onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="437"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="459"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="358"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="380"/>
         <source>&amp;Call</source>
         <translation>&amp;Bellen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="469"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="390"/>
         <source>Call &amp;mobile</source>
         <translation>Bel &amp;mobiel</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="494"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="408"/>
         <source>&amp;Edit</source>
         <translation>&amp;Bewerken</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="514"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="425"/>
         <source>&amp;Hangup call</source>
         <translation>&amp;Oproep beëindigen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="539"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="444"/>
         <source>Cancel transfer</source>
         <translation>Doorschakeling annuleren</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="558"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="460"/>
         <source>Invite in conference room</source>
         <translation>Uitnodigen voor conference gesprek</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="583"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="480"/>
         <source>&amp;Park correspondant</source>
         <translation>&amp;Park correspondent</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="590"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="487"/>
         <source>&amp;Park</source>
         <translation>&amp;Parkeer</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="635"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="514"/>
         <source>Direct &amp;Transfer</source>
         <translation>Rechtstreeks &amp;Doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="635"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="514"/>
         <source>&amp;Indirect Transfer</source>
         <translation>&amp;Onrechtstreeks Doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="691"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="567"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="815"/>
-        <source>XiVO Client - Removing %1 %2</source>
-        <translation>XiVO Client - %1 %2 verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="816"/>
-        <source>Removing %1 %2.
-Are you sure ?</source>
-        <translation> %1 %2 verwijderen
-Bent u zeker?</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="831"/>
-        <source>Rename Item</source>
-        <translation>Dit item herbenoemen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="831"/>
-        <source>Rename %1 :</source>
-        <translation>%1 herbenoemen:</translation>
     </message>
 </context>
 <context>
@@ -1030,7 +988,6 @@ Bezette lijnen: %6</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="272"/>
-        <location filename="../src/configwidget.cpp" line="361"/>
         <source>Double-click action</source>
         <translation>Dubbel klik actie</translation>
     </message>
@@ -1085,313 +1042,288 @@ Bezette lijnen: %6</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="339"/>
-        <source>Small</source>
-        <translation>Klein</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="340"/>
-        <source>Detailed</source>
-        <translation>Gedetailleerd</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="345"/>
-        <source>Appearance of SwitchBoard elements</source>
-        <translation>Voorstelling van de schakelbord elementen</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="353"/>
-        <source>Maximum width for small SwitchBoard elements</source>
-        <translation>Maximale breedte voor kleine SwitchBoardelementen</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="363"/>
-        <source>Switchboard</source>
-        <translation>Schakelbord</translation>
-    </message>
-    <message>
-        <location filename="../src/configwidget.cpp" line="369"/>
+        <location filename="../src/configwidget.cpp" line="338"/>
         <source>Functions</source>
         <translation>Functies</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="379"/>
+        <location filename="../src/configwidget.cpp" line="348"/>
         <source>Context</source>
         <translation>Context</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="382"/>
+        <location filename="../src/configwidget.cpp" line="351"/>
         <source>User Login</source>
         <translation>Gebruikerslogin</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="386"/>
+        <location filename="../src/configwidget.cpp" line="355"/>
         <source>Password</source>
         <translation>Paswoord</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="388"/>
+        <location filename="../src/configwidget.cpp" line="357"/>
         <source>Keep Password</source>
         <translation>Paswoord behouden</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="392"/>
+        <location filename="../src/configwidget.cpp" line="361"/>
         <source>Autoconnect at startup</source>
         <translation>Verbinden bij het opstarten</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="396"/>
+        <location filename="../src/configwidget.cpp" line="365"/>
         <source>Show the Agent options (like the
 ones beneath) on first window</source>
         <translation>De agentopties weergeven (zoals hieronder) in het eerste venster</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="401"/>
+        <location filename="../src/configwidget.cpp" line="370"/>
         <source>No Agent</source>
         <translation>Geen agent</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="402"/>
+        <location filename="../src/configwidget.cpp" line="371"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (niet ingelogd)</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="403"/>
+        <location filename="../src/configwidget.cpp" line="372"/>
         <source>Agent (logged)</source>
         <translation>Agent (ingelogd)</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="405"/>
+        <location filename="../src/configwidget.cpp" line="374"/>
         <source>Agent options</source>
         <translation>Agenten opties</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="410"/>
+        <location filename="../src/configwidget.cpp" line="379"/>
         <source>Phone Number</source>
         <translation>Telefoonnummer</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="414"/>
+        <location filename="../src/configwidget.cpp" line="383"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="424"/>
+        <location filename="../src/configwidget.cpp" line="393"/>
         <source>System Language</source>
         <translation>Systeem taal</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="425"/>
+        <location filename="../src/configwidget.cpp" line="394"/>
         <source>Dutch</source>
         <translation>Nederlands</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="426"/>
+        <location filename="../src/configwidget.cpp" line="395"/>
         <source>English</source>
         <translation>Engels</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="427"/>
+        <location filename="../src/configwidget.cpp" line="396"/>
         <source>French</source>
         <translation>Frans</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="428"/>
+        <location filename="../src/configwidget.cpp" line="397"/>
         <source>Italian</source>
         <translation>Italiaans</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="429"/>
-        <location filename="../src/configwidget.cpp" line="430"/>
-        <location filename="../src/configwidget.cpp" line="431"/>
-        <location filename="../src/configwidget.cpp" line="432"/>
-        <location filename="../src/configwidget.cpp" line="433"/>
+        <location filename="../src/configwidget.cpp" line="398"/>
+        <location filename="../src/configwidget.cpp" line="399"/>
+        <location filename="../src/configwidget.cpp" line="400"/>
+        <location filename="../src/configwidget.cpp" line="401"/>
+        <location filename="../src/configwidget.cpp" line="402"/>
         <source>incomplete</source>
         <translation>Onvolledig</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="429"/>
+        <location filename="../src/configwidget.cpp" line="398"/>
         <source>German</source>
         <translation>Duits</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="430"/>
+        <location filename="../src/configwidget.cpp" line="399"/>
         <source>Hungarian</source>
         <translation>Hongaars</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="431"/>
+        <location filename="../src/configwidget.cpp" line="400"/>
         <source>Japanese</source>
         <translation>Japans</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="432"/>
+        <location filename="../src/configwidget.cpp" line="401"/>
         <source>Portuguese</source>
         <translation>Portugees</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="433"/>
+        <location filename="../src/configwidget.cpp" line="402"/>
         <source>Spanish</source>
         <translation>Spaans</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="438"/>
+        <location filename="../src/configwidget.cpp" line="407"/>
         <source>Language</source>
         <translation>Taal</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="444"/>
+        <location filename="../src/configwidget.cpp" line="413"/>
         <source>Systrayed at startup</source>
         <translation>Minimaliseren bij het opstarten</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="449"/>
+        <location filename="../src/configwidget.cpp" line="418"/>
         <source>Allow multiple instances of XiVO Client</source>
         <translation>Laat meerdere instanties van de XIVO Client toe</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="454"/>
+        <location filename="../src/configwidget.cpp" line="423"/>
         <source>Default style</source>
         <translation>Standaard stijl</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="465"/>
+        <location filename="../src/configwidget.cpp" line="434"/>
         <source>Interface style</source>
         <translation>Interface stijl</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="467"/>
+        <location filename="../src/configwidget.cpp" line="436"/>
         <source>Enable the clipboard</source>
         <translation>Het klembord activeren</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="471"/>
+        <location filename="../src/configwidget.cpp" line="440"/>
         <source>Display the configuration profile</source>
         <translation>Toon het configuratie profiel</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="475"/>
+        <location filename="../src/configwidget.cpp" line="444"/>
         <source>Activate the window when calling from external application</source>
         <translation>Activeer het venster wanneer er gebeld wordt van een externe applicatie</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="479"/>
+        <location filename="../src/configwidget.cpp" line="448"/>
         <source>Reset</source>
         <translation>Reset</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="482"/>
+        <location filename="../src/configwidget.cpp" line="451"/>
         <source>Reset docks position</source>
         <translation>De locatie van de vakken herstellen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="484"/>
+        <location filename="../src/configwidget.cpp" line="453"/>
         <source>GUI Settings</source>
         <translation>GUI-instellingen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="493"/>
+        <location filename="../src/configwidget.cpp" line="462"/>
         <source>Enable logging of program actions</source>
         <translation>Activeer het loggen van programma handelingen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="499"/>
+        <location filename="../src/configwidget.cpp" line="468"/>
         <source>Logfile name</source>
         <translation>Naam logbestand</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="501"/>
+        <location filename="../src/configwidget.cpp" line="470"/>
         <source>Advanced</source>
         <translation>Geavanceerd</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="514"/>
+        <location filename="../src/configwidget.cpp" line="483"/>
         <source>(current: %0) use your keyboard</source>
         <translation>(momenteel %0) gebruik uw toetsenbord</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="518"/>
-        <location filename="../src/configwidget.cpp" line="555"/>
+        <location filename="../src/configwidget.cpp" line="487"/>
+        <location filename="../src/configwidget.cpp" line="524"/>
         <source>(current: %0) click to change</source>
         <translation>(momenteel %0) klik om te wijzigen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="527"/>
+        <location filename="../src/configwidget.cpp" line="496"/>
         <source>Answer</source>
         <translation>Antwoorden</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="529"/>
+        <location filename="../src/configwidget.cpp" line="498"/>
         <source>Hangup</source>
         <translation>Ophangen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="531"/>
+        <location filename="../src/configwidget.cpp" line="500"/>
         <source>D. Transfer</source>
         <translation>R. doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="533"/>
+        <location filename="../src/configwidget.cpp" line="502"/>
         <source>I. Transfer</source>
         <translation>O. doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="535"/>
+        <location filename="../src/configwidget.cpp" line="504"/>
         <source>I. Link</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="537"/>
+        <location filename="../src/configwidget.cpp" line="506"/>
         <source>I. Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="539"/>
+        <location filename="../src/configwidget.cpp" line="508"/>
         <source>Finalize Transfer</source>
         <translation>Doorschakeling voltooien</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="541"/>
+        <location filename="../src/configwidget.cpp" line="510"/>
         <source>Cancel Transfer</source>
         <translation>Doorschakeling annuleren</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="543"/>
+        <location filename="../src/configwidget.cpp" line="512"/>
         <source>Park</source>
         <translation>Parkeer</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="551"/>
+        <location filename="../src/configwidget.cpp" line="520"/>
         <source>Operator action</source>
         <translation>Handeling van de operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="552"/>
+        <location filename="../src/configwidget.cpp" line="521"/>
         <source>Key binding</source>
         <translation>Toets toekenning</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="568"/>
+        <location filename="../src/configwidget.cpp" line="537"/>
         <source>Display an answer action</source>
         <translation> Een antwoordactie weergeven</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="572"/>
+        <location filename="../src/configwidget.cpp" line="541"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation>Elke wijziging hier vereist een heropstarten van het programma/de toepassing om toegepast te worden</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="574"/>
+        <location filename="../src/configwidget.cpp" line="543"/>
         <source>Operator</source>
         <translation>Operator</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="595"/>
+        <location filename="../src/configwidget.cpp" line="564"/>
         <source>This key is already bound</source>
         <translation>Deze toets werd al toegekend</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="596"/>
+        <location filename="../src/configwidget.cpp" line="565"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation>Gelieve een andere toets in te drukken, deze toets werd al toegekend</translation>
     </message>
@@ -2204,7 +2136,7 @@ Bent u zeker ?</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="123"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="122"/>
         <source>Configure</source>
         <translation>Configureren</translation>
     </message>
@@ -2212,43 +2144,43 @@ Bent u zeker ?</translation>
 <context>
     <name>XletQueuesConfigure</name>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="159"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="158"/>
         <source>Queues configuration</source>
         <translation>Configuratie van de wachtrijen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="161"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="160"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
         <translation>Kies welke wachtrij wordt weergegeven, evenals de parameters van de wachtrij voor de statistieken van de periode:</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="172"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="171"/>
         <source>&amp;Close</source>
         <translation>&amp;Sluiten</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="185"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="184"/>
         <source>Queue</source>
         <translation>Wachtrij</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="186"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="185"/>
         <source>Qos - X (s)</source>
         <translation>Qos - X (s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="187"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="186"/>
         <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
         <translation>Dit is de drempel, in seconden, waarna een oproep te laat is beantwoord om nog aanzien te worden als een kwalitatieve oproep.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="190"/>
         <source>Window (s)</source>
         <translation>Venster(s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
         <source>The window is the period of time used to compute the statistics</source>
         <translation>De tijdspanne is de periode die gebruikt wordt om statistieken te berekenen</translation>
     </message>
@@ -2846,87 +2778,6 @@ Context: %2</translation>
         <location filename="../src/xlets/history/history.cpp" line="203"/>
         <source>Duration</source>
         <translation>Duur</translation>
-    </message>
-</context>
-<context>
-    <name>XletSwitchBoard</name>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="62"/>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="65"/>
-        <source>Switchboard</source>
-        <translation>Schakelbord</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="206"/>
-        <source>Removing group %1</source>
-        <translation>Verwijdering van groep %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="207"/>
-        <source>Removing group %1.
-Are you sure ?</source>
-        <translation>Verwijdering van groep %1.
-Bent u zeker?</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="241"/>
-        <source>Edit group name</source>
-        <translation>De naam van de groep wijzigen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="242"/>
-        <source>Name for group</source>
-        <translation>Naam van voor de groep</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="589"/>
-        <source>New group</source>
-        <translation>Nieuwe groep</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="591"/>
-        <source>Please enter a name for the new group</source>
-        <translation>Gelieve een naam in te voeren voor de nieuwe groep</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="594"/>
-        <source>Please choose a color for the new group</source>
-        <translation>Gelieve een kleur te kiezen voor de nieuwe groep</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="691"/>
-        <source>Remove group %1</source>
-        <translation>Groep %1 verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="695"/>
-        <source>Change color of group %1</source>
-        <translation>De kleur van groep %1 wijzigen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="699"/>
-        <source>Rename group %1</source>
-        <translation>Groep %1 herbenoemen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="704"/>
-        <source>Add Phone number entry</source>
-        <translation>Telefoonnummer toevoegen </translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="708"/>
-        <source>Draw the grid</source>
-        <translation>Het rooster tekenen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="817"/>
-        <source>Duplicate number</source>
-        <translation>Het nummer dupliceren</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboardwindow.cpp" line="818"/>
-        <source>Phone number %1 is already present in the switchboard panel.</source>
-        <translation>Telefoonnummer %1 is reeds aanwezig op het schakelbord.</translation>
     </message>
 </context>
 <context>

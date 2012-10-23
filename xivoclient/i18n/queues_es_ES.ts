@@ -172,7 +172,7 @@ de espera</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="123"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="122"/>
         <source>Configure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -180,43 +180,43 @@ de espera</translation>
 <context>
     <name>XletQueuesConfigure</name>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="159"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="158"/>
         <source>Queues configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="161"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="160"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="172"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="171"/>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="185"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="184"/>
         <source>Queue</source>
         <translation>Cola</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="186"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="185"/>
         <source>Qos - X (s)</source>
         <translation>CDS - X(s)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="187"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="186"/>
         <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="190"/>
         <source>Window (s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
         <source>The window is the period of time used to compute the statistics</source>
         <translation type="unfinished"></translation>
     </message>
