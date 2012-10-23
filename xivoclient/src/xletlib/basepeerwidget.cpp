@@ -70,16 +70,6 @@ BasePeerWidget::BasePeerWidget(const UserInfo * ui)
                 ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
     }
 
-    m_removeAction = new QAction(tr("&Remove"), this);
-    m_removeAction->setStatusTip(tr("Remove this peer from the panel"));
-    connect(m_removeAction, SIGNAL(triggered()),
-            this, SLOT(tryRemoveFromPanel()));
-
-    m_renameAction = new QAction(tr("Re&name"), this);
-    m_renameAction->setStatusTip(tr("Rename this peer"));
-    connect(m_renameAction, SIGNAL(triggered()),
-            this, SLOT(rename()));
-
     m_interceptAction = new QAction(tr("&Intercept"), this);
     m_interceptAction->setStatusTip(tr("Intercept call"));
     connect(m_interceptAction, SIGNAL(triggered()),
@@ -89,10 +79,6 @@ BasePeerWidget::BasePeerWidget(const UserInfo * ui)
             b_engine, SLOT(receiveNumberSelection(const QStringList &)));
 
     m_maxWidthWanted = 200;
-    m_maxWidthWanted = b_engine->getConfig("guioptions.maxwidthwanted").toInt();
-    if (m_maxWidthWanted < 50) {
-        m_maxWidthWanted = 200;
-    }
     setMaximumWidth(m_maxWidthWanted);
     setAcceptDrops(true);
 }
@@ -671,38 +657,6 @@ void BasePeerWidget::dropEvent(QDropEvent *event)
     default:
         qDebug() << "Unrecognized action" << event->proposedAction();
         break;
-    }
-}
-
-void BasePeerWidget::tryRemoveFromPanel()
-{
-    QString _number = number();
-    if (!_number.isEmpty()) {
-        _number = "("+_number+")";
-    }
-    int ret;
-    ret = QMessageBox::question(this,
-                                tr("XiVO Client - Removing %1 %2").arg(name()).arg(_number),
-                                tr("Removing %1 %2.\n"
-                                   "Are you sure ?").arg(name()).arg(_number),
-                                QMessageBox::Yes | QMessageBox::Cancel,
-                                QMessageBox::Cancel);
-    if (ret == QMessageBox::Yes) {
-        emit removeFromPanel();
-    }
-}
-
-void BasePeerWidget::rename()
-{
-    bool ok = false;
-    QString text = QInputDialog::getText(this, tr("Rename Item"), tr("Rename %1 :").arg(name()),
-                                         QLineEdit::Normal, name(), &ok);
-    if (ok && !text.isEmpty()) {
-        setName(text);
-        QSettings *settings = b_engine->getSettings();
-        settings->beginGroup("renamed_items");
-        settings->setValue(id(), text);
-        settings->endGroup();
     }
 }
 

@@ -227,7 +227,6 @@ void BaseEngine::loadSettings()
         m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 10).toInt();
         
         m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
-        m_config["doubleclick.switchboard"] = m_settings->value("doubleclick.switchboard", "call").toString();
 
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
@@ -328,7 +327,6 @@ void BaseEngine::saveSettings()
         m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
         
         m_settings->setValue("doubleclick.searchpanel", m_config["doubleclick.searchpanel"].toString());
-        m_settings->setValue("doubleclick.switchboard", m_config["doubleclick.switchboard"].toString());
 
         if (m_config["keeppass"].toBool())
             m_settings->setValue("password", m_config["password"].toString());

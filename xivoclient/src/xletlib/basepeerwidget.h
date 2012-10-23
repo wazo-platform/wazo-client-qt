@@ -96,7 +96,6 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         bool isLeftClick(const QMouseEvent *) const;
         bool isSwitchBoard() const;
     signals:
-        void removeFromPanel();
         void selectedNumber(const QStringList &);
     protected slots:
         void dial();
@@ -110,17 +109,13 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void peerdial();
         void vmtransfer();
         void parkcall();
-        void tryRemoveFromPanel();
-        void rename();
 
     protected:
         const UserInfo * m_ui_local;
         const UserInfo * m_ui_remote;
         QPoint m_dragstartpos;
 
-        QAction *m_removeAction;
         QAction *m_interceptAction;
-        QAction *m_renameAction;
         QAction *m_chitchatAction;
         QString m_number;
         bool m_editable;
