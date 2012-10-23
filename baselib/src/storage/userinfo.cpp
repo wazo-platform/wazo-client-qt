@@ -38,7 +38,6 @@
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
   : XInfo(ipbxid, id),
-    m_simultcalls(0),
     m_enableclient(false),
     m_enablevoicemail(false),
     m_incallfilter(false),
@@ -59,7 +58,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     m_xvoicemailid = QString("%1/%2").arg(m_ipbxid).arg(m_voicemailid);
     haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
     m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
-    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
     haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
     haschanged |= setIfChangeBool(prop, "enableclient", & m_enableclient);
     haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);

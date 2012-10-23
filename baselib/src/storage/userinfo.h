@@ -49,7 +49,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
             const QString & xvoicemailid() const { return m_xvoicemailid; };
             const QString & agentid() const { return m_agentid; };
             const QString & xagentid() const { return m_xagentid; };
-            int simultcalls() const { return m_simultcalls; };
             bool enableclient() const { return m_enableclient; };
             bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
             bool enablevoicemail() const { return m_enablevoicemail; };
@@ -91,7 +90,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
             QString m_xvoicemailid;             //!< ipbxid + voice mail box id
             QString m_agentid;                  //!< agent id
             QString m_xagentid;                 //!< ipbxid + agent id
-            int m_simultcalls;
             bool m_enableclient;
             QString m_profileclient;
             bool m_enablevoicemail;
@@ -102,18 +100,12 @@ class BASELIB_EXPORT UserInfo : public XInfo
             bool m_enablerna;
             QString m_destrna;
             bool m_enablebusy;
-	    bool m_enablexfer;
+            bool m_enablexfer;
             QString m_destbusy;
             QString m_mobilenumber;             //!< mobile phone number
-            
             QStringList m_phoneidlist;          //!< map to phones
             mutable QStringList m_identitylist; //!< Cached identities for this user
-        //! @}
-
-        //! \name Status
-        //! @{
             QString m_availstate; //!< availability state
-        //! @}
 };
 
 #endif
