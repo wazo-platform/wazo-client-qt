@@ -529,8 +529,7 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 
     QStringList numbers = this->getPeerNumbers();
 
-    bool multiple_numbers = numbers.size() > 1;
-    QMenu *transfer_menu = this->getTransferMenu(menu, title, multiple_numbers);
+    QList<QAction *> transfer_actions;
 
     foreach (const QString & chanxid, m_ui_local->xchannels()) {
         const ChannelInfo * channel = b_engine->channel(chanxid);
@@ -542,12 +541,23 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
         }
 
         foreach (const QString &number, numbers) {
+            QAction *action = NULL;
             if (blind) {
-                this->addNumberToDirectTransferMenu(number, *channel, transfer_menu);
+                action = this->newBlindTransferAction(number, *channel);
             } else {
-                this->addNumberToIndirectTransferMenu(number, *channel, transfer_menu);
+                action = this->newAttendedTransferAction(number, *channel);
+            }
+            if (action != NULL) {
+                transfer_actions << action;
             }
         }
+    }
+
+    bool multiple_numbers = transfer_actions.size() > 1;
+    QMenu *transfer_menu = this->getTransferMenu(menu, title, multiple_numbers);
+    foreach (QAction *transfer_action, transfer_actions) {
+        transfer_action->setParent(transfer_menu);
+        transfer_menu->addAction(transfer_action);
     }
 }
 
@@ -588,38 +598,36 @@ QMenu * BasePeerWidget::getTransferMenu(QMenu *basemenu,
     return basemenu;
 }
 
-void BasePeerWidget::addNumberToDirectTransferMenu(const QString &number,
-                                                   const ChannelInfo &channel,
-                                                   QMenu *menu)
+QAction * BasePeerWidget::newBlindTransferAction(const QString &number,
+                                                 const ChannelInfo &channel)
 {
-    QString label = QString("Direct transfer <%0>").arg(number);
+    QString label = QString("Blind transfer <%0>").arg(number);
     QAction * action = new QAction(label, this);
     if (action == NULL) {
-        return;
+        return NULL;
     }
     QString targeted_channel = QString("%0/%1").arg(channel.ipbxid()).arg(channel.talkingto_id());
     action->setProperty("number", number);
     action->setProperty("xchannel", targeted_channel);
     connect(action, SIGNAL(triggered()), this, SLOT(transfer()));
 
-    menu->addAction(action);
+    return action;
 }
 
-void BasePeerWidget::addNumberToIndirectTransferMenu(const QString &number,
-                                                     const ChannelInfo &channel,
-                                                     QMenu *menu)
+QAction * BasePeerWidget::newAttendedTransferAction(const QString &number,
+                                                    const ChannelInfo &channel)
 {
-    QString label = QString("Indirect transfer <%0>").arg(number);
+    QString label = QString("Attended transfer <%0>").arg(number);
     QAction * action = new QAction(label, this);
     if (action == NULL) {
-        return;
+        return NULL;
     }
     QString targeted_channel = channel.xid();
     action->setProperty("number", number);
     action->setProperty("xchannel", targeted_channel);
     connect(action, SIGNAL(triggered()), this, SLOT(itransfer()));
 
-    menu->addAction(action);
+    return action;
 }
 
 void BasePeerWidget::addTxferVmMenu(QMenu * menu)

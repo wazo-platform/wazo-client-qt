@@ -93,12 +93,10 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         QMenu *getTransferMenu(QMenu *basemenu,
                                const QString & title,
                                bool add_sub_menu);
-        void addNumberToDirectTransferMenu(const QString &number,
-                                           const ChannelInfo &channel,
-                                           QMenu *menu);
-        void addNumberToIndirectTransferMenu(const QString &number,
-                                             const ChannelInfo &channel,
-                                             QMenu *menu);
+        QAction * newBlindTransferAction(const QString &number,
+                                         const ChannelInfo &channel);
+        QAction * newAttendedTransferAction(const QString &number,
+                                            const ChannelInfo &channel);
         QStringList getPeerNumbers() const;
     signals:
         void selectedNumber(const QStringList &);
