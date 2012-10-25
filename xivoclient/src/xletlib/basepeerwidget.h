@@ -99,6 +99,7 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void addNumberToIndirectTransferMenu(const QString &number,
                                              const ChannelInfo &channel,
                                              QMenu *menu);
+        QStringList getPeerNumbers() const;
     signals:
         void selectedNumber(const QStringList &);
     protected slots:
