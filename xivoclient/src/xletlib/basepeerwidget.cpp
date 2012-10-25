@@ -509,15 +509,59 @@ void BasePeerWidget::addParkingMenu(QMenu * menu)
 
 void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 {
-    if (! m_ui_local->xchannels().size()) return;
-    if (m_ui_remote->isTalkingTo(m_ui_local->xid())) return;
-    QString string = blind ? tr("Direct &Transfer") : tr("&Indirect Transfer");
+    if (m_ui_local == NULL) {
+        return;
+    }
 
+    if (m_ui_local->enablexfer() == false) {
+        return;
+    }
+
+    if (m_ui_local->xchannels().size() == 0) {
+        return;
+    }
+
+    if (m_ui_remote->isTalkingTo(m_ui_local->xid())) {
+        return;
+    }
+
+    QString title = blind ? tr("Direct &Transfer") : tr("&Indirect Transfer");
+
+    QStringList numbers = this->getPeerNumbers();
+
+    bool multiple_numbers = numbers.size() > 1;
+    QMenu *transfer_menu = this->getTransferMenu(menu, title, multiple_numbers);
+
+    foreach (const QString & chanxid, m_ui_local->xchannels()) {
+        const ChannelInfo * channel = b_engine->channel(chanxid);
+        if (channel == NULL) {
+            continue;
+        }
+        if (channel->canBeTransferred() == false) {
+            continue;
+        }
+
+        foreach (const QString &number, numbers) {
+            if (blind) {
+                this->addNumberToDirectTransferMenu(number, *channel, transfer_menu);
+            } else {
+                this->addNumberToIndirectTransferMenu(number, *channel, transfer_menu);
+            }
+        }
+    }
+}
+
+QStringList BasePeerWidget::getPeerNumbers() const
+{
     QStringList numbers;
     foreach (const QString phonexid, m_ui_remote->phonelist()) {
-        if (const PhoneInfo * p = b_engine->phone(phonexid)) {
-            if (p->number().length() > 0)
-                numbers << p->number();
+        const PhoneInfo * phone = b_engine->phone(phonexid);
+        if (phone == NULL) {
+            continue;
+        }
+        const QString &number = phone->number();
+        if (number.isEmpty() == false) {
+            numbers << number;
         }
     }
 
@@ -525,36 +569,57 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
         numbers << m_ui_remote->mobileNumber();
     }
 
-    if(m_ui_local->enablexfer()) {
-        foreach (const QString & chanxid, m_ui_local->xchannels()) {
-            if (const ChannelInfo * c = b_engine->channel(chanxid)) {
-                if (canTransfer(*c)) {
-                    QMenu * submenu = 0;
-                    if (numbers.size() > 1) {
-                        submenu = new QMenu(string, menu);
-                        m_submenus.append(submenu);
-                        menu->addMenu(m_submenus.last());
-                    } else {
-                        submenu = menu;
-                    }
-                    foreach (const QString & number, numbers) {
-                        if (QAction * action = new QAction(numbers.size() == 1 ? string : number, this)) {
-                            action->setProperty("number", number);
-                            if (blind) {
-                                action->setProperty("xchannel", QString("%0/%1").arg(c->ipbxid()).arg(c->talkingto_id()));
-                                connect(action, SIGNAL(triggered()), this, SLOT(transfer()));
-                            } else  {
-                                action->setProperty("xchannel", c->xid());
-                                connect(action, SIGNAL(triggered()), this, SLOT(itransfer()));
-                            }
-                            submenu->addAction(action);
-                        }
-                    }
-                    break;
-                }
-            }
+    return numbers;
+}
+
+QMenu * BasePeerWidget::getTransferMenu(QMenu *basemenu,
+                                        const QString &title,
+                                        bool add_sub_menu)
+{
+    if (add_sub_menu) {
+        QMenu *submenu = new QMenu(title, basemenu);
+        if (submenu == NULL) {
+            return basemenu;
         }
+        m_submenus.append(submenu);
+        basemenu->addMenu(m_submenus.last());
+        return submenu;
     }
+    return basemenu;
+}
+
+void BasePeerWidget::addNumberToDirectTransferMenu(const QString &number,
+                                                   const ChannelInfo &channel,
+                                                   QMenu *menu)
+{
+    QString label = QString("Direct transfer <%0>").arg(number);
+    QAction * action = new QAction(label, this);
+    if (action == NULL) {
+        return;
+    }
+    QString targeted_channel = QString("%0/%1").arg(channel.ipbxid()).arg(channel.talkingto_id());
+    action->setProperty("number", number);
+    action->setProperty("xchannel", targeted_channel);
+    connect(action, SIGNAL(triggered()), this, SLOT(transfer()));
+
+    menu->addAction(action);
+}
+
+void BasePeerWidget::addNumberToIndirectTransferMenu(const QString &number,
+                                                     const ChannelInfo &channel,
+                                                     QMenu *menu)
+{
+    QString label = QString("Indirect transfer <%0>").arg(number);
+    QAction * action = new QAction(label, this);
+    if (action == NULL) {
+        return;
+    }
+    QString targeted_channel = channel.xid();
+    action->setProperty("number", number);
+    action->setProperty("xchannel", targeted_channel);
+    connect(action, SIGNAL(triggered()), this, SLOT(itransfer()));
+
+    menu->addAction(action);
 }
 
 void BasePeerWidget::addTxferVmMenu(QMenu * menu)
@@ -562,7 +627,7 @@ void BasePeerWidget::addTxferVmMenu(QMenu * menu)
     if (! m_ui_remote->voicemailid().isEmpty()) {
         foreach (const QString channelxid, m_ui_local->xchannels()) {
             if (const ChannelInfo * c = b_engine->channel(channelxid)) {
-                if (canTransfer(*c)) {
+                if (c->canBeTransferred()) {
                     if (QAction * action = new QAction(
                             tr("Transfer to &voice mail"), this)) {
                         QString chan_to_transfer = QString("%0/%1")

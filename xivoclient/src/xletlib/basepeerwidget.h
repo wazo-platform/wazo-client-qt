@@ -88,13 +88,17 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         QList<const ChannelInfo *> loopOverChannels(const UserInfo *);
         bool canDrag(const QMouseEvent *event) const {
           return (isLeftClick(event) && isme() && isSwitchBoard()); }
-        bool canTransfer(const ChannelInfo & channel) const {
-          return ((channel.commstatus() == CHAN_STATUS_LINKED_CALLER  ||
-                   channel.commstatus() == CHAN_STATUS_LINKED_CALLED) &&
-                  (! channel.talkingto_kind().contains("meetme"))     &&
-                  (! channel.isholded())); }
         bool isLeftClick(const QMouseEvent *) const;
         bool isSwitchBoard() const;
+        QMenu *getTransferMenu(QMenu *basemenu,
+                               const QString & title,
+                               bool add_sub_menu);
+        void addNumberToDirectTransferMenu(const QString &number,
+                                           const ChannelInfo &channel,
+                                           QMenu *menu);
+        void addNumberToIndirectTransferMenu(const QString &number,
+                                             const ChannelInfo &channel,
+                                             QMenu *menu);
     signals:
         void selectedNumber(const QStringList &);
     protected slots:
