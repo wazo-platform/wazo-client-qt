@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,19 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
-#include <QDebug>
-
 #include "baseengine.h"
 #include "channelinfo.h"
 
-/*! \brief Constructor
- *
- * just set userid
- */
 ChannelInfo::ChannelInfo(const QString & ipbxid,
                          const QString & id)
     : XInfo(ipbxid, id)
@@ -58,21 +48,6 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "holded", & m_isholded);
 
     return haschanged;
-}
-
-/*! \brief Returns a string representation of a ChannelInfo */
-QString ChannelInfo::toString() const
-{
-    QString s;
-    s += "Xid(" + xid() + ") ";
-    s += "Peer display(" + m_peerdisplay + ") ";
-    s += "Comm status(" + m_commstatus + ") ";
-    s += "Direction(" + m_direction + ") " ;
-    s += "Talking to kind(" + m_talkingto_kind + ") ";
-    s += "Talking to id(" + m_talkingto_id + ") ";
-    s += "Parked(" + QString(isparked() ? "true" : "false")  + ")";
-    s += "Held(" + QString(m_isholded ? "true" : "false") + ")";
-    return s;
 }
 
 const QString & ChannelInfo::talkingto_kind() const
@@ -100,9 +75,8 @@ double ChannelInfo::timestamp() const
     return m_timestamp;
 }
 
-const QString ChannelInfo::peerdisplay() const
+const QString & ChannelInfo::peerdisplay() const
 {
-    // go fetch information about 'talking to'
     return m_peerdisplay;
 }
 
@@ -111,22 +85,11 @@ int ChannelInfo::linenumber() const
     return m_linenumber;
 }
 
-bool ChannelInfo::ismonitored() const
-{
-    return m_ismonitored;
-}
-
-bool ChannelInfo::isspied() const
-{
-    return m_isspied;
-}
-
 bool ChannelInfo::isholded() const
 {
     return m_isholded;
 }
 
-/*! \brief Check if this call is parked */
 bool ChannelInfo::isparked() const
 {
     foreach (const XInfo * p, b_engine->iterover("parkinglots")) {
