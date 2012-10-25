@@ -48,6 +48,9 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         int linenumber() const;
         bool isholded() const;
         bool isparked() const;
+        bool canBeTransferred() const;
+        bool isTalking() const;
+        bool isInMeetme() const;
 
     private:
 
@@ -56,6 +59,7 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         QString m_commstatus;
         QString m_talkingto_kind;
         QString m_talkingto_id;
+        QString m_state;
         double m_timestamp;
 
         int m_linenumber;

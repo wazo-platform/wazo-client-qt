@@ -44,6 +44,7 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
     haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
+    haschanged |= setIfChangeString(prop, "state", & m_state);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
     haschanged |= setIfChangeBool(prop, "holded", & m_isholded);
 
@@ -88,6 +89,33 @@ int ChannelInfo::linenumber() const
 bool ChannelInfo::isholded() const
 {
     return m_isholded;
+}
+
+bool ChannelInfo::isTalking() const
+{
+    return m_state == "Up";
+}
+
+bool ChannelInfo::isInMeetme() const
+{
+    return m_talkingto_kind.contains("meetme");
+}
+
+bool ChannelInfo::canBeTransferred() const
+{
+    bool talking = this->isTalking();
+    bool meetme = this->isInMeetme();
+    bool holded = this->isholded();
+
+    if (meetme) {
+        return false;
+    }
+
+    if (holded) {
+        return false;
+    }
+
+    return talking;
 }
 
 bool ChannelInfo::isparked() const
