@@ -119,7 +119,7 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         QAction *m_chitchatAction;
         QString m_number;
         bool m_editable;
-        bool m_transfered;
+        bool m_transferred;
         int m_maxWidthWanted;
         QMenu * m_contextMenu;
         QList<QMenu *> m_submenus;

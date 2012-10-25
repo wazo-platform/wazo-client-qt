@@ -309,7 +309,7 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
         return;
 
     if (! phoneinfo->xchannels().size()) {
-        m_transfered = false;
+        m_transferred = false;
     }
 
     QString hintstatus = phoneinfo->hintstatus();

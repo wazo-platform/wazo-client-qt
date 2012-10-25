@@ -57,7 +57,7 @@ bool channelTimestampLessThan(const QString channelxid1, const QString channelxi
 
 
 BasePeerWidget::BasePeerWidget(const UserInfo * ui)
-    : m_ui_remote(ui), m_editable(false), m_transfered(false), m_contextMenu(NULL)
+    : m_ui_remote(ui), m_editable(false), m_transferred(false), m_contextMenu(NULL)
 {
     m_ui_local = b_engine->getXivoClientUser();
     if (m_ui_remote) {
@@ -159,7 +159,7 @@ void BasePeerWidget::transfer()
         .arg(m_ui_remote->ipbxid())
         .arg(sender()->property("number").toString());
     b_engine->actionCall("transfer", src, dst);
-    m_transfered = true;
+    m_transferred = true;
 }
 
 void BasePeerWidget::itransfer()
@@ -435,13 +435,13 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
 void BasePeerWidget::addInterceptMenu(QMenu * menu)
 {
     if (! b_engine->getCapasIpbxCommands().contains("intercept")
-            && ! m_transfered) {
+            && ! m_transferred) {
         return;
     }
     foreach (const QString & channelxid, m_ui_remote->xchannels()) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
             if (c->commstatus() == CHAN_STATUS_RINGING) {
-                QString s = m_transfered ? tr("Cancel transfer") : tr("&Intercept");
+                QString s = m_transferred ? tr("Cancel transfer") : tr("&Intercept");
                 QAction * action = new QAction(s, this);
                 action->setProperty("xchannel",
                                     (QString("%0/%1")
