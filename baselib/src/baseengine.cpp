@@ -53,7 +53,6 @@
 #include "cti_server.h"
 #include "phonenumber.h"
 
-
 /*! \brief Constructor.
  *
  * Construct the BaseEngine object and load settings.
@@ -67,27 +66,14 @@
  */
 
 BASELIB_EXPORT BaseEngine * b_engine;
-static const QStringList CheckFunctions = (QStringList()
-                                           << "presence"
-                                           << "customerinfo");
-static const QStringList GenLists = (QStringList()
-                                     << "users"
-                                     << "phones"
-                                     << "agents"
-                                     << "queues"
-                                     << "voicemails"
-                                     << "queuemembers"
-                                     << "parkinglots");
+static const QStringList CheckFunctions = (QStringList() << "presence" << "customerinfo");
+static const QStringList GenLists = (QStringList() << "users" << "phones" << "agents" << "queues" << "voicemails"
+        << "queuemembers" << "parkinglots");
 static CTIServer * m_cti_server;
 
-BaseEngine::BaseEngine(QSettings *settings,
-                       const QString &osInfo)
-    : QObject(NULL),
-      m_sessionid(""), m_state(ENotLogged),
-      m_pendingkeepalivemsg(0), m_logfile(NULL),
-      m_attempt_loggedin(false),
-      m_forced_to_disconnect(false)
-{
+BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo) :
+        QObject(NULL), m_sessionid(""), m_state(ENotLogged), m_pendingkeepalivemsg(0), m_logfile(NULL), m_attempt_loggedin(
+                false), m_forced_to_disconnect(false) {
     settings->setParent(this);
     m_timerid_keepalive = 0;
     m_timerid_changestate = 0;
@@ -109,37 +95,28 @@ BaseEngine::BaseEngine(QSettings *settings,
     m_ctiserversocket->setProtocol(QSsl::TlsV1);
     m_cti_server = new CTIServer(m_ctiserversocket);
 
-    connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
-            this, SLOT(sslErrors(const QList<QSslError> & )));
-    connect(m_ctiserversocket, SIGNAL(connected()),
-            this, SLOT(ctiSocketConnected()));
-    connect(m_ctiserversocket, SIGNAL(readyRead()),
-            this, SLOT(ctiSocketReadyRead()));
-    connect(m_cti_server, SIGNAL(disconnected()),
-            this, SLOT(onCTIServerDisconnected()));
-    connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
-            this, SLOT(popupError(const QString &, const QString &, const QString &)));
+    connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)), this,
+            SLOT(sslErrors(const QList<QSslError> & )));
+    connect(m_ctiserversocket, SIGNAL(connected()), this, SLOT(ctiSocketConnected()));
+    connect(m_ctiserversocket, SIGNAL(readyRead()), this, SLOT(ctiSocketReadyRead()));
+    connect(m_cti_server, SIGNAL(disconnected()), this, SLOT(onCTIServerDisconnected()));
+    connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)), this,
+            SLOT(popupError(const QString &, const QString &, const QString &)));
 
     // TCP connection for file transfer
     // (this could be moved to some other class)
     m_filetransfersocket = new QTcpSocket(this);
-    connect(m_filetransfersocket, SIGNAL(connected()),
-            this, SLOT(filetransferSocketConnected()));
-    connect(m_filetransfersocket, SIGNAL(readyRead()),
-            this, SLOT(filetransferSocketReadyRead()));
+    connect(m_filetransfersocket, SIGNAL(connected()), this, SLOT(filetransferSocketConnected()));
+    connect(m_filetransfersocket, SIGNAL(readyRead()), this, SLOT(filetransferSocketReadyRead()));
 
     if (m_config["autoconnect"].toBool())
         start();
-    translationFiles = \
-        (QStringList() << ":/obj/xivoclient_%1"
-                       << ":/obj/baselib_%1"
-                       << ":/obj/xletlib_%1"
-                       << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
+    translationFiles = (QStringList() << ":/obj/xivoclient_%1" << ":/obj/baselib_%1" << ":/obj/xletlib_%1"
+            << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1");
     changeTranslation();
 }
 
-void BaseEngine::sslErrors(const QList<QSslError> & qlse)
-{
+void BaseEngine::sslErrors(const QList<QSslError> & qlse) {
     qDebug() << Q_FUNC_INFO;
     foreach (QSslError qse, qlse)
         qDebug() << " ssl error" << qse;
@@ -152,15 +129,13 @@ void BaseEngine::sslErrors(const QList<QSslError> & qlse)
 
 /*! \brief Destructor
  */
-BaseEngine::~BaseEngine()
-{
+BaseEngine::~BaseEngine() {
     qDebug() << Q_FUNC_INFO;
     clearLists();
     clearChannelList();
 }
 
-QSettings* BaseEngine::getSettings()
-{
+QSettings* BaseEngine::getSettings() {
     return m_settings;
 }
 
@@ -168,12 +143,11 @@ QSettings* BaseEngine::getSettings()
  * Load Settings from the registry/configuration file
  * Use default values when settings are not found.
  */
-void BaseEngine::loadSettings()
-{
+void BaseEngine::loadSettings() {
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
     m_config["qss"] = m_settings->value("display/qss", "none").toString();
-    
+
     // this part had been commented for Win32, see svn 5882 or git 70eb1793
     // to allow a bit more flexibility, we leave it as a configurable setting,
     // whose default mode will be 'disabled'
@@ -187,12 +161,12 @@ void BaseEngine::loadSettings()
     m_config["logfilename"] = m_settings->value("display/logfilename", "XiVO_Client.log").toString();
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
     if (m_config["logtofile"].toBool()) {
-        openLogFile ();
+        openLogFile();
     }
-    
+
     m_config["profilename"] = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + m_config["profilename"].toString();
-    
+
     QString settingsversion = m_settings->value("version/xivo", __xivo_version__).toString();
 
     // this is used to make a migration from 1.0 to 1.1
@@ -202,37 +176,37 @@ void BaseEngine::loadSettings()
         m_profilename_read = "engine-" + m_config["profilename"].toString();
 
     m_settings->beginGroup(m_profilename_read);
-        m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
-        m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
-        m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
-        m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();
-        m_config["cti_backup_port"]    = m_settings->value("backup_server_port", 5003).toUInt();
-        m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
+    m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
+    m_config["cti_port"] = m_settings->value("serverport", 5003).toUInt();
+    m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
+    m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();
+    m_config["cti_backup_port"] = m_settings->value("backup_server_port", 5003).toUInt();
+    m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
 
-        setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
-        m_config["company"] = m_settings->value("company", "default").toString();
-        m_config["password"] = m_settings->value("password").toString();
-        // keeppass and showagselect are booleans in memory, integers (Qt::checkState) in qsettings/config file (due to compatibility)
-        m_config["keeppass"] = (m_settings->value("keeppass", Qt::Unchecked).toUInt() == Qt::Checked);
-        m_config["showagselect"] = (m_settings->value("showagselect", Qt::Checked).toUInt() == Qt::Checked);
-        m_config["agentphonenumber"] = m_settings->value("agentphonenumber").toString();
+    setUserLogin(m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
+    m_config["company"] = m_settings->value("company", "default").toString();
+    m_config["password"] = m_settings->value("password").toString();
+    // keeppass and showagselect are booleans in memory, integers (Qt::checkState) in qsettings/config file (due to compatibility)
+    m_config["keeppass"] = (m_settings->value("keeppass", Qt::Unchecked).toUInt() == Qt::Checked);
+    m_config["showagselect"] = (m_settings->value("showagselect", Qt::Checked).toUInt() == Qt::Checked);
+    m_config["agentphonenumber"] = m_settings->value("agentphonenumber").toString();
 
-        m_config["forcelocale"] = m_settings->value("forcelocale", "default").toString();
-        m_config["autoconnect"] = m_settings->value("autoconnect", false).toBool();
-        m_config["trytoreconnect"] = m_settings->value("trytoreconnect", false).toBool();
-        m_config["trytoreconnectinterval"] = m_settings->value("trytoreconnectinterval", 20*1000).toUInt();
-        m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 120*1000).toUInt();
-        m_availstate = m_settings->value("availstate", "available").toString();
-        m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
-        m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 10).toInt();
-        
-        m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
+    m_config["forcelocale"] = m_settings->value("forcelocale", "default").toString();
+    m_config["autoconnect"] = m_settings->value("autoconnect", false).toBool();
+    m_config["trytoreconnect"] = m_settings->value("trytoreconnect", false).toBool();
+    m_config["trytoreconnectinterval"] = m_settings->value("trytoreconnectinterval", 20 * 1000).toUInt();
+    m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 120 * 1000).toUInt();
+    m_availstate = m_settings->value("availstate", "available").toString();
+    m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
+    m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 10).toInt();
 
-        m_settings->beginGroup("user-gui");
-            m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
-        m_settings->endGroup();
+    m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
+
+    m_settings->beginGroup("user-gui");
+    m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
     m_settings->endGroup();
-    
+    m_settings->endGroup();
+
     QString defaultguioptions;
     QFile defaultguioptions_file(":/guioptions.json");
     if (defaultguioptions_file.exists()) {
@@ -243,28 +217,29 @@ void BaseEngine::loadSettings()
     QVariant data;
     try {
         data = JsonQt::JsonToVariant::parse(defaultguioptions);
-    } catch(JsonQt::ParseException) {
-        qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
+    } catch (JsonQt::ParseException) {
+        qDebug() << Q_FUNC_INFO
+        << "exception catched for" << defaultguioptions;
     }
 
     QVariantMap guisetting_map = data.toMap();
-    guisetting_map.insert("xlet_operator_keyanswer"        , QVariant(Qt::Key_F1));
-    guisetting_map.insert("xlet_operator_keyhangup"        , QVariant(Qt::Key_F2));
-    guisetting_map.insert("xlet_operator_keydtransfer"     , QVariant(Qt::Key_F3));
-    guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
-    guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
-    guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
-    guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
+    guisetting_map.insert("xlet_operator_keyanswer", QVariant(Qt::Key_F1));
+    guisetting_map.insert("xlet_operator_keyhangup", QVariant(Qt::Key_F2));
+    guisetting_map.insert("xlet_operator_keydtransfer", QVariant(Qt::Key_F3));
+    guisetting_map.insert("xlet_operator_keyitransfer", QVariant(Qt::Key_F4));
+    guisetting_map.insert("xlet_operator_keyilink", QVariant(Qt::Key_F5));
+    guisetting_map.insert("xlet_operator_keyicancel", QVariant(Qt::Key_F6));
+    guisetting_map.insert("xlet_operator_keypark", QVariant(Qt::Key_F7));
     guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
-    guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
+    guisetting_map.insert("xlet_operator_keyatxfercancel", QVariant(Qt::Key_F9));
     data.setValue(guisetting_map);
 
     // this is used to make a migration from 1.0 to 1.1
     if (settingsversion != "1.0")
         m_settings->beginGroup(m_profilename_read);
-            m_settings->beginGroup("user-gui");
-                m_config.merge (m_settings->value("guisettings", data).toMap(), "guioptions");
-            m_settings->endGroup();
+    m_settings->beginGroup("user-gui");
+    m_config.merge(m_settings->value("guisettings", data).toMap(), "guioptions");
+    m_settings->endGroup();
     if (settingsversion != "1.0")
         m_settings->endGroup();
 
@@ -274,11 +249,9 @@ void BaseEngine::loadSettings()
     enable_function_bydefault["presence"] = true;
 
     m_settings->beginGroup("user-functions");
-        foreach (QString function, CheckFunctions)
-            m_config["checked_function." + function] =
-                    m_settings->value(function,
-                                      enable_function_bydefault[function]
-                                     ).toBool();
+    foreach (QString function, CheckFunctions)
+        m_config["checked_function." + function] =
+                m_settings->value(function, enable_function_bydefault[function]).toBool();
     m_settings->endGroup();
 }
 
@@ -287,8 +260,7 @@ void BaseEngine::loadSettings()
  *
  * \todo automatize saving of m_config values
  */
-void BaseEngine::saveSettings()
-{
+void BaseEngine::saveSettings() {
     if (m_settings->value("userid").toString() != m_config["userloginsimple"].toString()) {
         m_settings->setValue("monitor/userid", QString(""));
     }
@@ -303,79 +275,74 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
-    
+
     m_settings->beginGroup(m_profilename_write);
-        m_settings->setValue("serverhost", m_config["cti_address"].toString());
-        m_settings->setValue("serverport", m_config["cti_port"].toUInt());
-        m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
-        m_settings->setValue("backup_server_host", m_config["cti_backup_address"].toString());
-        m_settings->setValue("backup_server_port", m_config["cti_backup_port"].toUInt());
-        m_settings->setValue("backup_server_encryption", m_config["cti_backup_encrypt"].toBool());
-        m_settings->setValue("userid", m_config["userloginsimple"].toString());
-        m_settings->setValue("useridopt", m_config["userloginopt"].toString());
-        m_settings->setValue("company", m_config["company"].toString());
-        // keeppass and showagselect are booleans in memory, but integers (Qt::checkType) in qsettings/config file (due to compatibility)
-        m_settings->setValue("keeppass", m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
-        m_settings->setValue("showagselect", m_config["showagselect"].toBool() ? Qt::Checked : Qt::Unchecked);
-        m_settings->setValue("agentphonenumber", m_config["agentphonenumber"].toString());
-        m_settings->setValue("forcelocale", m_config["forcelocale"].toString());
-        m_settings->setValue("autoconnect", m_config["autoconnect"].toBool());
-        m_settings->setValue("trytoreconnect", m_config["trytoreconnect"].toBool());
-        m_settings->setValue("trytoreconnectinterval", m_config["trytoreconnectinterval"].toUInt());
-        m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
-        m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
-        m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
-        
-        m_settings->setValue("doubleclick.searchpanel", m_config["doubleclick.searchpanel"].toString());
+    m_settings->setValue("serverhost", m_config["cti_address"].toString());
+    m_settings->setValue("serverport", m_config["cti_port"].toUInt());
+    m_settings->setValue("encryption", m_config["cti_encrypt"].toBool());
+    m_settings->setValue("backup_server_host", m_config["cti_backup_address"].toString());
+    m_settings->setValue("backup_server_port", m_config["cti_backup_port"].toUInt());
+    m_settings->setValue("backup_server_encryption", m_config["cti_backup_encrypt"].toBool());
+    m_settings->setValue("userid", m_config["userloginsimple"].toString());
+    m_settings->setValue("useridopt", m_config["userloginopt"].toString());
+    m_settings->setValue("company", m_config["company"].toString());
+    // keeppass and showagselect are booleans in memory, but integers (Qt::checkType) in qsettings/config file (due to compatibility)
+    m_settings->setValue("keeppass", m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_settings->setValue("showagselect", m_config["showagselect"].toBool() ? Qt::Checked : Qt::Unchecked);
+    m_settings->setValue("agentphonenumber", m_config["agentphonenumber"].toString());
+    m_settings->setValue("forcelocale", m_config["forcelocale"].toString());
+    m_settings->setValue("autoconnect", m_config["autoconnect"].toBool());
+    m_settings->setValue("trytoreconnect", m_config["trytoreconnect"].toBool());
+    m_settings->setValue("trytoreconnectinterval", m_config["trytoreconnectinterval"].toUInt());
+    m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
+    m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
+    m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
 
-        if (m_config["keeppass"].toBool())
-            m_settings->setValue("password", m_config["password"].toString());
-        else
-            m_settings->remove("password");
+    m_settings->setValue("doubleclick.searchpanel", m_config["doubleclick.searchpanel"].toString());
 
-        m_settings->beginGroup("user-gui");
-            m_settings->setValue("historysize", m_config["historysize"].toInt());
-            m_settings->setValue("guisettings", m_config.getSubSet("guioptions", BaseConfig::Unmasked));
-        m_settings->endGroup();
+    if (m_config["keeppass"].toBool())
+        m_settings->setValue("password", m_config["password"].toString());
+    else
+        m_settings->remove("password");
+
+    m_settings->beginGroup("user-gui");
+    m_settings->setValue("historysize", m_config["historysize"].toInt());
+    m_settings->setValue("guisettings", m_config.getSubSet("guioptions", BaseConfig::Unmasked));
+    m_settings->endGroup();
     m_settings->endGroup();
 
     m_settings->beginGroup("user-functions");
-        foreach (QString function, CheckFunctions)
-            m_settings->setValue(function, m_config["checked_function." + function].toBool());
+    foreach (QString function, CheckFunctions)
+        m_settings->setValue(function, m_config["checked_function." + function].toBool());
     m_settings->endGroup();
 
     emit settingsChanged();
 }
 
-QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const
-{
+QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const {
     m_settings->beginGroup(m_profilename_read);
-        QVariant ret = m_settings->value(key, bydefault);
+    QVariant ret = m_settings->value(key, bydefault);
     m_settings->endGroup();
     return ret;
 }
 
-void BaseEngine::setProfileSetting(const QString & key, const QVariant & value)
-{
+void BaseEngine::setProfileSetting(const QString & key, const QVariant & value) {
     m_settings->beginGroup(m_profilename_write);
-        m_settings->setValue(key, value);
+    m_settings->setValue(key, value);
     m_settings->endGroup();
 }
 
-void BaseEngine::pasteToDial(const QString & toPaste)
-{
+void BaseEngine::pasteToDial(const QString & toPaste) {
     emit pasteToXlets(toPaste);
 }
 
-bool BaseEngine::checkedFunction(const QString & function)
-{
+bool BaseEngine::checkedFunction(const QString & function) {
     return m_config["checked_function." + function].toBool();
 }
 
-void BaseEngine::openLogFile()
-{
+void BaseEngine::openLogFile() {
     QString logfilename = m_config["logfilename"].toString();
-    if (! logfilename.isEmpty()) {
+    if (!logfilename.isEmpty()) {
         m_logfile = new QFile(this);
         QDir::setCurrent(QDir::homePath());
         m_logfile->setFileName(logfilename);
@@ -383,8 +350,7 @@ void BaseEngine::openLogFile()
     }
 }
 
-void BaseEngine::logAction(const QString & logstring)
-{
+void BaseEngine::logAction(const QString & logstring) {
     if (m_config["logtofile"].toBool() && m_logfile != NULL) {
         QString tolog = QDateTime::currentDateTime().toString(Qt::ISODate) + " " + logstring + "\n";
         m_logfile->write(tolog.toUtf8());
@@ -396,8 +362,7 @@ void BaseEngine::logAction(const QString & logstring)
  *
  * \todo check if this is usefull. If not, remove it.
  */
-void BaseEngine::powerEvent(const QString & eventinfo)
-{
+void BaseEngine::powerEvent(const QString & eventinfo) {
     QVariantMap command;
     command["class"] = "powerevent";
     command["value"] = eventinfo;
@@ -408,11 +373,9 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  * This method starts the login process by connection
  * to the server.
  */
-void BaseEngine::start()
-{
-    qDebug() << "XiVO client starting:" << m_config["cti_address"].toString()
-            << port_to_use() << m_config["cti_encrypt"].toBool()
-            << m_config.getSubSet("checked_function");
+void BaseEngine::start() {
+    qDebug() << "XiVO client starting:" << m_config["cti_address"].toString() << port_to_use()
+            << m_config["cti_encrypt"].toBool() << m_config.getSubSet("checked_function");
 
     ConnectionConfig connection_config = m_config.getConnectionConfig();
     m_cti_server->connectToServer(connection_config);
@@ -421,8 +384,7 @@ void BaseEngine::start()
 /*! \brief Closes the connection to the server
  * This method disconnect the engine from the server
  */
-void BaseEngine::clearInternalData()
-{
+void BaseEngine::clearInternalData() {
     if (m_attempt_loggedin) {
         QString stopper = sender() ? sender()->property("stopper").toString() : "unknown";
         QVariantMap command;
@@ -430,8 +392,7 @@ void BaseEngine::clearInternalData()
         command["stopper"] = stopper;
         sendJsonCommand(command);
         m_settings->setValue("lastlogout/stopper", stopper);
-        m_settings->setValue("lastlogout/datetime",
-                             QDateTime::currentDateTime().toString(Qt::ISODate));
+        m_settings->setValue("lastlogout/datetime", QDateTime::currentDateTime().toString(Qt::ISODate));
         m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("availstate", m_availstate);
         m_settings->endGroup();
@@ -447,27 +408,23 @@ void BaseEngine::clearInternalData()
     m_listeners.clear();
 }
 
-void BaseEngine::stop()
-{
+void BaseEngine::stop() {
     disconnectAndClean();
 }
 
-void BaseEngine::disconnectAndClean()
-{
+void BaseEngine::disconnectAndClean() {
     clearInternalData();
     stopConnection();
     setState(ENotLogged);
 }
 
-void BaseEngine::stopConnection()
-{
+void BaseEngine::stopConnection() {
     qDebug() << Q_FUNC_INFO;
     m_cti_server->disconnectFromServer();
     stopKeepAliveTimer();
 }
 
-void BaseEngine::onCTIServerDisconnected()
-{
+void BaseEngine::onCTIServerDisconnected() {
     b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
     b_engine->startTryAgainTimer();
     this->stop();
@@ -477,8 +434,7 @@ void BaseEngine::onCTIServerDisconnected()
  *
  * Delete all contained UserInfo objects
  */
-void BaseEngine::clearLists()
-{
+void BaseEngine::clearLists() {
     foreach (QString listname, m_anylist.keys()) {
         QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(m_anylist.value(listname));
         while (iter.hasNext()) {
@@ -489,8 +445,7 @@ void BaseEngine::clearLists()
     }
 }
 
-void BaseEngine::clearChannelList()
-{
+void BaseEngine::clearChannelList() {
     QHashIterator<QString, ChannelInfo *> iterc = QHashIterator<QString, ChannelInfo *>(m_channels);
     while (iterc.hasNext()) {
         iterc.next();
@@ -506,59 +461,49 @@ void BaseEngine::clearChannelList()
 }
 
 /*! \brief gets m_capaxlets */
-const QVariantList & BaseEngine::getCapaXlets() const
-{
+const QVariantList & BaseEngine::getCapaXlets() const {
     return m_capaxlets;
 }
 
-const QVariantMap & BaseEngine::getOptionsUserStatus() const
-{
+const QVariantMap & BaseEngine::getOptionsUserStatus() const {
     return m_options_userstatus;
 }
 
-const QVariantMap & BaseEngine::getOptionsPhoneStatus() const
-{
+const QVariantMap & BaseEngine::getOptionsPhoneStatus() const {
     return m_options_phonestatus;
 }
 
-const QStringList & BaseEngine::getCapasRegCommands() const
-{
+const QStringList & BaseEngine::getCapasRegCommands() const {
     return m_capas_regcommands;
 }
 
-const QStringList & BaseEngine::getCapasIpbxCommands() const
-{
+const QStringList & BaseEngine::getCapasIpbxCommands() const {
     return m_capas_ipbxcommands;
 }
 
-const QString & BaseEngine::getCapaApplication() const
-{
+const QString & BaseEngine::getCapaApplication() const {
     return m_appliname;
 }
 
 /*!
  * sets the availability state and call keepLoginAlive() if needed
  */
-void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
-{
+void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer) {
     if (m_availstate != newstate && !comesFromServer) {
         m_availstate = newstate;
         changeState();
     }
 }
 
-void BaseEngine::restoreAvailState()
-{
+void BaseEngine::restoreAvailState() {
     changeState();
-    disconnect(m_ctiserversocket, SIGNAL(connected()),
-               this, SLOT(restoreAvailState()));
+    disconnect(m_ctiserversocket, SIGNAL(connected()), this, SLOT(restoreAvailState()));
 }
 
 /*!
  * Returns the availstate of the current user
  */
-const QString & BaseEngine::getAvailState() const
-{
+const QString & BaseEngine::getAvailState() const {
     if (const UserInfo * u = b_engine->user(getFullId())) {
         return u->availstate();
     }
@@ -568,16 +513,14 @@ const QString & BaseEngine::getAvailState() const
 }
 
 /*! \brief send command to XiVO CTI server */
-void BaseEngine::sendCommand(const QString & command)
-{
+void BaseEngine::sendCommand(const QString & command) {
     if (m_ctiserversocket->state() == QAbstractSocket::ConnectedState)
         m_ctiserversocket->write((command + "\n").toUtf8());
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
-QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
-{
-    if (! cticommand.contains("class"))
+QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand) {
+    if (!cticommand.contains("class"))
         return QString("");
     QVariantMap fullcommand = cticommand;
     fullcommand["commandid"] = qrand();
@@ -587,9 +530,8 @@ QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
 }
 
 /*! \brief send an ipbxcommand command to the cti server */
-void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
-{
-    if (! ipbxcommand.contains("command"))
+void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand) {
+    if (!ipbxcommand.contains("command"))
         return;
     QVariantMap cticommand = ipbxcommand;
     cticommand["class"] = "ipbxcommand";
@@ -597,8 +539,7 @@ void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
 }
 
 /*! \brief set monitored peer id */
-void BaseEngine::monitorPeerRequest(const QString & xuserid)
-{
+void BaseEngine::monitorPeerRequest(const QString & xuserid) {
     if (m_anylist.value("users").contains(xuserid)) {
         m_monitored_xuserid = xuserid;
         emit monitoredUserInfoDefined();
@@ -612,8 +553,7 @@ void BaseEngine::monitorPeerRequest(const QString & xuserid)
  * currently send the identification to login
  * \todo read correctly the banner
  */
-void BaseEngine::ctiSocketConnected()
-{
+void BaseEngine::ctiSocketConnected() {
     stopTryAgainTimer();
     /* do the login/identification */
     m_attempt_loggedin = false;
@@ -636,15 +576,13 @@ void BaseEngine::ctiSocketConnected()
 
 /*! \brief send filetransfer command
  */
-void BaseEngine::filetransferSocketConnected()
-{
+void BaseEngine::filetransferSocketConnected() {
     QVariantMap command;
     command["class"] = "filetransfer";
     command["command"] = "put_announce";
     command["format"] = "base64";
-    command["socketref"] = QString("%1:%2")
-        .arg(m_filetransfersocket->localAddress().toString())
-        .arg(m_filetransfersocket->localPort());
+    command["socketref"] = QString("%1:%2").arg(m_filetransfersocket->localAddress().toString()).arg(
+            m_filetransfersocket->localPort());
     command["filename"] = m_filename;
     command["fileid"] = m_fileid;
     command["formatted_size"] = m_filedata.size();
@@ -652,23 +590,19 @@ void BaseEngine::filetransferSocketConnected()
     sendJsonCommand(command);
 }
 
-double BaseEngine::timeServer() const
-{
+double BaseEngine::timeServer() const {
     return m_timesrv;
 }
 
-const QDateTime & BaseEngine::timeClient() const
-{
+const QDateTime & BaseEngine::timeClient() const {
     return m_timeclt;
 }
 
-double BaseEngine::timeDeltaServerClient() const
-{
+double BaseEngine::timeDeltaServerClient() const {
     return (m_timeclt.toTime_t() - m_timesrv);
 }
 
-QString BaseEngine::timeElapsed(double timestamp) const
-{
+QString BaseEngine::timeElapsed(double timestamp) const {
     double timespent = QDateTime::fromTime_t(timestamp).secsTo(QDateTime::currentDateTime());
     int timecorr = int(timespent - timeDeltaServerClient());
     int sec = timecorr % 60;
@@ -676,36 +610,32 @@ QString BaseEngine::timeElapsed(double timestamp) const
     int hou = ((timecorr - sec - min * 60) / 60) / 60;
     QString timefmt;
     if (hou > 0)
-        timefmt = QString("%1:%2:%3").arg(hou, 2, 10, QChar('0'))
-            .arg(min, 2, 10, QChar('0'))
-            .arg(sec, 2, 10, QChar('0'));
+        timefmt = QString("%1:%2:%3").arg(hou, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')).arg(sec, 2, 10,
+                QChar('0'));
     else
-        timefmt = QString("%1:%2").arg(min, 2, 10, QChar('0'))
-            .arg(sec, 2, 10, QChar('0'));
+        timefmt = QString("%1:%2").arg(min, 2, 10, QChar('0')).arg(sec, 2, 10, QChar('0'));
     return timefmt;
     // to bench : this, against .toString("hh:mm:ss") (see confs)
 }
 
-void BaseEngine::emitMessage(const QString & msg)
-{
+void BaseEngine::emitMessage(const QString & msg) {
     emit emitTextMessage(msg);
 }
 
 /*! \brief parse JSON and then process command */
-void BaseEngine::parseCommand(const QString &line)
-{
+void BaseEngine::parseCommand(const QString &line) {
     m_pendingkeepalivemsg = 0;
     QVariant data;
     try {
         QTime jsondecodetime;
         jsondecodetime.start();
         data = JsonQt::JsonToVariant::parse(line.trimmed());
-    } catch(JsonQt::ParseException) {
+    } catch (JsonQt::ParseException &) {
         qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         data = QVariant(QVariant::Invalid);
     }
 
-    if (! data.isValid())
+    if (!data.isValid())
         return;
 
     QVariantMap datamap = data.toMap();
@@ -716,8 +646,8 @@ void BaseEngine::parseCommand(const QString &line)
     m_timesrv = datamap.value("timenow").toDouble();
     m_timeclt = QDateTime::currentDateTime();
 
-    if (forwardToListeners(thisclass, datamap))  // a class callback was called,
-        return;                                  // so zap the 500 loc of if-else soup
+    if (forwardToListeners(thisclass, datamap)) // a class callback was called,
+        return; // so zap the 500 loc of if-else soup
 
     if ((thisclass == "keepalive") || (thisclass == "availstate")) {
         // ack from the keepalive and availstate commands previously sent
@@ -756,23 +686,24 @@ void BaseEngine::parseCommand(const QString &line)
     } else if (thisclass == "getlist") {
         configsLists(thisclass, function, datamap);
     } else if (thisclass == "agentlisten") {
-        emit statusListen(datamap.value("ipbxid").toString(),
-                          datamap.value("agentid").toString(),
-                          datamap.value("status").toString());
+        emit statusListen(datamap.value("ipbxid").toString(), datamap.value("agentid").toString(),
+                datamap.value("status").toString());
     } else if (thisclass == "serverdown") {
-        qDebug() << Q_FUNC_INFO << thisclass << datamap.value("mode").toString();
+        qDebug() << Q_FUNC_INFO
+        << thisclass << datamap.value("mode").toString();
 
     } else if (thisclass == "disconn") {
-        qDebug() << Q_FUNC_INFO << thisclass;
+        qDebug() << Q_FUNC_INFO
+        << thisclass;
 
     } else if (thisclass == "directory") {
-        emit directoryResponse(datamap.value("headers").toStringList(),
-                               datamap.value("resultlist").toStringList());
+        emit directoryResponse(datamap.value("headers").toStringList(), datamap.value("resultlist").toStringList());
 
     } else if (thisclass == "faxsend") {
-        if (datamap.contains("step"))
-            qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
-        else {
+        if (datamap.contains("step")) {
+            qDebug() << Q_FUNC_INFO
+            << "step" << datamap.value("step").toString();
+        } else {
             m_fileid = datamap.value("fileid").toString();
             m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), port_to_use());
         }
@@ -824,8 +755,7 @@ void BaseEngine::parseCommand(const QString &line)
             emit servicePutIsKO();
             emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
         } else {
-            emit servicePutIsOK(datamap.value("replyid").toString(),
-                                datamap.value("warning_string").toString());
+            emit servicePutIsOK(datamap.value("replyid").toString(), datamap.value("warning_string").toString());
             emit emitTextMessage("");
         }
     } else if (thisclass == "ipbxcommand" && datamap.contains("error_string")) {
@@ -866,7 +796,7 @@ void BaseEngine::parseCommand(const QString &line)
                     command["capaid"] = capas[0];
             }
 
-            switch(m_config["guioptions.loginkind"].toInt()) {
+            switch (m_config["guioptions.loginkind"].toInt()) {
             case 0:
                 command["loginkind"] = "user";
                 break;
@@ -918,7 +848,7 @@ void BaseEngine::parseCommand(const QString &line)
         qDebug() << "\n";
 
         QString urltolaunch = m_config["guioptions.loginwindow.url"].toString();
-        if (! urltolaunch.isEmpty()) {
+        if (!urltolaunch.isEmpty()) {
             urltolaunch.replace("{xc-username}", m_config["userloginsimple"].toString());
             urltolaunch.replace("{xc-password}", m_config["password"].toString());
             this->urlAuto(urltolaunch);
@@ -933,7 +863,7 @@ void BaseEngine::parseCommand(const QString &line)
         qDebug() << thisclass << datamap;
         QString type = datamap.value("type").toString();
         disconnectAndClean();
-        if (type=="force") {
+        if (type == "force") {
             m_forced_to_disconnect = true; // disable autoreconnect
             popupError("forcedisconnected");
         } else {
@@ -959,8 +889,7 @@ void BaseEngine::parseCommand(const QString &line)
     }
 }
 
-bool BaseEngine::isMeetmeMember(const QString &room, int number) const
-{
+bool BaseEngine::isMeetmeMember(const QString &room, int number) const {
     foreach (const QVariant &item, m_meetme_membership) {
         const QVariantMap &map = item.toMap();
         if (map["room_number"].toString() == room && map["user_number"].toInt() == number)
@@ -969,9 +898,7 @@ bool BaseEngine::isMeetmeMember(const QString &room, int number) const
     return false;
 }
 
-void BaseEngine::configsLists(const QString & thisclass, const QString & function,
-                              const QVariantMap & datamap)
-{
+void BaseEngine::configsLists(const QString & thisclass, const QString & function, const QVariantMap & datamap) {
     if (thisclass == "getlist") {
         QString listname = datamap.value("listname").toString();
         QString ipbxid = datamap.value("tipbxid").toString();
@@ -981,11 +908,11 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
                 if (GenLists.contains(listname)) {
-                    if (! m_anylist.contains(listname))
+                    if (!m_anylist.contains(listname))
                         m_anylist[listname].clear();
                     newXInfoProto construct = m_xinfoList.value(listname);
                     XInfo * xinfo = construct(ipbxid, id);
-                    if (! m_anylist[listname].contains(xid)) {
+                    if (!m_anylist[listname].contains(xid)) {
                         m_anylist[listname][xid] = xinfo;
                     }
                 }
@@ -1043,7 +970,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QVariantMap config = datamap.value("config").toMap();
             bool haschanged = false;
             if (GenLists.contains(listname)) {
-                if (! m_anylist.value(listname).contains(xid)) {
+                if (!m_anylist.value(listname).contains(xid)) {
                     newXInfoProto construct = m_xinfoList.value(listname);
                     XInfo * xinfo = construct(ipbxid, id);
                     m_anylist[listname][xid] = xinfo;
@@ -1060,7 +987,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 qDebug() << "received " << function << "for unknown list" << listname << "id" << xid;
             }
 
-            if (! haschanged) {
+            if (!haschanged) {
                 // qDebug() << "got an unchanged" << function << listname << xid;
             }
 
@@ -1072,7 +999,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             // transmission to xlets
             if (listname == "users") {
                 emit updateUserConfig(xid);
-                emit updateUserConfig(xid,datamap);
+                emit updateUserConfig(xid, datamap);
             } else if (listname == "phones")
                 emit updatePhoneConfig(xid);
             else if (listname == "agents")
@@ -1102,12 +1029,12 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (m_anylist.value(listname).contains(xid))
                     m_anylist.value(listname).value(xid)->updateStatus(status);
             } else if (listname == "channels") {
-                if (! m_channels.contains(xid))
+                if (!m_channels.contains(xid))
                     m_channels[xid] = new ChannelInfo(ipbxid, id);
                 m_channels[xid]->updateStatus(status);
             }
             if (listname == "queuemembers") {
-                if (! m_queuemembers.contains(xid))
+                if (!m_queuemembers.contains(xid))
                     m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
                 m_queuemembers[xid]->updateStatus(status);
                 if (id.startsWith("qa:")) {
@@ -1157,8 +1084,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                         sendJsonCommand(command);
                     }
                 }
-            }
-            else if (listname == "voicemails")
+            } else if (listname == "voicemails")
                 emit updateVoiceMailStatus(xid);
             else if (listname == "channels")
                 emit updateChannelStatus(xid);
@@ -1170,7 +1096,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (GenLists.contains(listname)) {
                     newXInfoProto construct = m_xinfoList.value(listname);
                     XInfo * xinfo = construct(ipbxid, id);
-                    if (! m_anylist[listname].contains(xid)) {
+                    if (!m_anylist[listname].contains(xid)) {
                         m_anylist[listname][xid] = xinfo;
                     }
                 }
@@ -1188,10 +1114,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
     }
 }
 
-
 /*! \brief send meetme command to the CTI server */
-void BaseEngine::meetmeAction(const QString &function, const QString &functionargs)
-{
+void BaseEngine::meetmeAction(const QString &function, const QString &functionargs) {
     QVariantMap command;
     command["command"] = "meetme";
     command["function"] = function;
@@ -1200,8 +1124,7 @@ void BaseEngine::meetmeAction(const QString &function, const QString &functionar
 }
 
 /*! \brief send callcampaign command to the CTI server */
-void BaseEngine::requestFileList(const QString & action)
-{
+void BaseEngine::requestFileList(const QString & action) {
     QVariantMap command;
     command["class"] = "callcampaign";
     command["command"] = action.split(" ");
@@ -1209,10 +1132,7 @@ void BaseEngine::requestFileList(const QString & action)
 }
 
 /*! \brief Send fax to CTI Server */
-void BaseEngine::sendFaxCommand(const QString & filename,
-                                const QString & number,
-                                Qt::CheckState hide)
-{
+void BaseEngine::sendFaxCommand(const QString & filename, const QString & number, Qt::CheckState hide) {
     m_filename = filename;
     QFile * qf = new QFile(filename);
     bool canopen = qf->open(QIODevice::ReadOnly);
@@ -1243,70 +1163,63 @@ void BaseEngine::sendFaxCommand(const QString & filename,
  *
  * TODO : replace string errorids by an enum ?
  */
-void BaseEngine::popupError(const QString & errorid,
-                            const QString & server_address,
-                            const QString & server_port)
-{
+void BaseEngine::popupError(const QString & errorid, const QString & server_address, const QString & server_port) {
     QString errormsg = QString(tr("Server has sent an Error."));
 
     // errors sent by the server (login phase)
     if (errorid.toLower() == "user_not_found") {
         errormsg = tr("Your registration name <%1@%2> "
-                      "is not known by the XiVO CTI server on %3:%4.")
-            .arg(m_config["userloginsimple"].toString()).arg(m_config["company"].toString())
-            .arg(server_address).arg(server_port);
+                "is not known by the XiVO CTI server on %3:%4.").arg(m_config["userloginsimple"].toString()).arg(
+                m_config["company"].toString()).arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
     } else if (errorid.startsWith("capaid_undefined:")) {
         QStringList capainfo = errorid.split(":");
         errormsg = tr("Your profile identifier <%1> is not defined.").arg(capainfo[1]);
 
-    // keepalive (internal)
+        // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
-        errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
-            .arg(server_address).arg(server_port);
+        errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.").arg(server_address).arg(
+                server_port);
 
-    // socket errors - while attempting to connect
+        // socket errors - while attempting to connect
     } else if (errorid.toLower() == "socket_error_hostnotfound") {
-        errormsg = tr("You defined an IP address %1 that is probably an unresolved host name.")
-            .arg(server_address);
+        errormsg = tr("You defined an IP address %1 that is probably an unresolved host name.").arg(server_address);
     } else if (errorid.toLower() == "socket_error_timeout") {
         errormsg = tr("Socket timeout (~ 60 s) : you probably attempted to reach, "
-                      "via a gateway, an IP address %1 that does not exist.")
-            .arg(server_address);
+                "via a gateway, an IP address %1 that does not exist.").arg(server_address);
     } else if (errorid.toLower() == "socket_error_connectionrefused") {
         errormsg = tr("There seems to be a machine running on this IP address %1, "
-                      "and either no CTI server is running, or your port %2 is wrong.")
-            .arg(server_address).arg(server_port);
+                "and either no CTI server is running, or your port %2 is wrong.").arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "socket_error_network") {
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
-                      "- no external route defined to access this IP address (~ no timeout)\n"
-                      "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
-                      "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
-            .arg(server_address);
+                "- no external route defined to access this IP address (~ no timeout)\n"
+                "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
+                "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).").arg(
+                server_address);
     } else if (errorid.toLower() == "socket_error_sslhandshake") {
         errormsg = tr("It seems that the server with IP address %1 does not accept encryption on "
-                      "its port %2. Please change either your port or your encryption setting.")
-            .arg(server_address).arg(server_port);
+                "its port %2. Please change either your port or your encryption setting.").arg(server_address).arg(
+                server_port);
     } else if (errorid.toLower() == "socket_error_unknown") {
-        errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(server_address).arg(server_port);
+        errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.").arg(
+                server_address).arg(server_port);
     } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
         QStringList ipinfo = errorid.split(":");
-        errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
-            .arg(ipinfo[1]).arg(server_address).arg(server_port);
+        errormsg =
+                tr(
+                        "An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.").arg(
+                        ipinfo[1]).arg(server_address).arg(server_port);
 
-    // socket errors - once connected
+        // socket errors - once connected
     } else if (errorid.toLower() == "socket_error_remotehostclosed") {
-        errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
-            .arg(server_address).arg(server_port);
+        errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.").arg(server_address).arg(
+                server_port);
 
     } else if (errorid.toLower() == "server_stopped") {
-        errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
-            .arg(server_address).arg(server_port);
+        errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.").arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "server_reloaded") {
-        errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
-            .arg(server_address).arg(server_port);
+        errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.").arg(server_address).arg(server_port);
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
@@ -1321,31 +1234,25 @@ void BaseEngine::popupError(const QString & errorid,
         QStringList versionslist = errorid.split(":")[1].split(";");
         if (versionslist.size() >= 2) {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
-                          "Please upgrade it to %2 at least.")
-                .arg(__git_hash__)
-                .arg(versionslist[1]);
+                    "Please upgrade it to %2 at least.").arg(__git_hash__).arg(versionslist[1]);
         } else {
             errormsg = tr("Your client version (%1) is too old for this server.\n"
-                          "Please upgrade it.").arg(__git_hash__);
+                    "Please upgrade it.").arg(__git_hash__);
         }
     } else if (errorid.startsWith("xivoversion_client:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
 
         if (versionslist.size() >= 2)
             errormsg = tr("Your client's major version (%1)\n"
-                          "is not the same as the server's (%2).")
-                .arg(__cti_protocol_version__)
-                .arg(versionslist[1]);
+                    "is not the same as the server's (%2).").arg(__cti_protocol_version__).arg(versionslist[1]);
     } else if (errorid.startsWith("version_server:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
         if (versionslist.size() >= 2) {
             errormsg = tr("Your server version (%1) is too old for this client.\n"
-                          "Please upgrade it to %2 at least.")
-                .arg(versionslist[0])
-                .arg(__git_hash__);
+                    "Please upgrade it to %2 at least.").arg(versionslist[0]).arg(__git_hash__);
         } else {
             errormsg = tr("Your server version (%1) is too old for this client.\n"
-                          "Please upgrade it.").arg(versionslist[0]);
+                    "Please upgrade it.").arg(versionslist[0]);
         }
     } else if (errorid == "disconnected") {
         errormsg = tr("You were disconnected by the server.");
@@ -1364,8 +1271,7 @@ void BaseEngine::popupError(const QString & errorid,
 /*! \brief save BaseEngine::m_downloaded to a file
  *  \sa BaseEngine::m_downloaded
  */
-void BaseEngine::saveToFile(const QString & filename)
-{
+void BaseEngine::saveToFile(const QString & filename) {
     qDebug() << "Saving downloaded file" << filename << "size" << m_downloaded.size();
     QFile outputfile(filename);
     outputfile.open(QIODevice::WriteOnly);
@@ -1377,10 +1283,9 @@ void BaseEngine::saveToFile(const QString & filename)
  *
  * Read and process the data from the server.
  */
-void BaseEngine::ctiSocketReadyRead()
-{
+void BaseEngine::ctiSocketReadyRead() {
     while (m_ctiserversocket->canReadLine()) {
-        QByteArray data  = m_ctiserversocket->readLine();
+        QByteArray data = m_ctiserversocket->readLine();
         QString line = QString::fromUtf8(data);
 
         if (line.startsWith("<ui version=")) {
@@ -1396,16 +1301,16 @@ void BaseEngine::ctiSocketReadyRead()
  *
  * Read text data, the file is encapsulated into JSON as a base 64 string.
  */
-void BaseEngine::filetransferSocketReadyRead()
-{
+void BaseEngine::filetransferSocketReadyRead() {
     while (m_filetransfersocket->canReadLine()) {
         QByteArray data = m_filetransfersocket->readLine();
         QString line = QString::fromUtf8(data);
         QVariant jsondata;
         try {
             jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
-        } catch(JsonQt::ParseException &) {
-            qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
+        } catch (JsonQt::ParseException &) {
+            qDebug() << Q_FUNC_INFO
+            << "exception catched for" << line.trimmed();
         }
         QVariantMap jsondatamap = jsondata.toMap();
         if (jsondatamap.value("class").toString() == "fileref") {
@@ -1415,8 +1320,8 @@ void BaseEngine::filetransferSocketReadyRead()
                 emit fileReceived();
             } else {
                 QByteArray fax64 = m_filedata.toBase64();
-                qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString()
-                         << m_faxsize << fax64.size();
+                qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString() << m_faxsize
+                        << fax64.size();
                 if (m_faxsize > 0) {
                     m_filetransfersocket->write(fax64 + "\n");
                     m_filetransfersocket->flush();
@@ -1434,8 +1339,7 @@ void BaseEngine::filetransferSocketReadyRead()
  *
  * Build and send JSON command
  */
-void BaseEngine::actionFromFiche(const QVariant & infos)
-{
+void BaseEngine::actionFromFiche(const QVariant & infos) {
     QVariantMap command;
     command["class"] = "actionfiche";
     command["infos"] = infos;
@@ -1444,8 +1348,7 @@ void BaseEngine::actionFromFiche(const QVariant & infos)
 
 /*! \brief send an originate command to the server
  */
-void BaseEngine::textEdited(const QString & text)
-{
+void BaseEngine::textEdited(const QString & text) {
     m_numbertodial = text;
 }
 
@@ -1453,11 +1356,8 @@ void BaseEngine::textEdited(const QString & text)
  *
  * \param action originate/transfer/atxfer/hangup/answer/refuse
  */
-void BaseEngine::actionCall(const QString & action,
-                            const QString & src,
-                            const QString & dst)
-{
-    if (! getCapasIpbxCommands().contains(action)) {
+void BaseEngine::actionCall(const QString & action, const QString & src, const QString & dst) {
+    if (!getCapasIpbxCommands().contains(action)) {
         qDebug() << Q_FUNC_INFO << "IGNORE" << action << src << dst;
         return;
     }
@@ -1468,7 +1368,7 @@ void BaseEngine::actionCall(const QString & action,
     if ((action == "originate") || (action == "transfer") || (action == "atxfer")) {
         ipbxcommand["command"] = action;
         ipbxcommand["source"] = src;
-        if ((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
+        if ((dst == "ext:special:dialxlet") && (!m_numbertodial.isEmpty()))
             ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(m_numbertodial);
         else
             ipbxcommand["destination"] = dst;
@@ -1500,8 +1400,7 @@ void BaseEngine::actionCall(const QString & action,
  *
  * \param action originate/transfer/atxfer/hangup/answer/refuse
  */
-void BaseEngine::actionDialNumber(const QString & number)
-{
+void BaseEngine::actionDialNumber(const QString & number) {
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = "dial";
     ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(number);
@@ -1511,8 +1410,7 @@ void BaseEngine::actionDialNumber(const QString & number)
 /*! \brief Receive a number list from xlets and signal this list
  *  to interested xlets
  */
-void BaseEngine::receiveNumberSelection(const QStringList & numbers)
-{
+void BaseEngine::receiveNumberSelection(const QStringList & numbers) {
     emit broadcastNumberSelection(numbers);
 }
 
@@ -1520,8 +1418,7 @@ void BaseEngine::receiveNumberSelection(const QStringList & numbers)
  *
  * \sa directoryResponse()
  */
-void BaseEngine::searchDirectory(const QString & text)
-{
+void BaseEngine::searchDirectory(const QString & text) {
     QVariantMap command;
     command["class"] = "directory";
     command["pattern"] = text;
@@ -1531,16 +1428,14 @@ void BaseEngine::searchDirectory(const QString & text)
 /*!
  * \return all settings
  */
-QVariantMap BaseEngine::getConfig() const
-{
+QVariantMap BaseEngine::getConfig() const {
     return m_config.toQVariantMap();
 }
 
 /*!
  * \return the setting indexed by the parameter
  */
-QVariant BaseEngine::getConfig(const QString & setting) const
-{
+QVariant BaseEngine::getConfig(const QString & setting) const {
     return m_config[setting];
 }
 
@@ -1553,19 +1448,18 @@ void BaseEngine::setConfig(const QString & setting, QVariant value) {
 }
 
 // qvm may not contain every key, only the ones that need to be modified
-void BaseEngine::setConfig(const QVariantMap & qvm)
-{
-    bool reload_tryagain = qvm.contains("trytoreconnectinterval") &&
-                           m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
-    bool reload_keepalive = qvm.contains("keepaliveinterval") &&
-                            m_config["keepaliveinterval"].toUInt() != qvm["keepaliveinterval"].toUInt();
-    bool change_translation = qvm.contains("forcelocale") &&
-                            m_config["forcelocale"].toUInt() != qvm["forcelocale"].toUInt();
-    bool toggle_presence_enabled = qvm.contains("checked_function.presence") &&
-                            m_config["checked_function.presence"].toBool() != qvm["checked_function.presence"].toBool();
+void BaseEngine::setConfig(const QVariantMap & qvm) {
+    bool reload_tryagain = qvm.contains("trytoreconnectinterval")
+            && m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
+    bool reload_keepalive = qvm.contains("keepaliveinterval")
+            && m_config["keepaliveinterval"].toUInt() != qvm["keepaliveinterval"].toUInt();
+    bool change_translation = qvm.contains("forcelocale")
+            && m_config["forcelocale"].toUInt() != qvm["forcelocale"].toUInt();
+    bool toggle_presence_enabled = qvm.contains("checked_function.presence")
+            && m_config["checked_function.presence"].toBool() != qvm["checked_function.presence"].toBool();
 
     m_config.merge(qvm);
-    
+
     if (reload_tryagain) {
         stopTryAgainTimer();
         startTryAgainTimer();
@@ -1574,9 +1468,9 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
         stopKeepAliveTimer();
         m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
     }
-    
+
     setUserLogin(m_config["userlogin"].toString());
-    
+
     if (change_translation)
         changeTranslation();
 
@@ -1593,8 +1487,7 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
 
 // === Getter and Setters ===
 
-void BaseEngine::setUserLogin(const QString & userlogin)
-{
+void BaseEngine::setUserLogin(const QString & userlogin) {
     m_config["userlogin"] = userlogin.trimmed();
     QStringList userloginsplit = userlogin.split("%");
     m_config["userloginsimple"] = userloginsplit[0].trimmed();
@@ -1605,75 +1498,60 @@ void BaseEngine::setUserLogin(const QString & userlogin)
     }
 }
 
-void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
-{
+void BaseEngine::setUserLogin(const QString & userid, const QString & opt) {
     m_config["userloginsimple"] = userid.trimmed();
     m_config["userloginopt"] = opt.trimmed();
     if (m_config["userloginopt"].toString().isEmpty()) {
         m_config["userlogin"] = m_config["userloginsimple"].toString();
     } else {
-        m_config["userlogin"] = m_config["userloginsimple"].toString()
-                                + "%" + m_config["userloginopt"].toString();
+        m_config["userlogin"] = m_config["userloginsimple"].toString() + "%" + m_config["userloginopt"].toString();
     }
 }
 
-uint BaseEngine::port_to_use() const
-{
-    if (! m_config["cti_encrypt"].toBool()) {
+uint BaseEngine::port_to_use() const {
+    if (!m_config["cti_encrypt"].toBool()) {
         return m_config["cti_port"].toUInt();
     } else {
         return m_config["cti_port_encrypted"].toUInt();
     }
 }
 
-void BaseEngine::initFeatureFields(const QString & field)
-{
-    if ( (field == "enablednd") ||
-         (field == "enablevoicemail") ||
-         (field == "incallfilter") )
+void BaseEngine::initFeatureFields(const QString & field) {
+    if ((field == "enablednd") || (field == "enablevoicemail") || (field == "incallfilter"))
         emit optChanged(field);
 
     // dnd, vm, unc, rna, busy ... ?
-    else if ( (field == "enableunc") ||
-              (field == "enablebusy") ||
-              (field == "enablerna") ||
-              (field == "destunc") ||
-              (field == "destbusy") ||
-              (field == "destrna"))
+    else if ((field == "enableunc") || (field == "enablebusy") || (field == "enablerna") || (field == "destunc")
+            || (field == "destbusy") || (field == "destrna"))
         emit forwardUpdated(field);
 }
 
-void BaseEngine::stopKeepAliveTimer()
-{
+void BaseEngine::stopKeepAliveTimer() {
     if (m_timerid_keepalive > 0) {
         killTimer(m_timerid_keepalive);
         m_timerid_keepalive = 0;
     }
 }
 
-void BaseEngine::stopTryAgainTimer()
-{
+void BaseEngine::stopTryAgainTimer() {
     if (m_timerid_tryreconnect > 0) {
         killTimer(m_timerid_tryreconnect);
         m_timerid_tryreconnect = 0;
     }
 }
 
-void BaseEngine::startTryAgainTimer()
-{
-    if (m_timerid_tryreconnect == 0 && m_config["trytoreconnect"].toBool() && ! m_forced_to_disconnect)
+void BaseEngine::startTryAgainTimer() {
+    if (m_timerid_tryreconnect == 0 && m_config["trytoreconnect"].toBool() && !m_forced_to_disconnect)
         m_timerid_tryreconnect = startTimer(m_config["trytoreconnectinterval"].toUInt());
 }
 
-void BaseEngine::timerEvent(QTimerEvent *event)
-{
+void BaseEngine::timerEvent(QTimerEvent *event) {
     int timerId = event->timerId();
     if (timerId == m_timerid_keepalive) {
         keepLoginAlive();
     } else if (timerId == m_timerid_tryreconnect) {
         emit emitTextMessage(tr("Attempting to reconnect to server"));
-        connect(m_ctiserversocket, SIGNAL(connected()),
-                this, SLOT(restoreAvailState()));
+        connect(m_ctiserversocket, SIGNAL(connected()), this, SLOT(restoreAvailState()));
         start();
     } else if (timerId == m_timerid_changestate) {
         if (m_availstate == m_changestate_oldstate)
@@ -1687,8 +1565,7 @@ void BaseEngine::timerEvent(QTimerEvent *event)
 }
 
 /*! \brief send a feature put command to the cti server */
-void BaseEngine::servicePutOpt(const QString &capa, bool b)
-{
+void BaseEngine::servicePutOpt(const QString &capa, bool b) {
     QVariantMap command;
     command["class"] = "featuresput";
     if (capa == "enablevoicemail")
@@ -1706,20 +1583,18 @@ void BaseEngine::servicePutOpt(const QString &capa, bool b)
  * NOTE: we send value (forward target number) BEFORE status (enabled/disabled)
  *       to prevent server disabling back forward if value was empty
  */
-QString BaseEngine::servicePutForward(const QString & capa, bool b, const QString & dst)
-{
+QString BaseEngine::servicePutForward(const QString & capa, bool b, const QString & dst) {
     QVariantMap command, value;
-    command["class"]    = "featuresput";
+    command["class"] = "featuresput";
     command["function"] = "fwd";
 
-    value["enable"+capa.mid(3)] = b;
-    value["dest"+capa.mid(3)]   = dst;
-    command["value"]            = value;
+    value["enable" + capa.mid(3)] = b;
+    value["dest" + capa.mid(3)] = dst;
+    command["value"] = value;
     return sendJsonCommand(command);
 }
 
-void BaseEngine::fetchIPBXList()
-{
+void BaseEngine::fetchIPBXList() {
     QVariantMap command;
     command["class"] = "getipbxlist";
     sendJsonCommand(command);
@@ -1730,8 +1605,7 @@ void BaseEngine::fetchIPBXList()
  * send getlist for "users", "queues", "agents", "phones",
  * "users", "endinit"
  */
-void BaseEngine::fetchLists()
-{
+void BaseEngine::fetchLists() {
     QVariantMap command;
 
     command["class"] = "getlist";
@@ -1764,16 +1638,14 @@ void BaseEngine::fetchLists()
     }
 }
 
-void BaseEngine::inviteConfRoom(const QString &invitee)
-{
+void BaseEngine::inviteConfRoom(const QString &invitee) {
     QVariantMap command;
     command["class"] = "invite_confroom";
     command["invitee"] = invitee;
     sendJsonCommand(command);
 }
 
-BaseEngine::EngineState BaseEngine::state()
-{
+BaseEngine::EngineState BaseEngine::state() {
     return m_state;
 }
 
@@ -1784,8 +1656,7 @@ BaseEngine::EngineState BaseEngine::state()
  * If the state is becoming ENotLogged, the
  * signal delogged() is thrown.
  */
-void BaseEngine::setState(EngineState state)
-{
+void BaseEngine::setState(EngineState state) {
     if (state != m_state) {
         m_state = state;
         if (state == ELogged) {
@@ -1799,15 +1670,13 @@ void BaseEngine::setState(EngineState state)
     }
 }
 
-void BaseEngine::changeWatchedAgent(const QString & agentid, bool force)
-{
+void BaseEngine::changeWatchedAgent(const QString & agentid, bool force) {
     if ((force || (agentid.size() > 0)) && (hasAgent(agentid))) {
         emit changeWatchedAgentSignal(agentid);
     }
 }
 
-void BaseEngine::changeWatchedQueue(const QString & queueid)
-{
+void BaseEngine::changeWatchedQueue(const QString & queueid) {
     emit changeWatchedQueueSignal(queueid);
 }
 
@@ -1815,14 +1684,12 @@ void BaseEngine::changeWatchedQueue(const QString & queueid)
  *
  * also builds a string defining who is the client (osname)
  */
-void BaseEngine::setOSInfos(const QString & osname)
-{
+void BaseEngine::setOSInfos(const QString & osname) {
     m_osname = osname;
 }
 
 // method to provide the list of phonenumbers of a given xuserid
-QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
-{
+QStringList BaseEngine::phonenumbers(const UserInfo * userinfo) {
     QStringList phonenumbers;
     if (userinfo != NULL) {
         foreach (QString xphoneid, userinfo->phonelist()) {
@@ -1830,15 +1697,14 @@ QStringList BaseEngine::phonenumbers(const UserInfo * userinfo)
             if (phoneinfo == NULL)
                 continue;
             QString phonenumber = phoneinfo->number();
-            if ((! phonenumber.isEmpty()) && (! phonenumbers.contains(phonenumber)))
+            if ((!phonenumber.isEmpty()) && (!phonenumbers.contains(phonenumber)))
                 phonenumbers.append(phonenumber);
         }
     }
     return phonenumbers;
 }
 
-void BaseEngine::keepLoginAlive()
-{
+void BaseEngine::keepLoginAlive() {
     if (m_pendingkeepalivemsg > 0) {
         disconnectNoKeepAlive();
     } else {
@@ -1846,16 +1712,14 @@ void BaseEngine::keepLoginAlive()
     }
 }
 
-void BaseEngine::disconnectNoKeepAlive()
-{
+void BaseEngine::disconnectNoKeepAlive() {
     disconnectAndClean();
     popupError("no_keepalive_from_server");
     m_pendingkeepalivemsg = 0;
     startTryAgainTimer();
 }
 
-void BaseEngine::sendKeepAliveMsg()
-{
+void BaseEngine::sendKeepAliveMsg() {
     QVariantMap command;
     command["class"] = "keepalive";
     ++m_pendingkeepalivemsg;
@@ -1863,8 +1727,7 @@ void BaseEngine::sendKeepAliveMsg()
 }
 
 /*! \brief send m_availstate to CTI server */
-void BaseEngine::changeState()
-{
+void BaseEngine::changeState() {
     QVariantMap command;
     command["class"] = "availstate";
     command["availstate"] = m_availstate;
@@ -1873,8 +1736,7 @@ void BaseEngine::changeState()
     sendJsonCommand(command);
 }
 
-QString BaseEngine::getInitialPresence() const
-{
+QString BaseEngine::getInitialPresence() const {
     if (m_config["checked_function.presence"].toBool()) {
         QString state = m_availstate;
         if (state.isEmpty() || state == __presence_off__)
@@ -1885,10 +1747,7 @@ QString BaseEngine::getInitialPresence() const
 }
 
 /*! \brief send message to the CTI Server */
-void BaseEngine::logClient(const QString & level,
-                           const QString & classmethod,
-                           const QString & message)
-{
+void BaseEngine::logClient(const QString & level, const QString & classmethod, const QString & message) {
     QVariantMap command;
     command["class"] = "logfromclient";
     command["level"] = level;
@@ -1898,30 +1757,26 @@ void BaseEngine::logClient(const QString & level,
 }
 
 /*! \brief save parameter in settings (.ini file) */
-void BaseEngine::saveQueueGroups(const QVariant & queuegroups)
-{
+void BaseEngine::saveQueueGroups(const QVariant & queuegroups) {
     m_settings->setValue("agentpanel/queuegroups", queuegroups);
 }
 
 /*! \brief load parameters from settings */
-void BaseEngine::loadQueueGroups()
-{
+void BaseEngine::loadQueueGroups() {
     emit setQueueGroups(m_settings->value("agentpanel/queuegroups"));
 }
 
 /*! \brief get pointer to the currently logged user
  *
  * Return NULL if not available */
-UserInfo * BaseEngine::getXivoClientUser()
-{
+UserInfo * BaseEngine::getXivoClientUser() {
     if (m_anylist.value("users").contains(m_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_xuserid);
     }
     return NULL;
 }
 
-UserInfo * BaseEngine::getXivoClientMonitored()
-{
+UserInfo * BaseEngine::getXivoClientMonitored() {
     if (m_anylist.value("users").contains(m_monitored_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_monitored_xuserid);
     }
@@ -1933,8 +1788,7 @@ UserInfo * BaseEngine::getXivoClientMonitored()
  *  \param xcid The xivo channel id to look for
  *  \return The UserInfo of the channel's owner
  */
-const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const
-{
+const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const {
     foreach (const QString xuid, b_engine->iterover("users").keys()) {
         const UserInfo * user = b_engine->user(xuid);
         if (user == NULL) {
@@ -1957,8 +1811,7 @@ const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const
 }
 
 /*! \brief send new remark about a sheet */
-void BaseEngine::sendNewRemark(const QString & id, const QString & text)
-{
+void BaseEngine::sendNewRemark(const QString & id, const QString & text) {
     QVariantMap command;
     command["class"] = "sheet";
     command["function"] = "addentry";
@@ -1972,8 +1825,7 @@ void BaseEngine::sendNewRemark(const QString & id, const QString & text)
  * Dial the number if the message is tel:<i>number</i>.
  * \see QtSingleApplication
  */
-void BaseEngine::handleOtherInstanceMessage(const QString & msg)
-{
+void BaseEngine::handleOtherInstanceMessage(const QString & msg) {
     qDebug() << Q_FUNC_INFO << m_osname << "got" << msg;
     // tel:number is in RFC 3966
     // callto:number is unofficial (read 7.3. in RFC 3966)
@@ -1985,46 +1837,42 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     actionDialNumber(phonenum);
 }
 
-int BaseEngine::forwardToListeners(QString event_dest, const QVariantMap & map)
-{
+int BaseEngine::forwardToListeners(QString event_dest, const QVariantMap & map) {
     if (m_listeners.contains(event_dest)) {
         foreach (IPBXListener *listener, m_listeners.values(event_dest)) {
             listener->parseCommand(map);
         }
-        return true ;
+        return true;
     } else {
         return false;
     }
 }
 
-void BaseEngine::registerListener(const QString & event_to_listen, IPBXListener *xlet)
-{
+void BaseEngine::registerListener(const QString & event_to_listen, IPBXListener *xlet) {
     m_listeners.insert(event_to_listen, xlet);
 }
 
-void BaseEngine::registerTranslation(const QString &path)
-{
+void BaseEngine::registerTranslation(const QString &path) {
     QString locale = m_locale;
     QTranslator *translator = new QTranslator;
     translator->load(path.arg(locale));
     qApp->installTranslator(translator);
 }
 
-void BaseEngine::changeTranslation(QString locale)
-{
+void BaseEngine::changeTranslation(QString locale) {
     if (locale.isEmpty()) {
         locale = m_config["forcelocale"].toString();
     }
     if (locale == "default") {
         locale = QLocale::system().name();
     }
-    
+
     m_locale = locale;
 
     QVector<QTranslator *> new_translators;
 
     int i;
-    for(i=0;i<translationFiles.size();++i) {
+    for (i = 0; i < translationFiles.size(); ++i) {
         if (locale != "en_US") {
             new_translators.append(new QTranslator);
             new_translators.at(i)->load(translationFiles.at(i).arg(locale));
@@ -2037,8 +1885,7 @@ void BaseEngine::changeTranslation(QString locale)
     translators = new_translators;
 }
 
-void BaseEngine::sheetSocketConnected()
-{
+void BaseEngine::sheetSocketConnected() {
     QString kind = sender()->property("kind").toString();
     QString payload = sender()->property("payload").toString();
     if (kind == "tcpsheet") {
@@ -2048,8 +1895,7 @@ void BaseEngine::sheetSocketConnected()
     }
 }
 
-void BaseEngine::urlAuto(const QString & value)
-{
+void BaseEngine::urlAuto(const QString & value) {
     // a list of URI schemes is available there : http://www.iana.org/assignments/uri-schemes.html
     // 'udp' and 'tcp' do not belong to it, however we'll use them ...
 
@@ -2075,14 +1921,12 @@ void BaseEngine::urlAuto(const QString & value)
                 m_tcpsheetsocket = new QTcpSocket(this);
                 m_tcpsheetsocket->setProperty("kind", "tcpsheet");
                 m_tcpsheetsocket->setProperty("payload", tosend.join("&"));
-                connect(m_tcpsheetsocket, SIGNAL(connected()),
-                        this, SLOT(sheetSocketConnected()));
+                connect(m_tcpsheetsocket, SIGNAL(connected()), this, SLOT(sheetSocketConnected()));
                 m_tcpsheetsocket->connectToHost(QHostAddress(url.host()), quint16(url.port()));
             } else if (url.scheme() == "udp") {
                 m_udpsheetsocket = new QUdpSocket(this);
-                m_udpsheetsocket->writeDatagram(tosend.join("&").toUtf8() + "\n",
-                                                QHostAddress(url.host()),
-                                                quint16(url.port()));
+                m_udpsheetsocket->writeDatagram(tosend.join("&").toUtf8() + "\n", QHostAddress(url.host()),
+                        quint16(url.port()));
             }
         }
 
@@ -2102,7 +1946,7 @@ void BaseEngine::urlAuto(const QString & value)
         QString command = settings.value(".").toString();
         QRegExp rx("\"(.+)\"");
         if (rx.indexIn(command) != -1)
-            command = rx.capturedTexts()[1];
+        command = rx.capturedTexts()[1];
         QFileInfo browserFileInfo(command);
         if (browserFileInfo.fileName() == "iexplore.exe") {
             QProcess::startDetached(browserFileInfo.absoluteFilePath(), QStringList() << "-new" << url.toEncoded());

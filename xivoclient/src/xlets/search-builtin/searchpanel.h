@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -44,37 +44,43 @@ class BaseEngine;
 class ExtendedLineEdit;
 class UserInfo;
 
-class SearchPanel : public XLet
-{
-    Q_OBJECT
-    public:
-        SearchPanel(QWidget *parent=0);
-        void resizeEvent(QResizeEvent *);
-        ~SearchPanel();
-    public slots:
-        void affTextChanged(const QString &);
-        void removePeer(const QString &);
-        void removePeers();
-        void updateDisplay();
-        void updateUserConfig(const QString &);
-        void updateUserStatus(const QString &);
-        void removeUserConfig(const QString &);
-        void updatePhoneConfig(const QString &);
-        void updatePhoneStatus(const QString &);
-        void removePhoneConfig(const QString &);
-    private:
-        BasePeerWidget *findWidgetByPhoneXid(const QString &);
-        bool isShown(const QString &) const;
-        unsigned int maxDisplay() const { return b_engine->getConfig("guioptions.contacts-max").toUInt(); };
-        QHash<QString, PeerItem *> m_peerhash;  //!< PeerItem hash
-        QGridLayout *m_peerlayout;
-        ExtendedLineEdit *m_input; //!< widget for search string input
-        QScrollArea * m_scrollarea; //!< widget to see all or part of the contacts list
-        
-        QString m_searchpattern;
-        static const unsigned peer_spacing = 6;
-    protected:
-        virtual void paintEvent(QPaintEvent *event);
+class SearchPanel: public XLet {
+Q_OBJECT
+
+public:
+    SearchPanel(QWidget *parent = 0);
+    void resizeEvent(QResizeEvent *);
+    ~SearchPanel();
+
+public slots:
+    void affTextChanged(const QString &);
+    void removePeer(const QString &);
+    void removePeers();
+    void updateDisplay();
+    void updateUserConfig(const QString &);
+    void updateUserStatus(const QString &);
+    void removeUserConfig(const QString &);
+    void updatePhoneConfig(const QString &);
+    void updatePhoneStatus(const QString &);
+    void removePhoneConfig(const QString &);
+
+private:
+    BasePeerWidget *findWidgetByPhoneXid(const QString &);
+    bool isShown(const QString &) const;
+    unsigned int maxDisplay() const {
+        return b_engine->getConfig("guioptions.contacts-max").toUInt();
+    }
+    ;
+    QHash<QString, PeerItem *> m_peerhash; //!< PeerItem hash
+    QGridLayout *m_peerlayout;
+    ExtendedLineEdit *m_input; //!< widget for search string input
+    QScrollArea * m_scrollarea; //!< widget to see all or part of the contacts list
+
+    QString m_searchpattern;
+    static const unsigned peer_spacing = 6;
+
+protected:
+    virtual void paintEvent(QPaintEvent *event);
 };
 
 #endif
