@@ -55,7 +55,6 @@ bool channelTimestampLessThan(const QString channelxid1, const QString channelxi
 
 }
 
-
 BasePeerWidget::BasePeerWidget(const UserInfo * ui)
     : m_ui_remote(ui), m_editable(false), m_transferred(false), m_contextMenu(NULL)
 {
@@ -525,7 +524,7 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
         return;
     }
 
-    QString title = blind ? tr("Direct &Transfer") : tr("&Indirect Transfer");
+    QString title = blind ? tr("Blind &Transfer") : tr("&Attended Transfer");
 
     QStringList numbers = this->getPeerNumbers();
 
@@ -601,7 +600,8 @@ QMenu * BasePeerWidget::getTransferMenu(QMenu *basemenu,
 QAction * BasePeerWidget::newBlindTransferAction(const QString &number,
                                                  const ChannelInfo &channel)
 {
-    QString label = QString("Blind transfer <%0>").arg(number);
+    QString blind_transfer_label_pattern = tr("Blind transfer <%0>");
+    QString label = QString(blind_transfer_label_pattern).arg(number);
     QAction * action = new QAction(label, this);
     if (action == NULL) {
         return NULL;
@@ -617,7 +617,8 @@ QAction * BasePeerWidget::newBlindTransferAction(const QString &number,
 QAction * BasePeerWidget::newAttendedTransferAction(const QString &number,
                                                     const ChannelInfo &channel)
 {
-    QString label = QString("Attended transfer <%0>").arg(number);
+    QString attended_transfer_label_pattern = tr("Attended transfer <%0>");
+    QString label = QString(attended_transfer_label_pattern).arg(number);
     QAction * action = new QAction(label, this);
     if (action == NULL) {
         return NULL;
