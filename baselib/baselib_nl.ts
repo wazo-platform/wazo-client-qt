@@ -216,12 +216,12 @@ Gelieve uw versie te upgraden.</translation>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="84"/>
         <source>Agent</source>
-        <translation type="unfinished">Agent</translation>
+        <translation>Agent</translation>
     </message>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="84"/>
         <source>Phone</source>
-        <translation type="unfinished">Tel.</translation>
+        <translation>Telefoon</translation>
     </message>
 </context>
 <context>

@@ -242,12 +242,12 @@
     <message>
         <location filename="../src/configwidget.cpp" line="328"/>
         <source>Hide unlogged agents</source>
-        <translation type="unfinished"></translation>
+        <translation>Verberg queue leden die niet ingelogs zijn</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="332"/>
         <source>Queue Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Queue leden</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="338"/>

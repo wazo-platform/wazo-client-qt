@@ -164,7 +164,7 @@
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="57"/>
         <source>Queues</source>
-        <translation type="unfinished">Wachtrijen</translation>
+        <translation>Queues</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="122"/>
