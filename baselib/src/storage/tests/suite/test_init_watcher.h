@@ -34,13 +34,15 @@
 
 class TestInitWatcher: public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
-        TestInitWatcher();
 
     private slots:
         void testWatchList();
+        void testSawItem();
+        void testSawAll();
+        void testWatchListEmpty();
 };
 
 #endif

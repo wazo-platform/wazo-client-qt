@@ -4,8 +4,11 @@ TARGET = testsuite
 
 SOURCES += $${ROOT_DIR}/src/storage/tests/main.cpp
 
-# For mocks
+INCLUDEPATH += $${ROOT_DIR}/src/storage/tests
 INCLUDEPATH += $${ROOT_DIR}/src/storage/tests/mock
+INCLUDEPATH += $${ROOT_DIR}/src/storage/tests/suite
+
+# For mocks
 HEADERS += $${ROOT_DIR}/src/storage/tests/mock/*.h
 SOURCES += $${ROOT_DIR}/src/storage/tests/mock/*.cpp
 
@@ -13,9 +16,11 @@ SOURCES += $${ROOT_DIR}/src/storage/tests/mock/*.cpp
 INCLUDEPATH += $${ROOT_DIR}/src
 INCLUDEPATH += $${ROOT_DIR}/src/storage
 
-INCLUDEPATH += $${ROOT_DIR}/src/storage/tests/suite/
 HEADERS += $${ROOT_DIR}/src/storage/tests/suite/*.h
 SOURCES += $${ROOT_DIR}/src/storage/tests/suite/*.cpp
+
+HEADERS += $${ROOT_DIR}/src/storage/init_watcher.h
+SOURCES += $${ROOT_DIR}/src/storage/init_watcher.cpp
 
 # The real class we want to unit-test
 HEADERS += $${ROOT_DIR}/src/storage/userinfo.h \
@@ -25,7 +30,4 @@ SOURCES += $${ROOT_DIR}/src/storage/userinfo.cpp \
            $${ROOT_DIR}/src/storage/xinfo.cpp \
            $${ROOT_DIR}/src/xivoconsts.cpp
 
-HEADER += $${ROOT_DIR}/src/storage/init_watcher.h
-SOURCES += $${ROOT_DIR}/src/storage/init_watcher.cpp
-
-QMAKE_CXXFLAGS = "-include ../userinfo.h" $${QMAKE_CXXFLAGS}
+QMAKE_CXXFLAGS = "-include userinfo.h" $${QMAKE_CXXFLAGS}

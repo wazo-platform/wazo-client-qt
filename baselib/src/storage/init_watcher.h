@@ -30,22 +30,30 @@
 #ifndef __INIT_WATCHER__
 #define __INIT_WATCHER__
 
+#include <QObject>
 #include <QHash>
-
 
 #include <QString>
 #include <QStringList>
 
-class InitWatcher
+class InitWatcher: public QObject
 {
+    Q_OBJECT
+
     public:
-        InitWatcher();
-        void watchList(const QString & list_name, const QStringList & ids);
+        void watchList(QString list_name, QStringList ids);
+        void sawItem(const QString & list_name, const QString & item_id);
+
+    signals:
+        void sawAll();
+        void watching();
+
+    public slots:
 
     private:
         QHash<QString, QStringList> m_stack;
 
-    friend class TestInitWatcher;
+        friend class TestInitWatcher;
 };
 
 #endif

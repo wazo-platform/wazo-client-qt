@@ -28,14 +28,11 @@
  */
 
 #include <QtTest/QtTest>
+#include <QSignalSpy>
 
 #include <init_watcher.h>
 
 #include "test_init_watcher.h"
-
-TestInitWatcher::TestInitWatcher()
-{
-}
 
 void TestInitWatcher::testWatchList()
 {
@@ -52,4 +49,62 @@ void TestInitWatcher::testWatchList()
     init_watcher.watchList(list_name_2, ids_2);
 
     QCOMPARE(expected_stack, init_watcher.m_stack);
+}
+
+void TestInitWatcher::testSawItem()
+{
+    QString list_name_1("superlist"), list_name_2("megalist");
+    QStringList ids_1 = QStringList() << "1" << "2" << "3";
+    QStringList ids_2 = QStringList() << "4" << "5" << "6";
+
+    InitWatcher init_watcher;
+    init_watcher.watchList(list_name_1, ids_1);
+    init_watcher.watchList(list_name_2, ids_2);
+
+    init_watcher.sawItem(list_name_2, ids_2[0]);
+    init_watcher.sawItem(list_name_2, ids_2[1]);
+
+    QStringList expected_ids = QStringList() << "6";
+    QCOMPARE(expected_ids, init_watcher.m_stack[list_name_2]);
+
+    init_watcher.sawItem(list_name_2, ids_2[2]);
+
+    QStringList expected_lists = QStringList() << list_name_1;
+    QStringList lists = init_watcher.m_stack.keys();
+    QCOMPARE(expected_lists, lists);
+}
+
+void TestInitWatcher::testSawAll()
+{
+    QString list_name_1("powerlist"), list_name_2("maxilist");
+    QStringList ids_1 = QStringList() << "1";
+    QStringList ids_2 = QStringList() << "2";
+
+    InitWatcher init_watcher;
+    init_watcher.watchList(list_name_1, ids_1);
+    init_watcher.watchList(list_name_2, ids_2);
+
+    QSignalSpy spy(&init_watcher, SIGNAL(sawAll()));
+
+    init_watcher.sawItem(list_name_1, ids_1.first());
+
+    QCOMPARE(spy.count(), 0);
+
+    init_watcher.sawItem(list_name_2, ids_2.first());
+
+    QCOMPARE(spy.count(), 1);
+}
+
+void TestInitWatcher::testWatchListEmpty()
+{
+    QString list_name_1("superlist"), list_name_2("megalist");
+    QStringList ids_1 = QStringList() << "1" << "2" << "3";
+    QStringList ids_2;
+
+    InitWatcher init_watcher;
+    init_watcher.watchList(list_name_1, ids_1);
+    init_watcher.watchList(list_name_2, ids_2);
+
+    const QStringList & lists = init_watcher.m_stack.keys();
+    QVERIFY(lists.contains(list_name_2) == false);
 }
