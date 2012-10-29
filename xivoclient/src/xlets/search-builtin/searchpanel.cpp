@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2012, Avencall
+ * Copyright (C) 2007-2011, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -45,7 +45,6 @@ SearchPanel::SearchPanel(QWidget *parent) :
     m_live_reload_enabled(false)
 {
     setTitle(tr("Contacts"));
-
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
@@ -54,7 +53,8 @@ SearchPanel::SearchPanel(QWidget *parent) :
     vlayout->addWidget(lbl, 0, Qt::AlignCenter);
     m_input = new ExtendedLineEdit(this);
     lbl->setBuddy(m_input);
-    connect(m_input, SIGNAL(textChanged(const QString &)), this, SLOT(affTextChanged(const QString &)));
+    connect(m_input, SIGNAL(textChanged(const QString &)),
+            this, SLOT(affTextChanged(const QString &)));
     vlayout->addWidget(m_input);
 
     m_scrollarea = new QScrollArea(this);
@@ -73,22 +73,33 @@ SearchPanel::SearchPanel(QWidget *parent) :
     m_searchpattern = "";
 
     // connect signal/slots
-    connect(b_engine, SIGNAL(updateUserConfig(const QString &)), this, SLOT(updateUserConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateUserStatus(const QString &)), this, SLOT(updateUserStatus(const QString &)));
-    connect(b_engine, SIGNAL(removeUserConfig(const QString &)), this, SLOT(removeUserConfig(const QString &)));
-    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)), this, SLOT(updatePhoneConfig(const QString &)));
-    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)), this, SLOT(updatePhoneStatus(const QString &)));
-    connect(b_engine, SIGNAL(removePhoneConfig(const QString &)), this, SLOT(removePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(removeUserConfig(const QString &)),
+            this, SLOT(removeUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(removePhoneConfig(const QString &)),
+            this, SLOT(removePhoneConfig(const QString &)));
 
-    connect(b_engine, SIGNAL(delogged()), this, SLOT((removePeers())));
+    connect(b_engine, SIGNAL(delogged()),
+            this, SLOT((removePeers())));
 
-    connect(b_engine, SIGNAL(settingsChanged()), this, SLOT(updateDisplay()));
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(updateDisplay()));
 
-    connect(b_engine, SIGNAL(initialized()), this, SLOT(initializationComplete()));
-    connect(b_engine, SIGNAL(initializing()), this, SLOT(initializationStarting()));
+    connect(b_engine, SIGNAL(initialized()),
+            this, SLOT(initializationComplete()));
+    connect(b_engine, SIGNAL(initializing()),
+            this, SLOT(initializationStarting()));
 }
 
-SearchPanel::~SearchPanel() {
+SearchPanel::~SearchPanel()
+{
     removePeers();
 }
 
@@ -118,7 +129,8 @@ void SearchPanel::disableLiveUpdate()
 
 /*! \brief apply the search
  */
-void SearchPanel::affTextChanged(const QString & text) {
+void SearchPanel::affTextChanged(const QString & text)
+{
     m_searchpattern = text;
     updateDisplay();
 }
@@ -127,7 +139,8 @@ void SearchPanel::resizeEvent(QResizeEvent *) {
     updateDisplay();
 }
 
-bool SearchPanel::isShown(const QString &xuserid) const {
+bool SearchPanel::isShown(const QString &xuserid) const
+{
     PeerItem *peer = m_peerhash.value(xuserid, NULL);
     if (peer) {
         if (BasePeerWidget *widget = peer->getWidget()) {
@@ -139,7 +152,8 @@ bool SearchPanel::isShown(const QString &xuserid) const {
 
 /*! \brief update the list of Persons displayed
  */
-void SearchPanel::updateDisplay() {
+void SearchPanel::updateDisplay()
+{
     if (m_live_reload_enabled == false) {
         return;
     }
@@ -149,7 +163,8 @@ void SearchPanel::updateDisplay() {
     // number of columns (0 = auto)
     unsigned ncolumns = b_engine->getConfig("guioptions.contacts-width").toUInt();
     if (ncolumns == 0) {
-        ncolumns = m_scrollarea->width() / (PeerWidget::max_width + 2 * SearchPanel::peer_spacing);
+        ncolumns = m_scrollarea->width() /
+            (PeerWidget::max_width + 2 * SearchPanel::peer_spacing);
     }
     // Prevent arithmetic exception
     if (ncolumns == 0) {
@@ -162,7 +177,8 @@ void SearchPanel::updateDisplay() {
         i.next();
         PeerItem *peeritem = i.value();
         BasePeerWidget *peerwidget = peeritem->getWidget();
-        if ((peerwidget != NULL) && (m_peerlayout->indexOf(peerwidget) > -1)) {
+        if ((peerwidget != NULL) &&
+            (m_peerlayout->indexOf(peerwidget) > -1)) {
             m_peerlayout->removeWidget(peerwidget);
             peerwidget->hide();
             peeritem->setWidget(NULL);
@@ -183,7 +199,7 @@ void SearchPanel::updateDisplay() {
         if (peeritem->matchPattern(m_searchpattern) && (naff < maxdisplay)) {
             if (peerwidget == NULL) {
                 peerwidget = new PeerWidget(userinfo);
-                if (!userinfo->agentid().isEmpty()) {
+                if (! userinfo->agentid().isEmpty()) {
                     peerwidget->updateAgentConfig(userinfo->xagentid());
                     peerwidget->updateAgentStatus(userinfo->xagentid());
                 }
@@ -195,7 +211,9 @@ void SearchPanel::updateDisplay() {
                 peeritem->updateDisplayedStatus();
                 peeritem->updateDisplayedName();
 
-                m_peerlayout->addWidget(peerwidget, naff / ncolumns, naff % ncolumns);
+                m_peerlayout->addWidget(peerwidget,
+                                        naff / ncolumns,
+                                        naff % ncolumns);
 
                 naff++;
                 peerwidget->show();
@@ -206,7 +224,8 @@ void SearchPanel::updateDisplay() {
 
 /*! \brief update display according to changes
  */
-void SearchPanel::updateUserConfig(const QString & xuserid) {
+void SearchPanel::updateUserConfig(const QString & xuserid)
+{
     PeerItem *peeritem = NULL;
 
     if (m_peerhash.contains(xuserid)) {
@@ -217,19 +236,21 @@ void SearchPanel::updateUserConfig(const QString & xuserid) {
         const UserInfo * ui = b_engine->user(xuserid);
         peeritem = new PeerItem(ui);
         m_peerhash.insert(xuserid, peeritem);
-        if (peeritem
-                && (((unsigned int) m_peerlayout->count() < maxDisplay()) && peeritem->matchPattern(m_searchpattern))) {
+        if (peeritem && (((unsigned int) m_peerlayout->count() < maxDisplay())
+                         && peeritem->matchPattern(m_searchpattern))) {
             updateDisplay();
         }
     }
     peeritem->updateStatus();
 }
 
-void SearchPanel::removeUserConfig(const QString & xuserid) {
+void SearchPanel::removeUserConfig(const QString & xuserid)
+{
     removePeer(xuserid);
 }
 
-void SearchPanel::updateUserStatus(const QString & xuserid) {
+void SearchPanel::updateUserStatus(const QString & xuserid)
+{
     PeerItem * peeritem = NULL;
     if (m_peerhash.contains(xuserid)) {
         peeritem = m_peerhash.value(xuserid);
@@ -237,7 +258,8 @@ void SearchPanel::updateUserStatus(const QString & xuserid) {
     }
 }
 
-BasePeerWidget *SearchPanel::findWidgetByPhoneXid(const QString &xphoneid) {
+BasePeerWidget *SearchPanel::findWidgetByPhoneXid(const QString &xphoneid)
+{
     if (const PhoneInfo * phone = b_engine->phone(xphoneid)) {
         QString userxid = phone->ipbxid() + "/" + phone->iduserfeatures();
         if (PeerItem * peeritem = m_peerhash.value(userxid)) {
@@ -247,13 +269,15 @@ BasePeerWidget *SearchPanel::findWidgetByPhoneXid(const QString &xphoneid) {
     return NULL;
 }
 
-void SearchPanel::updatePhoneConfig(const QString & xphoneid) {
+void SearchPanel::updatePhoneConfig(const QString & xphoneid)
+{
     if (BasePeerWidget * peerwidget = findWidgetByPhoneXid(xphoneid)) {
         peerwidget->updatePhoneConfig(xphoneid);
     }
 }
 
-void SearchPanel::updatePhoneStatus(const QString & xphoneid) {
+void SearchPanel::updatePhoneStatus(const QString & xphoneid)
+{
     if (BasePeerWidget * peerwidget = findWidgetByPhoneXid(xphoneid)) {
         peerwidget->updatePhoneStatus(xphoneid);
     }
@@ -268,7 +292,8 @@ void SearchPanel::removePhoneConfig(const QString & xphoneid) {
     }
 }
 
-void SearchPanel::removePeer(const QString & xuserid) {
+void SearchPanel::removePeer(const QString & xuserid)
+{
     if (m_peerhash.contains(xuserid)) {
         PeerItem * peeritem = m_peerhash.value(xuserid);
         BasePeerWidget * peerwidget = peeritem->getWidget();
@@ -282,15 +307,16 @@ void SearchPanel::removePeer(const QString & xuserid) {
     }
 }
 
-void SearchPanel::removePeers() {
+void SearchPanel::removePeers()
+{
     foreach (const QString &peerkey, m_peerhash.keys()) {
         PeerItem * peeritem = m_peerhash[peerkey];
         BasePeerWidget * peerwidget = peeritem->getWidget();
         if (peerwidget) {
-            if (m_peerlayout->indexOf(peerwidget) > -1) {
-                m_peerlayout->removeWidget(peerwidget);
-            }
-            delete peerwidget;
+                if (m_peerlayout->indexOf(peerwidget) > -1) {
+                    m_peerlayout->removeWidget(peerwidget);
+                }
+                delete peerwidget;
         }
         delete peeritem;
     }
@@ -300,7 +326,8 @@ void SearchPanel::removePeers() {
 /*! \brief force the widget to be redrawn a least two time
  * to fix a bug occurring on qt ~4.5 where the contact list is not correctly redraw after one expose event
  */
-void SearchPanel::paintEvent(QPaintEvent *) {
+void SearchPanel::paintEvent(QPaintEvent *)
+{
     static int i = 0;
 
     if (i) {
