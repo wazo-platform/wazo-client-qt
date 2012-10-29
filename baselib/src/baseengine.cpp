@@ -1053,18 +1053,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     qDebug() << Q_FUNC_INFO << "INITIALIZATION COMPLETE";
                     m_getlist_started = false;
                     emit initialized();
-                    foreach (const QString &listname, GenLists) {
-                        QHash<QString, XInfo *> list = this->iterover(listname);
-                        foreach (const QString &xid, list.keys()) {
-                            if (listname == "users") {
-                                emit updateUserConfig(xid);
-                                emit updateUserStatus(xid);
-                            } else if (listname == "phones") {
-                                emit updatePhoneConfig(xid);
-                                emit updatePhoneStatus(xid);
-                            }
-                        }
-                    }
                 }
             }
 
@@ -1638,6 +1626,7 @@ QString BaseEngine::servicePutForward(const QString & capa, bool b, const QStrin
 }
 
 void BaseEngine::fetchIPBXList() {
+    emit initializing();
     QVariantMap command;
     command["class"] = "getipbxlist";
     sendJsonCommand(command);
