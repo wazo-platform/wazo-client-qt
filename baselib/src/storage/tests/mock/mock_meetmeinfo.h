@@ -27,21 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#ifndef __MEETMEINFO_H__
+#define __MEETMEINFO_H__
 
-#include "test_userinfo.h"
-#include "test_init_watcher.h"
+#include <QString>
+#include <QStringList>
+#include <QVariantMap>
+#include <xinfo.h>
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
-
-int main (void)
+class MockMeetmeInfo : public XInfo
 {
-    TestUserInfo test_userinfo;
-    TestInitWatcher test_init_watcher;
+    public:
+        MockMeetmeInfo(const QString &, const QString &);
+        void setConfig(const QVariantMap &);
+        QVariantMap channels() const;
 
-    QTest::qExec(&test_userinfo);
-    QTest::qExec(&test_init_watcher);
-    return 0;
-}
+    private:
+        QVariantMap config;
+};
+
+typedef MockMeetmeInfo MeetmeInfo;
+
+#endif

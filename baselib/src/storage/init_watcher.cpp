@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,21 +27,16 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#include <QString>
+#include <QStringList>
 
-#include "test_userinfo.h"
-#include "test_init_watcher.h"
+#include "init_watcher.h"
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
-
-int main (void)
+InitWatcher::InitWatcher()
 {
-    TestUserInfo test_userinfo;
-    TestInitWatcher test_init_watcher;
+}
 
-    QTest::qExec(&test_userinfo);
-    QTest::qExec(&test_init_watcher);
-    return 0;
+void InitWatcher::watchList(const QString & list_name, const QStringList & ids)
+{
+    m_stack.insert(list_name, ids);
 }

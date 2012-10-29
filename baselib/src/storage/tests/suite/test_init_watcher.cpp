@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,41 +27,29 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __BASEENGINE_H__
-#define __BASEENGINE_H__
+#include <QtTest/QtTest>
 
-#include <QMap>
-#include <QHash>
+#include <init_watcher.h>
 
-#include "mock_phoneinfo.h"
-#include "mock_channelinfo.h"
+#include "test_init_watcher.h"
 
-class QString;
-class XInfo;
-
-// Creates getter and setter for SomethingInfo
-#define ADD_GET_SET(type,Type) \
-    public: void set##Type (const QString & x##type##id, Type##Info * type) { \
-        this->m_##type##s[x##type##id] = type; \
-    } \
-    const Type##Info * type (const QString & x##type##id) { \
-        return this->m_##type##s[x##type##id]; \
-    } \
-    private : QMap<QString, Type##Info *> m_##type##s;
-
-
-class MockBaseEngine
+TestInitWatcher::TestInitWatcher()
 {
-    public:
-        MockBaseEngine();
-        QHash<QString, XInfo *> iterover(const QString & listname) const;
-        ADD_GET_SET(phone,Phone)
-        ADD_GET_SET(user,User)
-        ADD_GET_SET(channel,Channel)
-};
+}
 
-typedef MockBaseEngine BaseEngine;
+void TestInitWatcher::testWatchList()
+{
+    QString list_name_1("superlist"), list_name_2("megalist");
+    QStringList ids_1 = QStringList() << "1" << "2" << "3";
+    QStringList ids_2 = QStringList() << "4" << "5" << "6";
 
-extern MockBaseEngine * b_engine;
+    QHash<QString, QStringList> expected_stack;
+    expected_stack.insert(list_name_1, ids_1);
+    expected_stack.insert(list_name_2, ids_2);
+    InitWatcher init_watcher;
 
-#endif
+    init_watcher.watchList(list_name_1, ids_1);
+    init_watcher.watchList(list_name_2, ids_2);
+
+    QCOMPARE(expected_stack, init_watcher.m_stack);
+}

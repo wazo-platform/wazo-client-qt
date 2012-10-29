@@ -1,4 +1,4 @@
 # build projects contained in subdirectories
 TEMPLATE = subdirs
 SUBDIRS  = \
-    src/storage/tests/userinfo
+    src/storage/tests/

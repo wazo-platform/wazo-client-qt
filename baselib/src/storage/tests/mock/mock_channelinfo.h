@@ -27,19 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mock_meetmeinfo.h"
+#ifndef __CHANNELINFO_H__
+#define __CHANNELINFO_H__
 
-MockMeetmeInfo::MockMeetmeInfo(const QString &ipbxid, const QString &id)
-    : XInfo(ipbxid, id)
-{
-}
+#include <QVariantMap>
 
-void MockMeetmeInfo::setConfig(const QVariantMap &config)
+class MockChannelInfo
 {
-    this->config = config;
-}
+    public:
+        MockChannelInfo(const QString &, const QString &);
+        void setConfig(const QVariantMap &);
+        QString talkingto_id() const;
 
-const QVariantMap & MockMeetmeInfo::channels() const
-{
-    return this->config.value("channels").toMap();
-}
+    private:
+        QVariantMap m_config;
+};
+
+typedef MockChannelInfo ChannelInfo;
+
+#endif

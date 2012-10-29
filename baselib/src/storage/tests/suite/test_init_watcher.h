@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,21 +27,20 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#ifndef __TEST_INIT_WATCHER__
+#define __TEST_INIT_WATCHER__
 
-#include "test_userinfo.h"
-#include "test_init_watcher.h"
+#include <QObject>
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
-
-int main (void)
+class TestInitWatcher: public QObject
 {
-    TestUserInfo test_userinfo;
-    TestInitWatcher test_init_watcher;
+    Q_OBJECT;
 
-    QTest::qExec(&test_userinfo);
-    QTest::qExec(&test_init_watcher);
-    return 0;
-}
+    public:
+        TestInitWatcher();
+
+    private slots:
+        void testWatchList();
+};
+
+#endif

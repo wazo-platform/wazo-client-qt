@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,20 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CHANNELINFO_H__
-#define __CHANNELINFO_H__
+#ifndef __INIT_WATCHER__
+#define __INIT_WATCHER__
 
-class MockChannelInfo
+#include <QHash>
+
+
+#include <QString>
+#include <QStringList>
+
+class InitWatcher
 {
     public:
-        MockChannelInfo(const QString &, const QString &);
-        void setConfig(const QVariantMap &);
-        QString talkingto_id() const;
+        InitWatcher();
+        void watchList(const QString & list_name, const QStringList & ids);
 
     private:
-        QVariantMap m_config;
-};
+        QHash<QString, QStringList> m_stack;
 
-typedef MockChannelInfo ChannelInfo;
+    friend class TestInitWatcher;
+};
 
 #endif

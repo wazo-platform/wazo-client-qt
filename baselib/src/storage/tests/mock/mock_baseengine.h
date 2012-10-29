@@ -27,21 +27,43 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#ifndef __BASEENGINE_H__
+#define __BASEENGINE_H__
 
-#include "test_userinfo.h"
-#include "test_init_watcher.h"
+#include <QMap>
+#include <QHash>
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
+#include <userinfo.h>
 
-int main (void)
+#include "mock_phoneinfo.h"
+#include "mock_channelinfo.h"
+
+class QString;
+class XInfo;
+
+// Creates getter and setter for SomethingInfo
+#define ADD_GET_SET(type,Type) \
+    public: void set##Type (const QString & x##type##id, Type##Info * type) { \
+        this->m_##type##s[x##type##id] = type; \
+    } \
+    const Type##Info * type (const QString & x##type##id) { \
+        return this->m_##type##s[x##type##id]; \
+    } \
+    private : QMap<QString, Type##Info *> m_##type##s;
+
+
+class MockBaseEngine
 {
-    TestUserInfo test_userinfo;
-    TestInitWatcher test_init_watcher;
+    public:
+        MockBaseEngine();
+        QHash<QString, XInfo *> iterover(const QString & listname) const;
+        ADD_GET_SET(phone,Phone)
+        ADD_GET_SET(user,User)
+        ADD_GET_SET(channel,Channel)
+};
 
-    QTest::qExec(&test_userinfo);
-    QTest::qExec(&test_init_watcher);
-    return 0;
-}
+typedef MockBaseEngine BaseEngine;
+
+extern MockBaseEngine * b_engine;
+
+#endif
