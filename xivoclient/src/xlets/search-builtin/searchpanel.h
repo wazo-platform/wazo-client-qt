@@ -65,6 +65,8 @@ class SearchPanel : public XLet
         void initializationStarting();
         void initializationComplete();
     private:
+        void disableLiveUpdate();
+        void enableLiveUpdate();
         BasePeerWidget *findWidgetByPhoneXid(const QString &);
         bool isShown(const QString &) const;
         unsigned int maxDisplay() const { return b_engine->getConfig("guioptions.contacts-max").toUInt(); };
