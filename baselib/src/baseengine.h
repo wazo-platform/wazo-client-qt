@@ -564,6 +564,9 @@ private:
     QHash<QString, QueueMemberInfo *> m_queuemembers; //!< List of Channel informations
     QVariantList m_meetme_membership;
 
+    QHash<QString, QStringList *> m_uninitialized_values;
+    bool m_getlist_started;
+
     friend class CTIServer;
 };
 

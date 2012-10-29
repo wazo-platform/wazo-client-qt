@@ -71,9 +71,14 @@ static const QStringList GenLists = (QStringList() << "users" << "phones" << "ag
         << "queuemembers" << "parkinglots");
 static CTIServer * m_cti_server;
 
-BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo) :
-        QObject(NULL), m_sessionid(""), m_state(ENotLogged), m_pendingkeepalivemsg(0), m_logfile(NULL), m_attempt_loggedin(
-                false), m_forced_to_disconnect(false) {
+BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
+    : QObject(NULL),
+      m_sessionid(""), m_state(ENotLogged),
+      m_pendingkeepalivemsg(0), m_logfile(NULL),
+      m_attempt_loggedin(false),
+      m_forced_to_disconnect(false),
+      m_getlist_started(false)
+{
     settings->setParent(this);
     m_timerid_keepalive = 0;
     m_timerid_changestate = 0;
@@ -904,7 +909,15 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
         QString ipbxid = datamap.value("tipbxid").toString();
 
         if (function == "listid") {
+            m_getlist_started = true;
+
             QStringList listid = datamap.value("list").toStringList();
+
+            if (m_uninitialized_values.contains(listname)) {
+                m_uninitialized_values[listname] = new QStringList(listid);
+                qDebug() << listname << listid;
+            }
+
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
                 if (GenLists.contains(listname)) {
@@ -1025,6 +1038,36 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QString id = datamap.value("tid").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
             QVariantMap status = datamap.value("status").toMap();
+
+            if (m_getlist_started && m_uninitialized_values.contains(listname)) {
+                m_uninitialized_values[listname]->removeOne(id);
+
+                foreach (const QString &listname, m_uninitialized_values.keys()) {
+                    if (m_uninitialized_values[listname]->isEmpty()) {
+                        delete m_uninitialized_values[listname];
+                        m_uninitialized_values.remove(listname);
+                    }
+                }
+
+                if (m_uninitialized_values.isEmpty()) {
+                    qDebug() << Q_FUNC_INFO << "INITIALIZATION COMPLETE";
+                    m_getlist_started = false;
+                    emit initialized();
+                    foreach (const QString &listname, GenLists) {
+                        QHash<QString, XInfo *> list = this->iterover(listname);
+                        foreach (const QString &xid, list.keys()) {
+                            if (listname == "users") {
+                                emit updateUserConfig(xid);
+                                emit updateUserStatus(xid);
+                            } else if (listname == "phones") {
+                                emit updatePhoneConfig(xid);
+                                emit updatePhoneStatus(xid);
+                            }
+                        }
+                    }
+                }
+            }
+
             if (GenLists.contains(listname)) {
                 if (m_anylist.value(listname).contains(xid))
                     m_anylist.value(listname).value(xid)->updateStatus(status);
@@ -1625,6 +1668,7 @@ void BaseEngine::fetchLists() {
         command["tipbxid"] = ipbxid;
         foreach (QString kind, getlists) {
             command["listname"] = kind;
+            m_uninitialized_values[kind] = new QStringList();
             sendJsonCommand(command);
         }
     }
