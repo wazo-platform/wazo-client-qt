@@ -56,7 +56,7 @@ void InitWatcher::sawItem(const QString & list_name, const QString & item_id)
         m_stack.remove(list_name);
     }
 
-    if (m_stack.isEmpty()) {
+    if (m_stack.isEmpty() && m_watching_started) {
         m_watching_started = false;
         emit sawAll();
     }

@@ -47,6 +47,7 @@
 #include <userinfo.h>
 #include <queuememberinfo.h>
 #include <queue_agent_status.h>
+#include <init_watcher.h>
 
 #include "baseconfig.h"
 #include "ipbxlistener.h"
@@ -341,7 +342,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void logged();    //!< signal emitted when the state becomes ELogged
         void delogged();  //!< signal emitted when the state becomes ENotLogged
 
-
         void initialized();
         void initializing();
 
@@ -527,8 +527,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
         QVariantList m_meetme_membership;
 
-        QHash<QString, QStringList *> m_uninitialized_values;
-        bool m_getlist_started;
+        InitWatcher m_init_watcher;
 
     friend class CTIServer;
 };
