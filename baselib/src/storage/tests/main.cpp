@@ -36,12 +36,12 @@
 // export LD_LIBRARY_PATH=../../bin
 // ./tests
 
-int main (void)
+int main (int argc, char *argv[])
 {
     TestUserInfo test_userinfo;
     TestInitWatcher test_init_watcher;
 
-    QTest::qExec(&test_userinfo);
-    QTest::qExec(&test_init_watcher);
+    QTest::qExec(&test_userinfo, argc, argv);
+    QTest::qExec(&test_init_watcher, argc, argv);
     return 0;
 }
