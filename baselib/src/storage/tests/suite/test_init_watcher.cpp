@@ -108,3 +108,26 @@ void TestInitWatcher::testWatchListEmpty()
     const QStringList & lists = init_watcher.m_stack.keys();
     QVERIFY(lists.contains(list_name_2) == false);
 }
+
+void TestInitWatcher::testWatching()
+{
+    QString list_name_1("superlist"), list_name_2("megalist"), list_name_3("hypralist");
+    QStringList ids_1;
+    QStringList ids_2 = QStringList() << "1" << "2" << "3";
+    QStringList ids_3 = QStringList() << "4" << "5" << "6";
+
+    InitWatcher init_watcher;
+    QSignalSpy spy(&init_watcher, SIGNAL(watching()));
+
+    init_watcher.watchList(list_name_1, ids_1);
+
+    QCOMPARE(spy.count(), 0);
+
+    init_watcher.watchList(list_name_2, ids_2);
+
+    QCOMPARE(spy.count(), 1);
+
+    init_watcher.watchList(list_name_3, ids_3);
+
+    QCOMPARE(spy.count(), 1);
+}

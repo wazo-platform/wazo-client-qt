@@ -41,6 +41,7 @@ class InitWatcher: public QObject
     Q_OBJECT
 
     public:
+        InitWatcher();
         void watchList(QString list_name, QStringList ids);
         void sawItem(const QString & list_name, const QString & item_id);
 
@@ -52,6 +53,7 @@ class InitWatcher: public QObject
 
     private:
         QHash<QString, QStringList> m_stack;
+        bool m_watching_started;
 
         friend class TestInitWatcher;
 };

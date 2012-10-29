@@ -32,10 +32,20 @@
 
 #include "init_watcher.h"
 
+InitWatcher::InitWatcher()
+    :m_watching_started(false)
+{
+}
+
 void InitWatcher::watchList(QString list_name, QStringList ids)
 {
-    if (! ids.isEmpty()) {
-        m_stack.insert(list_name, ids);
+    if (ids.isEmpty()) {
+        return;
+    }
+    m_stack.insert(list_name, ids);
+    if (m_watching_started == false) {
+        m_watching_started = true;
+        emit watching();
     }
 }
 
@@ -47,6 +57,7 @@ void InitWatcher::sawItem(const QString & list_name, const QString & item_id)
     }
 
     if (m_stack.isEmpty()) {
+        m_watching_started = false;
         emit sawAll();
     }
 }

@@ -43,6 +43,7 @@ class TestInitWatcher: public QObject
         void testSawItem();
         void testSawAll();
         void testWatchListEmpty();
+        void testWatching();
 };
 
 #endif
