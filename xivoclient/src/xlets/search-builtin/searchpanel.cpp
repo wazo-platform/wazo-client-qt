@@ -41,7 +41,9 @@
 #include "searchpanel.h"
 
 SearchPanel::SearchPanel(QWidget *parent) :
-        XLet(parent) {
+    XLet(parent),
+    m_live_reload_enabled(false)
+{
     setTitle(tr("Contacts"));
 
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
@@ -82,10 +84,36 @@ SearchPanel::SearchPanel(QWidget *parent) :
 
     connect(b_engine, SIGNAL(settingsChanged()), this, SLOT(updateDisplay()));
 
+    connect(b_engine, SIGNAL(initialized()), this, SLOT(initializationComplete()));
+    connect(b_engine, SIGNAL(initializing()), this, SLOT(initializationStarting()));
 }
 
 SearchPanel::~SearchPanel() {
     removePeers();
+}
+
+void SearchPanel::initializationStarting()
+{
+    qDebug() << "DISABLING UPDATES";
+    this->disableLiveUpdate();
+}
+
+void SearchPanel::initializationComplete()
+{
+    qDebug() << "ENABLING UPDATES";
+    this->enableLiveUpdate();
+}
+
+void SearchPanel::enableLiveUpdate()
+{
+    qDebug() << "Initialization complete received...";
+    this->m_live_reload_enabled = true;
+    this->updateDisplay();
+}
+
+void SearchPanel::disableLiveUpdate()
+{
+    this->m_live_reload_enabled = false;
 }
 
 /*! \brief apply the search
@@ -112,6 +140,10 @@ bool SearchPanel::isShown(const QString &xuserid) const {
 /*! \brief update the list of Persons displayed
  */
 void SearchPanel::updateDisplay() {
+    if (m_live_reload_enabled == false) {
+        return;
+    }
+
     // max number of peers displayed on the search panel
     unsigned maxdisplay = maxDisplay();
     // number of columns (0 = auto)

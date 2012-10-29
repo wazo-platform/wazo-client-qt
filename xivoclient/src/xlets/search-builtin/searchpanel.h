@@ -63,6 +63,8 @@ public slots:
     void updatePhoneConfig(const QString &);
     void updatePhoneStatus(const QString &);
     void removePhoneConfig(const QString &);
+  void initializationStarting();
+  void initializationComplete();
 
 private:
     BasePeerWidget *findWidgetByPhoneXid(const QString &);
@@ -71,6 +73,8 @@ private:
         return b_engine->getConfig("guioptions.contacts-max").toUInt();
     }
     ;
+  void enableLiveUpdate();
+  void disableLiveUpdate();
     QHash<QString, PeerItem *> m_peerhash; //!< PeerItem hash
     QGridLayout *m_peerlayout;
     ExtendedLineEdit *m_input; //!< widget for search string input
@@ -78,6 +82,7 @@ private:
 
     QString m_searchpattern;
     static const unsigned peer_spacing = 6;
+  bool m_live_reload_enabled;
 
 protected:
     virtual void paintEvent(QPaintEvent *event);

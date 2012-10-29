@@ -384,6 +384,9 @@ signals:
     void logged(); //!< signal emitted when the state becomes ELogged
     void delogged(); //!< signal emitted when the state becomes ENotLogged
 
+    void initialized();
+    void initializing();
+
     void emitTextMessage(const QString &); //!< message to be displayed to the user.
 
     void pasteToXlets(const QString &); //!< Xlets intercept this signal from paste to dial
