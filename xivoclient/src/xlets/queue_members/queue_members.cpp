@@ -64,8 +64,24 @@ XletQueueMembers::XletQueueMembers(QWidget *parent)
     m_view->hideColumn(QueueMembersModel::ID);
     m_view->sortByColumn(QueueMembersModel::NUMBER, Qt::AscendingOrder);
 
-    QueueMembersHeader *header = new QueueMembersHeader(this);
+    this->addHeader(xletLayout);
+    this->addCenteredBody(xletLayout);
+}
 
-    xletLayout->addWidget(header);
-    xletLayout->addWidget(m_view);
+void XletQueueMembers::addHeader(QVBoxLayout * layout)
+{
+    QueueMembersHeader *header = new QueueMembersHeader(this);
+    header->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+    layout->addWidget(header);
+}
+
+void XletQueueMembers::addCenteredBody(QVBoxLayout * layout)
+{
+    QHBoxLayout * centering_layout = new QHBoxLayout();
+
+    centering_layout->insertStretch(0);
+    centering_layout->addWidget(m_view);
+    centering_layout->insertStretch(2);
+
+    layout->addLayout(centering_layout);
 }

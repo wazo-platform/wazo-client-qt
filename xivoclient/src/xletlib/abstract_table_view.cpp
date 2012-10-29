@@ -75,3 +75,10 @@ AbstractTableView::AbstractTableView(QWidget * parent)
 AbstractTableView::~AbstractTableView()
 {
 }
+
+QSize AbstractTableView::sizeHint() const
+{
+    int width = this->horizontalHeader()->length();
+    int heigth = this->verticalHeader()->length();
+    return QSize(width, heigth);
+}

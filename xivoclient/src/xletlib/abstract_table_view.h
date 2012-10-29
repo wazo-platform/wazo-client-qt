@@ -41,6 +41,7 @@ class XLETLIB_EXPORT AbstractTableView : public QTableView
     public:
         AbstractTableView(QWidget *parent = NULL);
         virtual ~AbstractTableView() = 0;
+        QSize sizeHint() const;
 };
 
 #endif

@@ -43,7 +43,7 @@ QueueMembersHeader::QueueMembersHeader(QWidget * parent)
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->addWidget(this->m_header_label);
 
-    this->updateContent();
+    this->clearContent();
 
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(changeWatchedQueue(const QString &)));

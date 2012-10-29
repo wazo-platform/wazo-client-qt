@@ -38,6 +38,7 @@
 class QueueMembersView;
 class QueueMembersModel;
 class QueueMembersSortFilterProxyModel;
+class QVBoxLayout;
 
 class XletQueueMembers : public XLet
 {
@@ -47,6 +48,9 @@ class XletQueueMembers : public XLet
         XletQueueMembers(QWidget *parent=0);
 
     private:
+        void addHeader(QVBoxLayout * layout);
+        void addCenteredBody(QVBoxLayout * layout);
+
         QueueMembersModel *m_model;
         QueueMembersSortFilterProxyModel *m_proxy_model;
         QueueMembersView *m_view;
