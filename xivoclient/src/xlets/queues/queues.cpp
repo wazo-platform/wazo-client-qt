@@ -230,7 +230,7 @@ QWidget* XletQueuesConfigure::buildConfigureQueueList(QWidget *parent)
 
         spinBox = new QSpinBox(root);
         spinBox->setAlignment(Qt::AlignCenter);
-        spinBox->setMaximum(3600*24);
+        spinBox->setMaximum(3600*3);
         spinBox->setProperty("xqueueid", xqueueid);
         spinBox->setProperty("param", "window");
         spinBox->setValue(statConfig.value("window" + xqueueid, 3600).toInt());
