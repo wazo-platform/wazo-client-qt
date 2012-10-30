@@ -93,6 +93,10 @@ void TestInitWatcher::testSawAll()
     init_watcher.sawItem(list_name_2, ids_2.first());
 
     QCOMPARE(spy.count(), 1);
+
+    init_watcher.sawItem(list_name_1, ids_1.first());
+
+    QCOMPARE(spy.count(), 1);
 }
 
 void TestInitWatcher::testWatchListEmpty()
