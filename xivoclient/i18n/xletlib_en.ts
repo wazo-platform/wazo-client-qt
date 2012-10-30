@@ -76,17 +76,17 @@
         <translation>&amp;Attended Transfer</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="604"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="603"/>
         <source>Blind transfer &lt;%0&gt;</source>
         <translation>Blind transfer &lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="621"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="620"/>
         <source>Attended transfer &lt;%0&gt;</source>
         <translation>Attended transfer &lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="642"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="641"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfer to &amp;voice mail</translation>
     </message>

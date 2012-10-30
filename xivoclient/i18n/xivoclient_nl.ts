@@ -1160,12 +1160,12 @@ Bent u zeker ?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="46"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="47"/>
         <source>Contacts</source>
         <translation>Contacten</translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="51"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="52"/>
         <source>N&amp;ame or number to search :</source>
         <translation>N&amp;aam of nummer om op te zoeken:</translation>
     </message>
