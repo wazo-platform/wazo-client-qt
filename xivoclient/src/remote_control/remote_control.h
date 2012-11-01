@@ -93,6 +93,7 @@ class RemoteControl : public QObject
 
         void when_i_enable_screen_pop_up();
         void then_i_see_a_sheet_with_variables_and_values(const QVariantList &);
+        void then_i_should_not_see_any_sheet();
 
         void when_i_enable_the_hide_unlogged_agents_option();
         void when_i_disable_the_hide_unlogged_agents_option();

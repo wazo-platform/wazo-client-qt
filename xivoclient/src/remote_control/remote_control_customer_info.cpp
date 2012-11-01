@@ -75,4 +75,16 @@ void RemoteControl::then_i_see_a_sheet_with_variables_and_values(const QVariantL
     }
 }
 
+void RemoteControl::then_i_should_not_see_any_sheet()
+{
+    CustomerInfoPanel *xlet = static_cast<CustomerInfoPanel*>(m_exec_obj.win->m_xletlist.value("customerinfo"));
+    this->assert(xlet != NULL, "xlet null");
+
+    QTabWidget *sheet_tab = xlet->m_tabs;
+    this->assert(sheet_tab != NULL, "sheet tab widget null");
+
+    QWidget *current_tab = sheet_tab->currentWidget();
+    this->assert(current_tab == NULL, "Current tab should be NULL");
+}
+
 #endif

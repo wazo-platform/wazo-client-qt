@@ -138,6 +138,7 @@ void RemoteControl::processCommands()
 
             RC_EXECUTE(when_i_enable_screen_pop_up);
             RC_EXECUTE_ARG(then_i_see_a_sheet_with_variables_and_values);
+            RC_EXECUTE(then_i_should_not_see_any_sheet);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED);
