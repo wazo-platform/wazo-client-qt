@@ -356,11 +356,12 @@ void Popup::addInfoForm(int where, const QString & value)
 
 void Popup::addInfoText(int where, const QString & name, const QString & value)
 {
+    int index = m_vlayout->count();
     QString strValue(value);
     QLabel * lblname = new QLabel(name, this);
-    lblname->setObjectName(QString("label_name_%1").arg(where));
+    lblname->setObjectName(QString("label_name_%1").arg(index));
     QLabel * lblvalue = new QLabel(strValue, this);
-    lblvalue->setObjectName(QString("label_value_%1").arg(where));
+    lblvalue->setObjectName(QString("label_value_%1").arg(index));
     lblvalue->setTextInteractionFlags( Qt::TextSelectableByMouse
                                        | Qt::TextSelectableByKeyboard );
     QHBoxLayout * hlayout = new QHBoxLayout();

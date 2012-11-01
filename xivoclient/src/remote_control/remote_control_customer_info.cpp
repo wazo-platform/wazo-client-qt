@@ -48,30 +48,29 @@ void RemoteControl::then_i_see_a_sheet_with_variables_and_values(const QVariantL
     QWidget *current_tab = sheet_tab->currentWidget();
     this->assert(current_tab != NULL, "current sheet tab null");
 
-    int layout_header_offset = 3;
+    int layout_header_offset = 4;
 
-    int widget_index = layout_header_offset;
+    QHash<QString, QString> results;
+    for (int i = layout_header_offset; i < variables.size() + layout_header_offset; ++i) {
+        QString name_of_name_label = QString("label_name_%1").arg(i);
+        QString name_of_value_label = QString("label_value_%1").arg(i);
+
+        QLabel *variable_name_label = current_tab->findChild<QLabel*>(name_of_name_label);
+        this->assert(variable_name_label != NULL, QString("can't find label %1").arg(name_of_name_label));
+
+        QLabel *variable_value_label = current_tab->findChild<QLabel*>(name_of_value_label);
+        this->assert(variable_value_label != NULL, QString("can't find label %1").arg(name_of_value_label));
+
+        results[variable_name_label->text()] = variable_value_label->text();
+    }
 
     foreach (const QVariant &variable, variables) {
         QVariantMap variable_map = variable.toMap();
-
         const QString &expected_variable_name = variable_map["Variable"].toString();
         const QString &expected_variable_value = variable_map["Value"].toString();
 
-        const QString & name_of_name_label = QString("label_name_%1").arg(widget_index);
-        const QString & name_of_value_label = QString("label_value_%1").arg(widget_index);
-
-        QLabel * variable_name_label = current_tab->findChild<QLabel*>(name_of_name_label);
-        this->assert(variable_name_label != NULL, QString("can't find label %1").arg(name_of_name_label));
-        QLabel * variable_value_label = current_tab->findChild<QLabel*>(name_of_value_label);
-        this->assert(variable_value_label != NULL, QString("can't find label %1").arg(name_of_value_label));
-
-        const QString & variable_name = variable_name_label->text();
-        const QString & variable_value = variable_value_label->text();
-
-        this->assert(variable_name == expected_variable_name, QString("wrong name %1").arg(variable_name) );
-        this->assert(variable_value == expected_variable_value, QString("wrong value %1").arg(variable_value));
-        ++widget_index;
+        this->assert(results.contains(expected_variable_name), QString("No variable %1 on sheet").arg(expected_variable_name));
+        this->assert(results[expected_variable_name] == expected_variable_value, QString("wrong value %1").arg(results[expected_variable_name]));
     }
 }
 
