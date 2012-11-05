@@ -270,10 +270,10 @@ LangString REMOVE_XIVOCLIENT \${LANG_FRENCH}  "Désinstaller XiVO Client.lnk"
 VIProductVersion "9.4.8.6"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "ProductName" "XiVO client"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "Comments" "Computer Telephony Integration (CTI) client for XiVO"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "CompanyName" "Proformatique"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "CompanyName" "Avencall"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileDescription" "XiVO client installer"
 VIAddVersionKey /LANG=\${LANG_ENGLISH} "FileVersion" "${XC_VERSION}-${GIT_HASH}"
-VIAddVersionKey /LANG=\${LANG_ENGLISH} "LegalCopyright" "© 2007-2011, Proformatique"
+VIAddVersionKey /LANG=\${LANG_ENGLISH} "LegalCopyright" "© 2007-2011, Avencall"
 !
 
 echo

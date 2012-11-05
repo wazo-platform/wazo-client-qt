@@ -87,7 +87,7 @@ function package-control {
 Package: xivoclient
 Version: ${XC_VERSION}
 Architecture: ${ARCH}
-Maintainer: Proformatique Maintainance Team <technique@proformatique.com>
+Maintainer: Avencall Maintainance Team <xivo-dev@lists.proformatique.com>
 Installed-Size: ${PKGSIZE}
 Depends: libc6 (>= 2.7-1), libgcc1 (>= 1:4.1.1-21), libstdc++6 (>= 4.1.1-21), libqtcore4 (>= 4.6.0), libqtgui4 (>= 4.6.0), libqt4-network (>= 4.6.0), libqt4-xml (>= 4.6.0)
 Section: graphics
