@@ -66,7 +66,6 @@ class AgentsModel : public QAbstractTableModel
             FIRSTNAME,
             LASTNAME,
             SPY_STATUS,
-            ONLINE,
             LOGGED_STATUS,
             JOINED_QUEUES,
             PAUSED_STATUS,
@@ -75,7 +74,6 @@ class AgentsModel : public QAbstractTableModel
         };
 
     private:
-        int getNumberOfJoinedQueues(const QString &agent_xid);
         QVariant dataDisplay(int row, int column) const;
         QString dataDisplayLogged(bool logged_status) const;
         QString dataDisplayPaused(enum AgentPauseStatus pause_status) const;

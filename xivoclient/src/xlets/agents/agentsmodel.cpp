@@ -44,7 +44,6 @@ AgentsModel::AgentsModel(QObject *parent)
     m_headers[FIRSTNAME] = tr("First name");
     m_headers[LASTNAME] = tr("Last name");
     m_headers[SPY_STATUS] = tr("Listen");
-    m_headers[ONLINE] = tr("On Line");
     m_headers[LOGGED_STATUS] = tr("Logged");
     m_headers[JOINED_QUEUES] = tr("Joined\nqueues");
     m_headers[PAUSED_STATUS] = tr("Paused");
@@ -172,8 +171,6 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
         return agent->lastname();
     case SPY_STATUS:
         return tr("Listen");
-    case ONLINE:
-        return "Online";
     case LOGGED_STATUS:
         return this->dataDisplayLogged(agent->logged());
     case JOINED_QUEUES :
@@ -211,9 +208,4 @@ QString AgentsModel::dataDisplayPaused(enum AgentPauseStatus pause_status) const
     default:
         return this->not_available;
     }
-}
-
-int AgentsModel::getNumberOfJoinedQueues(const QString &agent_id)
-{
-    return (QueueMemberDAO::queueListFromAgentId(agent_id).size());
 }
