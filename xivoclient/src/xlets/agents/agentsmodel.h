@@ -65,7 +65,7 @@ class AgentsModel : public QAbstractTableModel
             NUMBER,
             FIRSTNAME,
             LASTNAME,
-            SPY_STATUS,
+            LISTEN,
             LOGGED_STATUS,
             JOINED_QUEUES,
             PAUSED_STATUS,

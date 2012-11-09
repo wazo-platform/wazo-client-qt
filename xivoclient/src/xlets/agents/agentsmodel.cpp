@@ -43,7 +43,7 @@ AgentsModel::AgentsModel(QObject *parent)
     m_headers[NUMBER] = tr("Number");
     m_headers[FIRSTNAME] = tr("First name");
     m_headers[LASTNAME] = tr("Last name");
-    m_headers[SPY_STATUS] = tr("Listen");
+    m_headers[LISTEN] = tr("Listen");
     m_headers[LOGGED_STATUS] = tr("Logged");
     m_headers[JOINED_QUEUES] = tr("Joined\nqueues");
     m_headers[PAUSED_STATUS] = tr("Paused");
@@ -169,7 +169,7 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
         return agent->firstname();
     case LASTNAME :
         return agent->lastname();
-    case SPY_STATUS:
+    case LISTEN:
         return tr("Listen");
     case LOGGED_STATUS:
         return this->dataDisplayLogged(agent->logged());

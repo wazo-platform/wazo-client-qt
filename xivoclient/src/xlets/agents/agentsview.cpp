@@ -35,14 +35,36 @@ AgentsView::AgentsView(QWidget *parent)
     : AbstractTableView(parent)
 {
     connect(this, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(changeWatchedAgent(const QModelIndex &)));
+            this, SLOT(agentClicked(const QModelIndex &)));
 }
 
-void AgentsView::changeWatchedAgent(const QModelIndex &index)
+void AgentsView::agentClicked(const QModelIndex &index)
 {
     QModelIndex agent_id_index = model()->index(index.row(),
                                                 AgentsModel::ID,
                                                 index.parent());
     QString agent_id = model()->data(agent_id_index).toString();
+
+    int column = index.column();
+    switch(column) {
+    case AgentsModel::LISTEN:
+        this->listenAgent(agent_id);
+        break;
+    default:
+        changeWatchedAgent(agent_id);
+    }
+}
+
+void AgentsView::changeWatchedAgent(const QString & agent_id)
+{
     b_engine->changeWatchedAgent(agent_id, false);
+}
+
+void AgentsView::listenAgent(const QString & agent_id)
+{
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "listen";
+    ipbxcommand["subcommand"] =  "start";
+    ipbxcommand["destination"] = agent_id;
+    b_engine->ipbxCommand(ipbxcommand);
 }
