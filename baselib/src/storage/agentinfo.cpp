@@ -54,7 +54,7 @@ bool AgentInfo::updateConfig(const QVariantMap & prop)
 bool AgentInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "status", & m_status);
+    haschanged |= setIfChangeString(prop, "availability", & m_status);
     haschanged |= setIfChangeString(prop, "phonenumber", & m_phonenumber);
 
     if (prop.contains("queues")) {
@@ -101,6 +101,16 @@ const QString & AgentInfo::firstname() const
 const QString & AgentInfo::lastname() const
 {
     return m_lastname;
+}
+
+const QString & AgentInfo::status() const
+{
+    return m_status;
+}
+
+bool AgentInfo::logged() const
+{
+    return m_status != "logged_out";
 }
 
 bool AgentInfo::paused() const
@@ -163,4 +173,19 @@ int AgentInfo::pausedQueueCount() const
         }
     }
     return paused_queues;
+}
+
+enum AgentPauseStatus AgentInfo::pausedStatus() const
+{
+    int joined = this->joinedQueueCount();
+    int paused = this->pausedQueueCount();
+    if (joined == 0) {
+        return UNPAUSED;
+    } else if (paused == 0) {
+        return UNPAUSED;
+    } else if (joined == paused) {
+        return PAUSED;
+    } else {
+        return PARTIALLY_PAUSED;
+    }
 }

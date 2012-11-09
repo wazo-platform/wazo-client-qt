@@ -55,7 +55,6 @@ XletAgents::XletAgents(QWidget *parent)
     view->setModel(m_model);
     view->hideColumn(AgentsModel::ID);
     view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
-    view->setItemDelegateForColumn(AgentsModel::LOGGED_STATUS, new AgentStatusDelegate());
 
     xletLayout->addWidget(view);
 

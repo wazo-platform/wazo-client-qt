@@ -39,29 +39,25 @@ QString AgentsModel::not_available = tr("N/A");
 AgentsModel::AgentsModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-  m_headers[ID] = "ID";
-  m_headers[NUMBER] = tr("Number");
-  m_headers[FIRSTNAME] = tr("First name");
-  m_headers[LASTNAME] = tr("Last name");
-  m_headers[SPY_BUTTON] = "";
-  m_headers[SPY_STATUS] = tr("Listen");
-  m_headers[ONLINE] = tr("On Line");
-  m_headers[PRESENCE] = tr("Presence");
-  m_headers[LOGGED_STATUS] = tr("Logged");
-  m_headers[JOINED_QUEUES] = tr("Joined\nqueues");
-  m_headers[PAUSE_STATUS] = tr("Paused");
-  m_headers[PAUSE_BUTTON] = "";
-  m_headers[PAUSED_QUEUES] = tr("Paused\nqueues");
+    m_headers[ID] = "ID";
+    m_headers[NUMBER] = tr("Number");
+    m_headers[FIRSTNAME] = tr("First name");
+    m_headers[LASTNAME] = tr("Last name");
+    m_headers[SPY_STATUS] = tr("Listen");
+    m_headers[ONLINE] = tr("On Line");
+    m_headers[LOGGED_STATUS] = tr("Logged");
+    m_headers[JOINED_QUEUES] = tr("Joined\nqueues");
+    m_headers[PAUSED_STATUS] = tr("Paused");
+    m_headers[PAUSED_QUEUES] = tr("Paused\nqueues");
 
-  connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
-          this, SLOT(updateAgentConfig(const QString &)));
-  connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
-          this, SLOT(updateAgentStatus(const QString &)));
-  connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
-          this, SLOT(updateAgentListenStatus(const QString &, const QString &, const QString &)));
-
-
+    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
+            this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
+    connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
+            this, SLOT(updateAgentListenStatus(const QString &, const QString &, const QString &)));
 }
+
 int AgentsModel::rowCount(const QModelIndex&) const
 {
     return m_row2id.size();
@@ -170,21 +166,51 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
         return agent_id;
     case NUMBER :
         return agent->agentNumber();
-    case LASTNAME :
-        return agent->lastname();
     case FIRSTNAME :
         return agent->firstname();
+    case LASTNAME :
+        return agent->lastname();
+    case SPY_STATUS:
+        return tr("Listen");
+    case ONLINE:
+        return "Online";
+    case LOGGED_STATUS:
+        return this->dataDisplayLogged(agent->logged());
     case JOINED_QUEUES :
         return agent->joinedQueueCount();
+    case PAUSED_STATUS:
+        return this->dataDisplayPaused(agent->pausedStatus());
     case PAUSED_QUEUES :
         return agent->pausedQueueCount();
-    case LOGGED_STATUS:
-        return agent->status();
     default :
         return this->not_available;
     }
 
     return QVariant();
+}
+
+
+QString AgentsModel::dataDisplayLogged(bool logged_status) const
+{
+    if (logged_status) {
+        return tr("Logged");
+    } else {
+        return tr("Unlogged");
+    }
+}
+
+QString AgentsModel::dataDisplayPaused(enum AgentPauseStatus pause_status) const
+{
+    switch (pause_status) {
+    case UNPAUSED:
+        return tr("Unpaused");
+    case PAUSED:
+        return tr("Paused");
+    case PARTIALLY_PAUSED:
+        return tr("Partially Paused");
+    default:
+        return this->not_available;
+    }
 }
 
 int AgentsModel::getNumberOfJoinedQueues(const QString &agent_id)

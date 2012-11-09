@@ -30,17 +30,16 @@
 #ifndef __AGENTSVIEW_H__
 #define __AGENTSVIEW_H__
 
-#include <QTableView>
+#include <abstract_table_view.h>
 
-class AgentsView : public QTableView
+class AgentsView : public AbstractTableView
 {
     Q_OBJECT
 
     public:
         AgentsView(QWidget *parent = NULL);
-        void init();
-    private:
+    private slots:
+        void changeWatchedAgent(const QModelIndex &index);
 };
 
 #endif
-

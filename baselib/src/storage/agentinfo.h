@@ -36,6 +36,13 @@
 #include <QMap>
 #include "xinfo.h"
 
+enum AgentPauseStatus {
+    UNPAUSED,
+    PAUSED,
+    PARTIALLY_PAUSED
+};
+
+
 class BASELIB_EXPORT AgentInfo : public XInfo
 {
     public:
@@ -49,7 +56,8 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         const QString & firstname() const;
         const QString & lastname() const;
 
-        const QString & status() const { return m_status; };
+        const QString & status() const;
+        bool logged() const;
         const QString & phonenumber() const { return m_phonenumber; };
         const QVariantMap & properties() const { return m_properties; } ;
 
@@ -62,6 +70,7 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         bool paused() const;
         void pauseQueue(const QString &, bool) const;
         void pauseAllQueue(bool) const;
+        enum AgentPauseStatus pausedStatus() const;
     private:
         QString m_context;
         QString m_agentnumber;

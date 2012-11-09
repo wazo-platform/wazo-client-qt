@@ -33,6 +33,8 @@
 #include <QAbstractTableModel>
 #include <QStringList>
 
+#include <agentinfo.h>
+
 class AgentsModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -59,13 +61,24 @@ class AgentsModel : public QAbstractTableModel
 
     public:
         enum Columns {
-            ID, NUMBER, FIRSTNAME, LASTNAME, SPY_BUTTON, SPY_STATUS, ONLINE, PRESENCE,
-            LOGGED_STATUS, JOINED_QUEUES, PAUSE_STATUS, PAUSE_BUTTON, PAUSED_QUEUES, NB_COL
+            ID,
+            NUMBER,
+            FIRSTNAME,
+            LASTNAME,
+            SPY_STATUS,
+            ONLINE,
+            LOGGED_STATUS,
+            JOINED_QUEUES,
+            PAUSED_STATUS,
+            PAUSED_QUEUES,
+            NB_COL
         };
 
     private:
         int getNumberOfJoinedQueues(const QString &agent_xid);
         QVariant dataDisplay(int row, int column) const;
+        QString dataDisplayLogged(bool logged_status) const;
+        QString dataDisplayPaused(enum AgentPauseStatus pause_status) const;
 
         QString m_headers[NB_COL];
         QStringList m_row2id;

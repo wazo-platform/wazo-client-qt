@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,57 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QHeaderView>
-#include <QStyleFactory>
-
 #include <baseengine.h>
-
+#include "agentsmodel.h"
 #include "agentsview.h"
 
 AgentsView::AgentsView(QWidget *parent)
-    : QTableView(parent)
+    : AbstractTableView(parent)
 {
-  setSortingEnabled(true);
+    connect(this, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(changeWatchedAgent(const QModelIndex &)));
+}
 
-  verticalHeader()->setMovable(true);
-  verticalHeader()->setFixedWidth(50);
-
-  horizontalHeader()->setMovable(true);
-  horizontalHeader()->setSortIndicatorShown(false);
-  horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-
-  setShowGrid(0);
-  setAlternatingRowColors(true);
-  setSelectionMode(QAbstractItemView::NoSelection);
-  setStyleSheet(
-
-      // No decoration of the view itself
-      "AgentsView {"
-          "border: none;"
-          "background: transparent;"
-      "}"
-
-      // Remove corner
-      "AgentsView QTableCornerButton::section {"
-          "background: transparent;"
-          "border: none;"
-      "}"
-  );
-
-  //! \todo see below
-  /* This is terrible, but not all styles support to change headers
-   * background, but plastique does (probably others, but we have to
-   * choose one.
-   * Better solutions are welcome (subclassing QHeaderView ?)
-   */
-  QStyle *plastique = QStyleFactory::create("plastique");
-  horizontalHeader()->setStyle(plastique);
-  verticalHeader()->setStyle(plastique);
-
-  // Necessary to make the tooltip visible, we can't see the text without this
-  horizontalHeader()->setStyleSheet(
-      "QToolTip {"
-          "color: #000;"
-      "}");
-
+void AgentsView::changeWatchedAgent(const QModelIndex &index)
+{
+    QModelIndex agent_id_index = model()->index(index.row(),
+                                                AgentsModel::ID,
+                                                index.parent());
+    QString agent_id = model()->data(agent_id_index).toString();
+    b_engine->changeWatchedAgent(agent_id, false);
 }
