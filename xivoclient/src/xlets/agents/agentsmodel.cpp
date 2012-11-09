@@ -155,6 +155,8 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
         return Qt::AlignCenter;
     case  Qt::DisplayRole:
         return this->dataDisplay(row, column);
+    case Qt::BackgroundRole:
+        return this->dataBackground(row, column);
     default:
         return QVariant();
     }
@@ -193,10 +195,28 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
     default :
         return this->not_available;
     }
-
-    return QVariant();
 }
 
+QVariant AgentsModel::dataBackground(int row, int column) const
+{
+    QString agent_id;
+
+    if (m_row2id.size() > row) {
+        agent_id = m_row2id[row];
+    }
+
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) return QVariant();
+
+    switch (column) {
+    case LOGGED_STATUS:
+        return this->dataBackgroundLogged(agent->logged());
+    case PAUSED_STATUS:
+        return this->dataBackgroundPaused(agent->pausedStatus());
+    default :
+        return QVariant();
+    }
+}
 
 QString AgentsModel::dataDisplayLogged(bool logged_status) const
 {
@@ -204,6 +224,15 @@ QString AgentsModel::dataDisplayLogged(bool logged_status) const
         return tr("Logged");
     } else {
         return tr("Unlogged");
+    }
+}
+
+QVariant AgentsModel::dataBackgroundLogged(bool logged_status) const
+{
+    if (logged_status) {
+        return Qt::green;
+    } else {
+        return Qt::red;
     }
 }
 
@@ -218,5 +247,19 @@ QString AgentsModel::dataDisplayPaused(enum AgentPauseStatus pause_status) const
         return tr("Partially Paused");
     default:
         return this->not_available;
+    }
+}
+
+QVariant AgentsModel::dataBackgroundPaused(enum AgentPauseStatus pause_status) const
+{
+    switch (pause_status) {
+    case UNPAUSED:
+        return Qt::green;
+    case PAUSED:
+        return Qt::red;
+    case PARTIALLY_PAUSED:
+        return Qt::yellow;
+    default:
+        return QVariant();
     }
 }

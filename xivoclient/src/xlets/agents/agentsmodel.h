@@ -75,8 +75,11 @@ class AgentsModel : public QAbstractTableModel
 
     private:
         QVariant dataDisplay(int row, int column) const;
+        QVariant dataBackground(int row, int column) const;
         QString dataDisplayLogged(bool logged_status) const;
+        QVariant dataBackgroundLogged(bool logged_status) const;
         QString dataDisplayPaused(enum AgentPauseStatus pause_status) const;
+        QVariant dataBackgroundPaused(enum AgentPauseStatus pause_status) const;
 
         QString m_headers[NB_COL];
         QStringList m_row2id;
