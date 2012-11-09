@@ -27,12 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include "baseengine.h"
 #include "ipbxlistener.h"
+
+IPBXListener::IPBXListener() {
+}
+
+IPBXListener::~IPBXListener() {
+}
 
 void IPBXListener::parseCommand(const QVariantMap &){
     qDebug() << "This should not appear !";

@@ -30,14 +30,15 @@
 #ifndef __QUEUESVIEW_H__
 #define __QUEUESVIEW_H__
 
-#include <QTableView>
+#include <abstract_table_view.h>
 
-class QueuesView : public QTableView
+class QueuesView : public AbstractTableView
 {
     Q_OBJECT
 
     public:
         QueuesView(QWidget *parent = NULL);
+        ~QueuesView();
         void init();
     public slots:
         void updateColumnHidden();

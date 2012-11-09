@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -25,10 +25,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/* $Revision$
- * $Date$
  */
 
 #include <QBuffer>
@@ -360,10 +356,12 @@ void Popup::addInfoForm(int where, const QString & value)
 
 void Popup::addInfoText(int where, const QString & name, const QString & value)
 {
+    int index = m_vlayout->count();
     QString strValue(value);
-    // qDebug() << Q_FUNC_INFO << value;
     QLabel * lblname = new QLabel(name, this);
+    lblname->setObjectName(QString("label_name_%1").arg(index));
     QLabel * lblvalue = new QLabel(strValue, this);
+    lblvalue->setObjectName(QString("label_value_%1").arg(index));
     lblvalue->setTextInteractionFlags( Qt::TextSelectableByMouse
                                        | Qt::TextSelectableByKeyboard );
     QHBoxLayout * hlayout = new QHBoxLayout();

@@ -40,8 +40,8 @@ XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
     return new LogWidget(parent);
 }
 
-LogWidgetModel::LogWidgetModel(int initialMode)
-    : QAbstractTableModel(NULL), m_sorted(false), m_sorted_column(0), m_sort_order(Qt::AscendingOrder)
+LogWidgetModel::LogWidgetModel(int initialMode, QWidget * parent)
+    : QAbstractTableModel(parent), m_sorted(false), m_sorted_column(0), m_sort_order(Qt::AscendingOrder)
 {
     registerListener("history");
     m_mode = (HistoryMode) initialMode;
@@ -236,7 +236,7 @@ LogWidget::LogWidget(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout(groupBox);
 
-    m_history_model = new LogWidgetModel(0);
+    m_history_model = new LogWidgetModel(0, this);
 
     hBox->addStretch(1);
     buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, m_history_model)->setChecked(true);

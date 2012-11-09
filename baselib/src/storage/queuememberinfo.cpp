@@ -46,6 +46,8 @@ bool QueueMemberInfo::updateConfig(const QVariantMap &prop)
     haschanged |= setIfChangeString(prop, "paused", & m_paused);
     haschanged |= setIfChangeString(prop, "membership", & m_membership);
     haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
+    haschanged |= setIfChangeString(prop, "callstaken", & m_callstaken);
+    haschanged |= setIfChangeString(prop, "lastcall", & m_lastcall);
     return haschanged;
 }
 
@@ -57,7 +59,7 @@ bool QueueMemberInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "membership", & m_membership);
     haschanged |= setIfChangeString(prop, "callstaken", & m_callstaken);
     haschanged |= setIfChangeString(prop, "penalty", & m_penalty);
-    haschanged |= setIfChangeInt(prop, "lastcall", & m_lastcall);
+    haschanged |= setIfChangeString(prop, "lastcall", & m_lastcall);
     return haschanged;
 }
 
@@ -75,4 +77,9 @@ QString QueueMemberInfo::agentNumber() const
     } else {
         return QString(interface_split[1]);
     }
+}
+
+QString QueueMemberInfo::agent_or_phone() const
+{
+    return this->is_agent() ? QObject::tr("Agent") : QObject::tr("Phone");
 }

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,19 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
-#include <QDebug>
-
 #include "baseengine.h"
 #include "channelinfo.h"
 
-/*! \brief Constructor
- *
- * just set userid
- */
 ChannelInfo::ChannelInfo(const QString & ipbxid,
                          const QString & id)
     : XInfo(ipbxid, id)
@@ -53,26 +43,12 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "talkingto_kind", & m_talkingto_kind);
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
-    haschanged |= setIfChangeString(prop, "thisdisplay", & m_thisdisplay);
     haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
+    haschanged |= setIfChangeString(prop, "state", & m_state);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
+    haschanged |= setIfChangeBool(prop, "holded", & m_isholded);
 
     return haschanged;
-}
-
-/*! \brief Returns a string representation of a ChannelInfo */
-QString ChannelInfo::toString() const
-{
-    QString s;
-    s += "Xid(" + xid() + ") ";
-    s += "This display(" + m_thisdisplay + ") ";
-    s += "Peer display(" + m_peerdisplay + ") ";
-    s += "Comm status(" + m_commstatus + ") ";
-    s += "Direction(" + m_direction + ") " ;
-    s += "Talking to kind(" + m_talkingto_kind + ") ";
-    s += "Talking to id(" + m_talkingto_id + ") ";
-    s += "Held(" + QString(m_isholded ? "true" : "false") + ")";
-    return s;
 }
 
 const QString & ChannelInfo::talkingto_kind() const
@@ -100,15 +76,8 @@ double ChannelInfo::timestamp() const
     return m_timestamp;
 }
 
-const QString ChannelInfo::thisdisplay() const
+const QString & ChannelInfo::peerdisplay() const
 {
-    // go fetch information about 'relations ?'
-    return m_thisdisplay;
-}
-
-const QString ChannelInfo::peerdisplay() const
-{
-    // go fetch information about 'talking to'
     return m_peerdisplay;
 }
 
@@ -117,17 +86,45 @@ int ChannelInfo::linenumber() const
     return m_linenumber;
 }
 
-bool ChannelInfo::ismonitored() const
-{
-    return m_ismonitored;
-}
-
-bool ChannelInfo::isspied() const
-{
-    return m_isspied;
-}
-
 bool ChannelInfo::isholded() const
 {
     return m_isholded;
+}
+
+bool ChannelInfo::isTalking() const
+{
+    return m_state == "Up";
+}
+
+bool ChannelInfo::isInMeetme() const
+{
+    return m_talkingto_kind.contains("meetme");
+}
+
+bool ChannelInfo::canBeTransferred() const
+{
+    bool talking = this->isTalking();
+    bool meetme = this->isInMeetme();
+    bool holded = this->isholded();
+
+    if (meetme) {
+        return false;
+    }
+
+    if (holded) {
+        return false;
+    }
+
+    return talking;
+}
+
+bool ChannelInfo::isparked() const
+{
+    foreach (const XInfo * p, b_engine->iterover("parkinglots")) {
+        const QString & xid = this->xid();
+        if ((static_cast<const ParkingInfo *>(p))->parkedHere(xid)) {
+            return true;
+        }
+    }
+    return false;
 }

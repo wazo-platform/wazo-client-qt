@@ -8,10 +8,12 @@ TARGET = xivoclient
 
 CONFIG += uitools
 
-unix:LIBS += -lxivoclientxlets
-win32 {
-    debug:LIBS += -lxivoclientxletsd
-    release:LIBS += -lxivoclientxlets
+!profiling {
+    unix:LIBS += -lxivoclientxlets
+    win32 {
+        debug:LIBS += -lxivoclientxletsd
+        release:LIBS += -lxivoclientxlets
+    }
 }
 mac {
     QMAKE_INFO_PLIST = ../cross/resources/macos-info.plist
@@ -32,14 +34,21 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_nl.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_de.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_es_ES.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_pt_BR.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_hu.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_it.ts
 
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src
 INCLUDEPATH += $$BASELIB_DIR/src/storage
+INCLUDEPATH += $${BASELIB_DIR}/json_jsonqt/lib
+INCLUDEPATH += $${ROOT_DIR}/src
 INCLUDEPATH += $${ROOT_DIR}/src/xletlib
 HEADERS += $${ROOT_DIR}/src/*.h
 SOURCES += $${ROOT_DIR}/src/*.cpp
+HEADERS += $${ROOT_DIR}/src/remote_control/*.h
+SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 
 BUILTIN_DIRS += callcampaign-builtin
 BUILTIN_DIRS += customerinfo-builtin
@@ -71,3 +80,8 @@ isEmpty( PLUGINDIR ) {
     PLUGINDIR = /usr/share/xivoclient/plugins
 }
 DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"
+
+profiling {
+    QMAKE_CXXFLAGS += -g -pg
+    QMAKE_LFLAGS += -g -pg
+}

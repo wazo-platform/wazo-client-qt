@@ -87,7 +87,6 @@ MainWidget::MainWidget()
 
     createActions();
     createMenus();
-
     if (m_withsystray && QSystemTrayIcon::isSystemTrayAvailable())
         createSystrayIcon();
 
@@ -635,6 +634,20 @@ void MainWidget::showWidgetOnTop(QWidget * widget)
     if (m_tabwidget)
         m_tabwidget->setCurrentWidget(widget);
 }
+QDockWidget* MainWidget::createDockXlet(const QString& name,
+                                        const QString& title,
+                                        QDockWidget::DockWidgetFeatures features,
+                                        QWidget *widget)
+{
+    QDockWidget* tmpDockWidget = new QDockWidget(title);
+    tmpDockWidget->setFeatures(features);
+    tmpDockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
+    tmpDockWidget->setObjectName(name);
+    addDockWidget(Qt::BottomDockWidgetArea, tmpDockWidget);
+    tmpDockWidget->hide();
+    tmpDockWidget->setWidget(widget);
+    return tmpDockWidget;
+}
 
 void MainWidget::addPanel(const QString &name, const QString &title, QWidget *widget)
 {
@@ -647,13 +660,10 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
             features |= QDockWidget::DockWidgetFloatable;
         if (m_dockoptions[name].contains("m"))
             features |= QDockWidget::DockWidgetMovable;
-        m_docks[name] = new QDockWidget(title);
-        m_docks[name]->setFeatures(features);
-        m_docks[name]->setAllowedAreas(Qt::BottomDockWidgetArea); // restrain the area to Bottom region
-        m_docks[name]->setObjectName(name); // compulsory to allow a proper state's saving
-        addDockWidget(Qt::BottomDockWidgetArea, m_docks[name]);
-        m_docks[name]->hide();
-        m_docks[name]->setWidget(widget);
+        if(! m_docks.contains(name)) {
+            m_docks[name] = new QList<QDockWidget *>();
+        }
+        m_docks[name]->prepend(createDockXlet(name, title, features, widget));
     } else if (m_gridnames.contains(name)) {
         qDebug() << Q_FUNC_INFO << "(grid)" << name << m_dockoptions[name] << title << m_dockoptions[name].toInt();
         qDebug() << Q_FUNC_INFO << "inserting" << m_dockoptions[name].toInt();
@@ -754,8 +764,8 @@ void MainWidget::engineStarted()
     m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
 
     foreach (QString name, m_docks.keys())
-        m_docks[name]->show();
-
+      for(QList<QDockWidget *>::iterator i = m_docks[name]->begin(); i != m_docks[name]->end(); i++)
+        (*i)->show();
     m_defaultState = saveState();
     // restore the saved state AFTER showing the docks
     restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
@@ -810,9 +820,10 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
 //    qDebug() << Q_FUNC_INFO << name << widget;
     if (m_docknames.contains(name)) {
-        removeDockWidget(m_docks[name]);
-        m_docks[name]->deleteLater();
-        m_docks.remove(name);
+      for(QList<QDockWidget *>::iterator i = m_docks[name]->begin(); i != m_docks[name]->end(); i++) {
+        removeDockWidget(*i);
+        (*i)->deleteLater();
+      }
     }
     if (m_tabnames.contains(name)) {
         int thisindex = m_tabwidget->indexOf(widget);
@@ -886,7 +897,13 @@ void MainWidget::engineStopped()
     }
 
     foreach (QString dname, m_docknames) {
-        removePanel(dname, m_docks.value(dname));
+      if(m_docks.contains(dname)) {
+        for(QList<QDockWidget *>::iterator i = m_docks[dname]->begin(); i != m_docks[dname]->end(); i++)
+          removePanel(dname, *i);
+      
+        delete m_docks[dname];
+        m_docks.remove(dname);
+      }
     }
     clearPresence();
 
@@ -1032,15 +1049,9 @@ void MainWidget::keyPressEvent(QKeyEvent * event)
 void MainWidget::about()
 {
     QString applicationVersion(XC_VERSION);
-    QString fetchlastone = QString("<a href=http://downloads.xivo.fr/xivo_cti_client/") +
-#if defined(Q_WS_X11)
-        "linux"
-#elif defined(Q_WS_WIN)
-        "win32"
-#elif defined(Q_WS_MAC)
-        "macos"
-#endif
-        ">" + tr("Fetch the last one") + "</a>";
+    QString fetchlastone = QString("<a href=http://mirror.xivo.fr/iso>"
+                                   "%1"
+                                   "</a>").arg(tr("Fetch the last one"));
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     QString gitdate_qs(__git_date__);
     QString gitdate(QDateTime::fromTime_t(gitdate_qs.toUInt()).toString());
@@ -1062,11 +1073,9 @@ void MainWidget::about()
                        tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
                        tr("(Application Launched on : %1)").arg(m_launchDateTime.toString()) + "<br>" +
                        tr("(Config File Location : %1)").arg(b_engine->getSettings()->fileName()) + "<hr>" +
-                       "Copyright (C) 2007-2011 <a href=http://www.proformatique.com><b>Avencall</b></a>"
+                       "Copyright (C) 2007-2012 <a href=http://www.avencall.com><b>Avencall</b></a>"
                        "<br>"
-                       "10 bis rue Lucien Voilin - 92800 Puteaux - FRANCE"
-                       "<p>"
-                       "<b>" + tr("E-mail : ") + "</b><a href=mailto:technique@proformatique.com>technique@proformatique.com</a><br>"
+                       "<b>" + tr("E-mail : ") + "</b><a href=mailto:contact@avencall.com>contact@avencall.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
                        "<b>" + tr("Authors : ") + "</b>" + tr("Avencall Development Team") +
                        "<hr>"

@@ -54,7 +54,7 @@
 CallWidget::CallWidget(const UserInfo * ui,
                        const QString & xchannel,
                        QWidget *parent)
-    : QWidget(parent), m_square(16,16)
+    : QWidget(parent), m_parkedCall(false), m_square(16,16)
 {
     qDebug() << Q_FUNC_INFO << xchannel;
 
@@ -91,6 +91,11 @@ CallWidget::CallWidget(const UserInfo * ui,
     m_transferToNumberAction->setStatusTip(tr("Transfer the channel to the dialed number") );
     connect(m_transferToNumberAction, SIGNAL(triggered()),
              this, SLOT(transferToNumber()));
+
+    m_parkCall = new QAction(tr("&Park the call"), this);
+    m_parkCall->setStatusTip(tr("Park this call") );
+    connect(m_parkCall, SIGNAL(triggered()),
+             this, SLOT(parkCall()));
 }
 
 /*! \brief update time displayed in m_lbl_time
@@ -122,6 +127,7 @@ void CallWidget::updateWidget(const QString & xchannel)
 
     QString status = channelinfo->commstatus();
     QString direction = channelinfo->direction();
+    m_parkedCall = channelinfo->isparked();
 
     setActionPixmap();
     updateCallTimeLabel();
@@ -136,6 +142,8 @@ void CallWidget::updateWidget(const QString & xchannel)
     QString text = tr("Unknown");
     if (channelinfo->talkingto_kind() == "meetme")
         text = tr("Conference room number %1").arg(channelinfo->talkingto_id());
+    else if (channelinfo->isparked())
+        text = tr("Parked call in %1").arg("767");
     else
         text = channelinfo->peerdisplay();
     m_lbl_exten->setText(text);
@@ -149,16 +157,9 @@ void CallWidget::setActionPixmap()
     if (channelinfo == NULL)
         return;
     QString status = channelinfo->commstatus();
-    QString color;
-    QString tooltip;
+    QString color("white");
+    QString tooltip("unknown status");
     qDebug() << status;
-    if (b_engine->getOptionsChannelStatus().contains(status)) {
-        color = b_engine->getOptionsChannelStatus().value(status).toMap().value("color").toString();
-        tooltip = b_engine->getOptionsChannelStatus().value(status).toMap().value("longname").toString();
-    } else {
-        color = "white";
-        tooltip = "unknown status";
-    }
     TaintedPixmap tp = TaintedPixmap(QString(":/images/phone-trans.png"), QColor(color));
     m_lbl_status->setPixmap(tp.getPixmap());
     setToolTip(tooltip);
@@ -216,6 +217,14 @@ void CallWidget::transferToNumber()
     doTransferToNumber(m_xchannel);
 }
 
+/*! \brief transfers the channel to a number
+ */
+void CallWidget::parkCall()
+{
+    qDebug() << Q_FUNC_INFO << m_xchannel;
+    doParkCall( m_xchannel );
+}
+
 /*! \brief open the context menu
  */
 void CallWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -223,6 +232,9 @@ void CallWidget::contextMenuEvent(QContextMenuEvent *event)
     QMenu contextMenu;
     contextMenu.addAction(m_hangUpAction);
     // m_transferToNumberAction only if there is something written
-    contextMenu.addAction(m_transferToNumberAction);
+    if (! m_parkedCall) {
+        contextMenu.addAction(m_transferToNumberAction);
+        contextMenu.addAction(m_parkCall);
+    }
     contextMenu.exec(event->globalPos());
 }

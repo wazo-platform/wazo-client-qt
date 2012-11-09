@@ -6,17 +6,17 @@
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="85"/>
         <source>&amp;Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>通話終了(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="86"/>
         <source>Hang up/Close the channel</source>
-        <translation type="unfinished"></translation>
+        <translation>通話を終了</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="90"/>
         <source>&amp;Transfer to number</source>
-        <translation type="unfinished"></translation>
+        <translation>番号へ転送(&amp;T)</translation>
     </message>
     <message>
         <location filename="../src/xlets/calls/callwidget.cpp" line="91"/>
@@ -24,13 +24,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="136"/>
-        <source>Unknown</source>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="95"/>
+        <source>&amp;Park the call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="138"/>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="96"/>
+        <source>Park this call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="142"/>
+        <source>Unknown</source>
+        <translation>未知な</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="144"/>
         <source>Conference room number %1</source>
+        <translation>会議室番号 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/calls/callwidget.cpp" line="146"/>
+        <source>Parked call in %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -39,12 +54,12 @@
     <message>
         <location filename="../src/xlets/calls/calls.cpp" line="48"/>
         <source>Calls</source>
-        <translation type="unfinished"></translation>
+        <translation>呼び出し</translation>
     </message>
     <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="169"/>
+        <location filename="../src/xlets/calls/calls.cpp" line="180"/>
         <source>Monitoring : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>監視中 : %1</translation>
     </message>
 </context>
 </TS>

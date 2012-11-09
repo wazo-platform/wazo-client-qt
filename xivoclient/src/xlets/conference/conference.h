@@ -58,7 +58,7 @@ class ConfTab : public QTabWidget
     public:
         ConfTab(QWidget *parent);
         int addClosableTab(QWidget *w, const QString &title);
-        void showConfRoom(const QString &id, bool force);
+        void showConfRoom(const QString &number, const QVariantMap &members, bool force);
         int indexOf(QWidget *w) { return QTabWidget::indexOf(w); };
         int indexOf(const QString &id);
 
@@ -75,11 +75,9 @@ class XletConference : public XLet
         XletConference(QWidget *parent=0);
 
     public slots:
-        void openConfRoom(const QString &id, bool force=false);
-    private slots:
-        // void checkJoiningPeople(const QString &room, DStoreEvent e);
-        void updateMeetmesStatus(const QString &);
+        void openConfRoom(const QString &number, const QVariantMap &members, bool force=false);
     private:
+        void registerMeetmeUpdate() const;
         ConfTab *m_tab;
 };
 

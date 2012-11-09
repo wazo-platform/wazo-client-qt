@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -33,10 +33,6 @@
 #include "baselib_export.h"
 #include "xinfo.h"
 
-#include <QMap>
-
-/*! \brief Store Channel information
- */
 class BASELIB_EXPORT ChannelInfo : public XInfo
 {
     public:
@@ -47,33 +43,27 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         const QString & talkingto_id() const;
         const QString & direction() const;
         const QString & commstatus() const;
+        const QString & peerdisplay() const;
         double timestamp() const;
-
-        const QString thisdisplay() const;
-        const QString peerdisplay() const;
         int linenumber() const;
-        bool ismonitored() const;
-        bool isspied() const;
         bool isholded() const;
-        const QString & agent() const;
-        QString toString() const;
+        bool isparked() const;
+        bool canBeTransferred() const;
+        bool isTalking() const;
+        bool isInMeetme() const;
 
     private:
-        QString m_thisdisplay;
 
         QString m_peerdisplay;
         QString m_direction;
         QString m_commstatus;
         QString m_talkingto_kind;
         QString m_talkingto_id;
+        QString m_state;
         double m_timestamp;
 
         int m_linenumber;
-        bool m_ismonitored;
-        bool m_isspied;
         bool m_isholded;
-        // XXX atxfer currently in progress ?
-        // XXX time informations
 };
 
 #endif

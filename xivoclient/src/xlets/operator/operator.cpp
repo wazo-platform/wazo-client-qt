@@ -55,6 +55,7 @@ XletOperator::XletOperator(QWidget * parent)
     m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyitransfer"     ).toInt()] = (QStringList() << "itransfer" << tr("I. Transfer"));
     m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyilink"         ).toInt()] = (QStringList() << "ilink" << tr("I. Link"));
     m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyicancel"       ).toInt()] = (QStringList() << "icancel" << tr("I. Cancel"));
+    m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keypark"          ).toInt()] = (QStringList() << "park" << tr("Park"));
     m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyatxferfinalize").toInt()] = (QStringList() << "atxferfinalize" << tr("Finalize Transfer"));
     m_actionkey[b_engine->getConfig("guioptions.xlet_operator_keyatxfercancel"  ).toInt()] = (QStringList() << "atxfercancel" << tr("Cancel Transfer"));
     // m_actionkey[Qt::Key_Return] = (QStringList() << "numreturn" << tr("Call Number"));
@@ -291,11 +292,13 @@ void XletOperator::functionKeyPressed(int keynum)
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
             else
                 updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "numreturn"));
+        } else if (action == "park") {
+            b_engine->actionCall("transfer", "chan:special:me:" + m_currentchannel, "ext:special:parkthecall");
         } else if (action == "atxferfinalize") {
             b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel));
         } else if (action == "atxfercancel") {
             b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(getPeerChan(m_currentchannel)));
-            updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer"));
+            updateLine(m_currentchannel, (QStringList() << "hangup" << "dtransfer" << "itransfer" << "park"));
         } else if (action == "ilink") {
             b_engine->actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel));
         } else if (action == "icancel") {
@@ -304,6 +307,8 @@ void XletOperator::functionKeyPressed(int keynum)
             // emit actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(getPeerChan(m_currentchannel)));  // does nothing
             // emit actionCall("hangup", QString("chan:%1:%2").arg(m_xphoneid).arg(m_currentchannel)); // finalize the indirect transfer
         }
+        //            if (action == "unpark")
+        //                qDebug() << Q_FUNC_INFO << "F1 when Wait : Take back";
     }
 }
 
@@ -349,7 +354,8 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
                 m_callchannels << xchannel;
                 m_linestatuses[xchannel] = Ringing;
                 QStringList action = QStringList() << "hangup"
-                                                   << "dtransfer";
+                                                   << "dtransfer"
+                                                   << "park";
                 if (b_engine->getConfig("guioptions.xlet_operator_answer_work").toInt()) {
                     action << "answer";
                 }
@@ -365,7 +371,7 @@ void XletOperator::updatePhoneStatus(const QString & xphoneid)
             }
             m_linestatuses[xchannel] = Online;
             QStringList allowed;
-            allowed << "hangup" << "dtransfer" << "itransfer";
+            allowed << "hangup" << "dtransfer" << "itransfer" << "park";
             // if (qvm["atxfer"].toBool()) XXXX
             // allowed << "atxferfinalize" << "atxfercancel";
             updateLine(xchannel, allowed);

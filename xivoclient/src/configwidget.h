@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -48,18 +48,13 @@ class QTabWidget;
 
 class BaseEngine;
 
-/*! \brief Configuration Window
- *
- * This Widget enables the user to edit the connection
- * parameters to the identification server.
- * 
- * If you want to update the settings window, you need to look for every
+/*If you want to update the settings window, you need to look for every
  * setting wanted in the application.
  * First you can get every QSettings variable with a command like :
- * \code $ grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib \endcode
+ *     grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib
  * Then you can get every setting by typing a command like :
- * \code $ egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib \endcode
- * where variables stands for the list of the variables obtained by the 
+ *     egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib
+ * where variables stands for the list of the variables obtained by the
  * previous command, separated by |
  */
 
@@ -77,10 +72,8 @@ class ConfigWidget: public QDialog
         bool close();
 
     private slots:
-        //! Save the configuration to the BaseEngine object and close
         void saveAndClose();
         void changeOperatorKey(bool);
-        void changeEncrypted(bool);
         void loginKindChanged(int);
     protected:
         virtual void keyPressEvent(QKeyEvent *);
@@ -106,56 +99,58 @@ class ConfigWidget: public QDialog
 
         QMap<QString, QString> m_dblclick_actions;
 
-        QLineEdit * m_cti_address;      //!< IP/hostname of the server
-        QSpinBox  * m_cti_port;         //!< server port
-        QCheckBox * m_cti_encrypt;      //!< encrypt connection
-        QCheckBox * m_trytoreconnect;   //!< "Try to reconnect" Checkbox
-        QSpinBox  * m_tryinterval_sbox; //!< "Try to reconnect" interval
-        QSpinBox  * m_kainterval_sbox;  //!< Keep alive interval
+        QLineEdit * m_main_server_address_input;
+        QSpinBox  * m_main_server_port_input;
+        QCheckBox * m_main_server_encrypt_input;
+        QCheckBox * m_backup_server_enabled;
+        QLineEdit * m_backup_server_address_input;
+        QSpinBox  * m_backup_server_port_input;
+        QCheckBox * m_backup_server_encrypt_input;
+        QCheckBox * m_trytoreconnect;
+        QSpinBox  * m_tryinterval_sbox;
+        QSpinBox  * m_keepalive_input;
 
-        QLineEdit * m_context;          //!< context name (related to the company)
-        QLineEdit * m_userid;           //!< user login
-        QLineEdit * m_password;         //!< user password
-        QCheckBox * m_keeppass;         //!< keep password ?
-        QCheckBox * m_autoconnect;      //!< "Auto connect" checkbox
-        QCheckBox * m_showagselect;     //!< show agent select on main window ?
-        QComboBox * m_loginkind;        //!< login kind (user or agent)
-        QLineEdit * m_agentphonenumber; //!< agent's phone number
+        QLineEdit * m_context;
+        QLineEdit * m_userid;
+        QLineEdit * m_password;
+        QCheckBox * m_keeppass;
+        QCheckBox * m_autoconnect;
+        QCheckBox * m_showagselect;
+        QComboBox * m_loginkind;
+        QLineEdit * m_agentphonenumber;
 
-        QComboBox * m_locale_cbox;      //!< Locale selectbox
-        QCheckBox * m_systrayed;        //!< "Systray at startup" Checkbox
-        QCheckBox * m_unique;           //!< Can multiple instances of the program run simultaneously?
-        QComboBox * m_qss;              //!< Qt style sheet file. Only the name of the file, without qss.
-        QCheckBox * m_clipboard;        //!< Clipboard enabled?
+        QComboBox * m_locale_cbox;
+        QCheckBox * m_systrayed;
+        QCheckBox * m_unique;
+        QComboBox * m_qss;
+        QCheckBox * m_clipboard;
 
-        QHash<QString, QCheckBox *> m_function; //!< connect to functions checkboxes
+        QHash<QString, QCheckBox *> m_function;
 
-        QTabWidget * m_function_tabwidget; //!< Contains the settings for the xlets
+        QTabWidget * m_function_tabwidget;
 
-        QSpinBox * m_presenceIndicatorSize; //!< size of the presence indicator for basic peer widgets
+        QSpinBox * m_presenceIndicatorSize;
 
-        QCheckBox * m_autourl_allowed;  //!< Allow automatic opening of urls
-        QSpinBox  * m_tablimit_sbox;    //!< Maximum number of tabs
+        QCheckBox * m_autourl_allowed;
+        QSpinBox  * m_tablimit_sbox;
 
-        QSpinBox  * m_dial_history_size; //!< Dial history saved
+        QSpinBox  * m_dial_history_size;
 
-        QSpinBox  * m_history_sbox;     //!< History size
+        QSpinBox  * m_history_sbox;
 
-        QSpinBox  * m_contactssize_sbox;  //!< Displayed contacts' size
-        QSpinBox  * m_contactswidth_sbox; //!< Number of contacts displayed on one line
-        QComboBox * m_contacts_dblclick;  //!< Action to do when a contact is double clicked
+        QSpinBox  * m_contactssize_sbox;
+        QSpinBox  * m_contactswidth_sbox;
+        QComboBox * m_contacts_dblclick;
 
-        QHash<QString, QSpinBox *> m_queuelevels;      //!< For queue display
-        QHash<QString, QSpinBox *> m_queuelevels_wait; //!< For queue display
-        QCheckBox * m_queue_longestwait;               //!< should we display the longest wait in the queue xlet ?
-        QCheckBox * m_queue_displaynu;                 //!< should we display the queue number in queue name ?
+        QCheckBox * m_hide_unlogged_agents;
 
-        QComboBox * m_comboswitchboard; //!< Appearance of switchboard
-        QSpinBox * m_maxWidthWanted;    //!< Maximum width for small items in switchboard
-        QComboBox * m_switchboard_dblclick;  //!< Action to do when a switchboard item is double clicked
+        QHash<QString, QSpinBox *> m_queuelevels;
+        QHash<QString, QSpinBox *> m_queuelevels_wait;
+        QCheckBox * m_queue_longestwait;
+        QCheckBox * m_queue_displaynu;
 
-        QDialogButtonBox * m_btnbox;    //!< Buttons box
-        QTabWidget * m_tabwidget;       //!< Tabs to access configuration widgets
+        QDialogButtonBox * m_btnbox;
+        QTabWidget * m_tabwidget;
 
         enum operator_actions {
             ANSWER,
@@ -166,6 +161,7 @@ class ConfigWidget: public QDialog
             ICANCEL,
             ATXFER_FINAL,
             CANCEL_TXFER,
+            PARK,
             NB_OP_ACTIONS
         };
 
@@ -175,7 +171,7 @@ class ConfigWidget: public QDialog
             QPushButton *button;
         } m_operator_action[NB_OP_ACTIONS];
 
-        QCheckBox * m_operator_answer_work; //!< should we display the answer key in operator xlet ?
+        QCheckBox * m_operator_answer_work;
 
         int m_currentKeyChange;
 

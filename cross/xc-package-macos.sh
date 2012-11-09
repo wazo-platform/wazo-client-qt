@@ -42,10 +42,6 @@ function link_qt {
         ${QT_PATH}/lib/QtCore.framework/Versions/4/QtCore \
         @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
         ${lib}
-    install_name_tool -change \
-        ${QT_PATH}/lib/QtWebKit.framework/Versions/4/QtWebKit \
-        @executable_path/../Frameworks/QtWebKit.framework/Versions/4/QtWebKit \
-        ${lib}
 }
 
 function link_baselib_from_app {
@@ -64,18 +60,9 @@ function link_xletlib_from_app {
         ${app}
 }
 
-function deploy_webkit() {
-    cp -r ${QT_PATH}/lib/QtWebKit.framework ${PACK_CONTENTS}/Frameworks
-    install_name_tool -id \
-        @executable_path/../Frameworks/QtWebKit.framework/Versions/4/QtWebKit \
-        ${PACK_CONTENTS}/Frameworks/QtWebKit.framework/Versions/4/QtWebKit
-    link_qt ${PACK_CONTENTS}/Frameworks/QtWebKit.framework/Versions/4/QtWebKit
-}
-
 function package {
     echo "Including Qt ..."
     macdeployqt ${XC_PATH}/bin/xivoclient.app
-    deploy_webkit
 
     echo "Including XiVO Client libs ..."
     cp -R ${XC_PATH}/bin/*.dylib ${PACK_CONTENTS}/MacOS

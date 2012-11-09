@@ -38,14 +38,15 @@
 UserInfo::UserInfo(const QString & ipbxid,
                    const QString & id)
   : XInfo(ipbxid, id),
-    m_simultcalls(0),
     m_enableclient(false),
     m_enablevoicemail(false),
     m_incallfilter(false),
     m_enablednd(false),
     m_enableunc(false),
     m_enablerna(false),
-    m_enablebusy(false)
+    m_enablebusy(false),
+    m_enablexfer(false),
+    m_availstate(__presence_off__)
 {
 }
 
@@ -57,10 +58,8 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     m_xvoicemailid = QString("%1/%2").arg(m_ipbxid).arg(m_voicemailid);
     haschanged |= setIfChangeString(prop, "agentid", & m_agentid);
     m_xagentid = QString("%1/%2").arg(m_ipbxid).arg(m_agentid);
-    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
     haschanged |= setIfChangeString(prop, "mobilephonenumber", & m_mobilenumber);
     haschanged |= setIfChangeBool(prop, "enableclient", & m_enableclient);
-    haschanged |= setIfChangeString(prop, "loginclient", & m_ctilogin);
     haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
     haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
     haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
@@ -69,8 +68,11 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
     haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
+    haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
     haschanged |= setIfChangeString(prop, "profileclient", & m_profileclient);
+    haschanged |= setIfChangeString(prop, "firstname", & m_firstname);
+    haschanged |= setIfChangeString(prop, "lastname", & m_lastname);
 
     if (prop.contains("linelist")) {
         QStringList lid;
@@ -90,7 +92,6 @@ bool UserInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "availstate", & m_availstate);
-    haschanged |= setIfChangeString(prop, "connection", & m_connection);
     return haschanged;
 }
 
@@ -203,20 +204,6 @@ bool UserInfo::isTalkingTo(const QString & rhs) const
                 if (this->identitylist().contains(identity)) {
                     return true;
                 }
-            }
-        }
-    }
-    return false;
-}
-
-bool UserInfo::isInMeetme() const
-{
-    QStringList channels = xchannels();
-    if (channels.size() < 1) return false;
-    foreach (const XInfo * meetme, b_engine->iterover("meetmes")) {
-        foreach (const QString &channelid, static_cast<const MeetmeInfo *>(meetme)->channels().keys()) {
-            if (channels.contains(QString("%0/%1").arg(meetme->ipbxid()).arg(channelid))) {
-                return true;
             }
         }
     }

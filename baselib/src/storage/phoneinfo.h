@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __PHONEINFO_H__
 #define __PHONEINFO_H__
 
@@ -42,33 +38,31 @@
 #include "xinfo.h"
 #include "baselib_export.h"
 
-/*! \brief Store Phone information
- */
 class BASELIB_EXPORT PhoneInfo : public XInfo
 {
     public:
-        PhoneInfo(const QString &, const QString &);  //! constructor
-        bool updateConfig(const QVariantMap &);  //! update config members
-        bool updateStatus(const QVariantMap &);  //! update status members
-        const QString & context() const { return m_context; };  //! context this phone belongs to
-        const QString & number() const { return m_number; };  //! phone number
-        const QString & identity() const { return m_identity; }; //! phone identity (sip/abc123)
-        const QString & protocol() const { return m_protocol; };  //! phone technology (sip, iax, etc...)
-        const QString & iduserfeatures() const { return m_iduserfeatures; };  //! user relation
-        int rules_order() const { return m_rules_order; };  //! user relation's order
-        int simultcalls() const { return m_simultcalls; };  //! phone simultcalls
+        PhoneInfo(const QString &, const QString &);
+        bool updateConfig(const QVariantMap &);
+        bool updateStatus(const QVariantMap &);
+        const QString & context() const { return m_context; };
+        const QString & number() const { return m_number; };
+        const QString & identity() const { return m_identity; };
+        const QString & protocol() const { return m_protocol; };
+        const QString & iduserfeatures() const { return m_iduserfeatures; };
+        QString xid_user_features() const;
+        int rules_order() const { return m_rules_order; };
+        int simultcalls() const { return m_simultcalls; };
 
-        const QStringList & channels() const { return m_channels; };  //! current communications of this phone
-        const QStringList & xchannels() const { return m_xchannels; };  //! current communications of this phone
-        const QString & hintstatus() const { return m_hintstatus; }; //! hint status value
+        const QStringList & channels() const { return m_channels; };
+        const QStringList & xchannels() const { return m_xchannels; };
+        const QString & hintstatus() const { return m_hintstatus; };
 
         bool enableunc() const { return m_enableunc; };
-        QString toString() const;
     private:
         QString m_protocol;
         QString m_context;
         QString m_number;
-        QString m_identity; //! The phone's protocol/name
+        QString m_identity;
         QString m_iduserfeatures;
         int m_rules_order;
         int m_simultcalls;
@@ -95,9 +89,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
 
 namespace phone {
 
-    /*! \brief Find a phone for a given phone identity
-     * \param identity The phone's protocol/id
-     * \return the PhoneInfo or NULL */
     BASELIB_EXPORT const PhoneInfo * findByIdentity(const QString & identity);
 
 } // namespace phone

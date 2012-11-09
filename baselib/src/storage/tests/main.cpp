@@ -30,9 +30,18 @@
 #include <QtTest/QtTest>
 
 #include "test_userinfo.h"
+#include "test_init_watcher.h"
 
 // To run the tests use
 // export LD_LIBRARY_PATH=../../bin
 // ./tests
 
-QTEST_MAIN(TestUserInfo)
+int main (int argc, char *argv[])
+{
+    TestUserInfo test_userinfo;
+    TestInitWatcher test_init_watcher;
+
+    QTest::qExec(&test_userinfo, argc, argv);
+    QTest::qExec(&test_init_watcher, argc, argv);
+    return 0;
+}

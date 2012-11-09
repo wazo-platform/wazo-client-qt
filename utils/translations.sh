@@ -7,16 +7,16 @@
 
 # To add a new translation :
 # find . -name '*.pro' -exec sed -i -e 's|^TRANSLATIONS += $${\?ROOT_DIR}\?/i18n/\(.*\)_en.ts|\0\nTRANSLATIONS += $$ROOT_DIR/i18n/\1_it.ts|' {} \;
-# find . -name '*.qrc' -exec sed -i -e 's|^\\( *\\)<file>\\(.*\\)obj/\\(.*\\)_fr.qm</file>|\\0\\n\\1<file>\\2obj/\\3_de.qm</file>|' {} \\;
+# find . -name '*.qrc' -exec sed -i -e 's|^\( *\)<file>\(.*\)obj/\(.*\)_fr.qm</file>|\0\n\1<file>\2obj/\3_de.qm</file>|' {} \;
 
-LOCALES="en fr it de nl ja"
+LOCALES="en fr it de nl ja hu pt_BR es_ES"
 
 function usage {
     echo "Usage : $0 [help|pull|update]"
     echo
     echo "help : display this message"
     echo "pull : get translations from Transifex"
-    echo "push : upload transltations to Transifex"
+    echo "push : upload translations to Transifex"
     echo "update : update translation files from source"
 }
 
@@ -27,22 +27,21 @@ function pull_from_transifex {
     fi
 
     tx set --auto-remote  https://www.transifex.net/projects/p/xivo/
-    tx pull -r xivo.xivo-client -a
+    tx pull -r xivo.xivo-client -a -s -f
 }
 
 function find_all_ts_files {
     locale="$1"
-    find . \( -path './baselib/*'    -a -name "*_$locale.ts" \) \
-        -o \( -path './xivoclient/*' -a -name "*_$locale.ts" \) -print
+    find baselib xivoclient -name "*_$locale.ts" -print
 }
 
 function copy_from_transifex_to_git {
     # locale takes values as "fr.ts", "de.ts", "nl.ts" ...
-    for locale in $(ls translations/xivo.xivo-client)
+    for locale in ${LOCALES}
     do
         for ts in $(find_all_ts_files "en")
         do
-            cp "translations/xivo.xivo-client/$locale" "${ts%en.ts}$locale"
+            cp "translations/xivo.xivo-client/$locale.ts" "${ts%en.ts}${locale}.ts"
         done
     done
 
@@ -71,13 +70,10 @@ function merge_translations {
             find_all_ts_files "$locale" \
             | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
         done
+    else
+        echo "You need to install Qt tool lconvert !"
+        exit 1
     fi
-}
-
-function push_to_transifex {
-    tx set --auto-local -r xivo.xivo-client 'xivoclient/i18n/all_<lang>.ts' \
-        --source-lang en --execute
-    tx push -st -r xivo.xivo-client
 }
 
 function process_arguments {
@@ -92,12 +88,9 @@ function process_arguments {
             pull_from_transifex
             copy_from_transifex_to_git
             ;;
-        push)
-            merge_translations
-            push_to_transifex
-            ;;
         update)
             update_translations_from_source
+            merge_translations
             ;;
         *)
             usage

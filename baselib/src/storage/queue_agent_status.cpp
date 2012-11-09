@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,6 +31,7 @@
 #include "queue_agent_status.h"
 
 const QColor Orange = QColor(255, 128, 0);
+QString QueueAgentStatus::logged_out_status = "5";
 
 QueueAgentStatus::QueueAgentStatus()
 {
@@ -40,6 +41,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
                               const QString & sstatus,
                               const QString & pstatus)
 {
+    m_status = sstatus;
     if(dynstatus == "") {
         m_display_status_membership = "";
         m_display_status_darkfactor = 100;
@@ -49,7 +51,6 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         m_display_status_darkfactor = 100;
         m_display_action_join = ":/images/cancel.png";
     } else if ((dynstatus == "static") || (dynstatus == "realtime")) {
-        // XXX common handling, before finding out why there is actually 2 memberships
         m_display_status_membership = tr("Static/RT membership");
         m_display_status_darkfactor = 150;
         m_display_action_join = "";
@@ -76,8 +77,8 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         basecolor = Qt::red;
         m_display_status_queue = tr("Agent in Queue but Invalid");
         m_display_status_logged = "";
-    } else if (sstatus == "5") {
-        basecolor = Qt::blue;
+    } else if (sstatus == this->logged_out_status) {
+        basecolor = Qt::cyan;
         m_display_status_queue = tr("Agent in Queue");
         m_display_status_logged = tr("Logged out");
     } else {
@@ -166,4 +167,9 @@ const QString & QueueAgentStatus::context() const
 const QString & QueueAgentStatus::queueName() const
 {
     return m_queuename;
+}
+
+bool QueueAgentStatus::is_logged() const
+{
+    return m_status != this->logged_out_status;
 }

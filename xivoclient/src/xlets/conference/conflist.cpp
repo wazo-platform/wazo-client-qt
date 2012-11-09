@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -45,9 +45,8 @@ static QVariant COL_TITLE[NB_COL];
 ConfListModel::ConfListModel(QWidget *parent)
     : QAbstractTableModel(parent)
 {
-    // qDebug() << Q_FUNC_INFO;
+    startTimer(500);
 
-    startTimer(1000);
     COL_TITLE[ID] = tr("Room UID");
     COL_TITLE[NUMBER] = tr("Number");
     COL_TITLE[NAME] = tr("Name");
@@ -56,10 +55,8 @@ ConfListModel::ConfListModel(QWidget *parent)
     COL_TITLE[MODERATED] = tr("Moderated");
     COL_TITLE[STARTED_SINCE] = tr("Started since");
 
-    connect(b_engine, SIGNAL(updateMeetmesConfig(const QString &)),
-            this, SLOT(updateMeetmesConfig(const QString &)));
-    connect(b_engine, SIGNAL(removeMeetmeConfig(const QString &)),
-            this, SLOT(removeMeetmeConfig(const QString &)));
+    connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
+            this, SLOT(updateRoomConfigs(const QVariantMap &)));
 }
 
 void ConfListModel::timerEvent(QTimerEvent *)
@@ -67,15 +64,19 @@ void ConfListModel::timerEvent(QTimerEvent *)
     reset();
 }
 
-void ConfListModel::updateMeetmesConfig(const QString &xid)
+void ConfListModel::updateRoomConfigs(const QVariantMap &configs)
 {
-    if (! m_row2id.contains(xid)) {
-        m_row2id.append(xid);
-    }
+    beginResetModel();
+
+    m_room_configs = configs;
+    refreshRow2Number();
+
+    endResetModel();
 }
 
-void ConfListModel::removeMeetmeConfig(const QString &xid) {
-    m_row2id.removeAll(xid);
+void ConfListModel::refreshRow2Number()
+{
+    m_row2number = m_room_configs.keys();
 }
 
 Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
@@ -85,7 +86,7 @@ Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
 
 int ConfListModel::rowCount(const QModelIndex&) const
 {
-    return m_row2id.size();
+    return m_row2number.size();
 }
 
 int ConfListModel::columnCount(const QModelIndex&) const
@@ -107,44 +108,46 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
      * constructor
      */
     int row = index.row(), col = index.column();
-    QString meetme_id;
-
-    if (m_row2id.size() > row) {
-        meetme_id = m_row2id[row];
+    if (m_row2number.size() <= row) {
+        return QVariant();
     }
 
-    const MeetmeInfo * m = b_engine->meetme(meetme_id);
-    if (!m) return QVariant();
-    const QString & mm = m->admin_moderationmode();
+    const QString &room_number = m_row2number[row];
+    const QVariantMap &room_config = m_room_configs[room_number].toMap();
 
     switch (col) {
     case ID:
-        return m->xid();
+        return room_number.toInt();
     case NUMBER:
-        return m->number();
+        return room_config["number"].toString();
     case NAME:
-        return m->name();
+        return room_config["name"].toString();
     case PIN_REQUIRED:
-        return m->pin_needed() ? tr("Yes") : tr("No");
+        return room_config["pin_required"].toString();
     case MODERATED:
-        return mm.isEmpty() || mm == "0" ? tr("No") : tr("Yes");
+        return tr("No");  // to remove
     case MEMBER_COUNT:
-        return m->channels().size();
+        return room_config["member_count"].toString();
     case STARTED_SINCE:
-        {
-            const ChannelInfo * pseudochan = b_engine->channel(
-                QString("%0/%1").arg(m->ipbxid()).arg(m->pseudochan()));
-            if (pseudochan) {
-                uint now = QDateTime::currentDateTime().toTime_t();
-                uint startedsince = now - pseudochan->timestamp() - b_engine->timeDeltaServerClient();
-                return QDateTime::fromTime_t(startedsince).toUTC().toString("hh:mm:ss");
-            } else
-                return QString(tr("Not started"));
-        }
+        return startedSince(room_config["start_time"].toDouble());
     default:
         break;
     }
+
     return QVariant();
+}
+
+QString ConfListModel::startedSince(double time) const
+{
+    if (time == 0)
+        return tr("Not started");
+    else if (time == -1)
+        return tr("Unknown");
+
+    uint now = QDateTime::currentDateTime().toTime_t();
+    uint started_since = now - uint(time) -b_engine->timeDeltaServerClient();
+
+    return QDateTime::fromTime_t(started_since).toUTC().toString("hh:mm:ss");
 }
 
 QVariant ConfListModel::headerData(int section,
@@ -181,18 +184,16 @@ ConfListView::ConfListView(QWidget *parent)
 
 void ConfListView::onViewClick(const QModelIndex &model)
 {
-    QString roomId = model.sibling(model.row(), ID).data().toString();
+    QString number = model.sibling(model.row(), ID).data().toString();
     QString roomName = model.sibling(model.row(), NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
 
-    // qDebug() << Q_FUNC_INFO << roomId << roomName << roomNumber;
-
-    if (roomId != "") {
+    if (number != "") {
         if (lastPressed & Qt::LeftButton) {
             b_engine->pasteToDial(roomNumber);
             QTimer *timer = new QTimer(this);
             timer->setSingleShot(true);
-            timer->setProperty("id", roomId);
+            timer->setProperty("number", number);
             connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
             timer->start(10);
         } else {
@@ -201,7 +202,7 @@ void ConfListView::onViewClick(const QModelIndex &model)
             QAction *action = new QAction(
                 tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
 
-            action->setProperty("id", roomId);
+            action->setProperty("number", number);
             connect(action, SIGNAL(triggered(bool)),
                     parentWidget(), SLOT(openConfRoom()));
             connect(action, SIGNAL(triggered(bool)),
@@ -223,16 +224,15 @@ void ConfListView::mousePressEvent(QMouseEvent *event)
 ConfList::ConfList(XletConference *parent)
     : QWidget(), m_manager(parent)
 {
-    // qDebug() << Q_FUNC_INFO;
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
     
     // this contains the data, unordered
-    ConfListModel *model = new ConfListModel(this);
+    m_model = new ConfListModel(this);
     
     // this maps the indexes between the sorted view and the unordered model
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
-    proxyModel->setSourceModel(model);
+    proxyModel->setSourceModel(m_model);
     proxyModel->setDynamicSortFilter(true); /* sorts right on insertion, instead
     of half a second after the window has appeared */
     
@@ -253,19 +253,17 @@ ConfList::ConfList(XletConference *parent)
 
 void ConfList::phoneConfRoom()
 {
-    QString roomId = sender()->property("id").toString();
-    // qDebug() << Q_FUNC_INFO << "Room id" << roomId;
+    const QString &roomNumber = sender()->property("number").toString();
+    QVariantMap members = m_model->getMembers(roomNumber);
 
-    const MeetmeInfo * m = b_engine->meetme(roomId);
-    if (m) {
-        QString roomNumber = m->number();
-        b_engine->actionDialNumber(roomNumber);
-        m_manager->openConfRoom(roomId, true);
-    }
+    b_engine->actionDialNumber(roomNumber);
+    m_manager->openConfRoom(roomNumber, members, true);
 }
 
 void ConfList::openConfRoom()
 {
-    // qDebug() << Q_FUNC_INFO;
-    m_manager->openConfRoom(sender()->property("id").toString());
+    const QString &number = sender()->property("number").toString();
+    QVariantMap members = m_model->getMembers(number);
+
+    m_manager->openConfRoom(number, members);
 }

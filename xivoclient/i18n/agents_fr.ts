@@ -32,7 +32,7 @@ discrète</translation>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="55"/>
         <source>Logged</source>
-        <translation>Loggé</translation>
+        <translation>Logué</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="56"/>
@@ -44,14 +44,14 @@ jointes</translation>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="57"/>
         <source>Paused</source>
-        <translation>En pause</translation>
+        <translation>En retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="58"/>
         <source>Paused
 queues</source>
         <translation>Files
-en pause</translation>
+en retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="164"/>
@@ -61,44 +61,44 @@ Context: %2</source>
 Contexte: %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="261"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="267"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="262"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="268"/>
         <source>Agent logged on %1</source>
-        <translation>Agent loggé sur %1</translation>
+        <translation>Agent logué sur %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="271"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="272"/>
         <source>Agent NOT logged</source>
-        <translation>Agent NON loggé</translation>
+        <translation>Agent NON logué</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="275"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="276"/>
         <source>Unknown %1</source>
         <translation>Inconnu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="307"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="310"/>
         <source>Joined queues : %1</source>
         <translation>Files jointes : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="319"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="322"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="324"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="327"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="327"/>
-        <location filename="../src/xlets/agents/agents.cpp" line="332"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="330"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="335"/>
         <source>Paused queues : %1</source>
-        <translation>Files en pause : %1</translation>
+        <translation>Files en retrait : %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="329"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="332"/>
         <source>Partial</source>
         <translation>Partielle</translation>
     </message>

@@ -30,20 +30,11 @@
 #ifndef __QUEUESSORTFILTERPROXYMODEL_H__
 #define __QUEUESSORTFILTERPROXYMODEL_H__
 
-#include <QSortFilterProxyModel>
 #include <QStringList>
 
-/*! \brief Queues proxy model class
- *
- * It allows sorting and filtering the data from the model, without affecting
- * the model.
- *
- * The filter is a simple list containing the queues xids that should be
- * filtered.
- *
- * Sorting is automatic, thanks to Qt's Model/View framework.
- */
-class QueuesSortFilterProxyModel : public QSortFilterProxyModel
+#include <abstract_sort_filter_proxy_model.h>
+
+class QueuesSortFilterProxyModel : public AbstractSortFilterProxyModel
 {
     Q_OBJECT
 

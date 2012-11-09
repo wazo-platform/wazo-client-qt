@@ -69,19 +69,19 @@ class QueuesModel : public QAbstractTableModel
     public slots:
         void updateQueueConfig(const QString &);
         void removeQueueConfig(const QString &);
-        void updateQueueStatus(const QString &);
         void increaseWaitTime();
         void updateQueueNames();
 
     private:
         QVariant formatTime(const QVariant &) const;
         QVariant formatPercent(const QVariant &) const;
-
+        void refreshQueueDisplay(const QString &queue_xid);
     // Attributes
     public:
         enum Columns {
-            ID, NUMBER, NAME, WAITING_CALLS, CURRENT_MAX_WAIT, RECEIVED,
-            ANSWERED, ABANDONNED, TOTAL_MAX_WAIT, EFFICIENCY, QOS, NB_COL
+            ID, NUMBER, NAME, WAITING_CALLS, EWT, CURRENT_MAX_WAIT,
+            TALKING_AGENTS, LOGGEDAGENTS, AVAILABLE_AGENTS,
+            RECEIVED, ANSWERED, ABANDONED, MEAN_WAIT, TOTAL_MAX_WAIT, EFFICIENCY, QOS, NB_COL
         };
 
     signals:
@@ -95,8 +95,6 @@ class QueuesModel : public QAbstractTableModel
         };
 
         struct QueueDataStruct {
-            unsigned waiting_calls;
-            unsigned max_wait;
             QMap<QString, QString> stats;
         };
 

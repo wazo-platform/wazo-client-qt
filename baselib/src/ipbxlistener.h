@@ -41,6 +41,8 @@
 
 class BASELIB_EXPORT IPBXListener {
     public :
+        IPBXListener();
+        ~IPBXListener();
         virtual void parseCommand(const QVariantMap &);
     protected :
         void registerListener(const QString &str);

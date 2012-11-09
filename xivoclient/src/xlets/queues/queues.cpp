@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -54,7 +54,7 @@ XletQueues::XletQueues(QWidget *parent)
     : XLet(parent),
       m_configureWindow(NULL)
 {
-    setTitle(tr("Queues' List"));
+    setTitle(tr("Queues"));
 
     QStringList xletlist;
     uint nsecs = 30;
@@ -68,35 +68,23 @@ XletQueues::XletQueues(QWidget *parent)
 
     registerListener("getqueuesstats");
 
-    // Model
     m_model = new QueuesModel(this);
 
-    // Proxy model
     m_proxyModel = new QueuesSortFilterProxyModel(this);
     m_proxyModel->setSourceModel(m_model);
-    m_proxyModel->setDynamicSortFilter(true); /* sorts right on insertion,
-    instead of half a second after the window has appeared */
     m_proxyModel->updateFilter();
 
-    // View
     QueuesView *view = new QueuesView(this);
     view->setModel(m_proxyModel);
     view->hideColumn(QueuesModel::ID);
     view->sortByColumn(QueuesModel::NAME, Qt::AscendingOrder);
     view->init();
 
-    // Layout
     xletLayout->addWidget(view);
 
-    // Timers
     QTimer * timer_display = new QTimer(this);
     QTimer * timer_request = new QTimer(this);
     connect(timer_request, SIGNAL(timeout()), this, SLOT(askForQueueStats()));
-    /* timer_display is not very precise : the server specifies the time only
-     * in seconds, then there could be a gap of maximum one second
-     * (or slightly more, depending on the ping to the server) between the real
-     * waiting time and the waiting time displayed.
-     */
     connect(timer_display, SIGNAL(timeout()),
             m_model, SLOT(increaseWaitTime()));
     timer_request->start(nsecs * 1000);
@@ -104,6 +92,18 @@ XletQueues::XletQueues(QWidget *parent)
 
     connect(m_model, SIGNAL(askForQueueStats()),
             this, SLOT(askForQueueStats()));
+
+
+    subscribeToQueuesStats();
+}
+
+void XletQueues::subscribeToQueuesStats()
+{
+    QVariantMap command;
+    command["class"] = "subscribetoqueuesstats";
+
+    b_engine->sendJsonCommand(command);
+
 }
 
 void XletQueues::parseCommand(const QVariantMap &map)
@@ -135,12 +135,11 @@ void XletQueues::askForQueueStats()
     for (int i = 0 ; i < m_model->rowCount(QModelIndex()) ; i++) {
         QModelIndex index = m_model->index(i, QueuesModel::ID);
         QString xqueueid = m_model->data(index).toString();
-        
+
         QVariantMap _param;
         _param["window"] = statConfig.value("window" + xqueueid, 3600).toString();
         _param["xqos"] = statConfig.value("xqos" + xqueueid, 60).toString();
 
-        //! \todo Using queueid for compatibilty, to be changed in the server
         QString queueid = xqueueid.section("/", 1, 1);
         _for[queueid] = _param;
     }
@@ -231,7 +230,7 @@ QWidget* XletQueuesConfigure::buildConfigureQueueList(QWidget *parent)
 
         spinBox = new QSpinBox(root);
         spinBox->setAlignment(Qt::AlignCenter);
-        spinBox->setMaximum(3600*24);
+        spinBox->setMaximum(3600*3);
         spinBox->setProperty("xqueueid", xqueueid);
         spinBox->setProperty("param", "window");
         spinBox->setValue(statConfig.value("window" + xqueueid, 3600).toInt());
@@ -252,7 +251,7 @@ void XletQueuesConfigure::changeQueueStatParam(int v)
 
     QVariantMap qcfg = b_engine->getConfig("guioptions.queuespanel").toMap();
     qcfg[param + xqueueid] = v;
-    
+
     QVariantMap config;
     config["guioptions.queuespanel"] = qcfg;
 

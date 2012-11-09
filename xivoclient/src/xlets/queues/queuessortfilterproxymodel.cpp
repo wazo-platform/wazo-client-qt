@@ -33,7 +33,7 @@
 #include "queuesmodel.h"
 
 QueuesSortFilterProxyModel::QueuesSortFilterProxyModel(QObject *parent)
-    : QSortFilterProxyModel(parent)
+    : AbstractSortFilterProxyModel(parent)
 {
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateFilter()));

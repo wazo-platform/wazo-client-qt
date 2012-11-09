@@ -259,9 +259,11 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
         square.fill(Qt::gray);
         m_agent_logged_action[xagentid]->setIcon(QIcon(square));
         tooltip = tr("Unknown %1").arg(agstatus);
-        b_engine->logClient("warning", "XletAgents::updateAgentDisplay",
-                            QString("agentid %1 agstatus <%2>")
-                            .arg(xagentid).arg(agstatus));
+        if(! agstatus.isEmpty()) {
+            b_engine->logClient("warning", "XletAgents::updateAgentDisplay",
+                                QString("agentid %1 agstatus <%2>")
+                                .arg(xagentid).arg(agstatus));
+        }
     }
     m_agent_logged_status[xagentid]->setPixmap(square);
     m_agent_logged_status[xagentid]->setToolTip(tooltip);

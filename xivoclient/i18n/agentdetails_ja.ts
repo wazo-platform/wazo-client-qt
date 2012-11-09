@@ -4,62 +4,60 @@
 <context>
     <name>XletAgentDetails</name>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="47"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="45"/>
         <source>Agent Details</source>
-        <translation type="unfinished"></translation>
+        <translation>エージェントの詳細</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="50"/>
+        <source>Queues</source>
+        <translation>キュー</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="51"/>
+        <source>Joined</source>
+        <translation>参加</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
-        <source>Queues</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="53"/>
-        <source>Joined</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="54"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>一時停止中</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="58"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
         <source>Login</source>
-        <translation type="unfinished">ログイン</translation>
+        <translation>ログイン</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="186"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt;上で</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
+        <source>logged off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
-        <source>logged off &lt;b&gt;%1&lt;/b&gt;</source>
+        <source>logged in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="198"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="205"/>
-        <source>logged on phone number &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="208"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="298"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="278"/>
         <source>Server: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>サーバ: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="300"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
         <source>Context: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Context: %1</translation>
     </message>
 </context>
 </TS>

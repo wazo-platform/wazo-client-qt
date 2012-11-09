@@ -4,7 +4,7 @@
 <context>
     <name>LogTableView</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="296"/>
+        <location filename="../src/xlets/history/history.cpp" line="294"/>
         <source>Call %1</source>
         <translation>Appel %1</translation>
     </message>

@@ -31,6 +31,7 @@
 
 #include "baseengine.h"
 #include "queuememberdao.h"
+#include "queue_agent_status.h"
 
 QStringList uniquify(QStringList list)
 {
@@ -38,14 +39,10 @@ QStringList uniquify(QStringList list)
     return ret;
 }
 
-QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_xid)
+QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_id)
 {
     QStringList ret;
-    const AgentInfo * agentinfo = b_engine->agent(agent_xid);
-    if (agentinfo == NULL) {
-        return QStringList();
-    }
-    QString agent_number = agentinfo->agentNumber();
+    QString agent_number = agentNumberFromAgentId(agent_id);
     foreach (QString queuemember_xid_config, b_engine->iterover("queuemembers").keys()) {
         const QueueMemberInfo *queuememberinfo_config = b_engine->queuemember(queuemember_xid_config);
         if (queuememberinfo_config != NULL) {
@@ -56,13 +53,19 @@ QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_xid)
             }
         }
     }
+    const AgentInfo * agentinfo = b_engine->agent(agent_id);
+    if (agentinfo == NULL) {
+        return QStringList();
+    }
     foreach (QString queue_xid, agentinfo->xqueueids()) {
         const QueueInfo * queueinfo = b_engine->queue(queue_xid);
-        QString queuemember_xid_status = queueinfo->reference("agents", agent_xid);
-        const QueueMemberInfo * queuememberinfo_status = b_engine->queuemembers().value(queuemember_xid_status);
-        if (queuememberinfo_status != NULL) {
-            if (queuememberinfo_status->membership() != "static") {
-                ret << queue_xid;
+        if (queueinfo != NULL) {
+            QString queuemember_xid_status = queueinfo->reference("agents", agent_id);
+            const QueueMemberInfo * queuememberinfo_status = b_engine->queuemembers().value(queuemember_xid_status);
+            if (queuememberinfo_status != NULL) {
+                if (queuememberinfo_status->membership() != "static") {
+                    ret << queue_xid;
+                }
             }
         }
     }
@@ -85,21 +88,30 @@ QString QueueMemberDAO::queueIdFromQueueName(const QString & queue_name)
 
 QString QueueMemberDAO::agentIdFromAgentNumber(const QString & agent_number)
 {
-    foreach(const QString &agent_xid, b_engine->iterover("agents").keys()) {
-        const AgentInfo *agentinfo = b_engine->agent(agent_xid);
+    foreach(const QString &agent_id, b_engine->iterover("agents").keys()) {
+        const AgentInfo *agentinfo = b_engine->agent(agent_id);
         if (agentinfo != NULL) {
             if (agentinfo->agentNumber() == agent_number) {
-                return agent_xid;
+                return agent_id;
             }
         }
     }
     return "";
 }
 
-QString QueueMemberDAO::queueMemberId(const QString & agent_xid,
+QString QueueMemberDAO::agentNumberFromAgentId(const QString & agent_id)
+{
+    const AgentInfo * agentinfo = b_engine->agent(agent_id);
+    if (agentinfo == NULL) {
+        return QString();
+    }
+    return agentinfo->agentNumber();
+}
+
+QString QueueMemberDAO::queueMemberId(const QString & agent_id,
                                       const QString & queue_xid)
 {
-    const AgentInfo * agentinfo = b_engine->agent(agent_xid);
+    const AgentInfo * agentinfo = b_engine->agent(agent_id);
     const QueueInfo * queueinfo = b_engine->queue(queue_xid);
     if (agentinfo != NULL && queueinfo != NULL) {
         QString agent_number = agentinfo->agentNumber();
@@ -113,4 +125,29 @@ QString QueueMemberDAO::queueMemberId(const QString & agent_xid,
         }
     }
     return "";
+}
+
+QStringList QueueMemberDAO::queueMembersFromAgentId(const QString & agent_id)
+{
+    QStringList ret;
+    QString agent_number = agentNumberFromAgentId(agent_id);
+    foreach (const QString & queue_member_id, b_engine->iterover("queuemembers").keys()) {
+        const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+        if (queue_member->agentNumber() == agent_number) {
+            ret << queue_member_id;
+        }
+    }
+    return ret;
+}
+
+QueueAgentStatus QueueMemberDAO::getAgentStatus(const QueueMemberInfo *queue_member)
+{
+    QueueAgentStatus agent_status;
+    QString membership = queue_member->membership();
+    QString status = queue_member->status();
+    QString paused = queue_member->paused();
+
+    agent_status.update(membership, status, paused);
+
+    return agent_status;
 }

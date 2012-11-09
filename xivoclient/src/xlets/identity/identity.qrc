@@ -2,6 +2,9 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/identity_fr.qm</file>
+        <file>../../../obj/identity_es_ES.qm</file>
+        <file>../../../obj/identity_pt_BR.qm</file>
+        <file>../../../obj/identity_hu.qm</file>
         <file>../../../obj/identity_de.qm</file>
         <file>../../../obj/identity_ja.qm</file>
         <file>../../../obj/identity_it.qm</file>

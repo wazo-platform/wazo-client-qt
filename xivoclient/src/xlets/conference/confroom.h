@@ -55,15 +55,20 @@ class ConfRoomModel : public QAbstractTableModel
     Q_OBJECT
 
     public:
-        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &);
+        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &, const QVariantMap &);
         void setView(ConfRoomView *m_view);
-        QString id() const;
-        QString row2participantId(int) const;
-        int isAdmin() { return m_admin; };
-        int isAuthed() { return m_authed; };
+        QString number() const { return m_number; }
+        QString row2participantId(int row) const { return m_row2number[row]; }
+        int isAdmin() { return m_admin; }
+        int isAuthed() { return m_authed; }
+        bool isRowMuted(int row) const;
+        const QString &roomNumber() const { return m_number; }
+        int userNumberFromRow(int row) const;
+    public slots:
+        void updateMeetmeConfig(const QVariantMap &);
+        void updateMembership() { reset(); }
     private slots:
         void extractRow2IdMap();
-        void updateMeetmesStatus(const QString &);
     protected:
         void timerEvent(QTimerEvent *event);
     private:
@@ -78,9 +83,10 @@ class ConfRoomModel : public QAbstractTableModel
         QWidget *m_parent;
         bool m_admin;
         bool m_authed;
-        QString m_id;
+        QString m_number;
         ConfRoomView *m_view;
-        QMap<int, QString> m_row2id;
+        QStringList m_row2number;
+        QVariantMap m_members;
 };
 
 class ConfRoomView : public QTableView
@@ -103,12 +109,9 @@ class ConfRoom : public QWidget
     Q_OBJECT
 
     public:
-        ConfRoom(QWidget *parent, ConfTab *tab, const QString &id);
-    public slots:
-        void pauseConf();
-        void allowedIn();
+        ConfRoom(QWidget *parent, ConfTab *tab, const QString &, const QVariantMap &);
     private:
-        QString m_id;
+        QString m_number;
         ConfRoomModel *m_model;
         QLabel *m_moderatedRoom;
 };

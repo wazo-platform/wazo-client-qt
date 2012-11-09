@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -42,9 +42,6 @@ class UserInfo;
 class XletQueues;
 class QueueInfo;
 
-/*! \brief to configure if the queue should be shown and the queue
- *  stats parameters
- */
 class XletQueuesConfigure : public QWidget
 {
     Q_OBJECT
@@ -57,8 +54,6 @@ class XletQueuesConfigure : public QWidget
         void changeQueueStatParam(int);
 };
 
-/*! \brief Displays queues and their status
- */
 class XletQueues : public XLet, IPBXListener
 {
     Q_OBJECT
@@ -72,6 +67,7 @@ class XletQueues : public XLet, IPBXListener
 
     private:
         void openConfigureWindow();
+        void subscribeToQueuesStats();
 
     public slots:
         void askForQueueStats();
@@ -91,6 +87,5 @@ class XLetQueuesPlugin : public QObject, XLetInterface
     public:
         XLet *newXLetInstance(QWidget *parent=0);
 };
-
 
 #endif

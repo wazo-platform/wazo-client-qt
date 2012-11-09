@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -52,28 +52,15 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
     m_gridlayout->setRowStretch(100, 1);
     m_gridlayout->addWidget(m_queuedescription, 0, 0);
     startTimer(1000);
-    // connect signal slots to engine
-    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
-            this, SLOT(updateAgentConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
-            this, SLOT(updateAgentStatus(const QString &)));
+
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
             this, SLOT(updateQueueConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
-            this, SLOT(updateQueueStatus(const QString &)));
-
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(monitorThisQueue(const QString &)));
-}
-
-void XLetQueueEntryDetails::updateAgentConfig(const QString & /*xagentid*/)
-{
-    // qDebug() << Q_FUNC_INFO << xagentid;
-}
-
-void XLetQueueEntryDetails::updateAgentStatus(const QString & /*xagentid*/)
-{
-    // qDebug() << Q_FUNC_INFO << xagentid;
+    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+            this, SLOT(subscribeQueueEntry(const QString &)));
+    connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
+            this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
 }
 
 void XLetQueueEntryDetails::updateQueueConfig(const QString & xqueueid)
@@ -82,26 +69,33 @@ void XLetQueueEntryDetails::updateQueueConfig(const QString & xqueueid)
         updatePanel();
 }
 
-void XLetQueueEntryDetails::updateQueueStatus(const QString & xqueueid)
-{
-    if (xqueueid == m_monitored_queueid)
-        updatePanel();
-}
-
 void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
 {
-    // qDebug() << Q_FUNC_INFO << queueid;
-    if(b_engine->hasQueue(queueid)) {
+    if(m_monitored_queueid != queueid && b_engine->hasQueue(queueid)) {
         m_monitored_queueid = queueid;
         updatePanel();
+        clearPanel();
+        m_queue_entries.clear();
+    }
+}
+
+void XLetQueueEntryDetails::subscribeQueueEntry(const QString &queue_xid)
+{
+    if (const QueueInfo *queue = b_engine->queue(queue_xid)) {
+        QVariantMap subscribe_command;
+        subscribe_command["class"] = "subscribe";
+        subscribe_command["message"] = "queueentryupdate";
+        subscribe_command["queueid"] = queue->id();
+
+        b_engine->sendJsonCommand(subscribe_command);
     }
 }
 
 void XLetQueueEntryDetails::clearPanel()
 {
-    foreach(QString q, m_entrypos.keys()) {
-        m_gridlayout->removeWidget(m_entrypos[q]);
-        delete m_entrypos[q];
+    foreach(int position, m_entrypos.keys()) {
+        m_gridlayout->removeWidget(m_entrypos[position]);
+        delete m_entrypos[position];
     }
     m_entrypos.clear();
 }
@@ -110,51 +104,53 @@ void XLetQueueEntryDetails::clearPanel()
  */
 void XLetQueueEntryDetails::updatePanel()
 {
-    const QueueInfo * queueinfo = b_engine->queue(m_monitored_queueid);
-    if (queueinfo == NULL)
-        return;
-
-    // qDebug() << Q_FUNC_INFO << queueinfo->queueName() << queueinfo->xincalls();
-    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
-                                .arg(queueinfo->queueName())
-                                .arg(queueinfo->queueNumber())
-                                .arg(queueinfo->ipbxid())
-                                .arg(queueinfo->context())
-                                .arg(queueinfo->xincalls().count())
-                                );
-
-    // queue legends
-    clearPanel();
-
-    foreach(QString xchannel, queueinfo->xincalls()) {
-        m_entrypos[xchannel] = new QLabel(this);
-        updateEntryChannel(xchannel);
+    if (const QueueInfo *queue = b_engine->queue(m_monitored_queueid)) {
+        int count = m_queue_entries.size();
+        updateDescription(queue, count);
+        clearPanel();
+        showEntries();
     }
 }
 
-void XLetQueueEntryDetails::updateEntryChannel(const QString & xchannel)
+void XLetQueueEntryDetails::showEntries()
 {
-    const QueueInfo * queueinfo = b_engine->queue(m_monitored_queueid);
-    if (queueinfo == NULL)
-        return;
-    const ChannelInfo * channelinfo = b_engine->channels().value(xchannel);
-    if (channelinfo == NULL)
-        return;
+    foreach(const QVariant &v_entry, m_queue_entries) {
+        const QVariantMap &entry = v_entry.toMap();
+        QString time_stamp = b_engine->timeElapsed(entry["join_time"].toDouble());
+        int position = entry["position"].toInt();
+        QString name = entry["name"].toString();
+        QString number = entry["number"].toString();
+        QString text = QString("%0: %1 <%2> %3").arg(position).arg(name).arg(number).arg(time_stamp);
+        QLabel *label = new QLabel(text, this);
+        m_entrypos[position] = label;
+        m_gridlayout->addWidget(m_entrypos[position], position, 0, Qt::AlignLeft);
+    }
+}
 
-    if(m_entrypos.contains(xchannel)) {
-        QString timespent = b_engine->timeElapsed(channelinfo->timestamp());
-        int position = queueinfo->xincalls().indexOf(xchannel, 0) + 1;
-        m_entrypos[xchannel]->setText(QString("%1 : %2 : %3")
-                                      .arg(position)
-                                      .arg(channelinfo->thisdisplay())
-                                      .arg(timespent));
-        m_gridlayout->addWidget( m_entrypos[xchannel], position, 0, Qt::AlignLeft );
+void XLetQueueEntryDetails::updateDescription(const QueueInfo *queue,
+                                              int count)
+{
+    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
+                                .arg(queue->queueDisplayName())
+                                .arg(queue->queueNumber())
+                                .arg(queue->ipbxid())
+                                .arg(queue->context())
+                                .arg(count));
+}
+
+void XLetQueueEntryDetails::queueEntryUpdate(const QString &queue_id,
+                                             const QVariantList &entry_list)
+{
+    if (const QueueInfo *queue = b_engine->queue(m_monitored_queueid)) {
+        if (queue->id() == queue_id) {
+            m_queue_entries = entry_list;
+            updatePanel();
+        }
     }
 }
 
 void XLetQueueEntryDetails::timerEvent(QTimerEvent *)
 {
-    // qDebug() << Q_FUNC_INFO;
-    foreach(QString xchannel, m_entrypos.keys())
-        updateEntryChannel(xchannel);
+    clearPanel();
+    showEntries();
 }

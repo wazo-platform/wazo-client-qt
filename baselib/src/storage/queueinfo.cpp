@@ -75,27 +75,47 @@ bool QueueInfo::updateStatus(const QVariantMap & prop)
         }
         haschanged = true;
     }
-    if (prop.contains("trunkmembers")) {
-        m_xtrunkids.clear();
-        m_trunkmembers.clear();
-        foreach (QString trunkid, prop.value("trunkmembers").toStringList()) {
-            QString xtrunkid = QString("%1/%2").arg(m_ipbxid).arg(trunkid); // to match against trunk membership
-            QString trunkmember = QString("qt:%1-%2").arg(m_id).arg(trunkid); // for requests to server
-            m_xtrunkids.append(xtrunkid);
-            m_trunkmembers.append(trunkmember);
-        }
-        haschanged = true;
-    }
-    if (prop.contains("incalls")) {
-        m_xincalls.clear();
-        // here it is meaningful to have them set in the right order
-        foreach (QString incall, prop.value("incalls").toStringList()) {
-            QString xincall = QString("%1/%2").arg(m_ipbxid).arg(incall);
-            m_xincalls.append(xincall);
-        }
-        haschanged = true;
-    }
     return haschanged;
+}
+
+const QString & QueueInfo::context() const
+{
+    return m_context;
+}
+
+const QString & QueueInfo::queueNumber() const
+{
+    return m_number;
+}
+
+const QString & QueueInfo::queueName() const
+{
+    return m_name;
+}
+
+const QString & QueueInfo::queueDisplayName() const
+{
+    return m_displayname;
+}
+
+const QStringList & QueueInfo::xagentids() const
+{
+    return m_xagentids;
+}
+
+const QStringList & QueueInfo::agentmembers() const
+{
+    return m_agentmembers;
+}
+
+const QStringList & QueueInfo::xphoneids() const
+{
+    return m_xphoneids;
+}
+
+const QStringList & QueueInfo::phonemembers() const
+{
+    return m_phonemembers;
 }
 
 QString QueueInfo::reference(const QString & where, const QString & xmemberid) const

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -34,8 +34,6 @@
 #include <baselib_export.h>
 #include <QString>
 
-/*! \brief Store Agent information
- */
 class BASELIB_EXPORT QueueMemberInfo : public XInfo
 {
     public:
@@ -49,8 +47,10 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         const QString & callstaken() const { return m_callstaken; };
         const QString & penalty() const { return m_penalty; };
         const QString & queueName() const { return m_queue_name; };
+        const QString & interface() const { return m_interface; };
+        QString agent_or_phone() const;
         QString agentNumber() const;
-        int lastcall() const { return m_lastcall; };
+        QString lastcall() const { return m_lastcall; };
         bool is_agent() const;
 
     private:
@@ -61,7 +61,7 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         QString m_penalty;
         QString m_queue_name;
         QString m_interface;
-        int m_lastcall;
+        QString m_lastcall;
 };
 
 #endif

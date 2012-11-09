@@ -54,12 +54,12 @@ class XletAgentDetails : public XLet
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
         void monitorThisAgent(const QString &);
-        void statusListen(const QString &, const QString &, const QString &);
 
     private slots:
         void queueClicked();
         void actionClicked();
         void updatePanel();
+        void onRemoveQueueConfig();
 
     private:
         void clearPanel();
@@ -68,6 +68,7 @@ class XletAgentDetails : public XLet
         void setQueueProps(const QString &);
         void setQueueAgentSignals(const QString &);
         void fillQueue(int, const QString &);
+        QString getQueueLabelText(const QString &);
 
         QGridLayout *m_gridlayout; //!< layout
         int m_linenum;  //!< line number ?

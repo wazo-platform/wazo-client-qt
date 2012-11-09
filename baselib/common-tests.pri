@@ -9,20 +9,12 @@ MOC_DIR = $$ROOT_DIR/obj
 OBJECTS_DIR = $$ROOT_DIR/obj
 DESTDIR = $${BIN_DIR}/tests
 
-# For mocks
-INCLUDEPATH += $${ROOT_DIR}/src/storage/tests
-# For tested classes
-INCLUDEPATH += $${ROOT_DIR}/src
-INCLUDEPATH += $${ROOT_DIR}/src/storage
-
-HEADERS += $${ROOT_DIR}/src/storage/tests/*.h
-SOURCES += $${ROOT_DIR}/src/storage/tests/*.cpp
-
+# Do not override the real definition of what we are testing
 # This adds lines 'include "<file>"' at the very beginning of the cpp file,
 # thus overriding definitions of real classes by mock classes.
 # This is only necessary for the inclusion by real classes.
 # Mock classes inclusions can safely ignore this.
-QMAKE_CXXFLAGS += "-include tests/mock_baseengine.h" \
-                  "-include tests/mock_phoneinfo.h" \
-                  "-include tests/mock_channelinfo.h" \
-                  "-include tests/mock_meetmeinfo.h"
+QMAKE_CXXFLAGS += "-include mock_baseengine.h" \
+                  "-include mock_phoneinfo.h" \
+                  "-include mock_channelinfo.h" \
+                  "-include mock_meetmeinfo.h"

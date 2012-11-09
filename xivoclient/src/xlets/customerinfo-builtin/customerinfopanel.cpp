@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -69,7 +69,6 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
     QString opt = "";
     qDebug() << Q_FUNC_INFO << popup->callWhere()
              << popup->callIpbxId() << popup->callChannel();
-    qDebug() << Q_FUNC_INFO << b_engine->channels();
     if(popup->sheetpopup()) {
         // removed the "already_popup" stuff, since it is already handled in displayFiche()
         QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm:ss");

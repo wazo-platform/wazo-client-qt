@@ -4,7 +4,7 @@
 # If you use advanced shell features, please check that Cygwin accepts them
 # as well.
 
-if [ ! $# -eq 2 ] ; then
+if [ $# -lt 1 ] ; then
     echo "Usage : $0 <versions_file>"
     echo "Example : $0 versions.mak"
     exit
@@ -22,15 +22,8 @@ fi
 CURRENT_COMMIT="$(git rev-list HEAD --max-count=1)"
 COMMIT_HASH="$(git log -1 --pretty=%h $CURRENT_COMMIT)"
 COMMIT_DATE="$(git log -1 --pretty=%ct $CURRENT_COMMIT)"
-LAST_GIT_TAG="$(git tag -l | tail -n 1)"
-LAST_GIT_TAG_COMMIT="$(git rev-list $LAST_GIT_TAG --max-count=1)"
-LAST_GIT_TAG_VERSION="${LAST_GIT_TAG:12}" # Gets 1.2.1, 1.2.2, ...
-if [ "$CURRENT_COMMIT" = "$LAST_GIT_TAG_COMMIT" ]
-then
-    XC_VERSION="$LAST_GIT_TAG_VERSION"
-else
-    XC_VERSION="dev-$COMMIT_DATE-$COMMIT_HASH"
-fi
+GIT_DESCRIBE="$(git describe)"
+XC_VERSION="${GIT_DESCRIBE:12}" # Strip "xivo-client-" from tag name
 DATEBUILD="$(LANG= date +%Y-%m-%dT%H:%M:%S)"
 
 
@@ -44,9 +37,4 @@ GIT_HASH=$COMMIT_HASH
 GIT_DATE=$COMMIT_DATE
 XC_VERSION=$XC_VERSION
 DATEBUILD=$DATEBUILD
-
-# Packaging infos
-LAST_GIT_TAG=$LAST_GIT_TAG
-LAST_GIT_TAG_COMMIT=$LAST_GIT_TAG_COMMIT
-LAST_GIT_TAG_VERSION=$LAST_GIT_TAG_VERSION
 EOF

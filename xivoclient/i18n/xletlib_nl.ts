@@ -4,113 +4,91 @@
 <context>
     <name>BasePeerWidget</name>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="49"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="65"/>
         <source>&amp;Open a chat window</source>
         <translation>&amp;Open een gespreksvenster</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="50"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="66"/>
         <source>Open a chat window with this user</source>
         <translation>Open een gespreksvenster met deze gebruiker</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="56"/>
-        <source>&amp;Remove</source>
-        <translation>&amp;Verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="57"/>
-        <source>Remove this peer from the panel</source>
-        <translation>Verwijder deze gesprekspartner van het panel</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="61"/>
-        <source>Re&amp;name</source>
-        <translation>Her&amp;benoemen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="62"/>
-        <source>Rename this peer</source>
-        <translation>Deze gesprekspartner herbenoemen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="66"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="72"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="67"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="73"/>
         <source>Intercept call</source>
         <translation>Oproep onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="418"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="439"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="357"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="379"/>
         <source>&amp;Call</source>
         <translation>&amp;Bellen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="449"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="389"/>
         <source>Call &amp;mobile</source>
-        <translation type="unfinished"></translation>
+        <translation>Bel &amp;mobiel</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="474"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="407"/>
         <source>&amp;Edit</source>
         <translation>&amp;Bewerken</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="491"/>
-        <source>&amp;Hangup</source>
-        <translation type="unfinished">&amp;Ophangen &amp;gesprek beëindigen</translation>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="424"/>
+        <source>&amp;Hangup call</source>
+        <translation>&amp;Oproep beëindigen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="515"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
         <source>Cancel transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorschakeling annuleren</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="534"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="459"/>
         <source>Invite in conference room</source>
+        <translation>Uitnodigen voor conference gesprek</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="479"/>
+        <source>&amp;Park correspondant</source>
+        <translation>&amp;Park correspondent</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="486"/>
+        <source>&amp;Park</source>
+        <translation>&amp;Parkeer</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="527"/>
+        <source>Blind &amp;Transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
-        <source>Direct &amp;Transfer</source>
-        <translation>Rechtstreeks &amp;Doorschakelen</translation>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="527"/>
+        <source>&amp;Attended Transfer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
-        <source>&amp;Indirect Transfer</source>
-        <translation>&amp;Onrechtstreeks Doorschakelen</translation>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="603"/>
+        <source>Blind transfer &lt;%0&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="619"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="620"/>
+        <source>Attended transfer &lt;%0&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="641"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="748"/>
-        <source>XiVO Client - Removing %1 %2</source>
-        <translation>XiVO Client - %1 %2 verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="749"/>
-        <source>Removing %1 %2.
-Are you sure ?</source>
-        <translation> %1 %2 verwijderen
-Bent u zeker?</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="764"/>
-        <source>Rename Item</source>
-        <translation>Dit item herbenoemen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="764"/>
-        <source>Rename %1 :</source>
-        <translation>%1 herbenoemen:</translation>
     </message>
 </context>
 <context>
@@ -118,7 +96,7 @@ Bent u zeker?</translation>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="56"/>
         <source>Phone Numbers : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoonnummers: %1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="60"/>
@@ -129,12 +107,13 @@ Bent u zeker?</translation>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="117"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersnaam: %1
+Telefoonnummers: %2</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="125"/>
         <source>Status : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Status: %1</translation>
     </message>
 </context>
 <context>
@@ -152,13 +131,13 @@ Phone Numbers : %2</source>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="99"/>
         <source>chitchat - %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>chitchat - %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <location filename="../src/xletlib/chitchat.cpp" line="182"/>
         <source>chat window opened with &quot;%1&quot; (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>chat venster geopend met &quot;%1&quot; (%2</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="156"/>
@@ -235,56 +214,65 @@ Bent u zeker?</translation>
         <location filename="../src/xletlib/externalphonepeerwidget.cpp" line="49"/>
         <source>Label : %1
 Phone Number : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Label: %1
+Telefoonnumber: %2</translation>
     </message>
 </context>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="238"/>
         <source>Agent Number : %1
 In Queues : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent Nummer: %1
+In Wachtrijen: %2</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="248"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="249"/>
         <source>Mobile number : %1</source>
         <translation>Mobiel nummer: %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="262"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="263"/>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="321"/>
-        <source>Status:%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersnaam: %1
+IPBXid: %2
+Status: %3</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="324"/>
+        <source>Status:%1</source>
+        <translation>Status: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="327"/>
         <source>No status (no phone number)</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen status (geen telefoonnummer)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="329"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="337"/>
         <source>&lt;EMPTY&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;LEEG&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="338"/>
         <source>Phone Number: %1
 Order: %2
 IPBXid: %3
 Context: %4
 Status: %5
 Busy lines: %6</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefoon Nummer: %1
+Volgorde: %2
+IPBXid: %3
+Context: %4
+Status: %5
+Bezette lijnen: %6</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="357"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="365"/>
         <source>(No callerid yet)</source>
         <translation>(Nog zonder callerid)</translation>
     </message>
@@ -302,7 +290,7 @@ Busy lines: %6</source>
     <message>
         <location filename="../src/xletlib/xlet.cpp" line="67"/>
         <source>experimental</source>
-        <translation type="unfinished"></translation>
+        <translation>experimenteel</translation>
     </message>
 </context>
 </TS>

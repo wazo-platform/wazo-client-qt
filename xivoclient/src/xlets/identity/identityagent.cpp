@@ -52,6 +52,7 @@ IdentityAgent::IdentityAgent(QWidget *parent)
     m_icon->setPixmap(QPixmap(":/images/identity/applixware.png"));
     m_icon->setContentsMargins(0, 0, 5, 0);
     m_text = new QLabel(this);
+    m_text->setObjectName("agent_number");
     m_status = new QLabel(this);
     m_statustxt = new QLabel(this);
     m_pause = new QLabel(this);
@@ -127,6 +128,7 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     }
 
     int njoined = joined.size();
+    qDebug() << Q_FUNC_INFO << joined;
     setPausedColors(njoined, njoined - unpaused);
 }
 

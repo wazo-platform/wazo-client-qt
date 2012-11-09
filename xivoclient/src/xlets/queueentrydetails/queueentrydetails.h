@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -49,30 +49,27 @@ class XLetQueueEntryDetails : public XLet
     public:
         XLetQueueEntryDetails(QWidget *parent=0);
 
-    signals:
-        void changeWatchedAgent(const QString &);   //!< change watched agent
-
     protected:
         void timerEvent(QTimerEvent *);
 
     public slots:
         void setGuiOptions(const QVariantMap &) {};
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
         void updateQueueConfig(const QString &);
-        void updateQueueStatus(const QString &);
         void monitorThisQueue(const QString &);
-
+        void subscribeQueueEntry(const QString &);
+        void queueEntryUpdate(const QString &, const QVariantList &);
     private:
-        void updateEntryChannel(const QString &);
         void clearPanel();
         void updatePanel();
+        void updateDescription(const QueueInfo *, int);
+        void showEntries();
 
         QGridLayout *m_gridlayout; //!< Layout
 
         QString m_monitored_queueid;  //!< queue id
         QLabel *m_queuedescription;   //!< label for displaying queue name
-        QHash<QString, QLabel *> m_entrypos;    //!< display entry
+        QHash<int, QLabel *> m_entrypos;    //!< display entry
+        QVariantList m_queue_entries;
 };
 
 class XLetQueueEntryDetailsPlugin : public QObject, XLetInterface

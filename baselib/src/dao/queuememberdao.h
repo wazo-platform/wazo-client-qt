@@ -33,6 +33,8 @@
 #include "baselib_export.h"
 
 class QStringList;
+class QueueMemberInfo;
+class QueueAgentStatus;
 
 class BASELIB_EXPORT QueueMemberDAO
 {
@@ -41,7 +43,10 @@ class BASELIB_EXPORT QueueMemberDAO
         static QStringList queueListFromAgentId(const QString &);
         static QString queueIdFromQueueName(const QString &);
         static QString agentIdFromAgentNumber(const QString &);
+        static QString agentNumberFromAgentId(const QString &);
         static QString queueMemberId(const QString &, const QString &);
+        static QStringList queueMembersFromAgentId(const QString &);
+        static QueueAgentStatus getAgentStatus(const QueueMemberInfo * queue_member);
 };
 
 #endif

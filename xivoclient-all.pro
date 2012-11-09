@@ -3,7 +3,7 @@ TEMPLATE = subdirs
 # Generating versions.mak
 include(xivoclient-all.pri)
 VERSIONS_FILE = versions.mak
-PREMAKE_COMMAND = ./premake.sh $${VERSIONS_FILE} $${XIVO_MAJOR_VERSION}
+PREMAKE_COMMAND = ./premake.sh $${VERSIONS_FILE}
 
 win32 {
     # Double quotes escapes && from cmd shell
@@ -39,6 +39,15 @@ tests {
     xlets.makefile = Makefile_xlets
     xlets.depends = xletlib
 
+    profiling {
+        SUBDIRS = staticlib xivoclient
+
+        staticlib.file = xivoclient/staticlib.pro
+        staticlib.makefile = Makefile_staticlib
+
+        xivoclient.depends = staticlib
+    }
+
     # Pack rule
     win32 {
         pack.target = pack
@@ -60,10 +69,10 @@ tests {
         pack.commands += \"$${NSIS_PATH}/makensis\" \
             $${CYGWIN_PATH}/tmp/xivoclient-win/installer.nsi &&
         pack.commands += $(COPY_FILE) \
-           $${CYGWIN_PATH}\\tmp\\xivoclient-win\\xivoclient-inst.exe \
-           %CD%\\xivoclient-$${XIVO_MAJOR_VERSION}.-x86.exe
+           $${CYGWIN_PATH}\\tmp\\xivoclient-win\\xivoclient-*.exe \
+           %CD%
     }
-    unix {
+    linux-g++ {
         pack.target = pack
         pack.input = cross/resources/xivoclient.png \
                      cross/resources/xivoclient.desktop

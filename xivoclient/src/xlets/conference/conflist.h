@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -56,19 +56,21 @@ class ConfListModel : public QAbstractTableModel
 
     public:
         ConfListModel(QWidget *parent = NULL);
-
-    private slots:
-        void updateMeetmesConfig(const QString &);
-        void removeMeetmeConfig(const QString &);
+        QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
+    public slots:
+        void updateRoomConfigs(const QVariantMap &);
     protected:
         void timerEvent(QTimerEvent *event);
     private:
+        void refreshRow2Number();
+        QString startedSince(double time) const;
         int rowCount(const QModelIndex&) const;
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int , Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
-        QStringList m_row2id;
+        QStringList m_row2number;
+        QVariantMap m_room_configs;
 };
 
 class ConfListView : public QTableView
@@ -96,7 +98,8 @@ class ConfList : public QWidget
         void openConfRoom();
         void phoneConfRoom();
     private:
-        XletConference * m_manager;
+        XletConference *m_manager;
+        ConfListModel *m_model;
 };
 
 #endif
