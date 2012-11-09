@@ -39,8 +39,8 @@ AgentsModel::AgentsModel(QObject *parent)
 {
   m_headers[ID] = "ID";
   m_headers[NUMBER] = tr("Number");
-  m_headers[LASTNAME] = tr("Last name");
   m_headers[FIRSTNAME] = tr("First name");
+  m_headers[LASTNAME] = tr("Last name");
   m_headers[SPY_BUTTON] = "";
   m_headers[SPY_STATUS] = tr("Listen");
   m_headers[ONLINE] = tr("On Line");
@@ -75,43 +75,47 @@ bool AgentsModel::removeRows(int row, int count, const QModelIndex &)
     return true;
 }
 
-void AgentsModel::updateAgentConfig(const QString &xid)
+void AgentsModel::updateAgentConfig(const QString &agent_id)
 {
-    if (! m_row2id.contains(xid)) {
+    if (! m_row2id.contains(agent_id)) {
         int insertedRow = m_row2id.size();
         beginInsertRows(QModelIndex(), insertedRow, insertedRow);
-        m_row2id.append(xid);
+        m_row2id.append(agent_id);
         endInsertRows();
 
     } else {
-        QModelIndex firstCell = createIndex(m_row2id.indexOf(xid), ID);
-        QModelIndex lastCell = createIndex(m_row2id.indexOf(xid), PAUSED_QUEUES);
-        // sends signal to proxy/view that the data should be refreshed
-        emit dataChanged(firstCell, lastCell);
+        this->refreshAgentRow(agent_id);
     }
 }
 
-void AgentsModel::removeAgentConfig(const QString &xid)
+void AgentsModel::removeAgentConfig(const QString &agent_id)
 {
-    if (m_row2id.contains(xid)) {
-        int removedRow = m_row2id.indexOf(xid);
-        removeRow(removedRow); // calls removeRows
+    if (m_row2id.contains(agent_id)) {
+        int removedRow = m_row2id.indexOf(agent_id);
+        removeRow(removedRow);
     }
 }
 
-void AgentsModel::updateAgentStatus(const QString &xid)
+void AgentsModel::updateAgentStatus(const QString &agent_id)
 {
-  if (!m_row2id.contains(xid)) {
-      return;
-  }
+    if (!m_row2id.contains(agent_id)) {
+        return;
+    }
 
-  const AgentInfo * agentinfo = b_engine->agent(xid);
-  if (agentinfo == NULL) return;
+    const AgentInfo * agentinfo = b_engine->agent(agent_id);
+    if (agentinfo == NULL) return;
 
-  QModelIndex firstCell = createIndex(m_row2id.indexOf(xid), ID);
-  QModelIndex lastCell = createIndex(m_row2id.indexOf(xid), PAUSED_QUEUES);
-  // sends signal to proxy/view that the data should be refreshed
-  emit dataChanged(firstCell, lastCell);
+    this->refreshAgentRow(agent_id);
+}
+
+void AgentsModel::refreshAgentRow(const QString & agent_id)
+{
+    unsigned first_column_index = 0;
+    unsigned last_column_index = NB_COL - 1;
+    unsigned agent_row_id = m_row2id.indexOf(agent_id);
+    QModelIndex cell_changed_start = createIndex(agent_row_id, first_column_index);
+    QModelIndex cell_changed_end = createIndex(agent_row_id, last_column_index);
+    emit dataChanged(cell_changed_start, cell_changed_end);
 }
 
 void AgentsModel::updateAgentListenStatus(const QString & ipbxid, const QString & xagentid, const QString & status)
@@ -136,15 +140,10 @@ QVariant AgentsModel::headerData(int section,
 
 QVariant AgentsModel::data(const QModelIndex &index, int role) const
 {
-    // Alignment
     if (role == Qt::TextAlignmentRole) {
         return Qt::AlignCenter;
     }
-    /* Rows here are not the same than the lines displayed by the view,
-     * as there is a proxy model between the view and this model,
-     * that maps the displayed lines to the stored lines, see ConfList
-     * constructor
-     */
+
     int row = index.row(), col = index.column();
     QString xagentid;
 
@@ -175,10 +174,6 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
     int njoined = joined_queues.size();
     int npaused = paused_queues.size();
 
-
-
-    // Data
-
     QString not_available = tr("N/A");
     if (role == Qt::DisplayRole) {
         switch (col) {
@@ -204,7 +199,7 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-int AgentsModel::getNumberOfJoinedQueues(const QString &agent_xid)
+int AgentsModel::getNumberOfJoinedQueues(const QString &agent_id)
 {
-    return (QueueMemberDAO::queueListFromAgentId(agent_xid).size());
+    return (QueueMemberDAO::queueListFromAgentId(agent_id).size());
 }

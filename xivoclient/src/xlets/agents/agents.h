@@ -27,13 +27,10 @@
 #ifndef __AGENTSPANEL_H__
 #define __AGENTSPANEL_H__
 
-#include <QtGui>
-#include <baseengine.h>
 #include <xletinterface.h>
 #include <xlet.h>
 
 #include "agentsmodel.h"
-#include "agentsview.h"
 
 class XletAgents : public XLet
 {

@@ -37,7 +37,6 @@ class AgentsModel : public QAbstractTableModel
 {
     Q_OBJECT
 
-    // Methods
     public:
         AgentsModel(QObject *parent = NULL);
 
@@ -55,12 +54,12 @@ class AgentsModel : public QAbstractTableModel
         void updateAgentConfig(const QString &);
         void removeAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
+        void refreshAgentRow(const QString & agent_id);
         void updateAgentListenStatus(const QString &, const QString &, const QString &);
 
-   // Attributes
     public:
         enum Columns {
-            ID, NUMBER, LASTNAME, FIRSTNAME, SPY_BUTTON, SPY_STATUS, ONLINE, PRESENCE,
+            ID, NUMBER, FIRSTNAME, LASTNAME, SPY_BUTTON, SPY_STATUS, ONLINE, PRESENCE,
             LOGGED_STATUS, JOINED_QUEUES, PAUSE_STATUS, PAUSE_BUTTON, PAUSED_QUEUES, NB_COL
         };
 

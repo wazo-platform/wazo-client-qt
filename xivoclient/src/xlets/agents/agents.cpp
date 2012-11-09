@@ -24,8 +24,13 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QVBoxLayout>
+
+#include <baseengine.h>
+
 #include "agents.h"
 #include "agentstatusdelegate.h"
+#include "agentsview.h"
 
 Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
 

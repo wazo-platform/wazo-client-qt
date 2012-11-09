@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,27 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __XLETINTERFACE_H__
 #define __XLETINTERFACE_H__
+
+#include <QtPlugin>
 
 class QWidget;
 class XLet;
 
-/*! \brief inteface class for xlets
- *
- * Only one method which return a XLet of the selected type.
- * Inherited classes could implement also constructor or destructor
- * in order to initialize things.
- */
 class XLetInterface
 {
     public:
         virtual ~XLetInterface() {};
-        virtual XLet* newXLetInstance(QWidget *) = 0; //! Return a XLet of the type of the plugin loaded
+        virtual XLet* newXLetInstance(QWidget *) = 0;
 };
 
 Q_DECLARE_INTERFACE(XLetInterface, "com.avencall.Plugin.XLetInterface/1.2");
