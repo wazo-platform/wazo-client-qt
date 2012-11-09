@@ -86,3 +86,6 @@ void AgentStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 }
 
+void AgentStatusDelegate::commitAndCloseEditor()
+ {
+ }

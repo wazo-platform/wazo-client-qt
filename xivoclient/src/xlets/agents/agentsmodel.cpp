@@ -70,6 +70,54 @@ int AgentsModel::columnCount(const QModelIndex&) const
     return NB_COL;
 }
 
+bool AgentsModel::removeRows(int row, int count, const QModelIndex &)
+{
+    return true;
+}
+
+void AgentsModel::updateAgentConfig(const QString &xid)
+{
+    if (! m_row2id.contains(xid)) {
+        int insertedRow = m_row2id.size();
+        beginInsertRows(QModelIndex(), insertedRow, insertedRow);
+        m_row2id.append(xid);
+        endInsertRows();
+
+    } else {
+        QModelIndex firstCell = createIndex(m_row2id.indexOf(xid), ID);
+        QModelIndex lastCell = createIndex(m_row2id.indexOf(xid), PAUSED_QUEUES);
+        // sends signal to proxy/view that the data should be refreshed
+        emit dataChanged(firstCell, lastCell);
+    }
+}
+
+void AgentsModel::removeAgentConfig(const QString &xid)
+{
+    if (m_row2id.contains(xid)) {
+        int removedRow = m_row2id.indexOf(xid);
+        removeRow(removedRow); // calls removeRows
+    }
+}
+
+void AgentsModel::updateAgentStatus(const QString &xid)
+{
+  if (!m_row2id.contains(xid)) {
+      return;
+  }
+
+  const AgentInfo * agentinfo = b_engine->agent(xid);
+  if (agentinfo == NULL) return;
+
+  QModelIndex firstCell = createIndex(m_row2id.indexOf(xid), ID);
+  QModelIndex lastCell = createIndex(m_row2id.indexOf(xid), PAUSED_QUEUES);
+  // sends signal to proxy/view that the data should be refreshed
+  emit dataChanged(firstCell, lastCell);
+}
+
+void AgentsModel::updateAgentListenStatus(const QString & ipbxid, const QString & xagentid, const QString & status)
+{
+}
+
 QVariant AgentsModel::headerData(int section,
                                  Qt::Orientation orientation,
                                  int role) const
@@ -139,9 +187,9 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
             case NUMBER :
                 return agentinfo->agentNumber();
             case LASTNAME :
-                return agentinfo->lastName();
+                return agentinfo->lastname();
             case FIRSTNAME :
-                return agentinfo->firstName();
+                return agentinfo->firstname();
             case JOINED_QUEUES :
                 return njoined;
             case PAUSED_QUEUES :
@@ -159,44 +207,4 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
 int AgentsModel::getNumberOfJoinedQueues(const QString &agent_xid)
 {
     return (QueueMemberDAO::queueListFromAgentId(agent_xid).size());
-}
-
-bool AgentsModel::removeRows(int row, int count, const QModelIndex &)
-{
-    return true;
-}
-
-void AgentsModel::updateAgentConfig(const QString &xid)
-{
-    if (! m_row2id.contains(xid)) {
-        int insertedRow = m_row2id.size();
-        beginInsertRows(QModelIndex(), insertedRow, insertedRow);
-        m_row2id.append(xid);
-        endInsertRows();
-
-    } else {
-        QModelIndex firstCell = createIndex(m_row2id.indexOf(xid), ID);
-        QModelIndex lastCell = createIndex(m_row2id.indexOf(xid), PAUSED_QUEUES);
-        // sends signal to proxy/view that the data should be refreshed
-        emit dataChanged(firstCell, lastCell);
-    }
-}
-
-void AgentsModel::updateAgentStatus(const QString &xid)
-{
-  if (!m_row2id.contains(xid)) {
-      return;
-  }
-
-  const AgentInfo * agentinfo = b_engine->agent(xid);
-  if (agentinfo == NULL) return;
-
-  QModelIndex firstCell = createIndex(m_row2id.indexOf(xid), ID);
-  QModelIndex lastCell = createIndex(m_row2id.indexOf(xid), PAUSED_QUEUES);
-  // sends signal to proxy/view that the data should be refreshed
-  emit dataChanged(firstCell, lastCell);
-}
-
-void AgentsModel::updateAgentListenStatus(const QString & ipbxid, const QString & xagentid, const QString & status)
-{
 }
