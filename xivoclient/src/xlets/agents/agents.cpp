@@ -29,9 +29,8 @@
 #include <baseengine.h>
 
 #include "agents.h"
-#include "agentstatusdelegate.h"
-#include "agentsview.h"
-#include "agentsmodel.h"
+#include "agents_view.h"
+#include "agents_model.h"
 
 Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
 

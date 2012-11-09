@@ -32,7 +32,7 @@
 #include <baseengine.h>
 #include <queuememberdao.h>
 
-#include "agentsmodel.h"
+#include "agents_model.h"
 
 QString AgentsModel::not_available = tr("N/A");
 

@@ -28,8 +28,8 @@
  */
 
 #include <baseengine.h>
-#include "agentsmodel.h"
-#include "agentsview.h"
+#include "agents_model.h"
+#include "agents_view.h"
 
 AgentsView::AgentsView(QWidget *parent)
     : AbstractTableView(parent)
