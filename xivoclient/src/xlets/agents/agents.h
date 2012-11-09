@@ -30,7 +30,9 @@
 #include <xletinterface.h>
 #include <xlet.h>
 
-#include "agentsmodel.h"
+class QVBoxLayout;
+class AgentsView;
+class AgentsModel;
 
 class XletAgents : public XLet
 {
@@ -39,7 +41,10 @@ class XletAgents : public XLet
         XletAgents(QWidget *parent);
 
     private:
-        AgentsModel *m_model;
+        void addCenteredBody(QVBoxLayout * layout);
+
+        AgentsView * m_view;
+        AgentsModel * m_model;
 };
 
 class XLetAgentsPlugin : public QObject, XLetInterface

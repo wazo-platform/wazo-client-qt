@@ -31,6 +31,7 @@
 #include "agents.h"
 #include "agentstatusdelegate.h"
 #include "agentsview.h"
+#include "agentsmodel.h"
 
 Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
 
@@ -51,15 +52,26 @@ XletAgents::XletAgents(QWidget *parent)
 
     m_model = new AgentsModel(this);
 
-    AgentsView *view = new AgentsView(this);
-    view->setModel(m_model);
-    view->hideColumn(AgentsModel::ID);
-    view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
+    m_view = new AgentsView(this);
+    m_view->setModel(m_model);
+    m_view->hideColumn(AgentsModel::ID);
+    m_view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
 
-    xletLayout->addWidget(view);
-
+    xletLayout->addWidget(m_view);
+    this->addCenteredBody(xletLayout);
 }
 
+
+void XletAgents::addCenteredBody(QVBoxLayout * layout)
+{
+    QHBoxLayout * centering_layout = new QHBoxLayout();
+
+    centering_layout->insertStretch(0);
+    centering_layout->addWidget(m_view);
+    centering_layout->insertStretch(2);
+
+    layout->addLayout(centering_layout);
+}
 
 // if (action == "changeagent") {
 //     b_engine->changeWatchedAgent(xagentid, true);
