@@ -72,35 +72,3 @@ void XletAgents::addCenteredBody(QVBoxLayout * layout)
 
     layout->addLayout(centering_layout);
 }
-
-// if (action == "changeagent") {
-//     b_engine->changeWatchedAgent(xagentid, true);
-// }
-
-// else if (action == "loginoff") {
-//     QString status = agentinfo->status();
-//     ipbxcommand["agentids"] = xagentid;
-//     if (status == "AGENT_IDLE")
-//         ipbxcommand["command"] = "agentlogout";
-//     else if (status == "AGENT_ONCALL")
-//         ipbxcommand["command"] = "agentlogout";
-//     else if (status == "AGENT_LOGGEDOFF")
-//         ipbxcommand["command"] = "agentlogin";
-//     else
-//         b_engine->logClient("warning", "XletAgents::agentClicked",
-//                             QString("agentid %1 action %2 status %3")
-//                             .arg(xagentid).arg(action).arg(status));
-// } else if (action == "unpause") {
-//     ipbxcommand["command"] = "queuepause";
-//     ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
-//     ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-// } else if (action == "pause") {
-//     ipbxcommand["command"] = "queueunpause";
-//     ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
-//     ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-// } else if (action.endsWith("listen")) {
-//     ipbxcommand["command"] = action;
-//     ipbxcommand["subcommand"] = action == "listen" ? "start" : "stop";
-//     ipbxcommand["destination"] = xagentid;
-// }
-// emit ipbxCommand(ipbxcommand);
