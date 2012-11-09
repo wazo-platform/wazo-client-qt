@@ -51,6 +51,8 @@ AgentsModel::AgentsModel(QObject *parent)
 
     connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
             this, SLOT(updateAgentConfig(const QString &)));
+    connect(b_engine, SIGNAL(removeAgentConfig(const QString &)),
+            this, SLOT(removeAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(statusListen(const QString &, const QString &, const QString &)),
@@ -67,9 +69,18 @@ int AgentsModel::columnCount(const QModelIndex&) const
     return NB_COL;
 }
 
-bool AgentsModel::removeRows(int /*row*/, int /*count*/, const QModelIndex & /*index*/)
+bool AgentsModel::removeRows(int row, int count, const QModelIndex & index)
 {
-    return true;
+    bool ret = true;
+    if (count > 0) {
+        beginRemoveRows(index, row, row + count - 1);
+        for (int i = 0 ; i < count ; i ++) {
+            ret = ret && row < m_row2id.size();
+            m_row2id.removeAt(row);
+        }
+        endRemoveRows();
+    }
+    return ret;
 }
 
 void AgentsModel::updateAgentConfig(const QString &agent_id)
