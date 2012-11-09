@@ -56,296 +56,35 @@ XletAgents::XletAgents(QWidget *parent)
 
 }
 
-void XletAgents::updateAgentConfig(const QString & xagentid)
-{
-    const AgentInfo * agentinfo = b_engine->agent(xagentid);
-    if (agentinfo == NULL)
-        return;
 
-    bool newagentid = false;
+// if (action == "changeagent") {
+//     b_engine->changeWatchedAgent(xagentid, true);
+// }
 
-    if (! m_agent_labels.contains(xagentid)) {
-        newAgentLine(xagentid);
-        newagentid = true;
-    }
-    updateAgentLineAdmin(xagentid);
-    updateAgentLineEvent(xagentid);
-    if (newagentid)
-        displayLine(xagentid, m_agent_labels.size());
-
-    updateAgentDisplay(xagentid);
-}
-
-void XletAgents::updateAgentStatus(const QString & xagentid)
-{
-    updateAgentDisplay(xagentid);
-}
-
-void XletAgents::newAgentLine(const QString & xagentid)
-{
-    m_agent_labels[xagentid] = new QLabel(this);
-    m_agent_more[xagentid] = new QPushButton(this);
-    connect(m_agent_more[xagentid], SIGNAL(clicked()),
-             this, SLOT(agentClicked()));
-    m_agent_listen[xagentid] = new QPushButton(this);
-    connect(m_agent_listen[xagentid], SIGNAL(clicked()),
-             this, SLOT(agentClicked()));
-    m_agent_logged_action[xagentid] = new QPushButton(this);
-    connect(m_agent_logged_action[xagentid], SIGNAL(clicked()),
-             this, SLOT(agentClicked()));
-    m_agent_paused_action[xagentid] = new QPushButton(this);
-    connect(m_agent_paused_action[xagentid], SIGNAL(clicked()),
-             this, SLOT(agentClicked()));
-
-    m_agent_busy[xagentid] = new QLabel(this);
-    m_agent_presence[xagentid] = new QLabel(this);
-    m_agent_logged_status[xagentid] = new QLabel(this);
-    m_agent_joined_number[xagentid] = new QLabel(this);
-    m_agent_paused_number[xagentid] = new QLabel(this);
-    m_agent_paused_status[xagentid] = new QLabel(this);
-}
-
-void XletAgents::updateAgentLineAdmin(const QString & xagentid)
-{
-    const AgentInfo * agentinfo = b_engine->agent(xagentid);
-    if (agentinfo == NULL)
-        return;
-
-    m_agent_labels[xagentid]->setText(QString("%1 (%2)")
-                                      .arg(agentinfo->fullname())
-                                      .arg(agentinfo->agentNumber()));
-    m_agent_labels[xagentid]->setToolTip(tr("Server: %1\n"
-                                            "Context: %2")
-                                         .arg(agentinfo->ipbxid())
-                                         .arg(agentinfo->context()));
-    m_agent_more[xagentid]->setProperty("xagentid", xagentid);
-    m_agent_more[xagentid]->setProperty("action", "changeagent");
-    m_agent_listen[xagentid]->setProperty("xagentid", xagentid);
-    m_agent_busy[xagentid]->setProperty("xagentid", xagentid);
-    m_agent_logged_action[xagentid]->setProperty("xagentid", xagentid);
-    m_agent_paused_action[xagentid]->setProperty("xagentid", xagentid);
-}
-
-void XletAgents::updateAgentLineEvent(const QString & xagentid)
-{
-    m_agent_listen[xagentid]->setProperty("action", "listen");
-    m_agent_logged_action[xagentid]->setProperty("action", "loginoff");
-    m_agent_paused_action[xagentid]->setProperty("action", "pause");
-}
-
-void XletAgents::displayLine(const QString & xagentid, int linenum)
-{
-    QFrame * qvline1 = new QFrame(this);
-    qvline1->setFrameShape(QFrame::VLine);
-    qvline1->setLineWidth(1);
-    QFrame * qvline2 = new QFrame(this);
-    qvline2->setFrameShape(QFrame::VLine);
-    qvline2->setLineWidth(1);
-    QFrame * qvline3 = new QFrame(this);
-    qvline3->setFrameShape(QFrame::VLine);
-    qvline3->setLineWidth(1);
-
-    QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-    square.fill(Qt::gray);
-    m_agent_presence[xagentid]->setPixmap(square);
-
-    m_agent_more[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-    m_agent_more[xagentid]->setIcon(QIcon(":/images/add.png"));
-    m_agent_listen[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-    m_agent_listen[xagentid]->setIcon(QIcon(":/images/player_play.png"));
-    m_agent_logged_action[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-    m_agent_paused_action[xagentid]->setIconSize(QSize(m_gui_buttonsize, m_gui_buttonsize));
-
-    int colnum = 0;
-    m_gridlayout->addWidget(m_agent_labels[xagentid], linenum, colnum++, Qt::AlignLeft);
-    m_gridlayout->addWidget(m_agent_more[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_listen[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_busy[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(qvline1, linenum, colnum++, Qt::AlignHCenter);
-    m_gridlayout->addWidget(m_agent_presence[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(qvline2, linenum, colnum++, Qt::AlignHCenter);
-    m_gridlayout->addWidget(m_agent_logged_status[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_logged_action[xagentid], linenum, colnum++, Qt::AlignCenter);
-    ++colnum;
-    m_gridlayout->addWidget(m_agent_joined_number[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(qvline3, linenum, colnum++, Qt::AlignHCenter);
-    m_gridlayout->addWidget(m_agent_paused_status[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_paused_action[xagentid], linenum, colnum++, Qt::AlignCenter);
-    m_gridlayout->addWidget(m_agent_paused_number[xagentid], linenum, colnum++, Qt::AlignCenter);
-}
-
-void XletAgents::updateAgentDisplay(const QString & xagentid)
-{
-    const AgentInfo * agentinfo = b_engine->agent(xagentid);
-    if (agentinfo == NULL)
-        return;
-    if (! m_agent_busy.contains(xagentid))
-        return;
-
-    QString context_agent = agentinfo->context();
-    QString agstatus = agentinfo->status();
-    QString phonenum = agentinfo->phonenumber();
-
-    QVariantMap slink;
-    bool link = false;
-    if (! slink.isEmpty()) {
-        QString linkmode = slink.value("linkmode").toString();
-        if ((linkmode == "phonelink") || (linkmode == "agentlink"))
-            link = true;
-        else
-            b_engine->logClient("warning", "XletAgents::updateAgentDisplay",
-                                QString("agentid %1 linkmode <%2>")
-                                .arg(xagentid).arg(linkmode));
-    }
-
-    QPixmap square(m_gui_buttonsize, m_gui_buttonsize);
-    if (link) {
-        square.fill(Qt::green);
-    } else {
-        square.fill(Qt::gray);
-    }
-
-    m_agent_busy[xagentid]->setPixmap(square);
-
-    QString tooltip;
-    if (agstatus == "AGENT_IDLE") {
-        square.fill(Qt::green);
-        m_agent_logged_action[xagentid]->setIcon(QIcon(":/images/cancel.png"));
-        tooltip = tr("Agent logged on %1").arg(phonenum);
-    } else if (agstatus == "AGENT_ONCALL") {
-        square.fill(Qt::green);
-        m_agent_logged_action[xagentid]->setIcon(QIcon(":/images/cancel.png"));
-        tooltip = tr("Agent logged on %1").arg(phonenum);
-    } else if (agstatus == "AGENT_LOGGEDOFF") {
-        square.fill(Qt::red);
-        m_agent_logged_action[xagentid]->setIcon(QIcon(":/images/button_ok.png"));
-        tooltip = tr("Agent NOT logged");
-    } else {
-        square.fill(Qt::gray);
-        m_agent_logged_action[xagentid]->setIcon(QIcon(square));
-        tooltip = tr("Unknown %1").arg(agstatus);
-        if(! agstatus.isEmpty()) {
-            b_engine->logClient("warning", "XletAgents::updateAgentDisplay",
-                                QString("agentid %1 agstatus <%2>")
-                                .arg(xagentid).arg(agstatus));
-        }
-    }
-    m_agent_logged_status[xagentid]->setPixmap(square);
-    m_agent_logged_status[xagentid]->setToolTip(tooltip);
-
-    QStringList joined_queues;
-    QStringList paused_queues;
-
-    foreach (QString xqueueid, agentinfo->xqueueids()) {
-        const QueueInfo * queueinfo = b_engine->queue(xqueueid);
-        if (queueinfo == NULL)
-            continue;
-        QString xqueuemember = queueinfo->reference("agents", xagentid);
-        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
-        if (qmi == NULL)
-            continue;
-        joined_queues << queueinfo->queueName();
-        if (qmi->paused() == "1")
-            paused_queues << queueinfo->queueName();
-    }
-
-    int njoined = joined_queues.size();
-    int npaused = paused_queues.size();
-    QString sep = ", ";
-
-    m_agent_joined_number[xagentid]->setText(QString::number(njoined));
-    m_agent_paused_number[xagentid]->setText(QString::number(npaused));
-
-    if (njoined)
-        m_agent_joined_number[xagentid]->setToolTip(tr("Joined queues : %1")
-                                                   .arg(joined_queues.join(sep)));
-    else
-        m_agent_joined_number[xagentid]->setToolTip("");
-
-    if (njoined == 0) {
-        m_agent_paused_status[xagentid]->hide();
-        m_agent_paused_action[xagentid]->hide();
-        m_agent_paused_number[xagentid]->hide();
-    } else {
-        QString tooltip;
-        if (npaused == 0) {
-            m_agent_paused_status[xagentid]->setText(tr("No"));
-            m_agent_paused_action[xagentid]->setIcon(QIcon(":/images/cancel.png"));
-            m_agent_paused_action[xagentid]->setProperty("action", "unpause");
-            tooltip = "";
-        } else if (npaused == njoined) {
-            m_agent_paused_status[xagentid]->setText(tr("Yes"));
-            m_agent_paused_action[xagentid]->setIcon(QIcon(":/images/button_ok.png"));
-            m_agent_paused_action[xagentid]->setProperty("action", "pause");
-            tooltip = tr("Paused queues : %1").arg(paused_queues.join(sep));
-        } else {
-            m_agent_paused_status[xagentid]->setText(tr("Partial"));
-            m_agent_paused_action[xagentid]->setIcon(QIcon(":/images/button_ok.png"));
-            m_agent_paused_action[xagentid]->setProperty("action", "pause");
-            tooltip = tr("Paused queues : %1").arg(paused_queues.join(sep));
-        }
-        m_agent_paused_status[xagentid]->setToolTip(tooltip);
-        m_agent_paused_number[xagentid]->setToolTip(tooltip);
-        m_agent_paused_status[xagentid]->show();
-        m_agent_paused_action[xagentid]->show();
-        m_agent_paused_number[xagentid]->show();
-    }
-}
-
-void XletAgents::agentClicked()
-{
-    QString xagentid = sender()->property("xagentid").toString();
-    const AgentInfo * agentinfo = b_engine->agent(xagentid);
-    if (agentinfo == NULL)
-        return;
-    QString action  = sender()->property("action").toString();
-
-    QString ipbxid = agentinfo->ipbxid();
-    QVariantMap ipbxcommand;
-
-    if (action == "changeagent") {
-        b_engine->changeWatchedAgent(xagentid, true);
-    }
-
-    else if (action == "loginoff") {
-        QString status = agentinfo->status();
-        ipbxcommand["agentids"] = xagentid;
-        if (status == "AGENT_IDLE")
-            ipbxcommand["command"] = "agentlogout";
-        else if (status == "AGENT_ONCALL")
-            ipbxcommand["command"] = "agentlogout";
-        else if (status == "AGENT_LOGGEDOFF")
-            ipbxcommand["command"] = "agentlogin";
-        else
-            b_engine->logClient("warning", "XletAgents::agentClicked",
-                                QString("agentid %1 action %2 status %3")
-                                .arg(xagentid).arg(action).arg(status));
-    } else if (action == "unpause") {
-        ipbxcommand["command"] = "queuepause";
-        ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
-        ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    } else if (action == "pause") {
-        ipbxcommand["command"] = "queueunpause";
-        ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
-        ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    } else if (action.endsWith("listen")) {
-        ipbxcommand["command"] = action;
-        ipbxcommand["subcommand"] = action == "listen" ? "start" : "stop";
-        ipbxcommand["destination"] = xagentid;
-    }
-    emit ipbxCommand(ipbxcommand);
-}
-
-void XletAgents::statusListen(const QString & xagentid, const QString & status)
-{
-    if (! m_agent_listen.contains(xagentid))
-        return;
-
-    if (status == "started") {
-        m_agent_listen[xagentid]->setProperty("action", "stoplisten");
-        m_agent_listen[xagentid]->setStyleSheet("QPushButton {background: #fbb638}");
-    } else if (status == "stopped") {
-        m_agent_listen[xagentid]->setProperty("action", "listen");
-        m_agent_listen[xagentid]->setStyleSheet("");
-    }
-}
+// else if (action == "loginoff") {
+//     QString status = agentinfo->status();
+//     ipbxcommand["agentids"] = xagentid;
+//     if (status == "AGENT_IDLE")
+//         ipbxcommand["command"] = "agentlogout";
+//     else if (status == "AGENT_ONCALL")
+//         ipbxcommand["command"] = "agentlogout";
+//     else if (status == "AGENT_LOGGEDOFF")
+//         ipbxcommand["command"] = "agentlogin";
+//     else
+//         b_engine->logClient("warning", "XletAgents::agentClicked",
+//                             QString("agentid %1 action %2 status %3")
+//                             .arg(xagentid).arg(action).arg(status));
+// } else if (action == "unpause") {
+//     ipbxcommand["command"] = "queuepause";
+//     ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
+//     ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
+// } else if (action == "pause") {
+//     ipbxcommand["command"] = "queueunpause";
+//     ipbxcommand["member"] = QString("agent:%0").arg(xagentid);
+//     ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
+// } else if (action.endsWith("listen")) {
+//     ipbxcommand["command"] = action;
+//     ipbxcommand["subcommand"] = action == "listen" ? "start" : "stop";
+//     ipbxcommand["destination"] = xagentid;
+// }
+// emit ipbxCommand(ipbxcommand);

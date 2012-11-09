@@ -41,53 +41,7 @@ class XletAgents : public XLet
     public:
         XletAgents(QWidget *parent);
 
-    signals:
-        void changeWatchedAgent(const QString &, bool);
-
-    public slots:
-        void updateAgentConfig(const QString &);
-        void updateAgentStatus(const QString &);
-        void statusListen(const QString &, const QString &);
-
-    private slots:
-        void agentClicked();
-
     private:
-        void newAgentLine(const QString &);
-        void updateAgentLineAdmin(const QString &);
-        void updateAgentLineEvent(const QString &);
-        void displayLine(const QString &, int);
-        void updateAgentDisplay(const QString &);
-
-        QFont m_gui_font;
-        quint32 m_gui_buttonsize;
-
-        QGridLayout *m_gridlayout;
-
-        QHash<QString, QLabel *> m_agent_labels;
-        QHash<QString, QPushButton *> m_agent_more;
-        QHash<QString, QPushButton *> m_agent_listen;
-        QHash<QString, QLabel *> m_agent_busy;
-        QHash<QString, QLabel *> m_agent_presence;
-        QHash<QString, QLabel *> m_agent_logged_status;
-        QHash<QString, QPushButton *> m_agent_logged_action;
-        QHash<QString, QLabel *> m_agent_joined_number;
-        QHash<QString, QLabel *> m_agent_paused_status;
-        QHash<QString, QPushButton *> m_agent_paused_action;
-        QHash<QString, QLabel *> m_agent_paused_number;
-
-        QHash<QString, QStringList> m_agent_joined_list;
-        QHash<QString, QStringList> m_agent_paused_list;
-
-        QLabel *m_title_agent;
-        QLabel *m_title_listen;
-        QLabel *m_title_online;
-        QLabel *m_title_presence;
-        QLabel *m_title_logged;
-        QLabel *m_title_paused;
-        QLabel *m_title_njoined;
-        QLabel *m_title_npaused;
-
         AgentsModel *m_model;
 };
 
