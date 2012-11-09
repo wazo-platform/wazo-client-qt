@@ -46,6 +46,7 @@ class AgentsView : public AbstractTableView
         void changeWatchedAgent(const QString & agent_id);
         void listenAgent(const QString & agent_id);
         void logAgent(const QString & agent_id);
+        void pauseAgent(const QString & agent_id);
 };
 
 #endif

@@ -53,6 +53,9 @@ void AgentsView::agentClicked(const QModelIndex &index)
     case AgentsModel::LOGGED_STATUS:
         this->logAgent(agent_id);
         break;
+    case AgentsModel::PAUSED_STATUS:
+        this->pauseAgent(agent_id);
+        break;
     default:
         changeWatchedAgent(agent_id);
     }
@@ -85,5 +88,28 @@ void AgentsView::logAgent(const QString & agent_id)
     } else {
         ipbxcommand["command"] = "agentlogin";
     }
+    b_engine->ipbxCommand(ipbxcommand);
+}
+
+void AgentsView::pauseAgent(const QString & agent_id)
+{
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) {
+        return;
+    }
+    QVariantMap ipbxcommand;
+    enum AgentPauseStatus pause_status = agent->pausedStatus();
+    switch (pause_status) {
+    case UNPAUSED:
+    case PARTIALLY_PAUSED:
+        ipbxcommand["command"] = "queuepause";
+        break;
+    case PAUSED:
+        ipbxcommand["command"] = "queueunpause";
+        break;
+    }
+    ipbxcommand["member"] = QString("agent:%0").arg(agent_id);
+    ipbxcommand["queue"] = QString("queue:xivo/all");
+
     b_engine->ipbxCommand(ipbxcommand);
 }
