@@ -1,7 +1,4 @@
-/* XiVO Client
- * Copyright (C) 2007-2011, Avencall
- *
- * This file is part of XiVO Client.
+/* Copyright (C) 2007-2012, Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +24,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include "agents.h"
 #include "agentstatusdelegate.h"
 
@@ -50,7 +43,7 @@ XletAgents::XletAgents(QWidget *parent)
     QVBoxLayout *xletLayout = new QVBoxLayout();
     setLayout(xletLayout);
     xletLayout->setSpacing(0);
-    // Model
+
     m_model = new AgentsModel(this);
 
     AgentsView *view = new AgentsView(this);
@@ -59,13 +52,10 @@ XletAgents::XletAgents(QWidget *parent)
     view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
     view->setItemDelegateForColumn(AgentsModel::LOGGED_STATUS, new AgentStatusDelegate());
 
-    // Layout
     xletLayout->addWidget(view);
 
 }
 
-/*! \brief set font
- */
 void XletAgents::setGuiOptions()
 {
     QVariantMap optionsMap = b_engine->getConfig();
@@ -131,12 +121,10 @@ void XletAgents::newAgentLine(const QString & xagentid)
     m_agent_presence[xagentid] = new QLabel(this);
     m_agent_logged_status[xagentid] = new QLabel(this);
     m_agent_joined_number[xagentid] = new QLabel(this);
-    // m_agent_joined_status[xagentid] = new QLabel(this);
     m_agent_paused_number[xagentid] = new QLabel(this);
     m_agent_paused_status[xagentid] = new QLabel(this);
 }
 
-// update according to admin-defined parameters
 void XletAgents::updateAgentLineAdmin(const QString & xagentid)
 {
     const AgentInfo * agentinfo = b_engine->agent(xagentid);
@@ -158,7 +146,6 @@ void XletAgents::updateAgentLineAdmin(const QString & xagentid)
     m_agent_paused_action[xagentid]->setProperty("xagentid", xagentid);
 }
 
-// update according to misc parameters
 void XletAgents::updateAgentLineEvent(const QString & xagentid)
 {
     m_agent_listen[xagentid]->setProperty("action", "listen");
@@ -219,7 +206,7 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
     QString agstatus = agentinfo->status();
     QString phonenum = agentinfo->phonenumber();
 
-    QVariantMap slink; // "Xivo-Agent-Status-Link"
+    QVariantMap slink;
     bool link = false;
     if (! slink.isEmpty()) {
         QString linkmode = slink.value("linkmode").toString();
@@ -246,10 +233,8 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
         m_agent_logged_action[xagentid]->setIcon(QIcon(":/images/cancel.png"));
         tooltip = tr("Agent logged on %1").arg(phonenum);
     } else if (agstatus == "AGENT_ONCALL") {
-        // square.fill(Qt::darkGreen);
         square.fill(Qt::green);
         m_agent_logged_action[xagentid]->setIcon(QIcon(":/images/cancel.png"));
-        // tooltip = tr("Agent busy");
         tooltip = tr("Agent logged on %1").arg(phonenum);
     } else if (agstatus == "AGENT_LOGGEDOFF") {
         square.fill(Qt::red);
@@ -327,8 +312,6 @@ void XletAgents::updateAgentDisplay(const QString & xagentid)
     }
 }
 
-/*! \brief process actions
- */
 void XletAgents::agentClicked()
 {
     QString xagentid = sender()->property("xagentid").toString();
@@ -373,8 +356,6 @@ void XletAgents::agentClicked()
     emit ipbxCommand(ipbxcommand);
 }
 
-/*! \brief update Listen/Stop Listen buttons
- */
 void XletAgents::statusListen(const QString & xagentid, const QString & status)
 {
     if (! m_agent_listen.contains(xagentid))

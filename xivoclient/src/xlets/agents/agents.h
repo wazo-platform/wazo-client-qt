@@ -1,7 +1,4 @@
-/* XiVO Client
- * Copyright (C) 2007-2011, Avencall
- *
- * This file is part of XiVO Client.
+/* Copyright (C) 2007-2012, Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +24,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __AGENTSPANEL_H__
 #define __AGENTSPANEL_H__
 
@@ -42,8 +35,6 @@
 #include "agentsmodel.h"
 #include "agentsview.h"
 
-/*! \brief Display a list of agents
- */
 class XletAgents : public XLet
 {
     Q_OBJECT
@@ -69,34 +60,34 @@ class XletAgents : public XLet
         void displayLine(const QString &, int);
         void updateAgentDisplay(const QString &);
 
-        QFont m_gui_font;  //!< font
-        quint32 m_gui_buttonsize;  //!< button size
+        QFont m_gui_font;
+        quint32 m_gui_buttonsize;
 
-        QGridLayout *m_gridlayout;  //!< Layout
+        QGridLayout *m_gridlayout;
 
-        QHash<QString, QLabel *>      m_agent_labels;
+        QHash<QString, QLabel *> m_agent_labels;
         QHash<QString, QPushButton *> m_agent_more;
         QHash<QString, QPushButton *> m_agent_listen;
-        QHash<QString, QLabel *>      m_agent_busy;
-        QHash<QString, QLabel *>      m_agent_presence;
-        QHash<QString, QLabel *>      m_agent_logged_status;
+        QHash<QString, QLabel *> m_agent_busy;
+        QHash<QString, QLabel *> m_agent_presence;
+        QHash<QString, QLabel *> m_agent_logged_status;
         QHash<QString, QPushButton *> m_agent_logged_action;
-        QHash<QString, QLabel *>      m_agent_joined_number;
-        QHash<QString, QLabel *>      m_agent_paused_status;
+        QHash<QString, QLabel *> m_agent_joined_number;
+        QHash<QString, QLabel *> m_agent_paused_status;
         QHash<QString, QPushButton *> m_agent_paused_action;
-        QHash<QString, QLabel *>      m_agent_paused_number;
+        QHash<QString, QLabel *> m_agent_paused_number;
 
         QHash<QString, QStringList> m_agent_joined_list;
         QHash<QString, QStringList> m_agent_paused_list;
 
-        QLabel *m_title_agent;  //!< "Agent"
-        QLabel *m_title_listen;  //!< "Listen"
-        QLabel *m_title_online;  //!< "On Line"
-        QLabel *m_title_presence;  //!< "Presence"
-        QLabel *m_title_logged;    //!< "Logged"
-        QLabel *m_title_paused;    //!< "Paused"
-        QLabel *m_title_njoined;   //!< "Joined queues"
-        QLabel *m_title_npaused;   //!< "paused queues"
+        QLabel *m_title_agent;
+        QLabel *m_title_listen;
+        QLabel *m_title_online;
+        QLabel *m_title_presence;
+        QLabel *m_title_logged;
+        QLabel *m_title_paused;
+        QLabel *m_title_njoined;
+        QLabel *m_title_npaused;
 
         AgentsModel *m_model;
 };
