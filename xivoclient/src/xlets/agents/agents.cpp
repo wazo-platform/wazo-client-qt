@@ -56,26 +56,6 @@ XletAgents::XletAgents(QWidget *parent)
 
 }
 
-void XletAgents::setGuiOptions()
-{
-    QVariantMap optionsMap = b_engine->getConfig();
-    if (optionsMap.contains("guioptions.xlet.agents.fontname") &&
-        optionsMap.contains("guioptions.xlet.agents.fontsize"))
-            m_gui_font = QFont(b_engine->getConfig("guioptions.xlet.agents.fontname").toString(),
-                               b_engine->getConfig("guioptions.xlet.agents.fontsize").toInt());
-    if (optionsMap.contains("guioptions.xlet.agents.iconsize"))
-        m_gui_buttonsize = b_engine->getConfig("guioptions.xlet.agents.iconsize").toInt();
-
-    m_title_agent->setFont(m_gui_font);
-    m_title_listen->setFont(m_gui_font);
-    m_title_online->setFont(m_gui_font);
-    m_title_presence->setFont(m_gui_font);
-    m_title_logged->setFont(m_gui_font);
-    m_title_njoined->setFont(m_gui_font);
-    m_title_paused->setFont(m_gui_font);
-    m_title_npaused->setFont(m_gui_font);
-}
-
 void XletAgents::updateAgentConfig(const QString & xagentid)
 {
     const AgentInfo * agentinfo = b_engine->agent(xagentid);
