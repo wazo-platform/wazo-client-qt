@@ -50,6 +50,9 @@ void AgentsView::agentClicked(const QModelIndex &index)
     case AgentsModel::LISTEN:
         this->listenAgent(agent_id);
         break;
+    case AgentsModel::LOGGED_STATUS:
+        this->logAgent(agent_id);
+        break;
     default:
         changeWatchedAgent(agent_id);
     }
@@ -66,5 +69,21 @@ void AgentsView::listenAgent(const QString & agent_id)
     ipbxcommand["command"] = "listen";
     ipbxcommand["subcommand"] =  "start";
     ipbxcommand["destination"] = agent_id;
+    b_engine->ipbxCommand(ipbxcommand);
+}
+
+void AgentsView::logAgent(const QString & agent_id)
+{
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) {
+        return;
+    }
+    QVariantMap ipbxcommand;
+    ipbxcommand["agentids"] = agent_id;
+    if (agent->logged()) {
+        ipbxcommand["command"] = "agentlogout";
+    } else {
+        ipbxcommand["command"] = "agentlogin";
+    }
     b_engine->ipbxCommand(ipbxcommand);
 }
