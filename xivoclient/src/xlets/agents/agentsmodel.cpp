@@ -34,6 +34,8 @@
 
 #include "agentsmodel.h"
 
+QString AgentsModel::not_available = tr("N/A");
+
 AgentsModel::AgentsModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
@@ -70,7 +72,7 @@ int AgentsModel::columnCount(const QModelIndex&) const
     return NB_COL;
 }
 
-bool AgentsModel::removeRows(int row, int count, const QModelIndex &)
+bool AgentsModel::removeRows(int /*row*/, int /*count*/, const QModelIndex & /*index*/)
 {
     return true;
 }
@@ -118,7 +120,7 @@ void AgentsModel::refreshAgentRow(const QString & agent_id)
     emit dataChanged(cell_changed_start, cell_changed_end);
 }
 
-void AgentsModel::updateAgentListenStatus(const QString & ipbxid, const QString & xagentid, const QString & status)
+void AgentsModel::updateAgentListenStatus(const QString & /*ipbxid*/, const QString & /*agent_id*/, const QString & /*status*/)
 {
 }
 
@@ -140,60 +142,46 @@ QVariant AgentsModel::headerData(int section,
 
 QVariant AgentsModel::data(const QModelIndex &index, int role) const
 {
-    if (role == Qt::TextAlignmentRole) {
-        return Qt::AlignCenter;
-    }
+    int row = index.row(), column = index.column();
 
-    int row = index.row(), col = index.column();
-    QString xagentid;
+    switch(role) {
+    case Qt::TextAlignmentRole:
+        return Qt::AlignCenter;
+    case  Qt::DisplayRole:
+        return this->dataDisplay(row, column);
+    default:
+        return QVariant();
+    }
+}
+
+QVariant AgentsModel::dataDisplay(int row, int column) const
+{
+    QString agent_id;
 
     if (m_row2id.size() > row) {
-        xagentid = m_row2id[row];
+        agent_id = m_row2id[row];
     }
 
-    const AgentInfo * agentinfo = b_engine->agent(xagentid);
-    if (agentinfo == NULL) return QVariant();
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) return QVariant();
 
-
-    QStringList joined_queues;
-    QStringList paused_queues;
-
-    foreach (QString xqueueid, agentinfo->xqueueids()) {
-        const QueueInfo * queueinfo = b_engine->queue(xqueueid);
-        if (queueinfo == NULL)
-            continue;
-        QString xqueuemember = queueinfo->reference("agents", xagentid);
-        const QueueMemberInfo * qmi = b_engine->queuemembers().value(xqueuemember);
-        if (qmi == NULL)
-            continue;
-        joined_queues << queueinfo->queueName();
-        if (qmi->paused() == "1")
-            paused_queues << queueinfo->queueName();
-    }
-
-    int njoined = joined_queues.size();
-    int npaused = paused_queues.size();
-
-    QString not_available = tr("N/A");
-    if (role == Qt::DisplayRole) {
-        switch (col) {
-            case ID :
-                return xagentid;
-            case NUMBER :
-                return agentinfo->agentNumber();
-            case LASTNAME :
-                return agentinfo->lastname();
-            case FIRSTNAME :
-                return agentinfo->firstname();
-            case JOINED_QUEUES :
-                return njoined;
-            case PAUSED_QUEUES :
-                return npaused;
-            case LOGGED_STATUS:
-                return agentinfo->status();
-            default :
-                return not_available;
-        }
+    switch (column) {
+    case ID :
+        return agent_id;
+    case NUMBER :
+        return agent->agentNumber();
+    case LASTNAME :
+        return agent->lastname();
+    case FIRSTNAME :
+        return agent->firstname();
+    case JOINED_QUEUES :
+        return agent->joinedQueueCount();
+    case PAUSED_QUEUES :
+        return agent->pausedQueueCount();
+    case LOGGED_STATUS:
+        return agent->status();
+    default :
+        return this->not_available;
     }
 
     return QVariant();

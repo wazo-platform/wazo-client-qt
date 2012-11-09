@@ -56,6 +56,9 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         const QStringList & xqueueids() const { return m_xqueueids; };
         const QStringList & xgroupids() const { return m_xgroupids; };
 
+        int joinedQueueCount() const;
+        int pausedQueueCount() const;
+
         bool paused() const;
         void pauseQueue(const QString &, bool) const;
         void pauseAllQueue(bool) const;

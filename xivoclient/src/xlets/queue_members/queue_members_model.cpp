@@ -162,33 +162,33 @@ QVariant QueueMembersModel::dataDisplay(int row, int column) const
 
 QVariant QueueMembersModel::phoneDataDisplay(int column, const QueueMemberInfo * queue_member) const
 {
-  const PhoneInfo * phone = phone::findByIdentity(queue_member->interface());
-  if (phone == NULL) return QVariant();
-  const UserInfo * user = b_engine->user(phone->xid_user_features());
-  if (user == NULL) return QVariant();
+    const PhoneInfo * phone = phone::findByIdentity(queue_member->interface());
+    if (phone == NULL) return QVariant();
+    const UserInfo * user = b_engine->user(phone->xid_user_features());
+    if (user == NULL) return QVariant();
 
-  switch(column) {
-  case ID:
-    return queue_member->xid();
-  case NUMBER:
-    return phone->number();
-  case FIRSTNAME:
-    return user->firstname();
-  case LASTNAME:
-    return user->lastname();
-  case ANSWERED_CALLS:
-    return queue_member->callstaken();
-  case LAST_CALL_DATE:
-    return queue_member->lastcall();
-  case PENALTY:
-    return queue_member->penalty();
-  case LOGGED:
-    return tr("Always");
-  case PAUSED:
-    return tr("Never");
-  default:
-      return this->not_available;
-  }
+    switch(column) {
+    case ID:
+        return queue_member->xid();
+    case NUMBER:
+        return phone->number();
+    case FIRSTNAME:
+        return user->firstname();
+    case LASTNAME:
+        return user->lastname();
+    case ANSWERED_CALLS:
+        return queue_member->callstaken();
+    case LAST_CALL_DATE:
+        return queue_member->lastcall();
+    case PENALTY:
+        return queue_member->penalty();
+    case LOGGED:
+        return tr("Always");
+    case PAUSED:
+        return tr("Never");
+    default:
+        return this->not_available;
+    }
 }
 
 QVariant QueueMembersModel::agentDataDisplay(int row, int column, const QueueMemberInfo * queue_member) const

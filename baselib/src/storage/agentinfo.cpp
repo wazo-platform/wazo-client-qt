@@ -27,10 +27,11 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "agentinfo.h"
-
 #include "baseengine.h"
 #include "queueinfo.h"
+#include <dao/queuememberdao.h>
+
+#include "agentinfo.h"
 
 AgentInfo::AgentInfo(const QString & ipbxid,
                      const QString & id)
@@ -139,4 +140,27 @@ void AgentInfo::pauseAllQueue(bool pause) const
     ipbxcommand["member"] = QString("agent:%0").arg(xid());
     ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
     b_engine->ipbxCommand(ipbxcommand);
+}
+
+int AgentInfo::joinedQueueCount() const
+{
+    int joined_queues = 0;
+
+    QStringList queue_members = QueueMemberDAO::queueMembersFromAgentId(this->xid());
+    joined_queues = queue_members.size();
+    return joined_queues;
+}
+
+int AgentInfo::pausedQueueCount() const
+{
+    int paused_queues = 0;
+
+    QStringList queue_members = QueueMemberDAO::queueMembersFromAgentId(this->xid());
+    foreach (const QString & queue_member_id, queue_members) {
+        const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+        if (queue_member != NULL && queue_member->paused() == "1") {
+            ++paused_queues;
+        }
+    }
+    return paused_queues;
 }

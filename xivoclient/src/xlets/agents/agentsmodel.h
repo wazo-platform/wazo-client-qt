@@ -65,10 +65,11 @@ class AgentsModel : public QAbstractTableModel
 
     private:
         int getNumberOfJoinedQueues(const QString &agent_xid);
+        QVariant dataDisplay(int row, int column) const;
 
         QString m_headers[NB_COL];
         QStringList m_row2id;
-
+        static QString not_available ;
 };
 
 #endif
