@@ -182,18 +182,17 @@ void XletAgentDetails::updatePanel()
     agent_descriptions << QString("<b>%1</b> (%2)").arg(agentinfo->fullname()).arg(agentinfo->agentNumber())
                        << tr("on <b>%1</b>").arg(agentinfo->ipbxid())
                        << QString("(%1)").arg(agentinfo->context());
-    QString lstatus = agentinfo->status();
 
-    if (lstatus == "AGENT_LOGGEDOFF") {
-        agent_descriptions << tr("logged off");
-        m_action["agentlogin"]->setProperty("function", "agentlogin");
-        m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
-        m_actionlegends["agentlogin"]->setText(tr("Login"));
-    } else if (lstatus == "AGENT_IDLE" or lstatus == "AGENT_ONCALL") {
+    if (agentinfo->logged()) {
         agent_descriptions << tr("logged in");
         m_action["agentlogin"]->setProperty("function", "agentlogout");
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
+    } else {
+        agent_descriptions << tr("logged off");
+        m_action["agentlogin"]->setProperty("function", "agentlogin");
+        m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
+        m_actionlegends["agentlogin"]->setText(tr("Login"));
     }
 
     m_agentstatus->setText(agent_descriptions.join(" "));

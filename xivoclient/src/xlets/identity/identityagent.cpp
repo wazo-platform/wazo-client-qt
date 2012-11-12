@@ -94,20 +94,12 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     setPausedColors(7, 3);
     setStatusColors();
 
-    const QString & agstatus = agentinfo->status();
-    if(agstatus != m_agstatus) {
-        m_agstatus = agstatus;
-        if(agstatus == "AGENT_LOGGEDOFF") {
+    if (agentinfo->logged()) {
+            emit setSystrayIcon(icon_agent_logged);
+    } else {
             emit setSystrayIcon(icon_user_logged);
-        } else if(agstatus == "AGENT_IDLE") {
-            emit setSystrayIcon(icon_agent_logged);
-        } else if(agstatus == "AGENT_ONCALL") {
-            emit setSystrayIcon(icon_agent_logged);
-        } else {
-            qDebug() << Q_FUNC_INFO << "unknown status" << agstatus;
-        }
-        setStatusColors();
     }
+    setStatusColors();
 
     const QStringList joined = agentinfo->xqueueids();
     int unpaused = 0;
@@ -137,7 +129,7 @@ void IdentityAgent::setStatusColors()
     QPixmap square(10, 10);
     if (const AgentInfo * agentinfo = b_engine->agent(m_xagentid)) {
         const QString phonenumber = b_engine->getConfig("agentphonenumber").toString();
-        if(agentinfo->status() == "AGENT_IDLE") {
+        if(agentinfo->logged()) {
             square.fill("#00ff00");
             m_statustxt->setText(tr("Connected to %1").arg(phonenumber));
         } else {
@@ -162,10 +154,11 @@ void IdentityAgent::setPausedColors(int nj, int np)
             square.fill("#00ff00");
             m_pause->setToolTip(tr("Unpaused"));
             m_pausetxt->setText(tr("Unpaused"));
-            if(agentinfo->status() == "AGENT_IDLE")
+            if(agentinfo->logged()) {
                 emit setSystrayIcon(icon_agent_logged);
-            else
+            } else {
                 emit setSystrayIcon(icon_user_logged);
+            }
         } else {
             square.fill(Orange);
             m_pause->setToolTip(tr("Partially paused"));
@@ -184,7 +177,7 @@ void IdentityAgent::contextMenuEvent(QContextMenuEvent * event)
     QMenu contextMenu(this);
 
     if (const AgentInfo * agentinfo = b_engine->agent(m_xagentid)) {
-        bool loggedin = agentinfo->status() == "AGENT_IDLE";
+        bool loggedin = agentinfo->logged();
         bool paused = agentinfo->paused();
 
         if(m_allow_logagent) {

@@ -52,7 +52,7 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         QString agentNumber() const;
         QString lastcall() const { return m_lastcall; };
         bool is_agent() const;
-
+        bool isCallingOrBusy() const;
     private:
         QString m_status;
         QString m_paused;

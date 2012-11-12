@@ -179,16 +179,17 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
     const AgentInfo * agentinfo = b_engine->agent(xagentid);
     if (agentinfo == NULL)
         return;
-    QString agentstatus = agentinfo->status();
-    // color login/green logout/grey 
-    QString color;
-    if (agentstatus == "AGENT_IDLE") {
+
+    QString color = "grey";
+
+    if (agentinfo->logged()) {
         color = "green";
-    } else if (agentstatus == "AGENT_ONCALL") {
-        color = "red";
-    } else {
-        color = "grey";
     }
+
+    if (agentinfo->isCallingOrBusy()) {
+        color = "red";
+    }
+
     m_agentlbl->setPixmap(TaintedPixmap(
        QString(":/images/agent-trans.png"), QColor(color)).getPixmap());
 }
