@@ -44,6 +44,7 @@ AgentsModel::AgentsModel(QObject *parent)
     m_headers[FIRSTNAME] = tr("First name");
     m_headers[LASTNAME] = tr("Last name");
     m_headers[LISTEN] = tr("Listen");
+    m_headers[AVAILABILITY] = tr("Availability");
     m_headers[LOGGED_STATUS] = tr("Logged");
     m_headers[JOINED_QUEUES] = tr("Joined\nqueues");
     m_headers[PAUSED_STATUS] = tr("Paused");
@@ -126,6 +127,15 @@ void AgentsModel::refreshAgentRow(const QString & agent_id)
     emit dataChanged(cell_changed_start, cell_changed_end);
 }
 
+void AgentsModel::refreshColumn(int column_index)
+{
+    unsigned first_row_index = 0;
+    unsigned last_row_index = m_row2id.size() - 1;
+    QModelIndex cell_changed_start = createIndex(first_row_index, column_index);
+    QModelIndex cell_changed_end = createIndex(last_row_index, column_index);
+    emit dataChanged(cell_changed_start, cell_changed_end);
+}
+
 void AgentsModel::updateAgentListenStatus(const QString & /*ipbxid*/, const QString & /*agent_id*/, const QString & /*status*/)
 {
 }
@@ -184,6 +194,8 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
         return agent->lastname();
     case LISTEN:
         return tr("Listen");
+    case AVAILABILITY:
+        return this->dataDisplayAvailability(agent);
     case LOGGED_STATUS:
         return this->dataDisplayLogged(agent->logged());
     case JOINED_QUEUES :
@@ -216,6 +228,25 @@ QVariant AgentsModel::dataBackground(int row, int column) const
     default :
         return QVariant();
     }
+}
+
+QString AgentsModel::dataDisplayAvailability(const AgentInfo * agent) const
+{
+    QString availability;
+    switch (agent->availability()) {
+    case AgentInfo::LOGGED_OUT:
+        return "-";
+    case AgentInfo::AVAILABLE:
+        availability = tr("Available");
+        break;
+    case AgentInfo::UNAVAILABLE:
+        availability = tr("Unavailable");
+        break;
+    default:
+        return QString();
+    }
+    QString time_since = agent->availabilitySince();
+    return QString("%1 (%2)").arg(availability).arg(time_since);
 }
 
 QString AgentsModel::dataDisplayLogged(bool logged_status) const
@@ -262,4 +293,9 @@ QVariant AgentsModel::dataBackgroundPaused(enum AgentPauseStatus pause_status) c
     default:
         return QVariant();
     }
+}
+
+void AgentsModel::increaseAvailability()
+{
+    this->refreshColumn(AVAILABILITY);
 }

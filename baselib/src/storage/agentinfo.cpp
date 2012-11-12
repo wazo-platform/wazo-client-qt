@@ -54,7 +54,8 @@ bool AgentInfo::updateConfig(const QVariantMap & prop)
 bool AgentInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "availability", & m_status);
+    haschanged |= setIfChangeString(prop, "availability", & m_availability);
+    haschanged |= setIfChangeDouble(prop, "availability_since", & m_availability_since);
     haschanged |= setIfChangeString(prop, "phonenumber", & m_phonenumber);
 
     if (prop.contains("queues")) {
@@ -103,14 +104,26 @@ const QString & AgentInfo::lastname() const
     return m_lastname;
 }
 
-const QString & AgentInfo::status() const
+enum AgentInfo::AgentAvailability AgentInfo::availability() const
 {
-    return m_status;
+    if (m_availability == "available") {
+        return AVAILABLE;
+    } else if (m_availability == "unavailable") {
+        return UNAVAILABLE;
+    } else {
+        return LOGGED_OUT;
+    }
+}
+
+QString AgentInfo::availabilitySince() const
+{
+    QString time_since = b_engine->timeElapsed(m_availability_since);
+    return time_since;
 }
 
 bool AgentInfo::logged() const
 {
-    return m_status != "logged_out";
+    return this->availability() != LOGGED_OUT;
 }
 
 bool AgentInfo::isCallingOrBusy() const
@@ -118,10 +131,8 @@ bool AgentInfo::isCallingOrBusy() const
     QStringList queue_member_ids = QueueMemberDAO::queueMembersFromAgentId(this->xid());
     foreach (const QString & queue_member_id, queue_member_ids) {
         const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
-        if (queue_member != NULL) {
-            if (queue_member->isCallingOrBusy()) {
-                return true;
-            }
+        if (queue_member && queue_member->isCallingOrBusy()) {
+            return true;
         }
     }
     return false;

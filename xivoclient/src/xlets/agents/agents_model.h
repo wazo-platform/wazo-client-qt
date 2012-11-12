@@ -57,7 +57,9 @@ class AgentsModel : public QAbstractTableModel
         void removeAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
         void refreshAgentRow(const QString & agent_id);
+        void refreshColumn(int column_index);
         void updateAgentListenStatus(const QString &, const QString &, const QString &);
+        void increaseAvailability();
 
     public:
         enum Columns {
@@ -66,6 +68,7 @@ class AgentsModel : public QAbstractTableModel
             FIRSTNAME,
             LASTNAME,
             LISTEN,
+            AVAILABILITY,
             LOGGED_STATUS,
             JOINED_QUEUES,
             PAUSED_STATUS,
@@ -76,6 +79,7 @@ class AgentsModel : public QAbstractTableModel
     private:
         QVariant dataDisplay(int row, int column) const;
         QVariant dataBackground(int row, int column) const;
+        QString dataDisplayAvailability(const AgentInfo * agent) const;
         QString dataDisplayLogged(bool logged_status) const;
         QVariant dataBackgroundLogged(bool logged_status) const;
         QString dataDisplayPaused(enum AgentPauseStatus pause_status) const;

@@ -42,10 +42,15 @@ enum AgentPauseStatus {
     PARTIALLY_PAUSED
 };
 
-
 class BASELIB_EXPORT AgentInfo : public XInfo
 {
     public:
+        enum AgentAvailability {
+            LOGGED_OUT,
+            AVAILABLE,
+            UNAVAILABLE
+        };
+
         AgentInfo(const QString &, const QString &);
         bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);
@@ -56,8 +61,9 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         const QString & firstname() const;
         const QString & lastname() const;
 
-        const QString & status() const;
         bool logged() const;
+        enum AgentAvailability availability() const;
+        QString availabilitySince() const;
         const QString & phonenumber() const { return m_phonenumber; };
         const QVariantMap & properties() const { return m_properties; } ;
 
@@ -80,7 +86,8 @@ class BASELIB_EXPORT AgentInfo : public XInfo
 
         QString m_fullname;
 
-        QString m_status;
+        QString m_availability;
+        double m_availability_since;
         QString m_phonenumber;
         QVariantMap m_properties;
 

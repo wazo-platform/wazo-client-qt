@@ -25,6 +25,7 @@
  */
 
 #include <QVBoxLayout>
+#include <QTimer>
 
 #include <baseengine.h>
 
@@ -62,6 +63,11 @@ XletAgents::XletAgents(QWidget *parent)
 
     xletLayout->addWidget(m_view);
     this->addCenteredBody(xletLayout);
+
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            m_model, SLOT(increaseAvailability()));
+    timer_display->start(1000);
 }
 
 
