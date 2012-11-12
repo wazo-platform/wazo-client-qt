@@ -80,6 +80,7 @@ class AgentsModel : public QAbstractTableModel
         QVariant dataDisplay(int row, int column) const;
         QVariant dataBackground(int row, int column) const;
         QString dataDisplayAvailability(const AgentInfo * agent) const;
+        QVariant dataBackgroundAvailability(const AgentInfo * agent) const;
         QString dataDisplayLogged(bool logged_status) const;
         QVariant dataBackgroundLogged(bool logged_status) const;
         QString dataDisplayPaused(enum AgentPauseStatus pause_status) const;

@@ -221,6 +221,8 @@ QVariant AgentsModel::dataBackground(int row, int column) const
     if (agent == NULL) return QVariant();
 
     switch (column) {
+    case AVAILABILITY:
+        return this->dataBackgroundAvailability(agent);
     case LOGGED_STATUS:
         return this->dataBackgroundLogged(agent->logged());
     case PAUSED_STATUS:
@@ -247,6 +249,18 @@ QString AgentsModel::dataDisplayAvailability(const AgentInfo * agent) const
     }
     QString time_since = agent->availabilitySince();
     return QString("%1 (%2)").arg(availability).arg(time_since);
+}
+
+QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
+{
+    switch (agent->availability()) {
+    case AgentInfo::AVAILABLE:
+        return Qt::green;
+    case AgentInfo::UNAVAILABLE:
+        return Qt::red;
+    default:
+        return QVariant();
+    }
 }
 
 QString AgentsModel::dataDisplayLogged(bool logged_status) const
