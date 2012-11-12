@@ -1,4 +1,7 @@
-/* Copyright (C) 2007-2012, Avencall
+/* XiVO Client
+ * Copyright (C) 2007-2012, Avencall
+ *
+ * This file is part of XiVO Client.
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,54 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QVBoxLayout>
-
-#include <baseengine.h>
-
-#include "agents.h"
-#include "agents_view.h"
 #include "agents_sort_filter_proxy_model.h"
-#include "agents_model.h"
 
-Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
-
-XLet* XLetAgentsPlugin::newXLetInstance(QWidget *parent)
+AgentsSortFilterProxyModel::AgentsSortFilterProxyModel(QObject *parent = NULL)
+    : AbstractSortFilterProxyModel(parent)
 {
-    b_engine->registerTranslation(":/obj/agents_%1");
-    return new XletAgents(parent);
-}
-
-XletAgents::XletAgents(QWidget *parent)
-    : XLet(parent)
-{
-    setTitle(tr("Agents' List (plain)"));
-
-    QVBoxLayout *xletLayout = new QVBoxLayout();
-    setLayout(xletLayout);
-    xletLayout->setSpacing(0);
-
-    m_model = new AgentsModel(this);
-
-    AgentsSortFilterProxyModel * proxy_model = new AgentsSortFilterProxyModel(this);
-    proxy_model->setSourceModel(m_model);
-
-    m_view = new AgentsView(this);
-    m_view->setModel(proxy_model);
-    m_view->hideColumn(AgentsModel::ID);
-    m_view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
-
-    xletLayout->addWidget(m_view);
-    this->addCenteredBody(xletLayout);
-}
-
-
-void XletAgents::addCenteredBody(QVBoxLayout * layout)
-{
-    QHBoxLayout * centering_layout = new QHBoxLayout();
-
-    centering_layout->insertStretch(0);
-    centering_layout->addWidget(m_view);
-    centering_layout->insertStretch(2);
-
-    layout->addLayout(centering_layout);
 }
