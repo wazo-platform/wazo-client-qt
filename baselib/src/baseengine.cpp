@@ -670,12 +670,13 @@ const QDateTime & BaseEngine::timeClient() const
 
 double BaseEngine::timeDeltaServerClient() const
 {
-    return (m_timeclt.toTime_t() - m_timesrv);
+    double delta = m_timeclt.toTime_t() - m_timesrv;
+    return delta;
 }
 
 QString BaseEngine::timeElapsed(double timestamp) const
 {
-    QDateTime now = QDateTime::currentDateTime().addSecs(timeDeltaServerClient());
+    QDateTime now = QDateTime::currentDateTime().addSecs(-timeDeltaServerClient());
     int seconds_elapsed = QDateTime::fromTime_t(timestamp).secsTo(now);
     QTime time_elapsed = QTime().addSecs(seconds_elapsed);
     if (time_elapsed.hour() == 0) {
@@ -712,8 +713,10 @@ void BaseEngine::parseCommand(const QString &line)
     QString function = datamap.value("function").toString();
     QString thisclass = datamap.value("class").toString();
     QString replyid = datamap.value("replyid").toString();
-    m_timesrv = datamap.value("timenow").toDouble();
-    m_timeclt = QDateTime::currentDateTime();
+    if (datamap.contains("timenow")) {
+        m_timesrv = datamap.value("timenow").toDouble();
+        m_timeclt = QDateTime::currentDateTime();
+    }
 
     if (forwardToListeners(thisclass, datamap))  // a class callback was called,
         return;                                  // so zap the 500 loc of if-else soup

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -60,6 +60,8 @@ class XletAgentDetails : public XLet
         void actionClicked();
         void updatePanel();
         void onRemoveQueueConfig();
+        void updateHeader();
+        void updateAvailability();
 
     private:
         void clearPanel();
@@ -74,7 +76,8 @@ class XletAgentDetails : public XLet
         int m_linenum;  //!< line number ?
 
         QString m_monitored_agentid;    //!< monitored agent id
-        QLabel *m_agentstatus; //!< to display agent name and status
+        QLabel *m_agent_header;
+        QLabel *m_agent_availability;
         QLabel *m_agentlegend_qname;   //!< "Queues"
         QLabel *m_agentlegend_joined;  //!< "Joined"
         QLabel *m_agentlegend_paused;  //!< "Paused"

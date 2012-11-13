@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,6 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QSpacerItem>
+
 #include <dao/queuememberdao.h>
 
 #include "agentdetails.h"
@@ -46,7 +48,8 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     m_linenum = 0;
     m_gridlayout = new QGridLayout(this);
 
-    m_agentstatus = new QLabel(this);
+    m_agent_header = new QLabel(this);
+    m_agent_availability = new QLabel(this);
     m_agentlegend_qname = new QLabel(tr("Queues"), this);
     m_agentlegend_joined = new QLabel(tr("Joined"), this);
     m_agentlegend_paused = new QLabel(tr("Paused"), this);
@@ -61,7 +64,12 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
 
     m_gridlayout->setRowStretch( 100, 1 );
-    m_gridlayout->addWidget(m_agentstatus, m_linenum, 0, 1, 9);
+    m_gridlayout->addWidget(m_agent_header, m_linenum, 0, 1, 9);
+    m_linenum ++;
+    QHBoxLayout *availability_layout = new QHBoxLayout(this);
+    availability_layout->addWidget(m_agent_availability);
+    availability_layout->insertStretch(1);
+    m_gridlayout->addLayout(availability_layout, m_linenum, 0, 1, 9);
     m_linenum ++;
 
     int colnum = 0;
@@ -95,6 +103,12 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
         connect( m_action[function], SIGNAL(clicked()),
                  this, SLOT(actionClicked()));
     }
+
+
+    QTimer * timer_header = new QTimer(this);
+    connect(timer_header, SIGNAL(timeout()), this, SLOT(updateAvailability()));
+    timer_header->start(1000);
+
 
     // connect signal/slots with engine
     connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
@@ -172,30 +186,70 @@ void XletAgentDetails::clearPanel()
     m_queue_pause_action.clear();
 }
 
-void XletAgentDetails::updatePanel()
+void XletAgentDetails::updateHeader()
 {
-    const AgentInfo * agentinfo = b_engine->agent(m_monitored_agentid);
-    if (agentinfo == NULL)
+    const AgentInfo * agent = b_engine->agent(m_monitored_agentid);
+    if (agent == NULL) {
         return;
+    }
 
     QStringList agent_descriptions;
-    agent_descriptions << QString("<b>%1</b> (%2)").arg(agentinfo->fullname()).arg(agentinfo->agentNumber())
-                       << tr("on <b>%1</b>").arg(agentinfo->ipbxid())
-                       << QString("(%1)").arg(agentinfo->context());
+    agent_descriptions << QString("<b>%1</b> (%2)").arg(agent->fullname()).arg(agent->agentNumber())
+                       << tr("on <b>%1</b>").arg(agent->ipbxid())
+                       << QString("(%1)<br/>").arg(agent->context());
 
-    if (agentinfo->logged()) {
-        agent_descriptions << tr("logged in");
+    if (agent->logged()) {
         m_action["agentlogin"]->setProperty("function", "agentlogout");
         m_action["agentlogin"]->setIcon(QIcon(":/images/cancel.png"));
         m_actionlegends["agentlogin"]->setText(tr("Logout"));
     } else {
-        agent_descriptions << tr("logged off");
         m_action["agentlogin"]->setProperty("function", "agentlogin");
         m_action["agentlogin"]->setIcon(QIcon(":/images/button_ok.png"));
         m_actionlegends["agentlogin"]->setText(tr("Login"));
     }
 
-    m_agentstatus->setText(agent_descriptions.join(" "));
+    m_agent_header->setText(agent_descriptions.join(" "));
+}
+
+void XletAgentDetails::updateAvailability()
+{
+    const AgentInfo * agent = b_engine->agent(m_monitored_agentid);
+    if (agent == NULL) {
+        return;
+    }
+
+    QString availability_status;
+    QString style;
+    enum AgentInfo::AgentAvailability availability = agent->availability();
+    QString since = agent->availabilitySince();
+
+    switch (availability) {
+    case AgentInfo::AVAILABLE:
+        availability_status = tr("Available");
+        style = "QLabel { background-color : lime; }";
+        break;
+    case AgentInfo::UNAVAILABLE:
+        availability_status = tr("Unavailable");
+        style = "QLabel { background-color : red; }";
+        break;
+    default:
+        availability_status = tr("Logged out");
+        style = "QLabel { background-color : none; }";
+        break;
+    }
+    QString availability_since = QString("%1 since %2").arg(availability_status).arg(since);
+    m_agent_availability->setText(availability_since);
+    m_agent_availability->setStyleSheet(style);
+}
+
+void XletAgentDetails::updatePanel()
+{
+    this->updateHeader();
+    this->updateAvailability();
+
+    const AgentInfo * agentinfo = b_engine->agent(m_monitored_agentid);
+    if (agentinfo == NULL)
+        return;
 
     m_agentlegend_qname->show();
     m_agentlegend_joined->show();
