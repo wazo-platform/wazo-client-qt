@@ -44,7 +44,7 @@ AgentsModel::AgentsModel(QObject *parent)
     m_headers[FIRSTNAME] = tr("First name");
     m_headers[LASTNAME] = tr("Last name");
     m_headers[LISTEN] = tr("Listen");
-    m_headers[AVAILABILITY] = tr("Availability");
+    m_headers[AVAILABILITY] = tr("Status since");
     m_headers[LOGGED_STATUS] = tr("Logged");
     m_headers[JOINED_QUEUES] = tr("Joined\nqueues");
     m_headers[PAUSED_STATUS] = tr("Paused");
@@ -167,6 +167,8 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
         return this->dataDisplay(row, column);
     case Qt::BackgroundRole:
         return this->dataBackground(row, column);
+    case Qt::ToolTipRole:
+        return this->dataTooltip(row, column);
     default:
         return QVariant();
     }
@@ -209,6 +211,37 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
     }
 }
 
+QVariant AgentsModel::dataTooltip(int row, int column) const
+{
+    QString agent_id;
+
+    if (m_row2id.size() > row) {
+        agent_id = m_row2id[row];
+    }
+
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) return QVariant();
+
+    switch (column) {
+    case AVAILABILITY:
+        return this->dataTooltipAvailability(agent->availability());
+    default :
+        return QVariant();
+    }
+}
+
+QString AgentsModel::dataTooltipAvailability(enum AgentInfo::AgentAvailability availability) const
+{
+    switch (availability) {
+    case AgentInfo::AVAILABLE:
+        return tr("Agent ready to receive a call");
+    case AgentInfo::UNAVAILABLE:
+        return tr("Agent processing a call or paused");
+    default:
+        return QString();
+    }
+}
+
 QVariant AgentsModel::dataBackground(int row, int column) const
 {
     QString agent_id;
@@ -239,10 +272,10 @@ QString AgentsModel::dataDisplayAvailability(const AgentInfo * agent) const
     case AgentInfo::LOGGED_OUT:
         return "-";
     case AgentInfo::AVAILABLE:
-        availability = tr("Available");
+        availability = tr("Not in use");
         break;
     case AgentInfo::UNAVAILABLE:
-        availability = tr("Unavailable");
+        availability = tr("In use");
         break;
     default:
         return QString();

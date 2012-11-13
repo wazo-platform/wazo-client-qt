@@ -225,11 +225,11 @@ void XletAgentDetails::updateAvailability()
 
     switch (availability) {
     case AgentInfo::AVAILABLE:
-        availability_status = tr("Available");
+        availability_status = tr("Not in use");
         style = "QLabel { background-color : lime; }";
         break;
     case AgentInfo::UNAVAILABLE:
-        availability_status = tr("Unavailable");
+        availability_status = tr("In use");
         style = "QLabel { background-color : red; }";
         break;
     default:
