@@ -33,6 +33,7 @@
 #include "agents_view.h"
 #include "agents_sort_filter_proxy_model.h"
 #include "agents_model.h"
+#include "agents_controller.h"
 
 Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
 
@@ -56,6 +57,8 @@ XletAgents::XletAgents(QWidget *parent)
     AgentsSortFilterProxyModel * proxy_model = new AgentsSortFilterProxyModel(this);
     proxy_model->setSourceModel(m_model);
 
+    AgentsController *controller = new AgentsController(this, proxy_model);
+
     m_view = new AgentsView(this);
     m_view->setModel(proxy_model);
     m_view->hideColumn(AgentsModel::ID);
@@ -68,6 +71,9 @@ XletAgents::XletAgents(QWidget *parent)
     connect(timer_display, SIGNAL(timeout()),
             m_model, SLOT(increaseAvailability()));
     timer_display->start(1000);
+
+    connect(m_view, SIGNAL(clicked(const QModelIndex &)),
+            controller, SLOT(agentClicked(const QModelIndex &)));
 }
 
 

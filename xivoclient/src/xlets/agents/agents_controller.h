@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2012, Avencall
+ * Copyright (C) 2007-2011, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,9 +27,32 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "agents_view.h"
+#ifndef __AGENTSCONTROLLER_H__
+#define __AGENTSCONTROLLER_H__
 
-AgentsView::AgentsView(QWidget *parent)
-    : AbstractTableView(parent)
+#include <QObject>
+
+class QString;
+class QModelIndex;
+class QAbstractItemModel;
+
+class AgentsController : public QObject
 {
-}
+    Q_OBJECT
+
+    public:
+        AgentsController(QObject *parent = NULL, QAbstractItemModel *model=NULL);
+
+    public slots:
+        void agentClicked(const QModelIndex & index);
+
+    private:
+        void changeWatchedAgent(const QString & agent_id);
+        void listenAgent(const QString & agent_id);
+        void logAgent(const QString & agent_id);
+        void pauseAgent(const QString & agent_id);
+
+        QAbstractItemModel *m_model;
+};
+
+#endif

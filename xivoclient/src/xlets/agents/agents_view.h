@@ -38,15 +38,6 @@ class AgentsView : public AbstractTableView
 
     public:
         AgentsView(QWidget *parent = NULL);
-
-    private slots:
-        void agentClicked(const QModelIndex & index);
-
-    private:
-        void changeWatchedAgent(const QString & agent_id);
-        void listenAgent(const QString & agent_id);
-        void logAgent(const QString & agent_id);
-        void pauseAgent(const QString & agent_id);
 };
 
 #endif
