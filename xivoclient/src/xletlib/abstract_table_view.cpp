@@ -67,7 +67,7 @@ AbstractTableView::AbstractTableView(QWidget * parent)
             "color: #000;"
         "}");
 
-    QStyle *plastique = QStyleFactory::create("plastique");
+    QStyle *plastique = QStyleFactory::create("cleanlooks");
     this->horizontalHeader()->setStyle(plastique);
     this->verticalHeader()->setStyle(plastique);
 }
