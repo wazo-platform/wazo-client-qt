@@ -59,7 +59,7 @@ más larga</translation>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
         <source>Logged</source>
-        <translation type="unfinished">Sesión</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
@@ -169,7 +169,7 @@ de espera</translation>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="57"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Colas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="122"/>

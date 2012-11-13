@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
         <source>Logged</source>
-        <translation type="unfinished">記録済</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>

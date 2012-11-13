@@ -4,58 +4,63 @@
 <context>
     <name>XletAgentDetails</name>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="45"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="47"/>
         <source>Agent Details</source>
         <translation>Ügynök részletek</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="50"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="53"/>
         <source>Queues</source>
         <translation>Hívósorok</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="51"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="54"/>
         <source>Joined</source>
         <translation>Csatlakozott</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="52"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="55"/>
         <source>Paused</source>
         <translation>Szünetel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="191"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="59"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="208"/>
         <source>Login</source>
         <translation>Felhasználónév</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="183"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="198"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>? &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="188"/>
-        <source>logged off</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="193"/>
-        <source>logged in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="196"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="204"/>
         <source>Logout</source>
         <translation>Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="278"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="228"/>
+        <source>Not in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="232"/>
+        <source>In use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="236"/>
+        <source>Logged out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="331"/>
         <source>Server: %1</source>
         <translation>Szerver: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="279"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="332"/>
         <source>Context: %1</source>
         <translation>Kontextus:  %1</translation>
     </message>

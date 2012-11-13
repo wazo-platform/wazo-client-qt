@@ -56,7 +56,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="51"/>
         <source>Logged</source>
-        <translation type="unfinished">Rögzített</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
@@ -164,7 +164,7 @@
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="57"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hívócsoport</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="122"/>
