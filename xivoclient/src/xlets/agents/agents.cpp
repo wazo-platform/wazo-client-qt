@@ -65,7 +65,6 @@ XletAgents::XletAgents(QWidget *parent)
     m_view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
 
     xletLayout->addWidget(m_view);
-    this->addCenteredBody(xletLayout);
 
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
@@ -74,16 +73,4 @@ XletAgents::XletAgents(QWidget *parent)
 
     connect(m_view, SIGNAL(clicked(const QModelIndex &)),
             controller, SLOT(agentClicked(const QModelIndex &)));
-}
-
-
-void XletAgents::addCenteredBody(QVBoxLayout * layout)
-{
-    QHBoxLayout * centering_layout = new QHBoxLayout();
-
-    centering_layout->insertStretch(0);
-    centering_layout->addWidget(m_view);
-    centering_layout->insertStretch(2);
-
-    layout->addLayout(centering_layout);
 }

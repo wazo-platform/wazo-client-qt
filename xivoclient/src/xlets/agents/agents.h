@@ -41,8 +41,6 @@ class XletAgents : public XLet
         XletAgents(QWidget *parent);
 
     private:
-        void addCenteredBody(QVBoxLayout * layout);
-
         AgentsView * m_view;
         AgentsModel * m_model;
 };
