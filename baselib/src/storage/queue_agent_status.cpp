@@ -68,11 +68,11 @@ bool QueueAgentStatus::update(const QString & dynstatus,
     } else if (sstatus == "1") {
         basecolor = Qt::green;
         m_display_status_queue = tr("Agent in Queue");
-        m_display_status_logged = tr("Logged in");
+        m_display_status_logged = tr("Logged");
     } else if (sstatus == "3") {
         basecolor = Qt::yellow;
         m_display_status_queue = tr("Agent Called or Busy");
-        m_display_status_logged = tr("Logged in");
+        m_display_status_logged = tr("Logged");
     } else if (sstatus == "4") {
         basecolor = Qt::red;
         m_display_status_queue = tr("Agent in Queue but Invalid");
@@ -80,7 +80,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
     } else if (sstatus == this->logged_out_status) {
         basecolor = Qt::cyan;
         m_display_status_queue = tr("Agent in Queue");
-        m_display_status_logged = tr("Logged out");
+        m_display_status_logged = tr("Unlogged");
     } else {
         basecolor = Qt::black;
         m_display_status_queue = QString("unknown-%1").arg(sstatus);
@@ -88,7 +88,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
     }
 
     if(pstatus == "0") {
-        m_display_status_paused = tr("Not paused");
+        m_display_status_paused = tr("Unpaused");
         m_display_status_paused_color = Qt::green;
         m_display_action_pause = ":/images/cancel.png";
     } else if(pstatus == "1") {

@@ -233,11 +233,11 @@ void XletAgentDetails::updateAvailability()
         style = "QLabel { background-color : red; }";
         break;
     default:
-        availability_status = tr("Logged out");
+        availability_status = tr("Unlogged");
         style = "QLabel { background-color : none; }";
         break;
     }
-    QString availability_since = QString("%1 since %2").arg(availability_status).arg(since);
+    QString availability_since = QString(tr("%1 since %2")).arg(availability_status).arg(since);
     m_agent_availability->setText(availability_since);
     m_agent_availability->setStyleSheet(style);
 }
