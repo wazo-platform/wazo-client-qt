@@ -250,8 +250,9 @@ Gelieve uw versie te upgraden.</translation>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="71"/>
         <location filename="src/storage/queue_agent_status.cpp" line="75"/>
-        <source>Logged in</source>
-        <translation>Ingelogd</translation>
+        <source>Logged</source>
+        <oldsource>Logged in</oldsource>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="74"/>
@@ -265,13 +266,15 @@ Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="83"/>
-        <source>Logged out</source>
-        <translation>Uitgelogd</translation>
+        <source>Unlogged</source>
+        <oldsource>Logged out</oldsource>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="91"/>
-        <source>Not paused</source>
-        <translation>Niet gepauzeerd</translation>
+        <source>Unpaused</source>
+        <oldsource>Not paused</oldsource>
+        <translation type="unfinished">Klaar</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="95"/>

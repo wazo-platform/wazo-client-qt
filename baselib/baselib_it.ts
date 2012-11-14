@@ -251,8 +251,9 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="71"/>
         <location filename="src/storage/queue_agent_status.cpp" line="75"/>
-        <source>Logged in</source>
-        <translation>Loggato</translation>
+        <source>Logged</source>
+        <oldsource>Logged in</oldsource>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="74"/>
@@ -266,13 +267,15 @@ Per favore aggiornala.</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="83"/>
-        <source>Logged out</source>
-        <translation>Disconnesso</translation>
+        <source>Unlogged</source>
+        <oldsource>Logged out</oldsource>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="91"/>
-        <source>Not paused</source>
-        <translation>Non in pausa</translation>
+        <source>Unpaused</source>
+        <oldsource>Not paused</oldsource>
+        <translation type="unfinished">Riattivato</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="95"/>

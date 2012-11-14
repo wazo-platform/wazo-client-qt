@@ -51,8 +51,13 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="236"/>
-        <source>Logged out</source>
-        <translation type="unfinished">Disconnesso</translation>
+        <source>Unlogged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="240"/>
+        <source>%1 since %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="331"/>

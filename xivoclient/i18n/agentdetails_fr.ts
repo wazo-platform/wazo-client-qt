@@ -21,7 +21,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="55"/>
         <source>Paused</source>
-        <translation>En retrait</translation>
+        <translation>Retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="59"/>
@@ -51,8 +51,13 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="236"/>
-        <source>Logged out</source>
+        <source>Unlogged</source>
         <translation>Délogué</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="240"/>
+        <source>%1 since %2</source>
+        <translation>%1 depuis %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="331"/>

@@ -169,7 +169,7 @@ de espera</translation>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="57"/>
         <source>Queues</source>
-        <translation type="unfinished">Colas</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="122"/>

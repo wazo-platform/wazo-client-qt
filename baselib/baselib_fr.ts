@@ -248,7 +248,8 @@ Merci de mettre à jour votre serveur.</translation>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="71"/>
         <location filename="src/storage/queue_agent_status.cpp" line="75"/>
-        <source>Logged in</source>
+        <source>Logged</source>
+        <oldsource>Logged in</oldsource>
         <translation>Logué</translation>
     </message>
     <message>
@@ -263,12 +264,14 @@ Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="83"/>
-        <source>Logged out</source>
-        <translation>Dé-logué</translation>
+        <source>Unlogged</source>
+        <oldsource>Logged out</oldsource>
+        <translation>Délogué</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="91"/>
-        <source>Not paused</source>
+        <source>Unpaused</source>
+        <oldsource>Not paused</oldsource>
         <translation>Prêt</translation>
     </message>
     <message>

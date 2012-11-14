@@ -239,7 +239,8 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="71"/>
         <location filename="src/storage/queue_agent_status.cpp" line="75"/>
-        <source>Logged in</source>
+        <source>Logged</source>
+        <oldsource>Logged in</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -254,13 +255,15 @@ Please upgrade it.</source>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="83"/>
-        <source>Logged out</source>
+        <source>Unlogged</source>
+        <oldsource>Logged out</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="91"/>
-        <source>Not paused</source>
-        <translation type="unfinished"></translation>
+        <source>Unpaused</source>
+        <oldsource>Not paused</oldsource>
+        <translation type="unfinished">Tirar da espera</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="95"/>

@@ -22,7 +22,7 @@
         <location filename="../src/xlets/agents/agents_model.cpp" line="46"/>
         <location filename="../src/xlets/agents/agents_model.cpp" line="198"/>
         <source>Listen</source>
-        <translation>Écoute discrète</translation>
+        <translation>Activer l&apos;écoute</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="47"/>
@@ -46,7 +46,7 @@ jointes</translation>
         <location filename="../src/xlets/agents/agents_model.cpp" line="50"/>
         <location filename="../src/xlets/agents/agents_model.cpp" line="323"/>
         <source>Paused</source>
-        <translation>Retrait</translation>
+        <translation>En retrait</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="51"/>
