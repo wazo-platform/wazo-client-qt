@@ -225,9 +225,32 @@ QVariant AgentsModel::dataTooltip(int row, int column) const
     switch (column) {
     case AVAILABILITY:
         return this->dataTooltipAvailability(agent->availability());
+    case JOINED_QUEUES:
+        return this->dataTooltipJoinedQueues(agent);
+    case PAUSED_QUEUES:
+        return this->dataTooltipPausedQueues(agent);
     default :
         return QVariant();
     }
+}
+
+QString AgentsModel::dataTooltipPausedQueues(const AgentInfo *agent) const
+{
+    if (agent == NULL) {
+        return QString();
+    }
+    QStringList paused_queues = agent->pausedQueueNames();
+    return paused_queues.join("\n");
+}
+
+
+QString AgentsModel::dataTooltipJoinedQueues(const AgentInfo *agent) const
+{
+    if (agent == NULL) {
+        return QString();
+    }
+    QStringList joined_queues = agent->joinedQueueNames();
+    return joined_queues.join("\n");
 }
 
 QString AgentsModel::dataTooltipAvailability(enum AgentInfo::AgentAvailability availability) const

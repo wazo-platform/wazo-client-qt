@@ -30,6 +30,7 @@
 #include "baseengine.h"
 #include "queueinfo.h"
 #include <dao/queuememberdao.h>
+#include <dao/queuedao.h>
 
 #include "agentinfo.h"
 
@@ -185,6 +186,35 @@ int AgentInfo::joinedQueueCount() const
     joined_queues = queue_members.size();
     return joined_queues;
 }
+
+QStringList AgentInfo::joinedQueueNames() const
+{
+    QStringList queue_ids = QueueMemberDAO::queueListFromAgentId(this->xid());
+    QStringList queue_names;
+    foreach (const QString &queue_id, queue_ids) {
+        const QueueInfo * queue = b_engine->queue(queue_id);
+        if (queue != NULL) {
+            queue_names << queue->queueDisplayName();
+        }
+    }
+    return queue_names;
+}
+
+QStringList AgentInfo::pausedQueueNames() const
+{
+    QStringList queue_names;
+    QStringList queue_members = QueueMemberDAO::queueMembersFromAgentId(this->xid());
+    foreach (const QString & queue_member_id, queue_members) {
+        const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+        if (queue_member != NULL && queue_member->paused() == "1") {
+            QString queue_name = queue_member->queueName();
+            QString display_name = QueueDAO::queueDisplayNameFromQueueName(queue_name);
+            queue_names << display_name;
+        }
+    }
+    return queue_names;
+}
+
 
 int AgentInfo::pausedQueueCount() const
 {

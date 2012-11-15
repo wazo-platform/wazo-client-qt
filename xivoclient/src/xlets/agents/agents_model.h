@@ -87,6 +87,8 @@ class AgentsModel : public QAbstractTableModel
         QVariant dataBackgroundLogged(bool logged_status) const;
         QString dataDisplayPaused(enum AgentPauseStatus pause_status) const;
         QVariant dataBackgroundPaused(enum AgentPauseStatus pause_status) const;
+        QString dataTooltipPausedQueues(const AgentInfo *agent) const;
+        QString dataTooltipJoinedQueues(const AgentInfo *agent) const;
 
         QString m_headers[NB_COL];
         QStringList m_row2id;
