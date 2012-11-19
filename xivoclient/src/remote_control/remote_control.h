@@ -102,6 +102,7 @@ class RemoteControl : public QObject
         void then_the_queue_members_xlet_for_queue_1_displays_agents(const QVariantList &);
 
         void then_user_shows_up_in_the_directory_xlet_after_searching(const QVariantList &args);
+        void then_nothing_shows_up_in_the_directory_xlet_after_searching(const QVariantList &args);
 
     signals:
         void select_queue(const QString & queue_id);

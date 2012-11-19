@@ -48,4 +48,20 @@ void RemoteControl::then_user_shows_up_in_the_directory_xlet_after_searching(con
 
 }
 
+void RemoteControl::then_nothing_shows_up_in_the_directory_xlet_after_searching(const QVariantList &args)
+{
+
+    const QString& search = args[0].toString();
+
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
+
+    panel->m_searchText->setText(search);
+    panel->startSearch();
+    pause(2000);
+
+    int nb_rows = panel->m_table->rowCount();
+    this->assert(nb_rows == 0);
+
+}
+
 #endif

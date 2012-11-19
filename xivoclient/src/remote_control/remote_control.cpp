@@ -141,6 +141,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE(then_i_should_not_see_any_sheet);
 
             RC_EXECUTE_ARG(then_user_shows_up_in_the_directory_xlet_after_searching);
+            RC_EXECUTE_ARG(then_nothing_shows_up_in_the_directory_xlet_after_searching);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED);
