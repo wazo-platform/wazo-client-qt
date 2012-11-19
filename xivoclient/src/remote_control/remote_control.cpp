@@ -140,6 +140,8 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(then_i_see_a_sheet_with_variables_and_values);
             RC_EXECUTE(then_i_should_not_see_any_sheet);
 
+            RC_EXECUTE_ARG(then_user_shows_up_in_the_directory_xlet_after_searching);
+
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED);
             } else if (this->m_command_found) {
@@ -218,6 +220,34 @@ void RemoteControl::assert(bool condition, const QString & message)
     if (!condition) {
         throw TestFailedException(message);
     }
+}
+
+int RemoteControl::getColumnIndex(QTableWidget* table, QString header)
+{
+    int nb_columns = table->columnCount();
+    int index = -1;
+
+    for(int i = 0; i < nb_columns && index < 0; i++) {
+        if( table->horizontalHeaderItem(i)->text() == header) {
+            index = i;
+        }
+    }
+
+    return index;
+}
+
+bool RemoteControl::isValueInTable(QString value, QString column_header, QTableWidget* table)
+{
+    int column = getColumnIndex(table, column_header);
+    int nb_rows = table->rowCount();
+    bool found = false;
+
+    for(int count = 0; count < nb_rows && !found; count++) {
+        QString item_text = table->item(count, column)->text();
+        found = (item_text == value);
+    }
+
+    return found;
 }
 
 #endif

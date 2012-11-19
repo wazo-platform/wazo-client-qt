@@ -27,63 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __DIRECTORYPANEL_H__
-#define __DIRECTORYPANEL_H__
+#ifdef FUNCTESTS
 
-#include <QContextMenuEvent>
-#include <QDebug>
-#include <QDesktopServices>
-#include <QDropEvent>
-#include <QFocusEvent>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMenu>
-#include <QPushButton>
-#include <QUrl>
-#include <QVBoxLayout>
+#include "xlets/directory-builtin/directorypanel.h"
+#include "remote_control.h"
 
-#include "directorypanel.h"
-#include <baseengine.h>
-#include <extendedtablewidget.h>
-#include <extendedlineedit.h>
-#include <userinfo.h>
-#include <phoneinfo.h>
-#include <xivoconsts.h>
-#include <xlet.h>
-
-#include <functests.h>
-
-/*! \brief Directory allowing search
- */
-class DirectoryPanel : public XLet
+void RemoteControl::then_user_shows_up_in_the_directory_xlet_after_searching(const QVariantList &args)
 {
-    Q_OBJECT
 
-    public:
-        DirectoryPanel(QWidget *parent=0);
+    const QString& user = args[0].toString();
+    const QString& search = args[1].toString();
 
-    protected:
-        void dropEvent(QDropEvent *);
-        void focusInEvent(QFocusEvent *);
-    private slots:
-        void startSearch();
-        void itemClicked(QTableWidgetItem *);
-        void itemDoubleClicked(QTableWidgetItem *);
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
 
-    signals:
-        void selectedText(const QString &);
+    panel->m_searchText->setText(search);
+    panel->startSearch();
+    pause(2000);
 
-    public slots:
-        void setSearchResponse(const QStringList &, const QStringList &);
-        void stop();
+    this->assert(isValueInTable(user, "Nom", panel->m_table));
 
-    private:
-        ExtendedLineEdit *m_searchText;  //!< search text input
-        ExtendedTableWidget *m_table;  //!< table to display results
-        QPushButton *m_searchButton;  //!< button
-        QString m_mailAddr;  //!< used to store email address
-
-    FUNCTESTED
-};
+}
 
 #endif

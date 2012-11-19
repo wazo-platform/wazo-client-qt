@@ -101,6 +101,8 @@ class RemoteControl : public QObject
         void then_the_queue_members_xlet_for_queue_1_is_empty_(const QVariantList &);
         void then_the_queue_members_xlet_for_queue_1_displays_agents(const QVariantList &);
 
+        void then_user_shows_up_in_the_directory_xlet_after_searching(const QVariantList &args);
+
     signals:
         void select_queue(const QString & queue_id);
 
@@ -122,6 +124,8 @@ class RemoteControl : public QObject
         void sendResponse(RemoteControlResponse response, const char * message = "");
         void assert(bool condition, const QString & message = "");
         bool commandMatches(RemoteControlCommand, std::string);
+        bool isValueInTable(QString value, QString column_header, QTableWidget* table);
+        int getColumnIndex(QTableWidget* table, QString header);
 
         ExecObjects m_exec_obj;
         bool m_command_found;
