@@ -43,4 +43,5 @@ QMAKE_CXXFLAGS += -Wall \
                   -Wcast-align \
                   -Wwrite-strings \
                   -Winit-self \
-                  -Wstrict-aliasing
+                  -Wstrict-aliasing \
+                  -std=c++0x
