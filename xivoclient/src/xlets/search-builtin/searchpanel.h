@@ -31,18 +31,18 @@
 #define __SEARCHPANEL_H__
 
 #include <QHash>
-#include <QVariant>
 
-#include <QPaintEvent>
 #include "xlet.h"
-#include "peeritem.h"
+#include "basepeerwidget.h"
 
 class QGridLayout;
 class QVBoxLayout;
+class QPaintEvent;
 
 class BaseEngine;
 class ExtendedLineEdit;
 class UserInfo;
+class PeerItem;
 
 class SearchPanel : public XLet
 {

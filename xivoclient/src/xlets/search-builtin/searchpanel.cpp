@@ -38,6 +38,7 @@
 #include <phoneinfo.h>
 #include <userinfo.h>
 #include <chitchat.h>
+#include <peeritem.h>
 
 #include "searchpanel.h"
 
