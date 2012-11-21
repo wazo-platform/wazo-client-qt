@@ -13,6 +13,7 @@ SUBDIRS  = \
     src/xlets/queue_members \
     src/xlets/queueentrydetails \
     src/xlets/services \
+    src/xlets/switchboard \
 
 xletdebug {
     SUBDIRS += src/xlets/debug

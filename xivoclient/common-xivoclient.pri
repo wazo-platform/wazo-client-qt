@@ -17,6 +17,7 @@ updateqm.CONFIG += no_link target_predeps
 MOC_DIR = $$ROOT_DIR/obj
 OBJECTS_DIR = $$ROOT_DIR/obj
 RCC_DIR = $$ROOT_DIR/obj
+UI_DIR = $$ROOT_DIR/obj
 
 LIBS += -L$${BIN_DIR}
 unix:LIBS += -lxivoclient
