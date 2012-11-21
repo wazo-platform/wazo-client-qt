@@ -35,6 +35,7 @@
 #include <peerwidget.h>
 #include <baseengine.h>
 #include <extendedlineedit.h>
+#include <phoneinfo.h>
 #include <userinfo.h>
 #include <chitchat.h>
 

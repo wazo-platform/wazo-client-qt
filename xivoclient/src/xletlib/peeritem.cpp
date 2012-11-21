@@ -36,6 +36,7 @@
 #include "peeritem.h"
 #include "peerwidget.h"
 #include "userinfo.h"
+#include "phoneinfo.h"
 #include "xivoconsts.h"
 
 /*! \brief Constructor

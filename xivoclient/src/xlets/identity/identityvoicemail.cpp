@@ -37,6 +37,7 @@
 #include "baseengine.h"
 #include "identityvoicemail.h"
 #include "userinfo.h"
+#include "voicemailinfo.h"
 
 /*! \brief Constructor
  */

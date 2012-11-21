@@ -40,6 +40,7 @@
 #include "identityphone.h"
 #include "userinfo.h"
 #include "phoneinfo.h"
+#include "channelinfo.h"
 
 /*! \brief Constructor
  */

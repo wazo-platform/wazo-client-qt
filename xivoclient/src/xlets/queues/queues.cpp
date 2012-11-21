@@ -40,6 +40,8 @@
 
 #include <baseengine.h>
 
+#include <queueinfo.h>
+
 #include "queues.h"
 
 Q_EXPORT_PLUGIN2(xletqueuesplugin, XLetQueuesPlugin);

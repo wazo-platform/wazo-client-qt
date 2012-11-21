@@ -33,6 +33,7 @@
 #include <dao/queuedao.h>
 
 #include "agentinfo.h"
+#include "queuememberinfo.h"
 
 AgentInfo::AgentInfo(const QString & ipbxid,
                      const QString & id)

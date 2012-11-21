@@ -38,6 +38,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSettings>
 #include <QSpinBox>
 #include <QVBoxLayout>
 #include <QFormLayout>

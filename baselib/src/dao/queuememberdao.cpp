@@ -28,10 +28,14 @@
  */
 
 #include <QStringList>
+#include <QSet>
 
 #include "baseengine.h"
 #include "queuememberdao.h"
 #include "queue_agent_status.h"
+#include <queuememberinfo.h>
+#include <agentinfo.h>
+#include <queueinfo.h>
 
 QStringList uniquify(QStringList list)
 {

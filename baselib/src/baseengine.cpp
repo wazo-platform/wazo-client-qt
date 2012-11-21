@@ -36,6 +36,7 @@
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QLocale>
+#include <QSettings>
 #include <QProcess>
 #include <QTcpSocket>
 #include <QTranslator>
@@ -48,6 +49,16 @@
 #include <JsonToVariant.h>
 #include <VariantToJson.h>
 
+#include <agentinfo.h>
+#include <channelinfo.h>
+#include <parkinginfo.h>
+#include <phoneinfo.h>
+#include <queueinfo.h>
+#include <queuememberinfo.h>
+#include <userinfo.h>
+#include <voicemailinfo.h>
+
+#include "ipbxlistener.h"
 #include "xivoconsts.h"
 #include "baseengine.h"
 #include "cti_server.h"

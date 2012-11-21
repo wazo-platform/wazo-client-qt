@@ -33,6 +33,8 @@
 
 #include "queueentrydetails.h"
 
+#include <queueinfo.h>
+
 Q_EXPORT_PLUGIN2(xletqueueentrydetailsplugin, XLetQueueEntryDetailsPlugin);
 
 XLet* XLetQueueEntryDetailsPlugin::newXLetInstance(QWidget *parent)

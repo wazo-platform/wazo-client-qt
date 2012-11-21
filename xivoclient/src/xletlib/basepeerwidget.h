@@ -38,8 +38,8 @@
 #include <baseengine.h>
 #include "chitchat.h"
 #include "xivoconsts.h"
+#include <userinfo.h>
 
-class UserInfo;
 
 class XLETLIB_EXPORT BasePeerWidget : public QWidget
 {

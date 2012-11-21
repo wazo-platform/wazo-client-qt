@@ -27,7 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+
 #include <baseengine.h>
+#include <queuememberinfo.h>
 #include <dao/queuememberdao.h>
 
 #include "queue_members_view.h"

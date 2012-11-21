@@ -33,6 +33,8 @@
 
 #include "calls.h"
 
+#include <channelinfo.h>
+
 Q_EXPORT_PLUGIN2(xletcallsplugin, XLetCallsPlugin);
 
 XLet* XLetCallsPlugin::newXLetInstance(QWidget *parent)

@@ -29,6 +29,7 @@
 
 #include "baseengine.h"
 #include "channelinfo.h"
+#include "parkinginfo.h"
 
 ChannelInfo::ChannelInfo(const QString & ipbxid,
                          const QString & id)

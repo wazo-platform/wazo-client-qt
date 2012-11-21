@@ -29,6 +29,7 @@
 
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QDebug>
 
 #include <baseengine.h>
 

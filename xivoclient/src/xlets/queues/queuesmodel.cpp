@@ -30,6 +30,7 @@
 #include <QBrush>
 
 #include <baseengine.h>
+#include <queueinfo.h>
 
 #include "queuesmodel.h"
 

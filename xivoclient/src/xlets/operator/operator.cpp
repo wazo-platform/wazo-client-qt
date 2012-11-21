@@ -33,6 +33,9 @@
 
 #include "operator.h"
 
+#include <channelinfo.h>
+#include <phoneinfo.h>
+
 Q_EXPORT_PLUGIN2(xletoperatorplugin, XLetOperatorPlugin);
 
 XLet* XLetOperatorPlugin::newXLetInstance(QWidget *parent)

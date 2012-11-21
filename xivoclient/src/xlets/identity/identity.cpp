@@ -45,6 +45,7 @@
 #include "userinfo.h"
 #include "phoneinfo.h"
 #include "agentinfo.h"
+#include "channelinfo.h"
 #include "queueinfo.h"
 #include "identityagent.h"
 #include "identityphone.h"

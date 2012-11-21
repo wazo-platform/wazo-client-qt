@@ -29,6 +29,9 @@
 
 #include <QSpacerItem>
 
+#include <agentinfo.h>
+#include <queueinfo.h>
+#include <queuememberinfo.h>
 #include <dao/queuememberdao.h>
 
 #include "agentdetails.h"

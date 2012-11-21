@@ -46,6 +46,7 @@
 #include "userinfo.h"
 #include "xivoconsts.h"
 #include "taintedpixmap.h"
+#include <channelinfo.h>
 
 /*! \brief Constructor
  *

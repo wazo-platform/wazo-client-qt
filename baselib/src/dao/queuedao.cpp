@@ -30,6 +30,7 @@
 
 #include "baseengine.h"
 #include "queuedao.h"
+#include <queueinfo.h>
 
 QString QueueDAO::queueDisplayNameFromQueueName(const QString &queue_name)
 {

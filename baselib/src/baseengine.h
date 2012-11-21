@@ -36,21 +36,12 @@
 #include <QMultiHash>
 #include <QObject>
 #include <QTime>
-#include <QSettings>
+#include <QVector>
 
-#include <channelinfo.h>
-#include "parkinginfo.h"
-#include <phoneinfo.h>
-#include <queueinfo.h>
-#include <agentinfo.h>
-#include <voicemailinfo.h>
-#include <userinfo.h>
-#include <queuememberinfo.h>
-#include <queue_agent_status.h>
 #include <init_watcher.h>
 
 #include "baseconfig.h"
-#include "ipbxlistener.h"
+#include <xinfo.h>
 
 class QApplication;
 class QDateTime;
@@ -64,6 +55,17 @@ class QTimerEvent;
 class QTranslator;
 class QUdpSocket;
 class QVariant;
+
+class IPBXListener;
+
+class AgentInfo;
+class ChannelInfo;
+class ParkingInfo;
+class PhoneInfo;
+class QueueInfo;
+class QueueMemberInfo;
+class UserInfo;
+class VoiceMailInfo;
 
 /*! \brief Class which handles connection with the XiVO CTI server
  *

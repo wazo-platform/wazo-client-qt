@@ -30,7 +30,10 @@
 #include <QBrush>
 
 #include <baseengine.h>
+#include <agentinfo.h>
+#include <phoneinfo.h>
 #include <queuememberinfo.h>
+#include <userinfo.h>
 #include <dao/queuememberdao.h>
 
 #include "queue_members_model.h"

@@ -39,6 +39,10 @@
 #include "basepeerwidget.h"
 #include "baseengine.h"
 #include "xivoconsts.h"
+#include <channelinfo.h>
+#include <phoneinfo.h>
+#include <userinfo.h>
+#include <parkinginfo.h>
 
 
 static

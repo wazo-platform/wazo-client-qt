@@ -33,6 +33,9 @@
 
 #include "baseengine.h"
 #include "identityagent.h"
+#include <agentinfo.h>
+#include <queueinfo.h>
+#include <queuememberinfo.h>
 
 const QString icon_user_unlogged = "xivo-black";
 const QString icon_user_logged = "xivo-transp";
