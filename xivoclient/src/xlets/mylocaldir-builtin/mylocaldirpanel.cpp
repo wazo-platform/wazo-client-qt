@@ -325,7 +325,8 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
         int row = m_table->rowCount();
         m_table->setRowCount( row + 1 );
 
-        for (unsigned int i = 0; i < record.size(); ++i) {
+        unsigned int nb_records = record.size();
+        for (unsigned int i = 0; i < nb_records; ++i) {
             record[i].truncate(m_max_lengths[i]);
         }
 

@@ -46,7 +46,7 @@ FileOpenEventHandler::~FileOpenEventHandler()
 {
 }
 
-bool FileOpenEventHandler::eventFilter(QObject* obj, QEvent* event)
+bool FileOpenEventHandler::eventFilter(QObject*, QEvent* event)
 {
     if(event->type() == QEvent::FileOpen)
     {

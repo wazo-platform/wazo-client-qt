@@ -84,9 +84,8 @@ void LogWidgetModel::sort(int column, Qt::SortOrder order)
     reset();
 }
 
-int LogWidgetModel::rowCount(const QModelIndex &a) const
+int LogWidgetModel::rowCount(const QModelIndex&) const
 {
-    int row, column; row = a.row(); column = a.column();
     int nbrow = 0;
 
     if (((m_history[m_mode].toList().count())))

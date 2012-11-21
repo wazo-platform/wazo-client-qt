@@ -257,7 +257,7 @@ void ConfList::phoneConfRoom()
     QVariantMap members = m_model->getMembers(roomNumber);
 
     b_engine->actionDialNumber(roomNumber);
-    m_manager->openConfRoom(roomNumber, members, true);
+    m_manager->openConfRoom(roomNumber, members);
 }
 
 void ConfList::openConfRoom()
