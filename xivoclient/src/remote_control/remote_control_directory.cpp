@@ -32,25 +32,9 @@
 #include "xlets/directory-builtin/directorypanel.h"
 #include "remote_control.h"
 
-void RemoteControl::then_user_shows_up_in_the_directory_xlet_after_searching(const QVariantList &args)
+
+void RemoteControl::when_i_search_for_1_in_the_directory_xlet(const QVariantList & args)
 {
-
-    const QString& user = args[0].toString();
-    const QString& search = args[1].toString();
-
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
-
-    panel->m_searchText->setText(search);
-    panel->startSearch();
-    pause(2000);
-
-    this->assert(isValueInTable(user, "Nom", panel->m_table));
-
-}
-
-void RemoteControl::then_nothing_shows_up_in_the_directory_xlet_after_searching(const QVariantList &args)
-{
-
     const QString& search = args[0].toString();
 
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
@@ -58,10 +42,21 @@ void RemoteControl::then_nothing_shows_up_in_the_directory_xlet_after_searching(
     panel->m_searchText->setText(search);
     panel->startSearch();
     pause(2000);
+}
 
+void RemoteControl::then_nothing_shows_up_in_the_directory_xlet()
+{
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
     int nb_rows = panel->m_table->rowCount();
     this->assert(nb_rows == 0);
+}
 
+void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & args)
+{
+    const QString& user = args[0].toString();
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
+
+    this->assert(isValueInTable(user, "Nom", panel->m_table));
 }
 
 #endif
