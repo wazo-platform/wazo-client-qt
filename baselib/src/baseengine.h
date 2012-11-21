@@ -57,6 +57,7 @@ class QUdpSocket;
 class QVariant;
 
 class IPBXListener;
+class XletDebug;
 
 class AgentInfo;
 class ChannelInfo;
@@ -532,6 +533,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         InitWatcher m_init_watcher;
 
     friend class CTIServer;
+    friend class XletDebug;
 };
 
 extern BASELIB_EXPORT BaseEngine *b_engine;
