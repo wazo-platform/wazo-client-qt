@@ -43,6 +43,7 @@ public:
     Switchboard(QWidget *parent=0);
     ~Switchboard();
 public slots:
+    void on_answerButton_clicked() const;
 private:
     Ui::SwitchboardPanel ui;
 };

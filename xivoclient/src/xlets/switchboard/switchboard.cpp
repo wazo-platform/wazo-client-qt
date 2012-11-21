@@ -28,6 +28,7 @@
  */
 
 #include "switchboard.h"
+#include <baseengine.h>
 
 Switchboard::Switchboard(QWidget *parent)
     : XLet(parent)
@@ -37,4 +38,13 @@ Switchboard::Switchboard(QWidget *parent)
 
 Switchboard::~Switchboard()
 {
+}
+
+void Switchboard::on_answerButton_clicked() const
+{
+    QVariantMap pickupCommand;
+    pickupCommand["class"] = "answer";
+
+    b_engine->sendJsonCommand(pickupCommand);
+
 }
