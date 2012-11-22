@@ -1,0 +1,13 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../obj/queue_entries_fr.qm</file>
+        <file>../../../obj/queue_entries_es_ES.qm</file>
+        <file>../../../obj/queue_entries_pt_BR.qm</file>
+        <file>../../../obj/queue_entries_hu.qm</file>
+        <file>../../../obj/queue_entries_de.qm</file>
+        <file>../../../obj/queue_entries_ja.qm</file>
+        <file>../../../obj/queue_entries_it.qm</file>
+        <file>../../../obj/queue_entries_nl.qm</file>
+    </qresource>
+</RCC>

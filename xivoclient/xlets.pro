@@ -11,7 +11,7 @@ SUBDIRS  = \
     src/xlets/operator \
     src/xlets/queues \
     src/xlets/queue_members \
-    src/xlets/queueentrydetails \
+    src/xlets/queue_entries \
     src/xlets/services \
     src/xlets/switchboard \
 

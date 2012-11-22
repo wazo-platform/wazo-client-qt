@@ -35,13 +35,13 @@
 #include <queueinfo.h>
 #include <baseengine.h>
 
-#include "queueentrydetails.h"
+#include "queue_entries.h"
 
-Q_EXPORT_PLUGIN2(xletqueueentrydetailsplugin, QueueEntriesPlugin);
+Q_EXPORT_PLUGIN2(queueentriesplugin, QueueEntriesPlugin);
 
 XLet* QueueEntriesPlugin::newXLetInstance(QWidget *parent)
 {
-    b_engine->registerTranslation(":/obj/queueentrydetails_%1");
+    b_engine->registerTranslation(":/obj/queue_entries_%1");
     return new QueueEntries(parent);
 }
 
