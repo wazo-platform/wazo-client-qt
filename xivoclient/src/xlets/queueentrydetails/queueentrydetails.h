@@ -27,27 +27,27 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
+#ifndef __QUEUEENTRIES_H__
+#define __QUEUEENTRIES_H__
 
-#ifndef __QUEUEENTRYDETAILSPANEL_H__
-#define __QUEUEENTRYDETAILSPANEL_H__
-
-#include <QtGui>
+#include <QHash>
+#include <QVariantMap>
+#include <QVariantList>
 #include "xlet.h"
 #include "xletinterface.h"
 
-#include <baseengine.h>
+class QTimerEvent;
+class QueueInfo;
+class QGridLayout;
+class QLabel;
+class QString;
 
-/*! \brief Display entries of a queue
- */
-class XLetQueueEntryDetails : public XLet
+class QueueEntries : public XLet
 {
     Q_OBJECT
 
     public:
-        XLetQueueEntryDetails(QWidget *parent=0);
+        QueueEntries(QWidget *parent=0);
 
     protected:
         void timerEvent(QTimerEvent *);
@@ -64,15 +64,15 @@ class XLetQueueEntryDetails : public XLet
         void updateDescription(const QueueInfo *, int);
         void showEntries();
 
-        QGridLayout *m_gridlayout; //!< Layout
+        QGridLayout *m_gridlayout;
 
-        QString m_monitored_queueid;  //!< queue id
-        QLabel *m_queuedescription;   //!< label for displaying queue name
-        QHash<int, QLabel *> m_entrypos;    //!< display entry
+        QString m_monitored_queueid;
+        QLabel *m_queuedescription;
+        QHash<int, QLabel *> m_entrypos;
         QVariantList m_queue_entries;
 };
 
-class XLetQueueEntryDetailsPlugin : public QObject, XLetInterface
+class QueueEntriesPlugin : public QObject, XLetInterface
 {
     Q_OBJECT
     Q_INTERFACES(XLetInterface)
@@ -82,4 +82,4 @@ class XLetQueueEntryDetailsPlugin : public QObject, XLetInterface
 };
 
 
-#endif /* __QUEUEENTRYDETAILSPANEL_H__ */
+#endif /* __QUEUEENTRIES_H__ */

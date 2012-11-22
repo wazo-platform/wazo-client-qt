@@ -27,23 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
+#include <QTimerEvent>
+#include <QGridLayout>
+#include <QLabel>
+#include <QString>
+
+#include <queueinfo.h>
+#include <baseengine.h>
 
 #include "queueentrydetails.h"
 
-#include <queueinfo.h>
+Q_EXPORT_PLUGIN2(xletqueueentrydetailsplugin, QueueEntriesPlugin);
 
-Q_EXPORT_PLUGIN2(xletqueueentrydetailsplugin, XLetQueueEntryDetailsPlugin);
-
-XLet* XLetQueueEntryDetailsPlugin::newXLetInstance(QWidget *parent)
+XLet* QueueEntriesPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/queueentrydetails_%1");
-    return new XLetQueueEntryDetails(parent);
+    return new QueueEntries(parent);
 }
 
-XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
+QueueEntries::QueueEntries(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Calls of a Queue"));
@@ -65,13 +67,13 @@ XLetQueueEntryDetails::XLetQueueEntryDetails(QWidget *parent)
             this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
 }
 
-void XLetQueueEntryDetails::updateQueueConfig(const QString & xqueueid)
+void QueueEntries::updateQueueConfig(const QString & xqueueid)
 {
     if (xqueueid == m_monitored_queueid)
         updatePanel();
 }
 
-void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
+void QueueEntries::monitorThisQueue(const QString & queueid)
 {
     if(m_monitored_queueid != queueid && b_engine->hasQueue(queueid)) {
         m_monitored_queueid = queueid;
@@ -81,7 +83,7 @@ void XLetQueueEntryDetails::monitorThisQueue(const QString & queueid)
     }
 }
 
-void XLetQueueEntryDetails::subscribeQueueEntry(const QString &queue_xid)
+void QueueEntries::subscribeQueueEntry(const QString &queue_xid)
 {
     if (const QueueInfo *queue = b_engine->queue(queue_xid)) {
         QVariantMap subscribe_command;
@@ -93,7 +95,7 @@ void XLetQueueEntryDetails::subscribeQueueEntry(const QString &queue_xid)
     }
 }
 
-void XLetQueueEntryDetails::clearPanel()
+void QueueEntries::clearPanel()
 {
     foreach(int position, m_entrypos.keys()) {
         m_gridlayout->removeWidget(m_entrypos[position]);
@@ -102,9 +104,7 @@ void XLetQueueEntryDetails::clearPanel()
     m_entrypos.clear();
 }
 
-/*! \brief update entries
- */
-void XLetQueueEntryDetails::updatePanel()
+void QueueEntries::updatePanel()
 {
     if (const QueueInfo *queue = b_engine->queue(m_monitored_queueid)) {
         int count = m_queue_entries.size();
@@ -114,7 +114,7 @@ void XLetQueueEntryDetails::updatePanel()
     }
 }
 
-void XLetQueueEntryDetails::showEntries()
+void QueueEntries::showEntries()
 {
     foreach(const QVariant &v_entry, m_queue_entries) {
         const QVariantMap &entry = v_entry.toMap();
@@ -129,7 +129,7 @@ void XLetQueueEntryDetails::showEntries()
     }
 }
 
-void XLetQueueEntryDetails::updateDescription(const QueueInfo *queue,
+void QueueEntries::updateDescription(const QueueInfo *queue,
                                               int count)
 {
     m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
@@ -140,7 +140,7 @@ void XLetQueueEntryDetails::updateDescription(const QueueInfo *queue,
                                 .arg(count));
 }
 
-void XLetQueueEntryDetails::queueEntryUpdate(const QString &queue_id,
+void QueueEntries::queueEntryUpdate(const QString &queue_id,
                                              const QVariantList &entry_list)
 {
     if (const QueueInfo *queue = b_engine->queue(m_monitored_queueid)) {
@@ -151,7 +151,7 @@ void XLetQueueEntryDetails::queueEntryUpdate(const QString &queue_id,
     }
 }
 
-void XLetQueueEntryDetails::timerEvent(QTimerEvent *)
+void QueueEntries::timerEvent(QTimerEvent *)
 {
     clearPanel();
     showEntries();
