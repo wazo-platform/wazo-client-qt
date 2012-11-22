@@ -36,6 +36,8 @@
 #include <baseengine.h>
 
 #include "queue_entries.h"
+#include "queue_entries_model.h"
+#include "queue_entries_view.h"
 
 Q_EXPORT_PLUGIN2(queueentriesplugin, QueueEntriesPlugin);
 
@@ -65,6 +67,14 @@ QueueEntries::QueueEntries(QWidget *parent)
             this, SLOT(subscribeQueueEntry(const QString &)));
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
+
+//    this->m_model = new QueueEntriesModel(this);
+//    this->m_view = new QueueEntriesView(this);
+//    this->m_view->setModel(this->m_model);
+//    this->m_view->hideColumn(QueueEntriesModel::ID);
+//
+//    QVBoxLayout *layout = new QVBoxLayout(this);
+//    layout->addWidget(this->m_view);
 }
 
 void QueueEntries::updateQueueConfig(const QString & xqueueid)

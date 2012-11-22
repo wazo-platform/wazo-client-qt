@@ -27,64 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUEENTRIES_H__
-#define __QUEUEENTRIES_H__
+#ifndef __QUEUE_ENTRIES_VIEW_H__
+#define __QUEUE_ENTRIES_VIEW_H__
 
-#include <QHash>
-#include <QVariantMap>
-#include <QVariantList>
-#include "xlet.h"
-#include "xletinterface.h"
+#include <abstract_table_view.h>
 
-class QTimerEvent;
-class QueueInfo;
-class QGridLayout;
-class QLabel;
-class QString;
-class QueueEntriesView;
-class QueueEntriesModel;
-
-class QueueEntries : public XLet
+class QueueEntriesView : public AbstractTableView
 {
     Q_OBJECT
 
     public:
-        QueueEntries(QWidget *parent=0);
-
-    protected:
-        void timerEvent(QTimerEvent *);
-
-    public slots:
-        void setGuiOptions(const QVariantMap &) {};
-        void updateQueueConfig(const QString &);
-        void monitorThisQueue(const QString &);
-        void subscribeQueueEntry(const QString &);
-        void queueEntryUpdate(const QString &, const QVariantList &);
-    private:
-        void clearPanel();
-        void updatePanel();
-        void updateDescription(const QueueInfo *, int);
-        void showEntries();
-
-        QGridLayout *m_gridlayout;
-
-        QString m_monitored_queueid;
-        QLabel *m_queuedescription;
-        QHash<int, QLabel *> m_entrypos;
-        QVariantList m_queue_entries;
-
-        QueueEntriesView * m_view;
-        QueueEntriesModel * m_model;
+        QueueEntriesView(QWidget *parent = NULL);
+        ~QueueEntriesView();
 };
 
-class QueueEntriesPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-
-#endif /* __QUEUEENTRIES_H__ */
+#endif

@@ -27,64 +27,48 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUEENTRIES_H__
-#define __QUEUEENTRIES_H__
+#include <QStringList>
+#include <QAbstractTableModel>
+#include <QDebug>
 
-#include <QHash>
-#include <QVariantMap>
-#include <QVariantList>
-#include "xlet.h"
-#include "xletinterface.h"
-
-class QTimerEvent;
-class QueueInfo;
-class QGridLayout;
-class QLabel;
-class QString;
-class QueueEntriesView;
-class QueueEntriesModel;
-
-class QueueEntries : public XLet
+class QueueEntriesModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        QueueEntries(QWidget *parent=0);
+        QueueEntriesModel(QObject *parent = NULL);
+        ~QueueEntriesModel();
 
-    protected:
-        void timerEvent(QTimerEvent *);
+        void fillHeaders();
 
+        int rowCount(const QModelIndex & index) const;
+        int columnCount(const QModelIndex & index) const;
+
+        bool removeRows(int start_row_index, int row_count, const QModelIndex & index);
+
+        QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+        QVariant headerData(int column_index,
+                            Qt::Orientation orientation,
+                            int role) const;
     public slots:
-        void setGuiOptions(const QVariantMap &) {};
-        void updateQueueConfig(const QString &);
-        void monitorThisQueue(const QString &);
-        void subscribeQueueEntry(const QString &);
-        void queueEntryUpdate(const QString &, const QVariantList &);
+        void queueEntryUpdate(const QString & queue_id,
+                              const QVariantList & entry_list);
+        void changeWatchedQueue(const QString & queue_id);
     private:
-        void clearPanel();
-        void updatePanel();
-        void updateDescription(const QueueInfo *, int);
-        void showEntries();
-
-        QGridLayout *m_gridlayout;
-
-        QString m_monitored_queueid;
-        QLabel *m_queuedescription;
-        QHash<int, QLabel *> m_entrypos;
-        QVariantList m_queue_entries;
-
-        QueueEntriesView * m_view;
-        QueueEntriesModel * m_model;
-};
-
-class QueueEntriesPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+        QVariant dataDisplay(int row, int column) const;
+        void subscribeQueueEntry(const QString & queue_id);
 
     public:
-        XLet *newXLetInstance(QWidget *parent=0);
+        enum Columns {
+            ID,
+            POSITION,
+            NAME,
+            NUMBER,
+            TIME,
+            NB_COL
+        };
+
+        QString m_headers[NB_COL];
+        QVariantList m_entries;
+        static QString not_available ;
 };
-
-
-#endif /* __QUEUEENTRIES_H__ */
