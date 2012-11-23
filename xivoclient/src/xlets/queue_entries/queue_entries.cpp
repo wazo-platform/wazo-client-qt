@@ -63,6 +63,9 @@ QueueEntries::QueueEntries(QWidget *parent)
     this->m_view->setModel(this->m_proxy_model);
     this->m_view->hideColumn(QueueEntriesModel::ID);
 
+    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
+            this->m_model, SLOT(changeWatchedQueue(const QString &)));
+
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(&m_queue_description);
     layout->addWidget(this->m_view);

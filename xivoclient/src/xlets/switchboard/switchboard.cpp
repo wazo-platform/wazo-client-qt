@@ -27,17 +27,45 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "switchboard.h"
+#include <QDebug>
+
 #include <baseengine.h>
+#include <dao/queuedao.h>
+#include <id_converter.h>
+
+#include <queueinfo.h>
+
+#include <queue_entries/queue_entries_model.h>
+#include <queue_entries/queue_entries_sort_filter_proxy_model.h>
+#include <queue_entries/queue_entries_view.h>
+
+#include "switchboard.h"
 
 Switchboard::Switchboard(QWidget *parent)
     : XLet(parent)
 {
     ui.setupUi(this);
+
+    connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
+            this, SLOT(updateHeader(const QString &, const QVariantList &)));
+
+    this->m_model = new QueueEntriesModel(this);
+    this->m_proxy_model = new QueueEntriesSortFilterProxyModel(this);
+    this->m_proxy_model->setSourceModel(this->m_model);
+    ui.incomingCallsView->setModel(this->m_proxy_model);
+
+    connect(b_engine, SIGNAL(initialized()),
+            this, SLOT(watch_switchboard_queue()));
 }
 
 Switchboard::~Switchboard()
 {
+}
+
+void Switchboard::watch_switchboard_queue()
+{
+    const QString &queue_id = QueueDAO::findQueueIdByName("__switchboard");
+    this->m_model->changeWatchedQueue(queue_id);
 }
 
 void Switchboard::on_answerButton_clicked() const
@@ -47,4 +75,21 @@ void Switchboard::on_answerButton_clicked() const
 
     b_engine->sendJsonCommand(pickupCommand);
 
+}
+
+void Switchboard::updateHeader(const QString & queue_id, const QVariantList & entries)
+{
+    QString queue_xid = IdConverter::idToXId(queue_id);
+
+    const QueueInfo * queue = b_engine->queue(queue_xid);
+    if (queue == NULL) {
+        return;
+    }
+    if (queue->queueName() != "__switchboard") {
+        return;
+    }
+
+    QString header_text = QString(tr("%1 call(s)"))
+        .arg(entries.size());
+    this->ui.incomingCallCountLabel->setText(header_text);
 }

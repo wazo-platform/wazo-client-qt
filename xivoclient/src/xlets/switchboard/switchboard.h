@@ -35,17 +35,24 @@
 #include "ui_switchboard.h"
 
 class QLabel;
+class QueueEntriesModel;
+class QueueEntriesSortFilterProxyModel;
 
 class Switchboard : public XLet
 {
     Q_OBJECT
-public:
-    Switchboard(QWidget *parent=0);
-    ~Switchboard();
-public slots:
-    void on_answerButton_clicked() const;
-private:
-    Ui::SwitchboardPanel ui;
+
+    public:
+        Switchboard(QWidget *parent=0);
+        ~Switchboard();
+    public slots:
+        void on_answerButton_clicked() const;
+        void updateHeader(const QString &id, const QVariantList &entries);
+        void watch_switchboard_queue();
+    private:
+        Ui::SwitchboardPanel ui;
+        QueueEntriesModel *m_model;
+        QueueEntriesSortFilterProxyModel *m_proxy_model;
 };
 
 #endif

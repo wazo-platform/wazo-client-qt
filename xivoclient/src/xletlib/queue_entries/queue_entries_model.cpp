@@ -40,8 +40,6 @@ QueueEntriesModel::QueueEntriesModel(QObject *parent)
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
-    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
-            this, SLOT(changeWatchedQueue(const QString &)));
 
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),

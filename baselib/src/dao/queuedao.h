@@ -36,6 +36,7 @@ class BASELIB_EXPORT QueueDAO
 {
     public:
         static QString queueDisplayNameFromQueueName(const QString &queue_name);
+        static QString findQueueIdByName(const QString &queue_name);
 };
 
 #endif
