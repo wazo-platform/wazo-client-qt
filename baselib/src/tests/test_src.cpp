@@ -27,41 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TEST_USERINFO__
-#define __TEST_USERINFO__
+#include <QtTest/QtTest>
 
-#include <QObject>
-#include <QVariantMap>
-#include <QStringList>
+#include <test_id_converter.h>
 
-class TestUserInfo: public QObject
+// To run the tests use
+// export LD_LIBRARY_PATH=../../bin
+// ./tests
+
+int main (int argc, char *argv[])
 {
-    Q_OBJECT
+    TestIdConverter test_id_converter;
 
-  public:
+    QTest::qExec(&test_id_converter, argc, argv);
 
-  private slots:
-    void constructor();
-    void xid();
-    void updateConfig();
-    void updateStatus();
-    void setAvailState();
-    void setPhoneIdList();
-    void hasPhoneId();
-    void hasChannelId();
-    void findNumberForXChannel();
-    void xchannels();
-    void isTalkingTo();
-    void identitylist();
-
-    // Special slot, automatically called before executing all tests
-    void initTestCase();
-
-  private:
-    QString m_ipbxid;
-    QVariantMap m_prop1;
-    QStringList m_linelist;
-    QStringList m_phoneidlist;
-};
-
-#endif
+    return 0;
+}

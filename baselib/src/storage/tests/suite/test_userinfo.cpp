@@ -36,10 +36,6 @@
 
 #include "test_userinfo.h"
 
-TestUserInfo::TestUserInfo()
-{
-}
-
 void TestUserInfo::initTestCase()
 {
     b_engine = new MockBaseEngine;

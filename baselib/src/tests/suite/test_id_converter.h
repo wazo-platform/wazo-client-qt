@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,41 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TEST_USERINFO__
-#define __TEST_USERINFO__
+#ifndef __TEST_ID_CONVERTER__
+#define __TEST_ID_CONVERTER__
 
 #include <QObject>
-#include <QVariantMap>
-#include <QStringList>
 
-class TestUserInfo: public QObject
+class TestIdConverter: public QObject
 {
     Q_OBJECT
 
-  public:
+    public:
 
-  private slots:
-    void constructor();
-    void xid();
-    void updateConfig();
-    void updateStatus();
-    void setAvailState();
-    void setPhoneIdList();
-    void hasPhoneId();
-    void hasChannelId();
-    void findNumberForXChannel();
-    void xchannels();
-    void isTalkingTo();
-    void identitylist();
-
-    // Special slot, automatically called before executing all tests
-    void initTestCase();
-
-  private:
-    QString m_ipbxid;
-    QVariantMap m_prop1;
-    QStringList m_linelist;
-    QStringList m_phoneidlist;
+    private slots:
+        void testIdToXId();
 };
 
 #endif
