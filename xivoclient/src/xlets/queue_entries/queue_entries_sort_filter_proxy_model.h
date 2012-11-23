@@ -27,45 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUEENTRIES_H__
-#define __QUEUEENTRIES_H__
+#ifndef __QUEUE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
+#define __QUEUE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 
-#include <QVariantList>
-#include <QLabel>
-#include "xlet.h"
-#include "xletinterface.h"
+#include <abstract_sort_filter_proxy_model.h>
 
-class QueueEntriesView;
-class QueueEntriesSortFilterProxyModel;
-class QueueEntriesModel;
-
-class QueueEntries : public XLet
+class QueueEntriesSortFilterProxyModel : public AbstractSortFilterProxyModel
 {
     Q_OBJECT
 
     public:
-        QueueEntries(QWidget *parent=0);
-
-    public slots:
-        void updateHeader(const QString & queue_id, const QVariantList & entries);
-        void changeWatchedQueue(const QString & queue_id);
+        QueueEntriesSortFilterProxyModel(QObject * parent);
     private:
-        QString m_monitored_queue_id;
-        QLabel m_queue_description;
-
-        QueueEntriesView * m_view;
-        QueueEntriesSortFilterProxyModel * m_proxy_model;
-        QueueEntriesModel * m_model;
 };
 
-class QueueEntriesPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-
-#endif /* __QUEUEENTRIES_H__ */
+#endif

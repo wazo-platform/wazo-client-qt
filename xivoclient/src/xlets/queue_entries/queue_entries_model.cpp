@@ -29,6 +29,7 @@
 
 #include <baseengine.h>
 #include <queueinfo.h>
+#include <QTimer>
 
 #include "queue_entries_model.h"
 
@@ -41,6 +42,11 @@ QueueEntriesModel::QueueEntriesModel(QObject *parent)
             this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(changeWatchedQueue(const QString &)));
+
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            this, SLOT(increaseTime()));
+    timer_display->start(1000);
 }
 
 void QueueEntriesModel::fillHeaders()
@@ -127,6 +133,8 @@ QVariant QueueEntriesModel::dataDisplay(int row, int column) const
         return entry.value("name");
     case NUMBER:
         return entry.value("number");
+    case TIME:
+        return b_engine->timeElapsed(entry.value("join_time").toDouble());
     default:
         return QVariant();
     }
@@ -161,4 +169,18 @@ void QueueEntriesModel::subscribeQueueEntry(const QString & queue_id)
     subscribe_command["queueid"] = queue->id();
 
     b_engine->sendJsonCommand(subscribe_command);
+}
+
+void QueueEntriesModel::increaseTime()
+{
+    this->refreshColumn(TIME);
+}
+
+void QueueEntriesModel::refreshColumn(int column_index)
+{
+    unsigned first_row_index = 0;
+    unsigned last_row_index = m_entries.size() - 1;
+    QModelIndex cell_changed_start = createIndex(first_row_index, column_index);
+    QModelIndex cell_changed_end = createIndex(last_row_index, column_index);
+    emit dataChanged(cell_changed_start, cell_changed_end);
 }

@@ -54,9 +54,12 @@ class QueueEntriesModel : public QAbstractTableModel
         void queueEntryUpdate(const QString & queue_id,
                               const QVariantList & entry_list);
         void changeWatchedQueue(const QString & queue_id);
+    private slots:
+        void increaseTime();
     private:
         QVariant dataDisplay(int row, int column) const;
         void subscribeQueueEntry(const QString & queue_id);
+        void refreshColumn(int column_index);
 
     public:
         enum Columns {

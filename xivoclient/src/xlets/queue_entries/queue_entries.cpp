@@ -28,15 +28,15 @@
  */
 
 #include <QTimerEvent>
-#include <QGridLayout>
-#include <QLabel>
-#include <QString>
+#include <QVBoxLayout>
 
 #include <queueinfo.h>
 #include <baseengine.h>
+#include <id_converter.h>
 
 #include "queue_entries.h"
 #include "queue_entries_model.h"
+#include "queue_entries_sort_filter_proxy_model.h"
 #include "queue_entries_view.h"
 
 Q_EXPORT_PLUGIN2(queueentriesplugin, QueueEntriesPlugin);
@@ -51,118 +51,48 @@ QueueEntries::QueueEntries(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Calls of a Queue"));
-    m_gridlayout = new QGridLayout(this);
-
-    m_queuedescription = new QLabel("", this);
-    m_gridlayout->setColumnStretch(5, 1);
-    m_gridlayout->setRowStretch(100, 1);
-    m_gridlayout->addWidget(m_queuedescription, 0, 0);
-    startTimer(1000);
-
-    connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
-            this, SLOT(updateQueueConfig(const QString &)));
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
-            this, SLOT(monitorThisQueue(const QString &)));
-    connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
-            this, SLOT(subscribeQueueEntry(const QString &)));
+            this, SLOT(changeWatchedQueue(const QString &)));
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
-            this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
+            this, SLOT(updateHeader(const QString &, const QVariantList &)));
 
-//    this->m_model = new QueueEntriesModel(this);
-//    this->m_view = new QueueEntriesView(this);
-//    this->m_view->setModel(this->m_model);
-//    this->m_view->hideColumn(QueueEntriesModel::ID);
-//
-//    QVBoxLayout *layout = new QVBoxLayout(this);
-//    layout->addWidget(this->m_view);
+    this->m_model = new QueueEntriesModel(this);
+    this->m_proxy_model = new QueueEntriesSortFilterProxyModel(this);
+    this->m_proxy_model->setSourceModel(this->m_model);
+    this->m_view = new QueueEntriesView(this);
+    this->m_view->setModel(this->m_proxy_model);
+    this->m_view->hideColumn(QueueEntriesModel::ID);
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->addWidget(&m_queue_description);
+    layout->addWidget(this->m_view);
 }
 
-void QueueEntries::updateQueueConfig(const QString & xqueueid)
+void QueueEntries::changeWatchedQueue(const QString & queue_id)
 {
-    if (xqueueid == m_monitored_queueid)
-        updatePanel();
-}
-
-void QueueEntries::monitorThisQueue(const QString & queueid)
-{
-    if(m_monitored_queueid != queueid && b_engine->hasQueue(queueid)) {
-        m_monitored_queueid = queueid;
-        updatePanel();
-        clearPanel();
-        m_queue_entries.clear();
+    const QueueInfo * queue = b_engine->queue(queue_id);
+    if (queue == NULL) {
+        return;
     }
+
+    this->m_monitored_queue_id = queue->xid();
 }
 
-void QueueEntries::subscribeQueueEntry(const QString &queue_xid)
+void QueueEntries::updateHeader(const QString & queue_id, const QVariantList & entries)
 {
-    if (const QueueInfo *queue = b_engine->queue(queue_xid)) {
-        QVariantMap subscribe_command;
-        subscribe_command["class"] = "subscribe";
-        subscribe_command["message"] = "queueentryupdate";
-        subscribe_command["queueid"] = queue->id();
-
-        b_engine->sendJsonCommand(subscribe_command);
+    QString queue_xid = IdConverter::idToXId(queue_id);
+    if (queue_xid != this->m_monitored_queue_id) {
+        return;
     }
-}
 
-void QueueEntries::clearPanel()
-{
-    foreach(int position, m_entrypos.keys()) {
-        m_gridlayout->removeWidget(m_entrypos[position]);
-        delete m_entrypos[position];
+    const QueueInfo * queue = b_engine->queue(queue_xid);
+    if (queue == NULL) {
+        return;
     }
-    m_entrypos.clear();
-}
 
-void QueueEntries::updatePanel()
-{
-    if (const QueueInfo *queue = b_engine->queue(m_monitored_queueid)) {
-        int count = m_queue_entries.size();
-        updateDescription(queue, count);
-        clearPanel();
-        showEntries();
-    }
-}
-
-void QueueEntries::showEntries()
-{
-    foreach(const QVariant &v_entry, m_queue_entries) {
-        const QVariantMap &entry = v_entry.toMap();
-        QString time_stamp = b_engine->timeElapsed(entry["join_time"].toDouble());
-        int position = entry["position"].toInt();
-        QString name = entry["name"].toString();
-        QString number = entry["number"].toString();
-        QString text = QString("%0: %1 <%2> %3").arg(position).arg(name).arg(number).arg(time_stamp);
-        QLabel *label = new QLabel(text, this);
-        m_entrypos[position] = label;
-        m_gridlayout->addWidget(m_entrypos[position], position, 0, Qt::AlignLeft);
-    }
-}
-
-void QueueEntries::updateDescription(const QueueInfo *queue,
-                                              int count)
-{
-    m_queuedescription->setText(tr("<b>%1</b> (%2) on <b>%3</b> (%4) (%5 call(s))")
-                                .arg(queue->queueDisplayName())
-                                .arg(queue->queueNumber())
-                                .arg(queue->ipbxid())
-                                .arg(queue->context())
-                                .arg(count));
-}
-
-void QueueEntries::queueEntryUpdate(const QString &queue_id,
-                                             const QVariantList &entry_list)
-{
-    if (const QueueInfo *queue = b_engine->queue(m_monitored_queueid)) {
-        if (queue->id() == queue_id) {
-            m_queue_entries = entry_list;
-            updatePanel();
-        }
-    }
-}
-
-void QueueEntries::timerEvent(QTimerEvent *)
-{
-    clearPanel();
-    showEntries();
+    QString header_text = QString(tr("<b>%1</b> (%2): %3 call(s)"))
+        .arg(queue->queueDisplayName())
+        .arg(queue->queueNumber())
+        .arg(entries.size());
+    this->m_queue_description.setText(header_text);
 }
