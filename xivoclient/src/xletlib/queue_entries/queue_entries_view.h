@@ -31,8 +31,9 @@
 #define __QUEUE_ENTRIES_VIEW_H__
 
 #include <abstract_table_view.h>
+#include <xletlib_export.h>
 
-class QueueEntriesView : public AbstractTableView
+class XLETLIB_EXPORT QueueEntriesView : public AbstractTableView
 {
     Q_OBJECT
 

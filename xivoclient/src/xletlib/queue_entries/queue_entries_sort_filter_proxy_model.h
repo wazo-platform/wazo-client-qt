@@ -32,7 +32,9 @@
 
 #include <abstract_sort_filter_proxy_model.h>
 
-class QueueEntriesSortFilterProxyModel : public AbstractSortFilterProxyModel
+#include <xletlib_export.h>
+
+class XLETLIB_EXPORT QueueEntriesSortFilterProxyModel : public AbstractSortFilterProxyModel
 {
     Q_OBJECT
 

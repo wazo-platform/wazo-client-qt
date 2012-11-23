@@ -31,7 +31,9 @@
 #include <QAbstractTableModel>
 #include <QDebug>
 
-class QueueEntriesModel : public QAbstractTableModel
+#include <xletlib_export.h>
+
+class XLETLIB_EXPORT QueueEntriesModel : public QAbstractTableModel
 {
     Q_OBJECT
 

@@ -35,9 +35,9 @@
 #include <id_converter.h>
 
 #include "queue_entries.h"
-#include "queue_entries_model.h"
-#include "queue_entries_sort_filter_proxy_model.h"
-#include "queue_entries_view.h"
+#include <queue_entries/queue_entries_model.h>
+#include <queue_entries/queue_entries_sort_filter_proxy_model.h>
+#include <queue_entries/queue_entries_view.h>
 
 Q_EXPORT_PLUGIN2(queueentriesplugin, QueueEntriesPlugin);
 
