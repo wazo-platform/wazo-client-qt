@@ -34,6 +34,7 @@
 #include <id_converter.h>
 
 #include <queueinfo.h>
+#include <phoneinfo.h>
 
 #include <queue_entries/queue_entries_model.h>
 #include <queue_entries/queue_entries_sort_filter_proxy_model.h>
@@ -46,12 +47,14 @@
 QString Switchboard::switchboard_queue_name = "__switchboard";
 
 Switchboard::Switchboard(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent), m_switchboard_user(b_engine->getXivoClientUser())
 {
     ui.setupUi(this);
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(updateHeader(const QString &, const QVariantList &)));
+    connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
+            this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
 
     this->m_model = new QueueEntriesModel(this);
     this->m_proxy_model = new QueueEntriesSortFilterProxyModel(this);
@@ -64,14 +67,34 @@ Switchboard::Switchboard(QWidget *parent)
             this, SLOT(watch_switchboard_queue()));
     connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(clicked(const QModelIndex &)));
-    connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
-            this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
 
     this->setFocus();
 }
 
 Switchboard::~Switchboard()
 {
+}
+
+void Switchboard::updatePhoneStatus(const QString &phone_id)
+{
+    if (! isSwitchboardPhone(phone_id)) {
+        return;
+    }
+
+    auto phone = b_engine->phone(phone_id);
+    if (phone && phone->hintstatus() == "0") {
+        this->setFocus();
+    }
+}
+
+bool Switchboard::isSwitchboardPhone(const QString &phone_id)
+{
+    if (! m_switchboard_user) {
+        m_switchboard_user = b_engine->getXivoClientUser();
+    }
+    return m_switchboard_user && m_switchboard_user->hasPhoneId(phone_id);
 }
 
 void Switchboard::queueEntryUpdate(const QString &queue_id,
