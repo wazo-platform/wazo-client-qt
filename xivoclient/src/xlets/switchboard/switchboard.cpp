@@ -49,6 +49,7 @@ QString Switchboard::switchboard_queue_name = "__switchboard";
 Switchboard::Switchboard(QWidget *parent)
     : XLet(parent), m_switchboard_user(b_engine->getXivoClientUser())
 {
+    this->setTitle(tr("Switchboard"));
     ui.setupUi(this);
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
