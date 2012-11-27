@@ -31,7 +31,7 @@
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="48"/>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="302"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="325"/>
         <source>Logged</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,7 +43,7 @@ queues</source>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="50"/>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="323"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="346"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
@@ -54,37 +54,37 @@ queues</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="237"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="260"/>
         <source>Agent ready to receive a call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="239"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="262"/>
         <source>Agent processing a call or paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="275"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="298"/>
         <source>Not in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="278"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="301"/>
         <source>In use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="304"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="327"/>
         <source>Unlogged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="321"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="344"/>
         <source>Unpaused</source>
         <translation type="unfinished">Klaar</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="325"/>
+        <location filename="../src/xlets/agents/agents_model.cpp" line="348"/>
         <source>Partially Paused</source>
         <translation type="unfinished"></translation>
     </message>

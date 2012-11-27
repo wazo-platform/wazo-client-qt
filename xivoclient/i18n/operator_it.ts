@@ -4,67 +4,67 @@
 <context>
     <name>XletOperator</name>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="49"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="52"/>
         <source>Operator panel</source>
         <translation>Pannello operatore</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="50"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="53"/>
         <source>Operator</source>
         <translation>Operatore</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="52"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="55"/>
         <source>Answer</source>
         <translation>Rispondi</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="53"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="56"/>
         <source>Hangup</source>
         <translation>Aggancia</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="54"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="57"/>
         <source>D. Transfer</source>
         <translation>Trasferimento Dir.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="55"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="58"/>
         <source>I. Transfer</source>
         <translation>Trasferimento Ind.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="56"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="59"/>
         <source>I. Link</source>
         <translation>Collegamento Ind.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="57"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="60"/>
         <source>I. Cancel</source>
         <translation>Annulla Ind.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="58"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="61"/>
         <source>Park</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="59"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="62"/>
         <source>Finalize Transfer</source>
         <translation>Finalizza Trasferimento</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="60"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="63"/>
         <source>Cancel Transfer</source>
         <translation>Annulla Trasferimento</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="363"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="366"/>
         <source>%1 Ringing</source>
         <translation>%1 sta squillando</translation>
     </message>
     <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="378"/>
+        <location filename="../src/xlets/operator/operator.cpp" line="381"/>
         <source>Link %1</source>
         <translation>Collega %1</translation>
     </message>

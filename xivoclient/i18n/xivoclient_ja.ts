@@ -62,476 +62,476 @@
 <context>
     <name>ConfigWidget</name>
     <message>
-        <location filename="../src/configwidget.cpp" line="61"/>
+        <location filename="../src/configwidget.cpp" line="62"/>
         <source>You must restart the program for this setting to apply.</source>
         <translation>この設定を適用するには再起動が必要です。</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="63"/>
+        <location filename="../src/configwidget.cpp" line="64"/>
         <source>Configuration</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="71"/>
+        <location filename="../src/configwidget.cpp" line="72"/>
         <source>Call</source>
         <translation>通話</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="99"/>
+        <location filename="../src/configwidget.cpp" line="100"/>
         <source>Green</source>
         <translation>緑</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="102"/>
+        <location filename="../src/configwidget.cpp" line="103"/>
         <source>Orange</source>
         <translation>オレンジ</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="112"/>
+        <location filename="../src/configwidget.cpp" line="113"/>
         <source>Host address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="113"/>
+        <location filename="../src/configwidget.cpp" line="114"/>
         <source>CTI port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="115"/>
+        <location filename="../src/configwidget.cpp" line="116"/>
         <source>Main server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="125"/>
-        <location filename="../src/configwidget.cpp" line="139"/>
+        <location filename="../src/configwidget.cpp" line="126"/>
+        <location filename="../src/configwidget.cpp" line="140"/>
         <source>Encrypt Connection</source>
         <translation>暗号接続</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="129"/>
+        <location filename="../src/configwidget.cpp" line="130"/>
         <source>Backup server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="147"/>
+        <location filename="../src/configwidget.cpp" line="148"/>
         <source>Try to reconnect</source>
         <translation>再接続</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="148"/>
+        <location filename="../src/configwidget.cpp" line="149"/>
         <source>Checking this box disables the Error Popups</source>
         <translation>このチェックボックスにチェックを入れるとエラーをポップアップしません。</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="155"/>
+        <location filename="../src/configwidget.cpp" line="156"/>
         <source>Try to reconnect interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="160"/>
+        <location filename="../src/configwidget.cpp" line="161"/>
         <source>Keep alive interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="174"/>
+        <location filename="../src/configwidget.cpp" line="175"/>
         <source>Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="183"/>
-        <location filename="../src/configwidget.cpp" line="210"/>
+        <location filename="../src/configwidget.cpp" line="184"/>
+        <location filename="../src/configwidget.cpp" line="211"/>
         <source>Presence reporting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="184"/>
-        <location filename="../src/configwidget.cpp" line="225"/>
+        <location filename="../src/configwidget.cpp" line="185"/>
+        <location filename="../src/configwidget.cpp" line="226"/>
         <source>Customer Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="208"/>
+        <location filename="../src/configwidget.cpp" line="209"/>
         <source>Presence indicator size (in pixels)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="216"/>
+        <location filename="../src/configwidget.cpp" line="217"/>
         <source>Allow the Automatic Opening of URL&apos;s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="223"/>
+        <location filename="../src/configwidget.cpp" line="224"/>
         <source>Tab limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="237"/>
+        <location filename="../src/configwidget.cpp" line="238"/>
         <source>Lines of call history saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="239"/>
+        <location filename="../src/configwidget.cpp" line="240"/>
         <source>Dialer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="248"/>
+        <location filename="../src/configwidget.cpp" line="249"/>
         <source>History size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="250"/>
+        <location filename="../src/configwidget.cpp" line="251"/>
         <source>History</source>
         <translation type="unfinished">履歴</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="259"/>
+        <location filename="../src/configwidget.cpp" line="260"/>
         <source>Contacts&apos; max number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="264"/>
+        <location filename="../src/configwidget.cpp" line="265"/>
         <source>Contacts per row (0 = auto)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="272"/>
+        <location filename="../src/configwidget.cpp" line="273"/>
         <source>Double-click action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="274"/>
+        <location filename="../src/configwidget.cpp" line="275"/>
         <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="288"/>
+        <location filename="../src/configwidget.cpp" line="289"/>
         <source>Queue thresholds (waiting calls)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="294"/>
+        <location filename="../src/configwidget.cpp" line="295"/>
         <source>Thresholds to change the color of the queue, in number of waiting calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="299"/>
+        <location filename="../src/configwidget.cpp" line="300"/>
         <source>Display queue&apos;s longest wait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="305"/>
+        <location filename="../src/configwidget.cpp" line="306"/>
         <source>Queue thresholds (longest wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="312"/>
+        <location filename="../src/configwidget.cpp" line="313"/>
         <source>Thresholds to change the color of the queue, in seconds of longest wait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="317"/>
+        <location filename="../src/configwidget.cpp" line="318"/>
         <source>Display queue number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="321"/>
+        <location filename="../src/configwidget.cpp" line="322"/>
         <source>Queues</source>
         <translation type="unfinished">キュー</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="328"/>
+        <location filename="../src/configwidget.cpp" line="329"/>
         <source>Hide unlogged agents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="332"/>
+        <location filename="../src/configwidget.cpp" line="333"/>
         <source>Queue Members</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="338"/>
+        <location filename="../src/configwidget.cpp" line="339"/>
         <source>Functions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="348"/>
+        <location filename="../src/configwidget.cpp" line="349"/>
         <source>Context</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="351"/>
+        <location filename="../src/configwidget.cpp" line="352"/>
         <source>User Login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="355"/>
+        <location filename="../src/configwidget.cpp" line="356"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="357"/>
+        <location filename="../src/configwidget.cpp" line="358"/>
         <source>Keep Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="361"/>
+        <location filename="../src/configwidget.cpp" line="362"/>
         <source>Autoconnect at startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="365"/>
+        <location filename="../src/configwidget.cpp" line="366"/>
         <source>Show the Agent options (like the
 ones beneath) on first window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="370"/>
+        <location filename="../src/configwidget.cpp" line="371"/>
         <source>No Agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="371"/>
+        <location filename="../src/configwidget.cpp" line="372"/>
         <source>Agent (unlogged)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="372"/>
+        <location filename="../src/configwidget.cpp" line="373"/>
         <source>Agent (logged)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="374"/>
+        <location filename="../src/configwidget.cpp" line="375"/>
         <source>Agent options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="379"/>
+        <location filename="../src/configwidget.cpp" line="380"/>
         <source>Phone Number</source>
         <translation type="unfinished">電話番号</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="383"/>
+        <location filename="../src/configwidget.cpp" line="384"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="393"/>
+        <location filename="../src/configwidget.cpp" line="394"/>
         <source>System Language</source>
         <translation>システム言語</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="394"/>
+        <location filename="../src/configwidget.cpp" line="395"/>
         <source>Dutch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="395"/>
+        <location filename="../src/configwidget.cpp" line="396"/>
         <source>English</source>
         <translation>英語</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="396"/>
+        <location filename="../src/configwidget.cpp" line="397"/>
         <source>French</source>
         <translation>フランス語</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="397"/>
+        <location filename="../src/configwidget.cpp" line="398"/>
         <source>Italian</source>
         <translation>イタリア語</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="398"/>
         <location filename="../src/configwidget.cpp" line="399"/>
         <location filename="../src/configwidget.cpp" line="400"/>
         <location filename="../src/configwidget.cpp" line="401"/>
         <location filename="../src/configwidget.cpp" line="402"/>
+        <location filename="../src/configwidget.cpp" line="403"/>
         <source>incomplete</source>
         <translation>不完全</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="398"/>
+        <location filename="../src/configwidget.cpp" line="399"/>
         <source>German</source>
         <translation>ドイツ語</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="399"/>
+        <location filename="../src/configwidget.cpp" line="400"/>
         <source>Hungarian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="400"/>
+        <location filename="../src/configwidget.cpp" line="401"/>
         <source>Japanese</source>
         <translation>日本語</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="401"/>
+        <location filename="../src/configwidget.cpp" line="402"/>
         <source>Portuguese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="402"/>
+        <location filename="../src/configwidget.cpp" line="403"/>
         <source>Spanish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="407"/>
+        <location filename="../src/configwidget.cpp" line="408"/>
         <source>Language</source>
         <translation>言語</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="413"/>
+        <location filename="../src/configwidget.cpp" line="414"/>
         <source>Systrayed at startup</source>
         <translation>起動時にシステムトレイに常駐</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="418"/>
+        <location filename="../src/configwidget.cpp" line="419"/>
         <source>Allow multiple instances of XiVO Client</source>
         <translation>XiVOクライアントの複数起動を許可</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="423"/>
+        <location filename="../src/configwidget.cpp" line="424"/>
         <source>Default style</source>
         <translation>デフォルトスタイル</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="434"/>
+        <location filename="../src/configwidget.cpp" line="435"/>
         <source>Interface style</source>
         <translation>インターフェーススタイル</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="436"/>
+        <location filename="../src/configwidget.cpp" line="437"/>
         <source>Enable the clipboard</source>
         <translation>クリップボードを有効</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="440"/>
+        <location filename="../src/configwidget.cpp" line="441"/>
         <source>Display the configuration profile</source>
         <translation>設定プロファイルを表示</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="444"/>
+        <location filename="../src/configwidget.cpp" line="445"/>
         <source>Activate the window when calling from external application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="448"/>
+        <location filename="../src/configwidget.cpp" line="449"/>
         <source>Reset</source>
         <translation>リセット</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="451"/>
+        <location filename="../src/configwidget.cpp" line="452"/>
         <source>Reset docks position</source>
         <translation>ドッキング位置をリセット</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="453"/>
+        <location filename="../src/configwidget.cpp" line="454"/>
         <source>GUI Settings</source>
         <translation>GUI設定</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="462"/>
+        <location filename="../src/configwidget.cpp" line="463"/>
         <source>Enable logging of program actions</source>
         <translation>プログラム動作をログ取得</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="468"/>
+        <location filename="../src/configwidget.cpp" line="469"/>
         <source>Logfile name</source>
         <translation>ログファイル名</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="470"/>
+        <location filename="../src/configwidget.cpp" line="471"/>
         <source>Advanced</source>
         <translation>詳細</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="483"/>
+        <location filename="../src/configwidget.cpp" line="484"/>
         <source>(current: %0) use your keyboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="487"/>
-        <location filename="../src/configwidget.cpp" line="524"/>
+        <location filename="../src/configwidget.cpp" line="488"/>
+        <location filename="../src/configwidget.cpp" line="525"/>
         <source>(current: %0) click to change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="496"/>
+        <location filename="../src/configwidget.cpp" line="497"/>
         <source>Answer</source>
         <translation type="unfinished">回答</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="498"/>
+        <location filename="../src/configwidget.cpp" line="499"/>
         <source>Hangup</source>
         <translation>通話終了</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="500"/>
+        <location filename="../src/configwidget.cpp" line="501"/>
         <source>D. Transfer</source>
         <translation>D. 転送</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="502"/>
+        <location filename="../src/configwidget.cpp" line="503"/>
         <source>I. Transfer</source>
         <translation>I. 転送</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="504"/>
+        <location filename="../src/configwidget.cpp" line="505"/>
         <source>I. Link</source>
         <translation>I. リンク</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="506"/>
+        <location filename="../src/configwidget.cpp" line="507"/>
         <source>I. Cancel</source>
         <translation>I. 中止</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="508"/>
+        <location filename="../src/configwidget.cpp" line="509"/>
         <source>Finalize Transfer</source>
         <translation type="unfinished">転送確定</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="510"/>
+        <location filename="../src/configwidget.cpp" line="511"/>
         <source>Cancel Transfer</source>
         <translation type="unfinished">転送中止</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="512"/>
+        <location filename="../src/configwidget.cpp" line="513"/>
         <source>Park</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="520"/>
+        <location filename="../src/configwidget.cpp" line="521"/>
         <source>Operator action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="521"/>
+        <location filename="../src/configwidget.cpp" line="522"/>
         <source>Key binding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="537"/>
+        <location filename="../src/configwidget.cpp" line="538"/>
         <source>Display an answer action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="541"/>
+        <location filename="../src/configwidget.cpp" line="542"/>
         <source>Any change here requires an application restart to be effective</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="543"/>
+        <location filename="../src/configwidget.cpp" line="544"/>
         <source>Operator</source>
         <translation>オペレーター</translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="564"/>
+        <location filename="../src/configwidget.cpp" line="565"/>
         <source>This key is already bound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configwidget.cpp" line="565"/>
+        <location filename="../src/configwidget.cpp" line="566"/>
         <source>Please press another key, this one has already been bound for action &apos;%0&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1133,12 +1133,12 @@ Reason given : %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="403"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="404"/>
         <source>Removing all contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="404"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="405"/>
         <source>Removing all contacts.
 Are you sure ?</source>
         <translation type="unfinished"></translation>
@@ -1155,12 +1155,12 @@ Are you sure ?</source>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="47"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="49"/>
         <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="52"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="54"/>
         <source>N&amp;ame or number to search :</source>
         <translation>名前・番号で検索:</translation>
     </message>

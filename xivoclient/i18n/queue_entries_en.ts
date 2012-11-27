@@ -2,16 +2,16 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en">
 <context>
-    <name>XLetQueueEntryDetails</name>
+    <name>QueueEntries</name>
     <message>
-        <location filename="../src/xlets/queueentrydetails/queueentrydetails.cpp" line="47"/>
+        <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="53"/>
         <source>Calls of a Queue</source>
         <translation>Calls of a Queue</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queueentrydetails/queueentrydetails.cpp" line="133"/>
-        <source>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4) (%5 call(s))</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; (%2) on &lt;b&gt;%3&lt;/b&gt; (%4) (%5 call(s))</translation>
+        <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="108"/>
+        <source>&lt;b&gt;%1&lt;/b&gt; (%2): %3 call(s)</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; (%2): %3 call(s)</translation>
     </message>
 </context>
 </TS>

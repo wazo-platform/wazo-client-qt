@@ -4,68 +4,68 @@
 <context>
     <name>XletAgentDetails</name>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="47"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="50"/>
         <source>Agent Details</source>
         <translation>エージェントの詳細</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="53"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
         <source>Queues</source>
         <translation>キュー</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="54"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="57"/>
         <source>Joined</source>
         <translation>参加</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="55"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="58"/>
         <source>Paused</source>
         <translation>一時停止中</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="59"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="208"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="62"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="211"/>
         <source>Login</source>
         <translation>ログイン</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="198"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;上で</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="204"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="207"/>
         <source>Logout</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="228"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>Not in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="232"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>In use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="236"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Unlogged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="240"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>%1 since %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="331"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="334"/>
         <source>Server: %1</source>
         <translation>サーバ: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="332"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="335"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
     </message>

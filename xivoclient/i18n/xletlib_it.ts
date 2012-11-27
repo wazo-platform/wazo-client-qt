@@ -4,89 +4,89 @@
 <context>
     <name>BasePeerWidget</name>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="65"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="69"/>
         <source>&amp;Open a chat window</source>
         <translation>&amp;Apri una finestra di chat</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="66"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="70"/>
         <source>Open a chat window with this user</source>
         <translation>Apri una finestra di chat con questo utente</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="72"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="76"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="447"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Intercetta</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="73"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="77"/>
         <source>Intercept call</source>
         <translation>Intercetta chiamata</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="357"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="379"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="361"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="383"/>
         <source>&amp;Call</source>
         <translation>&amp;Chiama</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="389"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="393"/>
         <source>Call &amp;mobile</source>
         <translation>Chiama &amp;cellulare</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="407"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="411"/>
         <source>&amp;Edit</source>
         <translation>&amp;Modifica</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="424"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="428"/>
         <source>&amp;Hangup call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="447"/>
         <source>Cancel transfer</source>
         <translation>Annulla trasferimento</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="459"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="463"/>
         <source>Invite in conference room</source>
         <translation>Invita in sala conferenza</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="479"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="483"/>
         <source>&amp;Park correspondant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="486"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="490"/>
         <source>&amp;Park</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="527"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="531"/>
         <source>Blind &amp;Transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="527"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="531"/>
         <source>&amp;Attended Transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="603"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="607"/>
         <source>Blind transfer &lt;%0&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="620"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="624"/>
         <source>Attended transfer &lt;%0&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="641"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="645"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Trasferisci alla casella di posta &amp;vocale</translation>
     </message>
@@ -118,33 +118,33 @@ Phone Numbers : %2</source>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="81"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="82"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Cancella storia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="82"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="83"/>
         <source>&amp;Send</source>
         <translation>&amp;Invia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="99"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="100"/>
         <source>chitchat - %1 (%2)</source>
         <translation>chitchat - %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="139"/>
-        <location filename="../src/xletlib/chitchat.cpp" line="182"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="140"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="183"/>
         <source>chat window opened with &quot;%1&quot; (%2)</source>
         <translation>finestra di chat aperta con &quot;%1&quot; (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="156"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="157"/>
         <source>you said: </source>
         <translation>hai detto:</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="185"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="186"/>
         <source>system: </source>
         <translation>sistema:</translation>
     </message>
@@ -152,37 +152,37 @@ Phone Numbers : %2</source>
 <context>
     <name>ExtendedTableWidget</name>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="77"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="78"/>
         <source>&amp;Remove</source>
         <translation>&amp;Rimuovi</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="81"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="82"/>
         <source>&amp;Dial</source>
         <translation>&amp;Chiama</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="84"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="85"/>
         <source>Direct &amp;Transfer</source>
         <translation>&amp;Trasferimento Diretto</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="85"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="86"/>
         <source>&amp;Indirect Transfer</source>
         <translation>Trasferimento &amp;Indiretto</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="117"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="118"/>
         <source>Send an E-mail</source>
         <translation>Invia una E-mail</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="223"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="224"/>
         <source>Removing this contact</source>
         <translation>Rimuovi questo contatto</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="224"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="225"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Rimozione del contatto. Sei sicuro ?</translation>
@@ -219,18 +219,18 @@ Numero di telefono : %2</translation>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="239"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="242"/>
         <source>Agent Number : %1
 In Queues : %2</source>
         <translation>Numero Agente : %1 Nelle Code : %2</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="250"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="253"/>
         <source>Mobile number : %1</source>
         <translation>Numero di cellulare : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="264"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="267"/>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
@@ -239,22 +239,22 @@ IPBXid: %2
 Stato: %3</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="325"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="328"/>
         <source>Status:%1</source>
         <translation>Stato: %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="328"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="331"/>
         <source>No status (no phone number)</source>
         <translation>Nessuno stato (nessun numero di telefono)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="338"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="341"/>
         <source>&lt;EMPTY&gt;</source>
         <translation>&lt;VUOTO&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="339"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="342"/>
         <source>Phone Number: %1
 Order: %2
 IPBXid: %3
@@ -269,9 +269,37 @@ Stato: %5
 Linee impegnate: %6</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="366"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="369"/>
         <source>(No callerid yet)</source>
         <translation>(Ancora nessun id chiamante)</translation>
+    </message>
+</context>
+<context>
+    <name>QueueEntriesModel</name>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="52"/>
+        <source>ID</source>
+        <translation type="unfinished">ID</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="53"/>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="54"/>
+        <source>Name</source>
+        <translation type="unfinished">Nome</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
+        <source>Number</source>
+        <translation type="unfinished">Numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
