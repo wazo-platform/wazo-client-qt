@@ -9,6 +9,8 @@
 # find . -name '*.pro' -exec sed -i -e 's|^TRANSLATIONS += $${\?ROOT_DIR}\?/i18n/\(.*\)_en.ts|\0\nTRANSLATIONS += $$ROOT_DIR/i18n/\1_it.ts|' {} \;
 # find . -name '*.qrc' -exec sed -i -e 's|^\( *\)<file>\(.*\)obj/\(.*\)_fr.qm</file>|\0\n\1<file>\2obj/\3_de.qm</file>|' {} \;
 
+this_script_directory="$(dirname $0)"
+
 LOCALES="en fr it de nl ja hu pt_BR es_ES"
 
 function usage {
@@ -49,8 +51,10 @@ function copy_from_transifex_to_git {
 }
 
 function lupdate_all {
-    lupdate xivoclient/*.pro -no-obsolete
-    lupdate baselib/baselib.pro -no-obsolete
+    lupdate "baselib/baselib.pro" -no-obsolete
+    lupdate "xivoclient/xletlib.pro" -no-obsolete
+    lupdate "xivoclient/xivoclient.pro" -no-obsolete
+    lupdate "xivoclient/xlets.pro" -no-obsolete
 }
 
 function unmerge_translations {
@@ -71,7 +75,7 @@ function merge_translations {
             | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
         done
     else
-        echo "You need to install Qt tool lconvert !"
+        echo "You need to install the Qt tool lconvert."
         exit 1
     fi
 }
@@ -99,4 +103,27 @@ function process_arguments {
     esac
 }
 
-process_arguments $@
+function qmake_is_run {
+    file_path="$this_script_directory/../versions.mak"
+    if [ -r "$file_path" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+
+function main {
+    if [ $# -eq 0 ] ; then
+        usage
+        exit 1
+    fi
+    if qmake_is_run ; then
+        process_arguments $@
+    else
+        echo "Please run qmake before updating translations."
+        exit 2
+    fi
+}
+
+main $@
