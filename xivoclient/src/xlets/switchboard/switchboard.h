@@ -53,6 +53,7 @@ class Switchboard : public XLet
         Ui::SwitchboardPanel ui;
         QueueEntriesModel *m_model;
         QueueEntriesSortFilterProxyModel *m_proxy_model;
+        static QString switchboard_queue_name;
 };
 
 #endif

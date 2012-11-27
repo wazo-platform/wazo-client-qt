@@ -41,6 +41,8 @@
 
 #include "switchboard.h"
 
+QString Switchboard::switchboard_queue_name = "__switchboard";
+
 Switchboard::Switchboard(QWidget *parent)
     : XLet(parent)
 {
@@ -64,7 +66,7 @@ Switchboard::~Switchboard()
 
 void Switchboard::watch_switchboard_queue()
 {
-    const QString &queue_id = QueueDAO::findQueueIdByName("__switchboard");
+    const QString &queue_id = QueueDAO::findQueueIdByName(this->switchboard_queue_name);
     this->m_model->changeWatchedQueue(queue_id);
 }
 
@@ -85,7 +87,7 @@ void Switchboard::updateHeader(const QString & queue_id, const QVariantList & en
     if (queue == NULL) {
         return;
     }
-    if (queue->queueName() != "__switchboard") {
+    if (queue->queueName() != this->switchboard_queue_name) {
         return;
     }
 
