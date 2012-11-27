@@ -13,6 +13,21 @@ this_script_directory="$(dirname $0)"
 
 LOCALES="en fr it de nl ja hu pt_BR es_ES"
 
+
+function main {
+    if [ $# -eq 0 ] ; then
+        usage
+        exit 1
+    fi
+    if qmake_is_run ; then
+        process_arguments $@
+    else
+        echo "Please run qmake before updating translations."
+        exit 2
+    fi
+}
+
+
 function usage {
     echo "Usage : $0 [help|pull|update]"
     echo
@@ -22,71 +37,18 @@ function usage {
     echo "update : update translation files from source"
 }
 
-function pull_from_transifex {
-    if [ ! -d .tx ]
-    then
-        tx init --host https://www.transifex.net
-    fi
 
-    tx set --auto-remote  https://www.transifex.net/projects/p/xivo/
-    tx pull -r xivo.xivo-client -a -s -f
-}
-
-function find_all_ts_files {
-    locale="$1"
-    find baselib xivoclient -name "*_$locale.ts" -print
-}
-
-function copy_from_transifex_to_git {
-    # locale takes values as "fr.ts", "de.ts", "nl.ts" ...
-    for locale in ${LOCALES}
-    do
-        for ts in $(find_all_ts_files "en")
-        do
-            cp "translations/xivo.xivo-client/$locale.ts" "${ts%en.ts}${locale}.ts"
-        done
-    done
-
-    unmerge_translations
-}
-
-function lupdate_all {
-    lupdate "baselib/baselib.pro" -no-obsolete
-    lupdate "xivoclient/xletlib.pro" -no-obsolete
-    lupdate "xivoclient/xivoclient.pro" -no-obsolete
-    lupdate "xivoclient/xlets.pro" -no-obsolete
-}
-
-function unmerge_translations {
-    lupdate_all
-}
-
-function update_translations_from_source {
-    lupdate_all
-}
-
-function merge_translations {
-    if hash lconvert
-    then
-        for locale in ${LOCALES}
-        do
-            rm "xivoclient/i18n/all_$locale.ts"
-            find_all_ts_files "$locale" \
-            | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
-        done
+function qmake_is_run {
+    file_path="$this_script_directory/../versions.mak"
+    if [ -r "$file_path" ] ; then
+        return 0
     else
-        echo "You need to install the Qt tool lconvert."
-        exit 1
+        return 1
     fi
 }
+
 
 function process_arguments {
-    if [ $# -eq 0 ]
-    then
-        usage
-        exit 1
-    fi
-
     case $1 in
         pull)
             pull_from_transifex
@@ -103,27 +65,70 @@ function process_arguments {
     esac
 }
 
-function qmake_is_run {
-    file_path="$this_script_directory/../versions.mak"
-    if [ -r "$file_path" ] ; then
-        return 0
-    else
-        return 1
+
+function pull_from_transifex {
+    if [ ! -d .tx ]
+    then
+        tx init --host https://www.transifex.net
     fi
+
+    tx set --auto-remote  https://www.transifex.net/projects/p/xivo/
+    tx pull -r xivo.xivo-client -a -s -f
 }
 
 
-function main {
-    if [ $# -eq 0 ] ; then
-        usage
+function copy_from_transifex_to_git {
+    # locale takes values as "fr.ts", "de.ts", "nl.ts" ...
+    for locale in ${LOCALES}
+    do
+        for ts in $(find_all_ts_files "en")
+        do
+            cp "translations/xivo.xivo-client/$locale.ts" "${ts%en.ts}${locale}.ts"
+        done
+    done
+
+    unmerge_translations
+}
+
+
+function update_translations_from_source {
+    lupdate_all
+}
+
+
+function merge_translations {
+    if hash lconvert
+    then
+        for locale in ${LOCALES}
+        do
+            rm "xivoclient/i18n/all_$locale.ts"
+            find_all_ts_files "$locale" \
+            | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
+        done
+    else
+        echo "You need to install the Qt tool lconvert."
         exit 1
     fi
-    if qmake_is_run ; then
-        process_arguments $@
-    else
-        echo "Please run qmake before updating translations."
-        exit 2
-    fi
 }
+
+
+function unmerge_translations {
+    lupdate_all
+}
+
+
+function find_all_ts_files {
+    locale="$1"
+    find baselib xivoclient -name "*_$locale.ts" -print
+}
+
+
+function lupdate_all {
+    lupdate "baselib/baselib.pro" -no-obsolete
+    lupdate "xivoclient/xletlib.pro" -no-obsolete
+    lupdate "xivoclient/xivoclient.pro" -no-obsolete
+    lupdate "xivoclient/xlets.pro" -no-obsolete
+}
+
 
 main $@
