@@ -32,7 +32,8 @@
 #define __SWITCHBOARDPLUGIN_H__
 
 #include <QObject>
-#include "xletinterface.h"
+
+#include <xletinterface.h>
 
 class SwitchboardPlugin : public QObject, XLetInterface
 {

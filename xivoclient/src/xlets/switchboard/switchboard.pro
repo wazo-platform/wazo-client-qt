@@ -13,3 +13,5 @@ TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_nl.ts
+
+RESOURCES = switchboard.qrc
