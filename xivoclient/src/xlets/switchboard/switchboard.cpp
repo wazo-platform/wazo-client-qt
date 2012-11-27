@@ -57,6 +57,8 @@ Switchboard::Switchboard(QWidget *parent)
     this->m_proxy_model = new QueueEntriesSortFilterProxyModel(this);
     this->m_proxy_model->setSourceModel(this->m_model);
     ui.incomingCallsView->setModel(this->m_proxy_model);
+    ui.incomingCallsView->hideColumn(QueueEntriesModel::ID);
+    ui.incomingCallsView->hideColumn(QueueEntriesModel::POSITION);
 
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(watch_switchboard_queue()));

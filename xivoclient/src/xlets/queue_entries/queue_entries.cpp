@@ -79,6 +79,9 @@ void QueueEntries::changeWatchedQueue(const QString & queue_id)
     }
 
     this->m_monitored_queue_id = queue->xid();
+    this->updateHeaderLabel(queue->queueDisplayName(),
+                            queue->queueNumber(),
+                            0);
 }
 
 void QueueEntries::updateHeader(const QString & queue_id, const QVariantList & entries)
@@ -93,9 +96,18 @@ void QueueEntries::updateHeader(const QString & queue_id, const QVariantList & e
         return;
     }
 
+    this->updateHeaderLabel(queue->queueDisplayName(),
+                            queue->queueNumber(),
+                            entries.size());
+}
+
+void QueueEntries::updateHeaderLabel(const QString &display_name,
+                                     const QString &number,
+                                     int call_count)
+{
     QString header_text = QString(tr("<b>%1</b> (%2): %3 call(s)"))
-        .arg(queue->queueDisplayName())
-        .arg(queue->queueNumber())
-        .arg(entries.size());
+        .arg(display_name)
+        .arg(number)
+        .arg(call_count);
     this->m_queue_description.setText(header_text);
 }

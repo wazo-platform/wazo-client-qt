@@ -50,6 +50,9 @@ class QueueEntries : public XLet
         void updateHeader(const QString & queue_id, const QVariantList & entries);
         void changeWatchedQueue(const QString & queue_id);
     private:
+       void updateHeaderLabel(const QString &display_name,
+                              const QString &number,
+                              int call_count);
         QString m_monitored_queue_id;
         QLabel m_queue_description;
 
