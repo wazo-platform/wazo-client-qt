@@ -49,7 +49,12 @@ class Switchboard : public XLet
         void on_answerButton_clicked() const;
         void updateHeader(const QString &id, const QVariantList &entries);
         void watch_switchboard_queue();
+        void clicked(const QModelIndex &index);
+        void keyPressEvent(QKeyEvent *event);
+        void queueEntryUpdate(const QString &queue_id, const QVariantList &entry);
     private:
+        bool isSwitchboardQueue(const QString &queue_id) const;
+
         Ui::SwitchboardPanel ui;
         QueueEntriesModel *m_model;
         QueueEntriesSortFilterProxyModel *m_proxy_model;

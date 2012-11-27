@@ -41,6 +41,8 @@
 
 #include "switchboard.h"
 
+#include <QKeyEvent>
+
 QString Switchboard::switchboard_queue_name = "__switchboard";
 
 Switchboard::Switchboard(QWidget *parent)
@@ -58,15 +60,48 @@ Switchboard::Switchboard(QWidget *parent)
 
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(watch_switchboard_queue()));
+    connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(clicked(const QModelIndex &)));
+    connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
+            this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
+
+    this->setFocus();
 }
 
 Switchboard::~Switchboard()
 {
 }
 
+void Switchboard::queueEntryUpdate(const QString &queue_id,
+                                   const QVariantList &)
+{
+    if (this->isSwitchboardQueue(queue_id) == false) {
+        return;
+    }
+    this->setFocus();
+}
+
+void Switchboard::clicked(const QModelIndex &index)
+{
+    int clicked_row = index.row();
+
+    if (clicked_row == 0) {
+        this->on_answerButton_clicked();
+    }
+}
+
+void Switchboard::keyPressEvent(QKeyEvent *event)
+{
+    int key_code = event->key();
+
+    if (key_code == Qt::Key_Enter || key_code == Qt::Key_Return) {
+        this->on_answerButton_clicked();
+    }
+}
+
 void Switchboard::watch_switchboard_queue()
 {
-    const QString &queue_id = QueueDAO::findQueueIdByName(this->switchboard_queue_name);
+    auto queue_id = QueueDAO::findQueueIdByName(this->switchboard_queue_name);
     this->m_model->changeWatchedQueue(queue_id);
 }
 
@@ -81,17 +116,17 @@ void Switchboard::on_answerButton_clicked() const
 
 void Switchboard::updateHeader(const QString & queue_id, const QVariantList & entries)
 {
-    QString queue_xid = IdConverter::idToXId(queue_id);
-
-    const QueueInfo * queue = b_engine->queue(queue_xid);
-    if (queue == NULL) {
-        return;
-    }
-    if (queue->queueName() != this->switchboard_queue_name) {
+    if (this->isSwitchboardQueue(queue_id) == false) {
         return;
     }
 
     QString header_text = QString(tr("%1 call(s)"))
         .arg(entries.size());
     this->ui.incomingCallCountLabel->setText(header_text);
+}
+
+bool Switchboard::isSwitchboardQueue(const QString &queue_id) const
+{
+    auto queue = b_engine->queue(IdConverter::idToXId(queue_id));
+    return queue && queue->queueName() == this->switchboard_queue_name;
 }
