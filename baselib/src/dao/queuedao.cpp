@@ -47,8 +47,8 @@ QString QueueDAO::queueDisplayNameFromQueueName(const QString &queue_name)
 
 QString QueueDAO::findQueueIdByName(const QString &queue_name)
 {
-    foreach (auto queue_id, b_engine->iterover("queues").keys()) {
-        auto queue = b_engine->queue(queue_id);
+    foreach (const QString &queue_id, b_engine->iterover("queues").keys()) {
+        const QueueInfo *queue = b_engine->queue(queue_id);
         if (queue && queue->queueName() == queue_name) {
             return queue->xid();
         }

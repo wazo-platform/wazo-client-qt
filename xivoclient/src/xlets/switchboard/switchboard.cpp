@@ -84,7 +84,7 @@ void Switchboard::updatePhoneStatus(const QString &phone_id)
         return;
     }
 
-    auto phone = b_engine->phone(phone_id);
+    const PhoneInfo *phone = b_engine->phone(phone_id);
     if (phone && phone->hintstatus() == "0") {
         this->setFocus();
     }
@@ -127,7 +127,7 @@ void Switchboard::keyPressEvent(QKeyEvent *event)
 
 void Switchboard::watch_switchboard_queue()
 {
-    auto queue_id = QueueDAO::findQueueIdByName(this->switchboard_queue_name);
+    const QString &queue_id = QueueDAO::findQueueIdByName(this->switchboard_queue_name);
     this->m_model->changeWatchedQueue(queue_id);
 }
 
@@ -153,6 +153,6 @@ void Switchboard::updateHeader(const QString & queue_id, const QVariantList & en
 
 bool Switchboard::isSwitchboardQueue(const QString &queue_id) const
 {
-    auto queue = b_engine->queue(IdConverter::idToXId(queue_id));
+    const QueueInfo *queue = b_engine->queue(IdConverter::idToXId(queue_id));
     return queue && queue->queueName() == this->switchboard_queue_name;
 }
