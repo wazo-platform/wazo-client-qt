@@ -437,10 +437,6 @@ void BasePeerWidget::addHangupMenu(QMenu * menu)
 
 void BasePeerWidget::addInterceptMenu(QMenu * menu)
 {
-    if (! b_engine->getCapasIpbxCommands().contains("intercept")
-            && ! m_transferred) {
-        return;
-    }
     foreach (const QString & channelxid, m_ui_remote->xchannels()) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
             if (c->commstatus() == CHAN_STATUS_RINGING) {
