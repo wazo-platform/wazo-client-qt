@@ -1476,11 +1476,6 @@ void BaseEngine::actionCall(const QString & action,
                             const QString & src,
                             const QString & dst)
 {
-    if (! getCapasIpbxCommands().contains(action)) {
-        qDebug() << Q_FUNC_INFO << "IGNORE" << action << src << dst;
-        return;
-    }
-
     QVariantMap ipbxcommand;
     ipbxcommand["command"] = action;
 
