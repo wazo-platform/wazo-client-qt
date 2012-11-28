@@ -584,7 +584,7 @@ Lignes occupées : %6</translation>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
         <source>Time</source>
-        <translation>Temps</translation>
+        <translation>Durée</translation>
     </message>
 </context>
 <context>
