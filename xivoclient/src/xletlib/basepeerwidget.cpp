@@ -46,7 +46,7 @@
 
 
 static
-bool channelTimestampLessThan(const QString channelxid1, const QString channelxid2)
+bool channelTimestampLessThan(const QString &channelxid1, const QString &channelxid2)
 {
     const ChannelInfo * channel1 , * channel2;
     channel1 = b_engine->channel(channelxid1);
@@ -90,7 +90,7 @@ void BasePeerWidget::reloadSavedName()
 {
     QSettings *settings = b_engine->getSettings();
     settings->beginGroup("renamed_items");
-    QVariant value = settings->value(id());
+    const QVariant &value = settings->value(id());
     if (!value.isNull()) {
         setName(value.toString());
     }
@@ -170,8 +170,8 @@ void BasePeerWidget::itransfer()
     QString xchannel = sender()->property("xchannel").toString();
     QString src = QString("chan:%1").arg(xchannel);
     QString dst_number = sender()->property("number").toString();
-    const QString ipbx = (m_ui_remote ? m_ui_remote->ipbxid()
-                          : m_ui_local->ipbxid());
+    const QString &ipbx = (m_ui_remote ? m_ui_remote->ipbxid()
+                           : m_ui_local->ipbxid());
     QString dst = QString("exten:%0/%1").arg(ipbx).arg(dst_number);
     b_engine->actionCall("atxfer", src, dst);
 }
@@ -227,7 +227,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
             subwidgetkind = w->property("kind").toString();
         }
         foreach(const ChannelInfo * channelinfo, loopOverChannels(m_ui_local)) {
-            const QString status = channelinfo->commstatus();
+            const QString &status = channelinfo->commstatus();
             if ((status == CHAN_STATUS_LINKED_CALLER) ||
                 (status == CHAN_STATUS_LINKED_CALLED)) {
                 QString action = b_engine->getConfig("doubleclick.searchpanel").toString();
@@ -250,7 +250,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
         }
         // "I" have no current communications, intercept if the person is being called
         foreach(const ChannelInfo * channelinfo, loopOverChannels(m_ui_remote)) {
-            const QString status = channelinfo->commstatus();
+            const QString &status = channelinfo->commstatus();
             if (status == CHAN_STATUS_RINGING) {
                 b_engine->actionCall("transfer",
                                      QString("chan:%1:%2").arg(m_ui_remote->xid()).arg(channelinfo->id()),
@@ -273,7 +273,7 @@ void BasePeerWidget::mousePressEvent(QMouseEvent *event)
 
         QStringList numbers;
         if (m_ui_remote) {
-            foreach (QString xphoneid, m_ui_remote->phonelist()) {
+            foreach (const QString &xphoneid, m_ui_remote->phonelist()) {
                 const PhoneInfo * phone = b_engine->phone(xphoneid);
                 if (phone) numbers.append(phone->number());
             }
@@ -322,10 +322,9 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
 QList<const ChannelInfo *> BasePeerWidget::loopOverChannels(const UserInfo * userinfo)
 {
     QList<const ChannelInfo *> channels;
-    QString ipbxid = userinfo->ipbxid();
     foreach (const QString &xphoneid, userinfo->phonelist()) {
         if (const PhoneInfo * phoneinfo = b_engine->phone(xphoneid)) {
-            foreach (const QString xchannel, phoneinfo->xchannels()) {
+            foreach (const QString &xchannel, phoneinfo->xchannels()) {
                 if (const ChannelInfo * channelinfo = b_engine->channels().value(xchannel)) {
                     channels << channelinfo;
                 }
@@ -526,7 +525,7 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 
     QString title = blind ? tr("Blind &Transfer") : tr("&Attended Transfer");
 
-    QStringList numbers = this->getPeerNumbers();
+    const QStringList &numbers = this->getPeerNumbers();
 
     QList<QAction *> transfer_actions;
 
@@ -563,7 +562,7 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
 QStringList BasePeerWidget::getPeerNumbers() const
 {
     QStringList numbers;
-    foreach (const QString phonexid, m_ui_remote->phonelist()) {
+    foreach (const QString &phonexid, m_ui_remote->phonelist()) {
         const PhoneInfo * phone = b_engine->phone(phonexid);
         if (phone == NULL) {
             continue;
@@ -623,7 +622,7 @@ QAction * BasePeerWidget::newAttendedTransferAction(const QString &number,
     if (action == NULL) {
         return NULL;
     }
-    QString targeted_channel = channel.xid();
+    const QString &targeted_channel = channel.xid();
     action->setProperty("number", number);
     action->setProperty("xchannel", targeted_channel);
     connect(action, SIGNAL(triggered()), this, SLOT(itransfer()));
@@ -634,7 +633,7 @@ QAction * BasePeerWidget::newAttendedTransferAction(const QString &number,
 void BasePeerWidget::addTxferVmMenu(QMenu * menu)
 {
     if (! m_ui_remote->voicemailid().isEmpty()) {
-        foreach (const QString channelxid, m_ui_local->xchannels()) {
+        foreach (const QString &channelxid, m_ui_local->xchannels()) {
             if (const ChannelInfo * c = b_engine->channel(channelxid)) {
                 if (c->canBeTransferred()) {
                     if (QAction * action = new QAction(
@@ -741,9 +740,4 @@ QString BasePeerWidget::id() const
     } else {
         return (QString("number-") + number());
     }
-}
-
-QString BasePeerWidget::xletName() const
-{
-    return parentWidget()->metaObject()->className();
 }

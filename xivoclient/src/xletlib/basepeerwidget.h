@@ -70,7 +70,6 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void dragEnterEvent(QDragEnterEvent *);
         void dragMoveEvent(QDragMoveEvent *);
         void dropEvent(QDropEvent *);
-        QString xletName() const;
 
         bool isme() const;
         void updateMenuSelf(QMenu *, QContextMenuEvent *);
