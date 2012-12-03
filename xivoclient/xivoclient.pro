@@ -16,14 +16,14 @@ CONFIG += uitools
     }
 }
 mac {
-    QMAKE_INFO_PLIST = ../cross/resources/macos-info.plist
+    QMAKE_INFO_PLIST = ../packaging/resources/macos-info.plist
 }
 
 QT += xml
 
 RESOURCES += xivoclient.qrc
 mac {
-    ICON = ../cross/resources/xivoicon-mac.icns
+    ICON = ../packaging/resources/xivoicon-mac.icns
 } else {
     RC_FILE = xivoclient.rc
 }

@@ -19,8 +19,8 @@ source xivoclient-all.pri
 XC_DIR=.
 MINGW_DIR=${WIN_MINGW_PATH}
 QT_DIR=${WIN_QT_PATH}
-RES_DIR=${XC_DIR}/cross/resources
-TEMPLATES_DIR=${XC_DIR}/cross/templates
+RES_DIR=${XC_DIR}/packaging/resources
+TEMPLATES_DIR=${XC_DIR}/packaging/templates
 DEST_DIR=/tmp/xivoclient-win
 
 rm -rf $DEST_DIR

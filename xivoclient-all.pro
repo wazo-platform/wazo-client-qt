@@ -43,25 +43,25 @@ tests {
     # Pack rule
     win32 {
         pack.target = pack
-        pack.input = cross/resources/gpl.txt \
-                     cross/resources/qt.conf \
-                     cross/resources/xivo.bmp \
-                     cross/resources/xivoclient.png \
-                     cross/resources/xivoicon.ico \
-                     cross/resources/xivoicon_un.ico \
-                     cross/xc-packaging-windows.sh
-        pack.commands = cross/xc-package-windows.sh
+        pack.input = packaging/resources/gpl.txt \
+                     packaging/resources/qt.conf \
+                     packaging/resources/xivo.bmp \
+                     packaging/resources/xivoclient.png \
+                     packaging/resources/xivoicon.ico \
+                     packaging/resources/xivoicon_un.ico \
+                     packaging/xc-packaging-windows.sh
+        pack.commands = packaging/xc-package-windows.sh
     }
     linux-g++ {
         pack.target = pack
-        pack.input = cross/resources/xivoclient.png \
-                     cross/resources/xivoclient.desktop
-        pack.commands = cross/xc-package-unix.sh
+        pack.input = packaging/resources/xivoclient.png \
+                     packaging/resources/xivoclient.desktop
+        pack.commands = packaging/xc-package-unix.sh
     }
     mac {
         pack.target = pack
-        pack.input = cross/resources/macos-info.plist
-        pack.commands = cross/xc-package-macos.sh \
+        pack.input = packaging/resources/macos-info.plist
+        pack.commands = packaging/xc-package-macos.sh \
             $${MAC_QT_PATH} \
             .
     }

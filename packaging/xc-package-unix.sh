@@ -26,15 +26,16 @@ function package-content {
 
     PKGDIR=pkg
     PKGROOT=$PKGDIR/root
+    RESOURCES_DIR=packaging/resources
 
     mkdir -p $PKGROOT/opt/xivoclient
     cp -r bin/* $PKGROOT/opt/xivoclient
 
     mkdir -p $PKGROOT/usr/share/icons/
-    cp cross/resources/xivoclient.png $PKGROOT/usr/share/icons/
+    cp $RESOURCES_DIR/xivoclient.png $PKGROOT/usr/share/icons/
 
     mkdir -p $PKGROOT/usr/share/applications/
-    cp cross/resources/xivoclient.desktop $PKGROOT/usr/share/applications/
+    cp $RESOURCES_DIR/xivoclient.desktop $PKGROOT/usr/share/applications/
     sed -i s/xivoicon/xivoclient/ $PKGROOT/usr/share/applications/xivoclient.desktop
 
     mkdir -p $PKGROOT/usr/bin
