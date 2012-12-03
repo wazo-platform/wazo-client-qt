@@ -14,7 +14,7 @@ else
     exit 1
 fi
 
-source xivoclient-all.pri
+source build-deps
 
 XC_DIR=.
 MINGW_DIR=${WIN_MINGW_PATH}

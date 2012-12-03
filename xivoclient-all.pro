@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
 # Generating versions.mak
-include(xivoclient-all.pri)
+include(build-deps)
 VERSIONS_FILE = versions.mak
 
 system(bash premake.sh $${VERSIONS_FILE})
