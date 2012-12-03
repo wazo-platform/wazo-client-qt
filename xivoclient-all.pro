@@ -3,15 +3,8 @@ TEMPLATE = subdirs
 # Generating versions.mak
 include(xivoclient-all.pri)
 VERSIONS_FILE = versions.mak
-PREMAKE_COMMAND = ./premake.sh $${VERSIONS_FILE}
 
-win32 {
-    # Double quotes escapes && from cmd shell
-    # OLDPWD is the current directory of cmd
-    system($${CYGWIN_PATH}/bin/bash --login -c \"cd $OLDPWD && $${PREMAKE_COMMAND}\")
-} else {
-    system($${PREMAKE_COMMAND})
-}
+system(bash premake.sh $${VERSIONS_FILE})
 
 tests {
     SUBDIRS = tests
@@ -19,8 +12,7 @@ tests {
     tests.file = baselib/tests.pro
     tests.makefile = Makefile_tests
 
-    unix:QMAKE_DISTCLEAN += -r bin/tests
-    win32:QMAKE_DISTCLEAN += /s /f /q bin/tests && rd /s /q bin/tests
+    QMAKE_DISTCLEAN += -r bin/tests
 } else {
     SUBDIRS = baselib xletlib xlets xivoclient
 
@@ -58,19 +50,7 @@ tests {
                      cross/resources/xivoicon.ico \
                      cross/resources/xivoicon_un.ico \
                      cross/xc-packaging-windows.sh
-        # Need $$ to escape $ from make
-        # Need \$$ to escape $$ from qmake
-        pack.commands = $${CYGWIN_PATH}/bin/bash --login -c \" \
-            cd \$$OLDPWD &&\
-            cross/xc-package-windows.sh \
-                . \
-                \$$\(which libstdc++-6.dll|xargs dirname\)/.. \
-                \$$\(cygpath \$$QTDIR)\" &&
-        pack.commands += \"$${NSIS_PATH}/makensis\" \
-            $${CYGWIN_PATH}/tmp/xivoclient-win/installer.nsi &&
-        pack.commands += $(COPY_FILE) \
-           $${CYGWIN_PATH}\\tmp\\xivoclient-win\\xivoclient-*.exe \
-           %CD%
+        pack.commands = cross/xc-package-windows.sh
     }
     linux-g++ {
         pack.target = pack
@@ -91,9 +71,7 @@ tests {
     FILES_TO_CLEAN = versions.mak
     DIRS_TO_CLEAN = bin
     win32 {
-        DIRS_TO_CLEAN += $${CYGWIN_PATH}\\tmp\\xivoclient-win
-        QMAKE_DISTCLEAN += $${FILES_TO_CLEAN} /s /f /q $${DIRS_TO_CLEAN} && rd /s /q $${DIRS_TO_CLEAN}
-    } else {
-        QMAKE_DISTCLEAN += -r $${FILES_TO_CLEAN} $${DIRS_TO_CLEAN}
+        DIRS_TO_CLEAN += /tmp/xivoclient-win
     }
+    QMAKE_DISTCLEAN += -r $${FILES_TO_CLEAN} $${DIRS_TO_CLEAN}
 }

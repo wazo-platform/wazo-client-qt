@@ -1,6 +1,5 @@
-# The paths should be of the form :
-# VARIABLE = c:\\path\\to\\file
+WIN_MINGW_PATH=/cygdrive/c/QtSDK/mingw
+WIN_QT_PATH=/cygdrive/c/QtSDK/Desktop/Qt/4.8.1/mingw
+WIN_NSIS_PATH="/cygdrive/c/Program files (x86)/nsis"
 
-CYGWIN_PATH = c:\\cygwin
-NSIS_PATH = c:\\program files (x86)\\nsis
-MAC_QT_PATH = ~/QtSDK/Desktop/Qt/4.8.0/gcc
+MAC_QT_PATH=~/QtSDK/Desktop/Qt/4.8.0/gcc
