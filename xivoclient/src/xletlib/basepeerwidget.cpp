@@ -102,12 +102,16 @@ void BasePeerWidget::dial()
     QString number;
     if (sender()) {
         number = sender()->property("number").toString();
-    } else if (m_ui_remote) {
-        if (const PhoneInfo * p = b_engine->phone(
-                m_ui_remote->phonelist().value(0))) {
+    }
+
+    if (m_ui_remote) {
+        const QString &phone_id = m_ui_remote->phonelist().value(0);
+        const PhoneInfo *p = b_engine->phone(phone_id);
+        if (p) {
             number = p->number();
         }
     }
+
     if (! number.isEmpty()) {
         b_engine->actionDialNumber(number);
     } else {
@@ -137,28 +141,31 @@ void BasePeerWidget::peerdial()
 
 void BasePeerWidget::hangup()
 {
-    if (m_ui_remote) {
-        QString xchannel = sender()->property("xchannel").toString();
-        b_engine->actionCall("hangup",
-                             QString("chan:%1").arg(xchannel));
+    if (! m_ui_remote) {
+        return;
     }
+
+    const QString &xchannel = sender()->property("xchannel").toString();
+    b_engine->actionCall("hangup", QString("chan:%1").arg(xchannel));
 }
 
 void BasePeerWidget::intercept()
 {
-    if (m_ui_remote) {
-        QString xchannel = sender()->property("xchannel").toString();
-        b_engine->actionCall("intercept",
-                             QString("user:%0").arg(b_engine->getFullId()),
-                             QString("chan:%0").arg(xchannel));
+    if (! m_ui_remote) {
+        return;
     }
+
+    const QString &xchannel = sender()->property("xchannel").toString();
+    b_engine->actionCall("intercept",
+                         QString("user:%0").arg(b_engine->getFullId()),
+                         QString("chan:%0").arg(xchannel));
 }
 
 void BasePeerWidget::transfer()
 {
-    QString xchannel = sender()->property("xchannel").toString();
-    QString src = QString("chan:%1").arg(xchannel);
-    QString dst = QString("exten:%0/%1")
+    const QString &xchannel = sender()->property("xchannel").toString();
+    const QString &src = QString("chan:%1").arg(xchannel);
+    const QString &dst = QString("exten:%0/%1")
         .arg(m_ui_remote->ipbxid())
         .arg(sender()->property("number").toString());
     b_engine->actionCall("transfer", src, dst);
@@ -167,22 +174,24 @@ void BasePeerWidget::transfer()
 
 void BasePeerWidget::itransfer()
 {
-    QString xchannel = sender()->property("xchannel").toString();
-    QString src = QString("chan:%1").arg(xchannel);
-    QString dst_number = sender()->property("number").toString();
+    const QString &xchannel = sender()->property("xchannel").toString();
+    const QString &src = QString("chan:%1").arg(xchannel);
+    const QString &dst_number = sender()->property("number").toString();
     const QString &ipbx = (m_ui_remote ? m_ui_remote->ipbxid()
                            : m_ui_local->ipbxid());
-    QString dst = QString("exten:%0/%1").arg(ipbx).arg(dst_number);
+    const QString &dst = QString("exten:%0/%1").arg(ipbx).arg(dst_number);
+
     b_engine->actionCall("atxfer", src, dst);
 }
 
 void BasePeerWidget::itransfercancel()
 {
-    if (m_ui_remote) {
-        QString xchannel = sender()->property("xchannel").toString();
-        b_engine->actionCall("transfercancel",
-                             QString("chan:%1").arg(xchannel));
+    if (! m_ui_remote) {
+        return;
     }
+
+    const QString &xchannel = sender()->property("xchannel").toString();
+    b_engine->actionCall("transfercancel", QString("chan:%1").arg(xchannel));
 }
 
 void BasePeerWidget::parkcall()
@@ -198,72 +207,73 @@ void BasePeerWidget::parkcall()
 
 void BasePeerWidget::vmtransfer()
 {
-    if (m_ui_remote) {
-        QString xchannel = sender()->property("xchannel").toString();
-        b_engine->actionCall("transfer",
-                             QString("chan:%1").arg(xchannel),
-                             "voicemail:" + m_ui_remote->xvoicemailid());
+    if (! m_ui_remote) {
+        return;
     }
+
+    const QString &xchannel = sender()->property("xchannel").toString();
+    b_engine->actionCall("transfer",
+                         QString("chan:%1").arg(xchannel),
+                         "voicemail:" + m_ui_remote->xvoicemailid());
 }
 
 void BasePeerWidget::inviteConfRoom()
 {
-    if (m_ui_remote) {
-        QString invitee = QString("%0:%1").arg("user").arg(m_ui_remote->xid());
-        b_engine->inviteConfRoom(invitee);
+    if (! m_ui_remote) {
+        return;
     }
+
+    const QString &invitee = QString("%0:%1").arg("user").arg(m_ui_remote->xid());
+    b_engine->inviteConfRoom(invitee);
 }
 
 void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (! m_ui_remote)
+    if (! m_ui_remote || ! m_ui_local) {
         return;
-    if (! m_ui_local)
-        return;
-    if (event->button() == Qt::LeftButton) {
-        QWidget *w = childAt(event->pos());
-        QString subwidgetkind;
-        if (w) {
-            subwidgetkind = w->property("kind").toString();
-        }
-        foreach(const ChannelInfo * channelinfo, loopOverChannels(m_ui_local)) {
-            const QString &status = channelinfo->commstatus();
-            if ((status == CHAN_STATUS_LINKED_CALLER) ||
-                (status == CHAN_STATUS_LINKED_CALLED)) {
-                QString action = b_engine->getConfig("doubleclick.searchpanel").toString();
-                if (action == "atxfer") {
-                    QString to;
-                    if (m_ui_remote) {
-                        to = "user:" + m_ui_remote->xid();
-                    } else {
-                        to = "ext:" + m_number;
-                    }
-                    b_engine->actionCall("atxfer",
-                                         QString("chan:%1").arg(channelinfo->xid()),
-                                         to);
-                    return;
-                } else {
-                    // Do nothing, get out of the loop, and eventually dial
-                }
+    }
 
-            }
-        }
-        // "I" have no current communications, intercept if the person is being called
-        foreach(const ChannelInfo * channelinfo, loopOverChannels(m_ui_remote)) {
-            const QString &status = channelinfo->commstatus();
-            if (status == CHAN_STATUS_RINGING) {
-                b_engine->actionCall("transfer",
-                                     QString("chan:%1:%2").arg(m_ui_remote->xid()).arg(channelinfo->id()),
-                                     "user:special:me");
-                return;
-            }
-        }
+    if (event->button() != Qt::LeftButton) {
+        return;
+    }
+
+    if (const QWidget *w = childAt(event->pos())) {
+        const QString &subwidgetkind = w->property("kind").toString();
         if (subwidgetkind == "mobile") {
-            b_engine->actionDialNumber(m_ui_remote->mobileNumber());
-        } else {
-            dial();
+            return b_engine->actionDialNumber(m_ui_remote->mobileNumber());
         }
     }
+
+    foreach(const ChannelInfo * channelinfo, loopOverChannels(m_ui_local)) {
+        const QString &status = channelinfo->commstatus();
+        if ((status == CHAN_STATUS_LINKED_CALLER) ||
+            (status == CHAN_STATUS_LINKED_CALLED)) {
+            QString action = b_engine->getConfig("doubleclick.searchpanel").toString();
+            if (action == "atxfer") {
+                QString to;
+                if (m_ui_remote) {
+                    to = "user:" + m_ui_remote->xid();
+                } else {
+                    to = "ext:" + m_number;
+                }
+                return b_engine->actionCall("atxfer",
+                                            QString("chan:%1").arg(channelinfo->xid()),
+                                            to);
+            }
+        }
+    }
+
+    // "I" have no current communications, intercept if the person is being called
+    foreach(const ChannelInfo * channel, loopOverChannels(m_ui_remote)) {
+        const QString &status = channel->commstatus();
+        if (status != CHAN_STATUS_RINGING) {
+            break;
+        }
+        return b_engine->actionCall("transfer",
+                                    QString("chan:%1:%2").arg(m_ui_remote->xid()).arg(channel->id()),
+                                    "user:special:me");
+    }
+    dial();
 }
 
 void BasePeerWidget::mousePressEvent(QMouseEvent *event)
@@ -632,23 +642,26 @@ QAction * BasePeerWidget::newAttendedTransferAction(const QString &number,
 
 void BasePeerWidget::addTxferVmMenu(QMenu * menu)
 {
-    if (! m_ui_remote->voicemailid().isEmpty()) {
-        foreach (const QString &channelxid, m_ui_local->xchannels()) {
-            if (const ChannelInfo * c = b_engine->channel(channelxid)) {
-                if (c->canBeTransferred()) {
-                    if (QAction * action = new QAction(
-                            tr("Transfer to &voice mail"), this)) {
-                        QString chan_to_transfer = QString("%0/%1")
-                            .arg(c->ipbxid()).arg(c->talkingto_id());
-                        action->setProperty("xchannel", chan_to_transfer);
-                        connect(action, SIGNAL(triggered()),
-                                this, SLOT(vmtransfer()));
-                        menu->addAction(action);
-                        break;
-                    }
-                }
-            }
+    if (! m_ui_remote || (m_ui_remote && m_ui_remote->voicemailid().isEmpty())) {
+        return;
+    }
+
+    foreach (const QString &channelxid, m_ui_local->xchannels()) {
+        const ChannelInfo * c = b_engine->channel(channelxid);
+        if (! c || (c && ! c->canBeTransferred())) {
+            continue;
         }
+
+        QAction * action = new QAction(tr("Transfer to &voice mail"), this);
+        if (! action) {
+            continue;
+        }
+
+        QString chan_to_transfer = QString("%0/%1").arg(c->ipbxid()).arg(c->talkingto_id());
+        action->setProperty("xchannel", chan_to_transfer);
+        connect(action, SIGNAL(triggered()), this, SLOT(vmtransfer()));
+        menu->addAction(action);
+        break;
     }
 }
 
