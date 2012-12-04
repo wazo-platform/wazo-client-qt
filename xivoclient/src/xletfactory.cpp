@@ -40,7 +40,6 @@
 #include "xletfactory.h"
 #include "xletinterface.h"
 
-#include <callcampaignpanel.h>
 #include <customerinfopanel.h>
 #include <dialpanel.h>
 #include <directorypanel.h>
@@ -67,7 +66,6 @@ static const struct {
     { "fax"               ,newXLet<FaxPanel>               },
     { "search"            ,newXLet<SearchPanel>            },
     { "directory"         ,newXLet<DirectoryPanel>         },
-    { "callcampaign"      ,newXLet<CallCampaignPanel>      },
     { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },
 };
 

@@ -50,7 +50,6 @@ SOURCES += $${ROOT_DIR}/src/*.cpp
 HEADERS += $${ROOT_DIR}/src/remote_control/*.h
 SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 
-BUILTIN_DIRS += callcampaign-builtin
 BUILTIN_DIRS += customerinfo-builtin
 BUILTIN_DIRS += dial-builtin
 BUILTIN_DIRS += directory-builtin
@@ -64,7 +63,6 @@ for(BUILTIN_DIR, BUILTIN_DIRS){
 }
 
 # necessary to make lupdate process these source files
-SOURCES += $${ROOT_DIR}/src/xlets/callcampaign-builtin/*.cpp
 SOURCES += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.cpp
 SOURCES += $${ROOT_DIR}/src/xlets/dial-builtin/*.cpp
 SOURCES += $${ROOT_DIR}/src/xlets/directory-builtin/*.cpp
