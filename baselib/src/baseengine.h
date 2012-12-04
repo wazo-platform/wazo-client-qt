@@ -68,65 +68,6 @@ class QueueMemberInfo;
 class UserInfo;
 class VoiceMailInfo;
 
-/*! \brief Class which handles connection with the XiVO CTI server
- *
- *  The engine object contains all the code to
- *  handle network connection and requests
- *
- *  Config options (available through getConfig):
- *  - (bool) \b systrayed = main window starts systrayed
- *  - (bool) \b uniqueinstance = forbids multiple clients running simultaneously on the same machine
- *  - (string) \b qss = Qt style sheet, changes appearance of the client. It is the name of a file in \code :/common/ *.qss \endcode, without path nor extension.
- *  - (bool) \b enableclipboard = enable the clipboard or not
- *  - (bool) \b logtofile = enable events logging
- *  - (string) \b logfilename = log file name, no path
- *  - (bool) \b activate_on_tel = activate the window when calling from an extern application through the client
- *  - (string) \b profilename = config profile used
- *  - (string) \b cti_address = CTI server address
- *  - (int) \b cti_port = CTI server port
- *  - (bool) \b cti_encrypt = encrypt communication to CTI server
- *  - (string) \b userlogin = login\%opt
- *  - (string) \b userloginsimple = login
- *  - (string) \b userloginopt = opt
- *  - (string) \b password = password
- *  - (string) \b company = user's company (context)
- *  - (bool) \b keeppass = keep password in config file
- *  - (bool) \b showagselect = show agent combobox on main window
- *  - (string) \b agentphonenumber = agent phone number
- *  - (string) \b forcelocale = language choice. Can be 'default' or 'en_US', 'fr_FR' ... Plugin localization is automatic, you should not have to use this.
- *  - (bool) \b autoconnect = connect on starting client
- *  - (bool) \b trytoreconnect = automatic reconnection
- *  - (int) \b trytoreconnectinterval = reconnection attempts interval (ms)
- *  - (int) \b keepaliveinterval = heartbeat intervals (ms)
- *  - (bool) \b displayprofile = show the config profile used (bottom right of the main window)
- *  - (int) \b historysize = max number of lines displayed in XLetHistoryPlugin
- *  - (bool) \b guioptions.autourl_allowed = enable loading web page on incoming call
- *  - (int) \b guioptions.contacts-max = max number of contacts displayed in SearchPanel
- *  - (int) \b guioptions.contacts-width = number of columns to display contacts in SearchPanel
- *  - (int) \b guioptions.loginkind = index of agent combobox (0 = no agent, 1 = agent not logged, 2 = agent logged)
- *  - (string) \b guioptions.loginwindow.url = url to load when connecting to the server
- *  - (int) \b guioptions.maxwidthwanted = maximum graphical width of contacts (px)
- *  - (int) \b guioptions.presenceindicatorsize = size of contacts presence indicator (px)
- *  - (bool) \b guioptions.queue_displaynu = display queue numbers
- *  - (bool) \b guioptions.queue_longestwait = display longest wait queue
- *  - (map)(int) \b guioptions.queuelevels = number of queued calls threshold to change queue color (indices: green and orange)
- *  - (map)(int) \b guioptions.queuelevels_wait = waiting time threshold to change queue color (indices: green and orange)
- *  - (map)(list) \b guioptions.server_funcs = server enabled functions (index: functions)
- *  - (int) \b guioptions.sheet-tablimit = max number of tab in presence reporting
- *  - (string) \b guioptions.switchboard-elt-type = switchboard display method (values: small, detailed)
- *  - (bool) \b guioptions.xlet_operator_answer_work = show answer button
- *  - (int) \b guioptions.xlet_operator_keyanswer = key code to answer
- *  - (int) \b guioptions.xlet_operator_keyatxfercancel = key code to cancel transfer
- *  - (int) \b guioptions.xlet_operator_keyatxferfinalize = key code to finalize a transfer
- *  - (int) \b guioptions.xlet_operator_keydtransfer = key code to direct transfer
- *  - (int) \b guioptions.xlet_operator_keyhangup = key code to hang up
- *  - (int) \b guioptions.xlet_operator_keyicancel = key code to cancel ?
- *  - (int) \b guioptions.xlet_operator_keyilink = key code to join
- *  - (int) \b guioptions.xlet_operator_keyitransfer = key code to indirect transfer
- *  - (int) \b guioptions.xlet_operator_keypark = key code to park
- *  - (bool) \b checked_function.presence = presence function enabled ?
- *  - (bool) \b checked_function.customerinfo = customerinfo function enabled ?
- */
 class BASELIB_EXPORT BaseEngine: public QObject
 {
     Q_OBJECT

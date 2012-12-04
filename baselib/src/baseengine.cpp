@@ -264,18 +264,6 @@ void BaseEngine::loadSettings()
         qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
     }
 
-    QVariantMap guisetting_map = data.toMap();
-    guisetting_map.insert("xlet_operator_keyanswer"        , QVariant(Qt::Key_F1));
-    guisetting_map.insert("xlet_operator_keyhangup"        , QVariant(Qt::Key_F2));
-    guisetting_map.insert("xlet_operator_keydtransfer"     , QVariant(Qt::Key_F3));
-    guisetting_map.insert("xlet_operator_keyitransfer"     , QVariant(Qt::Key_F4));
-    guisetting_map.insert("xlet_operator_keyilink"         , QVariant(Qt::Key_F5));
-    guisetting_map.insert("xlet_operator_keyicancel"       , QVariant(Qt::Key_F6));
-    guisetting_map.insert("xlet_operator_keypark"          , QVariant(Qt::Key_F7));
-    guisetting_map.insert("xlet_operator_keyatxferfinalize", QVariant(Qt::Key_F8));
-    guisetting_map.insert("xlet_operator_keyatxfercancel"  , QVariant(Qt::Key_F9));
-    data.setValue(guisetting_map);
-
     // this is used to make a migration from 1.0 to 1.1
     if (settingsversion != "1.0")
         m_settings->beginGroup(m_profilename_read);

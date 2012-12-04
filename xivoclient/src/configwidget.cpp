@@ -56,8 +56,7 @@ QHash<QString, QString> func_legend;
 QString reboot_message;
 
 ConfigWidget::ConfigWidget(QWidget *parent)
-    : QDialog(parent),
-      m_currentKeyChange(-1)
+    : QDialog(parent)
 {
     reboot_message = tr("You must restart the program for this setting to apply.");
     m_parent = parent;
@@ -332,8 +331,6 @@ void ConfigWidget::_insert_function_tab()
 
     m_function_tabwidget->addTab(widget_queue_members, tr("Queue Members"));
 
-    _insert_operator_functiontab();
-
     layout2->addWidget(m_function_tabwidget);
 
     m_tabwidget->addTab(widget_functions, tr("Functions"));
@@ -471,108 +468,6 @@ void ConfigWidget::_insert_advanced_tab()
     m_tabwidget->addTab(widget_adv, tr("Advanced"));
 }
 
-void ConfigWidget::changeOperatorKey(bool a)
-{
-  QPushButton *button = qobject_cast<QPushButton *>(sender());
-  int index = button->property("i").toInt();
-  static QPushButton *old = NULL;
-
-  if (a) {
-      if ((old!=NULL)&&(old!=button))
-          old->toggle();
-      old = button;
-      button->setText(tr("(current: %0) use your keyboard")
-                      .arg(QKeySequence(m_config["guioptions.xlet_operator_key" + m_operator_action[index].action].toInt()).toString()));
-      m_currentKeyChange = index;
-  } else {
-    button->setText(tr("(current: %0) click to change")
-                    .arg(QKeySequence(m_config["guioptions.xlet_operator_key" + m_operator_action[index].action].toInt()).toString()));
-    old = NULL;
-  }
-}
-
-void ConfigWidget::_insert_operator_functiontab()
-{
-     m_operator_action[ANSWER].action = QString("answer");
-     m_operator_action[ANSWER].translation = tr("Answer");
-     m_operator_action[HANGUP].action = QString("hangup");
-     m_operator_action[HANGUP].translation = tr("Hangup");
-     m_operator_action[DTXFER].action = QString("dtransfer");
-     m_operator_action[DTXFER].translation = tr("D. Transfer");
-     m_operator_action[ITXFER].action = QString("itransfer");
-     m_operator_action[ITXFER].translation = tr("I. Transfer");
-     m_operator_action[ILINK].action = QString("ilink");
-     m_operator_action[ILINK].translation = tr("I. Link");
-     m_operator_action[ICANCEL].action = QString("icancel");
-     m_operator_action[ICANCEL].translation = tr("I. Cancel");
-     m_operator_action[ATXFER_FINAL].action = QString("atxferfinalize");
-     m_operator_action[ATXFER_FINAL].translation = tr("Finalize Transfer");
-     m_operator_action[CANCEL_TXFER].action = QString("atxfercancel");
-     m_operator_action[CANCEL_TXFER].translation = tr("Cancel Transfer");
-     m_operator_action[PARK].action = QString("park");
-     m_operator_action[PARK].translation = tr("Park");
-    int i;
-
-    QGridLayout *glayout = new QGridLayout();
-    QWidget *root_widget = new QWidget();
-    root_widget->setLayout(glayout);
-    QPushButton *selectKey;
-
-    glayout->addWidget(new QLabel(tr("Operator action")), 0, 1);
-    glayout->addWidget(new QLabel(tr("Key binding")), 0, 2);
-
-    for(i=0;i<NB_OP_ACTIONS;i++) {
-        selectKey = new QPushButton(tr("(current: %0) click to change")
-                                    .arg(QKeySequence(m_config["guioptions.xlet_operator_key" + m_operator_action[i].action].toInt()).toString()),
-                                    root_widget);
-        selectKey->setCheckable(true);
-        selectKey->setProperty("i", i);
-        m_operator_action[i].button = selectKey;
-        glayout->addWidget(new QLabel(m_operator_action[i].translation), i+1 ,1);
-        glayout->addWidget(selectKey, i+1, 2);
-
-        connect(selectKey, SIGNAL(toggled(bool)), this, SLOT(changeOperatorKey(bool)));
-    }
-
-
-    m_operator_answer_work = new QCheckBox(tr("Display an answer action"));
-    m_operator_answer_work->setChecked(m_config["guioptions.xlet_operator_answer_work"].toInt());
-    glayout->addWidget(m_operator_answer_work, ++i , 1, 1, 2);
-
-    glayout->addWidget(new QLabel(tr("Any change here requires an application restart to be effective")), ++i, 1, 1, 2);
-
-    m_function_tabwidget->addTab(root_widget, tr("Operator"));
-}
-
-
-void ConfigWidget::keyPressEvent(QKeyEvent *e)
-{
-    if ((m_currentKeyChange == -1) || (e->modifiers() != Qt::NoModifier))
-        return;
-
-    int i, already_bound = -1;
-
-    for(i=0;i<NB_OP_ACTIONS;i++) {
-        if ((m_config["guioptions.xlet_operator_key" + m_operator_action[i].action].toInt() == e->key()) &&
-            (i != m_currentKeyChange)) {
-            already_bound = i;
-            break;
-        }
-    }
-
-    if (already_bound != -1) {
-        QMessageBox::information(this,
-            tr("This key is already bound"),
-            tr("Please press another key, this one has already been bound for action '%0'")
-                .arg(m_operator_action[i].translation));
-
-        return ;
-    }
-
-    m_config["guioptions.xlet_operator_key" + m_operator_action[m_currentKeyChange].action] = e->key();
-    m_operator_action[m_currentKeyChange].button->toggle();
-}
-
 void ConfigWidget::loginKindChanged(int index)
 {
     if (index == 0) {
@@ -584,7 +479,6 @@ void ConfigWidget::loginKindChanged(int index)
 
 void ConfigWidget::saveAndClose()
 {
-    int i;
     m_config["cti_address"] = m_main_server_address_input->text();
     m_config["cti_port"] = m_main_server_port_input->value();
     m_config["cti_encrypt"] = m_main_server_encrypt_input->isChecked();
@@ -616,12 +510,6 @@ void ConfigWidget::saveAndClose()
 
     foreach(QString function, func_legend.keys())
         m_config["checked_function." + function] = m_function[function]->isChecked();
-
-    for(i=0;i<NB_OP_ACTIONS;i++) {
-        m_config["guioptions.xlet_operator_key" + m_operator_action[i].action] =
-            m_config["guioptions.xlet_operator_key" + m_operator_action[i].action].toInt();
-    }
-    m_config["guioptions.xlet_operator_answer_work"] = m_operator_answer_work->isChecked();
 
     QVariantMap qvm, qvm2;
 

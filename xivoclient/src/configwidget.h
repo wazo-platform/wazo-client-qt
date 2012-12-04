@@ -73,10 +73,7 @@ class ConfigWidget: public QDialog
 
     private slots:
         void saveAndClose();
-        void changeOperatorKey(bool);
         void loginKindChanged(int);
-    protected:
-        virtual void keyPressEvent(QKeyEvent *);
 
     private:
         void createColors();
@@ -84,7 +81,6 @@ class ConfigWidget: public QDialog
         void _insert_account_tab();
         void _insert_guisetting_tab();
         void _insert_function_tab();
-        void _insert_operator_functiontab();
         void _insert_advanced_tab();
 
         QWidget * m_parent;
@@ -151,29 +147,6 @@ class ConfigWidget: public QDialog
 
         QDialogButtonBox * m_btnbox;
         QTabWidget * m_tabwidget;
-
-        enum operator_actions {
-            ANSWER,
-            HANGUP,
-            DTXFER,
-            ITXFER,
-            ILINK,
-            ICANCEL,
-            ATXFER_FINAL,
-            CANCEL_TXFER,
-            PARK,
-            NB_OP_ACTIONS
-        };
-
-        struct {
-            QString action;
-            QString translation;
-            QPushButton *button;
-        } m_operator_action[NB_OP_ACTIONS];
-
-        QCheckBox * m_operator_answer_work;
-
-        int m_currentKeyChange;
 
         QCheckBox * m_logtofile;
         QLineEdit * m_logfilename;
