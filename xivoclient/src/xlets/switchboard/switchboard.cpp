@@ -65,17 +65,33 @@ Switchboard::Switchboard(QWidget *parent)
     ui.incomingCallsView->hideColumn(QueueEntriesModel::POSITION);
 
     connect(b_engine, SIGNAL(initialized()),
-            this, SLOT(watch_switchboard_queue()));
+            this, SLOT(postInitializationSetup()));
     connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(clicked(const QModelIndex &)));
-    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
-            this, SLOT(updatePhoneStatus(const QString &)));
 
     this->setFocus();
 }
 
 Switchboard::~Switchboard()
 {
+}
+
+void Switchboard::postInitializationSetup()
+{
+    this->subscribeCurrentCalls();
+    this->connectPhoneStatus();
+    this->watch_switchboard_queue();
+}
+
+void Switchboard::connectPhoneStatus() const
+{
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+}
+
+void Switchboard::subscribeCurrentCalls() const
+{
+    qDebug() << "Subscribing to current_calls";
 }
 
 void Switchboard::updatePhoneStatus(const QString &phone_id)
