@@ -14,3 +14,6 @@ SOURCES += $${ROOT_DIR}/src/tests/suite/*.cpp
 
 HEADERS += $${ROOT_DIR}/src/id_converter.h
 SOURCES += $${ROOT_DIR}/src/id_converter.cpp
+
+HEADERS += $${ROOT_DIR}/src/message_factory.h
+SOURCES += $${ROOT_DIR}/src/message_factory.cpp

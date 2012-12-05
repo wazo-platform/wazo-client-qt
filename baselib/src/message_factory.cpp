@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,22 +27,13 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
+#include "message_factory.h"
 
-#include <test_id_converter.h>
-#include <test_message_factory.h>
-
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
-
-int main (int argc, char *argv[])
+QVariantMap MessageFactory::subscribeCurrentCalls()
 {
-    TestIdConverter test_id_converter;
-    TestMessageFactory test_message_factory;
+    QVariantMap message;
+    message["class"] = "subscribe";
+    message["message"] = "current_calls";
 
-    QTest::qExec(&test_id_converter, argc, argv);
-    QTest::qExec(&test_message_factory, argc, argv);
-
-    return 0;
+    return message;
 }

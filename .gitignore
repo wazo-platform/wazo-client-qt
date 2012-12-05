@@ -27,3 +27,4 @@ Makefile
 # Translations
 .tx
 translations
+*.log
