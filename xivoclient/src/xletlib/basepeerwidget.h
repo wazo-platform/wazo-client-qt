@@ -80,7 +80,6 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void addHangupMenu(QMenu *);
         void addInterceptMenu(QMenu *);
         void addMeetmeMenu(QMenu *);
-        void addParkingMenu(QMenu *);
         void addTxferMenu(QMenu *, bool);
         void addTxferVmMenu(QMenu *);
     private:
@@ -110,7 +109,6 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void itransfercancel();
         void peerdial();
         void vmtransfer();
-        void parkcall();
 
     protected:
         const UserInfo * m_ui_local;

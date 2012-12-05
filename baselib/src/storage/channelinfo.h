@@ -47,7 +47,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         double timestamp() const;
         int linenumber() const;
         bool isholded() const;
-        bool isparked() const;
         bool canBeTransferred() const;
         bool isTalking() const;
         bool isInMeetme() const;

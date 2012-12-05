@@ -29,7 +29,6 @@
 
 #include "baseengine.h"
 #include "channelinfo.h"
-#include "parkinginfo.h"
 
 ChannelInfo::ChannelInfo(const QString & ipbxid,
                          const QString & id)
@@ -117,15 +116,4 @@ bool ChannelInfo::canBeTransferred() const
     }
 
     return talking;
-}
-
-bool ChannelInfo::isparked() const
-{
-    foreach (const XInfo * p, b_engine->iterover("parkinglots")) {
-        const QString & xid = this->xid();
-        if ((static_cast<const ParkingInfo *>(p))->parkedHere(xid)) {
-            return true;
-        }
-    }
-    return false;
 }

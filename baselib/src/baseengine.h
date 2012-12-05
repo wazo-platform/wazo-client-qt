@@ -61,7 +61,6 @@ class XletDebug;
 
 class AgentInfo;
 class ChannelInfo;
-class ParkingInfo;
 class PhoneInfo;
 class QueueInfo;
 class QueueMemberInfo;
@@ -139,8 +138,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
             { return (const AgentInfo *) m_anylist.value("agents").value(id); };
         const QueueInfo * queue(const QString & id) const         //!< Return the queue to any Xlet
             { return (const QueueInfo *) m_anylist.value("queues").value(id); };
-        const ParkingInfo * parkinglot(const QString & id) const
-            { return (const ParkingInfo *) m_anylist.value("parkinglots").value(id); }
         const VoiceMailInfo * voicemail(const QString & id) const  //!< Return the voicemail to any Xlet
             { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };
         const QueueMemberInfo * queuemember(const QString & id) const  //!< Return the queuemember to any Xlet
@@ -293,11 +290,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
 
-        void parkingEvent(const QString &,
-                          const QString &,
-                          const QString &,
-                          const QVariant &);
-
         void ackFax(const QString &, const QString &);
 
         void monitorPeerChanged();
@@ -331,8 +323,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateChannelStatus(const QString &);
         void updateQueueMemberConfig(const QString &);
         void updateQueueMemberStatus(const QString &);
-        void updateParkinglotConfig(const QString &);
-        void updateParkinglotStatus(const QString &);
         void removePhoneConfig(const QString &);
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);

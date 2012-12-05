@@ -51,7 +51,6 @@
 
 #include <agentinfo.h>
 #include <channelinfo.h>
-#include <parkinginfo.h>
 #include <phoneinfo.h>
 #include <queueinfo.h>
 #include <queuememberinfo.h>
@@ -87,8 +86,7 @@ static const QStringList GenLists = (QStringList()
                                      << "agents"
                                      << "queues"
                                      << "voicemails"
-                                     << "queuemembers"
-                                     << "parkinglots");
+                                     << "queuemembers");
 static CTIServer * m_cti_server;
 
 BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
@@ -114,7 +112,6 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     m_xinfoList.insert("queues", newXInfo<QueueInfo>);
     m_xinfoList.insert("voicemails", newXInfo<VoiceMailInfo>);
     m_xinfoList.insert("queuemembers", newXInfo<QueueMemberInfo>);
-    m_xinfoList.insert("parkinglots", newXInfo<ParkingInfo>);
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
@@ -190,7 +187,7 @@ void BaseEngine::loadSettings()
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
     m_config["qss"] = m_settings->value("display/qss", "none").toString();
-    
+
     // this part had been commented for Win32, see svn 5882 or git 70eb1793
     // to allow a bit more flexibility, we leave it as a configurable setting,
     // whose default mode will be 'disabled'
@@ -206,10 +203,10 @@ void BaseEngine::loadSettings()
     if (m_config["logtofile"].toBool()) {
         openLogFile ();
     }
-    
+
     m_config["profilename"] = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + m_config["profilename"].toString();
-    
+
     QString settingsversion = m_settings->value("version/xivo", __xivo_version__).toString();
 
     // this is used to make a migration from 1.0 to 1.1
@@ -242,14 +239,14 @@ void BaseEngine::loadSettings()
         m_availstate = m_settings->value("availstate", "available").toString();
         m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
         m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 10).toInt();
-        
+
         m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
 
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
         m_settings->endGroup();
     m_settings->endGroup();
-    
+
     QString defaultguioptions;
     QFile defaultguioptions_file(":/guioptions.json");
     if (defaultguioptions_file.exists()) {
@@ -308,7 +305,7 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
-    
+
     m_settings->beginGroup(m_profilename_write);
         m_settings->setValue("serverhost", m_config["cti_address"].toString());
         m_settings->setValue("serverport", m_config["cti_port"].toUInt());
@@ -330,7 +327,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
         m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
         m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
-        
+
         m_settings->setValue("doubleclick.searchpanel", m_config["doubleclick.searchpanel"].toString());
 
         if (m_config["keeppass"].toBool())
@@ -1087,8 +1084,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateVoiceMailConfig(xid);
             else if (listname == "queuemembers")
                 emit updateQueueMemberConfig(xid);
-            else if (listname == "parkinglots")
-                emit updateParkinglotConfig(xid);
 
             QVariantMap command;
             command["class"] = "getlist";
@@ -1143,8 +1138,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                         sendJsonCommand(command);
                     }
                 }
-            } else if (listname == "parkinglots") {
-                emit updateParkinglotStatus(xid);
             } else if (listname == "agents")
                 emit updateAgentStatus(xid);
             else if (listname == "queues") {
@@ -1480,10 +1473,6 @@ void BaseEngine::actionCall(const QString & action,
     } else if (action == "dial") {
         ipbxcommand["command"] = action;
         ipbxcommand["destination"] = dst;
-    } else if (action == "parking") {
-        ipbxcommand["command"] = action;
-        ipbxcommand["source"] = src;
-        ipbxcommand["destination"] = dst;
     } else if (action == "answer") {
         ipbxcommand["command"] = action;
         ipbxcommand["phoneids"] = src;
@@ -1567,7 +1556,7 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
                             m_config["checked_function.presence"].toBool() != qvm["checked_function.presence"].toBool();
 
     m_config.merge(qvm);
-    
+
     if (reload_tryagain) {
         stopTryAgainTimer();
         startTryAgainTimer();
@@ -1576,9 +1565,9 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
         stopKeepAliveTimer();
         m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
     }
-    
+
     setUserLogin(m_config["userlogin"].toString());
-    
+
     if (change_translation)
         changeTranslation();
 
@@ -2020,7 +2009,7 @@ void BaseEngine::changeTranslation(QString locale)
     if (locale == "default") {
         locale = QLocale::system().name();
     }
-    
+
     m_locale = locale;
 
     QVector<QTranslator *> new_translators;
