@@ -47,6 +47,9 @@ class BASELIB_EXPORT QueueMemberDAO
         static QString queueMemberId(const QString &, const QString &);
         static QStringList queueMembersFromAgentId(const QString &);
         static QueueAgentStatus getAgentStatus(const QueueMemberInfo * queue_member);
+
+        static int nbAgentsFromQueue(const QueueInfo *);
+        static int nbNonAgentsFromQueue(const QueueInfo *);
 };
 
 #endif

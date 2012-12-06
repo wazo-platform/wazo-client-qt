@@ -27,6 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
 #include <QStringList>
 #include <QSet>
 
@@ -154,4 +155,34 @@ QueueAgentStatus QueueMemberDAO::getAgentStatus(const QueueMemberInfo *queue_mem
     agent_status.update(membership, status, paused);
 
     return agent_status;
+}
+
+int QueueMemberDAO::nbAgentsFromQueue(const QueueInfo * queue)
+{
+    int nb_of_agents = 0;
+
+    QHash<QString, XInfo *> queue_members = b_engine->iterover("queuemembers");
+    foreach (XInfo * info, queue_members.values()) {
+        QueueMemberInfo * queue_member = static_cast<QueueMemberInfo *>(info);
+        if ((queue_member->queueName() == queue->queueName()) && (queue_member->is_agent())) {
+            ++nb_of_agents;
+        }
+    }
+
+    return nb_of_agents;
+}
+
+int QueueMemberDAO::nbNonAgentsFromQueue(const QueueInfo * queue)
+{
+    int nb_of_non_agents = 0;
+
+    QHash<QString, XInfo *> queue_members = b_engine->iterover("queuemembers");
+    foreach (XInfo * info, queue_members.values()) {
+        QueueMemberInfo * queue_member = static_cast<QueueMemberInfo *>(info);
+        if ((queue_member->queueName() == queue->queueName()) && (!queue_member->is_agent())) {
+            ++nb_of_non_agents;
+        }
+    }
+
+    return nb_of_non_agents;
 }

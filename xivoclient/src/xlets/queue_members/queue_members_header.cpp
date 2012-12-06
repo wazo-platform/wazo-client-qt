@@ -32,6 +32,7 @@
 #include <QDebug>
 
 #include <baseengine.h>
+#include <dao/queuememberdao.h>
 
 #include "queue_members_header.h"
 
@@ -84,8 +85,8 @@ QString QueueMembersHeader::buildHeaderText(const QueueInfo * queue) const
     QString queue_name = queue->queueDisplayName();
     QString queue_number = queue->queueNumber();
     QString queue_context = queue->context();
-    int agent_count = queue->agentmembers().size();
-    int phone_count = queue->phonemembers().size();
+    int agent_count = QueueMemberDAO::nbAgentsFromQueue(queue);
+    int phone_count = QueueMemberDAO::nbNonAgentsFromQueue(queue);
 
     QString agents_text = tr("%n agent(s)", "", agent_count);
     QString phones_text = tr("%n phone(s)", "", phone_count);
