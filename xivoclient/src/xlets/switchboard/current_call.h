@@ -27,48 +27,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SWITCHBOARD_H__
-#define __SWITCHBOARD_H__
+#ifndef __CURRENT_CALL_H__
+#define __CURRENT_CALL_H__
 
+#include <ipbxlistener.h>
 #include <QObject>
-#include "xlet.h"
-#include "ui_switchboard.h"
 
-class QLabel;
-class QueueEntriesModel;
-class QueueEntriesSortFilterProxyModel;
-class UserInfo;
-class CurrentCall;
+class QWidget;
+namespace Ui {
+    class CurrentCallWidget;
+}
 
-class Switchboard : public XLet
+class CurrentCall: public QObject, public IPBXListener
 {
     Q_OBJECT
 
     public:
-        Switchboard(QWidget *parent=0);
-        ~Switchboard();
-    public slots:
-        void on_answerButton_clicked() const;
-        void updateHeader(const QString &id, const QVariantList &entries);
-        void clicked(const QModelIndex &index);
-        void keyPressEvent(QKeyEvent *event);
-        void queueEntryUpdate(const QString &queue_id, const QVariantList &entry);
-        void updatePhoneStatus(const QString &queue_id);
-        void postInitializationSetup();
+        CurrentCall(QObject *parent=NULL);
+        ~CurrentCall();
+        void setParentWidget(QWidget *parent);
+        virtual void parseCommand(const QVariantMap &command);
+    private slots:
+        void updateTime();
     private:
-        void watch_switchboard_queue();
-        void connectPhoneStatus() const;
-        void setupUi();
-        void subscribeCurrentCalls() const;
-        bool isSwitchboardQueue(const QString &queue_id) const;
-        bool isSwitchboardPhone(const QString &phone_id);
+        void clear();
+        void updateCallerID(const QString &name, const QString &number);
+        void updateCall(const QVariantList &calls);
 
-        Ui::SwitchboardPanel ui;
-        CurrentCall *m_current_call;
-        QueueEntriesModel *m_model;
-        QueueEntriesSortFilterProxyModel *m_proxy_model;
-        static QString switchboard_queue_name;
-        const UserInfo *m_switchboard_user;
+        Ui::CurrentCallWidget *m_current_call_widget;
+        double m_call_start;
 };
 
-#endif
+#endif /* __CURRENT_CALL_H__ */

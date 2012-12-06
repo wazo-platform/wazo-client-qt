@@ -2,6 +2,7 @@ include(../../../common-xlets.pri)
 HEADERS = *.h
 SOURCES = *.cpp
 FORMS = switchboard.ui
+FORMS += current_call.ui
 TARGET = switchboardplugin
 
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_en.ts

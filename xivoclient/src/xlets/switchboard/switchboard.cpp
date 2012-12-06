@@ -42,29 +42,29 @@
 #include <queue_entries/queue_entries_view.h>
 
 #include "switchboard.h"
+#include "ui_current_call.h"
+#include "current_call.h"
 
 #include <QKeyEvent>
 
 QString Switchboard::switchboard_queue_name = "__switchboard";
 
 Switchboard::Switchboard(QWidget *parent)
-    : XLet(parent), m_switchboard_user(b_engine->getXivoClientUser())
+    : XLet(parent),
+      m_current_call(new CurrentCall()),
+      m_switchboard_user(b_engine->getXivoClientUser())
 {
     this->setTitle(tr("Switchboard"));
-    ui.setupUi(this);
+    this->m_model = new QueueEntriesModel(this);
+    this->m_proxy_model = new QueueEntriesSortFilterProxyModel(this);
+    this->m_proxy_model->setSourceModel(this->m_model);
+
+    this->setupUi();
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(updateHeader(const QString &, const QVariantList &)));
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
-
-    this->m_model = new QueueEntriesModel(this);
-    this->m_proxy_model = new QueueEntriesSortFilterProxyModel(this);
-    this->m_proxy_model->setSourceModel(this->m_model);
-    ui.incomingCallsView->setModel(this->m_proxy_model);
-    ui.incomingCallsView->hideColumn(QueueEntriesModel::ID);
-    ui.incomingCallsView->hideColumn(QueueEntriesModel::POSITION);
-
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(postInitializationSetup()));
     connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
@@ -75,6 +75,17 @@ Switchboard::Switchboard(QWidget *parent)
 
 Switchboard::~Switchboard()
 {
+}
+
+void Switchboard::setupUi()
+{
+    ui.setupUi(this);
+
+    this->m_current_call->setParentWidget(ui.current_call_widget);
+
+    ui.incomingCallsView->setModel(this->m_proxy_model);
+    ui.incomingCallsView->hideColumn(QueueEntriesModel::ID);
+    ui.incomingCallsView->hideColumn(QueueEntriesModel::POSITION);
 }
 
 void Switchboard::postInitializationSetup()
