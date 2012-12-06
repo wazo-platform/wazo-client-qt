@@ -41,7 +41,7 @@ CurrentCall::CurrentCall(QObject *parent)
 {
     this->registerListener("current_calls");
 
-    QTimer * timer_display = new QTimer();
+    QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
             this, SLOT(updateTime()));
     timer_display->start(1000);

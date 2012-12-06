@@ -51,7 +51,7 @@ QString Switchboard::switchboard_queue_name = "__switchboard";
 
 Switchboard::Switchboard(QWidget *parent)
     : XLet(parent),
-      m_current_call(new CurrentCall()),
+      m_current_call(new CurrentCall(this)),
       m_switchboard_user(b_engine->getXivoClientUser())
 {
     this->setTitle(tr("Switchboard"));
