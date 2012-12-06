@@ -69,15 +69,6 @@ bool AgentInfo::updateStatus(const QVariantMap & prop)
         haschanged = true;
     }
 
-    if (prop.contains("groups")) {
-        m_xgroupids.clear();
-        foreach (QString groupid, prop.value("groups").toStringList()) {
-            QString xgroupid = QString("%1/%2").arg(m_ipbxid).arg(groupid);
-            m_xgroupids.append(xgroupid);
-        }
-        haschanged = true;
-    }
-
     return haschanged;
 }
 

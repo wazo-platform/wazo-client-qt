@@ -68,7 +68,6 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         const QVariantMap & properties() const { return m_properties; } ;
 
         const QStringList & xqueueids() const { return m_xqueueids; };
-        const QStringList & xgroupids() const { return m_xgroupids; };
 
         int joinedQueueCount() const;
         int pausedQueueCount() const;
@@ -94,7 +93,6 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         QVariantMap m_properties;
 
         QStringList m_xqueueids;
-        QStringList m_xgroupids;
 };
 
 #endif
