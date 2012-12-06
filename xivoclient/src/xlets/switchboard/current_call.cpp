@@ -55,6 +55,9 @@ void CurrentCall::setParentWidget(QWidget *parent)
 {
     m_current_call_widget = new Ui::CurrentCallWidget();
     m_current_call_widget->setupUi(parent);
+    connect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
+            this, SLOT(hangup()));
+    this->disableButtons();
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -95,6 +98,7 @@ void CurrentCall::updateCall(const QVariantList &calls)
                              call_map["cid_number"].toString());
         this->m_call_start = call_map["call_start"].toDouble();
         this->updateTime();
+        this->enableButtons();
     }
 }
 
@@ -103,4 +107,25 @@ void CurrentCall::clear()
     this->m_current_call_widget->lbl_callerid->clear();
     this->m_call_start = 0;
     this->updateTime();
+    this->disableButtons();
+}
+
+void CurrentCall::hangup()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
+void CurrentCall::disableButtons()
+{
+    this->setButtonsAvailability(false);
+}
+
+void CurrentCall::enableButtons()
+{
+    this->setButtonsAvailability(true);
+}
+
+void CurrentCall::setButtonsAvailability(bool enabled)
+{
+    this->m_current_call_widget->btn_hangup->setEnabled(enabled);
 }

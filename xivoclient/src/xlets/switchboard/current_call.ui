@@ -39,6 +39,9 @@
          <property name="text">
           <string>Hangup</string>
          </property>
+         <property name="shortcut">
+          <string>F8</string>
+         </property>
         </widget>
        </item>
        <item>
