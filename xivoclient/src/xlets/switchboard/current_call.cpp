@@ -43,7 +43,7 @@ CurrentCall::CurrentCall(QObject *parent)
 
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
-            this, SLOT(updateTime()));
+            this, SLOT(updateCallInfo()));
     timer_display->start(1000);
 }
 
@@ -63,18 +63,17 @@ void CurrentCall::setParentWidget(QWidget *parent)
 void CurrentCall::updateCallerID(const QString &name,
                                  const QString &number)
 {
-    QString caller_id = QString("%1 <%2>").arg(name).arg(number);
-    this->m_current_call_widget->lbl_callerid->setText(caller_id);
+    m_caller_id = QString("%1 <%2>").arg(name).arg(number);
 }
 
-void CurrentCall::updateTime()
+void CurrentCall::updateCallInfo()
 {
-    if (m_call_start == 0) {
-        this->m_current_call_widget->lbl_time->clear();
-    } else {
-        const QString &time = b_engine->timeElapsed(m_call_start);
-        this->m_current_call_widget->lbl_time->setText(time);
+    QString time;
+    if (m_call_start != 0) {
+        time = b_engine->timeElapsed(m_call_start);
     }
+    QString info = QString("%1 %2").arg(this->m_caller_id).arg(time);
+    this->m_current_call_widget->lbl_call_info->setText(info);
 }
 
 void CurrentCall::parseCommand(const QVariantMap &current_calls)
@@ -97,16 +96,16 @@ void CurrentCall::updateCall(const QVariantList &calls)
         this->updateCallerID(call_map["cid_name"].toString(),
                              call_map["cid_number"].toString());
         this->m_call_start = call_map["call_start"].toDouble();
-        this->updateTime();
+        this->updateCallInfo();
         this->enableButtons();
     }
 }
 
 void CurrentCall::clear()
 {
-    this->m_current_call_widget->lbl_callerid->clear();
+    this->m_caller_id.clear();
     this->m_call_start = 0;
-    this->updateTime();
+    this->updateCallInfo();
     this->disableButtons();
 }
 

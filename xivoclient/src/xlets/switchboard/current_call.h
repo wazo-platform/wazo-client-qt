@@ -50,7 +50,7 @@ class CurrentCall: public QObject, public IPBXListener
     public slots:
         void hangup();
     private slots:
-        void updateTime();
+        void updateCallInfo();
     private:
         void clear();
         void updateCallerID(const QString &name, const QString &number);
@@ -61,6 +61,7 @@ class CurrentCall: public QObject, public IPBXListener
 
         Ui::CurrentCallWidget *m_current_call_widget;
         double m_call_start;
+        QString m_caller_id;
 };
 
 #endif /* __CURRENT_CALL_H__ */
