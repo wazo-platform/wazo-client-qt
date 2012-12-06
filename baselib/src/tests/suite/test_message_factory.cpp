@@ -54,3 +54,13 @@ void TestMessageFactory::testAnswer()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testHangup()
+{
+    QVariantMap result = MessageFactory::hangup();
+
+    QVariantMap expected;
+    expected["class"] = "hangup";
+
+    QCOMPARE(result, expected);
+}

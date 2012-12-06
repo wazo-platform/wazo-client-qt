@@ -30,6 +30,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <baseengine.h>
+#include <message_factory.h>
 #include "ui_current_call.h"
 #include "current_call.h"
 
@@ -111,7 +112,7 @@ void CurrentCall::clear()
 
 void CurrentCall::hangup()
 {
-    qDebug() << Q_FUNC_INFO;
+    b_engine->sendJsonCommand(MessageFactory::hangup());
 }
 
 void CurrentCall::disableButtons()

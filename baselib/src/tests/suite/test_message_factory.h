@@ -39,6 +39,7 @@ class TestMessageFactory: public QObject
     private slots:
         void testSubscribeCurrentCalls();
         void testAnswer();
+        void testHangup();
 };
 
 #endif /* __TEST_MESSAGE_FACTORY_H__ */

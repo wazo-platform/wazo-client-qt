@@ -41,6 +41,9 @@ class BASELIB_EXPORT MessageFactory
         ~MessageFactory();
         static QVariantMap subscribeCurrentCalls();
         static QVariantMap answer();
+        static QVariantMap hangup();
+    private:
+        static QVariantMap baseMessage(const QString &class_name);
 };
 
 

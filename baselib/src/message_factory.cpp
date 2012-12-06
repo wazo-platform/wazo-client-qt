@@ -31,8 +31,7 @@
 
 QVariantMap MessageFactory::subscribeCurrentCalls()
 {
-    QVariantMap message;
-    message["class"] = "subscribe";
+    QVariantMap message = MessageFactory::baseMessage("subscribe");
     message["message"] = "current_calls";
 
     return message;
@@ -40,8 +39,17 @@ QVariantMap MessageFactory::subscribeCurrentCalls()
 
 QVariantMap MessageFactory::answer()
 {
-    QVariantMap message;
-    message["class"] = "answer";
+    return MessageFactory::baseMessage("answer");
+}
 
+QVariantMap MessageFactory::hangup()
+{
+    return MessageFactory::baseMessage("hangup");
+}
+
+QVariantMap MessageFactory::baseMessage(const QString &class_name)
+{
+    QVariantMap message;
+    message["class"] = class_name;
     return message;
 }
