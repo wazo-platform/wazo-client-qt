@@ -1888,18 +1888,6 @@ void BaseEngine::logClient(const QString & level,
     sendJsonCommand(command);
 }
 
-/*! \brief save parameter in settings (.ini file) */
-void BaseEngine::saveQueueGroups(const QVariant & queuegroups)
-{
-    m_settings->setValue("agentpanel/queuegroups", queuegroups);
-}
-
-/*! \brief load parameters from settings */
-void BaseEngine::loadQueueGroups()
-{
-    emit setQueueGroups(m_settings->value("agentpanel/queuegroups"));
-}
-
 /*! \brief get pointer to the currently logged user
  *
  * Return NULL if not available */

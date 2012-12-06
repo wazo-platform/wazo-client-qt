@@ -239,9 +239,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void saveToFile(const QString &);
 
-        void loadQueueGroups();
-        void saveQueueGroups(const QVariant &);
-
         void logAction(const QString &);  //!< client side logging
 
         void logClient(const QString &, const QString &, const QString &);  //!< log tricky situations (server side)
@@ -304,8 +301,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void statusListen(const QString &, const QString &, const QString &);
 
         void emitMessageBox(const QString &);
-
-        void setQueueGroups(const QVariant &);
 
         void peersReceived();  //!< list of peer was received
 
