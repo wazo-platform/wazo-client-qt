@@ -37,3 +37,11 @@ QVariantMap MessageFactory::subscribeCurrentCalls()
 
     return message;
 }
+
+QVariantMap MessageFactory::answer()
+{
+    QVariantMap message;
+    message["class"] = "answer";
+
+    return message;
+}

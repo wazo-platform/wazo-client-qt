@@ -44,3 +44,13 @@ void TestMessageFactory::testSubscribeCurrentCalls()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testAnswer()
+{
+    QVariantMap result = MessageFactory::answer();
+
+    QVariantMap expected;
+    expected["class"] = "answer";
+
+    QCOMPARE(result, expected);
+}

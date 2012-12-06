@@ -32,6 +32,7 @@
 #include <baseengine.h>
 #include <dao/queuedao.h>
 #include <id_converter.h>
+#include <message_factory.h>
 
 #include <queueinfo.h>
 #include <phoneinfo.h>
@@ -91,7 +92,7 @@ void Switchboard::connectPhoneStatus() const
 
 void Switchboard::subscribeCurrentCalls() const
 {
-    qDebug() << "Subscribing to current_calls";
+    b_engine->sendJsonCommand(MessageFactory::subscribeCurrentCalls());
 }
 
 void Switchboard::updatePhoneStatus(const QString &phone_id)
@@ -149,11 +150,7 @@ void Switchboard::watch_switchboard_queue()
 
 void Switchboard::on_answerButton_clicked() const
 {
-    QVariantMap pickupCommand;
-    pickupCommand["class"] = "answer";
-
-    b_engine->sendJsonCommand(pickupCommand);
-
+    b_engine->sendJsonCommand(MessageFactory::answer());
 }
 
 void Switchboard::updateHeader(const QString & queue_id, const QVariantList & entries)
