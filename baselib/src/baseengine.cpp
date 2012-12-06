@@ -1142,21 +1142,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 emit updateAgentStatus(xid);
             else if (listname == "queues") {
                 emit updateQueueStatus(xid);
-                if (hasQueue(xid)) {
-                    QVariantMap command;
-                    command["class"] = "getlist";
-                    command["function"] = "updatestatus";
-                    command["listname"] = "queuemembers";
-                    command["tipbxid"] = ipbxid;
-                    foreach (QString aid, queue(xid)->agentmembers()) {
-                        command["tid"] = aid;
-                        sendJsonCommand(command);
-                    }
-                    foreach (QString pid, queue(xid)->phonemembers()) {
-                        command["tid"] = pid;
-                        sendJsonCommand(command);
-                    }
-                }
             }
             else if (listname == "voicemails")
                 emit updateVoiceMailStatus(xid);

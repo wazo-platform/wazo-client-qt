@@ -38,12 +38,6 @@
 #include <agentinfo.h>
 #include <queueinfo.h>
 
-QStringList uniquify(QStringList list)
-{
-    QStringList ret = list.toSet().toList();
-    return ret;
-}
-
 QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_id)
 {
     QStringList ret;
@@ -58,23 +52,6 @@ QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_id)
             }
         }
     }
-    const AgentInfo * agentinfo = b_engine->agent(agent_id);
-    if (agentinfo == NULL) {
-        return QStringList();
-    }
-    foreach (QString queue_xid, agentinfo->xqueueids()) {
-        const QueueInfo * queueinfo = b_engine->queue(queue_xid);
-        if (queueinfo != NULL) {
-            QString queuemember_xid_status = queueinfo->reference("agents", agent_id);
-            const QueueMemberInfo * queuememberinfo_status = b_engine->queuemembers().value(queuemember_xid_status);
-            if (queuememberinfo_status != NULL) {
-                if (queuememberinfo_status->membership() != "static") {
-                    ret << queue_xid;
-                }
-            }
-        }
-    }
-    ret = uniquify(ret);
     return ret;
 }
 

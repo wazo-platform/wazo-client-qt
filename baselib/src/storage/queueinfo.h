@@ -53,25 +53,11 @@ class BASELIB_EXPORT QueueInfo : public XInfo
         const QString & queueName() const;
         const QString & queueDisplayName() const;
 
-        const QStringList & xagentids() const;
-        const QStringList & agentmembers() const;
-        const QStringList & xphoneids() const;
-        const QStringList & phonemembers() const;
-        QString reference(const QString &, const QString &) const;
-
     private:
         QString m_context;
         QString m_name;
         QString m_displayname;
         QString m_number;
-
-        QStringList m_xagentids;
-        QStringList m_agentmembers;
-        QStringList m_xphoneids;
-        QStringList m_phonemembers;
-        QStringList m_trunkmembers;
-
-        QStringList m_xincalls;
 };
 
 #endif
