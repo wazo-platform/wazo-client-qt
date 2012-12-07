@@ -49,7 +49,8 @@ class Switchboard : public XLet
         ~Switchboard();
     public slots:
         void on_answerButton_clicked() const;
-        void updateHeader(const QString &id, const QVariantList &entries);
+        void updateIncomingHeader(const QString &id, const QVariantList &entries);
+        void updateWaitingHeader(const QString &id, const QVariantList &entries);
         void clicked(const QModelIndex &index);
         void keyPressEvent(QKeyEvent *event);
         void queueEntryUpdate(const QString &queue_id, const QVariantList &entry);
@@ -61,13 +62,20 @@ class Switchboard : public XLet
         void setupUi();
         void subscribeCurrentCalls() const;
         bool isSwitchboardQueue(const QString &queue_id) const;
+        bool isSwitchboardHoldQueue(const QString &queue_id) const;
         bool isSwitchboardPhone(const QString &phone_id);
 
         Ui::SwitchboardPanel ui;
         CurrentCall *m_current_call;
-        QueueEntriesModel *m_model;
-        QueueEntriesSortFilterProxyModel *m_proxy_model;
+
+        QueueEntriesModel *m_incoming_call_model;
+        QueueEntriesSortFilterProxyModel *m_incoming_call_proxy_model;
         static QString switchboard_queue_name;
+
+        QueueEntriesModel *m_waiting_call_model;
+        QueueEntriesSortFilterProxyModel *m_waiting_call_proxy_model;
+        static QString switchboard_hold_queue_name;
+
         const UserInfo *m_switchboard_user;
 };
 

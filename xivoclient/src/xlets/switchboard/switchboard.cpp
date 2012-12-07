@@ -48,23 +48,31 @@
 #include <QKeyEvent>
 
 QString Switchboard::switchboard_queue_name = "__switchboard";
+QString Switchboard::switchboard_hold_queue_name = "__switchboard_hold";
 
 Switchboard::Switchboard(QWidget *parent)
     : XLet(parent),
       m_current_call(new CurrentCall(this)),
+      m_incoming_call_model(new QueueEntriesModel(this)),
+      m_waiting_call_model(new QueueEntriesModel(this)),
+      m_incoming_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
+      m_waiting_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
       m_switchboard_user(b_engine->getXivoClientUser())
 {
     this->setTitle(tr("Switchboard"));
-    this->m_model = new QueueEntriesModel(this);
-    this->m_proxy_model = new QueueEntriesSortFilterProxyModel(this);
-    this->m_proxy_model->setSourceModel(this->m_model);
+
+    this->m_incoming_call_proxy_model->setSourceModel(this->m_incoming_call_model);
+    this->m_waiting_call_proxy_model->setSourceModel(this->m_waiting_call_model);
 
     this->setupUi();
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
-            this, SLOT(updateHeader(const QString &, const QVariantList &)));
+            this, SLOT(updateIncomingHeader(const QString &, const QVariantList &)));
+    connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
+            this, SLOT(updateWaitingHeader(const QString &, const QVariantList &)));
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(queueEntryUpdate(const QString &, const QVariantList &)));
+
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(postInitializationSetup()));
     connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
@@ -83,9 +91,14 @@ void Switchboard::setupUi()
 
     this->m_current_call->setParentWidget(ui.current_call_widget);
 
-    ui.incomingCallsView->setModel(this->m_proxy_model);
+    ui.incomingCallsView->setModel(this->m_incoming_call_proxy_model);
     ui.incomingCallsView->hideColumn(QueueEntriesModel::ID);
     ui.incomingCallsView->hideColumn(QueueEntriesModel::POSITION);
+
+    ui.waitingCallsView->setModel(this->m_waiting_call_proxy_model);
+    ui.waitingCallsView->hideColumn(QueueEntriesModel::ID);
+    ui.waitingCallsView->hideColumn(QueueEntriesModel::POSITION);
+
 }
 
 void Switchboard::postInitializationSetup()
@@ -155,8 +168,8 @@ void Switchboard::keyPressEvent(QKeyEvent *event)
 
 void Switchboard::watch_switchboard_queue()
 {
-    const QString &queue_id = QueueDAO::findQueueIdByName(this->switchboard_queue_name);
-    this->m_model->changeWatchedQueue(queue_id);
+    this->m_incoming_call_model->changeWatchedQueue(QueueDAO::findQueueIdByName(this->switchboard_queue_name));
+    this->m_waiting_call_model->changeWatchedQueue(QueueDAO::findQueueIdByName(this->switchboard_hold_queue_name));
 }
 
 void Switchboard::on_answerButton_clicked() const
@@ -164,7 +177,7 @@ void Switchboard::on_answerButton_clicked() const
     b_engine->sendJsonCommand(MessageFactory::answer());
 }
 
-void Switchboard::updateHeader(const QString & queue_id, const QVariantList & entries)
+void Switchboard::updateIncomingHeader(const QString & queue_id, const QVariantList & entries)
 {
     if (this->isSwitchboardQueue(queue_id) == false) {
         return;
@@ -175,8 +188,26 @@ void Switchboard::updateHeader(const QString & queue_id, const QVariantList & en
     this->ui.incomingCallCountLabel->setText(header_text);
 }
 
+void Switchboard::updateWaitingHeader(const QString & queue_id, const QVariantList & entries)
+{
+    if (this->isSwitchboardHoldQueue(queue_id) == false) {
+        return;
+    }
+
+    QString header_text = QString(tr("%1 call(s)"))
+        .arg(entries.size());
+    this->ui.waitingCallCountLabel->setText(header_text);
+}
+
+
 bool Switchboard::isSwitchboardQueue(const QString &queue_id) const
 {
     const QueueInfo *queue = b_engine->queue(IdConverter::idToXId(queue_id));
     return queue && queue->queueName() == this->switchboard_queue_name;
+}
+
+bool Switchboard::isSwitchboardHoldQueue(const QString &queue_id) const
+{
+    const QueueInfo *queue = b_engine->queue(IdConverter::idToXId(queue_id));
+    return queue && queue->queueName() == this->switchboard_hold_queue_name;
 }
