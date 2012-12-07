@@ -1112,14 +1112,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 if (! m_queuemembers.contains(xid))
                     m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
                 m_queuemembers[xid]->updateStatus(status);
-                if (id.startsWith("qa:")) {
-                    QString qaids = id.split(":")[1];
-                    QStringList parts = qaids.split("-");
-                    QString queuexid = QString("%0/%1").arg(ipbxid).arg(parts[0]);
-                    QString agentxid = QString("%0/%1").arg(ipbxid).arg(parts[1]);
-                    emit updateQueueStatus(queuexid);
-                    emit updateAgentStatus(agentxid);
-                }
             }
 
             if (listname == "users") {
