@@ -15,20 +15,21 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QWidget" name="current_call_widget" native="true">
-     <zorder>frame</zorder>
-    </widget>
+    <widget class="QWidget" name="current_call_widget" native="true"/>
    </item>
    <item>
-    <widget class="QWidget" name="" native="true">
+    <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QFrame" name="frame">
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
+        <property name="title">
+         <string>Incoming Call</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
@@ -36,13 +37,6 @@
            <property name="sizeConstraint">
             <enum>QLayout::SetMinimumSize</enum>
            </property>
-           <item>
-            <widget class="QLabel" name="incomingCallLabel">
-             <property name="text">
-              <string>&lt;b&gt;Incoming Call&lt;/b&gt;</string>
-             </property>
-            </widget>
-           </item>
            <item>
             <spacer name="horizontalSpacer">
              <property name="orientation">
@@ -61,6 +55,12 @@
            </item>
            <item>
             <widget class="QLabel" name="incomingCallCountLabel">
+             <property name="font">
+              <font>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
              <property name="text">
               <string>0 call</string>
              </property>
@@ -75,6 +75,12 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true"/>
