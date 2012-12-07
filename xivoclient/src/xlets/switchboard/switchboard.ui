@@ -34,16 +34,10 @@
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetMinimumSize</enum>
-           </property>
            <item>
             <spacer name="horizontalSpacer">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -70,29 +64,17 @@
          </item>
          <item>
           <widget class="QueueEntriesView" name="incomingCallsView">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="font">
             <font>
              <weight>50</weight>
              <bold>false</bold>
             </font>
            </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
            <property name="frameShape">
             <enum>QFrame::Box</enum>
            </property>
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
-           </property>
-           <property name="horizontalScrollBarPolicy">
-            <enum>Qt::ScrollBarAsNeeded</enum>
            </property>
           </widget>
          </item>
@@ -127,7 +109,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="waitingCallCountLabel">
              <property name="font">
               <font>
                <weight>50</weight>
@@ -142,12 +124,18 @@
           </layout>
          </item>
          <item>
-          <widget class="QueueEntriesView" name="tableView">
+          <widget class="QueueEntriesView" name="waitingCallsView">
            <property name="font">
             <font>
              <weight>50</weight>
              <bold>false</bold>
             </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
            </property>
           </widget>
          </item>
