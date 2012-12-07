@@ -29,9 +29,21 @@
 
 #include "id_converter.h"
 
+#include <QStringList>
+
 QString IdConverter::ipbx_name = "xivo";
 
 QString IdConverter::idToXId(const QString & id)
 {
     return QString("%1/%2").arg(ipbx_name).arg(id);
+}
+
+QString IdConverter::xidToId(const QString &xid)
+{
+    if (! xid.contains("/")) {
+        return xid;
+    }
+
+    const QStringList &xid_parts = xid.split("/");
+    return xid_parts[1];
 }

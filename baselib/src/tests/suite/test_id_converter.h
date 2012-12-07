@@ -40,6 +40,8 @@ class TestIdConverter: public QObject
 
     private slots:
         void testIdToXId();
+        void testXidToId();
+        void testXidToIdWithId();
 };
 
 #endif

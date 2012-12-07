@@ -42,3 +42,23 @@ void TestIdConverter::testIdToXId()
 
     QCOMPARE(result, expected_xid);
 }
+
+void TestIdConverter::testXidToId()
+{
+    QString xid = "xivo/1234";
+    QString expected_id = "1234";
+
+    QString result = IdConverter::xidToId(xid);
+
+    QCOMPARE(result, expected_id);
+}
+
+void TestIdConverter::testXidToIdWithId()
+{
+    QString xid = "1234";
+    QString expected_id = "1234";
+
+    QString result = IdConverter::xidToId(xid);
+
+    QCOMPARE(result, expected_id);
+}

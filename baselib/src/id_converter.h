@@ -40,6 +40,7 @@ class BASELIB_EXPORT IdConverter
         IdConverter();
         ~IdConverter();
         static QString idToXId(const QString & id);
+        static QString xidToId(const QString & id);
     private:
         static QString ipbx_name;
 };
