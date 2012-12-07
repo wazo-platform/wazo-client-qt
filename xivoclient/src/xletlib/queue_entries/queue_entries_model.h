@@ -74,6 +74,7 @@ class XLETLIB_EXPORT QueueEntriesModel : public QAbstractTableModel
         };
 
         QString m_headers[NB_COL];
+        QString m_queue_id;
         QVariantList m_entries;
         static QString not_available ;
 };

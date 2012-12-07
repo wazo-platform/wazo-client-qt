@@ -31,6 +31,8 @@
 #include <queueinfo.h>
 #include <QTimer>
 
+#include <id_converter.h>
+
 #include "queue_entries_model.h"
 
 QueueEntriesModel::QueueEntriesModel(QObject *parent)
@@ -87,9 +89,13 @@ bool QueueEntriesModel::removeRows(int start_row_index, int row_count, const QMo
     return ret;
 }
 
-void QueueEntriesModel::queueEntryUpdate(const QString & /*queue_id*/,
+void QueueEntriesModel::queueEntryUpdate(const QString & queue_id,
                                          const QVariantList & entry_list)
 {
+    if (queue_id != IdConverter::xidToId(m_queue_id)) {
+        return;
+    }
+
     if (this->rowCount(QModelIndex()) > 0) {
         this->removeRows(0, this->rowCount(QModelIndex()), QModelIndex());
     }
@@ -160,6 +166,7 @@ void QueueEntriesModel::subscribeQueueEntry(const QString & queue_id)
     if (queue == NULL) {
         return;
     }
+    this->m_queue_id = queue_id;
 
     QVariantMap subscribe_command;
     subscribe_command["class"] = "subscribe";
