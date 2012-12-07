@@ -47,6 +47,11 @@ QVariantMap MessageFactory::hangup()
     return MessageFactory::baseMessage("hangup");
 }
 
+QVariantMap MessageFactory::holdSwitchboard()
+{
+    return MessageFactory::baseMessage("hold_switchboard");
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

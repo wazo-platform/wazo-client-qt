@@ -40,6 +40,7 @@ class TestMessageFactory: public QObject
         void testSubscribeCurrentCalls();
         void testAnswer();
         void testHangup();
+        void testHoldSwitchboard();
 };
 
 #endif /* __TEST_MESSAGE_FACTORY_H__ */

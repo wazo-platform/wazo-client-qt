@@ -64,3 +64,13 @@ void TestMessageFactory::testHangup()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testHoldSwitchboard()
+{
+    QVariantMap result = MessageFactory::holdSwitchboard();
+
+    QVariantMap expected;
+    expected["class"] = "hold_switchboard";
+
+    QCOMPARE(result, expected);
+}

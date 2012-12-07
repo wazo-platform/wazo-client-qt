@@ -126,7 +126,7 @@ void CurrentCall::hangup()
 
 void CurrentCall::hold()
 {
-    qDebug() << Q_FUNC_INFO;
+    b_engine->sendJsonCommand(MessageFactory::holdSwitchboard());
 }
 
 void CurrentCall::disableButtons()
