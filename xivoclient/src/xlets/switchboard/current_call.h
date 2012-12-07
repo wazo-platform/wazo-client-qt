@@ -49,6 +49,7 @@ class CurrentCall: public QObject, public IPBXListener
         virtual void parseCommand(const QVariantMap &command);
     public slots:
         void hangup();
+        void hold();
     private slots:
         void updateCallInfo();
     private:
@@ -58,6 +59,7 @@ class CurrentCall: public QObject, public IPBXListener
         void enableButtons();
         void disableButtons();
         void setButtonsAvailability(bool enabled);
+        void connectButtons();
 
         Ui::CurrentCallWidget *m_current_call_widget;
         double m_call_start;

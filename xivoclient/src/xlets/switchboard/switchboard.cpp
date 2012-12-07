@@ -54,8 +54,8 @@ Switchboard::Switchboard(QWidget *parent)
     : XLet(parent),
       m_current_call(new CurrentCall(this)),
       m_incoming_call_model(new QueueEntriesModel(this)),
-      m_waiting_call_model(new QueueEntriesModel(this)),
       m_incoming_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
+      m_waiting_call_model(new QueueEntriesModel(this)),
       m_waiting_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
       m_switchboard_user(b_engine->getXivoClientUser())
 {

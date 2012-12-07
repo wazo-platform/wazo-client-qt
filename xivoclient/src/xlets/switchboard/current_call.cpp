@@ -56,9 +56,18 @@ void CurrentCall::setParentWidget(QWidget *parent)
 {
     m_current_call_widget = new Ui::CurrentCallWidget();
     m_current_call_widget->setupUi(parent);
+
+    this->connectButtons();
+
+    this->disableButtons();
+}
+
+void CurrentCall::connectButtons()
+{
     connect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
             this, SLOT(hangup()));
-    this->disableButtons();
+    connect(m_current_call_widget->btn_hold, SIGNAL(clicked()),
+            this, SLOT(hold()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -115,6 +124,11 @@ void CurrentCall::hangup()
     b_engine->sendJsonCommand(MessageFactory::hangup());
 }
 
+void CurrentCall::hold()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
 void CurrentCall::disableButtons()
 {
     this->setButtonsAvailability(false);
@@ -128,4 +142,5 @@ void CurrentCall::enableButtons()
 void CurrentCall::setButtonsAvailability(bool enabled)
 {
     this->m_current_call_widget->btn_hangup->setEnabled(enabled);
+    this->m_current_call_widget->btn_hold->setEnabled(enabled);
 }
