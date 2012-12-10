@@ -52,6 +52,14 @@ QVariantMap MessageFactory::holdSwitchboard()
     return MessageFactory::baseMessage("hold_switchboard");
 }
 
+QVariantMap MessageFactory::unholdSwitchboard(const QString &unique_id)
+{
+    QVariantMap message = MessageFactory::baseMessage("unhold_switchboard");
+    message["unique_id"] = unique_id;
+
+    return message;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

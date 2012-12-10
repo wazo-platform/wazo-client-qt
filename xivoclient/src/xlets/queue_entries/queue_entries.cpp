@@ -62,6 +62,7 @@ QueueEntries::QueueEntries(QWidget *parent)
     this->m_view = new QueueEntriesView(this);
     this->m_view->setModel(this->m_proxy_model);
     this->m_view->hideColumn(QueueEntriesModel::ID);
+    this->m_view->hideColumn(QueueEntriesModel::UNIQUE_ID);
 
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this->m_model, SLOT(changeWatchedQueue(const QString &)));

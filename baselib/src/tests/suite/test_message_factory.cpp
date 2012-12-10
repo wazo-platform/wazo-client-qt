@@ -74,3 +74,15 @@ void TestMessageFactory::testHoldSwitchboard()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testUnholdSwitchboard()
+{
+    QString unique_id = "1287634.33";
+    QVariantMap result = MessageFactory::unholdSwitchboard(unique_id);
+
+    QVariantMap expected;
+    expected["class"] = "unhold_switchboard";
+    expected["unique_id"] = unique_id;
+
+    QCOMPARE(result, expected);
+}

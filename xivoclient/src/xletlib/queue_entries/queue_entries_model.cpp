@@ -56,6 +56,7 @@ void QueueEntriesModel::fillHeaders()
     m_headers[NAME] = tr("Name");
     m_headers[NUMBER] = tr("Number");
     m_headers[TIME] = tr("Time");
+    m_headers[UNIQUE_ID] = "Unique ID";
 }
 
 QueueEntriesModel::~QueueEntriesModel()
@@ -139,6 +140,8 @@ QVariant QueueEntriesModel::dataDisplay(int row, int column) const
         return entry.value("number");
     case TIME:
         return b_engine->timeElapsed(entry.value("join_time").toDouble());
+    case UNIQUE_ID:
+        return entry.value("uniqueid");
     default:
         return QVariant();
     }

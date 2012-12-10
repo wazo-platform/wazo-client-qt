@@ -76,7 +76,10 @@ Switchboard::Switchboard(QWidget *parent)
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(postInitializationSetup()));
     connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(clicked(const QModelIndex &)));
+            this, SLOT(incomingCallClicked(const QModelIndex &)));
+    connect(ui.waitingCallsView, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(waitingCallClicked(const QModelIndex &)));
+
 
     this->setFocus();
 }
@@ -94,10 +97,12 @@ void Switchboard::setupUi()
     ui.incomingCallsView->setModel(this->m_incoming_call_proxy_model);
     ui.incomingCallsView->hideColumn(QueueEntriesModel::ID);
     ui.incomingCallsView->hideColumn(QueueEntriesModel::POSITION);
+    ui.incomingCallsView->hideColumn(QueueEntriesModel::UNIQUE_ID);
 
     ui.waitingCallsView->setModel(this->m_waiting_call_proxy_model);
     ui.waitingCallsView->hideColumn(QueueEntriesModel::ID);
     ui.waitingCallsView->hideColumn(QueueEntriesModel::POSITION);
+    ui.waitingCallsView->hideColumn(QueueEntriesModel::UNIQUE_ID);
 
 }
 
@@ -148,13 +153,21 @@ void Switchboard::queueEntryUpdate(const QString &queue_id,
     this->setFocus();
 }
 
-void Switchboard::clicked(const QModelIndex &index)
+void Switchboard::incomingCallClicked(const QModelIndex &index)
 {
     int clicked_row = index.row();
 
     if (clicked_row == 0) {
         this->on_answerButton_clicked();
     }
+}
+
+void Switchboard::waitingCallClicked(const QModelIndex &index)
+{
+    QModelIndex id_index = index.child(index.row(), QueueEntriesModel::UNIQUE_ID);
+    const QString &call_unique_id = m_waiting_call_proxy_model->data(id_index, Qt::DisplayRole).toString();
+
+    b_engine->sendJsonCommand(MessageFactory::unholdSwitchboard(call_unique_id));
 }
 
 void Switchboard::keyPressEvent(QKeyEvent *event)

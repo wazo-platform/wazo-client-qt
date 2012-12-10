@@ -41,6 +41,7 @@ class TestMessageFactory: public QObject
         void testAnswer();
         void testHangup();
         void testHoldSwitchboard();
+        void testUnholdSwitchboard();
 };
 
 #endif /* __TEST_MESSAGE_FACTORY_H__ */

@@ -70,6 +70,7 @@ class XLETLIB_EXPORT QueueEntriesModel : public QAbstractTableModel
             NAME,
             NUMBER,
             TIME,
+            UNIQUE_ID,
             NB_COL
         };
 

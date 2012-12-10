@@ -43,6 +43,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap answer();
         static QVariantMap hangup();
         static QVariantMap holdSwitchboard();
+        static QVariantMap unholdSwitchboard(const QString &unique_id);
     private:
         static QVariantMap baseMessage(const QString &class_name);
 };

@@ -51,7 +51,8 @@ class Switchboard : public XLet
         void on_answerButton_clicked() const;
         void updateIncomingHeader(const QString &id, const QVariantList &entries);
         void updateWaitingHeader(const QString &id, const QVariantList &entries);
-        void clicked(const QModelIndex &index);
+        void incomingCallClicked(const QModelIndex &index);
+        void waitingCallClicked(const QModelIndex &index);
         void keyPressEvent(QKeyEvent *event);
         void queueEntryUpdate(const QString &queue_id, const QVariantList &entry);
         void updatePhoneStatus(const QString &queue_id);
