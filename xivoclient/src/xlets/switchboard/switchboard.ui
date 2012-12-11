@@ -10,6 +10,9 @@
     <height>632</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::TabFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -70,6 +73,9 @@
              <bold>false</bold>
             </font>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
            <property name="autoFillBackground">
             <bool>false</bool>
            </property>
@@ -96,7 +102,7 @@
          </font>
         </property>
         <property name="title">
-         <string>Waiting Calls</string>
+         <string>Waiting Calls (F9)</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
@@ -136,6 +142,9 @@
              <weight>50</weight>
              <bold>false</bold>
             </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
            </property>
            <property name="autoFillBackground">
             <bool>false</bool>

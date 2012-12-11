@@ -75,17 +75,27 @@ Switchboard::Switchboard(QWidget *parent)
 
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(postInitializationSetup()));
+
     connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(incomingCallClicked(const QModelIndex &)));
-    connect(ui.waitingCallsView, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(waitingCallClicked(const QModelIndex &)));
+    connect(ui.incomingCallsView, SIGNAL(activated(const QModelIndex &)),
+            this, SLOT(incomingCallClicked(const QModelIndex &)));
 
+    connect(ui.waitingCallsView, SIGNAL(clicked(const QModelIndex &)),
+           this, SLOT(waitingCallClicked(const QModelIndex &)));
+    connect(ui.waitingCallsView, SIGNAL(activated(const QModelIndex &)),
+            this, SLOT(waitingCallClicked(const QModelIndex &)));
 
     this->setFocus();
 }
 
 Switchboard::~Switchboard()
 {
+}
+
+void Switchboard::incomingCallsUpdated(const QModelIndex &, const QModelIndex &)
+{
+    this->focusOnIncomingCalls();
 }
 
 void Switchboard::setupUi()
@@ -150,7 +160,7 @@ void Switchboard::queueEntryUpdate(const QString &queue_id,
     if (this->isSwitchboardQueue(queue_id) == false) {
         return;
     }
-    this->setFocus();
+    this->focusOnIncomingCalls();
 }
 
 void Switchboard::incomingCallClicked(const QModelIndex &index)
@@ -158,7 +168,7 @@ void Switchboard::incomingCallClicked(const QModelIndex &index)
     int clicked_row = index.row();
 
     if (clicked_row == 0) {
-        this->on_answerButton_clicked();
+        this->answerIncomingCall();
     }
 }
 
@@ -170,13 +180,44 @@ void Switchboard::waitingCallClicked(const QModelIndex &index)
     b_engine->sendJsonCommand(MessageFactory::unholdSwitchboard(call_unique_id));
 }
 
+void Switchboard::handleEnterKeys()
+{
+    if (this->ui.incomingCallsView->hasFocus()) {
+        return;
+    } else if (this->ui.waitingCallsView->hasFocus()) {
+        return;
+    } else {
+        this->answerIncomingCall();
+    }
+}
+
 void Switchboard::keyPressEvent(QKeyEvent *event)
 {
-    int key_code = event->key();
-
-    if (key_code == Qt::Key_Enter || key_code == Qt::Key_Return) {
-        this->on_answerButton_clicked();
+    if (! event) {
+        return;
     }
+
+    switch (event->key()) {
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+        this->handleEnterKeys();
+        break;
+    case Qt::Key_F9:
+        this->focusOnWaitingCalls();
+        break;
+    default:
+        break;
+    }
+}
+
+void Switchboard::focusOnIncomingCalls()
+{
+    this->ui.incomingCallsView->setFocus();
+}
+
+void Switchboard::focusOnWaitingCalls()
+{
+    this->ui.waitingCallsView->setFocus();
 }
 
 void Switchboard::watch_switchboard_queue()
@@ -185,7 +226,7 @@ void Switchboard::watch_switchboard_queue()
     this->m_waiting_call_model->changeWatchedQueue(QueueDAO::findQueueIdByName(this->switchboard_hold_queue_name));
 }
 
-void Switchboard::on_answerButton_clicked() const
+void Switchboard::answerIncomingCall() const
 {
     b_engine->sendJsonCommand(MessageFactory::answer());
 }
