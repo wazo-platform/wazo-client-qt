@@ -31,7 +31,7 @@
 #include "queue_agent_status.h"
 
 const QColor Orange = QColor(255, 128, 0);
-QString QueueAgentStatus::logged_out_status = "5";
+QString QueueAgentStatus::logged_out_status = "101";
 
 QueueAgentStatus::QueueAgentStatus()
 {
@@ -69,11 +69,11 @@ bool QueueAgentStatus::update(const QString & dynstatus,
         basecolor = Qt::green;
         m_display_status_queue = tr("Agent in Queue");
         m_display_status_logged = tr("Logged");
-    } else if (sstatus == "3") {
+    } else if (sstatus == "2" || sstatus == "3" || sstatus == "6" || sstatus == "7") {
         basecolor = Qt::yellow;
         m_display_status_queue = tr("Agent Called or Busy");
         m_display_status_logged = tr("Logged");
-    } else if (sstatus == "4") {
+    } else if (sstatus == "4" || sstatus == "5") {
         basecolor = Qt::red;
         m_display_status_queue = tr("Agent in Queue but Invalid");
         m_display_status_logged = "";
