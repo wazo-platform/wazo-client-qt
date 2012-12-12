@@ -89,7 +89,7 @@ SearchPanel::SearchPanel(QWidget *parent) :
             this, SLOT(removePhoneConfig(const QString &)));
 
     connect(b_engine, SIGNAL(delogged()),
-            this, SLOT((removePeers())));
+            this, SLOT(removePeers()));
 
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateDisplay()));

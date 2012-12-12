@@ -118,8 +118,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     setGuiOptions();
 
-    connect(b_engine, SIGNAL(forwardUpdated(const QString &, const QVariant &)),
-            this, SLOT(setForward(const QString &, const QVariant &)));
+    connect(b_engine, SIGNAL(forwardUpdated(const QString &)),
+            this, SLOT(setForward(const QString &)));
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
