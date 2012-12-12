@@ -910,11 +910,6 @@ void BaseEngine::parseCommand(const QString &line)
         tmp["functions"] = todisp;
         m_config["guioptions.server_funcs"] = tmp;
 
-        qDebug() << "\n";
-        qDebug() << "capaxlets" << m_capaxlets;
-        qDebug() << "appliname" << m_appliname;
-        qDebug() << "\n";
-
         QString urltolaunch = m_config["guioptions.loginwindow.url"].toString();
         if (! urltolaunch.isEmpty()) {
             urltolaunch.replace("{xc-username}", m_config["userloginsimple"].toString());
