@@ -59,7 +59,7 @@
               </font>
              </property>
              <property name="text">
-              <string>0 call(s)</string>
+              <string>0 call</string>
              </property>
             </widget>
            </item>
@@ -129,7 +129,7 @@
               </font>
              </property>
              <property name="text">
-              <string>0 call(s)</string>
+              <string>0 call</string>
              </property>
             </widget>
            </item>
