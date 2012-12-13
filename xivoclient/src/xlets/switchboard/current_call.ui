@@ -92,7 +92,7 @@
              </font>
             </property>
             <property name="text">
-             <string>F7</string>
+             <string notr="true">F7</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -129,7 +129,7 @@
              </font>
             </property>
             <property name="text">
-             <string>F8</string>
+             <string notr="true">F8</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
