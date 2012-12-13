@@ -237,8 +237,7 @@ void Switchboard::updateIncomingHeader(const QString & queue_id, const QVariantL
         return;
     }
 
-    QString header_text = QString(tr("%1 call(s)"))
-        .arg(entries.size());
+    QString header_text = QString(tr("%n call(s)", "", entries.size()));
     this->ui.incomingCallCountLabel->setText(header_text);
 }
 
@@ -248,8 +247,7 @@ void Switchboard::updateWaitingHeader(const QString & queue_id, const QVariantLi
         return;
     }
 
-    QString header_text = QString(tr("%1 call(s)"))
-        .arg(entries.size());
+    QString header_text = QString(tr("%n call(s)", "", entries.size()));
     this->ui.waitingCallCountLabel->setText(header_text);
 }
 
