@@ -42,22 +42,22 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet in gebruik</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation>In gebruik</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Unlogged</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet ingelogged</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>%1 since %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sedert %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="334"/>

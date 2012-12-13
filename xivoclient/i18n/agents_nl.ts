@@ -6,87 +6,89 @@
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="43"/>
         <source>Number</source>
-        <translation type="unfinished">Nummer</translation>
+        <translation>Nummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="44"/>
         <source>First name</source>
-        <translation type="unfinished"></translation>
+        <translation>Voornaam</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="45"/>
         <source>Last name</source>
-        <translation type="unfinished"></translation>
+        <translation>Achternaam</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="46"/>
         <location filename="../src/xlets/agents/agents_model.cpp" line="198"/>
         <source>Listen</source>
-        <translation type="unfinished"></translation>
+        <translation>Luisteren</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="47"/>
         <source>Status since</source>
-        <translation type="unfinished"></translation>
+        <translation>Status sinds</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="48"/>
         <location filename="../src/xlets/agents/agents_model.cpp" line="325"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation>ingelogged</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="49"/>
         <source>Joined
 queues</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingelogde
+wachtrijen</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="50"/>
         <location filename="../src/xlets/agents/agents_model.cpp" line="346"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Gepauzeerd</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="51"/>
         <source>Paused
 queues</source>
-        <translation type="unfinished"></translation>
+        <translation>Gepauzeerde
+wachtrijen</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="260"/>
         <source>Agent ready to receive a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent is klaar om oproepen te ontvangen</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="262"/>
         <source>Agent processing a call or paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent gepauzeerd of in gesprek</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="298"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet in gebruik</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="301"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation>In gebruik</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="327"/>
         <source>Unlogged</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitgelogd</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="344"/>
         <source>Unpaused</source>
-        <translation type="unfinished">Klaar</translation>
+        <translation>Niet gepauzeerd</translation>
     </message>
     <message>
         <location filename="../src/xlets/agents/agents_model.cpp" line="348"/>
         <source>Partially Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Gedeeltelijk gepauzeerd</translation>
     </message>
 </context>
 <context>
