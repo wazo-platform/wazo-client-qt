@@ -1323,8 +1323,10 @@ void BaseEngine::popupError(const QString & errorid,
         errormsg = tr("You were disconnected by the server.");
     } else if (errorid == "forcedisconnected") {
         errormsg = tr("You were forced to disconnect by the server.");
-    } else if (errorid == "invalid_exten") {
-        errormsg = tr("Invalid extension number");
+    } else if (errorid == "agent_login_invalid_exten") {
+        errormsg = tr("Could not log agent: invalid extension.");
+    } else if (errorid == "agent_login_exten_in_use") {
+        errormsg = tr("Could not log agent: extension already in use.");
     }
 
     // logs a message before sending any popup that would block
