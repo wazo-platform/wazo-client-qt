@@ -133,17 +133,11 @@ bool AgentInfo::isCallingOrBusy() const
 
 bool AgentInfo::paused() const
 {
-    foreach (const QString & queuexid, xqueueids()) {
-        if (const QueueInfo * q = b_engine->queue(queuexid)) {
-            QString qmemberid = QString("%0/qa:%1-%2").arg(ipbxid())
-                    .arg(q->id()).arg(id());
-            if (b_engine->queuemembers().contains(qmemberid)) {
-                if (const QueueMemberInfo * qmi = b_engine->queuemembers().value(qmemberid)) {
-                    if (qmi->paused() != "0") {
-                        return true;
-                    }
-                }
-            }
+    QStringList queue_members = QueueMemberDAO::queueMembersFromAgentId(this->xid());
+    foreach (const QString & queue_member_id, queue_members) {
+        const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
+        if (queue_member != NULL && queue_member->paused() == "1") {
+            return true;
         }
     }
     return false;
