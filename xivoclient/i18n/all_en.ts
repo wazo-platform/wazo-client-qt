@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="en">
 <context>
     <name>BaseEngine</name>
     <message>
@@ -138,7 +140,7 @@ Please upgrade it.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1307"/>
-        <source>Your client's major version (%1)
+        <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</translation>
@@ -203,8 +205,8 @@ Please upgrade it.</translation>
     <message>
         <location filename="json_jsonqt/lib/ParseException.cpp" line="35"/>
         <source>A parsing error occurred:
-	Got: '%1'
-	Expected: '%2'
+	Got: &apos;%1&apos;
+	Expected: &apos;%2&apos;
 	At: &apos;%3&apos;</source>
         <translation>A parsing error occurred:
 	Got: &apos;%1&apos;
@@ -445,67 +447,6 @@ queues</translation>
         <location filename="../src/xlets/history/history.cpp" line="202"/>
         <source>Duration</source>
         <translation>Duration</translation>
-    </message>
-</context>
-<context>
-    <name>CallWidget</name>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="86"/>
-        <source>&amp;Hangup</source>
-        <translation>&amp;Hangup</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="87"/>
-        <source>Hang up/Close the channel</source>
-        <translation>Hang up/Close the channel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="91"/>
-        <source>&amp;Transfer to number</source>
-        <translation>&amp;Transfer to number</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="92"/>
-        <source>Transfer the channel to the dialed number</source>
-        <translation>Transfer the channel to the dialed number</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="96"/>
-        <source>&amp;Park the call</source>
-        <translation>&amp;Park the call</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="97"/>
-        <source>Park this call</source>
-        <translation>Park this call</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="143"/>
-        <source>Unknown</source>
-        <translation>Unknown</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="145"/>
-        <source>Conference room number %1</source>
-        <translation>Conference room number %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/callwidget.cpp" line="147"/>
-        <source>Parked call in %1</source>
-        <translation>Parked call in %1</translation>
-    </message>
-</context>
-<context>
-    <name>XletCalls</name>
-    <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="50"/>
-        <source>Calls</source>
-        <translation>Calls</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/calls/calls.cpp" line="182"/>
-        <source>Monitoring : %1</source>
-        <translation>Monitoring : %1</translation>
     </message>
 </context>
 <context>
@@ -984,12 +925,18 @@ Busy lines: %6</translation>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="91"/>
         <source>%n agent(s)</source>
-        <translation><numerusform>%n agent(s)</numerusform><numerusform>%n agent(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n agent(s)</numerusform>
+            <numerusform>%n agent(s)</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="92"/>
         <source>%n phone(s)</source>
-        <translation><numerusform>%n phone(s)</numerusform><numerusform>%n phone(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n phone(s)</numerusform>
+            <numerusform>%n phone(s)</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="93"/>
@@ -1107,74 +1054,6 @@ Busy lines: %6</translation>
         <location filename="../src/xlets/queue_members/queue_members.cpp" line="51"/>
         <source>Queue Members</source>
         <translation>Queue Members</translation>
-    </message>
-</context>
-<context>
-    <name>XletOperator</name>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="52"/>
-        <source>Operator panel</source>
-        <translation>Operator panel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="53"/>
-        <source>Operator</source>
-        <translation>Operator</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="55"/>
-        <source>Answer</source>
-        <translation>Answer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="56"/>
-        <source>Hangup</source>
-        <translation>Hangup</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="57"/>
-        <source>D. Transfer</source>
-        <translation>D. Transfer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="58"/>
-        <source>I. Transfer</source>
-        <translation>I. Transfer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="59"/>
-        <source>I. Link</source>
-        <translation>I. Link</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="60"/>
-        <source>I. Cancel</source>
-        <translation>I. Cancel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="61"/>
-        <source>Park</source>
-        <translation>Park</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="62"/>
-        <source>Finalize Transfer</source>
-        <translation>Finalize Transfer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="63"/>
-        <source>Cancel Transfer</source>
-        <translation>Cancel Transfer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="366"/>
-        <source>%1 Ringing</source>
-        <translation>%1 Ringing</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/operator/operator.cpp" line="381"/>
-        <source>Link %1</source>
-        <translation>Link %1</translation>
     </message>
 </context>
 <context>
@@ -2814,24 +2693,24 @@ Context: %4</translation>
         <translation>Current Call</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
-        <source>F7</source>
-        <translation>F7</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="111"/>
         <source>Hold</source>
         <translation>Hold</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="154"/>
-        <source>F8</source>
-        <translation>F8</translation>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
+        <source>F7</source>
+        <translation>F7</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="151"/>
         <source>Hangup</source>
         <translation>Hangup</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="154"/>
+        <source>F8</source>
+        <translation>F8</translation>
     </message>
 </context>
 <context>
@@ -2841,17 +2720,14 @@ Context: %4</translation>
         <source>Switchboard</source>
         <translation>Switchboard</translation>
     </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="240"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="251"/>
-        <source>%1 call(s)</source>
-        <translation>%1 call(s)</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="240"/>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="250"/>
         <source>%n call(s)</source>
-        <translation><numerusform>%n call(s)</numerusform><numerusform>%n call(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n call</numerusform>
+            <numerusform>%n calls</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -2862,20 +2738,10 @@ Context: %4</translation>
         <translation>Incoming Calls</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
-        <source>Incoming Calls</source>
-        <translation>Incoming Calls</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboard.ui" line="105"/>
-        <source>Waiting Calls (F9)</source>
-        <translation>Waiting Calls (F9)</translation>
-    </message>
-    <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="132"/>
-        <source>%n call(s)</source>
-        <translation>%n call(s)</translation>
+        <source>0 call</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="105"/>
