@@ -93,10 +93,6 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     if (agentinfo == NULL)
         return;
 
-    emit setSystrayIcon(icon_user_logged);
-    setPausedColors(7, 3);
-    setStatusColors();
-
     if (agentinfo->logged()) {
             emit setSystrayIcon(icon_agent_logged);
     } else {
@@ -104,27 +100,10 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
     }
     setStatusColors();
 
-    const QStringList joined = agentinfo->xqueueids();
-    int unpaused = 0;
+    int njoined = agentinfo->joinedQueueCount();
+    int npaused = agentinfo->pausedQueueCount();
 
-    foreach (const QString & qxid, joined) {
-        if (const QueueInfo * q = b_engine->queue(qxid)) {
-            QString qmemberxid = QString("%0/qa:%1-%2")
-                    .arg(agentinfo->ipbxid())
-                    .arg(q->id())
-                    .arg(agentinfo->id());
-            if (b_engine->queuemembers().contains(qmemberxid)) {
-                const QueueMemberInfo * qmi = b_engine->queuemembers()[qmemberxid];
-                if (qmi->paused() == "0") {
-                    ++unpaused;
-                }
-            }
-        }
-    }
-
-    int njoined = joined.size();
-    qDebug() << Q_FUNC_INFO << joined;
-    setPausedColors(njoined, njoined - unpaused);
+    setPausedColors(njoined, npaused);
 }
 
 void IdentityAgent::setStatusColors()
