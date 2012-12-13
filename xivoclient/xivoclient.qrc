@@ -3,6 +3,7 @@
     <qresource>
         <file>xivo.qss</file>
         <file>obj/xivoclient_fr.qm</file>
+        <file>obj/xivoclient_en.qm</file>
         <file>obj/xivoclient_es_ES.qm</file>
         <file>obj/xivoclient_pt_BR.qm</file>
         <file>obj/xivoclient_hu.qm</file>

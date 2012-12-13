@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/services_fr.qm</file>
+        <file>../../../obj/services_en.qm</file>
         <file>../../../obj/services_es_ES.qm</file>
         <file>../../../obj/services_pt_BR.qm</file>
         <file>../../../obj/services_hu.qm</file>

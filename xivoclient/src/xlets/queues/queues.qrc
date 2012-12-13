@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>../../../obj/queues_fr.qm</file>
+        <file>../../../obj/queues_en.qm</file>
         <file>../../../obj/queues_es_ES.qm</file>
         <file>../../../obj/queues_pt_BR.qm</file>
         <file>../../../obj/queues_hu.qm</file>

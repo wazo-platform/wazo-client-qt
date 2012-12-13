@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>obj/baselib_fr.qm</file>
+        <file>obj/baselib_en.qm</file>
         <file>obj/baselib_es_ES.qm</file>
         <file>obj/baselib_pt_BR.qm</file>
         <file>obj/baselib_hu.qm</file>
