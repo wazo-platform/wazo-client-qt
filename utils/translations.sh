@@ -101,7 +101,7 @@ function merge_translations {
     then
         for locale in ${LOCALES}
         do
-            rm "xivoclient/i18n/all_$locale.ts"
+            rm "xivoclient/i18n/all_$locale.ts" -f
             find_all_ts_files "$locale" \
             | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
         done
