@@ -177,7 +177,7 @@ void Switchboard::waitingCallClicked(const QModelIndex &index)
     QModelIndex id_index = index.child(index.row(), QueueEntriesModel::UNIQUE_ID);
     const QString &call_unique_id = m_waiting_call_proxy_model->data(id_index, Qt::DisplayRole).toString();
 
-    b_engine->sendJsonCommand(MessageFactory::unholdSwitchboard(call_unique_id));
+    this->retrieveCallOnHold(call_unique_id);
 }
 
 void Switchboard::handleEnterKeys()
@@ -229,6 +229,11 @@ void Switchboard::watch_switchboard_queue()
 void Switchboard::answerIncomingCall() const
 {
     b_engine->sendJsonCommand(MessageFactory::answer());
+}
+
+void Switchboard::retrieveCallOnHold(const QString & call_unique_id) const
+{
+    b_engine->sendJsonCommand(MessageFactory::unholdSwitchboard(call_unique_id));
 }
 
 void Switchboard::updateIncomingHeader(const QString & queue_id, const QVariantList & entries)

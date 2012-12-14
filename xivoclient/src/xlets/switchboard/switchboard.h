@@ -48,7 +48,6 @@ class Switchboard : public XLet
         Switchboard(QWidget *parent=0);
         ~Switchboard();
     public slots:
-        void answerIncomingCall() const;
         void updateIncomingHeader(const QString &id, const QVariantList &entries);
         void updateWaitingHeader(const QString &id, const QVariantList &entries);
         void incomingCallClicked(const QModelIndex &index);
@@ -58,6 +57,8 @@ class Switchboard : public XLet
         void updatePhoneStatus(const QString &queue_id);
         void postInitializationSetup();
     private:
+        void answerIncomingCall() const;
+        void retrieveCallOnHold(const QString & call_unique_id) const;
         void focusOnIncomingCalls();
         void focusOnWaitingCalls();
         void handleEnterKeys();
