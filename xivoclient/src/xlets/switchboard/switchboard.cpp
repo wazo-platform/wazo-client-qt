@@ -141,7 +141,7 @@ void Switchboard::updatePhoneStatus(const QString &phone_id)
     }
 
     const PhoneInfo *phone = b_engine->phone(phone_id);
-    if (phone && phone->hintstatus() == "0") {
+    if (phone && phone->hintstatus() == PhoneHint::available) {
         this->setFocus();
     }
 }

@@ -58,6 +58,7 @@ class XLETLIB_EXPORT QueueEntriesModel : public QAbstractTableModel
         void changeWatchedQueue(const QString & queue_id);
     private slots:
         void increaseTime();
+
     private:
         QVariant dataDisplay(int row, int column) const;
         void subscribeQueueEntry(const QString & queue_id);

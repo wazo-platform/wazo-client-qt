@@ -85,12 +85,18 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         bool m_enablevoicemail;
         bool m_enablexfer;
         bool m_incallfilter;
+
+    public:
+};
+
+namespace PhoneHint {
+    static QString available = "0";
 };
 
 namespace phone {
 
     BASELIB_EXPORT const PhoneInfo * findByIdentity(const QString & identity);
 
-} // namespace phone
+}
 
 #endif
