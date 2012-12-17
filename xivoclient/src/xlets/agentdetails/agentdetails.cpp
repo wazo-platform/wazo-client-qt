@@ -463,14 +463,9 @@ void XletAgentDetails::queueClicked()
     if (action == "changequeue")
         b_engine->changeWatchedQueue(xqueueid);
     else if (action == "leavejoin") {
-        QString smstatus, pmstatus;
         if (qmi != NULL) {
-            smstatus = qmi->status();
-            pmstatus = qmi->paused();
-        }
-        if ((smstatus == "1") || (smstatus == "3") || (smstatus == "4") || (smstatus == "5")) {
             ipbxcommand["command"] = "queueremove";
-        } else if (smstatus == "") {
+        } else {
             ipbxcommand["command"] = "queueadd";
         }
     } else if (action == "pause") {
