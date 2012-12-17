@@ -108,12 +108,13 @@ void Switchboard::setupUi()
     ui.incomingCallsView->hideColumn(QueueEntriesModel::ID);
     ui.incomingCallsView->hideColumn(QueueEntriesModel::POSITION);
     ui.incomingCallsView->hideColumn(QueueEntriesModel::UNIQUE_ID);
+    ui.incomingCallsView->setSortingEnabled(false);
 
     ui.waitingCallsView->setModel(this->m_waiting_call_proxy_model);
     ui.waitingCallsView->hideColumn(QueueEntriesModel::ID);
     ui.waitingCallsView->hideColumn(QueueEntriesModel::POSITION);
     ui.waitingCallsView->hideColumn(QueueEntriesModel::UNIQUE_ID);
-
+    ui.waitingCallsView->setSortingEnabled(false);
 }
 
 void Switchboard::postInitializationSetup()
