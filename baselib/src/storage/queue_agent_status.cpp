@@ -53,7 +53,7 @@ bool QueueAgentStatus::update(const QString & dynstatus,
     } else if ((dynstatus == "static") || (dynstatus == "realtime")) {
         m_display_status_membership = tr("Static/RT membership");
         m_display_status_darkfactor = 150;
-        m_display_action_join = "";
+        m_display_action_join = ":/images/cancel.png";
     } else {
         m_display_status_membership = QString("unknown membership : %1").arg(dynstatus);
         m_display_status_darkfactor = 300;
