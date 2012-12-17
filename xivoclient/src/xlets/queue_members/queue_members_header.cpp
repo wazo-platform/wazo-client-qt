@@ -83,6 +83,9 @@ void QueueMembersHeader::removeQueueMember(const QString &)
 
 void QueueMembersHeader::updateContent()
 {
+    if (m_queue_id == "") {
+        return;
+    }
     const QueueInfo * queue = b_engine->queue(m_queue_id);
     if (queue == NULL) {
         qDebug() << Q_FUNC_INFO << "unknown queue" << m_queue_id;
