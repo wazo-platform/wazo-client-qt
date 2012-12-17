@@ -112,10 +112,6 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     connect(timer_header, SIGNAL(timeout()), this, SLOT(updateAvailability()));
     timer_header->start(1000);
 
-
-    // connect signal/slots with engine
-    connect(b_engine, SIGNAL(newAgentList(const QStringList &)),
-            this, SLOT(newAgentList(const QStringList &)));
     connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
             this, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
