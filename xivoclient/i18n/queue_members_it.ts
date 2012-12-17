@@ -4,7 +4,7 @@
 <context>
     <name>QueueMembersHeader</name>
     <message numerus="yes">
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="91"/>
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="106"/>
         <source>%n agent(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -12,7 +12,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="92"/>
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="107"/>
         <source>%n phone(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -20,12 +20,12 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="93"/>
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="108"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 and %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="105"/>
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="120"/>
         <source>No selected queue</source>
         <translation type="unfinished"></translation>
     </message>

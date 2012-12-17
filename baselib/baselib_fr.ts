@@ -171,16 +171,22 @@ Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1327"/>
-        <source>Invalid extension number</source>
+        <source>Could not log agent: invalid extension.</source>
+        <oldsource>Invalid extension number</oldsource>
         <translation>Extension invalide</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1331"/>
+        <location filename="src/baseengine.cpp" line="1329"/>
+        <source>Could not log agent: extension already in use.</source>
+        <translation>Impossible de loguer l&apos;agent: extension déjà utilisée.</translation>
+    </message>
+    <message>
+        <location filename="src/baseengine.cpp" line="1333"/>
         <source>ERROR</source>
         <translation>ERREUR</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1637"/>
+        <location filename="src/baseengine.cpp" line="1639"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>

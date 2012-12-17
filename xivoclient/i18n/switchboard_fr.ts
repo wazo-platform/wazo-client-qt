@@ -14,24 +14,24 @@
         <translation>Appel en cours</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
-        <source>F7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="111"/>
         <source>Hold</source>
         <translation>Mettre en attente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="154"/>
-        <source>F8</source>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
+        <source>F7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="151"/>
         <source>Hangup</source>
         <translation>Raccrocher</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="154"/>
+        <source>F8</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -42,8 +42,8 @@
         <translation>POPC</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="240"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="250"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="246"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="256"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n appel</numerusform>
@@ -62,7 +62,7 @@
         <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="132"/>
         <source>0 call</source>
-        <translation type="unfinished"></translation>
+        <translation>0 appel</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="105"/>

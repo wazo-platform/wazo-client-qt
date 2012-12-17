@@ -163,16 +163,22 @@ Please upgrade it.</source>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1327"/>
-        <source>Invalid extension number</source>
+        <source>Could not log agent: invalid extension.</source>
+        <oldsource>Invalid extension number</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1331"/>
+        <location filename="src/baseengine.cpp" line="1329"/>
+        <source>Could not log agent: extension already in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/baseengine.cpp" line="1333"/>
         <source>ERROR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1637"/>
+        <location filename="src/baseengine.cpp" line="1639"/>
         <source>Attempting to reconnect to server</source>
         <translation type="unfinished"></translation>
     </message>

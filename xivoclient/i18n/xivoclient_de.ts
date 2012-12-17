@@ -615,7 +615,7 @@ is being processed and will be sent soon.</source>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
         <source>Unknown</source>
-        <translation type="unfinished">unbekannt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="224"/>

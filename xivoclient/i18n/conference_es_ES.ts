@@ -51,7 +51,7 @@
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="145"/>
         <source>Unknown</source>
-        <translation type="unfinished">Desconocido</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="201"/>
         <source>Unknown</source>
-        <translation type="unfinished">Desconocido</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="203"/>
