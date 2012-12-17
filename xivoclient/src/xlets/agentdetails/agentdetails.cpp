@@ -69,7 +69,7 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
     m_gridlayout->setRowStretch( 100, 1 );
     m_gridlayout->addWidget(m_agent_header, m_linenum, 0, 1, 9);
     m_linenum ++;
-    QHBoxLayout *availability_layout = new QHBoxLayout(this);
+    QHBoxLayout *availability_layout = new QHBoxLayout();
     availability_layout->addWidget(m_agent_availability);
     availability_layout->insertStretch(1);
     m_gridlayout->addLayout(availability_layout, m_linenum, 0, 1, 9);
