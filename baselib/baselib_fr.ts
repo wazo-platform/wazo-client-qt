@@ -173,7 +173,7 @@ Merci de mettre à jour votre serveur.</translation>
         <location filename="src/baseengine.cpp" line="1327"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
-        <translation>Extension invalide</translation>
+        <translation>Impossible de loguer l&apos;agent: extension invalide.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1329"/>

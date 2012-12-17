@@ -171,7 +171,7 @@ Merci de mettre à jour votre serveur.</translation>
         <location filename="src/baseengine.cpp" line="1327"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
-        <translation>Extension invalide</translation>
+        <translation>Impossible de loguer l&apos;agent: extension invalide.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1329"/>
@@ -2683,7 +2683,7 @@ Lignes occupées : %6</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>
@@ -2698,7 +2698,7 @@ Lignes occupées : %6</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
         <source>F7</source>
-        <translation type="unfinished"/>
+        <translation>F7</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="151"/>
@@ -2708,7 +2708,7 @@ Lignes occupées : %6</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="154"/>
         <source>F8</source>
-        <translation type="unfinished"/>
+        <translation>F8</translation>
     </message>
 </context>
 <context>

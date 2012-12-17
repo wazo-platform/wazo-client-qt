@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>
@@ -21,7 +21,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
         <source>F7</source>
-        <translation type="unfinished"></translation>
+        <translation>F7</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="151"/>
@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="154"/>
         <source>F8</source>
-        <translation type="unfinished"></translation>
+        <translation>F8</translation>
     </message>
 </context>
 <context>
