@@ -256,7 +256,6 @@ void Switchboard::updateWaitingHeader(const QString & queue_id, const QVariantLi
     this->ui.waitingCallCountLabel->setText(header_text);
 }
 
-
 bool Switchboard::isSwitchboardQueue(const QString &queue_id) const
 {
     const QueueInfo *queue = b_engine->queue(IdConverter::idToXId(queue_id));

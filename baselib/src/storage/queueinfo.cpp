@@ -50,7 +50,7 @@ bool QueueInfo::updateConfig(const QVariantMap & prop)
     return haschanged;
 }
 
-bool QueueInfo::updateStatus(const QVariantMap & prop)
+bool QueueInfo::updateStatus(const QVariantMap & /*prop*/)
 {
     return false;
 }
