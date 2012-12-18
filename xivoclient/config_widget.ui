@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>ConfigWidget</class>
+ <widget class="QWidget" name="ConfigWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>XiVO Client Configuration</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="xivoclient.qrc">
+    <normaloff>:/images/xivoicon.png</normaloff>:/images/xivoicon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -234,7 +238,7 @@
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="currentIndex">
-          <number>5</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="presence">
           <property name="geometry">
@@ -521,6 +525,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="queue_members">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>410</width>
+            <height>163</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Queue Members</string>
           </attribute>
@@ -755,6 +767,7 @@
  </widget>
  <resources>
   <include location="config.qrc"/>
+  <include location="xivoclient.qrc"/>
  </resources>
  <connections/>
 </ui>
