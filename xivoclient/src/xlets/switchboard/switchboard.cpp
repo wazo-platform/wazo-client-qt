@@ -28,6 +28,8 @@
  */
 
 #include <QDebug>
+#include <QKeyEvent>
+#include <QShortcut>
 
 #include <baseengine.h>
 #include <dao/queuedao.h>
@@ -44,8 +46,6 @@
 #include "switchboard.h"
 #include "ui_current_call.h"
 #include "current_call.h"
-
-#include <QKeyEvent>
 
 QString Switchboard::switchboard_queue_name = "__switchboard";
 QString Switchboard::switchboard_hold_queue_name = "__switchboard_hold";
@@ -65,6 +65,11 @@ Switchboard::Switchboard(QWidget *parent)
     this->m_waiting_call_proxy_model->setSourceModel(this->m_waiting_call_model);
 
     this->setupUi();
+
+    QShortcut * waiting_calls_focus_shortcut = new QShortcut(QKeySequence(Qt::Key_F9), this);
+    waiting_calls_focus_shortcut->setContext(Qt::ApplicationShortcut);
+    connect(waiting_calls_focus_shortcut, SIGNAL(activated()),
+            this, SLOT(focusOnWaitingCalls()));
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(updateIncomingHeader(const QString &, const QVariantList &)));
@@ -202,9 +207,6 @@ void Switchboard::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Enter:
     case Qt::Key_Return:
         this->handleEnterKeys();
-        break;
-    case Qt::Key_F9:
-        this->focusOnWaitingCalls();
         break;
     default:
         break;

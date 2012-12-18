@@ -56,11 +56,11 @@ class Switchboard : public XLet
         void queueEntryUpdate(const QString &queue_id, const QVariantList &entry);
         void updatePhoneStatus(const QString &queue_id);
         void postInitializationSetup();
+        void focusOnWaitingCalls();
     private:
         void answerIncomingCall() const;
         void retrieveCallOnHold(const QString & call_unique_id) const;
         void focusOnIncomingCalls();
-        void focusOnWaitingCalls();
         void handleEnterKeys();
         void incomingCallsUpdated(const QModelIndex &, const QModelIndex &);
         void watch_switchboard_queue();
