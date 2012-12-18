@@ -25,47 +25,47 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="62"/>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="211"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="207"/>
         <source>Login</source>
         <translation>Inloggen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="197"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>op &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="207"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="203"/>
         <source>Logout</source>
         <translation>Uitloggen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="227"/>
         <source>Not in use</source>
         <translation>Niet in gebruik</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>In use</source>
         <translation>In gebruik</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>Unlogged</source>
         <translation>Niet ingelogged</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>%1 since %2</source>
         <translation>%1 sedert %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="334"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="330"/>
         <source>Server: %1</source>
         <translation>Server: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="335"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="331"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
     </message>
