@@ -9,9 +9,16 @@
 # find . -name '*.pro' -exec sed -i -e 's|^TRANSLATIONS += $${\?ROOT_DIR}\?/i18n/\(.*\)_en.ts|\0\nTRANSLATIONS += $$ROOT_DIR/i18n/\1_it.ts|' {} \;
 # find . -name '*.qrc' -exec sed -i -e 's|^\( *\)<file>\(.*\)obj/\(.*\)_fr.qm</file>|\0\n\1<file>\2obj/\3_de.qm</file>|' {} \;
 
-this_script_directory="$(dirname $0)"
+THIS_SCRIPT_DIRECTORY="$(dirname $0)"
+XIVO_CLIENT_ROOT="$THIS_SCRIPT_DIRECTORY/.."
 
-LOCALES="en fr it de nl ja hu pt_BR es_ES"
+LOCALES_LIST="en fr it de nl ja hu pt_BR es_ES"
+
+XIVO_CLIENT_RESOURCE=xivo.test-tx-client
+TRANSIFEX_URL=https://www.transifex.net
+TRANSIFEX_PROJECT_URL=https://www.transifex.net/projects/p/xivo/resource/test-tx-client
+TRANSIFEX_I18N_DIR="$XIVO_CLIENT_ROOT/translations/xivo.test-tx-client"
+XIVO_CLIENT_I18N_DIR="$XIVO_CLIENT_ROOT/xivoclient/i18n"
 
 
 function main {
@@ -38,7 +45,7 @@ function usage {
 
 
 function qmake_is_not_run {
-    file_path="$this_script_directory/../versions.mak"
+    file_path="$XIVO_CLIENT_ROOT/versions.mak"
     if [ -r "$file_path" ] ; then
         return 1
     else
@@ -65,24 +72,30 @@ function process_arguments {
 }
 
 
-function pull_from_transifex {
+function initialize_transifex_if_needed {
     if [ ! -d .tx ]
     then
-        tx init --host https://www.transifex.net
+        tx init --host "$TRANSIFEX_URL"
     fi
+    tx set --auto-remote "$TRANSIFEX_PROJECT_URL"
+}
 
-    tx set --auto-remote  https://www.transifex.net/projects/p/xivo/
-    tx pull -r xivo.xivo-client -a -s -f
+
+function pull_from_transifex {
+    initialize_transifex_if_needed
+    tx pull --resource "$XIVO_CLIENT_RESOURCE" --all --force --source
+}
+
+
 }
 
 
 function copy_from_transifex_to_git {
-    # locale takes values as "fr.ts", "de.ts", "nl.ts" ...
-    for locale in ${LOCALES}
+    for locale in ${LOCALES_LIST}
     do
         for ts in $(find_all_ts_files "en")
         do
-            cp "translations/xivo.xivo-client/$locale.ts" "${ts%en.ts}${locale}.ts"
+            cp "$TRANSIFEX_I18N_DIR/$locale.ts" "${ts%en.ts}${locale}.ts"
         done
     done
 
@@ -98,11 +111,11 @@ function update_translations_from_source {
 function merge_translations {
     if hash lconvert
     then
-        for locale in ${LOCALES}
+        for locale in ${LOCALES_LIST}
         do
-            rm "xivoclient/i18n/all_$locale.ts" -f
+            rm "$XIVO_CLIENT_I18N_DIR/all_$locale.ts" -f
             find_all_ts_files "$locale" \
-            | xargs lconvert -o "xivoclient/i18n/all_$locale.ts"
+            | xargs lconvert -o "$XIVO_CLIENT_I18N_DIR/all_$locale.ts"
         done
     else
         echo "You need to install the Qt tool lconvert."
