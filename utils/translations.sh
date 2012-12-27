@@ -35,12 +35,12 @@ function main {
 
 
 function usage {
-    echo "Usage : $0 [help|pull|update]"
+    echo "Usage : $0 [help|pull|commit|push]"
     echo
     echo "help : display this message"
     echo "pull : get translations from Transifex"
+    echo "commit : update translation files from source code, ready to push"
     echo "push : upload translations to Transifex"
-    echo "update : update translation files from source"
 }
 
 
@@ -60,7 +60,10 @@ function process_arguments {
             pull_from_transifex
             copy_from_transifex_to_git
             ;;
-        update)
+        push)
+            push_english_to_transifex
+            ;;
+        commit)
             update_translations_from_source
             merge_translations
             ;;
@@ -87,6 +90,17 @@ function pull_from_transifex {
 }
 
 
+function prepare_transifex_for_pushing_english {
+    mkdir -p "$TRANSIFEX_I18N_DIR"
+    cp "$XIVO_CLIENT_I18N_DIR"/all_en.ts "$TRANSIFEX_I18N_DIR"/en.ts
+    tx set --source --resource "$XIVO_CLIENT_RESOURCE" --language en "$TRANSIFEX_I18N_DIR"/en.ts
+}
+
+
+function push_english_to_transifex {
+    initialize_transifex_if_needed
+    prepare_transifex_for_pushing_english
+    tx push --source --resource "$XIVO_CLIENT_RESOURCE"
 }
 
 
