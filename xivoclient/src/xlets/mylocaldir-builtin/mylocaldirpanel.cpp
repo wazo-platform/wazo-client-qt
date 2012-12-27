@@ -65,13 +65,6 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
               << "company"
               << "faxnumber"
               << "mobilenumber";
-    m_max_lengths << 40
-                  << 40
-                  << 20
-                  << 60
-                  << 40
-                  << 20
-                  << 20;
 
     m_searchBox = new SearchDialog(this);
     connect(m_searchBox, SIGNAL(findNext()), this, SLOT(findNext()));
@@ -325,19 +318,14 @@ void MyLocalDirPanel::loadFromFile(QFile & file)
         int row = m_table->rowCount();
         m_table->setRowCount( row + 1 );
 
-        unsigned int nb_records = record.size();
-        for (unsigned int i = 0; i < nb_records; ++i) {
-            record[i].truncate(m_max_lengths[i]);
-        }
-
         int col = 0;
-        addCell(row, col++, record[firstNameCol]);
-        addCell(row, col++, record[lastNameCol]);
-        addCell(row, col++, record[phonenumberCol]);
-        addCell(row, col++, record[emailCol]);
-        addCell(row, col++, record[companyCol]);
-        addCell(row, col++, record[faxnumberCol]);
-        addCell(row, col++, record[mobilenumberCol]);
+        addCell(row, col++, record.value(firstNameCol));
+        addCell(row, col++, record.value(lastNameCol));
+        addCell(row, col++, record.value(phonenumberCol));
+        addCell(row, col++, record.value(emailCol));
+        addCell(row, col++, record.value(companyCol));
+        addCell(row, col++, record.value(faxnumberCol));
+        addCell(row, col++, record.value(mobilenumberCol));
     }
     m_table->setSortingEnabled( saveSorting );
 }
