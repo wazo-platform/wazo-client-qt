@@ -19,12 +19,11 @@ function main {
         usage
         exit 1
     fi
-    if qmake_is_run ; then
-        process_arguments $@
-    else
+    if qmake_is_not_run ; then
         echo "Please run qmake before updating translations."
         exit 2
     fi
+    process_arguments $@
 }
 
 
@@ -38,12 +37,12 @@ function usage {
 }
 
 
-function qmake_is_run {
+function qmake_is_not_run {
     file_path="$this_script_directory/../versions.mak"
     if [ -r "$file_path" ] ; then
-        return 0
-    else
         return 1
+    else
+        return 0
     fi
 }
 
