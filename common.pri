@@ -1,6 +1,4 @@
-exists(versions.mak) {
-    include(versions.mak)
-} else {
+! include(versions.mak) {
     error(Missing file versions.mak. Please do 'qmake'.)
 }
 
@@ -16,11 +14,6 @@ FUNCTESTS_MODE = $$(FUNCTESTS)
 contains(FUNCTESTS_MODE, yes) {
     DEFINES += FUNCTESTS
 }
-
-!build_pass:message('XiVO version    :' $${XIVOVER})
-!build_pass:message('git commit hash :' $${GIT_HASH})
-!build_pass:message('git commit date :' $${GIT_DATE})
-!build_pass:message('build date      :' $${DATEBUILD})
 
 # add everything correctly escaped as a string
 
