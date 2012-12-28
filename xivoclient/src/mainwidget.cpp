@@ -504,10 +504,8 @@ void MainWidget::createSystrayIcon()
     menu->addAction(m_connectact);
     menu->addAction(m_disconnectact);
     menu->addSeparator();
-#ifdef Q_WS_MAC
     menu->addAction(m_systraymax);
     menu->addSeparator();
-#endif
     menu->addAction(m_quitact);
     m_systrayIcon->setContextMenu(menu);
     m_systrayIcon->show();
