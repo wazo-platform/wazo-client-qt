@@ -1035,12 +1035,6 @@ void MainWidget::closeEvent(QCloseEvent *event)
     event->ignore();
 }
 
-void MainWidget::keyPressEvent(QKeyEvent * event)
-{
-    functionKeyPressed(event->key());
-}
-
-
 /*! \brief Displays the about box
  *
  * use QMessageBox::about() to display

@@ -80,13 +80,10 @@ class MainWidget : public QMainWindow
         void showWidgetOnTop(QWidget *);
         void updateUserStatus(const QString &);
         void setAvailability();  //!< set user status from menu
-    signals:
-        void functionKeyPressed(int);
     protected:
         virtual void hideEvent(QHideEvent *);  //!< Catch hide events
         virtual void closeEvent(QCloseEvent *);
         virtual void resizeEvent(QResizeEvent *);
-        virtual void keyPressEvent(QKeyEvent *);
 
         void addPanel(const QString &, const QString &, QWidget *);
         void removePanel(const QString &, QWidget *);
