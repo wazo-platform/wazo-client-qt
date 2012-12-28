@@ -477,6 +477,10 @@ void BasePeerWidget::addTxferMenu(QMenu * menu, bool blind)
         return;
     }
 
+    if (b_engine->isInMeetme()) {
+        return;
+    }
+
     QString title = blind ? tr("Blind &Transfer") : tr("&Attended Transfer");
 
     const QStringList &numbers = this->getPeerNumbers();

@@ -49,7 +49,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         bool isholded() const;
         bool canBeTransferred() const;
         bool isTalking() const;
-        bool isInMeetme() const;
 
     private:
 

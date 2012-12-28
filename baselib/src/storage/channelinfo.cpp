@@ -96,20 +96,10 @@ bool ChannelInfo::isTalking() const
     return m_state == "Up";
 }
 
-bool ChannelInfo::isInMeetme() const
-{
-    return m_talkingto_kind.contains("meetme");
-}
-
 bool ChannelInfo::canBeTransferred() const
 {
     bool talking = this->isTalking();
-    bool meetme = this->isInMeetme();
     bool holded = this->isholded();
-
-    if (meetme) {
-        return false;
-    }
 
     if (holded) {
         return false;
