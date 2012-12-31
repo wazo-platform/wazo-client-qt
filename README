@@ -10,3 +10,11 @@ The shorter version of the documentation is, on GNU/Linux systems:
 qmake
 make
 LD_LIBRARY_PATH=bin bin/xivoclient
+
+
+Unit-tests
+==========
+
+You need the google-mock library:
+
+$ apt-get install google-mock
