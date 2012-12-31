@@ -1,4 +1,4 @@
-include(common-xivoclient.pri)
+include(common-no-tests.pri)
 include($${ROOT_DIR}/qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
 
 TEMPLATE = app

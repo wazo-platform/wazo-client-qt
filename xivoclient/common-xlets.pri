@@ -1,4 +1,4 @@
-include(common-xivoclient.pri)
+include(common-no-tests.pri)
 
 TEMPLATE     = lib
 win32:CONFIG += dll
