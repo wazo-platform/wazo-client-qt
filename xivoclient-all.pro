@@ -7,10 +7,13 @@ VERSIONS_FILE = versions.mak
 system(bash premake.sh $${VERSIONS_FILE})
 
 tests {
-    SUBDIRS = tests
+    SUBDIRS = baselib_tests xivoclient_tests
 
-    tests.file = baselib/tests.pro
-    tests.makefile = Makefile_tests
+    baselib_tests.file = baselib/tests.pro
+    baselib_tests.makefile = Makefile_tests
+
+    xivoclient_tests.file = xivoclient/tests.pro
+    xivoclient_tests.makefile = Makefile_tests
 
     QMAKE_DISTCLEAN += -r bin/tests
 } else {
