@@ -32,20 +32,20 @@
 
 #include "application_status_icon.h"
 
-class SystrayIconManager;
+class ApplicationStatusIconManager;
 class QIcon;
 
 template <class _QSystemTrayIcon>
 class SystrayManager
 {
     public:
-        SystrayManager(const SystrayIconManager & systray_icon_manager,
+        SystrayManager(const ApplicationStatusIconManager & application_status_icon_manager,
                        _QSystemTrayIcon & qt_system_tray_icon);
-        void changeIcon(SystrayIcon new_icon_id);
+        void changeIcon(ApplicationStatusIcon new_icon_id);
         void showNotification(const QString & title, const QString & message);
 
     private:
-        const SystrayIconManager & m_systray_icon_manager;
+        const ApplicationStatusIconManager & m_application_status_icon_manager;
         _QSystemTrayIcon & m_qt_system_tray_icon;
 };
 

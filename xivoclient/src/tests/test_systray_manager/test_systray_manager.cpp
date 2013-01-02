@@ -39,10 +39,10 @@
 
 using namespace testing;
 
-class MockApplicationStatusIconManager: public SystrayIconManager
+class MockApplicationStatusIconManager: public ApplicationStatusIconManager
 {
     public:
-        MOCK_CONST_METHOD1(get_systray_icon, QIcon(SystrayIcon));
+        MOCK_CONST_METHOD1(getApplicationStatusIcon, QIcon(ApplicationStatusIcon));
 };
 
 class MockQSystemTrayIcon
@@ -66,11 +66,11 @@ class TestSystrayManager: public QObject
         MockQSystemTrayIcon mock_qt_system_tray_icon;
         SystrayManager<MockQSystemTrayIcon> systray_manager(mock_application_status_icon_manager,
                                                             mock_qt_system_tray_icon);
-        SystrayIcon new_systray_icon_id = icon_unlogged;
+        ApplicationStatusIcon new_systray_icon_id = icon_disconnected;
         QIcon new_systray_icon;
-        ON_CALL(mock_application_status_icon_manager, get_systray_icon(Eq(new_systray_icon_id)))
+        ON_CALL(mock_application_status_icon_manager, getApplicationStatusIcon(Eq(new_systray_icon_id)))
             .WillByDefault(Return(new_systray_icon));
-        EXPECT_CALL(mock_application_status_icon_manager, get_systray_icon(Eq(new_systray_icon_id)))
+        EXPECT_CALL(mock_application_status_icon_manager, getApplicationStatusIcon(Eq(new_systray_icon_id)))
             .Times(1);
         EXPECT_CALL(mock_qt_system_tray_icon, setIcon(_))
             .Times(1);

@@ -36,17 +36,17 @@
 // #include "systray_manager.h"
 
 template <class _QSystemTrayIcon>
-SystrayManager<_QSystemTrayIcon>::SystrayManager(const SystrayIconManager & systray_icon_manager,
+SystrayManager<_QSystemTrayIcon>::SystrayManager(const ApplicationStatusIconManager & application_status_icon_manager,
                                   _QSystemTrayIcon & qt_system_tray_icon)
-    : m_systray_icon_manager(systray_icon_manager),
+    : m_application_status_icon_manager(application_status_icon_manager),
       m_qt_system_tray_icon(qt_system_tray_icon)
 {
 }
 
 template <class _QSystemTrayIcon>
-void SystrayManager<_QSystemTrayIcon>::changeIcon(SystrayIcon new_icon_id)
+void SystrayManager<_QSystemTrayIcon>::changeIcon(ApplicationStatusIcon new_icon_id)
 {
-    QIcon new_icon = this->m_systray_icon_manager.get_systray_icon(new_icon_id);
+    QIcon new_icon = this->m_application_status_icon_manager.getApplicationStatusIcon(new_icon_id);
     this->m_qt_system_tray_icon.setIcon(new_icon);
 }
 
