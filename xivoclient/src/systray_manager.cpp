@@ -29,20 +29,32 @@
 
 #include <QDebug>
 #include <QIcon>
-#include <QSystemTrayIcon>
 
-#include "systray_icon_manager.h"
-#include "systray_manager.h"
+#include "application_status_icon_manager.h"
 
-SystrayManager::SystrayManager(const SystrayIconManager & systray_icon_manager,
-                               QSystemTrayIcon & qt_system_tray_icon)
+// Template class : the header includes the implementation
+// #include "systray_manager.h"
+
+template <class _QSystemTrayIcon>
+SystrayManager<_QSystemTrayIcon>::SystrayManager(const SystrayIconManager & systray_icon_manager,
+                                  _QSystemTrayIcon & qt_system_tray_icon)
     : m_systray_icon_manager(systray_icon_manager),
       m_qt_system_tray_icon(qt_system_tray_icon)
 {
 }
 
-void SystrayManager::change_icon(SystrayIcon new_icon_id)
+template <class _QSystemTrayIcon>
+void SystrayManager<_QSystemTrayIcon>::changeIcon(SystrayIcon new_icon_id)
 {
     QIcon new_icon = this->m_systray_icon_manager.get_systray_icon(new_icon_id);
     this->m_qt_system_tray_icon.setIcon(new_icon);
+}
+
+template <class _QSystemTrayIcon>
+void SystrayManager<_QSystemTrayIcon>::showNotification(const QString & title, const QString & message)
+{
+    this->m_qt_system_tray_icon.showMessage(title,
+                                            message,
+                                            QSystemTrayIcon::Information,
+                                            5000);
 }

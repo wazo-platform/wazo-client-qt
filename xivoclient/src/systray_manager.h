@@ -30,22 +30,29 @@
 #ifndef __SYSTRAY_MANAGER_H__
 #define __SYSTRAY_MANAGER_H__
 
-#include "systray_icon.h"
+#include "application_status_icon.h"
 
 class SystrayIconManager;
-class QSystemTrayIcon;
 class QIcon;
 
+template <class _QSystemTrayIcon>
 class SystrayManager
 {
     public:
-    SystrayManager(const SystrayIconManager & systray_icon_manager,
-                   QSystemTrayIcon & qt_system_tray_icon);
-        void change_icon(SystrayIcon new_icon_id);
+        SystrayManager(const SystrayIconManager & systray_icon_manager,
+                       _QSystemTrayIcon & qt_system_tray_icon);
+        void changeIcon(SystrayIcon new_icon_id);
+        void showNotification(const QString & title, const QString & message);
 
     private:
         const SystrayIconManager & m_systray_icon_manager;
-        QSystemTrayIcon & m_qt_system_tray_icon;
+        _QSystemTrayIcon & m_qt_system_tray_icon;
 };
+
+/* Template class need to be implemented in the same place that it is defined.
+ * This is because the compiler can't know with which type the template will be
+ * used, this will be detected on compilation.
+ */
+#include "systray_manager.cpp"
 
 #endif

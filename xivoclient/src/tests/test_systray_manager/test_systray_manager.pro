@@ -9,5 +9,6 @@ INCLUDEPATH += $${TESTED_DIR}
 INCLUDEPATH += $${MOC_DIR}
 
 SOURCES += $${TEST_DIR}/*.cpp
+HEADERS += $${TESTED_DIR}/application_status_icon_manager.h
 HEADERS += $${TESTED_DIR}/systray_manager.h
 SOURCES += $${TESTED_DIR}/systray_manager.cpp

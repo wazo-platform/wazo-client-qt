@@ -27,11 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SYSTRAY_ICON_H__
-#define __SYSTRAY_ICON_H__
+#ifndef __APPLICATION_STATUS_ICON_H__
+#define __APPLICATION_STATUS_ICON_H__
 
-enum SystrayIcon {
-    icon_unlogged,
+enum ApplicationStatusIcon {
+    icon_disconnected,
+    icon_connected,
+    icon_agent_logged,
+    icon_agent_paused
 };
 
 #endif

@@ -35,20 +35,24 @@
 #include <gmock/gmock.h>
 
 #include <systray_manager.h>
-#include <systray_icon_manager.h>
+#include <application_status_icon_manager.h>
 
 using namespace testing;
 
-class MockSystrayIconManager: public SystrayIconManager
+class MockApplicationStatusIconManager: public SystrayIconManager
 {
     public:
         MOCK_CONST_METHOD1(get_systray_icon, QIcon(SystrayIcon));
 };
 
-class MockQSystemTrayIcon: public QSystemTrayIcon
+class MockQSystemTrayIcon
 {
     public:
         MOCK_METHOD1(setIcon, void(QIcon));
+        MOCK_METHOD4(showMessage, void(const QString &,
+                                       const QString &,
+                                       QSystemTrayIcon::MessageIcon,
+                                       int));
 };
 
 class TestSystrayManager: public QObject
@@ -58,20 +62,37 @@ class TestSystrayManager: public QObject
     private slots:
     void testChangeIcon()
     {
-        MockSystrayIconManager mock_systray_icon_manager;
+        MockApplicationStatusIconManager mock_application_status_icon_manager;
         MockQSystemTrayIcon mock_qt_system_tray_icon;
-        SystrayManager systray_manager(mock_systray_icon_manager,
-                                       mock_qt_system_tray_icon);
+        SystrayManager<MockQSystemTrayIcon> systray_manager(mock_application_status_icon_manager,
+                                                            mock_qt_system_tray_icon);
         SystrayIcon new_systray_icon_id = icon_unlogged;
         QIcon new_systray_icon;
-        ON_CALL(mock_systray_icon_manager, get_systray_icon(Eq(new_systray_icon_id)))
+        ON_CALL(mock_application_status_icon_manager, get_systray_icon(Eq(new_systray_icon_id)))
             .WillByDefault(Return(new_systray_icon));
-        EXPECT_CALL(mock_systray_icon_manager, get_systray_icon(Eq(new_systray_icon_id)))
+        EXPECT_CALL(mock_application_status_icon_manager, get_systray_icon(Eq(new_systray_icon_id)))
             .Times(1);
         EXPECT_CALL(mock_qt_system_tray_icon, setIcon(_))
             .Times(1);
 
-        systray_manager.change_icon(new_systray_icon_id);
+        systray_manager.changeIcon(new_systray_icon_id);
+    }
+
+    void testShowNotification()
+    {
+        MockApplicationStatusIconManager mock_application_status_icon_manager;
+        MockQSystemTrayIcon mock_qt_system_tray_icon;
+        SystrayManager<MockQSystemTrayIcon> systray_manager(mock_application_status_icon_manager,
+                                                            mock_qt_system_tray_icon);
+        QString title = "title";
+        QString message = "message";
+        EXPECT_CALL(mock_qt_system_tray_icon, showMessage(Eq(title),
+                                                          Eq(message),
+                                                          QSystemTrayIcon::Information,
+                                                          5000))
+            .Times(1);
+
+        systray_manager.showNotification(title, message);
     }
 };
 
