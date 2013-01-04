@@ -46,7 +46,7 @@ class MainWidget : public QMainWindow
     FUNCTESTED
 
     public:
-        MainWidget();
+        MainWidget(QSystemTrayIcon & qt_system_tray_icon);
         ~MainWidget();
 
         void setAppearance(const QVariantList &);  //!< dock options
@@ -102,7 +102,7 @@ class MainWidget : public QMainWindow
                                     const QString& title,
                                     QDockWidget::DockWidgetFeatures features,
                                     QWidget *widget);
-        QSystemTrayIcon *m_systrayIcon;  //!< System Tray Icon
+        QSystemTrayIcon & m_systrayIcon;
         QIcon m_icon_transp;  //!< Icon Objects
         QIcon m_icon_red;
         QIcon m_icon_green;

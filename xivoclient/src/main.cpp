@@ -47,6 +47,8 @@
 #include "remote_control/remote_control.h"
 #endif
 
+#include "context.h"
+
 #include "main.h"
 
 /*
@@ -138,7 +140,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         app->setStyleSheet(qssFile.readAll());
     }
 
-    MainWidget *window = new MainWidget();
+    MainWidget *window = new MainWidget(Context::get<QSystemTrayIcon>());
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
     app->setActivationWindow(window, activate_on_tel);
 

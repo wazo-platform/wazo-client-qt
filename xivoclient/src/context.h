@@ -39,40 +39,56 @@
 
 #include <QMap>
 #include <QString>
+#include <QDebug>
 
 #include <QSystemTrayIcon>
 #include "application_status_icon_manager.h"
 #include "systray_manager.h"
+
+/*
+ * Some Qt classes have to be treated separately:
+ * - declare them as pointers
+ * - instanciate them with new
+ * - make sure they have a Qt parent
+ *
+ * The main reason is that some Qt classes (e.g. QSystemTrayIcon) need the main
+ * window when they are destroyed (that may be a Qt bug). Hence they need to be
+ * destroyed through the parenting system of Qt, which uses "delete", which can
+ * only be used on pointers gotten from new.
+ */
 
 class Context
 {
     public:
     template<class T> static T& get()
     {
+        static Context instance;  // Calls the constructor only the first time
         return *((T*)type_instance_map[typeid(T).name()]);
     }
 
- private:
+    private:
     static QMap<QString, void* > type_instance_map;
-    static Context instance;
 
     Context()
-        : m_systray_manager(m_application_status_icon_manager,
-                            m_qt_system_tray_icon)
+        : m_qt_system_tray_icon(new QSystemTrayIcon()),
+          m_application_status_icon_manager(),
+          m_systray_manager(m_application_status_icon_manager,
+                            *m_qt_system_tray_icon)
     {
         registerInstance<SystrayManager<QSystemTrayIcon> >(m_systray_manager);
         registerInstance<ApplicationStatusIconManager>(m_application_status_icon_manager);
-        registerInstance<QSystemTrayIcon>(m_qt_system_tray_icon);
+        registerInstance<QSystemTrayIcon>(*m_qt_system_tray_icon);
     }
+
 
     template<class T> static void registerInstance(const T& instance)
     {
         type_instance_map[typeid(T).name()] = (void*)&instance;
     }
 
-    SystrayManager<QSystemTrayIcon> m_systray_manager;
+    QSystemTrayIcon * m_qt_system_tray_icon;
     ApplicationStatusIconManager m_application_status_icon_manager;
-    QSystemTrayIcon m_qt_system_tray_icon;
+    SystrayManager<QSystemTrayIcon> m_systray_manager;
 };
 
 #endif

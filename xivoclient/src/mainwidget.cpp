@@ -39,9 +39,9 @@
  * The geometry is restored from settings.
  * engine object ownership is taken
  */
-MainWidget::MainWidget()
+MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon)
     : QMainWindow(NULL),
-      m_systrayIcon(0),
+      m_systrayIcon(qt_system_tray_icon),
       m_icon_transp(":/images/xivo-login.png"),
       m_icon_red(":/images/xivoicon-red.png"),
       m_icon_green(":/images/xivoicon-green.png"),
@@ -57,7 +57,7 @@ MainWidget::MainWidget()
       m_clipboard(NULL)
 {
     b_engine->setParent(this); // take ownership of the engine object
-    
+    qt_system_tray_icon.setParent(this);
     fetchConfig();
     
     m_appliname = tr("Client %1").arg(XC_VERSION);
@@ -481,8 +481,8 @@ void MainWidget::createMenus()
 void MainWidget::updateAppliName()
 {
     setWindowTitle(QString("XiVO %1").arg(m_appliname));
-    if (m_withsystray && m_systrayIcon) {
-        m_systrayIcon->setToolTip(QString("XiVO %1").arg(m_appliname));
+    if (m_withsystray) {
+        m_systrayIcon.setToolTip(QString("XiVO %1").arg(m_appliname));
     }
 }
 
@@ -493,9 +493,8 @@ void MainWidget::updateAppliName()
  */
 void MainWidget::createSystrayIcon()
 {
-    m_systrayIcon = new QSystemTrayIcon(this);
     setSystrayIcon("xivo-black");
-    m_systrayIcon->setToolTip(QString("XiVO %1").arg(m_appliname));
+    m_systrayIcon.setToolTip(QString("XiVO %1").arg(m_appliname));
     QMenu *menu = new QMenu(QString("SystrayMenu"), this);
     menu->addAction(m_cfgact);
     menu->addSeparator();
@@ -507,14 +506,14 @@ void MainWidget::createSystrayIcon()
     menu->addAction(m_systraymax);
     menu->addSeparator();
     menu->addAction(m_quitact);
-    m_systrayIcon->setContextMenu(menu);
-    m_systrayIcon->show();
+    m_systrayIcon.setContextMenu(menu);
+    m_systrayIcon.show();
     //connect(m_systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
     //         this, SLOT(show()));
-    connect(m_systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-             this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
-    connect(m_systrayIcon, SIGNAL(messageClicked()),
-             this, SLOT(systrayMsgClicked()));
+    connect(&m_systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
+    connect(&m_systrayIcon, SIGNAL(messageClicked()),
+            this, SLOT(systrayMsgClicked()));
     // QSystemTrayIcon::ActivationReason
     // qDebug() << Q_FUNC_INFO << "QSystemTrayIcon::supportsMessages() = "
     //          << QSystemTrayIcon::supportsMessages();
@@ -779,7 +778,7 @@ void MainWidget::engineStarted()
         removeDockWidget(m_resizingHelper);
     }
 
-    if (m_withsystray && m_systrayIcon)
+    if (m_withsystray)
         setSystrayIcon("xivo-transp");
 
     connectionStateChanged();
@@ -803,9 +802,8 @@ void MainWidget::setSystrayIcon(const QString & def)
         icon = QIcon(square);
     }
 
-    if (m_systrayIcon) {
-        m_systrayIcon->setIcon(icon);
-    }
+    qDebug() << Q_FUNC_INFO << &m_systrayIcon;
+    m_systrayIcon.setIcon(icon);
     setWindowIcon(icon);
 }
 
@@ -921,7 +919,7 @@ void MainWidget::engineStopped()
 
     showLogin();
 
-    if (m_withsystray && m_systrayIcon)
+    if (m_withsystray)
         setSystrayIcon("xivo-black");
 
     clearAppearance();
@@ -958,7 +956,7 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
     qDebug() << Q_FUNC_INFO;
     // systray popup
     // to be customisable (yes or no)
-    if (m_withsystray && m_systrayIcon && options.contains("s") && (msgtitle.size() > 0)) {
+    if (m_withsystray && options.contains("s") && (msgtitle.size() > 0)) {
         QStringList todisp;
         QStringList orders = msgs.keys();
         orders.sort();
@@ -967,7 +965,7 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
             if (! linetodisp.isEmpty())
                 todisp.append(linetodisp);
         }
-        m_systrayIcon->showMessage(msgtitle,
+        m_systrayIcon.showMessage(msgtitle,
                                    todisp.join("\n"),
                                    QSystemTrayIcon::Information,
                                    5000);
