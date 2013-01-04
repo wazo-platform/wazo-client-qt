@@ -43,10 +43,21 @@ struct ExecObjects {
     PowerAwareApplication *app;
     MainWidget *win;
     BaseEngine *baseengine;
-    bool initOK;
 #ifdef FUNCTESTS
     RemoteControl *rc;
 #endif
+    bool initOK;
+
+    ExecObjects()
+    : app(NULL),
+      win(NULL),
+      baseengine(NULL),
+#ifdef FUNCTESTS
+      rc(NULL),
+#endif
+      initOK(false)
+    {
+    }
 };
 
 ExecObjects init_xivoclient(int &, char **);
