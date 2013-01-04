@@ -170,25 +170,24 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
 int run_xivoclient(ExecObjects exec_obj)
 {
-    if (exec_obj.initOK == true)
+    if (exec_obj.initOK == true) {
         return exec_obj.app->exec();
-    else
+    } else {
         return 1;
+    }
 }
 
 void clean_xivoclient(ExecObjects exec_obj)
 {
 
-    if (exec_obj.initOK) {
-        delete exec_obj.win;
+    delete exec_obj.win;
 
-        // BaseEngine is already deleted by MainWidget
+    // BaseEngine is already deleted by MainWidget
 
 #ifdef FUNCTESTS
-        delete exec_obj.rc;
+    delete exec_obj.rc;
 #endif
-	delete exec_obj.app;
-    }
+    delete exec_obj.app;
 }
 
 /*! \brief program entry point
