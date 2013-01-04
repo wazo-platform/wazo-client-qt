@@ -32,20 +32,47 @@
  * Licence: Unknown
  */
 
+#ifndef __CONTEXT_H__
+#define  __CONTEXT_H__
+
+#include <typeinfo>
+
+#include <QMap>
+#include <QString>
+
+#include <QSystemTrayIcon>
+#include "application_status_icon_manager.h"
+#include "systray_manager.h"
 
 class Context
 {
-    static QMap<QString, void* > type_instance_map;
+    public:
+    template<class T> static T& get()
+    {
+        return *((T*)type_instance_map[typeid(T).name()]);
+    }
 
-public:
+ private:
+    static QMap<QString, void* > type_instance_map;
+    static Context instance;
+
+    Context()
+        : m_systray_manager(m_application_status_icon_manager,
+                            m_qt_system_tray_icon)
+    {
+        registerInstance<SystrayManager<QSystemTrayIcon> >(m_systray_manager);
+        registerInstance<ApplicationStatusIconManager>(m_application_status_icon_manager);
+        registerInstance<QSystemTrayIcon>(m_qt_system_tray_icon);
+    }
 
     template<class T> static void registerInstance(const T& instance)
     {
         type_instance_map[typeid(T).name()] = (void*)&instance;
     }
 
-    template<class T> static T& get()
-    {
-        return *((T*)type_instance_map[typeid(T).name()]);
-    }
+    SystrayManager<QSystemTrayIcon> m_systray_manager;
+    ApplicationStatusIconManager m_application_status_icon_manager;
+    QSystemTrayIcon m_qt_system_tray_icon;
 };
+
+#endif
