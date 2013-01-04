@@ -140,7 +140,8 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         app->setStyleSheet(qssFile.readAll());
     }
 
-    MainWidget *window = new MainWidget(Context::get<QSystemTrayIcon>());
+    MainWidget *window = new MainWidget(Context::get<QSystemTrayIcon>(),
+                                        Context::get<SystrayManager>());
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
     app->setActivationWindow(window, activate_on_tel);
 

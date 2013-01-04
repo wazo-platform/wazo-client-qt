@@ -39,7 +39,8 @@
  * The geometry is restored from settings.
  * engine object ownership is taken
  */
-MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon)
+MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
+                       SystrayManager & systray_manager)
     : QMainWindow(NULL),
       m_systrayIcon(qt_system_tray_icon),
       m_icon_transp(":/images/xivo-login.png"),
@@ -54,7 +55,8 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon)
       m_centralWidget(new QStackedWidget(this)),
       m_resizingHelper(0),
       m_configwindow(NULL),
-      m_clipboard(NULL)
+      m_clipboard(NULL),
+      m_systray_manager(systray_manager)
 {
     b_engine->setParent(this); // take ownership of the engine object
     qt_system_tray_icon.setParent(this);

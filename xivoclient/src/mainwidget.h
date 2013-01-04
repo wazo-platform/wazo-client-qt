@@ -35,6 +35,8 @@
 
 #include <functests.h>
 
+#include "systray_manager.h"
+
 class XLet;
 class ConfigWidget;
 
@@ -46,7 +48,8 @@ class MainWidget : public QMainWindow
     FUNCTESTED
 
     public:
-        MainWidget(QSystemTrayIcon & qt_system_tray_icon);
+        MainWidget(QSystemTrayIcon & qt_system_tray_icon,
+                   SystrayManager & systray_manager);
         ~MainWidget();
 
         void setAppearance(const QVariantList &);  //!< dock options
@@ -170,6 +173,8 @@ class MainWidget : public QMainWindow
         QDateTime m_launchDateTime;
 
         QClipboard * m_clipboard;
+
+        SystrayManager & m_systray_manager;
 };
 
 #endif
