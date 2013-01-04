@@ -64,7 +64,7 @@ class TestSystrayManager: public QObject
     {
         MockApplicationStatusIconManager mock_application_status_icon_manager;
         MockQSystemTrayIcon mock_qt_system_tray_icon;
-        SystrayManager<MockQSystemTrayIcon> systray_manager(mock_application_status_icon_manager,
+        SystrayManagerTpl<MockQSystemTrayIcon> systray_manager(mock_application_status_icon_manager,
                                                             mock_qt_system_tray_icon);
         ApplicationStatusIcon new_systray_icon_id = icon_disconnected;
         QIcon new_systray_icon;
@@ -82,7 +82,7 @@ class TestSystrayManager: public QObject
     {
         MockApplicationStatusIconManager mock_application_status_icon_manager;
         MockQSystemTrayIcon mock_qt_system_tray_icon;
-        SystrayManager<MockQSystemTrayIcon> systray_manager(mock_application_status_icon_manager,
+        SystrayManagerTpl<MockQSystemTrayIcon> systray_manager(mock_application_status_icon_manager,
                                                             mock_qt_system_tray_icon);
         QString title = "title";
         QString message = "message";

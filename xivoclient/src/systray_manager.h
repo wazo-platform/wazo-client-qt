@@ -36,11 +36,11 @@ class ApplicationStatusIconManager;
 class QIcon;
 
 template <class _QSystemTrayIcon>
-class SystrayManager
+class SystrayManagerTpl
 {
     public:
-        SystrayManager(const ApplicationStatusIconManager & application_status_icon_manager,
-                       _QSystemTrayIcon & qt_system_tray_icon);
+        SystrayManagerTpl(const ApplicationStatusIconManager & application_status_icon_manager,
+                          _QSystemTrayIcon & qt_system_tray_icon);
         void changeIcon(ApplicationStatusIcon new_icon_id);
         void showNotification(const QString & title, const QString & message);
 
@@ -48,6 +48,8 @@ class SystrayManager
         const ApplicationStatusIconManager & m_application_status_icon_manager;
         _QSystemTrayIcon & m_qt_system_tray_icon;
 };
+
+typedef SystrayManagerTpl<QSystemTrayIcon> SystrayManager;
 
 /* Template class need to be implemented in the same place that it is defined.
  * This is because the compiler can't know with which type the template will be

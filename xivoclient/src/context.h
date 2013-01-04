@@ -75,7 +75,7 @@ class Context
           m_systray_manager(m_application_status_icon_manager,
                             *m_qt_system_tray_icon)
     {
-        registerInstance<SystrayManager<QSystemTrayIcon> >(m_systray_manager);
+        registerInstance<SystrayManager>(m_systray_manager);
         registerInstance<ApplicationStatusIconManager>(m_application_status_icon_manager);
         registerInstance<QSystemTrayIcon>(*m_qt_system_tray_icon);
     }
@@ -88,7 +88,7 @@ class Context
 
     QSystemTrayIcon * m_qt_system_tray_icon;
     ApplicationStatusIconManager m_application_status_icon_manager;
-    SystrayManager<QSystemTrayIcon> m_systray_manager;
+    SystrayManager m_systray_manager;
 };
 
 #endif

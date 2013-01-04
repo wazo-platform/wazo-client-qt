@@ -31,7 +31,7 @@
 #define __FILE_NAME_H__
 
 template <class _MockedClass>
-class ClassName
+class ClassNameTpl
 {
     public:
         ClassName(_MockedClass & mocked_class);
@@ -39,6 +39,8 @@ class ClassName
     private:
         _MockedClass & m_mocked_class;
 };
+
+typedef ClassNameTpl<MockedClass> ClassName;
 
 /* Template class need to be implemented in the same place that it is defined.
  * This is because the compiler can't know with which type the template will be
