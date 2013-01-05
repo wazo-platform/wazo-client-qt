@@ -32,6 +32,7 @@
 #include "configwidget.h"
 #include "xivoconsts.h"
 #include "xletfactory.h"
+#include "application_status_icon.h"
 
 /*! \brief Constructor
  *
@@ -789,23 +790,27 @@ void MainWidget::engineStarted()
 void MainWidget::setSystrayIcon(const QString & def)
 {
     QIcon icon;
+    ApplicationStatusIcon icon_id;
     if (def == "xivo-transp") {
         icon = m_icon_transp;
+        icon_id = icon_connected;
     } else if (def == "xivo-red") {
         icon = m_icon_red;
+        icon_id = icon_agent_paused;
     } else if (def == "xivo-green") {
         icon = m_icon_green;
+        icon_id = icon_agent_logged;
     } else if (def == "xivo-black") {
         icon = m_icon_black;
+        icon_id = icon_disconnected;
     } else {
         int psize = 16;
         QPixmap square(psize, psize);
         square.fill(def);
         icon = QIcon(square);
+        icon_id = icon_disconnected;
     }
-
-    qDebug() << Q_FUNC_INFO << &m_systrayIcon;
-    m_systrayIcon.setIcon(icon);
+    m_systray_manager.changeIcon(icon_id);
     setWindowIcon(icon);
 }
 

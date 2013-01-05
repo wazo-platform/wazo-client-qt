@@ -62,12 +62,12 @@ class Context
     public:
     template<class T> static T& get()
     {
-        static Context instance;  // Calls the constructor only the first time
         return *((T*)type_instance_map[typeid(T).name()]);
     }
 
     private:
     static QMap<QString, void* > type_instance_map;
+    static Context instance;
 
     Context()
         : m_qt_system_tray_icon(new QSystemTrayIcon()),
