@@ -52,7 +52,7 @@ SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 
 BUILTIN_DIRS += customerinfo-builtin
 BUILTIN_DIRS += dial-builtin
-BUILTIN_DIRS += directory-builtin
+BUILTIN_DIRS += remotedirectory-builtin
 BUILTIN_DIRS += fax-builtin
 BUILTIN_DIRS += mylocaldir-builtin
 BUILTIN_DIRS += search-builtin
@@ -65,7 +65,7 @@ for(BUILTIN_DIR, BUILTIN_DIRS){
 # necessary to make lupdate process these source files
 SOURCES += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.cpp
 SOURCES += $${ROOT_DIR}/src/xlets/dial-builtin/*.cpp
-SOURCES += $${ROOT_DIR}/src/xlets/directory-builtin/*.cpp
+SOURCES += $${ROOT_DIR}/src/xlets/remotedirectory-builtin/*.cpp
 SOURCES += $${ROOT_DIR}/src/xlets/fax-builtin/*.cpp
 SOURCES += $${ROOT_DIR}/src/xlets/mylocaldir-builtin/*.cpp
 SOURCES += $${ROOT_DIR}/src/xlets/search-builtin/*.cpp

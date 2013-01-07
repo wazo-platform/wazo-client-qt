@@ -4,6 +4,7 @@ SUBDIRS  = \
     src/xlets/agents \
     src/xlets/agentdetails \
     src/xlets/conference \
+    src/xlets/directory \
     src/xlets/datetime \
     src/xlets/history \
     src/xlets/identity \

@@ -65,7 +65,7 @@ static const struct {
     { "dial"              ,newXLet<DialPanel>              },
     { "fax"               ,newXLet<FaxPanel>               },
     { "search"            ,newXLet<SearchPanel>            },
-    { "directory"         ,newXLet<DirectoryPanel>         },
+    { "remotedirectory"   ,newXLet<DirectoryPanel>         },
     { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },
 };
 

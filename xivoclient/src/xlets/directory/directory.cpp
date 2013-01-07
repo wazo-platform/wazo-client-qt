@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,36 +27,20 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef FUNCTESTS
+#include <QLabel>
+#include <QHBoxLayout>
 
-#include "xlets/remotedirectory-builtin/directorypanel.h"
-#include "remote_control.h"
+#include "directory.h"
 
-
-void RemoteControl::when_i_search_for_1_in_the_directory_xlet(const QVariantList & args)
+Directory::Directory(QWidget *parent)
+    : XLet(parent)
 {
-    const QString& search = args[0].toString();
-
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
-
-    panel->m_searchText->setText(search);
-    panel->startSearch();
-    pause(2000);
+    setTitle(tr("Directory"));
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    m_label = new QLabel(tr("Hello world !"));
+    layout->addWidget(m_label);
 }
 
-void RemoteControl::then_nothing_shows_up_in_the_directory_xlet()
+Directory::~Directory()
 {
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
-    int nb_rows = panel->m_table->rowCount();
-    this->assert(nb_rows == 0);
 }
-
-void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & args)
-{
-    const QString& user = args[0].toString();
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("directory"));
-
-    this->assert(isValueInTable(user, "Nom", panel->m_table));
-}
-
-#endif
