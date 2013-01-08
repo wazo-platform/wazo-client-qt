@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2011, Avencall
+ * Copyright (C) 2007-2012, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #include <QDebug>
 #include <QtPlugin>
 
@@ -46,4 +42,3 @@ XLet * XLetNullPlugin::newXLetInstance(QWidget *parent)
 {
     return new XletNull(parent);
 }
-
