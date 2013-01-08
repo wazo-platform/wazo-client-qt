@@ -62,8 +62,11 @@ class DirectoryEntryModel : public QAbstractTableModel
         };
 
     private:
+        QPixmap getRedPhone() const;
+
         QVariant dataDisplay(int row, int column) const;
         QVariant dataBackground(int row, int column) const;
+        QVariant dataDecoration(int row, int column) const;
         QVariant dataTooltip(int row, int column) const;
 
         QString m_headers[NB_COL];

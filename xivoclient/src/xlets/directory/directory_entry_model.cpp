@@ -27,6 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QPixmap>
+#include <QString>
+
+#include <taintedpixmap.h>
 #include "directory_entry_model.h"
 
 DirectoryEntryModel::DirectoryEntryModel(QObject *parent)
@@ -41,7 +45,7 @@ DirectoryEntryModel::DirectoryEntryModel(QObject *parent)
 
 int DirectoryEntryModel::rowCount(const QModelIndex&) const
 {
-    return 0;
+    return 1;
 }
 
 int DirectoryEntryModel::columnCount(const QModelIndex&) const
@@ -54,6 +58,8 @@ QVariant DirectoryEntryModel::data(const QModelIndex &index, int role) const
     int row = index.row(), column = index.column();
 
     switch(role) {
+    case Qt::DecorationRole:
+        return this->dataDecoration(row, column);
     case Qt::TextAlignmentRole:
         return Qt::AlignCenter;
     case  Qt::DisplayRole:
@@ -86,9 +92,30 @@ QVariant DirectoryEntryModel::headerData(int column,
 QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
 {
     switch (column) {
+    case FIRST_NAME:
+        return "Alice";
+    case LAST_NAME:
+        return "Cooper";
+    case NUMBER:
+        return "666";
     default :
         return QVariant();
     }
+}
+
+QVariant DirectoryEntryModel::dataDecoration(int row, int column) const
+{
+    switch (column) {
+    case STATUS_ICON:
+        return this->getRedPhone();
+    default :
+        return QVariant();
+    }
+}
+
+QPixmap DirectoryEntryModel::getRedPhone() const
+{
+    return TaintedPixmap(QString(":/images/phone-trans.png"), QColor("red")).getPixmap();
 }
 
 QVariant DirectoryEntryModel::dataTooltip(int row, int column) const
