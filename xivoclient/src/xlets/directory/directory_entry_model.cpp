@@ -29,6 +29,7 @@
 
 #include <QPixmap>
 #include <QString>
+#include <baseengine.h>
 
 #include <taintedpixmap.h>
 #include "directory_entry_model.h"
@@ -41,11 +42,40 @@ DirectoryEntryModel::DirectoryEntryModel(QObject *parent)
     m_headers[LAST_NAME] = tr("Last name");
     m_headers[NUMBER] = tr("Number");
 
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
+}
+
+void DirectoryEntryModel::updatePhoneConfig(const QString &xid)
+{
+    const PhoneInfo *phone = b_engine->phone(xid);
+    if (! phone) {
+        return;
+    }
+
+    if (! m_phones.contains(phone)) {
+        int insertedRow = m_phones.size();
+        beginInsertRows(QModelIndex(), insertedRow, insertedRow);
+        m_phones.append(phone);
+        endInsertRows();
+    } else {
+        this->refreshEntryRow(phone);
+    }
+}
+
+void DirectoryEntryModel::refreshEntryRow(const PhoneInfo *phone)
+{
+    unsigned first_column_index = 0;
+    unsigned last_column_index = NB_COL - 1;
+    unsigned row_id = m_phones.indexOf(phone);
+    QModelIndex cell_changed_start = createIndex(row_id, first_column_index);
+    QModelIndex cell_changed_end = createIndex(row_id, last_column_index);
+    emit dataChanged(cell_changed_start, cell_changed_end);
 }
 
 int DirectoryEntryModel::rowCount(const QModelIndex&) const
 {
-    return 1;
+    return m_phones.size();
 }
 
 int DirectoryEntryModel::columnCount(const QModelIndex&) const
@@ -91,13 +121,18 @@ QVariant DirectoryEntryModel::headerData(int column,
 
 QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
 {
+    const PhoneInfo *phone = m_phones[row];
+    if (! phone) {
+        return QVariant();
+    }
+
     switch (column) {
     case FIRST_NAME:
         return "Alice";
     case LAST_NAME:
         return "Cooper";
     case NUMBER:
-        return "666";
+        return phone->number();
     default :
         return QVariant();
     }

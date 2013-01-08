@@ -32,6 +32,8 @@
 
 #include <QAbstractTableModel>
 
+#include <phoneinfo.h>
+
 class DirectoryEntryModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -51,6 +53,7 @@ class DirectoryEntryModel : public QAbstractTableModel
 
     public slots:
         void refreshColumn(int column_index);
+        void updatePhoneConfig(const QString &xid);
 
     public:
         enum Columns {
@@ -62,6 +65,7 @@ class DirectoryEntryModel : public QAbstractTableModel
         };
 
     private:
+        void refreshEntryRow(const PhoneInfo *phone);
         QPixmap getRedPhone() const;
 
         QVariant dataDisplay(int row, int column) const;
@@ -70,6 +74,7 @@ class DirectoryEntryModel : public QAbstractTableModel
         QVariant dataTooltip(int row, int column) const;
 
         QString m_headers[NB_COL];
+        QList<const PhoneInfo *> m_phones;
 };
 
 #endif
