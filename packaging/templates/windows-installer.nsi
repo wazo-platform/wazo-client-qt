@@ -195,4 +195,4 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Computer Telephony Integration
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Avencall"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "XiVO client installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${XC_VERSION}-${GIT_HASH}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2007-2011, Avencall"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2007-2013, Avencall"
