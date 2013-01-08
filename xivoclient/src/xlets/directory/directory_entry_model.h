@@ -41,7 +41,7 @@ class DirectoryEntryModel : public QAbstractTableModel
     public:
         DirectoryEntryModel(QObject *parent = NULL);
 
-        int rowCount(const QModelIndex &) const;
+        int rowCount(const QModelIndex &parent = QModelIndex()) const;
         int columnCount(const QModelIndex &) const;
 
         bool removeRows(int, int, const QModelIndex &);
@@ -54,6 +54,8 @@ class DirectoryEntryModel : public QAbstractTableModel
     public slots:
         void refreshColumn(int column_index);
         void updatePhoneConfig(const QString &xid);
+        void updatePhoneStatus(const QString &xid);
+        void clearingCache();
 
     public:
         enum Columns {
@@ -66,7 +68,7 @@ class DirectoryEntryModel : public QAbstractTableModel
 
     private:
         void refreshEntryRow(const PhoneInfo *phone);
-        QPixmap getRedPhone() const;
+        QPixmap getPhoneIcon(const PhoneInfo *phone) const;
 
         QVariant dataDisplay(int row, int column) const;
         QVariant dataBackground(int row, int column) const;

@@ -32,6 +32,7 @@
 #include <baseengine.h>
 #include <userinfo.h>
 #include <dao/userdao.h>
+#include <dao/phonedao.h>
 
 #include <taintedpixmap.h>
 #include "directory_entry_model.h"
@@ -46,6 +47,15 @@ DirectoryEntryModel::DirectoryEntryModel(QObject *parent)
 
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
+            this, SLOT(updatePhoneStatus(const QString &)));
+    connect(b_engine, SIGNAL(clearingCache()),
+            this, SLOT(clearingCache()));
+}
+
+void DirectoryEntryModel::clearingCache()
+{
+    this->removeRows(0, this->rowCount(), QModelIndex());
 }
 
 void DirectoryEntryModel::updatePhoneConfig(const QString &xid)
@@ -63,6 +73,16 @@ void DirectoryEntryModel::updatePhoneConfig(const QString &xid)
     } else {
         this->refreshEntryRow(phone);
     }
+}
+
+void DirectoryEntryModel::updatePhoneStatus(const QString &xid)
+{
+    const PhoneInfo *phone = b_engine->phone(xid);
+    if (! phone) {
+        return;
+    }
+
+    this->refreshEntryRow(phone);
 }
 
 void DirectoryEntryModel::refreshEntryRow(const PhoneInfo *phone)
@@ -150,17 +170,21 @@ QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
 
 QVariant DirectoryEntryModel::dataDecoration(int row, int column) const
 {
-    switch (column) {
-    case STATUS_ICON:
-        return this->getRedPhone();
-    default :
+    if (column != STATUS_ICON) {
         return QVariant();
     }
+
+    const PhoneInfo *phone = m_phones[row];
+    if (! phone) {
+        return QVariant();
+    }
+    return this->getPhoneIcon(phone);
 }
 
-QPixmap DirectoryEntryModel::getRedPhone() const
+QPixmap DirectoryEntryModel::getPhoneIcon(const PhoneInfo *phone) const
 {
-    return TaintedPixmap(QString(":/images/phone-trans.png"), QColor("red")).getPixmap();
+    QColor color = PhoneDAO::getStatusColor(phone);
+    return TaintedPixmap(QString(":/images/phone-trans.png"), color).getPixmap();
 }
 
 QVariant DirectoryEntryModel::dataTooltip(int row, int column) const
@@ -181,5 +205,14 @@ QVariant DirectoryEntryModel::dataBackground(int row, int column) const
 
 bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & index)
 {
-    return true;
+    bool ret = true;
+    if (count > 0) {
+        beginRemoveRows(index, row, row + count - 1);
+        for (int i = 0 ; i < count ; i ++) {
+            ret = ret && row < m_phones.size();
+            m_phones.removeAt(row);
+        }
+        endRemoveRows();
+    }
+    return ret;
 }

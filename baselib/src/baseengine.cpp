@@ -481,6 +481,7 @@ void BaseEngine::onCTIServerDisconnected()
  */
 void BaseEngine::clearLists()
 {
+    emit clearingCache();
     foreach (QString listname, m_anylist.keys()) {
         QHashIterator<QString, XInfo *> iter = QHashIterator<QString, XInfo *>(m_anylist.value(listname));
         while (iter.hasNext()) {

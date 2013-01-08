@@ -351,6 +351,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void broadcastNumberSelection(const QStringList &);  //!< numbers for a selected peer
         void queueEntryUpdate(const QString &, const QVariantList &);
         void meetmeUpdate(const QVariantMap &);
+        void clearingCache();
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events
 
