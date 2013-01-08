@@ -27,21 +27,46 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "directory.h"
-#include "directory_entry_model.h"
+#ifndef __DIRECTORY_ENTRY_MODEL_H__
+#define __DIRECTORY_ENTRY_MODEL_H__
 
-#include "ui_directory_widget.h"
+#include <QAbstractTableModel>
 
-Directory::Directory(QWidget *parent)
-    : XLet(parent)
+class DirectoryEntryModel : public QAbstractTableModel
 {
-    setTitle(tr("Directory"));
+    Q_OBJECT
 
-    ui.setupUi(this);
+    public:
+        DirectoryEntryModel(QObject *parent = NULL);
 
-    ui.entry_table->setModel(new DirectoryEntryModel());
-}
+        int rowCount(const QModelIndex &) const;
+        int columnCount(const QModelIndex &) const;
 
-Directory::~Directory()
-{
-}
+        bool removeRows(int, int, const QModelIndex &);
+
+        QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
+        QVariant headerData(int,
+                            Qt::Orientation,
+                            int) const;
+
+    public slots:
+        void refreshColumn(int column_index);
+
+    public:
+        enum Columns {
+          STATUS_ICON,
+          FIRST_NAME,
+          LAST_NAME,
+          NUMBER,
+          NB_COL
+        };
+
+    private:
+        QVariant dataDisplay(int row, int column) const;
+        QVariant dataBackground(int row, int column) const;
+        QVariant dataTooltip(int row, int column) const;
+
+        QString m_headers[NB_COL];
+};
+
+#endif

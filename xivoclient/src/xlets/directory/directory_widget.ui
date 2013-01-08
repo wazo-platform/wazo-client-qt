@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="DirectoryEntryView" name="tbl_entries"/>
+    <widget class="DirectoryEntryView" name="entry_table"/>
    </item>
   </layout>
  </widget>
