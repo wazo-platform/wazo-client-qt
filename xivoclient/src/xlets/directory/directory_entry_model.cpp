@@ -30,6 +30,8 @@
 #include <QPixmap>
 #include <QString>
 #include <baseengine.h>
+#include <userinfo.h>
+#include <dao/userdao.h>
 
 #include <taintedpixmap.h>
 #include "directory_entry_model.h"
@@ -125,14 +127,22 @@ QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
     if (! phone) {
         return QVariant();
     }
-
     switch (column) {
-    case FIRST_NAME:
-        return "Alice";
-    case LAST_NAME:
-        return "Cooper";
     case NUMBER:
         return phone->number();
+    default :
+        break;
+    }
+
+    const UserInfo * user = UserDAO::findUserFromPhone(phone);
+    if (! user) {
+        return QVariant();
+    }
+    switch (column) {
+    case FIRST_NAME:
+        return user->firstname();
+    case LAST_NAME:
+        return user->lastname();
     default :
         return QVariant();
     }
