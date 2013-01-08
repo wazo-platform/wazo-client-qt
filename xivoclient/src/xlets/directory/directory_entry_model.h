@@ -52,7 +52,6 @@ class DirectoryEntryModel : public QAbstractTableModel
                             int) const;
 
     public slots:
-        void refreshColumn(int column_index);
         void updatePhoneConfig(const QString &xid);
         void updatePhoneStatus(const QString &xid);
         void clearingCache();
