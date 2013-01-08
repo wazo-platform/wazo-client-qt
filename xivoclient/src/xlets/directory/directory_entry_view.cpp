@@ -27,18 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "directory.h"
+#include "directory_entry_view.h"
 
-#include "ui_directory_widget.h"
-
-Directory::Directory(QWidget *parent)
-    : XLet(parent)
-{
-    setTitle(tr("Directory"));
-
-    ui.setupUi(this);
-}
-
-Directory::~Directory()
+DirectoryEntryView::DirectoryEntryView(QWidget *parent)
+    : AbstractTableView(parent)
 {
 }

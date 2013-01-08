@@ -32,8 +32,7 @@
 
 #include <QObject>
 #include "xlet.h"
-
-class QLabel;
+#include "ui_directory_widget.h"
 
 class Directory: public XLet
 {
@@ -42,7 +41,7 @@ public:
     Directory(QWidget *parent=0);
     ~Directory();
 private:
-    QLabel *m_label;
+    Ui::DirectoryWidget ui;
 };
 
 #endif /* __DIRECTORY_H__ */
