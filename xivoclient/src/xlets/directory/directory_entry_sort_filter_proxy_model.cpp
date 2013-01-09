@@ -27,24 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "directory.h"
 #include "directory_entry_model.h"
 #include "directory_entry_sort_filter_proxy_model.h"
 
-#include "ui_directory_widget.h"
-
-Directory::Directory(QWidget *parent)
-    : XLet(parent)
-{
-    setTitle(tr("Directory"));
-
-    ui.setupUi(this);
-
-    DirectoryEntrySortFilterProxyModel * proxy_model = new DirectoryEntrySortFilterProxyModel(this);
-    proxy_model->setSourceModel(new DirectoryEntryModel());
-    ui.entry_table->setModel(proxy_model);
-}
-
-Directory::~Directory()
+DirectoryEntrySortFilterProxyModel::DirectoryEntrySortFilterProxyModel(QObject *parent = NULL)
+    : AbstractSortFilterProxyModel(parent)
 {
 }
