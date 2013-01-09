@@ -41,5 +41,32 @@ bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const Q
                                                                     DirectoryEntryModel::NUMBER,
                                                                     sourceParent);
     QString directory_entry_number = sourceModel()->data(directory_entry_number_index).toString();
-    return ! directory_entry_number.isEmpty();
+    if (directory_entry_number.isEmpty()) {
+        return false;
+    }
+    if (this->filterMatchesColumn(sourceRow, DirectoryEntryModel::FIRST_NAME, sourceParent)
+        || this->filterMatchesColumn(sourceRow, DirectoryEntryModel::LAST_NAME, sourceParent)
+        || this->filterMatchesColumn(sourceRow, DirectoryEntryModel::NUMBER, sourceParent)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void DirectoryEntrySortFilterProxyModel::setFilter(const QString & filter)
+{
+    this->m_filter = filter;
+    this->invalidateFilter();
+}
+
+bool DirectoryEntrySortFilterProxyModel::filterMatchesColumn(int sourceRow,
+                                                             DirectoryEntryModel::Columns column,
+                                                             const QModelIndex & sourceParent) const
+{
+    QModelIndex directory_entry_column_index = sourceModel()->index(sourceRow,
+                                                                    column,
+                                                                    sourceParent);
+    QString value = sourceModel()->data(directory_entry_column_index).toString();
+
+    return value.contains(this->m_filter, Qt::CaseInsensitive);
 }

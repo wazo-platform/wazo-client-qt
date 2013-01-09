@@ -31,6 +31,7 @@
 #define __DIRECTORY_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 
 #include <abstract_sort_filter_proxy_model.h>
+#include "directory_entry_model.h"
 
 class DirectoryEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
 {
@@ -38,8 +39,16 @@ class DirectoryEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
 
     public:
         DirectoryEntrySortFilterProxyModel(QObject *parent);
+    public slots:
+        void setFilter(const QString & filter);
     protected:
         bool filterAcceptsRow(int , const QModelIndex &) const;
+    private:
+        bool filterMatchesColumn(int sourceRow,
+                                 DirectoryEntryModel::Columns colum,
+                                 const QModelIndex & sourceParent) const;
+
+        QString m_filter;
 };
 
 #endif

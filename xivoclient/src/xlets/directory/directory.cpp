@@ -43,6 +43,9 @@ Directory::Directory(QWidget *parent)
     DirectoryEntrySortFilterProxyModel * proxy_model = new DirectoryEntrySortFilterProxyModel(this);
     proxy_model->setSourceModel(new DirectoryEntryModel());
     ui.entry_table->setModel(proxy_model);
+
+    connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
+            proxy_model, SLOT(setFilter(const QString &)));
 }
 
 Directory::~Directory()

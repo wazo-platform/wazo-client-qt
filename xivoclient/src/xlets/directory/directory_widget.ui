@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLineEdit" name="txt_filter">
+    <widget class="QLineEdit" name="entry_filter">
      <property name="text">
       <string notr="true"/>
      </property>
