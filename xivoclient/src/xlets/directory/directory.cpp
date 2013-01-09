@@ -38,7 +38,7 @@ Directory::Directory(QWidget *parent)
 {
     setTitle(tr("Directory"));
 
-    ui.setupUi(this);
+    this->ui.setupUi(this);
 
     DirectoryEntrySortFilterProxyModel * proxy_model = new DirectoryEntrySortFilterProxyModel(this);
     proxy_model->setSourceModel(new DirectoryEntryModel());

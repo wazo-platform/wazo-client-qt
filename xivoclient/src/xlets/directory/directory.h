@@ -37,11 +37,11 @@
 class Directory: public XLet
 {
     Q_OBJECT
-public:
-    Directory(QWidget *parent=0);
-    ~Directory();
-private:
-    Ui::DirectoryWidget ui;
+    public:
+        Directory(QWidget *parent=0);
+        ~Directory();
+    private:
+        Ui::DirectoryWidget ui;
 };
 
 #endif /* __DIRECTORY_H__ */
