@@ -1002,6 +1002,20 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+                if (listname == "phones")
+                    emit removePhoneConfig(xid);
+                else if (listname == "users")
+                    emit removeUserConfig(xid);
+                else if (listname == "agents")
+                    emit removeAgentConfig(xid);
+                else if (listname == "queues")
+                    emit removeQueueConfig(xid);
+                else if (listname == "queuemembers")
+                    emit removeQueueMemberConfig(xid);
+            }
+
+            foreach (QString id, listid) {
+                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
                 if (GenLists.contains(listname)) {
                     if (m_anylist.value(listname).contains(xid)) {
                         delete m_anylist[listname][xid];
@@ -1019,19 +1033,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                         m_queuemembers.remove(xid);
                     }
                 }
-            }
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (listname == "phones")
-                    emit removePhoneConfig(xid);
-                else if (listname == "users")
-                    emit removeUserConfig(xid);
-                else if (listname == "agents")
-                    emit removeAgentConfig(xid);
-                else if (listname == "queues")
-                    emit removeQueueConfig(xid);
-                else if (listname == "queuemembers")
-                    emit removeQueueMemberConfig(xid);
             }
 
         } else if (function == "updateconfig") {
