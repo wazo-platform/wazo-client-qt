@@ -53,6 +53,7 @@ class DirectoryEntryModel : public QAbstractTableModel
 
     public slots:
         void updatePhoneConfig(const QString &xid);
+        void removePhoneConfig(const QString &xid);
         void updatePhoneStatus(const QString &xid);
         void clearingCache();
 

@@ -47,6 +47,8 @@ DirectoryEntryModel::DirectoryEntryModel(QObject *parent)
 
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(removePhoneConfig(const QString &)),
+            this, SLOT(removePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
             this, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(clearingCache()),
@@ -72,6 +74,19 @@ void DirectoryEntryModel::updatePhoneConfig(const QString &xid)
         endInsertRows();
     } else {
         this->refreshEntryRow(phone);
+    }
+}
+
+void DirectoryEntryModel::removePhoneConfig(const QString &xid)
+{
+    const PhoneInfo *phone = b_engine->phone(xid);
+    if (! phone) {
+        return;
+    }
+
+    if (m_phones.contains(phone)) {
+        int removedRow = m_phones.indexOf(phone);
+        removeRow(removedRow);
     }
 }
 
