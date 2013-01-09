@@ -38,6 +38,8 @@ class DirectoryEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
 
     public:
         DirectoryEntrySortFilterProxyModel(QObject *parent);
+    protected:
+        bool filterAcceptsRow(int , const QModelIndex &) const;
 };
 
 #endif
