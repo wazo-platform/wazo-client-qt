@@ -29,6 +29,8 @@
 
 #include <QDebug>
 #include <signal_relayer.h>
+#include <baseengine.h>
+#include <message_factory.h>
 
 #include "directory.h"
 #include "directory_entry_model.h"
@@ -76,5 +78,5 @@ void Directory::focusEntryTable()
 void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
 {
     QString number = m_model->getNumber(index);
-    b_engine->sendJsonCommand(MessageFactory::getAttendedTransfer(number));
+    b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
 }
