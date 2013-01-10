@@ -2,8 +2,9 @@
 
 # Launch all unit-tests
 
-testbins=$(find bin/tests -type f -print)
+TESTS_BIN_PATH=bin/tests
+testbins=$(ls $TESTS_BIN_PATH)
 for testbin in $testbins ; do
-    "$testbin"
-    "$testbin" -xunitxml -o unit-tests/unit-baselib.xml
+    "$TESTS_BIN_PATH/$testbin"
+    "$TESTS_BIN_PATH/$testbin" -xunitxml -o "unit-tests/$testbin.xml"
 done
