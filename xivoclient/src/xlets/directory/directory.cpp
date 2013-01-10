@@ -76,4 +76,5 @@ void Directory::focusEntryTable()
 void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
 {
     QString number = m_model->getNumber(index);
+    b_engine->sendJsonCommand(MessageFactory::getAttendedTransfer(number));
 }
