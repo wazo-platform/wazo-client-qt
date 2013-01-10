@@ -27,7 +27,9 @@ gmock {
     gmock_linker.input = GMOCK_SOURCES
     gmock_linker.output = $${GIT_DIR}/libgmock.a
     gmock_linker.commands = ar -rv ${QMAKE_FILE_OUT} $${GIT_DIR}/gmock-all.o $${GIT_DIR}/gtest-all.o
-    gmock_linker.CONFIG = combine explicit_dependencies
+    gmock_linker.CONFIG = combine explicit_dependencies no_link target_predeps
+
+    LIBS += $${GIT_DIR}/libgmock.a
 } else {
     LIBS += -lgmock -lgtest
 }
