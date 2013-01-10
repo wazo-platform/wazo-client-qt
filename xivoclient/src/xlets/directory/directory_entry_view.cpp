@@ -28,8 +28,10 @@
  */
 
 #include "directory_entry_view.h"
+#include "directory_entry_model.h"
 
 DirectoryEntryView::DirectoryEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
+    this->sortByColumn(DirectoryEntryModel::LAST_NAME, Qt::AscendingOrder);
 }
