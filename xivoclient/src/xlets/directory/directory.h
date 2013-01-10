@@ -40,6 +40,8 @@ class Directory: public XLet
     public:
         Directory(QWidget *parent=0);
         ~Directory();
+    public slots:
+        void attendedTransferRequested();
     private:
         Ui::DirectoryWidget ui;
 };

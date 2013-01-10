@@ -31,6 +31,7 @@
 #include <QTimer>
 #include <baseengine.h>
 #include <message_factory.h>
+#include <signal_relayer.h>
 #include "ui_current_call.h"
 #include "current_call.h"
 
@@ -134,6 +135,7 @@ void CurrentCall::hold()
 void CurrentCall::attendedTransfer()
 {
     qDebug() << "ATXFer";
+    signal_relayer->relayAttendedTransferRequested();
 }
 
 void CurrentCall::disableButtons()

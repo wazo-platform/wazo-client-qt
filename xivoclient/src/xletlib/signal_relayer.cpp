@@ -27,37 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-#include <signal_relayer.h>
+#include <QObject>
+#include "signal_relayer.h"
 
-#include "directory.h"
-#include "directory_entry_model.h"
-#include "directory_entry_sort_filter_proxy_model.h"
+#include "xletlib_export.h"
 
-#include "ui_directory_widget.h"
+XLETLIB_EXPORT SignalRelayer *signal_relayer = new SignalRelayer();
 
-Directory::Directory(QWidget *parent)
-    : XLet(parent)
+SignalRelayer::SignalRelayer(QObject *parent)
+    : QObject(parent)
+{}
+
+void SignalRelayer::relayAttendedTransferRequested()
 {
-    setTitle(tr("Directory"));
-
-    this->ui.setupUi(this);
-
-    DirectoryEntrySortFilterProxyModel * proxy_model = new DirectoryEntrySortFilterProxyModel(this);
-    proxy_model->setSourceModel(new DirectoryEntryModel());
-    ui.entry_table->setModel(proxy_model);
-
-    connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
-            proxy_model, SLOT(setFilter(const QString &)));
-    connect(signal_relayer, SIGNAL(attendedTransferRequested()),
-            this, SLOT(attendedTransferRequested()));
-}
-
-Directory::~Directory()
-{
-}
-
-void Directory::attendedTransferRequested()
-{
-    qDebug() << Q_FUNC_INFO;
+    emit attendedTransferRequested();
 }
