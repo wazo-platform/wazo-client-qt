@@ -48,6 +48,7 @@ class CurrentCall: public QObject, public IPBXListener
         void setParentWidget(QWidget *parent);
         virtual void parseCommand(const QVariantMap &command);
     public slots:
+        void attendedTransfer();
         void hangup();
         void hold();
     private slots:

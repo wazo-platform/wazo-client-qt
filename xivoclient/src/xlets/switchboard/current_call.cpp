@@ -68,6 +68,8 @@ void CurrentCall::connectButtons()
             this, SLOT(hangup()));
     connect(m_current_call_widget->btn_hold, SIGNAL(clicked()),
             this, SLOT(hold()));
+    connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
+            this, SLOT(attendedTransfer()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -129,6 +131,11 @@ void CurrentCall::hold()
     b_engine->sendJsonCommand(MessageFactory::holdSwitchboard());
 }
 
+void CurrentCall::attendedTransfer()
+{
+    qDebug() << "ATXFer";
+}
+
 void CurrentCall::disableButtons()
 {
     this->setButtonsAvailability(false);
@@ -141,6 +148,7 @@ void CurrentCall::enableButtons()
 
 void CurrentCall::setButtonsAvailability(bool enabled)
 {
+    this->m_current_call_widget->btn_attended_transfer->setEnabled(enabled);
     this->m_current_call_widget->btn_hangup->setEnabled(enabled);
     this->m_current_call_widget->btn_hold->setEnabled(enabled);
 }
