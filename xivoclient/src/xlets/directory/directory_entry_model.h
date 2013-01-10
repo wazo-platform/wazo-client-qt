@@ -71,7 +71,6 @@ class DirectoryEntryModel : public QAbstractTableModel
         QPixmap getPhoneIcon(const PhoneInfo *phone) const;
 
         QVariant dataDisplay(int row, int column) const;
-        QVariant dataBackground(int row, int column) const;
         QVariant dataDecoration(int row, int column) const;
         QVariant dataTooltip(int row, int column) const;
 

@@ -131,8 +131,6 @@ QVariant DirectoryEntryModel::data(const QModelIndex &index, int role) const
         return Qt::AlignCenter;
     case  Qt::DisplayRole:
         return this->dataDisplay(row, column);
-    case Qt::BackgroundRole:
-        return this->dataBackground(row, column);
     case Qt::ToolTipRole:
         return this->dataTooltip(row, column);
     default:
@@ -213,14 +211,6 @@ QVariant DirectoryEntryModel::dataTooltip(int row, int column) const
         return QVariant();
     }
     return PhoneDAO::getStatusName(phone);
-}
-
-QVariant DirectoryEntryModel::dataBackground(int row, int column) const
-{
-    switch (column) {
-    default :
-        return QVariant();
-    }
 }
 
 bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & index)
