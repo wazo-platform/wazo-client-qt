@@ -44,6 +44,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap hangup();
         static QVariantMap holdSwitchboard();
         static QVariantMap unholdSwitchboard(const QString &unique_id);
+        static QVariantMap attendedTransfer(const QString &number);
     private:
         static QVariantMap baseMessage(const QString &class_name);
 };

@@ -60,6 +60,14 @@ QVariantMap MessageFactory::unholdSwitchboard(const QString &unique_id)
     return message;
 }
 
+QVariantMap MessageFactory::attendedTransfer(const QString &number)
+{
+    QVariantMap message = MessageFactory::baseMessage("attended_transfer");
+    message["number"] = number;
+
+    return message;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

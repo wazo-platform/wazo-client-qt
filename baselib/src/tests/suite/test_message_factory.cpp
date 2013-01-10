@@ -86,3 +86,15 @@ void TestMessageFactory::testUnholdSwitchboard()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testAttendedTransfer()
+{
+    QString number = "1234";
+    QVariantMap result = MessageFactory::attendedTransfer(number);
+
+    QVariantMap expected;
+    expected["class"] = "attended_transfer";
+    expected["number"] = number;
+
+    QCOMPARE(result, expected);
+}
