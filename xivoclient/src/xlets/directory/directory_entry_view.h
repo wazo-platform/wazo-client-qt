@@ -38,6 +38,7 @@ class DirectoryEntryView : public AbstractTableView
 
     public:
         DirectoryEntryView(QWidget *parent = NULL);
+        void selectFirstRow();
 };
 
 #endif /* __DIRECTORY_ENTRY_VIEW_H__ */

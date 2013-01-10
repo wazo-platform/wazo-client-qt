@@ -37,20 +37,26 @@
 #include "ui_directory_widget.h"
 
 Directory::Directory(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent),
+      m_model(NULL)
 {
     setTitle(tr("Directory"));
 
     this->ui.setupUi(this);
 
     DirectoryEntrySortFilterProxyModel * proxy_model = new DirectoryEntrySortFilterProxyModel(this);
-    proxy_model->setSourceModel(new DirectoryEntryModel());
+    m_model = new DirectoryEntryModel(this);
+    proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(proxy_model);
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             proxy_model, SLOT(setFilter(const QString &)));
     connect(signal_relayer, SIGNAL(attendedTransferRequested()),
             this, SLOT(attendedTransferRequested()));
+    connect(this->ui.entry_filter, SIGNAL(returnPressed()),
+            this, SLOT(focusEntryTable()));
+    connect(this->ui.entry_table, SIGNAL(activated(const QModelIndex &)),
+            this, SLOT(attendedTransferSelectedIndex(const QModelIndex &)));
 }
 
 Directory::~Directory()
@@ -59,5 +65,15 @@ Directory::~Directory()
 
 void Directory::attendedTransferRequested()
 {
-    qDebug() << Q_FUNC_INFO;
+    this->ui.entry_filter->setFocus();
+}
+
+void Directory::focusEntryTable()
+{
+    this->ui.entry_table->selectFirstRow();
+}
+
+void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
+{
+    QString number = m_model->getNumber(index);
 }

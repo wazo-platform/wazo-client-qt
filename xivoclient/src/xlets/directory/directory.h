@@ -33,6 +33,7 @@
 #include <QObject>
 #include "xlet.h"
 #include "ui_directory_widget.h"
+#include "directory_entry_model.h"
 
 class Directory: public XLet
 {
@@ -42,8 +43,11 @@ class Directory: public XLet
         ~Directory();
     public slots:
         void attendedTransferRequested();
+        void focusEntryTable();
+        void attendedTransferSelectedIndex(const QModelIndex &index);
     private:
         Ui::DirectoryWidget ui;
+        DirectoryEntryModel *m_model;
 };
 
 #endif /* __DIRECTORY_H__ */

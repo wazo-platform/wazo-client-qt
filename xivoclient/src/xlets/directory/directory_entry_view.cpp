@@ -27,6 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+#include <QItemSelectionModel>
+
 #include "directory_entry_view.h"
 #include "directory_entry_model.h"
 
@@ -34,4 +37,12 @@ DirectoryEntryView::DirectoryEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
     this->sortByColumn(DirectoryEntryModel::LAST_NAME, Qt::AscendingOrder);
+    this->setSelectionBehavior(QAbstractItemView::SelectRows);
+    this->setSelectionMode(QAbstractItemView::SingleSelection);
+}
+
+void DirectoryEntryView::selectFirstRow()
+{
+    this->selectRow(0);
+    this->setFocus();
 }

@@ -50,7 +50,7 @@ class DirectoryEntryModel : public QAbstractTableModel
         QVariant headerData(int,
                             Qt::Orientation,
                             int) const;
-
+        QString getNumber(const QModelIndex &index);
     public slots:
         void updatePhoneConfig(const QString &xid);
         void removePhoneConfig(const QString &xid);
