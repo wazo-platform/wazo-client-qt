@@ -204,10 +204,15 @@ QPixmap DirectoryEntryModel::getPhoneIcon(const PhoneInfo *phone) const
 
 QVariant DirectoryEntryModel::dataTooltip(int row, int column) const
 {
-    switch (column) {
-    default :
+    if (column != STATUS_ICON) {
         return QVariant();
     }
+
+    const PhoneInfo *phone = m_phones[row];
+    if (! phone) {
+        return QVariant();
+    }
+    return PhoneDAO::getStatusName(phone);
 }
 
 QVariant DirectoryEntryModel::dataBackground(int row, int column) const

@@ -30,6 +30,8 @@
 #ifndef __PHONEDAO_H__
 #define __PHONEDAO_H__
 
+#include <QVariantMap>
+
 class QColor;
 class PhoneInfo;
 
@@ -39,6 +41,8 @@ class BASELIB_EXPORT PhoneDAO
 {
     public:
         static QColor getStatusColor(const PhoneInfo *phone);
+        static QString getStatusName(const PhoneInfo *phone);
+        static QVariantMap getPhoneStatusConfig(const PhoneInfo *phone);
 };
 
 #endif

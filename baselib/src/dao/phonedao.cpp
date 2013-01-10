@@ -34,15 +34,27 @@
 
 QColor PhoneDAO::getStatusColor(const PhoneInfo *phone)
 {
-    QColor color;
+    QVariantMap config = PhoneDAO::getPhoneStatusConfig(phone);
+    return QColor(config.value("color").toString());
+}
+
+QString PhoneDAO::getStatusName(const PhoneInfo *phone)
+{
+    QVariantMap config = PhoneDAO::getPhoneStatusConfig(phone);
+    return config.value("longname").toString();
+}
+
+QVariantMap PhoneDAO::getPhoneStatusConfig(const PhoneInfo *phone)
+{
+    QVariantMap config;
     if (! phone) {
-        return color;
+        return config;
     }
 
     const QString &status = phone->hintstatus();
     if (b_engine->getOptionsPhoneStatus().contains(status)) {
-        QVariantMap phone_status_config = b_engine->getOptionsPhoneStatus().value(status).toMap();
-        color = QColor(phone_status_config.value("color").toString());
+        config = b_engine->getOptionsPhoneStatus().value(status).toMap();
     }
-    return color;
+
+    return config;
 }
