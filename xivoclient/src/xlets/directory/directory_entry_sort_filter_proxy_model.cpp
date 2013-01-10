@@ -37,6 +37,10 @@ DirectoryEntrySortFilterProxyModel::DirectoryEntrySortFilterProxyModel(QObject *
 
 bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+    if (m_filter.isEmpty()) {
+        return false;
+    }
+
     QModelIndex directory_entry_number_index = sourceModel()->index(sourceRow,
                                                                     DirectoryEntryModel::NUMBER,
                                                                     sourceParent);
