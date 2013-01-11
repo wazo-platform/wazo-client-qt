@@ -40,10 +40,6 @@ class QLabel;
 class QPixmap;
 class UserInfo;
 
-/*! \brief Display Phone informations
- *
- * \see IdentityDisplay
- */
 class IdentityPhone : public QWidget
 {
     Q_OBJECT
@@ -60,9 +56,9 @@ class IdentityPhone : public QWidget
         void setPhoneLines();
         QString m_xphoneid;
 
-        QGridLayout * m_layout;  //!< layout
-        QLabel * m_icon;  //!< icon
-        QLabel * m_phone;  //!< Phone name label
+        QGridLayout * m_layout;
+        QLabel * m_icon;
+        QLabel * m_phone;
         QLabel * m_phonecall;
         QLabel * m_phonecalltxt;
         QLabel * m_phonestatustxt;

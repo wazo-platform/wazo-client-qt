@@ -94,7 +94,6 @@ void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
         m_phone->setText(tr("Phone %1").arg(phonenumber));
     else
         m_phone->setText(tr("Phone <EMPTY>"));
-    // would be good to display SIP/grmbl in tooltip, too ...
     m_phone->setToolTip(tr("Protocol: %1\n"
                            "Order: %2\n"
                            "IPBXid: %3\n"
