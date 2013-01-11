@@ -61,8 +61,6 @@ class XLETLIB_EXPORT ExtendedTableWidget : public QTableWidget
     private slots:
         void dialNumber();
         void sendMail();
-        void itransfer();
-        void dtransfer();
         void remove();
 
     private:

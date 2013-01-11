@@ -81,39 +81,6 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
         if (PhoneNumber::phone_re().exactMatch(item->text())) {
             action = contextMenu.addAction(tr("&Dial"), this, SLOT(dialNumber()));
             action->setProperty("number", item->text());
-
-            QMenu *transferMenu = new QMenu(tr("Direct &Transfer"), &contextMenu);
-            QMenu *indirectTransferMenu = new QMenu(tr("&Indirect Transfer"), &contextMenu);
-            UserInfo *ui = b_engine->getXivoClientUser();
-            if (ui) {
-                QString ipbxid = ui->ipbxid();
-                foreach (const QString phoneid, ui->phonelist()) {
-                    QString xphoneid = QString("%1/%2").arg(ipbxid).arg(phoneid);
-                    const PhoneInfo * pi = b_engine->phone(xphoneid);
-                    if (! pi)
-                        continue;
-                    foreach (const QString channel, pi->channels()) {
-                        const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-                        if (! channelinfo)
-                            continue;
-                        QString text = channelinfo->peerdisplay();
-
-                        action = transferMenu->addAction(text, this, SLOT(dtransfer()));
-                        action->setProperty("chan", channel);
-                        action->setProperty("number", item->text());
-
-                        action = indirectTransferMenu->addAction(text, this, SLOT(itransfer()));
-                        action->setProperty("chan", channel);
-                        action->setProperty("number", item->text());
-                    }
-                }
-            }
-            if (!transferMenu->isEmpty()) {
-                contextMenu.addMenu(transferMenu);
-            }
-            if (!indirectTransferMenu->isEmpty()) {
-                contextMenu.addMenu(indirectTransferMenu);
-            }
         } else if(item->text().contains("@")) { // this is an email address
             action = contextMenu.addAction(tr("Send an E-mail"),
                                            this, SLOT(sendMail()) );
@@ -228,29 +195,5 @@ void ExtendedTableWidget::remove()
 
     if (ret == QMessageBox::Yes) {
         removeRow(_row);
-    }
-}
-
-void ExtendedTableWidget::dtransfer()
-{
-    QString chan = sender()->property("chan").toString();
-    QString number = sender()->property("number").toString();
-    // XXX as of today 2011/02/25, chan is not the right one here,
-    // we should make it so that the server fetches the proper peerchannel
-    if ((!chan.isEmpty())&&(!number.isEmpty())) {
-        b_engine->actionCall("transfer",
-                             "chan:special:me:" + chan,
-                             "ext:" + number);
-    }
-}
-
-void ExtendedTableWidget::itransfer()
-{
-    QString chan = sender()->property("chan").toString();
-    QString number = sender()->property("number").toString();
-    if ((!chan.isEmpty()) && (!number.isEmpty())) {
-        b_engine->actionCall("atxfer",
-                             "chan:special:me:" + chan,
-                             "ext:" + number);
     }
 }
