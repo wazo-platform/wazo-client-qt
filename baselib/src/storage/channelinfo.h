@@ -43,7 +43,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         const QString & talkingto_id() const;
         const QString & direction() const;
         const QString & commstatus() const;
-        const QString & peerdisplay() const;
         double timestamp() const;
         int linenumber() const;
         bool isholded() const;
@@ -52,7 +51,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
 
     private:
 
-        QString m_peerdisplay;
         QString m_direction;
         QString m_commstatus;
         QString m_talkingto_kind;

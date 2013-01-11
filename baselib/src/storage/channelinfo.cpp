@@ -43,7 +43,6 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "talkingto_kind", & m_talkingto_kind);
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
-    haschanged |= setIfChangeString(prop, "peerdisplay", & m_peerdisplay);
     haschanged |= setIfChangeString(prop, "state", & m_state);
     haschanged |= setIfChangeDouble(prop, "timestamp", & m_timestamp);
     haschanged |= setIfChangeBool(prop, "holded", & m_isholded);
@@ -74,11 +73,6 @@ const QString & ChannelInfo::commstatus() const
 double ChannelInfo::timestamp() const
 {
     return m_timestamp;
-}
-
-const QString & ChannelInfo::peerdisplay() const
-{
-    return m_peerdisplay;
 }
 
 int ChannelInfo::linenumber() const
