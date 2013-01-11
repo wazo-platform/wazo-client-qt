@@ -59,7 +59,7 @@ tests {
         pack.target = pack
         pack.input = packaging/resources/xivoclient.png \
                      packaging/resources/xivoclient.desktop
-        pack.commands = packaging/xc-package-unix.sh
+        pack.commands = packaging/xc-package-debian.sh
     }
     mac {
         pack.target = pack
