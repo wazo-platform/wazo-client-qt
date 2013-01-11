@@ -61,8 +61,6 @@ ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent
 
 void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 {
-    qDebug() << Q_FUNC_INFO << event;
-    qDebug() << "   " << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
     QAction *action;
     if (item) {
