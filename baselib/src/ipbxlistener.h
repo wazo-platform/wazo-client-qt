@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- /* $Revision$
- * $Date$
- */
-
 #ifndef __IPBXLISTENER_H__
 #define __IPBXLISTENER_H__
 

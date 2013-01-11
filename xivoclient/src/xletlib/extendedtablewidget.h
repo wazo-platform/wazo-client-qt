@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __EXTENDEDTABLEWIDGET_H__
 #define __EXTENDEDTABLEWIDGET_H__
 

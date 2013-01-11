@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef _CONFERENCE2_CONFLIST_H_
 #define _CONFERENCE2_CONFLIST_H_
 

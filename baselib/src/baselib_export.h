@@ -27,10 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
-
 #ifndef __BASELIB_EXPORT_H__
 #define __BASELIB_EXPORT_H__
 #include <QtGlobal>

@@ -27,9 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* $Revision$
- * $Date$
- */
 #ifndef _CONFERENCE2_CONFROOM_H_
 #define _CONFERENCE2_CONFROOM_H_
 #include <QWidget>
