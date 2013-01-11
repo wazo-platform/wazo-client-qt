@@ -40,8 +40,6 @@
 #include <baseengine.h>
 
 
-/*! \brief Table class inheriting QTableWidget with contextMenu added.
- */
 class XLETLIB_EXPORT ExtendedTableWidget : public QTableWidget
 {
     Q_OBJECT

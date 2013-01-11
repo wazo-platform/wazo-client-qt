@@ -43,8 +43,6 @@
 
 #include "extendedtablewidget.h"
 
-/*! \brief Constructor
- */
 ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
     : QTableWidget(parent),
       m_editable(false)
@@ -54,8 +52,6 @@ ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
     horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 }
 
-/*! \brief Constructor
- */
 ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent)
     : QTableWidget(rows, columns, parent)
 {
@@ -63,8 +59,6 @@ ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent
     setAlternatingRowColors(true);
 }
 
-/*! \brief display the context Menu
- */
 void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 {
     qDebug() << Q_FUNC_INFO << event;
@@ -81,7 +75,7 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
         if (PhoneNumber::phone_re().exactMatch(item->text())) {
             action = contextMenu.addAction(tr("&Dial"), this, SLOT(dialNumber()));
             action->setProperty("number", item->text());
-        } else if(item->text().contains("@")) { // this is an email address
+        } else if(item->text().contains("@")) {
             action = contextMenu.addAction(tr("Send an E-mail"),
                                            this, SLOT(sendMail()) );
             action->setProperty("email", item->text());
@@ -96,23 +90,19 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
 
 void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
 {
-    // qDebug() << Q_FUNC_INFO << event << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
     if (item) {
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData;
         mimeData->setText(item->text());
-        mimeData->setData(NUMBER_MIMETYPE, ""); // ???
+        mimeData->setData(NUMBER_MIMETYPE, "");
         drag->setMimeData(mimeData);
         drag->start(Qt::CopyAction | Qt::MoveAction);
     }
 }
 
-/*! \brief filter drag events
- */
 void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    // qDebug() << Q_FUNC_INFO << event->mimeData()->formats() << event->pos();
     if (event->mimeData()->hasFormat(XPHONEID_MIMETYPE) ||
         event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
         event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
@@ -120,13 +110,8 @@ void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-/*! \brief filter drag move events
- *
- * Detect if the move is over a cell containing a phone number.
- */
 void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-    // qDebug() << Q_FUNC_INFO << event->pos();
     if (event->proposedAction() & (Qt::CopyAction | Qt::MoveAction)) {
         event->acceptProposedAction();
     }
@@ -142,11 +127,8 @@ void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
     }
 }
 
-/*! \brief receive drop event
- */
 void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
-    // qDebug() << Q_FUNC_INFO << event->mimeData()->text() << event->pos();
     QTableWidgetItem *item = itemAt(event->pos());
     if ((item) && (PhoneNumber::phone_re().exactMatch(item->text()))) {
         QString userid_from = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
