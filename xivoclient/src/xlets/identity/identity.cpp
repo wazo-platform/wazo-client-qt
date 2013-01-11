@@ -319,28 +319,6 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
 
-    foreach(QString xphoneid, m_ui->phonelist()) {
-        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
-        if (phoneinfo == NULL)
-            continue;
-        foreach (const QString channel, phoneinfo->channels()) {
-            const ChannelInfo * channelinfo = b_engine->channels().value(channel);
-            if (channelinfo == NULL)
-                continue;
-            QString status = channelinfo->commstatus();
-            QString todisplay = channelinfo->peerdisplay();
-            // QString direction = channelinfo->direction();
-            // int timestamp = channelinfo->timestamp();
-
-            QPixmap square_comm(25, 3);
-            square_comm.fill(channelinfo->isholded() ? Qt::darkGreen : Qt::green);
-            if (status == "hangup") {
-                todisplay = tr("(Line %1)").arg(channelinfo->linenumber());
-                square_comm.fill(Qt::black);
-            }
-        }
-    }
-
     if (! m_ui->xagentid().isEmpty() && b_engine->getConfig("guioptions.loginkind").toUInt() != 0)
         m_agent->show();
     m_agent->setAgentId(m_ui->xagentid());

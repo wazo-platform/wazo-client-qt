@@ -44,32 +44,6 @@ class QLabel;
 class QPixmap;
 class UserInfo;
 
-/*! \brief phone line display
- */
-class IdentityPhoneLine : public QWidget
-{
-    Q_OBJECT
-
-    public:
-        IdentityPhoneLine(int linenum, QWidget *parent=0);
-        void setPixmap(const QPixmap &);
-        void setText(const QString &);
-        void setPhoneId(const QString &);
-    public slots:
-        void hangup();
-        void answer();
-        void refuse();
-
-    protected:
-        void contextMenuEvent(QContextMenuEvent *);
-
-    private:
-        QString m_xphoneid;
-        int m_linenum;
-        QLabel * m_action;
-        QLabel * m_status;
-};
-
 /*! \brief Display Phone informations
  *
  * \see IdentityDisplay
@@ -86,7 +60,6 @@ class IdentityPhone : public QWidget
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void updateChannelStatus(const QString &);
-        void updateLines(const QStringList &);
     private:
         void setPhoneLines();
         QString m_xphoneid;
@@ -97,7 +70,6 @@ class IdentityPhone : public QWidget
         QLabel * m_phonecall;
         QLabel * m_phonecalltxt;
         QLabel * m_phonestatustxt;
-        QList<IdentityPhoneLine *> m_lines;
 };
 
 #endif
