@@ -31,8 +31,8 @@ function package-content {
     mkdir -p $PKGROOT/opt/xivoclient
     cp -r bin/* $PKGROOT/opt/xivoclient
 
-    mkdir -p $PKGROOT/usr/share/icons/
-    cp $RESOURCES_DIR/xivoclient.png $PKGROOT/usr/share/icons/
+    mkdir -p $PKGROOT/usr/share/icons/hicolor/128x128/apps
+    cp $RESOURCES_DIR/xivoclient.png $PKGROOT/usr/share/icons/hicolor/128x128/apps
 
     mkdir -p $PKGROOT/usr/share/applications/
     cp $RESOURCES_DIR/xivoclient.desktop $PKGROOT/usr/share/applications/
