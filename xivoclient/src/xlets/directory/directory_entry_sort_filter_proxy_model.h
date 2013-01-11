@@ -41,6 +41,7 @@ class DirectoryEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
         DirectoryEntrySortFilterProxyModel(QObject *parent);
     public slots:
         void setFilter(const QString & filter);
+        QString getNumber(const QModelIndex &index);
     protected:
         bool filterAcceptsRow(int , const QModelIndex &) const;
     private:

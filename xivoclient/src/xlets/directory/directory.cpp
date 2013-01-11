@@ -40,19 +40,18 @@
 
 Directory::Directory(QWidget *parent)
     : XLet(parent),
-      m_model(NULL)
+      m_proxy_model(NULL)
 {
     setTitle(tr("Directory"));
 
     this->ui.setupUi(this);
 
-    DirectoryEntrySortFilterProxyModel * proxy_model = new DirectoryEntrySortFilterProxyModel(this);
-    m_model = new DirectoryEntryModel(this);
-    proxy_model->setSourceModel(m_model);
-    ui.entry_table->setModel(proxy_model);
+    m_proxy_model = new DirectoryEntrySortFilterProxyModel(this);
+    m_proxy_model->setSourceModel(new DirectoryEntryModel(this));
+    ui.entry_table->setModel(m_proxy_model);
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
-            proxy_model, SLOT(setFilter(const QString &)));
+            m_proxy_model, SLOT(setFilter(const QString &)));
     connect(signal_relayer, SIGNAL(attendedTransferRequested()),
             this, SLOT(attendedTransferRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
@@ -77,6 +76,7 @@ void Directory::focusEntryTable()
 
 void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
 {
-    QString number = m_model->getNumber(index);
+    const QString &number = m_proxy_model->getNumber(index);
+    qDebug() << Q_FUNC_INFO << "Requesting an attended transfer to" << number;
     b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
 }

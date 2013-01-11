@@ -74,3 +74,9 @@ bool DirectoryEntrySortFilterProxyModel::filterMatchesColumn(int sourceRow,
 
     return value.contains(this->m_filter, Qt::CaseInsensitive);
 }
+
+QString DirectoryEntrySortFilterProxyModel::getNumber(const QModelIndex &index)
+{
+    QModelIndex number_index = this->index(index.row(), DirectoryEntryModel::NUMBER);
+    return this->data(number_index, Qt::DisplayRole).toString();
+}

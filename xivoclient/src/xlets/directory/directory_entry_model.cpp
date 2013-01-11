@@ -226,9 +226,3 @@ bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & ind
     }
     return ret;
 }
-
-QString DirectoryEntryModel::getNumber(const QModelIndex &index)
-{
-    QModelIndex number_index = this->index(index.row(), NUMBER);
-    return this->data(number_index, Qt::DisplayRole).toString();
-}

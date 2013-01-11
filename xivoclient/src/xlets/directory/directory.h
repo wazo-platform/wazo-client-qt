@@ -33,7 +33,7 @@
 #include <QObject>
 #include "xlet.h"
 #include "ui_directory_widget.h"
-#include "directory_entry_model.h"
+#include "directory_entry_sort_filter_proxy_model.h"
 
 class Directory: public XLet
 {
@@ -47,7 +47,7 @@ class Directory: public XLet
         void attendedTransferSelectedIndex(const QModelIndex &index);
     private:
         Ui::DirectoryWidget ui;
-        DirectoryEntryModel *m_model;
+        DirectoryEntrySortFilterProxyModel *m_proxy_model;
 };
 
 #endif /* __DIRECTORY_H__ */
