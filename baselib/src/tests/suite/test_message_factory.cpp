@@ -108,3 +108,13 @@ void TestMessageFactory::testCompleteTransfer()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testCancelTransfer()
+{
+    QVariantMap result = MessageFactory::cancelTransfer();
+
+    QVariantMap expected;
+    expected["class"] = "cancel_transfer";
+
+    QCOMPARE(result, expected);
+}

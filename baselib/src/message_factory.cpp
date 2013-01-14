@@ -73,6 +73,11 @@ QVariantMap MessageFactory::completeTransfer()
     return MessageFactory::baseMessage("complete_transfer");
 }
 
+QVariantMap MessageFactory::cancelTransfer()
+{
+    return MessageFactory::baseMessage("cancel_transfer");
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;
