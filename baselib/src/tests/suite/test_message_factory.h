@@ -43,6 +43,7 @@ class TestMessageFactory: public QObject
         void testHoldSwitchboard();
         void testUnholdSwitchboard();
         void testAttendedTransfer();
+        void testCompleteTransfer();
 };
 
 #endif /* __TEST_MESSAGE_FACTORY_H__ */
