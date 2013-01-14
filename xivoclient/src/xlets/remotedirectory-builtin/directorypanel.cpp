@@ -30,10 +30,6 @@
 #include "directorypanel.h"
 #include "phonenumber.h"
 
-/*! \brief Constructor
- *
- *  Build layout and child widgets, connect signals/slots.
- */
 DirectoryPanel::DirectoryPanel(QWidget *parent)
     : XLet(parent)
 {
@@ -66,65 +62,47 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
     setFocusPolicy(Qt::StrongFocus);
     setFocusProxy(m_searchText);
 
-    // connect signal/slots
     connect(b_engine, SIGNAL(directoryResponse(const QStringList &, const QStringList &)),
             this, SLOT(setSearchResponse(const QStringList &, const QStringList &)) );
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(stop()) );
 }
 
-/*! \brief does nothing for the moment */
 void DirectoryPanel::focusInEvent(QFocusEvent * event)
 {
     qDebug() << Q_FUNC_INFO << event;
 }
 
-/*! \brief does nothing for the moment */
 void DirectoryPanel::dropEvent(QDropEvent * event)
 {
     qDebug() << Q_FUNC_INFO << event;
 }
 
-/*! \brief copy number in clicked cell to clipboard
- */
 void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 {
-    //qDebug() << Q_FUNC_INFO << item << item->text();
-    // check if the string is a phone number
     if( PhoneNumber::phone_re().exactMatch(item->text()) ) {
-        //qDebug() << Q_FUNC_INFO << "preparing to dial" << item->text();
         b_engine->pasteToDial(item->text());
         emit selectedText(item->text());
     }
 }
 
-/*! \brief call the number or send an email to the address */
 void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
-    //qDebug() << item << item->text();
-    // check if the string is a number
     if( PhoneNumber::phone_re().exactMatch(item->text()) ) {
-        b_engine->actionDialNumber(item->text()); // Call
+        b_engine->actionDialNumber(item->text());
     }
 
     if(item && item->text().contains("@")) {
         QString mailAddr = item->text();
         if(mailAddr.length() > 0) {
-            //qDebug() << Q_FUNC_INFO << "mail" << mailAddr;
             QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
         }
     }
 }
 
-/*! \brief receive and process search response
- *
- * Parses the response, sets column and row headers,
- * set table cells.
- */
 void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStringList & resp)
 {
     int x, y;
-    //qDebug() << Q_FUNC_INFO << headers << resp;
     int ncolumns = headers.size();
     int nrows = resp.size();
 
@@ -139,43 +117,25 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
             for(x = 0; x < ncolumns; x++) {
                 QString it = items[x];
                 QTableWidgetItem * item = new QTableWidgetItem(it);
-                item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled ); // Qt::ItemIsDragEnabled
+                item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
 
                 if(it.contains("@"))
                     item->setToolTip(tr("Double-click to send an E-mail to") + "\n" + it);
                 else if(PhoneNumber::phone_re().exactMatch(it))
                     item->setToolTip(tr("Double-click to call") + "\n" + it);
-                //item->setStatusTip();
-                // qDebug() << x << y << item->flags();
                 m_table->setItem( y, x, item );
-                //qDebug() << m_table->cellWidget( y, x );
             }
         }
         m_table->setSortingEnabled(true);
         m_table->resizeColumnsToContents();
-
-        // to remove the headers if ever ...
-        // (they are useful to know that a reply has been received)
-        // } else {
-        // m_table->setColumnCount(0);
-        // m_table->setRowCount(0);
     }
-    // make columns fit the content
-    //if(m_table->rowCount() > 0)
-    //    m_table->resizeColumnsToContents();
 }
 
-/*! \brief start the search process
- */
 void DirectoryPanel::startSearch()
 {
     b_engine->searchDirectory(m_searchText->text());
 }
 
-/*! \brief stop
- *
- * clear everything.
- */
 void DirectoryPanel::stop()
 {
     m_table->setRowCount(0);

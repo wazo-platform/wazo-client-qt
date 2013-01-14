@@ -53,8 +53,6 @@
 
 #include <functests.h>
 
-/*! \brief Directory allowing search
- */
 class DirectoryPanel : public XLet
 {
     Q_OBJECT
@@ -78,10 +76,10 @@ class DirectoryPanel : public XLet
         void stop();
 
     private:
-        ExtendedLineEdit *m_searchText;  //!< search text input
-        ExtendedTableWidget *m_table;  //!< table to display results
-        QPushButton *m_searchButton;  //!< button
-        QString m_mailAddr;  //!< used to store email address
+        ExtendedLineEdit *m_searchText;
+        ExtendedTableWidget *m_table;
+        QPushButton *m_searchButton;
+        QString m_mailAddr;
 
     FUNCTESTED
 };
