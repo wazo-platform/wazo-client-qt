@@ -14,22 +14,47 @@
         <translation>Current Call</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="111"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="87"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="94"/>
+        <source>complete</source>
+        <translation>complete</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="125"/>
+        <source>Attended Transfer</source>
+        <translation>Attended Transfer</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="128"/>
+        <source>A Xfer</source>
+        <translation>A Xfer</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="131"/>
+        <source>F5</source>
+        <translation>F5</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="164"/>
         <source>Hold</source>
         <translation>Hold</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="167"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="151"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="204"/>
         <source>Hangup</source>
         <translation>Hangup</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="154"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="207"/>
         <source>F8</source>
         <translation>F8</translation>
     </message>

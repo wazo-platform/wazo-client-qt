@@ -390,42 +390,42 @@ ones beneath) on first window</source>
 <context>
     <name>ContactDialog</name>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="41"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="37"/>
         <source>Contact</source>
         <translation>Contact</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="44"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="40"/>
         <source>First Name</source>
         <translation>Voornaam</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="46"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="42"/>
         <source>Last Name</source>
         <translation>Familienaam</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="44"/>
         <source>Phone Number</source>
         <translation>Telefoonnummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="46"/>
         <source>Email Address</source>
         <translation>E-mailadres</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="52"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
         <source>Company</source>
         <translation>Firma</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="54"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
         <source>Fax Number</source>
         <translation>Faxnummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="56"/>
+        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="52"/>
         <source>Mobile Number</source>
         <translation>Gsm-nummer</translation>
     </message>
@@ -433,7 +433,7 @@ ones beneath) on first window</source>
 <context>
     <name>CustomerInfoPanel</name>
     <message>
-        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="42"/>
+        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="38"/>
         <source>Sheets</source>
         <translation>Tabbladen</translation>
     </message>
@@ -472,32 +472,32 @@ ones beneath) on first window</source>
 <context>
     <name>DirectoryPanel</name>
     <message>
-        <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="40"/>
-        <source>Directory</source>
-        <translation>Telefoonlijst</translation>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="36"/>
+        <source>Remote Directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="41"/>
-        <source>Directory Panel</source>
-        <translation>Telefoonlijst Paneel</translation>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="37"/>
+        <source>Remote Directory Panel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="44"/>
-        <source>Di&amp;rectory</source>
-        <translation>Te&amp;lefoonlijst</translation>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="40"/>
+        <source>Remote Di&amp;rectory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="52"/>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="48"/>
         <source>Search</source>
         <translation>Zoeken</translation>
     </message>
     <message>
-        <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="145"/>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="123"/>
         <source>Double-click to send an E-mail to</source>
         <translation>Dubbel klik om een e-mail te sturen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/directory-builtin/directorypanel.cpp" line="147"/>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="125"/>
         <source>Double-click to call</source>
         <translation>Dubbel klik om te bellen</translation>
     </message>
@@ -505,126 +505,126 @@ ones beneath) on first window</source>
 <context>
     <name>FaxPanel</name>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="42"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="38"/>
         <source>Fax</source>
         <translation>Fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="43"/>
         <source>Choose Destination Number</source>
         <translation>Kies het nummer van uw bestemmeling</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="51"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
         <source>Fax Number</source>
         <translation>Faxnummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="53"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="49"/>
         <source>Directory</source>
         <translation>Telefoonlijst</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="64"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="60"/>
         <source>Choose File to Send</source>
         <translation>Kies het bestand om te versturen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="70"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="66"/>
         <source>Browse</source>
         <translation>Bladeren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="77"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="73"/>
         <source>Hide the Number ?</source>
         <translation>Verberg het nummer?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="81"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="77"/>
         <source>Hide Number</source>
         <translation>Verberg nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="90"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="86"/>
         <source>Send your File</source>
         <translation>Verstuur uw bestand</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="94"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="90"/>
         <source>Send</source>
         <translation>Verzenden</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="151"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="147"/>
         <source>Open Fax File</source>
         <translation>Open Fax Bestand</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="153"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="149"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>PDF Bestanden (*.pdf);;Alle Bestanden (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="199"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="195"/>
         <source>Your Fax (file %1)
 was successfully sent to %2.</source>
         <translation>Uw Fax (bestand %1)
 Is met succes verzonden naar %2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="203"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="199"/>
         <source>Your Fax (file %1)
 is being processed and will be sent soon.</source>
         <translation>Uw Fax (bestand %1)
 wordt verwerkt en wordt weldra verstuurd.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="208"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="204"/>
         <source>File not found</source>
         <translation>Bestand niet  gevonden</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="210"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="206"/>
         <source>Empty file</source>
         <translation>Leeg bestand</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="212"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="208"/>
         <source>Problem when dialing the number</source>
         <translation>Proleem bij het bellen van het nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="214"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="210"/>
         <source>Unable to convert your PDF to TIFF</source>
         <translation>Niet mogelijk om uw PDF bestand te converteren naar TIFF</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="216"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="212"/>
         <source>Document not a PDF</source>
         <translation>Het document is geen PDF document</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="218"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="214"/>
         <source>Dialog between CTI server and IPBX</source>
         <translation>Communicatie tussen CTI server en IPBX</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="220"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="216"/>
         <source>(Server) missing directory</source>
         <translation>(server) ontbrekende telefoonlijst</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="218"/>
         <source>Unknown</source>
         <translation>onbekend</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="224"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="220"/>
         <source>Not given</source>
         <translation>Niet opgegeven</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="226"/>
+        <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="222"/>
         <source>Your Fax (file %1)
 was NOT sent to %2.
 Reason given : %3.</source>
@@ -636,133 +636,133 @@ Reden: %3.</translation>
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../src/mainwidget.cpp" line="63"/>
-        <location filename="../src/mainwidget.cpp" line="930"/>
+        <location filename="../src/mainwidget.cpp" line="66"/>
+        <location filename="../src/mainwidget.cpp" line="933"/>
         <source>Client %1</source>
         <translation>Client %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="168"/>
+        <location filename="../src/mainwidget.cpp" line="171"/>
         <source>Login</source>
         <translation>Inloggen</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="170"/>
+        <location filename="../src/mainwidget.cpp" line="173"/>
         <source>Password</source>
         <translation>Paswoord</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="172"/>
+        <location filename="../src/mainwidget.cpp" line="175"/>
         <source>Phone</source>
         <translation>Tel.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="188"/>
+        <location filename="../src/mainwidget.cpp" line="191"/>
         <source>Keep Password</source>
         <translation>Paswoord behouden</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="192"/>
+        <location filename="../src/mainwidget.cpp" line="195"/>
         <source>No Agent</source>
         <translation>Geen agent</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="193"/>
+        <location filename="../src/mainwidget.cpp" line="196"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (niet ingelogd)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="194"/>
+        <location filename="../src/mainwidget.cpp" line="197"/>
         <source>Agent (logged)</source>
         <translation>Agent (ingelogd)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="345"/>
+        <location filename="../src/mainwidget.cpp" line="348"/>
         <source>Confi&amp;gure</source>
         <translation>Confi&amp;gureren</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="347"/>
+        <location filename="../src/mainwidget.cpp" line="350"/>
         <source>Configure account and connection options</source>
         <translation>Account en verbindingsopties configureren</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="351"/>
+        <location filename="../src/mainwidget.cpp" line="354"/>
         <source>&amp;Quit</source>
         <translation>&amp;Verlaten</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="353"/>
+        <location filename="../src/mainwidget.cpp" line="356"/>
         <source>Close the application</source>
         <translation>De toepassing sluiten</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="354"/>
+        <location filename="../src/mainwidget.cpp" line="357"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="361"/>
+        <location filename="../src/mainwidget.cpp" line="364"/>
         <source>To S&amp;ystray</source>
         <translation>Naar S&amp;ystray</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="362"/>
+        <location filename="../src/mainwidget.cpp" line="365"/>
         <source>Enter the system tray</source>
         <translation> De toepassing minimaliseren in de systeemnotificatiezone</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="367"/>
+        <location filename="../src/mainwidget.cpp" line="370"/>
         <source>&amp;Show window</source>
         <translation>&amp;Venster weergeven</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="368"/>
+        <location filename="../src/mainwidget.cpp" line="371"/>
         <source>Leave the system tray</source>
         <translation> De toepassing uit de systeemnotificatiezone halen</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="378"/>
+        <location filename="../src/mainwidget.cpp" line="381"/>
         <source>&amp;Connect</source>
         <translation>&amp;Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="379"/>
+        <location filename="../src/mainwidget.cpp" line="382"/>
         <source>Connect to the server</source>
         <translation>Verbinden met de server</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="383"/>
+        <location filename="../src/mainwidget.cpp" line="386"/>
         <source>&amp;Disconnect</source>
         <translation>&amp;Verbinding verbreken</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="385"/>
+        <location filename="../src/mainwidget.cpp" line="388"/>
         <source>Disconnect from the server</source>
         <translation>Verbinding met de server verbreken</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="472"/>
+        <location filename="../src/mainwidget.cpp" line="475"/>
         <source>&amp;Availability</source>
         <translation>&amp;Beschikbaarheid</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="475"/>
+        <location filename="../src/mainwidget.cpp" line="478"/>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="476"/>
+        <location filename="../src/mainwidget.cpp" line="479"/>
         <source>&amp;About XiVO Client</source>
         <translation>&amp;Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="477"/>
+        <location filename="../src/mainwidget.cpp" line="480"/>
         <source>About &amp;Qt</source>
         <translation>Over &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="478"/>
+        <location filename="../src/mainwidget.cpp" line="481"/>
         <source>&amp;Credits</source>
         <translation>&amp;Credits</translation>
     </message>
@@ -782,92 +782,92 @@ Reden: %3.</translation>
         <translation>Tabs</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="845"/>
+        <location filename="../src/mainwidget.cpp" line="848"/>
         <source>Connected</source>
         <translation>Verbonden</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="854"/>
+        <location filename="../src/mainwidget.cpp" line="857"/>
         <source>Disconnected</source>
         <translation>Verbinding verbroken</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1054"/>
+        <location filename="../src/mainwidget.cpp" line="1051"/>
         <source>Fetch the last one</source>
         <translation>De laatste ophalen</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1061"/>
+        <location filename="../src/mainwidget.cpp" line="1058"/>
         <source>About XiVO Client</source>
         <translation>Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1063"/>
+        <location filename="../src/mainwidget.cpp" line="1060"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1068"/>
+        <location filename="../src/mainwidget.cpp" line="1065"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Versie Informatie&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1069"/>
+        <location filename="../src/mainwidget.cpp" line="1066"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Major: &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1070"/>
+        <location filename="../src/mainwidget.cpp" line="1067"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Minor : git hash &lt;b&gt;%1&lt;/b&gt; van : %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1073"/>
+        <location filename="../src/mainwidget.cpp" line="1070"/>
         <source>(Application Built on : %1)</source>
         <translation>(Applicatie Gecompileerd op : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1074"/>
+        <location filename="../src/mainwidget.cpp" line="1071"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Applicatie gestart op: %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1075"/>
+        <location filename="../src/mainwidget.cpp" line="1072"/>
         <source>(Config File Location : %1)</source>
         <translation>(Locatie Configuratie Bestand : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1078"/>
+        <location filename="../src/mainwidget.cpp" line="1075"/>
         <source>E-mail : </source>
         <translation>E-mail: </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1079"/>
+        <location filename="../src/mainwidget.cpp" line="1076"/>
         <source>Phone : </source>
         <translation>Tel. : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1080"/>
+        <location filename="../src/mainwidget.cpp" line="1077"/>
         <source>Authors : </source>
         <translation>Auteurs: </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1080"/>
+        <location filename="../src/mainwidget.cpp" line="1077"/>
         <source>Avencall Development Team</source>
         <translation>Avencall Development Team</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1082"/>
+        <location filename="../src/mainwidget.cpp" line="1079"/>
         <source>License : </source>
         <translation>Licentie: </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1084"/>
+        <location filename="../src/mainwidget.cpp" line="1081"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>met een speciale uitzondering om het te koppelen met OpenSSL, onder bepaalde voorwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1090"/>
+        <location filename="../src/mainwidget.cpp" line="1087"/>
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
@@ -875,125 +875,125 @@ Reden: %3.</translation>
 <context>
     <name>MyLocalDirPanel</name>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="59"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="55"/>
         <source>Personal Directory</source>
         <translation>Persoonlijke telefoonlijst</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="82"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="71"/>
         <source>&amp;New Contact</source>
         <translation>&amp;Nieuw Contact</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="86"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="75"/>
         <source>&amp;Export Contacts</source>
         <translation>&amp;Contacten exporteren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="90"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="79"/>
         <source>&amp;Import Contacts</source>
         <translation>&amp;Contacten importeren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="94"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="83"/>
         <source>&amp;Search</source>
         <translation>&amp;Zoeken</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="98"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="87"/>
         <source>&amp;Remove all Contacts</source>
         <translation>&amp;Alle contacten verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="108"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="272"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="97"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="261"/>
         <source>First Name</source>
         <translation>Voornaam</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="109"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="276"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="98"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="265"/>
         <source>Last Name</source>
         <translation>Familienaam</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="110"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="281"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="99"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="270"/>
         <source>Phone Number</source>
         <translation>Telefoonnummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="111"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="288"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="100"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="277"/>
         <source>Email Address</source>
         <translation>E-mailadres</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="112"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="298"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="101"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="287"/>
         <source>Company</source>
         <translation>Firma</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="113"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="303"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="102"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="292"/>
         <source>Fax Number</source>
         <translation>Fax nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="114"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="310"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="103"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="299"/>
         <source>Mobile Number</source>
         <translation>Gsm nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="199"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="188"/>
         <source>Open Contacts File</source>
         <translation>Open contacten bestand</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="201"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="217"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="190"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="206"/>
         <source>Comma Separated Value (*.csv)</source>
         <translation>Comma Separated Value (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="215"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="204"/>
         <source>Save Contacts File</source>
         <translation>Contacten bestand opslaan</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="283"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="272"/>
         <source>Number</source>
         <translation>Nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="289"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="278"/>
         <source>E-mail Address</source>
         <translation>E-mailadres</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="290"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="279"/>
         <source>Email</source>
         <translation>E-mail</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="304"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="293"/>
         <source>Fax</source>
         <translation>Fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="311"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="300"/>
         <source>Mobile</source>
         <translation>GSM</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="404"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="388"/>
         <source>Removing all contacts</source>
         <translation>Alle contacten worden verwijderd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="405"/>
+        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="389"/>
         <source>Removing all contacts.
 Are you sure ?</source>
         <translation>Alle contacten worden verwijderd.
@@ -1003,7 +1003,7 @@ Bent u zeker ?</translation>
 <context>
     <name>RemarkArea</name>
     <message>
-        <location filename="../src/xlets/customerinfo-builtin/remarkarea.cpp" line="67"/>
+        <location filename="../src/xlets/customerinfo-builtin/remarkarea.cpp" line="63"/>
         <source>&amp;Submit</source>
         <translation>&amp;Verstuur</translation>
     </message>
