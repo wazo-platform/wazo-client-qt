@@ -73,6 +73,8 @@ void CurrentCall::connectButtons()
             this, SLOT(attendedTransfer()));
     connect(m_current_call_widget->btn_complete, SIGNAL(clicked()),
             this, SLOT(completeTransfer()));
+    connect(m_current_call_widget->btn_cancel, SIGNAL(clicked()),
+            this, SLOT(cancelTransfer()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -144,6 +146,12 @@ void CurrentCall::completeTransfer()
 {
     qDebug() << "Completing txfer";
     b_engine->sendJsonCommand(MessageFactory::completeTransfer());
+}
+
+void CurrentCall::cancelTransfer()
+{
+    qDebug() << "Canceling txfer";
+    b_engine->sendJsonCommand(MessageFactory::cancelTransfer());
 }
 
 void CurrentCall::disableButtons()
