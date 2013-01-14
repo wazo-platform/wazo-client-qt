@@ -49,6 +49,7 @@ class CurrentCall: public QObject, public IPBXListener
         virtual void parseCommand(const QVariantMap &command);
     public slots:
         void attendedTransfer();
+        void completeTransfer();
         void hangup();
         void hold();
     private slots:

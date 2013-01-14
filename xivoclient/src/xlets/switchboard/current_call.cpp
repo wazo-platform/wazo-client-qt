@@ -71,6 +71,8 @@ void CurrentCall::connectButtons()
             this, SLOT(hold()));
     connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
             this, SLOT(attendedTransfer()));
+    connect(m_current_call_widget->btn_complete, SIGNAL(clicked()),
+            this, SLOT(completeTransfer()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -136,6 +138,12 @@ void CurrentCall::attendedTransfer()
 {
     qDebug() << "ATXFer";
     signal_relayer->relayAttendedTransferRequested();
+}
+
+void CurrentCall::completeTransfer()
+{
+    qDebug() << "Completing txfer";
+    b_engine->sendJsonCommand(MessageFactory::completeTransfer());
 }
 
 void CurrentCall::disableButtons()
