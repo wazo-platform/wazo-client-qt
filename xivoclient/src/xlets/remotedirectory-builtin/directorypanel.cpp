@@ -37,11 +37,11 @@
 DirectoryPanel::DirectoryPanel(QWidget *parent)
     : XLet(parent)
 {
-    setTitle(tr("Directory"));
-    setAccessibleName(tr("Directory Panel"));
+    setTitle(tr("Remote Directory"));
+    setAccessibleName(tr("Remote Directory Panel"));
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
-    QLabel *titleLbl = new QLabel(tr("Di&rectory"), this);
+    QLabel *titleLbl = new QLabel(tr("Remote Di&rectory"), this);
     vlayout->addWidget(titleLbl, 0, Qt::AlignCenter);
     QHBoxLayout *hlayout = new QHBoxLayout();
     m_searchText = new ExtendedLineEdit(this);
@@ -182,4 +182,3 @@ void DirectoryPanel::stop()
     m_table->setColumnCount(0);
     m_searchText->setText("");
 }
-
