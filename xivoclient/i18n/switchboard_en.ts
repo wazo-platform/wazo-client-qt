@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en">
 <context>
+    <name>CurrentCall</name>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="38"/>
+        <source>Indirect T</source>
+        <translation type="unfinished">Indirect T</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="39"/>
+        <source>Complete T</source>
+        <translation type="unfinished">Complete T</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="41"/>
+        <source>Hangup</source>
+        <translation type="unfinished">Hangup</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="42"/>
+        <source>Cancel T</source>
+        <translation type="unfinished">Cancel T</translation>
+    </message>
+</context>
+<context>
     <name>CurrentCallWidget</name>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
@@ -14,47 +37,37 @@
         <translation>Current Call</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="87"/>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="111"/>
+        <source>Indirect Transfer</source>
+        <translation>Indirect Transfer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="94"/>
-        <source>complete</source>
-        <translation>complete</translation>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
+        <source>Indirect T</source>
+        <translation>Indirect T</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="125"/>
-        <source>Attended Transfer</source>
-        <translation>Attended Transfer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="128"/>
-        <source>A Xfer</source>
-        <translation>A Xfer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="131"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="117"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="164"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="150"/>
         <source>Hold</source>
         <translation>Hold</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="167"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="153"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="204"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="190"/>
         <source>Hangup</source>
         <translation>Hangup</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="207"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="193"/>
         <source>F8</source>
         <translation>F8</translation>
     </message>

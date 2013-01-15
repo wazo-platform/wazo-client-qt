@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="hu">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="41"/>
+        <source>N/A</source>
+        <translation type="unfinished">N/A</translation>
+    </message>
+</context>
+<context>
     <name>QueueMembersHeader</name>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
