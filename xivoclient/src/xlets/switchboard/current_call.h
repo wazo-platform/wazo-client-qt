@@ -73,11 +73,11 @@ class CurrentCall: public QObject, public IPBXListener
         double m_call_start;
         QString m_caller_id;
 
-        static QString attended_transfer_label;
-        static QString complete_transfer_label;
+        QString m_attended_transfer_label;
+        QString m_complete_transfer_label;
+        QString m_hangup_label;
+        QString m_cancel_transfer_label;
         static QKeySequence attended_transfer_key;
-        static QString hangup_label;
-        static QString cancel_transfer_label;
         static QKeySequence hangup_key;
 };
 
