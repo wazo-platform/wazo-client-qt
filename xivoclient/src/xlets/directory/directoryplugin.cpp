@@ -29,6 +29,8 @@
 
 #include <QtPlugin>
 
+#include <baseengine.h>
+
 #include "directory.h"
 #include "directoryplugin.h"
 
@@ -36,5 +38,6 @@ Q_EXPORT_PLUGIN2(directoryplugin, DirectoryPlugin);
 
 XLet * DirectoryPlugin::newXLetInstance(QWidget *parent)
 {
+    b_engine->registerTranslation(":/obj/directory_%1");
     return new Directory(parent);
 }
