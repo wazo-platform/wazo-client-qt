@@ -317,13 +317,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void updateVoiceMailStatus(const QString &);
         void updateChannelStatus(const QString &);
         void updateQueueMemberConfig(const QString &);
-        void updateQueueMemberStatus(const QString &);
         void removePhoneConfig(const QString &);
         void removeUserConfig(const QString &);
         void removeAgentConfig(const QString &);
         void removeQueueConfig(const QString &);
         void removeQueueMemberConfig(const QString &);
-        void removeQueueMemberStatus(const QString &);
 
         void newQueueList(const QStringList &);
         void removeQueues(const QString &, const QStringList &);
