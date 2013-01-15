@@ -52,5 +52,7 @@ void DirectoryEntryView::keyPressEvent(QKeyEvent * event)
 {
     if (event && event->key() == Qt::Key_F5) {
         emit activated(this->currentIndex());
+    } else {
+        AbstractTableView::keyPressEvent(event);
     }
 }
