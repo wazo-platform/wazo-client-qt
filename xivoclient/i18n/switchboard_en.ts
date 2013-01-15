@@ -4,24 +4,24 @@
 <context>
     <name>CurrentCall</name>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="38"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="45"/>
         <source>Indirect T</source>
-        <translation type="unfinished">Indirect T</translation>
+        <translation>Indirect T</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="39"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="46"/>
         <source>Complete T</source>
-        <translation type="unfinished">Complete T</translation>
+        <translation>Complete T</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="41"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="47"/>
         <source>Hangup</source>
-        <translation type="unfinished">Hangup</translation>
+        <translation>Hangup</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="42"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="48"/>
         <source>Cancel T</source>
-        <translation type="unfinished">Cancel T</translation>
+        <translation>Cancel T</translation>
     </message>
 </context>
 <context>
