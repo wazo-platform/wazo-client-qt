@@ -138,19 +138,16 @@ void CurrentCall::hold()
 
 void CurrentCall::attendedTransfer()
 {
-    qDebug() << "ATXFer";
     signal_relayer->relayAttendedTransferRequested();
 }
 
 void CurrentCall::completeTransfer()
 {
-    qDebug() << "Completing txfer";
     b_engine->sendJsonCommand(MessageFactory::completeTransfer());
 }
 
 void CurrentCall::cancelTransfer()
 {
-    qDebug() << "Canceling txfer";
     b_engine->sendJsonCommand(MessageFactory::cancelTransfer());
 }
 
