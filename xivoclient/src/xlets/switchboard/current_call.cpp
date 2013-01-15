@@ -70,16 +70,6 @@ void CurrentCall::setParentWidget(QWidget *parent)
             this, SLOT(transferMode()));
 }
 
-void CurrentCall::connectButtons()
-{
-    connect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
-            this, SLOT(hangup()));
-    connect(m_current_call_widget->btn_hold, SIGNAL(clicked()),
-            this, SLOT(hold()));
-    connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
-            this, SLOT(attendedTransfer()));
-}
-
 void CurrentCall::updateCallerID(const QString &name,
                                  const QString &number)
 {
@@ -153,23 +143,6 @@ void CurrentCall::cancelTransfer()
 {
     b_engine->sendJsonCommand(MessageFactory::cancelTransfer());
     this->setButtonAnswering();
-}
-
-void CurrentCall::disableButtons()
-{
-    this->setButtonsAvailability(false);
-}
-
-void CurrentCall::enableButtons()
-{
-    this->setButtonsAvailability(true);
-}
-
-void CurrentCall::setButtonsAvailability(bool enabled)
-{
-    this->m_current_call_widget->btn_attended_transfer->setEnabled(enabled);
-    this->m_current_call_widget->btn_hangup->setEnabled(enabled);
-    this->m_current_call_widget->btn_hold->setEnabled(enabled);
 }
 
 void CurrentCall::setButtonNoCalls()

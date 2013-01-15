@@ -60,13 +60,9 @@ class CurrentCall: public QObject, public IPBXListener
         void clear();
         void updateCallerID(const QString &name, const QString &number);
         void updateCall(const QVariantList &calls);
-        void enableButtons();
-        void disableButtons();
-        void setButtonsAvailability(bool enabled);
         void setButtonNoCalls();
         void setButtonTransferring();
         void setButtonAnswering();
-        void connectButtons();
 
         Ui::CurrentCallWidget *m_current_call_widget;
         double m_call_start;
