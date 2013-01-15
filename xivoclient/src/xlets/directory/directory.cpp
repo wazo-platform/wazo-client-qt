@@ -67,6 +67,8 @@ Directory::~Directory()
 void Directory::attendedTransferRequested()
 {
     this->ui.entry_filter->setFocus();
+    int selection_length = this->ui.entry_filter->text().length();
+    this->ui.entry_filter->setSelection(0, selection_length);
 }
 
 void Directory::focusEntryTable()
@@ -77,6 +79,5 @@ void Directory::focusEntryTable()
 void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
 {
     const QString &number = m_proxy_model->getNumber(index);
-    qDebug() << Q_FUNC_INFO << "Requesting an attended transfer to" << number;
     b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
 }
