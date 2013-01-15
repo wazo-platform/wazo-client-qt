@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>455</width>
-    <height>144</height>
+    <width>509</width>
+    <height>153</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -82,20 +82,6 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_cancel">
-          <property name="text">
-           <string>Cancel</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btn_complete">
-          <property name="text">
-           <string>complete</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <widget class="QLabel" name="label_3">
@@ -122,10 +108,10 @@
              </font>
             </property>
             <property name="toolTip">
-             <string>Attended Transfer</string>
+             <string>Indirect Transfer</string>
             </property>
             <property name="text">
-             <string>A Xfer</string>
+             <string>Indirect T</string>
             </property>
             <property name="shortcut">
              <string>F5</string>

@@ -42,9 +42,11 @@ class XLETLIB_EXPORT SignalRelayer: public QObject
         SignalRelayer(QObject *parent=NULL);
 
         void relayAttendedTransferRequested();
+        void relayAttendedTransferSent();
 
     signals:
         void attendedTransferRequested();
+        void attendedTransferSent();
 };
 
 extern XLETLIB_EXPORT SignalRelayer *signal_relayer;

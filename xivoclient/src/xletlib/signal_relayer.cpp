@@ -42,3 +42,8 @@ void SignalRelayer::relayAttendedTransferRequested()
 {
     emit attendedTransferRequested();
 }
+
+void SignalRelayer::relayAttendedTransferSent()
+{
+    emit attendedTransferSent();
+}

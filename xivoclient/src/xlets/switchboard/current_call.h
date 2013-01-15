@@ -55,6 +55,7 @@ class CurrentCall: public QObject, public IPBXListener
         void hold();
     private slots:
         void updateCallInfo();
+        void transferMode();
     private:
         void clear();
         void updateCallerID(const QString &name, const QString &number);
@@ -62,11 +63,21 @@ class CurrentCall: public QObject, public IPBXListener
         void enableButtons();
         void disableButtons();
         void setButtonsAvailability(bool enabled);
+        void setButtonNoCalls();
+        void setButtonTransferring();
+        void setButtonAnswering();
         void connectButtons();
 
         Ui::CurrentCallWidget *m_current_call_widget;
         double m_call_start;
         QString m_caller_id;
+
+        static QString attended_transfer_label;
+        static QString complete_transfer_label;
+        static QKeySequence attended_transfer_key;
+        static QString hangup_label;
+        static QString cancel_transfer_label;
+        static QKeySequence hangup_key;
 };
 
 #endif /* __CURRENT_CALL_H__ */

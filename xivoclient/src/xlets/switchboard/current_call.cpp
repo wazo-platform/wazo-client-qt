@@ -35,6 +35,13 @@
 #include "ui_current_call.h"
 #include "current_call.h"
 
+QString CurrentCall::attended_transfer_label = tr("Indirect T");
+QString CurrentCall::complete_transfer_label = tr("Complete T");
+QKeySequence CurrentCall::attended_transfer_key = QKeySequence("F5");
+QString CurrentCall::hangup_label = tr("Hangup");
+QString CurrentCall::cancel_transfer_label = tr("Cancel T");
+QKeySequence CurrentCall::hangup_key = QKeySequence("F8");
+
 
 CurrentCall::CurrentCall(QObject *parent)
     : QObject(parent),
@@ -58,9 +65,9 @@ void CurrentCall::setParentWidget(QWidget *parent)
     m_current_call_widget = new Ui::CurrentCallWidget();
     m_current_call_widget->setupUi(parent);
 
-    this->connectButtons();
-
-    this->disableButtons();
+    this->setButtonNoCalls();
+    connect(signal_relayer, SIGNAL(attendedTransferSent()),
+            this, SLOT(transferMode()));
 }
 
 void CurrentCall::connectButtons()
@@ -71,10 +78,6 @@ void CurrentCall::connectButtons()
             this, SLOT(hold()));
     connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
             this, SLOT(attendedTransfer()));
-    connect(m_current_call_widget->btn_complete, SIGNAL(clicked()),
-            this, SLOT(completeTransfer()));
-    connect(m_current_call_widget->btn_cancel, SIGNAL(clicked()),
-            this, SLOT(cancelTransfer()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -114,7 +117,7 @@ void CurrentCall::updateCall(const QVariantList &calls)
                              call_map["cid_number"].toString());
         this->m_call_start = call_map["call_start"].toDouble();
         this->updateCallInfo();
-        this->enableButtons();
+        this->setButtonAnswering();
     }
 }
 
@@ -123,7 +126,7 @@ void CurrentCall::clear()
     this->m_caller_id.clear();
     this->m_call_start = 0;
     this->updateCallInfo();
-    this->disableButtons();
+    this->setButtonNoCalls();
 }
 
 void CurrentCall::hangup()
@@ -149,6 +152,7 @@ void CurrentCall::completeTransfer()
 void CurrentCall::cancelTransfer()
 {
     b_engine->sendJsonCommand(MessageFactory::cancelTransfer());
+    this->setButtonAnswering();
 }
 
 void CurrentCall::disableButtons()
@@ -166,4 +170,74 @@ void CurrentCall::setButtonsAvailability(bool enabled)
     this->m_current_call_widget->btn_attended_transfer->setEnabled(enabled);
     this->m_current_call_widget->btn_hangup->setEnabled(enabled);
     this->m_current_call_widget->btn_hold->setEnabled(enabled);
+}
+
+void CurrentCall::setButtonNoCalls()
+{
+    this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
+    m_current_call_widget->btn_attended_transfer->setText(attended_transfer_label);
+
+    this->m_current_call_widget->btn_hold->setEnabled(false);
+
+    this->m_current_call_widget->btn_hangup->setEnabled(false);
+    m_current_call_widget->btn_hangup->setText(hangup_label);
+}
+
+void CurrentCall::setButtonAnswering()
+{
+    this->m_current_call_widget->btn_attended_transfer->setEnabled(true);
+    m_current_call_widget->btn_attended_transfer->setText(attended_transfer_label);
+    m_current_call_widget->btn_attended_transfer->setShortcut(attended_transfer_key);
+    disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
+               this, SLOT(attendedTransfer()));
+    disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
+               this, SLOT(completeTransfer()));
+    connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
+            this, SLOT(attendedTransfer()));
+
+    this->m_current_call_widget->btn_hold->setEnabled(true);
+    disconnect(m_current_call_widget->btn_hold, SIGNAL(clicked()),
+               this, SLOT(hold()));
+    connect(m_current_call_widget->btn_hold, SIGNAL(clicked()),
+            this, SLOT(hold()));
+
+    this->m_current_call_widget->btn_hangup->setEnabled(true);
+    m_current_call_widget->btn_hangup->setText(hangup_label);
+    m_current_call_widget->btn_hangup->setShortcut(hangup_key);
+    disconnect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
+               this, SLOT(hangup()));
+    disconnect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
+               this, SLOT(cancelTransfer()));
+    connect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
+            this, SLOT(hangup()));
+}
+
+void CurrentCall::setButtonTransferring()
+{
+    this->m_current_call_widget->btn_attended_transfer->setEnabled(true);
+    m_current_call_widget->btn_attended_transfer->setText(complete_transfer_label);
+    m_current_call_widget->btn_attended_transfer->setShortcut(attended_transfer_key);
+    disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
+               this, SLOT(attendedTransfer()));
+    disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
+               this, SLOT(completeTransfer()));
+    connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
+            this, SLOT(completeTransfer()));
+
+    this->m_current_call_widget->btn_hold->setEnabled(false);
+
+    this->m_current_call_widget->btn_hangup->setEnabled(true);
+    m_current_call_widget->btn_hangup->setText(cancel_transfer_label);
+    m_current_call_widget->btn_hangup->setShortcut(hangup_key);
+    disconnect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
+               this, SLOT(hangup()));
+    disconnect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
+               this, SLOT(cancelTransfer()));
+    connect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
+            this, SLOT(cancelTransfer()));
+}
+
+void CurrentCall::transferMode()
+{
+    this->setButtonTransferring();
 }

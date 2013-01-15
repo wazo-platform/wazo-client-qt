@@ -80,4 +80,5 @@ void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
 {
     const QString &number = m_proxy_model->getNumber(index);
     b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
+    signal_relayer->relayAttendedTransferSent();
 }
