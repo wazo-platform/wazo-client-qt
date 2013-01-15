@@ -38,7 +38,7 @@
 
 #include "queue_members_model.h"
 
-QString QueueMembersModel::not_available = tr("N/A");
+QString QueueMembersModel::not_available = QObject::tr("N/A");
 
 QueueMembersModel::QueueMembersModel(QObject *parent)
     : QAbstractTableModel(parent)

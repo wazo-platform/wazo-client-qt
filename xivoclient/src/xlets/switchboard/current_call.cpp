@@ -35,11 +35,11 @@
 #include "ui_current_call.h"
 #include "current_call.h"
 
-QString CurrentCall::attended_transfer_label = tr("Indirect T");
-QString CurrentCall::complete_transfer_label = tr("Complete T");
+QString CurrentCall::attended_transfer_label = QObject::tr("Indirect T");
+QString CurrentCall::complete_transfer_label = QObject::tr("Complete T");
 QKeySequence CurrentCall::attended_transfer_key = QKeySequence("F5");
-QString CurrentCall::hangup_label = tr("Hangup");
-QString CurrentCall::cancel_transfer_label = tr("Cancel T");
+QString CurrentCall::hangup_label = QObject::tr("Hangup");
+QString CurrentCall::cancel_transfer_label = QObject::tr("Cancel T");
 QKeySequence CurrentCall::hangup_key = QKeySequence("F8");
 
 
