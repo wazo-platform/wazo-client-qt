@@ -124,7 +124,7 @@ XletAgentDetails::XletAgentDetails(QWidget *parent)
             this, SLOT(updatePanel()));
     connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
             this, SLOT(updatePanel()));
-    connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
+    connect(b_engine, SIGNAL(postRemoveQueueMemberConfig(const QString &)),
             this, SLOT(updatePanel()));
 
     connect(b_engine, SIGNAL(changeWatchedAgentSignal(const QString &)),

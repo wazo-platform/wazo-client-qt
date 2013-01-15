@@ -1035,6 +1035,13 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 }
             }
 
+            foreach (QString id, listid) {
+                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+                if (listname == "queuemembers") {
+                    emit postRemoveQueueMemberConfig(xid);
+                }
+            }
+
         } else if (function == "updateconfig") {
             QString id = datamap.value("tid").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
