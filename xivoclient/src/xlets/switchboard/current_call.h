@@ -55,14 +55,19 @@ class CurrentCall: public QObject, public IPBXListener
         void hold();
     private slots:
         void updateCallInfo();
-        void transferMode();
+        void transferringMode();
     private:
         void clear();
         void updateCallerID(const QString &name, const QString &number);
         void updateCall(const QVariantList &calls);
-        void setButtonNoCalls();
-        void setButtonTransferring();
-        void setButtonAnswering();
+        void noCallsMode();
+        void answeringMode();
+        void disconnectButtons();
+        void setAttendedTransferButton();
+        void setCompleteTransferButton();
+        void setHoldButton();
+        void setHangupButton();
+        void setCancelTransferButton();
 
         Ui::CurrentCallWidget *m_current_call_widget;
         double m_call_start;
