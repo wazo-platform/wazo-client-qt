@@ -131,6 +131,7 @@ void CurrentCall::hold()
 void CurrentCall::attendedTransfer()
 {
     signal_relayer->relayAttendedTransferRequested();
+    this->m_current_call_widget->btn_attended_transfer->setShortcut(QString());
 }
 
 void CurrentCall::completeTransfer()

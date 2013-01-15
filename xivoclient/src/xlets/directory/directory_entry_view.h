@@ -32,6 +32,8 @@
 
 #include <abstract_table_view.h>
 
+class QKeyEvent;
+
 class DirectoryEntryView : public AbstractTableView
 {
     Q_OBJECT
@@ -39,6 +41,7 @@ class DirectoryEntryView : public AbstractTableView
     public:
         DirectoryEntryView(QWidget *parent = NULL);
         void selectFirstRow();
+        void keyPressEvent(QKeyEvent * event);
 };
 
 #endif /* __DIRECTORY_ENTRY_VIEW_H__ */

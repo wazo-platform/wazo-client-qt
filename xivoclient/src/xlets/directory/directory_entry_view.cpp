@@ -29,6 +29,7 @@
 
 #include <QDebug>
 #include <QItemSelectionModel>
+#include <QKeyEvent>
 
 #include "directory_entry_view.h"
 #include "directory_entry_model.h"
@@ -45,4 +46,11 @@ void DirectoryEntryView::selectFirstRow()
 {
     this->selectRow(0);
     this->setFocus();
+}
+
+void DirectoryEntryView::keyPressEvent(QKeyEvent * event)
+{
+    if (event && event->key() == Qt::Key_F5) {
+        emit activated(this->currentIndex());
+    }
 }
