@@ -1,5 +1,6 @@
 include(../../../common-xlets.pri)
 
+INCLUDEPATH += .
 HEADERS     = *.h
 SOURCES     = *.cpp
 FORMS       = directory_widget.ui
