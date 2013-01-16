@@ -119,7 +119,7 @@ PeerWidget::PeerWidget(const UserInfo * ui)
             this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
             this, SLOT(updateQueueMemberConfig(const QString &)));
-    connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
+    connect(b_engine, SIGNAL(postRemoveQueueMemberConfig(const QString &)),
             this, SLOT(removeQueueMemberConfig(const QString &)));
     layout->addWidget(m_textlbl, 0, 2, 1, 1, Qt::AlignLeft);
     layout->addLayout(m_hLayout, 1, 2);

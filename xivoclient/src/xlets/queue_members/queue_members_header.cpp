@@ -53,7 +53,7 @@ QueueMembersHeader::QueueMembersHeader(QWidget * parent)
             this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
             this, SLOT(updateQueueMember(const QString &)));
-    connect(b_engine, SIGNAL(removeQueueMemberConfig(const QString &)),
+    connect(b_engine, SIGNAL(postRemoveQueueMemberConfig(const QString &)),
             this, SLOT(removeQueueMember(const QString &)));
 
 }
