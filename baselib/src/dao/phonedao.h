@@ -43,6 +43,7 @@ class BASELIB_EXPORT PhoneDAO
         static QColor getStatusColor(const PhoneInfo *phone);
         static QString getStatusName(const PhoneInfo *phone);
         static QVariantMap getPhoneStatusConfig(const PhoneInfo *phone);
+        static const PhoneInfo *findByIdentity(const QString &line_interface);
 };
 
 #endif

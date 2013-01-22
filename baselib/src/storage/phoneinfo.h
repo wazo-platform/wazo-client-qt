@@ -93,10 +93,4 @@ namespace PhoneHint {
     static QString available = "0";
 };
 
-namespace phone {
-
-    BASELIB_EXPORT const PhoneInfo * findByIdentity(const QString & identity);
-
-}
-
 #endif

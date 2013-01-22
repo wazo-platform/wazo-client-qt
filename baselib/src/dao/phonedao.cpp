@@ -58,3 +58,14 @@ QVariantMap PhoneDAO::getPhoneStatusConfig(const PhoneInfo *phone)
 
     return config;
 }
+
+const PhoneInfo *PhoneDAO::findByIdentity(const QString &line_interface)
+{
+    foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
+        const PhoneInfo * p = b_engine->phone(phonexid);
+        if (p && p->identity() == line_interface) {
+            return p;
+        }
+    }
+    return NULL;
+}

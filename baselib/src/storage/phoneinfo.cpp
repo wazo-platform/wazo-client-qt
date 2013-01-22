@@ -29,23 +29,6 @@
 
 #include "phoneinfo.h"
 
-#include "baseengine.h"
-
-namespace phone {
-
-const PhoneInfo * findByIdentity(const QString & identity)
-{
-    foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
-        const PhoneInfo * p = b_engine->phone(phonexid);
-        if (p && p->identity() == identity) {
-            return p;
-        }
-    }
-    return NULL;
-}
-
-} // namespace phone
-
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)
     : XInfo(ipbxid, id)
