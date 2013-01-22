@@ -42,6 +42,7 @@
 #include <QAction>
 #include <QMouseEvent>
 
+#include <functests.h>
 #include <baseengine.h>
 
 #include "conference.h"
@@ -49,8 +50,19 @@
 class ConfListModel : public QAbstractTableModel
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
+        enum ColOrder {
+            ID,
+            NAME,
+            NUMBER,
+            PIN_REQUIRED,
+            MODERATED,
+            MEMBER_COUNT,
+            STARTED_SINCE,
+            NB_COL
+        };
         ConfListModel(QWidget *parent = NULL);
         QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
     public slots:
@@ -67,7 +79,9 @@ class ConfListModel : public QAbstractTableModel
         Qt::ItemFlags flags(const QModelIndex &) const;
         QStringList m_row2number;
         QVariantMap m_room_configs;
+        QString COL_TITLE[NB_COL];
 };
+
 
 class ConfListView : public QTableView
 {
@@ -96,6 +110,7 @@ class ConfList : public QWidget
     private:
         XletConference *m_manager;
         ConfListModel *m_model;
+
 };
 
 #endif

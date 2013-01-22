@@ -40,6 +40,8 @@
 #include <xletinterface.h>
 #include <xlet.h>
 
+#include <functests.h>
+
 class XletConference;
 
 #include "conflist.h"
@@ -60,12 +62,14 @@ class ConfTab : public QTabWidget
 
     public slots:
         void closeTab(QWidget *w=0);
+
 };
 
 
 class XletConference : public XLet
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         XletConference(QWidget *parent=0);
@@ -75,6 +79,7 @@ class XletConference : public XLet
     private:
         void registerMeetmeUpdate() const;
         ConfTab *m_tab;
+
 };
 
 class XLetConferencePlugin : public QObject, XLetInterface

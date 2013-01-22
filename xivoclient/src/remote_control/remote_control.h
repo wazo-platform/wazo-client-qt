@@ -33,10 +33,13 @@
 #ifdef FUNCTESTS
 
 #include <QObject>
+#include <QAbstractItemModel>
 #include <string>
 #include <exception>
 
 #include <main.h>
+
+#include "xlets/conference/conflist.h"
 
 using namespace std;
 
@@ -105,6 +108,9 @@ class RemoteControl : public QObject
         void then_nothing_shows_up_in_the_directory_xlet();
         void then_1_shows_up_in_the_directory_xlet(const QVariantList &);
 
+        void assert_conference_room_1_has_number_2_in_xlet(const QVariantList &);
+        void assert_conference_room_1_has_pin_code_2_in_xlet(const QVariantList &);
+
     signals:
         void select_queue(const QString & queue_id);
 
@@ -128,6 +134,11 @@ class RemoteControl : public QObject
         bool commandMatches(RemoteControlCommand, std::string);
         bool isValueInTable(QString value, QString column_header, QTableWidget* table);
         int getColumnIndex(QTableWidget* table, QString header);
+
+        void assertValueInConferenceXlet(QString roomName, int column, QString value);
+        QAbstractItemModel* getConflistModel();
+        int findRowWithItem(QAbstractItemModel* model, int column, QString search);
+        QString getValueInModel(QAbstractItemModel* model, int row, int column);
 
         ExecObjects m_exec_obj;
         bool m_command_found;

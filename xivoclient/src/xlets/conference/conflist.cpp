@@ -31,13 +31,6 @@
 
 #include "conflist.h"
 
-enum ColOrder {
-    ID, NAME, NUMBER, PIN_REQUIRED, MODERATED,
-    MEMBER_COUNT, STARTED_SINCE, NB_COL
-};
-
-static QVariant COL_TITLE[NB_COL];
-
 ConfListModel::ConfListModel(QWidget *parent)
     : QAbstractTableModel(parent)
 {
@@ -180,9 +173,9 @@ ConfListView::ConfListView(QWidget *parent)
 
 void ConfListView::onViewClick(const QModelIndex &model)
 {
-    QString number = model.sibling(model.row(), ID).data().toString();
-    QString roomName = model.sibling(model.row(), NAME).data().toString();
-    QString roomNumber = model.sibling(model.row(), NUMBER).data().toString();
+    QString number = model.sibling(model.row(), ConfListModel::ID).data().toString();
+    QString roomName = model.sibling(model.row(), ConfListModel::NAME).data().toString();
+    QString roomNumber = model.sibling(model.row(), ConfListModel::NUMBER).data().toString();
 
     if (number != "") {
         if (lastPressed & Qt::LeftButton) {
@@ -225,6 +218,7 @@ ConfList::ConfList(XletConference *parent)
     
     // this contains the data, unordered
     m_model = new ConfListModel(this);
+    m_model->setObjectName("conflist_model");
     
     // this maps the indexes between the sorted view and the unordered model
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
@@ -235,9 +229,9 @@ ConfList::ConfList(XletConference *parent)
     // this displays the sorted data
     ConfListView *view = new ConfListView(this);
     view->setModel(proxyModel);
-    view->hideColumn(ID);
-    view->hideColumn(MODERATED);
-    view->sortByColumn(NAME, Qt::AscendingOrder);
+    view->hideColumn(ConfListModel::ID);
+    view->hideColumn(ConfListModel::MODERATED);
+    view->sortByColumn(ConfListModel::NAME, Qt::AscendingOrder);
 
     hBox->addStretch(1);
     hBox->addWidget(view, 8);
