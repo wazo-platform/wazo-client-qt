@@ -36,7 +36,7 @@ LineDirectoryEntry::LineDirectoryEntry(const PhoneInfo &phone)
 {
 }
 
-QString LineDirectoryEntry::number() const
+const QString &LineDirectoryEntry::number() const
 {
     return this->m_phone.number();
 }

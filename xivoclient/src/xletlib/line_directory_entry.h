@@ -37,7 +37,7 @@ class LineDirectoryEntry
 {
     public:
         LineDirectoryEntry(const PhoneInfo &phone);
-        QString number() const;
+        const QString &number() const;
     private:
         const PhoneInfo &m_phone;
 };

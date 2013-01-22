@@ -41,7 +41,7 @@ class MockPhoneInfo: public PhoneInfo
 {
     public:
         MockPhoneInfo(const QString &ipbxid, const QString &id) :PhoneInfo(ipbxid, id) {}
-        MOCK_CONST_METHOD0(number, QString());
+        MOCK_CONST_METHOD0(number, const QString&());
 };
 
 void TestLineDirectoryEntry::testNumber()
@@ -50,7 +50,7 @@ void TestLineDirectoryEntry::testNumber()
     QString number = "1234";
 
     EXPECT_CALL(phone, number())
-        .WillRepeatedly(Return(number));
+        .WillRepeatedly(ReturnRef(number));
 
     LineDirectoryEntry line_directory_entry(phone);
 
