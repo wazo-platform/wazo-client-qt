@@ -28,17 +28,14 @@
  */
 
 #include <QtTest/QtTest>
+#include <gmock/gmock.h>
 
 #include <test_line_directory_entry.h>
 
-// To run the tests use
-// export LD_LIBRARY_PATH=../../bin
-// ./tests
-
 int main (int argc, char *argv[])
 {
-    // TestIdConverter test_id_converter;
-    // QTest::qExec(&test_id_converter, argc, argv);
+    ::testing::GTEST_FLAG(throw_on_failure) = true;
+    ::testing::InitGoogleMock(&argc, argv);
 
     TestLineDirectoryEntry test_line_directory_entry;
     QTest::qExec(&test_line_directory_entry, argc, argv);

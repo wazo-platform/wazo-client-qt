@@ -27,34 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
-#include <gmock/gmock.h>
+#ifndef _LINE_DIRECTORY_ENTRY_H_
+#define _LINE_DIRECTORY_ENTRY_H_
 
-#include "test_line_directory_entry.h"
+class PhoneInfo;
+class QString;
 
-#include <phoneinfo.h>
-#include <line_directory_entry.h>
-
-using namespace testing;
-
-class MockPhoneInfo: public PhoneInfo
+class LineDirectoryEntry
 {
     public:
-        MockPhoneInfo(const QString &ipbxid, const QString &id) :PhoneInfo(ipbxid, id) {}
-        MOCK_CONST_METHOD0(number, QString());
+        LineDirectoryEntry(const PhoneInfo &phone);
+        QString number() const;
+    private:
+        const PhoneInfo &m_phone;
 };
 
-void TestLineDirectoryEntry::testNumber()
-{
-    MockPhoneInfo phone("xivo", "1");
-    QString number = "1234";
-
-    EXPECT_CALL(phone, number())
-        .WillRepeatedly(Return(number));
-
-    LineDirectoryEntry line_directory_entry(phone);
-
-    QString result = line_directory_entry.number();
-
-    QCOMPARE(result, number);
-}
+#endif /* _LINE_DIRECTORY_ENTRY_H_ */
