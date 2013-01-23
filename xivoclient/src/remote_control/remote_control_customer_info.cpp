@@ -31,7 +31,7 @@
 
 #include <JsonToVariant.h>
 
-#include "customerinfopanel.h"
+#include <xlets/customerinfo-builtin/customerinfopanel.h>
 
 #include "remote_control.h"
 

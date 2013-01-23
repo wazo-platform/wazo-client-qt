@@ -43,9 +43,9 @@
 
 #include <xletlib/xlet.h>
 #include <xletlib/functests.h>
-#include <popup.h>
 #include <baseengine.h>
 
+#include "popup.h"
 
 class Popup;
 

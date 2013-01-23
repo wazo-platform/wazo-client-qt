@@ -56,7 +56,6 @@ BUILTIN_DIRS += fax-builtin
 BUILTIN_DIRS += mylocaldir-builtin
 BUILTIN_DIRS += search-builtin
 for(BUILTIN_DIR, BUILTIN_DIRS){
-    INCLUDEPATH += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}
     HEADERS     += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}/*.h
     # SOURCES     += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}/*.cpp
 }

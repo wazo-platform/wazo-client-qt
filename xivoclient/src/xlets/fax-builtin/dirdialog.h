@@ -40,7 +40,7 @@
 #include <QVBoxLayout>
 
 #include <baseengine.h>
-#include <directorypanel.h>
+#include <xlets/remotedirectory-builtin/directorypanel.h>
 
 /*! \brief Directory dialog used for fax
  */
