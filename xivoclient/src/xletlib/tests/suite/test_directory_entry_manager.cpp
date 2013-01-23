@@ -28,6 +28,7 @@
  */
 
 #include <QtTest/QtTest>
+#include <QtTest/QSignalSpy>
 #include <gmock/gmock.h>
 
 #include "test_directory_entry_manager.h"
@@ -36,11 +37,17 @@
 
 using namespace testing;
 
+
 void TestDirectoryEntryManager::testUpdatePhoneConfig()
 {
     QString phone_xid = "123";
 
     DirectoryEntryManager manager;
+    QSignalSpy spy(&manager, SIGNAL(directoryEntryUpdated(int)));
 
     manager.updatePhoneConfig(phone_xid);
+
+    QCOMPARE(spy.count(), 1);
+    const QList<QVariant> &arguments = spy.takeFirst();
+    QCOMPARE(arguments.at(0).toInt(), 0);
 }

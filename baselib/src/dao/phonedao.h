@@ -44,6 +44,7 @@ class BASELIB_EXPORT PhoneDAO
         virtual QString getStatusName(const PhoneInfo *phone) = 0;
         virtual QVariantMap getPhoneStatusConfig(const PhoneInfo *phone) = 0;
         virtual const PhoneInfo *findByIdentity(const QString &line_interface) = 0;
+        virtual const PhoneInfo *findByXId(const QString &phone_xid) = 0;
         virtual ~PhoneDAO() {};
 };
 

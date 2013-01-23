@@ -29,7 +29,15 @@
 
 #include "directory_entry_manager.h"
 
-void DirectoryEntryManager::updatePhoneConfig(const QString &)
+#include <phoneinfo.h>
+
+DirectoryEntryManager::DirectoryEntryManager(
+    QObject *parent, const PhoneDAO &phone_dao)
+    : QObject(parent), m_phone_dao(phone_dao)
 {
-    return;
+}
+
+void DirectoryEntryManager::updatePhoneConfig(const QString &phone_xid)
+{
+    const PhoneInfo *phone = this->m_phone_dao.phoneByXid(phone_xid);
 }
