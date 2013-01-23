@@ -48,8 +48,7 @@ bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const Q
     if (directory_entry_number.isEmpty()) {
         return false;
     }
-    if (this->filterMatchesColumn(sourceRow, DirectoryEntryModel::FIRST_NAME, sourceParent)
-        || this->filterMatchesColumn(sourceRow, DirectoryEntryModel::LAST_NAME, sourceParent)
+    if (this->filterMatchesColumn(sourceRow, DirectoryEntryModel::NAME, sourceParent)
         || this->filterMatchesColumn(sourceRow, DirectoryEntryModel::NUMBER, sourceParent)) {
         return true;
     } else {

@@ -59,8 +59,7 @@ class DirectoryEntryModel : public QAbstractTableModel
     public:
         enum Columns {
           STATUS_ICON,
-          FIRST_NAME,
-          LAST_NAME,
+          NAME,
           NUMBER,
           NB_COL
         };

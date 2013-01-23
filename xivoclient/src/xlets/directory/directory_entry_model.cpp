@@ -42,8 +42,7 @@ DirectoryEntryModel::DirectoryEntryModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
     m_headers[STATUS_ICON] = "";
-    m_headers[FIRST_NAME] = tr("First name");
-    m_headers[LAST_NAME] = tr("Last name");
+    m_headers[NAME] = tr("Name");
     m_headers[NUMBER] = tr("Number");
 
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
@@ -164,21 +163,16 @@ QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
     switch (column) {
     case NUMBER:
         return phone->number();
-    default :
-        break;
+    case NAME:
+    {
+        UserDAO *user_dao = new UserDAOImpl();
+        if (! user_dao) {
+            return QVariant();
+        }
+        QVariant res = user_dao->findNameByPhone(phone);
+        delete user_dao;
+        return res;
     }
-
-    UserDAO *user_dao = new UserDAOImpl();
-    const UserInfo * user = user_dao->findUserFromPhone(phone);
-    delete user_dao;
-    if (! user) {
-        return QVariant();
-    }
-    switch (column) {
-    case FIRST_NAME:
-        return user->firstname();
-    case LAST_NAME:
-        return user->lastname();
     default :
         return QVariant();
     }
