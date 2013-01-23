@@ -42,6 +42,7 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
 {
     public:
         PhoneInfo(const QString &, const QString &);
+        ~PhoneInfo() {}
         bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);
         const QString & context() const { return m_context; };
