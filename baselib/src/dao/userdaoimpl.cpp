@@ -31,11 +31,11 @@
 #include <QDebug>
 
 #include "baseengine.h"
-#include "userdao.h"
+#include "userdaoimpl.h"
 #include "phoneinfo.h"
 #include "id_converter.h"
 
-const UserInfo *UserDAO::findUserFromPhone(const PhoneInfo *phone)
+const UserInfo *UserDAOImpl::findUserFromPhone(const PhoneInfo *phone) const
 {
     if (! phone) {
         return NULL;
@@ -43,4 +43,9 @@ const UserInfo *UserDAO::findUserFromPhone(const PhoneInfo *phone)
 
     const QString &user_id = IdConverter::idToXId(phone->iduserfeatures());
     return b_engine->user(user_id);
+}
+
+QString UserDAOImpl::findNameByPhone(const PhoneInfo *phone) const
+{
+    return "DAO NAME";
 }

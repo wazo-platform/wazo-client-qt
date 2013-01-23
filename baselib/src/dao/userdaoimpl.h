@@ -27,21 +27,21 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __USERDAO_H__
-#define __USERDAO_H__
+#ifndef __USERDAOIMPL_H__
+#define __USERDAOIMPL_H__
 
 #include "baselib_export.h"
-#include <QString>
+#include "userdao.h"
 
 class UserInfo;
 class PhoneInfo;
 
-class BASELIB_EXPORT UserDAO
+class BASELIB_EXPORT UserDAOImpl: public UserDAO
 {
     public:
-        virtual ~UserDAO() {};
-        virtual const UserInfo *findUserFromPhone(const PhoneInfo *phone) const = 0;
-        virtual QString findNameByPhone(const PhoneInfo *phone) const = 0;
+        virtual ~UserDAOImpl() {}
+        virtual const UserInfo *findUserFromPhone(const PhoneInfo *phone) const;
+        virtual QString findNameByPhone(const PhoneInfo *phone) const;
 };
 
 #endif

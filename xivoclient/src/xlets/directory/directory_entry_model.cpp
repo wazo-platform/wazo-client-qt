@@ -31,6 +31,7 @@
 #include <QString>
 #include <baseengine.h>
 #include <userinfo.h>
+#include <dao/userdaoimpl.h>
 #include <dao/userdao.h>
 #include <dao/phonedao.h>
 
@@ -167,8 +168,9 @@ QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
         break;
     }
 
-    UserDAO user_dao;
-    const UserInfo * user = user_dao.findUserFromPhone(phone);
+    UserDAO *user_dao = new UserDAOImpl();
+    const UserInfo * user = user_dao->findUserFromPhone(phone);
+    delete user_dao;
     if (! user) {
         return QVariant();
     }
