@@ -33,7 +33,7 @@
 #include <QAbstractTableModel>
 #include <QStringList>
 
-#include <agentinfo.h>
+#include <storage/agentinfo.h>
 
 class AgentsModel : public QAbstractTableModel
 {

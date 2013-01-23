@@ -5,9 +5,7 @@ win32:CONFIG += dll
 unix:CONFIG  += plugin
 
 INCLUDEPATH += $${BASELIB_DIR}/src
-INCLUDEPATH += $${BASELIB_DIR}/src/storage
-INCLUDEPATH += $${BASELIB_DIR}/src/dao
-INCLUDEPATH += $${ROOT_DIR}/src/xletlib
+INCLUDEPATH += $${ROOT_DIR}/src
 
 DESTDIR      = $${BIN_DIR}/plugins
 macx:DESTDIR = $${BIN_DIR}/xivoclient.app/Contents/Resources/plugins

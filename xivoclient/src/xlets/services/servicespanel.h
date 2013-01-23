@@ -32,8 +32,8 @@
 
 #include <QObject>
 
-#include <xletinterface.h>
-#include <xlet.h>
+#include <xletlib/xletinterface.h>
+#include <xletlib/xlet.h>
 #include <ipbxlistener.h>
 
 #include "waitingwidget.h"

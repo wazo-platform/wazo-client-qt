@@ -31,11 +31,11 @@
 #define __AGENTDETAILSPANEL_H__
 
 #include <QtGui>
-#include <xletinterface.h>
-#include <xlet.h>
 
-#include "baseengine.h"
-#include "queue_agent_status.h"
+#include <baseengine.h>
+#include <storage/queue_agent_status.h>
+#include <xletlib/xletinterface.h>
+#include <xletlib/xlet.h>
 
 
 /*! \brief Display details about an agent

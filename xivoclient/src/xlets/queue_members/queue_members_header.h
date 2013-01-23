@@ -33,7 +33,7 @@
 #include <QWidget>
 #include <QString>
 
-#include <queueinfo.h>
+#include <storage/queueinfo.h>
 
 class QLabel;
 

@@ -37,12 +37,13 @@
 #include <QSizePolicy>
 
 #include <baseengine.h>
+#include <storage/userinfo.h>
+#include <storage/phoneinfo.h>
+#include <storage/agentinfo.h>
+#include <storage/channelinfo.h>
+#include <storage/queueinfo.h>
+
 #include "identity.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "agentinfo.h"
-#include "channelinfo.h"
-#include "queueinfo.h"
 #include "identityagent.h"
 #include "identityphone.h"
 #include "identityvoicemail.h"

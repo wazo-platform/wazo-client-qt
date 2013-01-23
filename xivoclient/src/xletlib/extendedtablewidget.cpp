@@ -31,9 +31,9 @@
 #include <QMessageBox>
 
 #include <xivoconsts.h>
-#include <channelinfo.h>
-#include <userinfo.h>
-#include <phoneinfo.h>
+#include <storage/channelinfo.h>
+#include <storage/userinfo.h>
+#include <storage/phoneinfo.h>
 #include <baseengine.h>
 #include <phonenumber.h>
 

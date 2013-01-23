@@ -30,7 +30,7 @@
 #ifndef __AGENTSSORTFILTERPROXYMODEL_H__
 #define __AGENTSSORTFILTERPROXYMODEL_H__
 
-#include <abstract_sort_filter_proxy_model.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
 
 class AgentsSortFilterProxyModel : public AbstractSortFilterProxyModel
 {

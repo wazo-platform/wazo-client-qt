@@ -36,10 +36,10 @@
 #include <QList>
 
 #include <baseengine.h>
-#include "chitchat.h"
-#include "xivoconsts.h"
-#include <userinfo.h>
+#include <storage/userinfo.h>
+#include <xivoconsts.h>
 
+#include "chitchat.h"
 
 class XLETLIB_EXPORT BasePeerWidget : public QWidget
 {

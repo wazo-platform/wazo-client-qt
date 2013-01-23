@@ -31,11 +31,13 @@
 #include <QVariant>
 #include <QPainter>
 #include <QSizePolicy>
+
+#include <baseengine.h>
+#include <xivoconsts.h>
+#include <storage/userinfo.h>
+#include <storage/phoneinfo.h>
+
 #include "basicpeerwidget.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "baseengine.h"
-#include "xivoconsts.h"
 
 /*! \brief Constructor
  *

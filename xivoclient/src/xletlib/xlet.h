@@ -34,7 +34,7 @@
 #include <QWidget>
 #include <QtPlugin>
 
-#include <userinfo.h>
+#include <storage/userinfo.h>
 
 #include "xletlib_export.h"
 

@@ -30,8 +30,8 @@
 #ifndef __QUEUESPANEL_H__
 #define __QUEUESPANEL_H__
 
-#include <xlet.h>
-#include <xletinterface.h>
+#include <xletlib/xlet.h>
+#include <xletlib/xletinterface.h>
 #include <ipbxlistener.h>
 
 #include "queuesmodel.h"

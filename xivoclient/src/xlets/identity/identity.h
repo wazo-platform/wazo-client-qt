@@ -31,8 +31,9 @@
 #define __IDENTITYDISPLAY_H__
 
 #include <QtGui>
-#include <xletinterface.h>
-#include "xlet.h"
+
+#include <xletlib/xletinterface.h>
+#include <xletlib/xlet.h>
 
 class UserInfo;
 class IdentityAgent;

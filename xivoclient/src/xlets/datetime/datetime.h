@@ -31,8 +31,9 @@
 #define __DATETIMEPANEL_H__
 
 #include <QtGui>
-#include <xletinterface.h>
-#include <xlet.h>
+
+#include <xletlib/xletinterface.h>
+#include <xletlib/xlet.h>
 
 /*! \brief Panel displaying the date and time
  */

@@ -10,9 +10,7 @@ DEFINES += XLETLIB_LIBRARY
 TARGET      = xivoclientxlets
 
 INCLUDEPATH += $${BASELIB_DIR}/src
-INCLUDEPATH += $${BASELIB_DIR}/src/storage
-INCLUDEPATH += $${BASELIB_DIR}/src/dao
-INCLUDEPATH += $${ROOT_DIR}/src/xletlib
+INCLUDEPATH += $${ROOT_DIR}/src
 
 HEADERS += $${ROOT_DIR}/src/xletlib/*.h
 SOURCES += $${ROOT_DIR}/src/xletlib/*.cpp

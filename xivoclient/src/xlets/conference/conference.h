@@ -37,10 +37,10 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <xletinterface.h>
-#include <xlet.h>
+#include <xletlib/xletinterface.h>
+#include <xletlib/xlet.h>
 
-#include <functests.h>
+#include <xletlib/functests.h>
 
 class XletConference;
 

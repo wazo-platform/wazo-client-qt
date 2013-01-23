@@ -30,7 +30,7 @@
 #include <QDebug>
 
 #include <baseengine.h>
-#include <queuememberinfo.h>
+#include <storage/queuememberinfo.h>
 #include <dao/queuememberdao.h>
 
 #include "queue_members_view.h"

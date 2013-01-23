@@ -30,8 +30,8 @@
 #ifndef __QUEUE_ENTRIES_VIEW_H__
 #define __QUEUE_ENTRIES_VIEW_H__
 
-#include <abstract_table_view.h>
-#include <xletlib_export.h>
+#include <xletlib/abstract_table_view.h>
+#include <xletlib/xletlib_export.h>
 
 class XLETLIB_EXPORT QueueEntriesView : public AbstractTableView
 {

@@ -28,7 +28,7 @@
  */
 
 #include <QDebug>
-#include <signal_relayer.h>
+#include <xletlib/signal_relayer.h>
 #include <baseengine.h>
 #include <message_factory.h>
 

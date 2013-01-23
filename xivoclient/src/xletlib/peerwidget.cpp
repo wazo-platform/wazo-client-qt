@@ -40,12 +40,12 @@
 
 #include <baseengine.h>
 #include <xivoconsts.h>
-#include <agentinfo.h>
-#include <userinfo.h>
-#include <phoneinfo.h>
-#include <queueinfo.h>
-#include <queuememberdao.h>
-#include <queuememberinfo.h>
+#include <storage/agentinfo.h>
+#include <storage/userinfo.h>
+#include <storage/phoneinfo.h>
+#include <storage/queueinfo.h>
+#include <storage/queuememberinfo.h>
+#include <dao/queuememberdao.h>
 
 #include "peerwidget.h"
 

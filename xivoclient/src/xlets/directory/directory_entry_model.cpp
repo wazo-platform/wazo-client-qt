@@ -29,13 +29,14 @@
 
 #include <QPixmap>
 #include <QString>
+
 #include <baseengine.h>
-#include <userinfo.h>
+#include <storage/userinfo.h>
 #include <dao/userdaoimpl.h>
 #include <dao/userdao.h>
 #include <dao/phonedao.h>
+#include <xletlib/taintedpixmap.h>
 
-#include <taintedpixmap.h>
 #include "directory_entry_model.h"
 
 DirectoryEntryModel::DirectoryEntryModel(QObject *parent)

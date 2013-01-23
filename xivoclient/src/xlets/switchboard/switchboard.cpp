@@ -36,12 +36,12 @@
 #include <id_converter.h>
 #include <message_factory.h>
 
-#include <queueinfo.h>
-#include <phoneinfo.h>
+#include <storage/queueinfo.h>
+#include <storage/phoneinfo.h>
 
-#include <queue_entries/queue_entries_model.h>
-#include <queue_entries/queue_entries_sort_filter_proxy_model.h>
-#include <queue_entries/queue_entries_view.h>
+#include <xletlib/queue_entries/queue_entries_model.h>
+#include <xletlib/queue_entries/queue_entries_sort_filter_proxy_model.h>
+#include <xletlib/queue_entries/queue_entries_view.h>
 
 #include "switchboard.h"
 #include "ui_current_call.h"

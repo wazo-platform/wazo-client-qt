@@ -30,9 +30,8 @@
 #ifndef __QUEUE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 #define __QUEUE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 
-#include <abstract_sort_filter_proxy_model.h>
-
-#include <xletlib_export.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
+#include <xletlib/xletlib_export.h>
 
 class XLETLIB_EXPORT QueueEntriesSortFilterProxyModel : public AbstractSortFilterProxyModel
 {

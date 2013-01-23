@@ -31,7 +31,8 @@
 #define __DIRECTORY_PLUGIN_H__
 
 #include <QObject>
-#include "xletinterface.h"
+
+#include <xletlib/xletinterface.h>
 
 class DirectoryPlugin: public QObject, XLetInterface
 {

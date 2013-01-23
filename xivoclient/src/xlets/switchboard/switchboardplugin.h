@@ -33,7 +33,7 @@
 
 #include <QObject>
 
-#include <xletinterface.h>
+#include <xletlib/xletinterface.h>
 
 class SwitchboardPlugin : public QObject, XLetInterface
 {

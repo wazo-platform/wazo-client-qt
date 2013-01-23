@@ -27,8 +27,8 @@
 #ifndef __AGENTSPANEL_H__
 #define __AGENTSPANEL_H__
 
-#include <xletinterface.h>
-#include <xlet.h>
+#include <xletlib/xletinterface.h>
+#include <xletlib/xlet.h>
 
 class QVBoxLayout;
 class AgentsView;

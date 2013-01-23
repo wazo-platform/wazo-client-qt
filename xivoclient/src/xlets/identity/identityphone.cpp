@@ -33,10 +33,12 @@
 #include <QContextMenuEvent>
 #include <QAction>
 #include <QMenu>
+
+#include <storage/userinfo.h>
+#include <storage/phoneinfo.h>
+#include <storage/channelinfo.h>
+
 #include "identityphone.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "channelinfo.h"
 
 IdentityPhone::IdentityPhone(QWidget * parent)
     : QWidget(parent)

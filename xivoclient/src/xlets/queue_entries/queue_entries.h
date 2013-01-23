@@ -32,8 +32,9 @@
 
 #include <QVariantList>
 #include <QLabel>
-#include "xlet.h"
-#include "xletinterface.h"
+
+#include <xletlib/xlet.h>
+#include <xletlib/xletinterface.h>
 
 class QueueEntriesView;
 class QueueEntriesSortFilterProxyModel;

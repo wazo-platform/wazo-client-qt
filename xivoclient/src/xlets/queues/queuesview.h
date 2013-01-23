@@ -30,7 +30,7 @@
 #ifndef __QUEUESVIEW_H__
 #define __QUEUESVIEW_H__
 
-#include <abstract_table_view.h>
+#include <xletlib/abstract_table_view.h>
 
 class QueuesView : public AbstractTableView
 {

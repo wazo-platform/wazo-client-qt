@@ -27,10 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <baseengine.h>
-#include <queueinfo.h>
 #include <QTimer>
 
+#include <baseengine.h>
+#include <storage/queueinfo.h>
 #include <id_converter.h>
 
 #include "queue_entries_model.h"

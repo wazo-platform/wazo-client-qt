@@ -30,10 +30,12 @@
 #include <QGridLayout>
 #include <QPixmap>
 #include <QLabel>
-#include "baseengine.h"
+
+#include <baseengine.h>
+#include <storage/userinfo.h>
+#include <storage/voicemailinfo.h>
+
 #include "identityvoicemail.h"
-#include "userinfo.h"
-#include "voicemailinfo.h"
 
 /*! \brief Constructor
  */

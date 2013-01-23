@@ -30,10 +30,9 @@
 #ifndef __QUEUE_MEMBERS_PANEL_H__
 #define __QUEUE_MEMBERS_PANEL_H__
 
-#include <xlet.h>
-#include <xletinterface.h>
-
-#include "functests.h"
+#include <xletlib/functests.h>
+#include <xletlib/xlet.h>
+#include <xletlib/xletinterface.h>
 
 class QueueMembersView;
 class QueueMembersModel;

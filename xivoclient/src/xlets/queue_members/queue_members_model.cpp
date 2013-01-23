@@ -30,10 +30,10 @@
 #include <QBrush>
 
 #include <baseengine.h>
-#include <agentinfo.h>
-#include <phoneinfo.h>
-#include <queuememberinfo.h>
-#include <userinfo.h>
+#include <storage/agentinfo.h>
+#include <storage/phoneinfo.h>
+#include <storage/queuememberinfo.h>
+#include <storage/userinfo.h>
 #include <dao/queuememberdao.h>
 #include <dao/phonedao.h>
 

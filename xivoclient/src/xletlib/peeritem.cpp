@@ -29,11 +29,12 @@
 
 #include <QDebug>
 
-#include "peeritem.h"
+#include <storage/userinfo.h>
+#include <storage/phoneinfo.h>
+#include <xivoconsts.h>
 #include "peerwidget.h"
-#include "userinfo.h"
-#include "phoneinfo.h"
-#include "xivoconsts.h"
+
+#include "peeritem.h"
 
 /*! \brief Constructor
  */

@@ -32,7 +32,7 @@
 
 #include <QAbstractTableModel>
 
-#include <phoneinfo.h>
+#include <storage/phoneinfo.h>
 
 class DirectoryEntryModel : public QAbstractTableModel
 {

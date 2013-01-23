@@ -40,7 +40,7 @@
 
 #include <baseengine.h>
 
-#include <queueinfo.h>
+#include <storage/queueinfo.h>
 
 #include "queues.h"
 

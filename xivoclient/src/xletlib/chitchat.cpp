@@ -27,8 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <storage/userinfo.h>
+
 #include "chitchat.h"
-#include <userinfo.h>
+
 
 QHash<QString, ChitChatWindow*> ChitChatWindow::m_chat_window_opened = QHash <QString, ChitChatWindow*>();
 ChitChatWindow * ChitChatWindow::chitchat_instance = NULL;

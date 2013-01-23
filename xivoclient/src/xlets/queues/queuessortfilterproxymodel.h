@@ -32,7 +32,7 @@
 
 #include <QStringList>
 
-#include <abstract_sort_filter_proxy_model.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
 
 class QueuesSortFilterProxyModel : public AbstractSortFilterProxyModel
 {

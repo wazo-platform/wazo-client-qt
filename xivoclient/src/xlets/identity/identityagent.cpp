@@ -27,11 +27,12 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "baseengine.h"
+#include <baseengine.h>
+#include <storage/agentinfo.h>
+#include <storage/queueinfo.h>
+#include <storage/queuememberinfo.h>
+
 #include "identityagent.h"
-#include <agentinfo.h>
-#include <queueinfo.h>
-#include <queuememberinfo.h>
 
 const QString icon_user_unlogged = "xivo-black";
 const QString icon_user_logged = "xivo-transp";

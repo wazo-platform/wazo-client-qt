@@ -31,7 +31,8 @@
 #define __SWITCHBOARD_H__
 
 #include <QObject>
-#include "xlet.h"
+
+#include <xletlib/xlet.h>
 #include "ui_switchboard.h"
 
 class QLabel;

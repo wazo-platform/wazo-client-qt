@@ -172,7 +172,7 @@
   <customwidget>
    <class>QueueEntriesView</class>
    <extends>QTableView</extends>
-   <header location="global">queue_entries/queue_entries_view.h</header>
+   <header location="global">xletlib/queue_entries/queue_entries_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

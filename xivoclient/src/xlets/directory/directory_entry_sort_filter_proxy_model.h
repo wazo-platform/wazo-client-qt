@@ -30,7 +30,8 @@
 #ifndef __DIRECTORY_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 #define __DIRECTORY_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 
-#include <abstract_sort_filter_proxy_model.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
+
 #include "directory_entry_model.h"
 
 class DirectoryEntrySortFilterProxyModel : public AbstractSortFilterProxyModel

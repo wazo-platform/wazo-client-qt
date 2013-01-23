@@ -42,7 +42,7 @@
 #include <QAction>
 #include <QMouseEvent>
 
-#include <functests.h>
+#include <xletlib/functests.h>
 #include <baseengine.h>
 
 #include "conference.h"

@@ -36,13 +36,13 @@
 #include <QSettings>
 #include <QtAlgorithms>
 
-#include "basepeerwidget.h"
-#include "baseengine.h"
-#include "xivoconsts.h"
-#include <channelinfo.h>
-#include <phoneinfo.h>
-#include <userinfo.h>
+#include <baseengine.h>
+#include <xivoconsts.h>
+#include <storage/channelinfo.h>
+#include <storage/phoneinfo.h>
+#include <storage/userinfo.h>
 
+#include "basepeerwidget.h"
 
 static
 bool channelTimestampLessThan(const QString &channelxid1, const QString &channelxid2)

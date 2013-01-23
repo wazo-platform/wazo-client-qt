@@ -30,7 +30,7 @@
 #ifndef __AGENTSVIEW_H__
 #define __AGENTSVIEW_H__
 
-#include <abstract_table_view.h>
+#include <xletlib/abstract_table_view.h>
 
 class AgentsView : public AbstractTableView
 {

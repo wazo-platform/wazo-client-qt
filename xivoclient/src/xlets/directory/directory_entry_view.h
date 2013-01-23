@@ -30,7 +30,7 @@
 #ifndef __DIRECTORY_ENTRY_VIEW_H__
 #define __DIRECTORY_ENTRY_VIEW_H__
 
-#include <abstract_table_view.h>
+#include <xletlib/abstract_table_view.h>
 
 class QKeyEvent;
 

@@ -31,7 +31,7 @@
 
 #include <baseengine.h>
 #include <dao/queuememberdao.h>
-#include <queuememberinfo.h>
+#include <storage/queuememberinfo.h>
 
 #include "queue_members_sort_filter_proxy_model.h"
 #include "queue_members_model.h"

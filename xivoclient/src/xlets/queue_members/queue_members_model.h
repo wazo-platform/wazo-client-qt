@@ -32,7 +32,8 @@
 
 #include <QAbstractTableModel>
 #include <QStringList>
-#include <queue_agent_status.h>
+
+#include <storage/queue_agent_status.h>
 
 class QueueMemberInfo;
 
