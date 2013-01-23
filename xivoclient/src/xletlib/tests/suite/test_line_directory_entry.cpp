@@ -48,20 +48,41 @@ class MockPhoneInfo: public PhoneInfo
 class MockUserDAO: public UserDAO
 {
     public:
-        ~MockUserDAO() {}
+        MockUserDAO() {}
+        ~MockUserDAO() {};
+        MOCK_CONST_METHOD1(findUserFromPhone, const UserInfo*(const PhoneInfo *));
+        MOCK_CONST_METHOD1(findNameByPhone, QString(const PhoneInfo *));
 };
 
 void TestLineDirectoryEntry::testNumber()
 {
     MockPhoneInfo phone("xivo", "1");
+    MockUserDAO mock_user_dao;
     QString number = "1234";
 
     EXPECT_CALL(phone, number())
         .WillRepeatedly(ReturnRef(number));
 
-    LineDirectoryEntry line_directory_entry(phone);
+    LineDirectoryEntry line_directory_entry(phone, mock_user_dao);
 
     QString result = line_directory_entry.number();
 
     QCOMPARE(result, number);
+}
+
+void TestLineDirectoryEntry::testName()
+{
+    MockPhoneInfo mock_phone("xivo", "1");
+    MockUserDAO mock_user_dao;
+
+    QString name = "Alice Tremblay";
+
+    EXPECT_CALL(mock_user_dao, findNameByPhone(&mock_phone))
+        .WillRepeatedly(Return(name));
+
+    LineDirectoryEntry line_directory_entry(mock_phone, mock_user_dao);
+
+    QString result = line_directory_entry.name();
+
+    QCOMPARE(result, name);
 }

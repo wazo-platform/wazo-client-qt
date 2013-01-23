@@ -30,16 +30,20 @@
 #ifndef _LINE_DIRECTORY_ENTRY_H_
 #define _LINE_DIRECTORY_ENTRY_H_
 
+#include <dao/userdao.h>
+
 class PhoneInfo;
 class QString;
 
 class LineDirectoryEntry
 {
     public:
-        LineDirectoryEntry(const PhoneInfo &phone);
+        LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao);
         const QString &number() const;
+        QString name() const;
     private:
         const PhoneInfo &m_phone;
+        const UserDAO &m_user_dao;
 };
 
 #endif /* _LINE_DIRECTORY_ENTRY_H_ */

@@ -30,13 +30,19 @@
 #include "line_directory_entry.h"
 
 #include <phoneinfo.h>
+#include <dao/userdao.h>
 
-LineDirectoryEntry::LineDirectoryEntry(const PhoneInfo &phone)
-    : m_phone(phone)
+LineDirectoryEntry::LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao)
+    : m_phone(phone), m_user_dao(user_dao)
 {
 }
 
 const QString &LineDirectoryEntry::number() const
 {
     return this->m_phone.number();
+}
+
+QString LineDirectoryEntry::name() const
+{
+    return this->m_user_dao.findNameByPhone(&this->m_phone);
 }

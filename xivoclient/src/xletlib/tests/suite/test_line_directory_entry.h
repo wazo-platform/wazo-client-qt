@@ -40,6 +40,7 @@ class TestLineDirectoryEntry: public QObject
 
     private slots:
         void testNumber();
+        void testName();
 };
 
 #endif
