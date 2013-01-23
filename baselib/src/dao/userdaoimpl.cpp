@@ -27,12 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include <QDebug>
-
 #include "baseengine.h"
 #include "userdaoimpl.h"
 #include "phoneinfo.h"
+#include "userinfo.h"
 #include "id_converter.h"
 
 const UserInfo *UserDAOImpl::findUserFromPhone(const PhoneInfo *phone) const
@@ -47,5 +45,16 @@ const UserInfo *UserDAOImpl::findUserFromPhone(const PhoneInfo *phone) const
 
 QString UserDAOImpl::findNameByPhone(const PhoneInfo *phone) const
 {
-    return "DAO NAME";
+    if (! phone) {
+        return "";
+    }
+
+    const UserInfo *user = this->findUserFromPhone(phone);
+    if (! user) {
+        return "";
+    }
+
+    return QString("%1 %2")
+        .arg(user->firstname())
+        .arg(user->lastname());
 }
