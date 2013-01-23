@@ -111,6 +111,8 @@ class RemoteControl : public QObject
         void assert_conference_room_1_has_number_2_in_xlet(const QVariantList &);
         void assert_conference_room_1_has_pin_code_2_in_xlet(const QVariantList &);
 
+        void when_i_search_a_transfer_destination_1(const QVariantList &);
+
     signals:
         void select_queue(const QString & queue_id);
 
