@@ -29,7 +29,7 @@
 
 #include "line_directory_entry.h"
 
-#include <phoneinfo.h>
+#include <storage/phoneinfo.h>
 #include <dao/userdao.h>
 
 LineDirectoryEntry::LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao)

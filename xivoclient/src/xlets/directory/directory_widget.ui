@@ -30,7 +30,7 @@
   <customwidget>
    <class>DirectoryEntryView</class>
    <extends>QTableWidget</extends>
-   <header>directory_entry_view.h</header>
+   <header location="global">xlets/directory/directory_entry_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

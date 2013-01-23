@@ -27,11 +27,12 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "baseengine.h"
+#include <baseengine.h>
+#include <storage/phoneinfo.h>
+#include <storage/userinfo.h>
+#include <id_converter.h>
+
 #include "userdaoimpl.h"
-#include "phoneinfo.h"
-#include "userinfo.h"
-#include "id_converter.h"
 
 const UserInfo *UserDAOImpl::findUserFromPhone(const PhoneInfo *phone) const
 {
