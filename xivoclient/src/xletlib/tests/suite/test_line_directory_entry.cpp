@@ -33,6 +33,7 @@
 #include "test_line_directory_entry.h"
 
 #include <phoneinfo.h>
+#include <dao/userdao.h>
 #include <line_directory_entry.h>
 
 using namespace testing;
@@ -42,6 +43,12 @@ class MockPhoneInfo: public PhoneInfo
     public:
         MockPhoneInfo(const QString &ipbxid, const QString &id) :PhoneInfo(ipbxid, id) {}
         MOCK_CONST_METHOD0(number, const QString&());
+};
+
+class MockUserDAO: public UserDAO
+{
+    public:
+        ~MockUserDAO() {}
 };
 
 void TestLineDirectoryEntry::testNumber()

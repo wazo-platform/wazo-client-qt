@@ -38,6 +38,7 @@ class PhoneInfo;
 class BASELIB_EXPORT UserDAO
 {
     public:
+        virtual ~UserDAO() {}
         const UserInfo *findUserFromPhone(const PhoneInfo *phone);
 };
 
