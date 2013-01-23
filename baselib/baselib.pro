@@ -14,7 +14,6 @@ DEFINES     += BASELIB_LIBRARY
 
 INCLUDEPATH += $${JSON_JSONQT_DIR}
 INCLUDEPATH += $${ROOT_DIR}/src
-INCLUDEPATH += $${ROOT_DIR}/src/storage
 
 HEADERS     += $${ROOT_DIR}/src/*.h
 HEADERS     += $${ROOT_DIR}/src/storage/*.h

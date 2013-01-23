@@ -31,12 +31,13 @@
 #include <QStringList>
 #include <QSet>
 
-#include "baseengine.h"
+#include <baseengine.h>
+#include <storage/queue_agent_status.h>
+#include <storage/queuememberinfo.h>
+#include <storage/agentinfo.h>
+#include <storage/queueinfo.h>
+
 #include "queuememberdao.h"
-#include "queue_agent_status.h"
-#include <queuememberinfo.h>
-#include <agentinfo.h>
-#include <queueinfo.h>
 
 QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_id)
 {

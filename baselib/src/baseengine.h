@@ -38,10 +38,10 @@
 #include <QTime>
 #include <QVector>
 
-#include <init_watcher.h>
+#include <storage/init_watcher.h>
+#include <storage/xinfo.h>
 
 #include "baseconfig.h"
-#include <xinfo.h>
 
 class QApplication;
 class QDateTime;

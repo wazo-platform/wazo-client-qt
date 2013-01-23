@@ -49,13 +49,13 @@
 #include <JsonToVariant.h>
 #include <VariantToJson.h>
 
-#include <agentinfo.h>
-#include <channelinfo.h>
-#include <phoneinfo.h>
-#include <queueinfo.h>
-#include <queuememberinfo.h>
-#include <userinfo.h>
-#include <voicemailinfo.h>
+#include <storage/agentinfo.h>
+#include <storage/channelinfo.h>
+#include <storage/phoneinfo.h>
+#include <storage/queueinfo.h>
+#include <storage/queuememberinfo.h>
+#include <storage/userinfo.h>
+#include <storage/voicemailinfo.h>
 
 #include "ipbxlistener.h"
 #include "xivoconsts.h"

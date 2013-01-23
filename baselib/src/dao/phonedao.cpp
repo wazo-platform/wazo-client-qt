@@ -28,9 +28,11 @@
  */
 
 #include <QColor>
+
+#include <baseengine.h>
+#include <storage/phoneinfo.h>
+
 #include "dao/phonedao.h"
-#include "baseengine.h"
-#include "phoneinfo.h"
 
 QColor PhoneDAO::getStatusColor(const PhoneInfo *phone)
 {
