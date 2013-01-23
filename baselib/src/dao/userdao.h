@@ -38,7 +38,7 @@ class PhoneInfo;
 class BASELIB_EXPORT UserDAO
 {
     public:
-        static const UserInfo *findUserFromPhone(const PhoneInfo *phone);
+        const UserInfo *findUserFromPhone(const PhoneInfo *phone);
 };
 
 #endif

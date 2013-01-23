@@ -167,7 +167,8 @@ QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
         break;
     }
 
-    const UserInfo * user = UserDAO::findUserFromPhone(phone);
+    UserDAO user_dao;
+    const UserInfo * user = user_dao.findUserFromPhone(phone);
     if (! user) {
         return QVariant();
     }
