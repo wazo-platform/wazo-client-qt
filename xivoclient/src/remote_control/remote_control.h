@@ -112,6 +112,7 @@ class RemoteControl : public QObject
         void assert_conference_room_1_has_pin_code_2_in_xlet(const QVariantList &);
 
         void when_i_search_a_transfer_destination_1(const QVariantList &);
+        void assert_directory_has_entry(const QVariantList &);
 
     signals:
         void select_queue(const QString & queue_id);
@@ -121,6 +122,10 @@ class RemoteControl : public QObject
         void queue_members_xlet_is_empty();
         QStringList _extract_agent_numbers(const QVariantList & agents);
         QStringList _get_agent_numbers_from_queue_members();
+        bool _directory_row_matches(QAbstractItemModel* model,
+                                    int row_index,
+                                    QString display_name,
+                                    QString phone_number);
 
     public slots:
         void on_error(const QString &);

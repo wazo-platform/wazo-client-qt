@@ -31,6 +31,7 @@
 #define __DIRECTORY_H__
 
 #include <QObject>
+#include <xletlib/functests.h>
 #include <xletlib/xlet.h>
 #include <ui_directory_widget.h>
 #include "directory_entry_sort_filter_proxy_model.h"
@@ -38,6 +39,8 @@
 class Directory: public XLet
 {
     Q_OBJECT
+    FUNCTESTED
+
     public:
         Directory(QWidget *parent=0);
         ~Directory();

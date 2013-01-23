@@ -148,6 +148,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(assert_conference_room_1_has_pin_code_2_in_xlet);
 
             RC_EXECUTE_ARG(when_i_search_a_transfer_destination_1);
+            RC_EXECUTE_ARG(assert_directory_has_entry);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED);

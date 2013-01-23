@@ -41,6 +41,39 @@ void RemoteControl::when_i_search_a_transfer_destination_1(const QVariantList & 
     QLineEdit *entry_filter = xlet->findChild<QLineEdit*>(QString("entry_filter"));
 
     entry_filter->setText(search_string);
+    this->pause(1000);
+}
+
+void RemoteControl::assert_directory_has_entry(const QVariantList & args)
+{
+    QString display_name = args[0].toString();
+    QString phone_number = args[1].toString();
+
+    Directory *xlet = static_cast<Directory*>(m_exec_obj.win->m_xletlist.value("directory"));
+    QAbstractItemModel *model = xlet->ui.entry_table->model();
+    bool entry_found = false;
+    int row_count = model->rowCount();
+    this->assert(row_count > 0, "directory search returned no results");
+    for (int row_index = 0; row_index < model->rowCount(); row_index++) {
+        if (this->_directory_row_matches(model, row_index, display_name, phone_number)) {
+            entry_found = true;
+        }
+    }
+    this->assert(entry_found);
+}
+
+bool RemoteControl::_directory_row_matches(QAbstractItemModel *model, int row_index, QString display_name, QString phone_number)
+{
+    QString model_display_name = this->getValueInModel(model, row_index, DirectoryEntryModel::NAME);
+    QString model_phone_number = this->getValueInModel(model, row_index, DirectoryEntryModel::NUMBER);
+
+    if (model_display_name != display_name) {
+        return false;
+    }
+    if (model_phone_number != phone_number) {
+        return false;
+    }
+    return true;
 }
 
 #endif
