@@ -30,11 +30,14 @@
 #ifndef _DIRECTORY_ENTRY_MANAGER_H_
 #define _DIRECTORY_ENTRY_MANAGER_H_
 
+#include <QObject>
 #include <QString>
 
-class DirectoryEntryManager
+class DirectoryEntryManager: public QObject
 {
-    public:
+    Q_OBJECT
+
+    public slots:
         void updatePhoneConfig(const QString &phone_xid);
 };
 

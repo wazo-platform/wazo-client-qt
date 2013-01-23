@@ -17,4 +17,5 @@ SOURCES += $${GIT_DIR}/baselib/src/storage/phoneinfo.cpp
 SOURCES += $${GIT_DIR}/baselib/src/storage/xinfo.cpp
 
 SOURCES += $${ROOT_DIR}/src/xletlib/line_directory_entry.cpp
+HEADERS += $${ROOT_DIR}/src/xletlib/directory_entry_manager.h
 SOURCES += $${ROOT_DIR}/src/xletlib/directory_entry_manager.cpp
