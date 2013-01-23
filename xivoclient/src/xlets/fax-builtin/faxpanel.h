@@ -42,10 +42,11 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 
-#include <xlet.h>
 #include <baseengine.h>
-#include <dirdialog.h>
-#include <extendedlineedit.h>
+#include <xletlib/xlet.h>
+#include <xletlib/extendedlineedit.h>
+
+#include "dirdialog.h"
 
 /*! \brief Panel used to send an receive fax
  */

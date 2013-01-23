@@ -42,16 +42,15 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-#include "directorypanel.h"
 #include <baseengine.h>
-#include <extendedtablewidget.h>
-#include <extendedlineedit.h>
-#include <userinfo.h>
-#include <phoneinfo.h>
+#include <storage/userinfo.h>
+#include <storage/phoneinfo.h>
 #include <xivoconsts.h>
-#include <xlet.h>
+#include <xletlib/extendedtablewidget.h>
+#include <xletlib/extendedlineedit.h>
+#include <xletlib/xlet.h>
 
-#include <functests.h>
+#include <xletlib/functests.h>
 
 class DirectoryPanel : public XLet
 {

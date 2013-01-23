@@ -41,10 +41,10 @@
 #include <QTabWidget>
 #include <QVariant>
 
-#include <xlet.h>
+#include <xletlib/xlet.h>
+#include <xletlib/functests.h>
 #include <popup.h>
 #include <baseengine.h>
-#include "functests.h"
 
 
 class Popup;

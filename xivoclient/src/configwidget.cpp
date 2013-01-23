@@ -48,7 +48,7 @@
 
 #include <baseengine.h>
 #include <xivoconsts.h>
-#include <warningwidget.h>
+#include <xletlib/warningwidget.h>
 
 #include "configwidget.h"
 

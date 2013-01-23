@@ -31,7 +31,8 @@
 #define _XLET_FACTORY_H_
 
 #include <QWidget>
-#include "xlet.h"
+
+#include <xletlib/xlet.h>
 
 /*! \brief XLet Factory
  *
@@ -42,4 +43,3 @@ namespace XLetFactory {
 }
 
 #endif
-

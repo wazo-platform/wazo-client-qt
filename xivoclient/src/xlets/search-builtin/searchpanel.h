@@ -32,8 +32,8 @@
 
 #include <QHash>
 
-#include "xlet.h"
-#include "basepeerwidget.h"
+#include <xletlib/xlet.h>
+#include <xletlib/basepeerwidget.h>
 
 class QGridLayout;
 class QVBoxLayout;

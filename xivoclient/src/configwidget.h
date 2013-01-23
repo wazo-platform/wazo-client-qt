@@ -36,7 +36,7 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 
-#include <functests.h>
+#include <xletlib/functests.h>
 
 class QCheckBox;
 class QComboBox;

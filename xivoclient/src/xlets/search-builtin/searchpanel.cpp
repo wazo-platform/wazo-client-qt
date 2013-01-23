@@ -32,13 +32,13 @@
 #include <QScrollArea>
 #include <QDebug>
 
-#include <peerwidget.h>
 #include <baseengine.h>
-#include <extendedlineedit.h>
-#include <phoneinfo.h>
-#include <userinfo.h>
-#include <chitchat.h>
-#include <peeritem.h>
+#include <storage/phoneinfo.h>
+#include <storage/userinfo.h>
+#include <xletlib/peerwidget.h>
+#include <xletlib/extendedlineedit.h>
+#include <xletlib/chitchat.h>
+#include <xletlib/peeritem.h>
 
 #include "searchpanel.h"
 

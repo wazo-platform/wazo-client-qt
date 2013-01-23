@@ -39,13 +39,14 @@
 #include <QSettings>
 #include <QVBoxLayout>
 
-#include "baseengine.h"
-#include "mylocaldirpanel.h"
-#include "userinfo.h"
+#include <baseengine.h>
+#include <storage/userinfo.h>
+#include <xletlib/extendedtablewidget.h>
+#include <xletlib/searchdialog.h>
+
 #include "contactdialog.h"
-#include "extendedtablewidget.h"
-#include "searchdialog.h"
 #include "csvstream.h"
+#include "mylocaldirpanel.h"
 
 /*! \brief Constructor
  */

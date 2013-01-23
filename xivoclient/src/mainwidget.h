@@ -33,7 +33,7 @@
 #include <QtGui>
 #include <QList>
 
-#include <functests.h>
+#include <xletlib/functests.h>
 
 #include "systray_manager.h"
 

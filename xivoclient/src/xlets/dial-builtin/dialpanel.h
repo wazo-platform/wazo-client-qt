@@ -40,10 +40,10 @@
 #include <QMouseEvent>
 #include <QPushButton>
 
-#include <xlet.h>
+#include <xletlib/xlet.h>
 #include <xivoconsts.h> // for PEER_MIMETYPE
-#include <userinfo.h>
 #include <baseengine.h>
+#include <storage/userinfo.h>
 
 /*! \brief Simple widget to enter a number and dial it
  */

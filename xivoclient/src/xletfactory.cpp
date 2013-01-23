@@ -33,15 +33,16 @@
 #include <QDir>
 #include <QHash>
 
-#include "xletfactory.h"
-#include "xletinterface.h"
+#include <xletlib/xletinterface.h>
 
-#include <customerinfopanel.h>
-#include <dialpanel.h>
-#include <directorypanel.h>
-#include <faxpanel.h>
-#include <mylocaldirpanel.h>
-#include <searchpanel.h>
+#include <xlets/customerinfo-builtin/customerinfopanel.h>
+#include <xlets/dial-builtin/dialpanel.h>
+#include <xlets/remotedirectory-builtin/directorypanel.h>
+#include <xlets/fax-builtin/faxpanel.h>
+#include <xlets/mylocaldir-builtin/mylocaldirpanel.h>
+#include <xlets/search-builtin/searchpanel.h>
+
+#include "xletfactory.h"
 
 /*! \brief template to return a new XLet */
 template <class T>

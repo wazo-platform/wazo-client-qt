@@ -33,7 +33,7 @@
 #include <QObject>
 #include <QFile>
 
-#include "xlet.h"
+#include <xletlib/xlet.h>
 
 class QLineEdit;
 class BaseEngine;

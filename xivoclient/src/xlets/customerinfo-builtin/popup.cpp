@@ -44,14 +44,16 @@
 #include <QVariant>
 #include <QHBoxLayout>
 
-#include "popup.h"
-#include "baseengine.h"
+#include <baseengine.h>
+#include <storage/userinfo.h>
+
 #include "xmlhandler.h"
 #include "remotepicwidget.h"
 #include "urllabel.h"
-#include "userinfo.h"
 #include "remarkarea.h"
 #include "phonenumber.h"
+#include "popup.h"
+
 
 QStringList g_formbuttonnames = (QStringList()
                                  << "refuse" << "hangup" << "answer"
