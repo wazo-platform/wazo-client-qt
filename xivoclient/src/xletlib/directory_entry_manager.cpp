@@ -27,21 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
-#include <gmock/gmock.h>
+#include "directory_entry_manager.h"
 
-#include <test_line_directory_entry.h>
-#include <test_directory_entry_manager.h>
-
-int main (int argc, char *argv[])
+void DirectoryEntryManager::updatePhoneConfig(const QString &)
 {
-    ::testing::GTEST_FLAG(throw_on_failure) = true;
-    ::testing::InitGoogleMock(&argc, argv);
-
-    TestLineDirectoryEntry test_line_directory_entry;
-    QTest::qExec(&test_line_directory_entry, argc, argv);
-    TestDirectoryEntryManager test_directory_entry_manager;
-    QTest::qExec(&test_directory_entry_manager, argc, argv);
-
-    return 0;
+    return;
 }

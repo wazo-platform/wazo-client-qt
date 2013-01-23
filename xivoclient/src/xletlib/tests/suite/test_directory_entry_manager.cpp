@@ -30,18 +30,17 @@
 #include <QtTest/QtTest>
 #include <gmock/gmock.h>
 
-#include <test_line_directory_entry.h>
-#include <test_directory_entry_manager.h>
+#include "test_directory_entry_manager.h"
 
-int main (int argc, char *argv[])
+#include <directory_entry_manager.h>
+
+using namespace testing;
+
+void TestDirectoryEntryManager::testUpdatePhoneConfig()
 {
-    ::testing::GTEST_FLAG(throw_on_failure) = true;
-    ::testing::InitGoogleMock(&argc, argv);
+    QString phone_xid = "123";
 
-    TestLineDirectoryEntry test_line_directory_entry;
-    QTest::qExec(&test_line_directory_entry, argc, argv);
-    TestDirectoryEntryManager test_directory_entry_manager;
-    QTest::qExec(&test_directory_entry_manager, argc, argv);
+    DirectoryEntryManager manager;
 
-    return 0;
+    manager.updatePhoneConfig(phone_xid);
 }
