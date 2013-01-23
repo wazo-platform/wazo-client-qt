@@ -41,10 +41,11 @@ class PhoneInfo;
 class BASELIB_EXPORT PhoneDAOImpl: public PhoneDAO
 {
     public:
-        QColor getStatusColor(const PhoneInfo *phone);
-        QString getStatusName(const PhoneInfo *phone);
-        QVariantMap getPhoneStatusConfig(const PhoneInfo *phone);
-        const PhoneInfo *findByIdentity(const QString &line_interface);
+        QColor getStatusColor(const PhoneInfo *phone) const;
+        QString getStatusName(const PhoneInfo *phone) const;
+        QVariantMap getPhoneStatusConfig(const PhoneInfo *phone) const;
+        const PhoneInfo *findByIdentity(const QString &line_interface) const;
+        const PhoneInfo *findByXId(const QString &phone_xid) const {return NULL;}
         ~PhoneDAOImpl();
 };
 

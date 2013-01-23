@@ -30,6 +30,9 @@
 #include <QtTest/QtTest>
 #include <QtTest/QSignalSpy>
 #include <gmock/gmock.h>
+#include <QColor>
+
+#include <dao/phonedao.h>
 
 #include "test_directory_entry_manager.h"
 
@@ -37,12 +40,26 @@
 
 using namespace testing;
 
+class MockPhoneDAO: public PhoneDAO
+{
+    public:
+        MockPhoneDAO() {}
+        ~MockPhoneDAO() {}
+
+        MOCK_CONST_METHOD1(getStatusColor, QColor(const PhoneInfo *));
+        MOCK_CONST_METHOD1(getStatusName, QString(const PhoneInfo *));
+        MOCK_CONST_METHOD1(getPhoneStatusConfig, QVariantMap(const PhoneInfo *));
+        MOCK_CONST_METHOD1(findByIdentity, const PhoneInfo *(const QString &));
+        MOCK_CONST_METHOD1(findByXId, const PhoneInfo *(const QString &));
+};
+
 
 void TestDirectoryEntryManager::testUpdatePhoneConfig()
 {
     QString phone_xid = "123";
+    MockPhoneDAO mock_phone_dao;
 
-    DirectoryEntryManager manager;
+    DirectoryEntryManager manager(NULL, mock_phone_dao);
     QSignalSpy spy(&manager, SIGNAL(directoryEntryUpdated(int)));
 
     manager.updatePhoneConfig(phone_xid);

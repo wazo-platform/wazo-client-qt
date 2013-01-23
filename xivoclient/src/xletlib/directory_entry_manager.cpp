@@ -39,5 +39,5 @@ DirectoryEntryManager::DirectoryEntryManager(
 
 void DirectoryEntryManager::updatePhoneConfig(const QString &phone_xid)
 {
-    const PhoneInfo *phone = this->m_phone_dao.phoneByXid(phone_xid);
+    const PhoneInfo *phone = this->m_phone_dao.findByXId(phone_xid);
 }
