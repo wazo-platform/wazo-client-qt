@@ -1039,6 +1039,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 QString xid = QString("%1/%2").arg(ipbxid).arg(id);
                 if (listname == "queuemembers") {
                     emit postRemoveQueueMemberConfig(xid);
+                } else if (listname == "queues") {
+                    emit postRemoveQueueConfig(xid);
                 }
             }
 

@@ -323,6 +323,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void removeQueueConfig(const QString &);
         void removeQueueMemberConfig(const QString &);
         void postRemoveQueueMemberConfig(const QString &);
+        void postRemoveQueueConfig(const QString &);
 
         void newQueueList(const QStringList &);
         void removeQueues(const QString &, const QStringList &);
