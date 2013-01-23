@@ -32,21 +32,25 @@
 #include <baseengine.h>
 #include <storage/phoneinfo.h>
 
-#include "dao/phonedao.h"
+#include "dao/phonedaoimpl.h"
 
-QColor PhoneDAO::getStatusColor(const PhoneInfo *phone)
+PhoneDAOImpl::~PhoneDAOImpl()
 {
-    QVariantMap config = PhoneDAO::getPhoneStatusConfig(phone);
+}
+
+QColor PhoneDAOImpl::getStatusColor(const PhoneInfo *phone)
+{
+    QVariantMap config = this->getPhoneStatusConfig(phone);
     return QColor(config.value("color").toString());
 }
 
-QString PhoneDAO::getStatusName(const PhoneInfo *phone)
+QString PhoneDAOImpl::getStatusName(const PhoneInfo *phone)
 {
-    QVariantMap config = PhoneDAO::getPhoneStatusConfig(phone);
+    QVariantMap config = this->getPhoneStatusConfig(phone);
     return config.value("longname").toString();
 }
 
-QVariantMap PhoneDAO::getPhoneStatusConfig(const PhoneInfo *phone)
+QVariantMap PhoneDAOImpl::getPhoneStatusConfig(const PhoneInfo *phone)
 {
     QVariantMap config;
     if (! phone) {
@@ -61,7 +65,7 @@ QVariantMap PhoneDAO::getPhoneStatusConfig(const PhoneInfo *phone)
     return config;
 }
 
-const PhoneInfo *PhoneDAO::findByIdentity(const QString &line_interface)
+const PhoneInfo *PhoneDAOImpl::findByIdentity(const QString &line_interface)
 {
     foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
         const PhoneInfo * p = b_engine->phone(phonexid);

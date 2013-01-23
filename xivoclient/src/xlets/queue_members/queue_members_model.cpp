@@ -36,6 +36,7 @@
 #include <storage/userinfo.h>
 #include <dao/queuememberdao.h>
 #include <dao/phonedao.h>
+#include <dao/phonedaoimpl.h>
 
 #include "queue_members_model.h"
 
@@ -166,7 +167,12 @@ QVariant QueueMembersModel::dataDisplay(int row, int column) const
 
 QVariant QueueMembersModel::phoneDataDisplay(int column, const QueueMemberInfo * queue_member) const
 {
-    const PhoneInfo * phone = PhoneDAO::findByIdentity(queue_member->interface());
+    PhoneDAO *phone_dao = new PhoneDAOImpl();
+    if (! phone_dao) {
+        return QVariant();
+    }
+    const PhoneInfo * phone = phone_dao->findByIdentity(queue_member->interface());
+    delete phone_dao;
     if (phone == NULL) return QVariant();
     const UserInfo * user = b_engine->user(phone->xid_user_features());
     if (user == NULL) return QVariant();

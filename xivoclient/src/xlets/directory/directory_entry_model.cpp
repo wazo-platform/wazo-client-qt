@@ -35,6 +35,7 @@
 #include <dao/userdaoimpl.h>
 #include <dao/userdao.h>
 #include <dao/phonedao.h>
+#include <dao/phonedaoimpl.h>
 #include <xletlib/taintedpixmap.h>
 
 #include "directory_entry_model.h"
@@ -194,8 +195,14 @@ QVariant DirectoryEntryModel::dataDecoration(int row, int column) const
 
 QPixmap DirectoryEntryModel::getPhoneIcon(const PhoneInfo *phone) const
 {
-    QColor color = PhoneDAO::getStatusColor(phone);
-    return TaintedPixmap(QString(":/images/phone-trans.png"), color).getPixmap();
+    PhoneDAO *phone_dao = new PhoneDAOImpl();
+    if (! phone_dao) {
+        return QPixmap();
+    }
+    QColor color = phone_dao->getStatusColor(phone);
+    QPixmap res = TaintedPixmap(QString(":/images/phone-trans.png"), color).getPixmap();
+    delete phone_dao;
+    return res;
 }
 
 QVariant DirectoryEntryModel::dataTooltip(int row, int column) const
@@ -208,7 +215,14 @@ QVariant DirectoryEntryModel::dataTooltip(int row, int column) const
     if (! phone) {
         return QVariant();
     }
-    return PhoneDAO::getStatusName(phone);
+    PhoneDAO *phone_dao = new PhoneDAOImpl();
+    if (! phone_dao) {
+        return QVariant();
+    }
+
+    QVariant res = phone_dao->getStatusName(phone);
+    delete phone_dao;
+    return res;
 }
 
 bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & index)

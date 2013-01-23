@@ -27,24 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PHONEDAO_H__
-#define __PHONEDAO_H__
+#ifndef __PHONEDAOIMPL_H__
+#define __PHONEDAOIMPL_H__
 
 #include <QVariantMap>
+#include "phonedao.h"
 
 class QColor;
 class PhoneInfo;
 
 #include "baselib_export.h"
 
-class BASELIB_EXPORT PhoneDAO
+class BASELIB_EXPORT PhoneDAOImpl: public PhoneDAO
 {
     public:
-        virtual QColor getStatusColor(const PhoneInfo *phone) = 0;
-        virtual QString getStatusName(const PhoneInfo *phone) = 0;
-        virtual QVariantMap getPhoneStatusConfig(const PhoneInfo *phone) = 0;
-        virtual const PhoneInfo *findByIdentity(const QString &line_interface) = 0;
-        virtual ~PhoneDAO() {};
+        QColor getStatusColor(const PhoneInfo *phone);
+        QString getStatusName(const PhoneInfo *phone);
+        QVariantMap getPhoneStatusConfig(const PhoneInfo *phone);
+        const PhoneInfo *findByIdentity(const QString &line_interface);
+        ~PhoneDAOImpl();
 };
 
 #endif
