@@ -31,7 +31,6 @@
 #include <gmock/gmock.h>
 
 #include <test_line_directory_entry.h>
-#include <test_directory_entry_manager.h>
 
 int main (int argc, char *argv[])
 {
@@ -40,8 +39,6 @@ int main (int argc, char *argv[])
 
     TestLineDirectoryEntry test_line_directory_entry;
     QTest::qExec(&test_line_directory_entry, argc, argv);
-    TestDirectoryEntryManager test_directory_entry_manager;
-    QTest::qExec(&test_directory_entry_manager, argc, argv);
 
     return 0;
 }

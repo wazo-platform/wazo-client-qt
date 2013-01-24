@@ -33,12 +33,25 @@
 #include <QObject>
 #include <QString>
 
+#include <dao/phonedaoimpl.h>
+
+class PhoneDAO;
+
 class DirectoryEntryManager: public QObject
 {
     Q_OBJECT
 
+    public:
+        DirectoryEntryManager(QObject *parent=NULL, const PhoneDAO &phone_dao=PhoneDAOImpl());
+
     public slots:
         void updatePhoneConfig(const QString &phone_xid);
+
+    signals:
+        void directoryEntryUpdated(int entry_index);
+
+    private:
+        const PhoneDAO &m_phone_dao;
 };
 
 #endif /* _DIRECTORY_ENTRY_MANAGER_H_ */
