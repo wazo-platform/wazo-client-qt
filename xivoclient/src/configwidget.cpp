@@ -63,7 +63,8 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     setWindowTitle(tr("Configuration"));
     setAttribute(Qt::WA_DeleteOnClose);
 
-    QVBoxLayout * vlayout = new QVBoxLayout(this);
+    // OLD
+    QVBoxLayout * vlayout = new QVBoxLayout();
     m_tabwidget = new QTabWidget();
 
     m_config = b_engine->getConfig();
@@ -86,6 +87,18 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     connect(m_btnbox, SIGNAL(rejected()), this, SLOT(close()));
     m_btnbox->button(QDialogButtonBox::Ok)->setDefault(true);
     vlayout->addWidget(m_btnbox);
+
+    // NEW
+    QVBoxLayout * config_layout = new QVBoxLayout();
+    QWidget * config_widget = new QWidget(this);
+    this->ui.setupUi(config_widget);
+    config_layout->addWidget(config_widget);
+
+    // TEMP
+    QHBoxLayout * both_versions_layout = new QHBoxLayout(this);
+    both_versions_layout->addLayout(vlayout);
+    both_versions_layout->addLayout(config_layout);
+
 }
 
 ConfigWidget::~ConfigWidget()
