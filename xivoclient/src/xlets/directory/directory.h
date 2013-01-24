@@ -31,9 +31,14 @@
 #define __DIRECTORY_H__
 
 #include <QObject>
+
+#include <dao/phonedaoimpl.h>
+#include <dao/userdaoimpl.h>
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
+#include <xletlib/directory_entry_manager.h>
 #include <ui_directory_widget.h>
+
 #include "directory_entry_sort_filter_proxy_model.h"
 
 class Directory: public XLet
@@ -51,6 +56,9 @@ class Directory: public XLet
     private:
         Ui::DirectoryWidget ui;
         DirectoryEntrySortFilterProxyModel *m_proxy_model;
+        PhoneDAOImpl m_phone_dao;
+        UserDAOImpl m_user_dao;
+        DirectoryEntryManager m_directory_entry_manager;
 };
 
 #endif /* __DIRECTORY_H__ */

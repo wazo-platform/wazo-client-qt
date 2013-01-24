@@ -29,12 +29,15 @@
 
 #include <QtTest/QtTest>
 #include <gmock/gmock.h>
+#include <QPixmap>
 
 #include "test_line_directory_entry.h"
 
-#include <phoneinfo.h>
+#include <storage/phoneinfo.h>
 #include <dao/userdao.h>
-#include <line_directory_entry.h>
+#include <dao/phonedao.h>
+#include <xletlib/line_directory_entry.h>
+#include <xletlib/taintedpixmap.h>
 
 using namespace testing;
 
@@ -54,16 +57,29 @@ class MockUserDAO: public UserDAO
         MOCK_CONST_METHOD1(findNameByPhone, QString(const PhoneInfo *));
 };
 
+class MockPhoneDAO: public PhoneDAO
+{
+    public:
+        MockPhoneDAO() {}
+        ~MockPhoneDAO() {};
+        MOCK_CONST_METHOD1(getStatusColor, QColor(const PhoneInfo *));
+        MOCK_CONST_METHOD1(getStatusName, QString(const PhoneInfo *));
+        MOCK_CONST_METHOD1(getPhoneStatusConfig, QVariantMap(const PhoneInfo *));
+        MOCK_CONST_METHOD1(findByIdentity, const PhoneInfo *(const QString &));
+        MOCK_CONST_METHOD1(findByXId, const PhoneInfo *(const QString &));
+};
+
 void TestLineDirectoryEntry::testNumber()
 {
     MockPhoneInfo phone("xivo", "1");
     MockUserDAO mock_user_dao;
+    MockPhoneDAO mock_phone_dao;
     QString number = "1234";
 
     EXPECT_CALL(phone, number())
         .WillRepeatedly(ReturnRef(number));
 
-    LineDirectoryEntry line_directory_entry(phone, mock_user_dao);
+    LineDirectoryEntry line_directory_entry(phone, mock_user_dao, mock_phone_dao);
 
     QString result = line_directory_entry.number();
 
@@ -74,13 +90,14 @@ void TestLineDirectoryEntry::testName()
 {
     MockPhoneInfo mock_phone("xivo", "1");
     MockUserDAO mock_user_dao;
+    MockPhoneDAO mock_phone_dao;
 
     QString name = "Alice Tremblay";
 
     EXPECT_CALL(mock_user_dao, findNameByPhone(&mock_phone))
         .WillRepeatedly(Return(name));
 
-    LineDirectoryEntry line_directory_entry(mock_phone, mock_user_dao);
+    LineDirectoryEntry line_directory_entry(mock_phone, mock_user_dao, mock_phone_dao);
 
     QString result = line_directory_entry.name();
 

@@ -27,14 +27,37 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "line_directory_entry.h"
+#include <QDebug>
+#include <QPixmap>
 
 #include <storage/phoneinfo.h>
+#include <dao/phonedao.h>
 #include <dao/userdao.h>
+#include <xletlib/taintedpixmap.h>
 
-LineDirectoryEntry::LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao)
-    : m_phone(phone), m_user_dao(user_dao)
+#include "line_directory_entry.h"
+
+LineDirectoryEntry::LineDirectoryEntry(const PhoneInfo &phone,
+                                       const UserDAO &user_dao,
+                                       const PhoneDAO &phone_dao)
+    : m_phone(phone), m_user_dao(user_dao), m_phone_dao(phone_dao)
 {
+}
+
+bool LineDirectoryEntry::operator==(const LineDirectoryEntry & other) const
+{
+    const QString & this_phone = this->m_phone.id();
+    const QString & other_phone = other.m_phone.id();
+    return this_phone == other_phone;
+}
+
+LineDirectoryEntry & LineDirectoryEntry::operator=(const LineDirectoryEntry & other)
+{
+    if (this != &other) {
+        this->LineDirectoryEntry::~LineDirectoryEntry();
+        new (this) LineDirectoryEntry(other);
+    }
+    return *this;
 }
 
 const QString &LineDirectoryEntry::number() const
@@ -45,4 +68,17 @@ const QString &LineDirectoryEntry::number() const
 QString LineDirectoryEntry::name() const
 {
     return this->m_user_dao.findNameByPhone(&this->m_phone);
+}
+
+QPixmap LineDirectoryEntry::statusIcon() const
+{
+    QColor color = m_phone_dao.getStatusColor(&m_phone);
+    QPixmap icon = TaintedPixmap(QString(":/images/phone-trans.png"), color).getPixmap();
+    return icon;
+}
+
+QString LineDirectoryEntry::statusText() const
+{
+    QString text = m_phone_dao.getStatusName(&this->m_phone);
+    return text;
 }

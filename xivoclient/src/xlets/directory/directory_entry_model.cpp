@@ -27,34 +27,45 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QPixmap>
 #include <QString>
+#include <QPixmap>
 
 #include <baseengine.h>
-#include <storage/userinfo.h>
-#include <dao/userdaoimpl.h>
-#include <dao/userdao.h>
-#include <dao/phonedao.h>
-#include <dao/phonedaoimpl.h>
-#include <xletlib/taintedpixmap.h>
+#include <xletlib/directory_entry_manager.h>
 
 #include "directory_entry_model.h"
 
-DirectoryEntryModel::DirectoryEntryModel(QObject *parent)
-    : QAbstractTableModel(parent)
+DirectoryEntryModel::DirectoryEntryModel(const DirectoryEntryManager & directory_entry_manager,
+                                         QObject *parent)
+    : QAbstractTableModel(parent),
+      m_directory_entry_manager(directory_entry_manager)
 {
     m_headers[STATUS_ICON] = "";
     m_headers[NAME] = tr("Name");
     m_headers[NUMBER] = tr("Number");
 
-    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
-            this, SLOT(updatePhoneConfig(const QString &)));
-    connect(b_engine, SIGNAL(removePhoneConfig(const QString &)),
-            this, SLOT(removePhoneConfig(const QString &)));
-    connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
-            this, SLOT(updatePhoneStatus(const QString &)));
     connect(b_engine, SIGNAL(clearingCache()),
             this, SLOT(clearingCache()));
+    connect(&m_directory_entry_manager, SIGNAL(directoryEntryAdded(int)),
+            this, SLOT(directoryEntryAdded(int)));
+    connect(&m_directory_entry_manager, SIGNAL(directoryEntryUpdated(int)),
+            this, SLOT(directoryEntryUpdated(int)));
+    connect(&m_directory_entry_manager, SIGNAL(directoryEntryDeleted(int)),
+            this, SLOT(directoryEntryDeleted(int)));
+}
+
+void DirectoryEntryModel::directoryEntryAdded(int entry_index) {
+    int inserted_row = entry_index;
+    beginInsertRows(QModelIndex(), inserted_row, inserted_row);
+    endInsertRows();
+}
+
+void DirectoryEntryModel::directoryEntryUpdated(int entry_index) {
+    this->refreshEntry(entry_index);
+}
+
+void DirectoryEntryModel::directoryEntryDeleted(int entry_index) {
+    this->removeRow(entry_index);
 }
 
 void DirectoryEntryModel::clearingCache()
@@ -62,51 +73,10 @@ void DirectoryEntryModel::clearingCache()
     this->removeRows(0, this->rowCount(), QModelIndex());
 }
 
-void DirectoryEntryModel::updatePhoneConfig(const QString &xid)
-{
-    const PhoneInfo *phone = b_engine->phone(xid);
-    if (! phone) {
-        return;
-    }
-
-    if (! m_phones.contains(phone)) {
-        int insertedRow = m_phones.size();
-        beginInsertRows(QModelIndex(), insertedRow, insertedRow);
-        m_phones.append(phone);
-        endInsertRows();
-    } else {
-        this->refreshEntryRow(phone);
-    }
-}
-
-void DirectoryEntryModel::removePhoneConfig(const QString &xid)
-{
-    const PhoneInfo *phone = b_engine->phone(xid);
-    if (! phone) {
-        return;
-    }
-
-    if (m_phones.contains(phone)) {
-        int removedRow = m_phones.indexOf(phone);
-        removeRow(removedRow);
-    }
-}
-
-void DirectoryEntryModel::updatePhoneStatus(const QString &xid)
-{
-    const PhoneInfo *phone = b_engine->phone(xid);
-    if (! phone) {
-        return;
-    }
-
-    this->refreshEntryRow(phone);
-}
-
-void DirectoryEntryModel::refreshEntryRow(const PhoneInfo *phone)
+void DirectoryEntryModel::refreshEntry(int row_id)
 {
     unsigned first_column_index = 0;
     unsigned last_column_index = NB_COL - 1;
-    unsigned row_id = m_phones.indexOf(phone);
     QModelIndex cell_changed_start = createIndex(row_id, first_column_index);
     QModelIndex cell_changed_end = createIndex(row_id, last_column_index);
     emit dataChanged(cell_changed_start, cell_changed_end);
@@ -114,7 +84,7 @@ void DirectoryEntryModel::refreshEntryRow(const PhoneInfo *phone)
 
 int DirectoryEntryModel::rowCount(const QModelIndex&) const
 {
-    return m_phones.size();
+    return m_directory_entry_manager.entryCount();
 }
 
 int DirectoryEntryModel::columnCount(const QModelIndex&) const
@@ -125,16 +95,17 @@ int DirectoryEntryModel::columnCount(const QModelIndex&) const
 QVariant DirectoryEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
+    const LineDirectoryEntry & entry = m_directory_entry_manager.getEntry(row);
 
     switch(role) {
     case Qt::DecorationRole:
-        return this->dataDecoration(row, column);
+        return this->dataDecoration(entry, column);
     case Qt::TextAlignmentRole:
         return Qt::AlignCenter;
     case  Qt::DisplayRole:
-        return this->dataDisplay(row, column);
+        return this->dataDisplay(entry, column);
     case Qt::ToolTipRole:
-        return this->dataTooltip(row, column);
+        return this->dataTooltip(entry, column);
     default:
         return QVariant();
     }
@@ -156,85 +127,39 @@ QVariant DirectoryEntryModel::headerData(int column,
     }
 }
 
-QVariant DirectoryEntryModel::dataDisplay(int row, int column) const
+QVariant DirectoryEntryModel::dataDisplay(const LineDirectoryEntry & entry, int column) const
 {
-    const PhoneInfo *phone = m_phones[row];
-    if (! phone) {
-        return QVariant();
-    }
     switch (column) {
     case NUMBER:
-        return phone->number();
+        return entry.number();
     case NAME:
-    {
-        UserDAO *user_dao = new UserDAOImpl();
-        if (! user_dao) {
-            return QVariant();
-        }
-        QVariant res = user_dao->findNameByPhone(phone);
-        delete user_dao;
-        return res;
-    }
+        return entry.name();
     default :
         return QVariant();
     }
 }
 
-QVariant DirectoryEntryModel::dataDecoration(int row, int column) const
+QVariant DirectoryEntryModel::dataDecoration(const LineDirectoryEntry & entry, int column) const
 {
     if (column != STATUS_ICON) {
         return QVariant();
     }
-
-    const PhoneInfo *phone = m_phones[row];
-    if (! phone) {
-        return QVariant();
-    }
-    return this->getPhoneIcon(phone);
+    return entry.statusIcon();
 }
 
-QPixmap DirectoryEntryModel::getPhoneIcon(const PhoneInfo *phone) const
-{
-    PhoneDAO *phone_dao = new PhoneDAOImpl();
-    if (! phone_dao) {
-        return QPixmap();
-    }
-    QColor color = phone_dao->getStatusColor(phone);
-    QPixmap res = TaintedPixmap(QString(":/images/phone-trans.png"), color).getPixmap();
-    delete phone_dao;
-    return res;
-}
-
-QVariant DirectoryEntryModel::dataTooltip(int row, int column) const
+QVariant DirectoryEntryModel::dataTooltip(const LineDirectoryEntry & entry, int column) const
 {
     if (column != STATUS_ICON) {
         return QVariant();
     }
-
-    const PhoneInfo *phone = m_phones[row];
-    if (! phone) {
-        return QVariant();
-    }
-    PhoneDAO *phone_dao = new PhoneDAOImpl();
-    if (! phone_dao) {
-        return QVariant();
-    }
-
-    QVariant res = phone_dao->getStatusName(phone);
-    delete phone_dao;
-    return res;
+    return entry.statusText();
 }
 
 bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & index)
 {
-    bool ret = true;
     if (count > 0) {
         beginRemoveRows(index, row, row + count - 1);
-        for (int i = 0 ; i < count ; i ++) {
-            ret = ret && row < m_phones.size();
-            m_phones.removeAt(row);
-        }
         endRemoveRows();
     }
-    return ret;
+    return true;
 }

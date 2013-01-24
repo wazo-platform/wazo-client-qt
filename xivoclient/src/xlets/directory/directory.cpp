@@ -28,6 +28,7 @@
  */
 
 #include <QDebug>
+
 #include <xletlib/signal_relayer.h>
 #include <baseengine.h>
 #include <message_factory.h>
@@ -40,14 +41,16 @@
 
 Directory::Directory(QWidget *parent)
     : XLet(parent),
-      m_proxy_model(NULL)
+      m_proxy_model(NULL),
+      m_directory_entry_manager(m_phone_dao, m_user_dao, this)
 {
     setTitle(tr("Directory"));
 
     this->ui.setupUi(this);
 
     m_proxy_model = new DirectoryEntrySortFilterProxyModel(this);
-    m_proxy_model->setSourceModel(new DirectoryEntryModel(this));
+    m_proxy_model->setSourceModel(new DirectoryEntryModel(m_directory_entry_manager,
+                                                          this));
     ui.entry_table->setModel(m_proxy_model);
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),

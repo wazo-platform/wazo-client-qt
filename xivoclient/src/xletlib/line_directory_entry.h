@@ -30,20 +30,29 @@
 #ifndef _LINE_DIRECTORY_ENTRY_H_
 #define _LINE_DIRECTORY_ENTRY_H_
 
-#include <dao/userdao.h>
+#include <dao/userdaoimpl.h>
+#include <xletlib/xletlib_export.h>
 
+class QPixmap;
 class PhoneInfo;
 class QString;
+class UserDAO;
+class PhoneDAO;
 
-class LineDirectoryEntry
+class XLETLIB_EXPORT LineDirectoryEntry
 {
     public:
-        LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao);
+        LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao, const PhoneDAO &phone_dao);
         const QString &number() const;
         QString name() const;
+        QPixmap statusIcon() const;
+        QString statusText() const;
+        bool operator==(const LineDirectoryEntry & other) const;
+        LineDirectoryEntry & operator=(const LineDirectoryEntry & other);
     private:
         const PhoneInfo &m_phone;
         const UserDAO &m_user_dao;
+        const PhoneDAO &m_phone_dao;
 };
 
 #endif /* _LINE_DIRECTORY_ENTRY_H_ */

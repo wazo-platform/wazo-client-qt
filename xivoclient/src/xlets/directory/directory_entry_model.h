@@ -32,14 +32,16 @@
 
 #include <QAbstractTableModel>
 
-#include <storage/phoneinfo.h>
+class DirectoryEntryManager;
+class LineDirectoryEntry;
 
 class DirectoryEntryModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        DirectoryEntryModel(QObject *parent = NULL);
+        DirectoryEntryModel(const DirectoryEntryManager & directory_entry_manager,
+                            QObject *parent = NULL);
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const;
         int columnCount(const QModelIndex &) const;
@@ -51,9 +53,9 @@ class DirectoryEntryModel : public QAbstractTableModel
                             Qt::Orientation,
                             int) const;
     public slots:
-        void updatePhoneConfig(const QString &xid);
-        void removePhoneConfig(const QString &xid);
-        void updatePhoneStatus(const QString &xid);
+        void directoryEntryAdded(int entry_index);
+        void directoryEntryUpdated(int entry_index);
+        void directoryEntryDeleted(int entry_index);
         void clearingCache();
 
     public:
@@ -65,15 +67,13 @@ class DirectoryEntryModel : public QAbstractTableModel
         };
 
     private:
-        void refreshEntryRow(const PhoneInfo *phone);
-        QPixmap getPhoneIcon(const PhoneInfo *phone) const;
-
-        QVariant dataDisplay(int row, int column) const;
-        QVariant dataDecoration(int row, int column) const;
-        QVariant dataTooltip(int row, int column) const;
+        void refreshEntry(int entry_index);
+        QVariant dataDisplay(const LineDirectoryEntry & entry, int column) const;
+        QVariant dataDecoration(const LineDirectoryEntry & entry, int column) const;
+        QVariant dataTooltip(const LineDirectoryEntry & entry, int column) const;
 
         QString m_headers[NB_COL];
-        QList<const PhoneInfo *> m_phones;
+        const DirectoryEntryManager & m_directory_entry_manager;
 };
 
 #endif

@@ -28,6 +28,7 @@
  */
 
 #include <QColor>
+#include <QDebug>
 
 #include <baseengine.h>
 #include <storage/phoneinfo.h>

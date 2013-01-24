@@ -34,24 +34,38 @@
 #include <QString>
 
 #include <dao/phonedaoimpl.h>
+#include <dao/userdaoimpl.h>
+
+#include <xletlib/line_directory_entry.h>
+#include <xletlib/xletlib_export.h>
 
 class PhoneDAO;
+class UserDAO;
 
-class DirectoryEntryManager: public QObject
+class XLETLIB_EXPORT DirectoryEntryManager: public QObject
 {
     Q_OBJECT
 
     public:
-        DirectoryEntryManager(QObject *parent=NULL, const PhoneDAO &phone_dao=PhoneDAOImpl());
+        DirectoryEntryManager(const PhoneDAO &phone_dao,
+                              const UserDAO &user_dao,
+                              QObject *parent=NULL);
+        const LineDirectoryEntry & getEntry(int entry_index) const;
+        int entryCount() const;
 
     public slots:
-        void updatePhoneConfig(const QString &phone_xid);
+        void updatePhone(const QString &phone_xid);
+        void removePhone(const QString &phone_xid);
 
     signals:
+        void directoryEntryAdded(int entry_index);
         void directoryEntryUpdated(int entry_index);
+        void directoryEntryDeleted(int entry_index);
 
     private:
         const PhoneDAO &m_phone_dao;
+        const UserDAO &m_user_dao;
+        QList<LineDirectoryEntry> m_directory_entries;
 };
 
 #endif /* _DIRECTORY_ENTRY_MANAGER_H_ */
