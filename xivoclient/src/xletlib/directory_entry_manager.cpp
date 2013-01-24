@@ -29,7 +29,7 @@
 
 #include "directory_entry_manager.h"
 
-#include <phoneinfo.h>
+#include <storage/phoneinfo.h>
 
 DirectoryEntryManager::DirectoryEntryManager(
     QObject *parent, const PhoneDAO &phone_dao)

@@ -38,19 +38,19 @@ PhoneDAOImpl::~PhoneDAOImpl()
 {
 }
 
-QColor PhoneDAOImpl::getStatusColor(const PhoneInfo *phone)
+QColor PhoneDAOImpl::getStatusColor(const PhoneInfo *phone) const
 {
     QVariantMap config = this->getPhoneStatusConfig(phone);
     return QColor(config.value("color").toString());
 }
 
-QString PhoneDAOImpl::getStatusName(const PhoneInfo *phone)
+QString PhoneDAOImpl::getStatusName(const PhoneInfo *phone) const
 {
     QVariantMap config = this->getPhoneStatusConfig(phone);
     return config.value("longname").toString();
 }
 
-QVariantMap PhoneDAOImpl::getPhoneStatusConfig(const PhoneInfo *phone)
+QVariantMap PhoneDAOImpl::getPhoneStatusConfig(const PhoneInfo *phone) const
 {
     QVariantMap config;
     if (! phone) {
@@ -65,7 +65,7 @@ QVariantMap PhoneDAOImpl::getPhoneStatusConfig(const PhoneInfo *phone)
     return config;
 }
 
-const PhoneInfo *PhoneDAOImpl::findByIdentity(const QString &line_interface)
+const PhoneInfo *PhoneDAOImpl::findByIdentity(const QString &line_interface) const
 {
     foreach (const QString & phonexid, b_engine->iterover("phones").keys()) {
         const PhoneInfo * p = b_engine->phone(phonexid);
@@ -74,4 +74,9 @@ const PhoneInfo *PhoneDAOImpl::findByIdentity(const QString &line_interface)
         }
     }
     return NULL;
+}
+
+const PhoneInfo *PhoneDAOImpl::findByXId(const QString &phone_xid) const
+{
+    return b_engine->phone(phone_xid);
 }
