@@ -27,7 +27,7 @@ mac {
     RC_FILE = xivoclient.rc
 }
 
-FORM += config_widget.ui
+FORMS += config_widget.ui
 
 # this should just tell lrelease to compile these files
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
