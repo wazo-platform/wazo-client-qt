@@ -38,6 +38,8 @@
 
 #include <xletlib/functests.h>
 
+#include <ui_config_widget.h>
+
 class QCheckBox;
 class QComboBox;
 class QDialogButtonBox;
@@ -158,6 +160,8 @@ class ConfigWidget: public QDialog
         QCheckBox * m_activate_on_tel;
 
         QPushButton * m_reset_gui;
+
+        Ui::ConfigWidget ui;
 };
 
 #endif
