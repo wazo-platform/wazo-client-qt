@@ -36,7 +36,7 @@
 #include <dao/phonedaoimpl.h>
 #include <dao/userdaoimpl.h>
 
-#include <xletlib/line_directory_entry.h>
+#include <xletlib/directory_entry.h>
 #include <xletlib/xletlib_export.h>
 
 class PhoneDAO;
@@ -50,7 +50,7 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject
         DirectoryEntryManager(const PhoneDAO &phone_dao,
                               const UserDAO &user_dao,
                               QObject *parent=NULL);
-        const LineDirectoryEntry & getEntry(int entry_index) const;
+        const DirectoryEntry & getEntry(int entry_index) const;
         int entryCount() const;
 
     public slots:
@@ -63,9 +63,10 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject
         void directoryEntryDeleted(int entry_index);
 
     private:
+        int findEntryByPhone(const PhoneInfo *) const;
         const PhoneDAO &m_phone_dao;
         const UserDAO &m_user_dao;
-        QList<LineDirectoryEntry> m_directory_entries;
+        QList<const DirectoryEntry *> m_directory_entries;
 };
 
 #endif /* _DIRECTORY_ENTRY_MANAGER_H_ */

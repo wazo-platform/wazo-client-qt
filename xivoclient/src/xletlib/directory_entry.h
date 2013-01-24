@@ -27,36 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LINE_DIRECTORY_ENTRY_H_
-#define _LINE_DIRECTORY_ENTRY_H_
+#ifndef _DIRECTORY_ENTRY_H_
+#define _DIRECTORY_ENTRY_H_
 
-#include <dao/userdaoimpl.h>
 #include <xletlib/xletlib_export.h>
 
-#include <xletlib/directory_entry.h>
-
+class QString;
 class QPixmap;
 class PhoneInfo;
-class QString;
-class UserDAO;
-class PhoneDAO;
 
-class XLETLIB_EXPORT LineDirectoryEntry: public DirectoryEntry
+class XLETLIB_EXPORT DirectoryEntry
 {
     public:
-        LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao, const PhoneDAO &phone_dao);
-        const QString &number() const;
-        QString name() const;
-        QPixmap statusIcon() const;
-        QString statusText() const;
-        bool hasPhone(const PhoneInfo *phone) const;
-        bool operator==(const LineDirectoryEntry & other) const;
-        LineDirectoryEntry & operator=(const LineDirectoryEntry & other);
-        ~LineDirectoryEntry() {}
-    private:
-        const PhoneInfo &m_phone;
-        const UserDAO &m_user_dao;
-        const PhoneDAO &m_phone_dao;
+        virtual const QString &number() const = 0;
+        virtual QString name() const = 0;
+        virtual QPixmap statusIcon() const = 0;
+        virtual QString statusText() const = 0;
+        virtual bool hasPhone(const PhoneInfo */*phone*/) const { return false; }
+        virtual ~DirectoryEntry() {}
 };
 
 #endif /* _LINE_DIRECTORY_ENTRY_H_ */

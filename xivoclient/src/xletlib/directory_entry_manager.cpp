@@ -34,6 +34,7 @@
 #include <dao/userdao.h>
 #include <storage/phoneinfo.h>
 #include <xletlib/line_directory_entry.h>
+#include <xletlib/directory_entry.h>
 
 #include "directory_entry_manager.h"
 
@@ -50,14 +51,26 @@ DirectoryEntryManager::DirectoryEntryManager(const PhoneDAO &phone_dao,
             this, SLOT(removePhone(const QString &)));
 }
 
-const LineDirectoryEntry & DirectoryEntryManager::getEntry(int entry_index) const
+const DirectoryEntry & DirectoryEntryManager::getEntry(int entry_index) const
 {
-    return m_directory_entries.at(entry_index);
+    const DirectoryEntry *entry = m_directory_entries.at(entry_index);
+    return *entry;
 }
 
 int DirectoryEntryManager::entryCount() const
 {
     return m_directory_entries.size();
+}
+
+int DirectoryEntryManager::findEntryByPhone(const PhoneInfo *looked_up_phone) const
+{
+    for (int i = 0; i < m_directory_entries.size(); i++) {
+        const DirectoryEntry *entry = m_directory_entries[i];
+        if (entry->hasPhone(looked_up_phone)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void DirectoryEntryManager::updatePhone(const QString &phone_xid)
@@ -67,9 +80,9 @@ void DirectoryEntryManager::updatePhone(const QString &phone_xid)
         qDebug() << Q_FUNC_INFO << "phone" << phone_xid << "is null";
         return;
     }
-    LineDirectoryEntry updated_entry(*phone, m_user_dao, m_phone_dao);
-    int matching_entry_index = m_directory_entries.indexOf(updated_entry);
+    int matching_entry_index = this->findEntryByPhone(phone);
     if (matching_entry_index == -1) {
+        const DirectoryEntry *updated_entry = new LineDirectoryEntry(*phone, m_user_dao, m_phone_dao);
         m_directory_entries.append(updated_entry);
         emit directoryEntryAdded(m_directory_entries.size() - 1);
     } else {
@@ -84,12 +97,13 @@ void DirectoryEntryManager::removePhone(const QString &phone_xid)
         qDebug() << Q_FUNC_INFO << "phone" << phone_xid << "is null";
         return;
     }
-    LineDirectoryEntry removed_entry(*phone, m_user_dao, m_phone_dao);
-    int matching_entry_index = m_directory_entries.indexOf(removed_entry);
+    int matching_entry_index = this->findEntryByPhone(phone);
     if (matching_entry_index == -1) {
         qDebug() << Q_FUNC_INFO << "removed phone" << phone_xid << "not in cache";
     } else {
+        const DirectoryEntry *entry = m_directory_entries.at(matching_entry_index);
         m_directory_entries.removeAt(matching_entry_index);
+        delete entry;
         emit directoryEntryDeleted(matching_entry_index);
     }
 }

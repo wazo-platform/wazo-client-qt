@@ -95,7 +95,7 @@ int DirectoryEntryModel::columnCount(const QModelIndex&) const
 QVariant DirectoryEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
-    const LineDirectoryEntry & entry = m_directory_entry_manager.getEntry(row);
+    const DirectoryEntry & entry = m_directory_entry_manager.getEntry(row);
 
     switch(role) {
     case Qt::DecorationRole:
@@ -127,7 +127,7 @@ QVariant DirectoryEntryModel::headerData(int column,
     }
 }
 
-QVariant DirectoryEntryModel::dataDisplay(const LineDirectoryEntry & entry, int column) const
+QVariant DirectoryEntryModel::dataDisplay(const DirectoryEntry & entry, int column) const
 {
     switch (column) {
     case NUMBER:
@@ -139,7 +139,7 @@ QVariant DirectoryEntryModel::dataDisplay(const LineDirectoryEntry & entry, int 
     }
 }
 
-QVariant DirectoryEntryModel::dataDecoration(const LineDirectoryEntry & entry, int column) const
+QVariant DirectoryEntryModel::dataDecoration(const DirectoryEntry & entry, int column) const
 {
     if (column != STATUS_ICON) {
         return QVariant();
@@ -147,7 +147,7 @@ QVariant DirectoryEntryModel::dataDecoration(const LineDirectoryEntry & entry, i
     return entry.statusIcon();
 }
 
-QVariant DirectoryEntryModel::dataTooltip(const LineDirectoryEntry & entry, int column) const
+QVariant DirectoryEntryModel::dataTooltip(const DirectoryEntry & entry, int column) const
 {
     if (column != STATUS_ICON) {
         return QVariant();

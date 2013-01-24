@@ -33,7 +33,7 @@
 #include <QAbstractTableModel>
 
 class DirectoryEntryManager;
-class LineDirectoryEntry;
+class DirectoryEntry;
 
 class DirectoryEntryModel : public QAbstractTableModel
 {
@@ -68,9 +68,9 @@ class DirectoryEntryModel : public QAbstractTableModel
 
     private:
         void refreshEntry(int entry_index);
-        QVariant dataDisplay(const LineDirectoryEntry & entry, int column) const;
-        QVariant dataDecoration(const LineDirectoryEntry & entry, int column) const;
-        QVariant dataTooltip(const LineDirectoryEntry & entry, int column) const;
+        QVariant dataDisplay(const DirectoryEntry & entry, int column) const;
+        QVariant dataDecoration(const DirectoryEntry & entry, int column) const;
+        QVariant dataTooltip(const DirectoryEntry & entry, int column) const;
 
         QString m_headers[NB_COL];
         const DirectoryEntryManager & m_directory_entry_manager;
