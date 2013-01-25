@@ -44,6 +44,11 @@ const UserInfo *UserDAOImpl::findUserFromPhone(const PhoneInfo *phone) const
     return b_engine->user(user_id);
 }
 
+const UserInfo *UserDAOImpl::findByXId(const QString &user_xid) const
+{
+    return b_engine->user(user_xid);
+}
+
 QString UserDAOImpl::findNameByPhone(const PhoneInfo *phone) const
 {
     if (! phone) {

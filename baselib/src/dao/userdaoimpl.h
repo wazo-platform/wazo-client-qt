@@ -42,6 +42,7 @@ class BASELIB_EXPORT UserDAOImpl: public UserDAO
         virtual ~UserDAOImpl() {}
         virtual const UserInfo *findUserFromPhone(const PhoneInfo *phone) const;
         virtual QString findNameByPhone(const PhoneInfo *phone) const;
+        virtual const UserInfo *findByXId(const QString &user_xid) const;
 };
 
 #endif

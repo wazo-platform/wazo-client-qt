@@ -43,6 +43,11 @@ MobileDirectoryEntry::MobileDirectoryEntry(const UserInfo &user)
 {
 }
 
+bool MobileDirectoryEntry::hasUser(const UserInfo *user) const
+{
+    return user->id() == m_user.id();
+}
+
 bool MobileDirectoryEntry::operator==(const MobileDirectoryEntry & other) const
 {
     const QString & this_user = this->m_user.id();
@@ -71,7 +76,7 @@ QString MobileDirectoryEntry::name() const
 
 QPixmap MobileDirectoryEntry::statusIcon() const
 {
-    return QPixmap(":/images/mobile_grey.png");
+    return QPixmap(":/images/mobile-grey.png");
 }
 
 QString MobileDirectoryEntry::statusText() const

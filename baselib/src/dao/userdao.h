@@ -42,6 +42,7 @@ class BASELIB_EXPORT UserDAO
         virtual ~UserDAO() {};
         virtual const UserInfo *findUserFromPhone(const PhoneInfo *phone) const = 0;
         virtual QString findNameByPhone(const PhoneInfo *phone) const = 0;
+        virtual const UserInfo *findByXId(const QString &user_xid) const = 0;
 };
 
 #endif

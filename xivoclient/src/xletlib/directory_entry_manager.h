@@ -57,6 +57,9 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject
         void updatePhone(const QString &phone_xid);
         void removePhone(const QString &phone_xid);
 
+        void updateUser(const QString &user_xid);
+        void removeUser(const QString &user_xid);
+
     signals:
         void directoryEntryAdded(int entry_index);
         void directoryEntryUpdated(int entry_index);
@@ -64,6 +67,11 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject
 
     private:
         int findEntryByPhone(const PhoneInfo *) const;
+        int findEntryByUser(const UserInfo *) const;
+        void addEntry(const DirectoryEntry *new_entry);
+        void updateEntryAt(int index);
+        void removeEntryAt(int index);
+
         const PhoneDAO &m_phone_dao;
         const UserDAO &m_user_dao;
         QList<const DirectoryEntry *> m_directory_entries;

@@ -35,6 +35,7 @@
 class QString;
 class QPixmap;
 class PhoneInfo;
+class UserInfo;
 
 class XLETLIB_EXPORT DirectoryEntry
 {
@@ -44,6 +45,7 @@ class XLETLIB_EXPORT DirectoryEntry
         virtual QPixmap statusIcon() const = 0;
         virtual QString statusText() const = 0;
         virtual bool hasPhone(const PhoneInfo */*phone*/) const { return false; }
+        virtual bool hasUser(const UserInfo */*user*/) const { return false; }
         virtual ~DirectoryEntry() {}
 };
 

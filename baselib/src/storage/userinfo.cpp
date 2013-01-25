@@ -209,3 +209,8 @@ bool UserInfo::isTalkingTo(const QString & rhs) const
     }
     return false;
 }
+
+bool UserInfo::hasMobile() const
+{
+    return ! m_mobilenumber.isEmpty();
+}

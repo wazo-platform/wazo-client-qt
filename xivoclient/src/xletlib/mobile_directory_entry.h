@@ -49,6 +49,7 @@ class XLETLIB_EXPORT MobileDirectoryEntry: public DirectoryEntry
         QString statusText() const;
         bool operator==(const MobileDirectoryEntry & other) const;
         MobileDirectoryEntry & operator=(const MobileDirectoryEntry & other);
+        bool hasUser(const UserInfo */*user*/) const;
         ~MobileDirectoryEntry() {}
     private:
         const UserInfo &m_user;

@@ -77,6 +77,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
             bool hasPhoneId(const QString &) const;
             bool hasChannelId(const QString &) const;
+            bool hasMobile() const;
             QString findNumberForXChannel(const QString &) const;
             QStringList xchannels() const;
             bool isTalkingTo(const QString &) const;
