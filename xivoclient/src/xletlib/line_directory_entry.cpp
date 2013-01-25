@@ -44,7 +44,7 @@ LineDirectoryEntry::LineDirectoryEntry(const PhoneInfo &phone,
 {
 }
 
-bool LineDirectoryEntry::hasPhone(const PhoneInfo *phone) const
+bool LineDirectoryEntry::hasSource(const PhoneInfo *phone) const
 {
     return phone->id() == m_phone.id();
 }

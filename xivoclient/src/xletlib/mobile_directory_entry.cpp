@@ -43,7 +43,7 @@ MobileDirectoryEntry::MobileDirectoryEntry(const UserInfo &user)
 {
 }
 
-bool MobileDirectoryEntry::hasUser(const UserInfo *user) const
+bool MobileDirectoryEntry::hasSource(const UserInfo *user) const
 {
     return user->id() == m_user.id();
 }

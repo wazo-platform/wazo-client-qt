@@ -69,22 +69,12 @@ int DirectoryEntryManager::entryCount() const
     return m_directory_entries.size();
 }
 
-int DirectoryEntryManager::findEntryByPhone(const PhoneInfo *looked_up_phone) const
+template<class T>
+int DirectoryEntryManager::findEntryBy(const T *looked_up) const
 {
     for (int i = 0; i < m_directory_entries.size(); i++) {
         const DirectoryEntry *entry = m_directory_entries[i];
-        if (entry->hasPhone(looked_up_phone)) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-int DirectoryEntryManager::findEntryByUser(const UserInfo *looked_up_user) const
-{
-    for (int i = 0; i < m_directory_entries.size(); i++) {
-        const DirectoryEntry *entry = m_directory_entries[i];
-        if (entry->hasUser(looked_up_user)) {
+        if (entry->hasSource(looked_up)) {
             return i;
         }
     }
@@ -99,7 +89,7 @@ void DirectoryEntryManager::updatePhone(const QString &phone_xid)
         return;
     }
 
-    int matching_entry_index = this->findEntryByPhone(phone);
+    int matching_entry_index = this->findEntryBy(phone);
     if (matching_entry_index == -1) {
         this->addEntry(new LineDirectoryEntry(*phone, m_user_dao, m_phone_dao));
     } else {
@@ -115,7 +105,7 @@ void DirectoryEntryManager::updateUser(const QString &user_xid)
         return;
     }
 
-    int matching_entry_index = this->findEntryByUser(user);
+    int matching_entry_index = this->findEntryBy(user);
     if (matching_entry_index == -1) {
         if (! user->hasMobile()) {
             return;
@@ -136,7 +126,7 @@ void DirectoryEntryManager::removePhone(const QString &phone_xid)
         return;
     }
 
-    int matching_entry_index = this->findEntryByPhone(phone);
+    int matching_entry_index = this->findEntryBy(phone);
     if (matching_entry_index == -1) {
         qDebug() << Q_FUNC_INFO << "removed phone" << phone_xid << "not in cache";
     } else {
@@ -152,7 +142,7 @@ void DirectoryEntryManager::removeUser(const QString &user_xid)
         return;
     }
 
-    int matching_entry_index = this->findEntryByUser(user);
+    int matching_entry_index = this->findEntryBy(user);
     if (matching_entry_index != -1) {
         this->removeEntryAt(matching_entry_index);
     }

@@ -49,7 +49,7 @@ class XLETLIB_EXPORT LineDirectoryEntry: public DirectoryEntry
         QString name() const;
         QPixmap statusIcon() const;
         QString statusText() const;
-        bool hasPhone(const PhoneInfo *phone) const;
+        bool hasSource(const PhoneInfo *phone) const;
         bool operator==(const LineDirectoryEntry & other) const;
         LineDirectoryEntry & operator=(const LineDirectoryEntry & other);
         ~LineDirectoryEntry() {}

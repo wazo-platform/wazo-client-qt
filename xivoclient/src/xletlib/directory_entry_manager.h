@@ -66,8 +66,9 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject
         void directoryEntryDeleted(int entry_index);
 
     private:
-        int findEntryByPhone(const PhoneInfo *) const;
-        int findEntryByUser(const UserInfo *) const;
+        template<class T>
+        int findEntryBy(const T *) const;
+
         void addEntry(const DirectoryEntry *new_entry);
         void updateEntryAt(int index);
         void removeEntryAt(int index);
