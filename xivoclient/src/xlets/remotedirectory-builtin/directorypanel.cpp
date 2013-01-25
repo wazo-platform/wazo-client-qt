@@ -29,6 +29,7 @@
 
 #include "directorypanel.h"
 #include "phonenumber.h"
+#include <message_factory.h>
 
 DirectoryPanel::DirectoryPanel(QWidget *parent)
     : XLet(parent)
@@ -133,7 +134,8 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
 
 void DirectoryPanel::startSearch()
 {
-    b_engine->searchDirectory(m_searchText->text());
+    const QString &search_pattern = m_searchText->text();
+    b_engine->sendJsonCommand(MessageFactory::directorySearch(search_pattern));
 }
 
 void DirectoryPanel::stop()

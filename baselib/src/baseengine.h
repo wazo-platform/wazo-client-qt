@@ -217,8 +217,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void receiveNumberSelection(const QStringList &);  //!< relay the selection
 
-        void searchDirectory(const QString &);
-
         void textEdited(const QString &);
 
         void servicePutOpt(const QString &, bool);

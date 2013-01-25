@@ -45,6 +45,8 @@ class TestMessageFactory: public QObject
         void testAttendedTransfer();
         void testCompleteTransfer();
         void testCancelTransfer();
+        void testDirectorySearch();
+        void testSwitchboardDirectorySearch();
 };
 
 #endif /* __TEST_MESSAGE_FACTORY_H__ */

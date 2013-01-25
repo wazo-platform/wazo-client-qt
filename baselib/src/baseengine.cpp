@@ -1492,18 +1492,6 @@ void BaseEngine::receiveNumberSelection(const QStringList & numbers)
     emit broadcastNumberSelection(numbers);
 }
 
-/*! \brief send the directory search command to the server
- *
- * \sa directoryResponse()
- */
-void BaseEngine::searchDirectory(const QString & text)
-{
-    QVariantMap command;
-    command["class"] = "directory";
-    command["pattern"] = text;
-    sendJsonCommand(command);
-}
-
 /*!
  * \return all settings
  */

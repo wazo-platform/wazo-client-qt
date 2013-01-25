@@ -118,3 +118,27 @@ void TestMessageFactory::testCancelTransfer()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testDirectorySearch()
+{
+    QString pattern = "al";
+    QVariantMap result = MessageFactory::directorySearch(pattern);
+
+    QVariantMap expected;
+    expected["class"] = "directory";
+    expected["pattern"] = pattern;
+
+    QCOMPARE(result, expected);
+}
+
+void TestMessageFactory::testSwitchboardDirectorySearch()
+{
+    QString pattern = "al";
+    QVariantMap result = MessageFactory::switchboardDirectorySearch(pattern);
+
+    QVariantMap expected;
+    expected["class"] = "switchboard_directory_search";
+    expected["pattern"] = pattern;
+
+    QCOMPARE(result, expected);
+}

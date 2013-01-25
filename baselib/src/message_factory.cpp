@@ -78,6 +78,25 @@ QVariantMap MessageFactory::cancelTransfer()
     return MessageFactory::baseMessage("cancel_transfer");
 }
 
+
+QVariantMap MessageFactory::directorySearch(const QString &pattern)
+{
+    QVariantMap message = MessageFactory::baseMessage("directory");
+    message["pattern"] = pattern;
+
+    return message;
+}
+
+
+QVariantMap MessageFactory::switchboardDirectorySearch(const QString &pattern)
+{
+    QVariantMap message = MessageFactory::baseMessage("switchboard_directory_search");
+    message["pattern"] = pattern;
+
+    return message;
+}
+
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

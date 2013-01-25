@@ -47,6 +47,8 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap attendedTransfer(const QString &number);
         static QVariantMap completeTransfer();
         static QVariantMap cancelTransfer();
+        static QVariantMap directorySearch(const QString &pattern);
+        static QVariantMap switchboardDirectorySearch(const QString &pattern);
     private:
         static QVariantMap baseMessage(const QString &class_name);
 };
