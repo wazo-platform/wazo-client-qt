@@ -149,6 +149,7 @@ void RemoteControl::processCommands()
 
             RC_EXECUTE_ARG(when_i_search_a_transfer_destination_1);
             RC_EXECUTE_ARG(assert_directory_has_entry);
+            RC_EXECUTE(then_i_see_no_transfer_destinations);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED);

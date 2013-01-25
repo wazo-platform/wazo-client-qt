@@ -62,6 +62,14 @@ void RemoteControl::assert_directory_has_entry(const QVariantList & args)
     this->assert(entry_found);
 }
 
+void RemoteControl::then_i_see_no_transfer_destinations()
+{
+    Directory *xlet = static_cast<Directory*>(m_exec_obj.win->m_xletlist.value("directory"));
+    QAbstractItemModel *model = xlet->ui.entry_table->model();
+    int row_count = model->rowCount();
+    this->assert(row_count == 0, "Found directory results when none were expected");
+}
+
 bool RemoteControl::_directory_row_matches(QAbstractItemModel *model, int row_index, QString display_name, QString phone_number)
 {
     QString model_display_name = this->getValueInModel(model, row_index, DirectoryEntryModel::NAME);

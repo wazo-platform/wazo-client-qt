@@ -113,6 +113,7 @@ class RemoteControl : public QObject
 
         void when_i_search_a_transfer_destination_1(const QVariantList &);
         void assert_directory_has_entry(const QVariantList &);
+        void then_i_see_no_transfer_destinations();
 
     signals:
         void select_queue(const QString & queue_id);
