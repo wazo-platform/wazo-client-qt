@@ -55,6 +55,7 @@ class MockUserDAO: public UserDAO
         ~MockUserDAO() {};
         MOCK_CONST_METHOD1(findUserFromPhone, const UserInfo*(const PhoneInfo *));
         MOCK_CONST_METHOD1(findNameByPhone, QString(const PhoneInfo *));
+        MOCK_CONST_METHOD1(findByXId, const UserInfo *(const QString &));
 };
 
 class MockPhoneDAO: public PhoneDAO
