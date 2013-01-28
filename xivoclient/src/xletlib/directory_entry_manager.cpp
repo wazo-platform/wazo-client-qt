@@ -84,6 +84,12 @@ int DirectoryEntryManager::findEntryBy(const T looked_up) const
     return -1;
 }
 
+template<class T>
+int DirectoryEntryManager::hasEntry(const T looked_up) const
+{
+    return this->findEntryBy(looked_up) != 1;
+}
+
 void DirectoryEntryManager::updatePhone(const QString &phone_xid)
 {
     const PhoneInfo *phone = this->m_phone_dao.findByXId(phone_xid);
@@ -155,11 +161,9 @@ void DirectoryEntryManager::parseCommand(const QVariantMap &result)
 {
     const QList<QVariant> &entries = result["results"].toList();
     foreach (const QVariant &entry, entries) {
-        int matching_entry_index = this->findEntryBy(entry);
-        if (matching_entry_index != -1) {
-            continue;
+        if (! this->hasEntry(entry)) {
+            this->addEntry(new LookupDirectoryEntry(entry));
         }
-        this->addEntry(new LookupDirectoryEntry(entry));
     }
 }
 

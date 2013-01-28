@@ -73,6 +73,9 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject, IPBXListener
         template<class T>
         int findEntryBy(const T) const;
 
+        template<class T>
+        int hasEntry(const T) const;
+
         void addEntry(const DirectoryEntry *new_entry);
         void updateEntryAt(int index);
         void removeEntryAt(int index);
