@@ -67,7 +67,7 @@ Directory::Directory(QWidget *parent)
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchDirectory()));
     this->m_remote_lookup_timer.setSingleShot(true);
-    this->m_remote_lookup_timer.setInterval(2000);
+    this->m_remote_lookup_timer.setInterval(delay_before_lookup);
 }
 
 Directory::~Directory()
@@ -95,13 +95,27 @@ void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
 
 void Directory::scheduleDirectoryLookup(const QString &lookup_pattern)
 {
-    qDebug() << Q_FUNC_INFO << lookup_pattern;
-    m_searched_pattern = lookup_pattern;
-    m_remote_lookup_timer.start();
+    if (lookup_pattern.length() >= min_lookup_length) {
+        m_searched_pattern = lookup_pattern;
+        m_remote_lookup_timer.start();
+    }
 }
 
 void Directory::searchDirectory()
 {
-    qDebug() << Q_FUNC_INFO << m_searched_pattern;
-    b_engine->sendJsonCommand(MessageFactory::switchboardDirectorySearch(m_searched_pattern));
+    if (! this->alreadySearched(this->m_searched_pattern)) {
+        m_search_history.append(m_searched_pattern);
+        b_engine->sendJsonCommand(MessageFactory::switchboardDirectorySearch(m_searched_pattern));
+        qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
+    }
+}
+
+bool Directory::alreadySearched(const QString &search_pattern) const
+{
+    foreach (const QString &old_search, m_search_history) {
+        if (search_pattern.contains(old_search)) {
+            return true;
+        }
+    }
+    return false;
 }

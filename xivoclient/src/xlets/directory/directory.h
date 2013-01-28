@@ -47,6 +47,10 @@ class Directory: public XLet
     Q_OBJECT
     FUNCTESTED
 
+    private:
+        static const int delay_before_lookup = 1000;
+        static const int min_lookup_length = 3;
+
     public:
         Directory(QWidget *parent=0);
         ~Directory();
@@ -57,6 +61,8 @@ class Directory: public XLet
         void scheduleDirectoryLookup(const QString &lookup_pattern);
         void searchDirectory();
     private:
+        bool alreadySearched(const QString &search_pattern) const;
+
         Ui::DirectoryWidget ui;
         DirectoryEntrySortFilterProxyModel *m_proxy_model;
         PhoneDAOImpl m_phone_dao;
@@ -64,6 +70,7 @@ class Directory: public XLet
         DirectoryEntryManager m_directory_entry_manager;
         QTimer m_remote_lookup_timer;
         QString m_searched_pattern;
+        QStringList m_search_history;
 };
 
 #endif /* __DIRECTORY_H__ */
