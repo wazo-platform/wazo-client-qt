@@ -59,7 +59,7 @@ void RemoteControl::assert_directory_has_entry(const QVariantList & args)
             entry_found = true;
         }
     }
-    this->assert(entry_found);
+    this->assert(entry_found, QString("Could not find directory entry %1 %2").arg(display_name, phone_number));
 }
 
 void RemoteControl::then_i_see_no_transfer_destinations()
