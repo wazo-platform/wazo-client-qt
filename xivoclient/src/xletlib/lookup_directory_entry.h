@@ -50,8 +50,9 @@ class XLETLIB_EXPORT LookupDirectoryEntry: public DirectoryEntry
         bool hasSource(const QVariant & /*lookup_result*/) const;
         ~LookupDirectoryEntry() {}
     private:
-	QString m_number;
-	QVariantMap m_lookup_result;
+        QVariantMap m_lookup_result;
+        QString m_number;
+
 };
 
 #endif /* _LOOKUP_DIRECTORY_ENTRY_H_ */

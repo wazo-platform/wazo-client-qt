@@ -31,6 +31,7 @@
 #define __DIRECTORY_H__
 
 #include <QObject>
+#include <QTimer>
 
 #include <dao/phonedaoimpl.h>
 #include <dao/userdaoimpl.h>
@@ -53,12 +54,16 @@ class Directory: public XLet
         void attendedTransferRequested();
         void focusEntryTable();
         void attendedTransferSelectedIndex(const QModelIndex &index);
+        void scheduleDirectoryLookup(const QString &lookup_pattern);
+        void searchDirectory();
     private:
         Ui::DirectoryWidget ui;
         DirectoryEntrySortFilterProxyModel *m_proxy_model;
         PhoneDAOImpl m_phone_dao;
         UserDAOImpl m_user_dao;
         DirectoryEntryManager m_directory_entry_manager;
+        QTimer m_remote_lookup_timer;
+        QString m_searched_pattern;
 };
 
 #endif /* __DIRECTORY_H__ */

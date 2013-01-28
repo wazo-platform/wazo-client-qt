@@ -28,6 +28,7 @@
  */
 
 #include <QDebug>
+#include <QTimer>
 
 #include <xletlib/signal_relayer.h>
 #include <baseengine.h>
@@ -55,12 +56,18 @@ Directory::Directory(QWidget *parent)
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             m_proxy_model, SLOT(setFilter(const QString &)));
+    connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
+            this, SLOT(scheduleDirectoryLookup(const QString &)));
     connect(signal_relayer, SIGNAL(attendedTransferRequested()),
             this, SLOT(attendedTransferRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
     connect(this->ui.entry_table, SIGNAL(activated(const QModelIndex &)),
             this, SLOT(attendedTransferSelectedIndex(const QModelIndex &)));
+    connect(&m_remote_lookup_timer, SIGNAL(timeout()),
+            this, SLOT(searchDirectory()));
+    this->m_remote_lookup_timer.setSingleShot(true);
+    this->m_remote_lookup_timer.setInterval(2000);
 }
 
 Directory::~Directory()
@@ -84,4 +91,17 @@ void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
     const QString &number = m_proxy_model->getNumber(index);
     b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
     signal_relayer->relayAttendedTransferSent();
+}
+
+void Directory::scheduleDirectoryLookup(const QString &lookup_pattern)
+{
+    qDebug() << Q_FUNC_INFO << lookup_pattern;
+    m_searched_pattern = lookup_pattern;
+    m_remote_lookup_timer.start();
+}
+
+void Directory::searchDirectory()
+{
+    qDebug() << Q_FUNC_INFO << m_searched_pattern;
+    b_engine->sendJsonCommand(MessageFactory::switchboardDirectorySearch(m_searched_pattern));
 }
