@@ -33,6 +33,8 @@
 #include <QObject>
 #include <QString>
 
+#include <ipbxlistener.h>
+
 #include <dao/phonedaoimpl.h>
 #include <dao/userdaoimpl.h>
 
@@ -42,7 +44,7 @@
 class PhoneDAO;
 class UserDAO;
 
-class XLETLIB_EXPORT DirectoryEntryManager: public QObject
+class XLETLIB_EXPORT DirectoryEntryManager: public QObject, IPBXListener
 {
     Q_OBJECT
 
@@ -60,6 +62,8 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject
         void updateUser(const QString &user_xid);
         void removeUser(const QString &user_xid);
 
+        void parseCommand(const QVariantMap &command);
+
     signals:
         void directoryEntryAdded(int entry_index);
         void directoryEntryUpdated(int entry_index);
@@ -67,7 +71,7 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject
 
     private:
         template<class T>
-        int findEntryBy(const T *) const;
+        int findEntryBy(const T) const;
 
         void addEntry(const DirectoryEntry *new_entry);
         void updateEntryAt(int index);

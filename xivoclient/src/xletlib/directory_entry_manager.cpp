@@ -35,6 +35,7 @@
 #include <storage/phoneinfo.h>
 #include <storage/userinfo.h>
 #include <xletlib/line_directory_entry.h>
+#include <xletlib/lookup_directory_entry.h>
 #include <xletlib/directory_entry.h>
 #include <xletlib/mobile_directory_entry.h>
 
@@ -45,6 +46,8 @@ DirectoryEntryManager::DirectoryEntryManager(const PhoneDAO &phone_dao,
                                              QObject *parent)
     : QObject(parent), m_phone_dao(phone_dao), m_user_dao(user_dao)
 {
+    this->registerListener("directory_search_result");
+
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhone(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
@@ -70,7 +73,7 @@ int DirectoryEntryManager::entryCount() const
 }
 
 template<class T>
-int DirectoryEntryManager::findEntryBy(const T *looked_up) const
+int DirectoryEntryManager::findEntryBy(const T looked_up) const
 {
     for (int i = 0; i < m_directory_entries.size(); i++) {
         const DirectoryEntry *entry = m_directory_entries[i];
@@ -145,6 +148,18 @@ void DirectoryEntryManager::removeUser(const QString &user_xid)
     int matching_entry_index = this->findEntryBy(user);
     if (matching_entry_index != -1) {
         this->removeEntryAt(matching_entry_index);
+    }
+}
+
+void DirectoryEntryManager::parseCommand(const QVariantMap &result)
+{
+    const QList<QVariant> &entries = result["results"].toList();
+    foreach (const QVariant &entry, entries) {
+        int matching_entry_index = this->findEntryBy(entry);
+        if (matching_entry_index != -1) {
+            continue;
+        }
+        this->addEntry(new LookupDirectoryEntry(entry));
     }
 }
 

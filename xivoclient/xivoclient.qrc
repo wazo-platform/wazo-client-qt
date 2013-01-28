@@ -40,5 +40,6 @@
         <file>images/disconnected.png</file>
         <file>images/warning.png</file>
         <file>images/padlock.png</file>
+        <file>images/phonebook.png</file>
     </qresource>
 </RCC>

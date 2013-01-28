@@ -27,28 +27,31 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DIRECTORY_ENTRY_H_
-#define _DIRECTORY_ENTRY_H_
+#ifndef _LOOKUP_DIRECTORY_ENTRY_H_
+#define _LOOKUP_DIRECTORY_ENTRY_H_
 
+#include <dao/userdaoimpl.h>
 #include <xletlib/xletlib_export.h>
 
-class QString;
+#include <xletlib/directory_entry.h>
+
 class QPixmap;
-class PhoneInfo;
-class UserInfo;
+class QString;
 class QVariant;
 
-class XLETLIB_EXPORT DirectoryEntry
+class XLETLIB_EXPORT LookupDirectoryEntry: public DirectoryEntry
 {
     public:
-        virtual const QString &number() const = 0;
-        virtual QString name() const = 0;
-        virtual QPixmap statusIcon() const = 0;
-        virtual QString statusText() const = 0;
-        virtual bool hasSource(const PhoneInfo */*phone*/) const { return false; }
-        virtual bool hasSource(const UserInfo */*user*/) const { return false; }
-        virtual bool hasSource(const QVariant &/*lookup_result*/) const { return false; }
-        virtual ~DirectoryEntry() {}
+        LookupDirectoryEntry(const QVariant &lookup_result);
+        const QString &number() const;
+        QString name() const;
+        QPixmap statusIcon() const;
+        QString statusText() const;
+        bool hasSource(const QVariant & /*lookup_result*/) const;
+        ~LookupDirectoryEntry() {}
+    private:
+	QString m_number;
+	QVariantMap m_lookup_result;
 };
 
-#endif /* _LINE_DIRECTORY_ENTRY_H_ */
+#endif /* _LOOKUP_DIRECTORY_ENTRY_H_ */

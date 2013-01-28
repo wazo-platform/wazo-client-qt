@@ -27,28 +27,48 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DIRECTORY_ENTRY_H_
-#define _DIRECTORY_ENTRY_H_
+#include <QDebug>
+#include <QPixmap>
+#include <QObject>
 
-#include <xletlib/xletlib_export.h>
+#include <xletlib/taintedpixmap.h>
 
-class QString;
-class QPixmap;
-class PhoneInfo;
-class UserInfo;
-class QVariant;
+#include "lookup_directory_entry.h"
 
-class XLETLIB_EXPORT DirectoryEntry
+LookupDirectoryEntry::LookupDirectoryEntry(const QVariant &lookup_result)
+    : m_lookup_result(lookup_result.toMap()),
+      m_number(lookup_result.toMap()["number"].toString())
 {
-    public:
-        virtual const QString &number() const = 0;
-        virtual QString name() const = 0;
-        virtual QPixmap statusIcon() const = 0;
-        virtual QString statusText() const = 0;
-        virtual bool hasSource(const PhoneInfo */*phone*/) const { return false; }
-        virtual bool hasSource(const UserInfo */*user*/) const { return false; }
-        virtual bool hasSource(const QVariant &/*lookup_result*/) const { return false; }
-        virtual ~DirectoryEntry() {}
-};
+}
 
-#endif /* _LINE_DIRECTORY_ENTRY_H_ */
+bool LookupDirectoryEntry::hasSource(const QVariant &lookup_result) const
+{
+    return lookup_result.toMap() == m_lookup_result;
+}
+
+const QString &LookupDirectoryEntry::number() const
+{
+    return this->m_number;
+}
+
+QString LookupDirectoryEntry::name() const
+{
+    return this->m_lookup_result["name"].toString();
+}
+
+QPixmap LookupDirectoryEntry::statusIcon() const
+{
+    const QString &number_type = m_lookup_result["number_type"].toString();
+    if (number_type == "mobile") {
+        return QPixmap(":/images/mobile-grey.png");
+    } else if(number_type == "office") {
+        return TaintedPixmap(QString(":/images/phone-trans.png"), QColor("Black")).getPixmap();
+    } else {
+        return QPixmap(":/images/phonebook.png");
+    }
+}
+
+QString LookupDirectoryEntry::statusText() const
+{
+    return QObject::tr("Remote search result");
+}
