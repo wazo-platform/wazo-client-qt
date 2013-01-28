@@ -87,7 +87,7 @@ int DirectoryEntryManager::findEntryBy(const T looked_up) const
 template<class T>
 int DirectoryEntryManager::hasEntry(const T looked_up) const
 {
-    return this->findEntryBy(looked_up) != 1;
+    return this->findEntryBy(looked_up) != -1;
 }
 
 void DirectoryEntryManager::updatePhone(const QString &phone_xid)
