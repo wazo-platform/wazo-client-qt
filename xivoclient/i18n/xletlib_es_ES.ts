@@ -84,24 +84,24 @@
 <context>
     <name>BasicPeerWidget</name>
     <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="52"/>
+        <location filename="../src/xletlib/basicpeerwidget.cpp" line="54"/>
         <source>Phone Numbers : %1</source>
         <translation>Los números de teléfono : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="56"/>
+        <location filename="../src/xletlib/basicpeerwidget.cpp" line="58"/>
         <source>(No callerid yet)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="113"/>
+        <location filename="../src/xletlib/basicpeerwidget.cpp" line="115"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
         <translation>Nombre de usuario: %1
 Los números de teléfono : %2</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="121"/>
+        <location filename="../src/xletlib/basicpeerwidget.cpp" line="123"/>
         <source>Status : %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,33 +109,33 @@ Los números de teléfono : %2</translation>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="78"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="80"/>
         <source>&amp;Clear history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="79"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="81"/>
         <source>&amp;Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="96"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="98"/>
         <source>chitchat - %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="136"/>
-        <location filename="../src/xletlib/chitchat.cpp" line="179"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="138"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="181"/>
         <source>chat window opened with &quot;%1&quot; (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="153"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="155"/>
         <source>you said: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="182"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="184"/>
         <source>system: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -244,6 +244,19 @@ Busy lines: %6</source>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="369"/>
         <source>(No callerid yet)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="73"/>
+        <source>Remote search result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/mobile_directory_entry.cpp" line="84"/>
+        <source>Mobile phone</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

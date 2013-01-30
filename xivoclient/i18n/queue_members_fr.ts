@@ -4,7 +4,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="41"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="43"/>
         <source>N/A</source>
         <translation>N/D</translation>
     </message>
@@ -41,98 +41,98 @@
 <context>
     <name>QueueMembersModel</name>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="57"/>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="58"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="59"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="60"/>
         <source>ID</source>
         <translation>Identifiant</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="59"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>
         <source>Number</source>
         <translation>Numéro</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="60"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
         <source>Phone number of the queue</source>
         <translation>Numéro de la file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
         <source>Firstname</source>
         <translation>Prénom</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
         <source>Queue member&apos;s firstname</source>
         <translation>Prénom du membre de la file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
         <source>Lastname</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="66"/>
         <source>Queue member&apos;s lastname</source>
         <translation>Nom du membre de la file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
         <source>Logged</source>
         <translation>Logué</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="66"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>
         <source>Queue member&apos;s login status</source>
         <translation>État logué du membre de la file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
         <source>Paused</source>
         <translation>En retrait</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>
         <source>Queue member&apos;s pause status</source>
         <translation>Retrait du membre de la file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="71"/>
         <source>Answered calls</source>
         <translation>Appels répondus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="72"/>
         <source>Number of answered calls</source>
         <translation>Nombre d&apos;appels répondus</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="71"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="73"/>
         <source>Last call</source>
         <translation>Dernier appel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="72"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="74"/>
         <source>Hangup date of the last answered call</source>
         <translation>Date de fin du dernier appel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="73"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="75"/>
         <source>Penalty</source>
         <translation>Pénalité</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="74"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="76"/>
         <source>Queue member&apos;s penalty</source>
         <translation>Pénalité du membre de la file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="189"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="196"/>
         <source>Always</source>
         <translation>Toujours</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="191"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="198"/>
         <source>Never</source>
         <translation>Jamais</translation>
     </message>

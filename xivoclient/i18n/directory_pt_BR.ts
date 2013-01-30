@@ -4,7 +4,7 @@
 <context>
     <name>Directory</name>
     <message>
-        <location filename="../src/xlets/directory/directory.cpp" line="45"/>
+        <location filename="../src/xlets/directory/directory.cpp" line="48"/>
         <source>Directory</source>
         <translation type="unfinished">Diretório</translation>
     </message>
@@ -13,16 +13,11 @@
     <name>DirectoryEntryModel</name>
     <message>
         <location filename="../src/xlets/directory/directory_entry_model.cpp" line="44"/>
-        <source>First name</source>
-        <translation type="unfinished"></translation>
+        <source>Name</source>
+        <translation type="unfinished">Nome</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory/directory_entry_model.cpp" line="45"/>
-        <source>Last name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="46"/>
         <source>Number</source>
         <translation type="unfinished">Numero</translation>
     </message>

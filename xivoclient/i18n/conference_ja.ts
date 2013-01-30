@@ -4,52 +4,52 @@
 <context>
     <name>ConfListModel</name>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="46"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="39"/>
         <source>Room UID</source>
         <translation>ルーム番号</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="47"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="40"/>
         <source>Number</source>
         <translation>番号</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="48"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="41"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="49"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="42"/>
         <source>Pin code</source>
         <translation>Pinコード</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="50"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="43"/>
         <source>Member count</source>
         <translation>メンバー数</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="51"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="44"/>
         <source>Moderated</source>
         <translation>管理</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="52"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="45"/>
         <source>Started since</source>
         <translation>から開始</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="124"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="117"/>
         <source>No</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="139"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="132"/>
         <source>Not started</source>
         <translation>開始していません</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="141"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="134"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -57,7 +57,7 @@
 <context>
     <name>ConfListView</name>
     <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="199"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="192"/>
         <source>Get in room %1 (%2)</source>
         <translation> %1 (%2) ルームに入りました</translation>
     </message>
