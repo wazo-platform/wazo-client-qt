@@ -34,6 +34,7 @@
 #include <message_factory.h>
 #include <xletlib/signal_relayer.h>
 #include "ui_current_call.h"
+#include "switchboard.h"
 
 #include "current_call.h"
 
@@ -127,7 +128,8 @@ void CurrentCall::hangup()
 
 void CurrentCall::hold()
 {
-    b_engine->sendJsonCommand(MessageFactory::holdSwitchboard());
+    const QString &hold_queue_name = "__switchboard_hold";
+    b_engine->sendJsonCommand(MessageFactory::holdSwitchboard(hold_queue_name));
 }
 
 void CurrentCall::attendedTransfer()

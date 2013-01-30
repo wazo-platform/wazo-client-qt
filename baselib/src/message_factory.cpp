@@ -47,9 +47,12 @@ QVariantMap MessageFactory::hangup()
     return MessageFactory::baseMessage("hangup");
 }
 
-QVariantMap MessageFactory::holdSwitchboard()
+QVariantMap MessageFactory::holdSwitchboard(const QString &queue_name)
 {
-    return MessageFactory::baseMessage("hold_switchboard");
+    QVariantMap command = MessageFactory::baseMessage("hold_switchboard");
+    command["queue_name"] = queue_name;
+
+    return command;
 }
 
 QVariantMap MessageFactory::unholdSwitchboard(const QString &unique_id)

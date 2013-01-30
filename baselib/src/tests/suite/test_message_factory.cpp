@@ -67,10 +67,12 @@ void TestMessageFactory::testHangup()
 
 void TestMessageFactory::testHoldSwitchboard()
 {
-    QVariantMap result = MessageFactory::holdSwitchboard();
+    QString queue_name = "my_queue";
+    QVariantMap result = MessageFactory::holdSwitchboard(queue_name);
 
     QVariantMap expected;
     expected["class"] = "hold_switchboard";
+    expected["queue_name"] = queue_name;
 
     QCOMPARE(result, expected);
 }
