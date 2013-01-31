@@ -121,6 +121,9 @@ class ConfigWidget: public QDialog
         QComboBox * m_qss;
         QCheckBox * m_clipboard;
 
+        QLineEdit * m_switchboard_queue_name;
+        QLineEdit * m_switchboard_hold_queue_name;
+
         QHash<QString, QCheckBox *> m_function;
 
         QTabWidget * m_function_tabwidget;

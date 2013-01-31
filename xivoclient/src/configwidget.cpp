@@ -238,6 +238,24 @@ void ConfigWidget::_insert_function_tab()
 
     m_function_tabwidget->addTab(widget_dial, tr("Dialer"));
 
+        QWidget * widget_switchboard = new QWidget() ;
+        QFormLayout * layout_switchboard = new QFormLayout() ;
+        widget_switchboard->setLayout(layout_switchboard);
+
+        m_switchboard_queue_name = new QLineEdit(this);
+        m_switchboard_hold_queue_name = new QLineEdit(this);
+
+        const QString &switchboard_queue_name = m_config["switchboard_queue_name"].toString();
+        const QString &switchboard_hold_queue_name = m_config["switchboard_hold_queue_name"].toString();
+
+        m_switchboard_queue_name->setText(switchboard_queue_name);
+        m_switchboard_hold_queue_name->setText(switchboard_hold_queue_name);
+
+        layout_switchboard->addRow(tr("Switchboard queue name"), m_switchboard_queue_name);
+        layout_switchboard->addRow(tr("Switchboard call on hold queue name"), m_switchboard_hold_queue_name);
+
+    m_function_tabwidget->addTab(widget_switchboard, tr("Switchboard"));
+
         QWidget * widget_history = new QWidget() ;
         QFormLayout * layout_history = new QFormLayout() ;
         widget_history->setLayout(layout_history);
@@ -507,6 +525,8 @@ void ConfigWidget::saveAndClose()
     m_config["activate_on_tel"] = m_activate_on_tel->isChecked();
     m_config["dialpanel.history_length"] = m_dial_history_size->value();
     m_config["doubleclick.searchpanel"] = m_contacts_dblclick->itemData(m_contacts_dblclick->currentIndex());
+    m_config["switchboard_queue_name"] = m_switchboard_queue_name->text();
+    m_config["switchboard_hold_queue_name"] = m_switchboard_hold_queue_name->text();
 
     foreach(QString function, func_legend.keys())
         m_config["checked_function." + function] = m_function[function]->isChecked();

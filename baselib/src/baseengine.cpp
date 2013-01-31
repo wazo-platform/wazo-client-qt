@@ -242,6 +242,9 @@ void BaseEngine::loadSettings()
 
         m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
 
+        m_config["switchboard_queue_name"] = m_settings->value("switchboard.queue", "__switchboard").toString();
+        m_config["switchboard_hold_queue_name"] = m_settings->value("switchboard.queue_hold", "__switchboard_hold").toString();
+
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
         m_settings->endGroup();
@@ -329,6 +332,9 @@ void BaseEngine::saveSettings()
         m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
 
         m_settings->setValue("doubleclick.searchpanel", m_config["doubleclick.searchpanel"].toString());
+
+        m_settings->setValue("switchboard.queue", m_config["switchboard_queue_name"].toString());
+        m_settings->setValue("switchboard.queue_hold", m_config["switchboard_hold_queue_name"].toString());
 
         if (m_config["keeppass"].toBool())
             m_settings->setValue("password", m_config["password"].toString());
