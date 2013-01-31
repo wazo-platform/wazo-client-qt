@@ -77,11 +77,9 @@ class Switchboard : public XLet
 
         QueueEntriesModel *m_incoming_call_model;
         QueueEntriesSortFilterProxyModel *m_incoming_call_proxy_model;
-        static QString switchboard_queue_name;
 
         QueueEntriesModel *m_waiting_call_model;
         QueueEntriesSortFilterProxyModel *m_waiting_call_proxy_model;
-        static QString switchboard_hold_queue_name;
 
         const UserInfo *m_switchboard_user;
 };

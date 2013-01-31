@@ -128,7 +128,7 @@ void CurrentCall::hangup()
 
 void CurrentCall::hold()
 {
-    const QString &hold_queue_name = "__switchboard_hold";
+    const QString &hold_queue_name = b_engine->getConfig("switchboard_hold_queue_name").toString();
     b_engine->sendJsonCommand(MessageFactory::holdSwitchboard(hold_queue_name));
 }
 

@@ -47,9 +47,6 @@
 #include "ui_current_call.h"
 #include "current_call.h"
 
-QString Switchboard::switchboard_queue_name = "__switchboard";
-QString Switchboard::switchboard_hold_queue_name = "__switchboard_hold";
-
 Switchboard::Switchboard(QWidget *parent)
     : XLet(parent),
       m_current_call(new CurrentCall(this)),
@@ -225,8 +222,10 @@ void Switchboard::focusOnWaitingCalls()
 
 void Switchboard::watch_switchboard_queue()
 {
-    this->m_incoming_call_model->changeWatchedQueue(QueueDAO::findQueueIdByName(this->switchboard_queue_name));
-    this->m_waiting_call_model->changeWatchedQueue(QueueDAO::findQueueIdByName(this->switchboard_hold_queue_name));
+    const QString &switchboard_queue_name = b_engine->getConfig("switchboard_queue_name").toString();
+    const QString &switchboard_hold_queue_name = b_engine->getConfig("switchboard_hold_queue_name").toString();
+    this->m_incoming_call_model->changeWatchedQueue(QueueDAO::findQueueIdByName(switchboard_queue_name));
+    this->m_waiting_call_model->changeWatchedQueue(QueueDAO::findQueueIdByName(switchboard_hold_queue_name));
 }
 
 void Switchboard::answerIncomingCall() const
@@ -262,11 +261,13 @@ void Switchboard::updateWaitingHeader(const QString & queue_id, const QVariantLi
 bool Switchboard::isSwitchboardQueue(const QString &queue_id) const
 {
     const QueueInfo *queue = b_engine->queue(IdConverter::idToXId(queue_id));
-    return queue && queue->queueName() == this->switchboard_queue_name;
+    const QString &switchboard_queue_name = b_engine->getConfig("switchboard_queue_name").toString();
+    return queue && queue->queueName() == switchboard_queue_name;
 }
 
 bool Switchboard::isSwitchboardHoldQueue(const QString &queue_id) const
 {
     const QueueInfo *queue = b_engine->queue(IdConverter::idToXId(queue_id));
-    return queue && queue->queueName() == this->switchboard_hold_queue_name;
+    const QString &switchboard_hold_queue_name = b_engine->getConfig("switchboard_hold_queue_name").toString();
+    return queue && queue->queueName() == switchboard_hold_queue_name;
 }
