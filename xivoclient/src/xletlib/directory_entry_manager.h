@@ -41,6 +41,8 @@
 #include <xletlib/directory_entry.h>
 #include <xletlib/xletlib_export.h>
 
+#include <xletlib/current_filter_directory_entry.h>
+
 class PhoneDAO;
 class UserDAO;
 
@@ -56,6 +58,8 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject, IPBXListener
         int entryCount() const;
 
     public slots:
+        void updateSearch(const QString &current_search);
+
         void updatePhone(const QString &phone_xid);
         void removePhone(const QString &phone_xid);
 
@@ -83,6 +87,7 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject, IPBXListener
         const PhoneDAO &m_phone_dao;
         const UserDAO &m_user_dao;
         QList<const DirectoryEntry *> m_directory_entries;
+        CurrentFilterDirectoryEntry m_current_filter_directory_entry;
 };
 
 #endif /* _DIRECTORY_ENTRY_MANAGER_H_ */

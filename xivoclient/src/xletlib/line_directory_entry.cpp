@@ -65,7 +65,7 @@ LineDirectoryEntry & LineDirectoryEntry::operator=(const LineDirectoryEntry & ot
     return *this;
 }
 
-const QString &LineDirectoryEntry::number() const
+QString LineDirectoryEntry::number() const
 {
     return this->m_phone.number();
 }

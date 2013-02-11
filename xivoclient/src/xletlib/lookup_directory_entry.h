@@ -30,6 +30,8 @@
 #ifndef _LOOKUP_DIRECTORY_ENTRY_H_
 #define _LOOKUP_DIRECTORY_ENTRY_H_
 
+#include <QVariantMap>
+
 #include <dao/userdaoimpl.h>
 #include <xletlib/xletlib_export.h>
 
@@ -37,13 +39,12 @@
 
 class QPixmap;
 class QString;
-class QVariant;
 
 class XLETLIB_EXPORT LookupDirectoryEntry: public DirectoryEntry
 {
     public:
         LookupDirectoryEntry(const QVariant &lookup_result);
-        const QString &number() const;
+        QString number() const;
         QString name() const;
         QPixmap statusIcon() const;
         QString statusText() const;

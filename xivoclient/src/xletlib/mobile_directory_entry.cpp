@@ -64,7 +64,7 @@ MobileDirectoryEntry & MobileDirectoryEntry::operator=(const MobileDirectoryEntr
     return *this;
 }
 
-const QString &MobileDirectoryEntry::number() const
+QString MobileDirectoryEntry::number() const
 {
     return this->m_user.mobileNumber();
 }

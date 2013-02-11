@@ -27,29 +27,44 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DIRECTORY_ENTRY_H_
-#define _DIRECTORY_ENTRY_H_
+#include <QDebug>
+#include <QPixmap>
+#include <QObject>
 
-#include <xletlib/xletlib_export.h>
+#include <xletlib/taintedpixmap.h>
 
-class QString;
-class QPixmap;
-class PhoneInfo;
-class UserInfo;
-class QVariant;
+#include "current_filter_directory_entry.h"
 
-class XLETLIB_EXPORT DirectoryEntry
+CurrentFilterDirectoryEntry::CurrentFilterDirectoryEntry()
 {
-    public:
-        virtual QString number() const = 0;
-        virtual QString name() const = 0;
-        virtual QPixmap statusIcon() const = 0;
-        virtual QString statusText() const = 0;
-        virtual bool hasSource(const PhoneInfo */*phone*/) const { return false; }
-        virtual bool hasSource(const UserInfo */*user*/) const { return false; }
-        virtual bool hasSource(const QVariant &/*lookup_result*/) const { return false; }
-        virtual bool hasSource(const QString &/*current_search*/) const { return false; }
-        virtual ~DirectoryEntry() {}
-};
+}
 
-#endif /* _LINE_DIRECTORY_ENTRY_H_ */
+void CurrentFilterDirectoryEntry::setSearchedText(const QString &searched_text)
+{
+    this->m_searched_text = searched_text;
+}
+
+QString CurrentFilterDirectoryEntry::number() const
+{
+    return m_searched_text;
+}
+
+QString CurrentFilterDirectoryEntry::name() const
+{
+    return "";
+}
+
+QPixmap CurrentFilterDirectoryEntry::statusIcon() const
+{
+    return QPixmap();
+}
+
+QString CurrentFilterDirectoryEntry::statusText() const
+{
+    return QObject::tr("Current Search");
+}
+
+bool CurrentFilterDirectoryEntry::hasSource(const QString &searched_text) const
+{
+    return m_searched_text == searched_text;
+}

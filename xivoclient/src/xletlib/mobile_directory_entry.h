@@ -43,7 +43,7 @@ class XLETLIB_EXPORT MobileDirectoryEntry: public DirectoryEntry
 {
     public:
         MobileDirectoryEntry(const UserInfo &user);
-        const QString &number() const;
+        QString number() const;
         QString name() const;
         QPixmap statusIcon() const;
         QString statusText() const;

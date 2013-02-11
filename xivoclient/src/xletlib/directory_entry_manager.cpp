@@ -59,6 +59,8 @@ DirectoryEntryManager::DirectoryEntryManager(const PhoneDAO &phone_dao,
             this, SLOT(updateUser(const QString &)));
     connect(b_engine, SIGNAL(removeUserConfig(const QString &)),
             this, SLOT(removeUser(const QString &)));
+
+    this->addEntry(&m_current_filter_directory_entry);
 }
 
 const DirectoryEntry & DirectoryEntryManager::getEntry(int entry_index) const
@@ -88,6 +90,13 @@ template<class T>
 int DirectoryEntryManager::hasEntry(const T looked_up) const
 {
     return this->findEntryBy(looked_up) != -1;
+}
+
+void DirectoryEntryManager::updateSearch(const QString &current_search)
+{
+    m_current_filter_directory_entry.setSearchedText(current_search);
+    int matching_entry_index = this->findEntryBy(current_search);
+    this->updateEntryAt(matching_entry_index);
 }
 
 void DirectoryEntryManager::updatePhone(const QString &phone_xid)

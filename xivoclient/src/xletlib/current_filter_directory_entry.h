@@ -27,29 +27,31 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DIRECTORY_ENTRY_H_
-#define _DIRECTORY_ENTRY_H_
+#ifndef _CURRENT_FILTER_DIRECTORY_ENTRY_H_
+#define _CURRENT_FILTER_DIRECTORY_ENTRY_H_
 
+#include <dao/userdaoimpl.h>
 #include <xletlib/xletlib_export.h>
 
-class QString;
+#include <xletlib/directory_entry.h>
+
 class QPixmap;
 class PhoneInfo;
-class UserInfo;
-class QVariant;
+class QString;
 
-class XLETLIB_EXPORT DirectoryEntry
+class XLETLIB_EXPORT CurrentFilterDirectoryEntry: public DirectoryEntry
 {
     public:
-        virtual QString number() const = 0;
-        virtual QString name() const = 0;
-        virtual QPixmap statusIcon() const = 0;
-        virtual QString statusText() const = 0;
-        virtual bool hasSource(const PhoneInfo */*phone*/) const { return false; }
-        virtual bool hasSource(const UserInfo */*user*/) const { return false; }
-        virtual bool hasSource(const QVariant &/*lookup_result*/) const { return false; }
-        virtual bool hasSource(const QString &/*current_search*/) const { return false; }
-        virtual ~DirectoryEntry() {}
+        CurrentFilterDirectoryEntry();
+        QString number() const;
+        QString name() const;
+        QPixmap statusIcon() const;
+        QString statusText() const;
+        void setSearchedText(const QString &searched_text);
+        ~CurrentFilterDirectoryEntry() {}
+        bool hasSource(const QString &current_search) const;
+    private:
+        QString m_searched_text;
 };
 
-#endif /* _LINE_DIRECTORY_ENTRY_H_ */
+#endif /* _CURRENT_FILTER_DIRECTORY_ENTRY_H_ */

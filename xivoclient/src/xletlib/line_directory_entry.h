@@ -45,7 +45,7 @@ class XLETLIB_EXPORT LineDirectoryEntry: public DirectoryEntry
 {
     public:
         LineDirectoryEntry(const PhoneInfo &phone, const UserDAO &user_dao, const PhoneDAO &phone_dao);
-        const QString &number() const;
+        QString number() const;
         QString name() const;
         QPixmap statusIcon() const;
         QString statusText() const;

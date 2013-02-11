@@ -57,6 +57,8 @@ Directory::Directory(QWidget *parent)
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             m_proxy_model, SLOT(setFilter(const QString &)));
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
+            &m_directory_entry_manager, SLOT(updateSearch(const QString &)));
+    connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(scheduleDirectoryLookup(const QString &)));
     connect(signal_relayer, SIGNAL(attendedTransferRequested()),
             this, SLOT(attendedTransferRequested()));
