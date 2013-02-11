@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="43"/>
         <source>N/A</source>
-        <translation type="unfinished">N.v.t.</translation>
+        <translation>NVT</translation>
     </message>
 </context>
 <context>

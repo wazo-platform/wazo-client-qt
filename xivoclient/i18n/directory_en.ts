@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/directory/directory_entry_model.cpp" line="44"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/xlets/directory/directory_entry_model.cpp" line="45"/>

@@ -262,12 +262,12 @@ Busy lines: %6</translation>
     <message>
         <location filename="../src/xletlib/lookup_directory_entry.cpp" line="73"/>
         <source>Remote search result</source>
-        <translation type="unfinished"></translation>
+        <translation>Remote search result</translation>
     </message>
     <message>
         <location filename="../src/xletlib/mobile_directory_entry.cpp" line="84"/>
         <source>Mobile phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Mobile phone</translation>
     </message>
 </context>
 <context>

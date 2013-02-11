@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/directory/directory.cpp" line="48"/>
         <source>Directory</source>
-        <translation type="unfinished">Telefoonlijst</translation>
+        <translation>Telefoonlijst</translation>
     </message>
 </context>
 <context>
@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/xlets/directory/directory_entry_model.cpp" line="45"/>
         <source>Number</source>
-        <translation type="unfinished">Nummer</translation>
+        <translation>Nummer</translation>
     </message>
 </context>
 <context>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Formulier</translation>
+        <translation>Van</translation>
     </message>
 </context>
 </TS>
