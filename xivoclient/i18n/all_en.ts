@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="en">
 <context>
     <name>BaseEngine</name>
     <message>
@@ -138,7 +140,7 @@ Please upgrade it.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1324"/>
-        <source>Your client's major version (%1)
+        <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</translation>
@@ -209,8 +211,8 @@ Please upgrade it.</translation>
     <message>
         <location filename="json_jsonqt/lib/ParseException.cpp" line="35"/>
         <source>A parsing error occurred:
-	Got: '%1'
-	Expected: '%2'
+	Got: &apos;%1&apos;
+	Expected: &apos;%2&apos;
 	At: &apos;%3&apos;</source>
         <translation>A parsing error occurred:
 	Got: &apos;%1&apos;
@@ -236,6 +238,11 @@ Please upgrade it.</translation>
         <location filename="../src/xletlib/mobile_directory_entry.cpp" line="84"/>
         <source>Mobile phone</source>
         <translation>Mobile phone</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="64"/>
+        <source>Current Search</source>
+        <translation>Current Search</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="43"/>
@@ -965,37 +972,47 @@ queues</translation>
         <translation>Current Call</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="111"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
+        <source>Enter</source>
+        <translation>Enter</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
+        <source>Answer</source>
+        <translation>Answer</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
         <source>Indirect Transfer</source>
         <translation>Indirect Transfer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="150"/>
         <source>Indirect T</source>
         <translation>Indirect T</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="117"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="153"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="150"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="186"/>
         <source>Hold</source>
         <translation>Hold</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="153"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="189"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="190"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="226"/>
         <source>Hangup</source>
         <translation>Hangup</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="193"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="229"/>
         <source>F8</source>
         <translation>F8</translation>
     </message>
@@ -1011,7 +1028,10 @@ queues</translation>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="247"/>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="257"/>
         <source>%n call(s)</source>
-        <translation><numerusform>%n call</numerusform><numerusform>%n calls</numerusform></translation>
+        <translation>
+            <numerusform>%n call</numerusform>
+            <numerusform>%n calls</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -2290,12 +2310,18 @@ Are you sure ?</translation>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
         <source>%n agent(s)</source>
-        <translation><numerusform>%n agent(s)</numerusform><numerusform>%n agent(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n agent(s)</numerusform>
+            <numerusform>%n agent(s)</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="110"/>
         <source>%n phone(s)</source>
-        <translation><numerusform>%n phone(s)</numerusform><numerusform>%n phone(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n phone(s)</numerusform>
+            <numerusform>%n phone(s)</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="111"/>

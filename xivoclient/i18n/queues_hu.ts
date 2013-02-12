@@ -164,7 +164,7 @@
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="59"/>
         <source>Queues</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hívócsoport</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="124"/>

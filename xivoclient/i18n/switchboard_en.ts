@@ -37,37 +37,47 @@
         <translation>Current Call</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="111"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
+        <source>Enter</source>
+        <translation>Enter</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
+        <source>Answer</source>
+        <translation>Answer</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
         <source>Indirect Transfer</source>
         <translation>Indirect Transfer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="114"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="150"/>
         <source>Indirect T</source>
         <translation>Indirect T</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="117"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="153"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="150"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="186"/>
         <source>Hold</source>
         <translation>Hold</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="153"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="189"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="190"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="226"/>
         <source>Hangup</source>
         <translation>Hangup</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="193"/>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="229"/>
         <source>F8</source>
         <translation>F8</translation>
     </message>

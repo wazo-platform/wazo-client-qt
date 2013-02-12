@@ -269,6 +269,11 @@ Lignes occupées : %6</translation>
         <source>Mobile phone</source>
         <translation>Mobile</translation>
     </message>
+    <message>
+        <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="64"/>
+        <source>Current Search</source>
+        <translation>Recherche en cours</translation>
+    </message>
 </context>
 <context>
     <name>QueueEntriesModel</name>
