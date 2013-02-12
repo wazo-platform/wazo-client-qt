@@ -48,12 +48,8 @@ bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const Q
     if (directory_entry_number.isEmpty()) {
         return false;
     }
-    if (this->filterMatchesColumn(sourceRow, DirectoryEntryModel::NAME, sourceParent)
-        || this->filterMatchesColumn(sourceRow, DirectoryEntryModel::NUMBER, sourceParent)) {
-        return true;
-    } else {
-        return false;
-    }
+
+    return this->filterMatchesEntry(sourceRow, sourceParent);
 }
 
 bool DirectoryEntrySortFilterProxyModel::lessThan(const QModelIndex &left,
@@ -85,16 +81,17 @@ void DirectoryEntrySortFilterProxyModel::setFilter(const QString & filter)
     this->invalidateFilter();
 }
 
-bool DirectoryEntrySortFilterProxyModel::filterMatchesColumn(int sourceRow,
-                                                             DirectoryEntryModel::Columns column,
-                                                             const QModelIndex & sourceParent) const
+bool DirectoryEntrySortFilterProxyModel::filterMatchesEntry(int sourceRow, const QModelIndex & sourceParent) const
 {
-    QModelIndex directory_entry_column_index = sourceModel()->index(sourceRow,
-                                                                    column,
-                                                                    sourceParent);
-    QString value = sourceModel()->data(directory_entry_column_index).toString();
+    QModelIndex directory_entry_index = sourceModel()->index(sourceRow,
+                                                             0,
+                                                             sourceParent);
 
-    return value.contains(this->m_filter, Qt::CaseInsensitive);
+    QStringList search_list = sourceModel()->data(directory_entry_index,
+                                                  Qt::UserRole).toStringList();
+
+    bool empty = (search_list.filter(this->m_filter, Qt::CaseInsensitive).isEmpty());
+    return !empty;
 }
 
 QString DirectoryEntrySortFilterProxyModel::getNumber(const QModelIndex &index)

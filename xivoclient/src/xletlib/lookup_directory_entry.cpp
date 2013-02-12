@@ -46,6 +46,17 @@ bool LookupDirectoryEntry::hasSource(const QVariant &lookup_result) const
     return lookup_result.toMap() == m_lookup_result;
 }
 
+QStringList LookupDirectoryEntry::searchList() const
+{
+    QStringList list;
+    QVariant value;
+    foreach(value, this->m_lookup_result) {
+        list.append(value.toString());
+    }
+
+    return list;
+}
+
 QString LookupDirectoryEntry::number() const
 {
     return this->m_number;

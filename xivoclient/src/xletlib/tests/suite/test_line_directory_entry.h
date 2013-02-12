@@ -41,6 +41,7 @@ class TestLineDirectoryEntry: public QObject
     private slots:
         void testNumber();
         void testName();
+        void testSearchList();
 };
 
 #endif

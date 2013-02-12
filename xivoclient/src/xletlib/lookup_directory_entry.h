@@ -49,6 +49,7 @@ class XLETLIB_EXPORT LookupDirectoryEntry: public DirectoryEntry
         QPixmap statusIcon() const;
         QString statusText() const;
         bool hasSource(const QVariant & /*lookup_result*/) const;
+        QStringList searchList() const;
         ~LookupDirectoryEntry() {}
     private:
         QVariantMap m_lookup_result;

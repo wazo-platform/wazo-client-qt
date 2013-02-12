@@ -30,6 +30,8 @@
 #ifndef __DIRECTORY_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 #define __DIRECTORY_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 
+#include <QStringList>
+
 #include <xletlib/abstract_sort_filter_proxy_model.h>
 
 #include "directory_entry_model.h"
@@ -47,9 +49,8 @@ class DirectoryEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
         bool filterAcceptsRow(int , const QModelIndex &) const;
         virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
     private:
-        bool filterMatchesColumn(int sourceRow,
-                                 DirectoryEntryModel::Columns colum,
-                                 const QModelIndex & sourceParent) const;
+        bool filterMatchesEntry(int sourceRow,
+                                const QModelIndex & sourceParent) const;
 
         QString m_filter;
 };

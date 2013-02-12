@@ -71,6 +71,7 @@ class DirectoryEntryModel : public QAbstractTableModel
         QVariant dataDisplay(const DirectoryEntry & entry, int column) const;
         QVariant dataDecoration(const DirectoryEntry & entry, int column) const;
         QVariant dataTooltip(const DirectoryEntry & entry, int column) const;
+        QVariant dataSearch(const DirectoryEntry & entry) const;
 
         QString m_headers[NB_COL];
         const DirectoryEntryManager & m_directory_entry_manager;

@@ -106,6 +106,8 @@ QVariant DirectoryEntryModel::data(const QModelIndex &index, int role) const
         return this->dataDisplay(entry, column);
     case Qt::ToolTipRole:
         return this->dataTooltip(entry, column);
+    case Qt::UserRole:
+        return this->dataSearch(entry);
     default:
         return QVariant();
     }
@@ -153,6 +155,11 @@ QVariant DirectoryEntryModel::dataTooltip(const DirectoryEntry & entry, int colu
         return QVariant();
     }
     return entry.statusText();
+}
+
+QVariant DirectoryEntryModel::dataSearch(const DirectoryEntry & entry) const
+{
+    return entry.searchList();
 }
 
 bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & index)

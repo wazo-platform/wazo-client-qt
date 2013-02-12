@@ -48,6 +48,14 @@ bool MobileDirectoryEntry::hasSource(const UserInfo *user) const
     return user->id() == m_user.id();
 }
 
+QStringList MobileDirectoryEntry::searchList() const
+{
+    QStringList list;
+    list.append(this->name());
+    list.append(this->number());
+    return list;
+}
+
 bool MobileDirectoryEntry::operator==(const MobileDirectoryEntry & other) const
 {
     const QString & this_user = this->m_user.id();

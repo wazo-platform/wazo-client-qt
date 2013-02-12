@@ -49,6 +49,14 @@ bool LineDirectoryEntry::hasSource(const PhoneInfo *phone) const
     return phone->id() == m_phone.id();
 }
 
+QStringList LineDirectoryEntry::searchList() const
+{
+    QStringList list;
+    list.append(this->name());
+    list.append(this->number());
+    return list;
+}
+
 bool LineDirectoryEntry::operator==(const LineDirectoryEntry & other) const
 {
     const QString & this_phone = this->m_phone.id();

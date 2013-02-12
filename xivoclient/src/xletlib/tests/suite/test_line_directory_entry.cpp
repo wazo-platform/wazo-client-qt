@@ -104,3 +104,29 @@ void TestLineDirectoryEntry::testName()
 
     QCOMPARE(result, name);
 }
+
+void TestLineDirectoryEntry::testSearchList()
+{
+    MockPhoneInfo mock_phone("xivo", "1");
+    MockUserDAO mock_user_dao;
+    MockPhoneDAO mock_phone_dao;
+
+    QString name = "Alice Tremblay";
+    QString number = "1234";
+
+    QStringList search;
+    search.append(name);
+    search.append(number);
+
+    EXPECT_CALL(mock_phone, number())
+        .WillRepeatedly(ReturnRef(number));
+
+    EXPECT_CALL(mock_user_dao, findNameByPhone(&mock_phone))
+        .WillRepeatedly(Return(name));
+
+    LineDirectoryEntry line_directory_entry(mock_phone, mock_user_dao, mock_phone_dao);
+
+    QStringList result = line_directory_entry.searchList();
+
+    QCOMPARE(result, search);
+}
