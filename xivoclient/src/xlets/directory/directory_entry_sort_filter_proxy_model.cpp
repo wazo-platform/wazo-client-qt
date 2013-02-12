@@ -30,9 +30,10 @@
 #include "directory_entry_model.h"
 #include "directory_entry_sort_filter_proxy_model.h"
 
-DirectoryEntrySortFilterProxyModel::DirectoryEntrySortFilterProxyModel(QObject *parent = NULL)
+DirectoryEntrySortFilterProxyModel::DirectoryEntrySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
+    this->setSortLocaleAware(true);
     this->setDynamicSortFilter(true);
 }
 
@@ -54,6 +55,29 @@ bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const Q
         return true;
     } else {
         return false;
+    }
+}
+
+bool DirectoryEntrySortFilterProxyModel::lessThan(const QModelIndex &left,
+                                                  const QModelIndex &right) const
+{
+    QVariant left_data = sourceModel()->data(left);
+    QVariant right_data = sourceModel()->data(right);
+
+    if (left_data.type() == QVariant::String) {
+        const QString &left_string = left_data.toString();
+        if (left_string.isEmpty()) {
+            return false;
+        }
+
+        const QString &right_string = right_data.toString();
+        if (right_string.isEmpty()) {
+            return true;
+        }
+
+        return QString::localeAwareCompare(left_string, right_string) < 0;
+    } else {
+        return AbstractSortFilterProxyModel::lessThan(left, right);
     }
 }
 

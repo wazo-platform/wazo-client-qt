@@ -45,6 +45,7 @@ class DirectoryEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
         QString getNumber(const QModelIndex &index);
     protected:
         bool filterAcceptsRow(int , const QModelIndex &) const;
+        virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
     private:
         bool filterMatchesColumn(int sourceRow,
                                  DirectoryEntryModel::Columns colum,
