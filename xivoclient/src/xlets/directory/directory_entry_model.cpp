@@ -58,6 +58,7 @@ void DirectoryEntryModel::directoryEntryAdded(int entry_index) {
     int inserted_row = entry_index;
     beginInsertRows(QModelIndex(), inserted_row, inserted_row);
     endInsertRows();
+    this->refreshEntry(inserted_row);
 }
 
 void DirectoryEntryModel::directoryEntryUpdated(int entry_index) {
