@@ -128,4 +128,5 @@ void Directory::dataChanged(const QModelIndex &, const QModelIndex &)
 {
     this->m_proxy_model->invalidate();
     this->m_proxy_model->sort(1, Qt::AscendingOrder);
+    ui.entry_table->resizeColumnsToContents();
 }
