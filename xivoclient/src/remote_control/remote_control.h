@@ -147,6 +147,7 @@ class RemoteControl : public QObject
         QAbstractItemModel* getConflistModel();
         int findRowWithItem(QAbstractItemModel* model, int column, QString search);
         QString getValueInModel(QAbstractItemModel* model, int row, int column);
+        void wait(int milliseconds) const;
 
         ExecObjects m_exec_obj;
         bool m_command_found;
