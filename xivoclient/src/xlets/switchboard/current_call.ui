@@ -98,7 +98,7 @@
              <string>Answer</string>
             </property>
             <property name="shortcut">
-             <string>Return</string>
+             <string notr="true">Return</string>
             </property>
            </widget>
           </item>
