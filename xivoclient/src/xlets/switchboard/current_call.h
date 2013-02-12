@@ -48,6 +48,7 @@ class CurrentCall: public QObject, public IPBXListener
         void setParentWidget(QWidget *parent);
         virtual void parseCommand(const QVariantMap &command);
     public slots:
+        void answer();
         void attendedTransfer();
         void completeTransfer();
         void cancelTransfer();
@@ -63,6 +64,7 @@ class CurrentCall: public QObject, public IPBXListener
         void noCallsMode();
         void answeringMode();
         void disconnectButtons();
+        void setAnswerButton();
         void setAttendedTransferButton();
         void setCompleteTransferButton();
         void setHoldButton();

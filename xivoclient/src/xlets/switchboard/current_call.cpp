@@ -121,6 +121,11 @@ void CurrentCall::clear()
     this->noCallsMode();
 }
 
+void CurrentCall::answer()
+{
+    b_engine->sendJsonCommand(MessageFactory::answer());
+}
+
 void CurrentCall::hangup()
 {
     b_engine->sendJsonCommand(MessageFactory::hangup());
@@ -152,6 +157,7 @@ void CurrentCall::cancelTransfer()
 void CurrentCall::noCallsMode()
 {
     this->disconnectButtons();
+    this->setAnswerButton();
     this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
     m_current_call_widget->btn_attended_transfer->setText(m_attended_transfer_label);
 
@@ -169,6 +175,8 @@ void CurrentCall::answeringMode()
     this->setHoldButton();
 
     this->setHangupButton();
+
+    m_current_call_widget->btn_answer->setEnabled(false);
 }
 
 void CurrentCall::transferringMode()
@@ -184,6 +192,8 @@ void CurrentCall::transferringMode()
 
 void CurrentCall::disconnectButtons()
 {
+    disconnect(m_current_call_widget->btn_answer, SIGNAL(clicked()),
+               this, SLOT(answer()));
     disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
                this, SLOT(attendedTransfer()));
     disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
@@ -196,6 +206,16 @@ void CurrentCall::disconnectButtons()
                this, SLOT(hangup()));
     disconnect(m_current_call_widget->btn_hangup, SIGNAL(clicked()),
                this, SLOT(cancelTransfer()));
+}
+
+void CurrentCall::setAnswerButton()
+{
+    QPushButton *answer_button = this->m_current_call_widget->btn_answer;
+    if (! answer_button) {
+        return;
+    }
+    answer_button->setEnabled(true);
+    connect(answer_button, SIGNAL(clicked()), this, SLOT(answer()));
 }
 
 void CurrentCall::setAttendedTransferButton()
