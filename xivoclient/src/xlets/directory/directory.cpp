@@ -50,8 +50,8 @@ Directory::Directory(QWidget *parent)
     this->ui.setupUi(this);
 
     m_proxy_model = new DirectoryEntrySortFilterProxyModel(this);
-    m_proxy_model->setSourceModel(new DirectoryEntryModel(m_directory_entry_manager,
-                                                          this));
+    DirectoryEntryModel *model = new DirectoryEntryModel(m_directory_entry_manager, this);
+    m_proxy_model->setSourceModel(model);
     ui.entry_table->setModel(m_proxy_model);
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
@@ -68,6 +68,8 @@ Directory::Directory(QWidget *parent)
             this, SLOT(attendedTransferSelectedIndex(const QModelIndex &)));
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchDirectory()));
+    connect(model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+            this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
 }
@@ -120,4 +122,10 @@ bool Directory::alreadySearched(const QString &search_pattern) const
         }
     }
     return false;
+}
+
+void Directory::dataChanged(const QModelIndex &, const QModelIndex &)
+{
+    this->m_proxy_model->invalidate();
+    this->m_proxy_model->sort(1, Qt::AscendingOrder);
 }

@@ -37,7 +37,7 @@
 DirectoryEntryView::DirectoryEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    this->sortByColumn(DirectoryEntryModel::NAME, Qt::AscendingOrder);
+    this->setSortingEnabled(false);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
 }

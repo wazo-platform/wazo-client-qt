@@ -60,6 +60,7 @@ class Directory: public XLet
         void attendedTransferSelectedIndex(const QModelIndex &index);
         void scheduleDirectoryLookup(const QString &lookup_pattern);
         void searchDirectory();
+        void dataChanged(const QModelIndex &, const QModelIndex &);
     private:
         bool alreadySearched(const QString &search_pattern) const;
 

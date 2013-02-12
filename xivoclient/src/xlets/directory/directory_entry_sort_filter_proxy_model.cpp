@@ -33,8 +33,6 @@
 DirectoryEntrySortFilterProxyModel::DirectoryEntrySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
-    this->setSortLocaleAware(true);
-    this->setDynamicSortFilter(true);
 }
 
 bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
