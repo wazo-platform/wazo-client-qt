@@ -50,7 +50,6 @@ class XLETLIB_EXPORT MobileDirectoryEntry: public DirectoryEntry
         bool operator==(const MobileDirectoryEntry & other) const;
         MobileDirectoryEntry & operator=(const MobileDirectoryEntry & other);
         bool hasSource(const UserInfo */*user*/) const;
-        QStringList searchList() const;
         ~MobileDirectoryEntry() {}
     private:
         const UserInfo &m_user;

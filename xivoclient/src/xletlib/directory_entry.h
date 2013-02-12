@@ -49,7 +49,7 @@ class XLETLIB_EXPORT DirectoryEntry
         virtual bool hasSource(const UserInfo */*user*/) const { return false; }
         virtual bool hasSource(const QVariant &/*lookup_result*/) const { return false; }
         virtual bool hasSource(const QString &/*current_search*/) const { return false; }
-        virtual QStringList searchList() const { return QStringList(); }
+        virtual QStringList searchList() const { return QStringList() << this->name() << this->number(); }
         virtual ~DirectoryEntry() {}
 };
 
