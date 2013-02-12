@@ -50,7 +50,8 @@ void RemoteControl::then_nothing_shows_up_in_the_directory_xlet()
 {
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
     int nb_rows = panel->m_table->rowCount();
-    this->assert(nb_rows == 0);
+    // only the current searched term is found, nothing else
+    this->assert(nb_rows == 1);
 }
 
 void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & args)
