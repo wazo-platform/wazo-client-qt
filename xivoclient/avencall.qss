@@ -1,0 +1,34 @@
+QMainWindow {background:  qlineargradient(y1: 0.05, y2: 0.35, stop: 0 #093C7B, stop: 1.0 white); 
+                    margin : 0px; padding : 0px}
+
+QLabel#contact_search {color : #F37021}
+
+QVBoxLayout#identitylayout {color : white}
+QFrame#identitybck { color : white; 
+                    /*background:  qlineargradient(y1: 0.15, y2: 0.75, stop: 0 #093C7B, stop: 1.0 #80aade);*/ 
+                    margin : 0px; padding : 0px}
+QFrame#identitybck QLabel {color : white}
+QFrame#identitybck QLabel#voicemail_num {color : transparent}
+
+QFrame#identitybck QLabel#phone_number {color : transparent}
+QFrame#identitybck QLabel#phone_call {color : transparent}
+QFrame#identitybck QLabel#phone_calltxt {color : transparent}
+
+QTabWidget::tab-bar {left : 50px}
+QTabBar::tab {background: #808080;
+                /*font: bold;*/ /* Qt Bug : text is truncated. See QTBUG-5052 and QTBUG-8209 */
+                color: white ; padding: 3px; margin-left : 4px;
+                border: 0px solid white}
+QTabBar::tab:selected, QTabBar::tab:hover {background: white; color : #F37021}
+
+/*QTabWidget QWidget {background: white}*/
+QTabWidget > * {border: 0px solid #808080 ; border-radius: 10px}
+
+QTabWidget::pane {border-top : 5px solid white}
+
+QDockWidget { color : #093C7B; background : white}
+
+QDockWidget::title {
+    background : qlineargradient(y1: 0.15, y2: 0.75, stop: 0 darkgrey, stop: 1.0 lightgrey);
+    padding-left: 5px;
+}
