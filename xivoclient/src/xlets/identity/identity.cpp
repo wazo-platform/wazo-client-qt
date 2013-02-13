@@ -61,13 +61,20 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 {
     setTitle( tr("Identity") );
     setAccessibleName( tr("Current User Panel") );
+    setObjectName("identityXlet");
+
     m_gui_buttonsize = 16;
 
-    m_glayout = new QGridLayout(this);
-    // m_glayout->setMargin(0);
+    QVBoxLayout* vboxLayout = new QVBoxLayout(this);
+    QFrame* m_identitybck = new QFrame(this);
+    m_identitybck->setObjectName("identitybck");
+    vboxLayout->addWidget(m_identitybck);
+
+    m_glayout = new QGridLayout(m_identitybck);
+    m_glayout->setObjectName("identitylayout");
+
     m_user = new QLabel(this);
     m_user->setObjectName("fullname");
-    //m_user->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
     m_phonenum = new QLabel(this);

@@ -51,12 +51,15 @@ IdentityPhone::IdentityPhone(QWidget * parent)
     m_icon->setContentsMargins(20, 0, 5, 0);
 
     m_phone = new QLabel(this);
+    m_phone->setObjectName("phone_number");
     m_phone->setContentsMargins(0, 0, 10, 0);
 
     m_phonecall = new QLabel(this);
+    m_phonecall->setObjectName("phone_call");
     m_phonecall->setContentsMargins(0, 0, 0, 0);
 
     m_phonecalltxt = new QLabel(this);
+    m_phonecalltxt->setObjectName("phone_calltxt");
     m_phonecalltxt->setContentsMargins(0, 0, 10, 0);
 
     m_phonestatustxt = new QLabel(tr("No option"), this);
