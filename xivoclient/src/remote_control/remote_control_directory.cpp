@@ -32,8 +32,6 @@
 #include "xlets/remotedirectory-builtin/directorypanel.h"
 #include "remote_control.h"
 
-#include <QTime>
-
 
 void RemoteControl::when_i_search_for_1_in_the_directory_xlet(const QVariantList & args)
 {
@@ -58,17 +56,7 @@ void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & a
     const QString& user = args[0].toString();
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
-    this->wait(2000);
     this->assert(isValueInTable(user, "Nom", panel->m_table));
-}
-
-void RemoteControl::wait(int miliseconds) const
-{
-    QTime end = QTime::currentTime().addMSecs(miliseconds);
-    QTime now;
-    do {
-        now = QTime::currentTime();
-    } while (now < end);
 }
 
 #endif
