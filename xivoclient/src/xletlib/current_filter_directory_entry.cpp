@@ -56,7 +56,7 @@ QString CurrentFilterDirectoryEntry::name() const
 
 QPixmap CurrentFilterDirectoryEntry::statusIcon() const
 {
-    return TaintedPixmap(QString(":/images/phone-trans.png"), QColor("Black")).getPixmap();
+    return QPixmap(":/images/magnifying_glass.png");
 }
 
 QString CurrentFilterDirectoryEntry::statusText() const
