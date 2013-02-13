@@ -32,6 +32,7 @@
 #include <QObject>
 
 #include <xletlib/taintedpixmap.h>
+#include <phonenumber.h>
 
 #include "current_filter_directory_entry.h"
 
@@ -46,7 +47,7 @@ void CurrentFilterDirectoryEntry::setSearchedText(const QString &searched_text)
 
 QString CurrentFilterDirectoryEntry::number() const
 {
-    return m_searched_text;
+    return PhoneNumber::extract(m_searched_text);
 }
 
 QString CurrentFilterDirectoryEntry::name() const
