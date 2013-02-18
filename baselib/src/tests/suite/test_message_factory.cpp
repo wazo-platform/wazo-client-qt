@@ -144,3 +144,13 @@ void TestMessageFactory::testSwitchboardDirectorySearch()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testGetSwitchboardDirectoryHeaders()
+{
+    QVariantMap result = MessageFactory::getSwitchboardDirectoryHeaders();
+
+    QVariantMap expected;
+    expected["class"] = "get_switchboard_directory_headers";
+
+    QCOMPARE(result, expected);
+}

@@ -49,9 +49,9 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap cancelTransfer();
         static QVariantMap directorySearch(const QString &pattern);
         static QVariantMap switchboardDirectorySearch(const QString &pattern);
+        static QVariantMap getSwitchboardDirectoryHeaders();
     private:
         static QVariantMap baseMessage(const QString &class_name);
 };
-
 
 #endif /* __MESSAGE_FACTORY_H__ */

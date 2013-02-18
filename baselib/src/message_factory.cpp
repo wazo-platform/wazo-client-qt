@@ -99,6 +99,12 @@ QVariantMap MessageFactory::switchboardDirectorySearch(const QString &pattern)
     return message;
 }
 
+QVariantMap MessageFactory::getSwitchboardDirectoryHeaders()
+{
+    QVariantMap message = MessageFactory::baseMessage("get_switchboard_directory_headers");
+
+    return message;
+}
 
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
