@@ -58,7 +58,12 @@ DirectoryEntryModel::DirectoryEntryModel(const DirectoryEntryManager & directory
 
 void DirectoryEntryModel::addField(const QString &field)
 {
+    static QStringList fields_to_ignore = QStringList()
+        << "" << "name" << "number";
     foreach (const QString &compared_field, m_fields) {
+        if (fields_to_ignore.contains(field.toLower())) {
+            return;
+        }
         if (compared_field == field) {
             return;
         }

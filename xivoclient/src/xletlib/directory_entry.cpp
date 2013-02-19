@@ -27,33 +27,15 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DIRECTORY_ENTRY_H_
-#define _DIRECTORY_ENTRY_H_
+#include <QObject>
+#include "directory_entry.h"
 
-#include <xletlib/xletlib_export.h>
-
-#include <QStringList>
-
-class QString;
-class QPixmap;
-class PhoneInfo;
-class UserInfo;
-class QVariant;
-
-class XLETLIB_EXPORT DirectoryEntry
+QString DirectoryEntry::getField(const QString &field) const
 {
-    public:
-        virtual QString getField(const QString &field) const;
-        virtual QString number() const = 0;
-        virtual QString name() const = 0;
-        virtual QPixmap statusIcon() const = 0;
-        virtual QString statusText() const = 0;
-        virtual bool hasSource(const PhoneInfo */*phone*/) const { return false; }
-        virtual bool hasSource(const UserInfo */*user*/) const { return false; }
-        virtual bool hasSource(const QVariant &/*lookup_result*/) const { return false; }
-        virtual bool hasSource(const QString &/*current_search*/) const { return false; }
-        virtual QStringList searchList() const { return QStringList() << this->name() << this->number(); }
-        virtual ~DirectoryEntry() {}
-};
-
-#endif /* _LINE_DIRECTORY_ENTRY_H_ */
+    if (field == QObject::tr("Name"))
+        return name();
+    else if (field == QObject::tr("Number"))
+        return number();
+    else
+        return "";
+}
