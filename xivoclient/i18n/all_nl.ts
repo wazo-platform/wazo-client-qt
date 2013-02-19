@@ -235,7 +235,7 @@ Gelieve uw versie te upgraden.</translation>
         <translation>NVT</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="95"/>
+        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="98"/>
         <source>Remote search result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -248,18 +248,6 @@ Gelieve uw versie te upgraden.</translation>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/directory_entry.cpp" line="35"/>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="64"/>
-        <source>Name</source>
-        <translation type="unfinished">Naam</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/directory_entry.cpp" line="37"/>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="62"/>
-        <source>Number</source>
-        <translation type="unfinished">Nummer</translation>
     </message>
 </context>
 <context>
@@ -2810,19 +2798,6 @@ queues parameters for the Stats on slice:</source>
         <location filename="../src/xlets/directory/directory.cpp" line="48"/>
         <source>Directory</source>
         <translation>Telefoonlijst</translation>
-    </message>
-</context>
-<context>
-    <name>DirectoryEntryModel</name>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="44"/>
-        <source>Name</source>
-        <translation type="unfinished">Naam</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="45"/>
-        <source>Number</source>
-        <translation>Nummer</translation>
     </message>
 </context>
 <context>

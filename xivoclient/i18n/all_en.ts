@@ -230,7 +230,7 @@ Please upgrade it.</translation>
         <translation>Phone</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="95"/>
+        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="98"/>
         <source>Remote search result</source>
         <translation>Remote search result</translation>
     </message>
@@ -243,18 +243,6 @@ Please upgrade it.</translation>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
         <translation>Current Search</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/directory_entry.cpp" line="35"/>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="64"/>
-        <source>Name</source>
-        <translation type="unfinished">Name</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/directory_entry.cpp" line="37"/>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="62"/>
-        <source>Number</source>
-        <translation type="unfinished">Number</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="43"/>
@@ -2812,19 +2800,6 @@ queues parameters for the Stats on slice:</translation>
         <location filename="../src/xlets/directory/directory.cpp" line="48"/>
         <source>Directory</source>
         <translation>Directory</translation>
-    </message>
-</context>
-<context>
-    <name>DirectoryEntryModel</name>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="44"/>
-        <source>Name</source>
-        <translation>Name</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="45"/>
-        <source>Number</source>
-        <translation>Number</translation>
     </message>
 </context>
 <context>

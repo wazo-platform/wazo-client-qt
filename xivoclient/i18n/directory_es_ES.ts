@@ -10,19 +10,6 @@
     </message>
 </context>
 <context>
-    <name>DirectoryEntryModel</name>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="44"/>
-        <source>Name</source>
-        <translation type="unfinished">Nombre</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="45"/>
-        <source>Number</source>
-        <translation type="unfinished">Número</translation>
-    </message>
-</context>
-<context>
     <name>DirectoryWidget</name>
     <message>
         <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>

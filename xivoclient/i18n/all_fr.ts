@@ -228,7 +228,7 @@ Merci de mettre à jour votre serveur.</translation>
         <translation>Téléphone</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="95"/>
+        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="98"/>
         <source>Remote search result</source>
         <translation>Résultat d&apos;une recherche externe</translation>
     </message>
@@ -241,18 +241,6 @@ Merci de mettre à jour votre serveur.</translation>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
         <translation>Recherche en cours</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/directory_entry.cpp" line="35"/>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="64"/>
-        <source>Name</source>
-        <translation type="unfinished">Nom</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/directory_entry.cpp" line="37"/>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="62"/>
-        <source>Number</source>
-        <translation type="unfinished">Numéro</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="43"/>
@@ -2812,19 +2800,6 @@ Are you sure ?</source>
         <location filename="../src/xlets/directory/directory.cpp" line="48"/>
         <source>Directory</source>
         <translation>Répertoire</translation>
-    </message>
-</context>
-<context>
-    <name>DirectoryEntryModel</name>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="44"/>
-        <source>Name</source>
-        <translation>Nom</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/directory/directory_entry_model.cpp" line="45"/>
-        <source>Number</source>
-        <translation>Numéro</translation>
     </message>
 </context>
 <context>
