@@ -260,7 +260,7 @@ Bezette lijnen: %6</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="73"/>
+        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="95"/>
         <source>Remote search result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -270,9 +270,21 @@ Bezette lijnen: %6</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="64"/>
+        <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directory_entry.cpp" line="35"/>
+        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="64"/>
+        <source>Name</source>
+        <translation type="unfinished">Naam</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directory_entry.cpp" line="37"/>
+        <location filename="../src/xletlib/lookup_directory_entry.cpp" line="62"/>
+        <source>Number</source>
+        <translation type="unfinished">Nummer</translation>
     </message>
 </context>
 <context>
