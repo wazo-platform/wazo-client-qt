@@ -76,6 +76,7 @@ class DirectoryEntryModel : public QAbstractTableModel, IPBXListener
         QVariant dataTooltip(const DirectoryEntry & entry, int column) const;
         QVariant dataSearch(const DirectoryEntry & entry) const;
         void addField(const QString &field);
+        QString headerText(int column) const;
 
         QStringList m_fields;
         const DirectoryEntryManager & m_directory_entry_manager;

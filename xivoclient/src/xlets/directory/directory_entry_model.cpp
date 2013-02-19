@@ -141,22 +141,21 @@ QVariant DirectoryEntryModel::headerData(int column,
 
     switch(role) {
     case  Qt::DisplayRole:
-        return this->m_fields[column];
+        return this->headerText(column);
     default:
         return QVariant();
     }
 }
 
+QString DirectoryEntryModel::headerText(int column) const
+{
+    return this->m_fields.value(column);
+}
+
 QVariant DirectoryEntryModel::dataDisplay(const DirectoryEntry & entry, int column) const
 {
-    switch (column) {
-    case NUMBER:
-        return entry.number();
-    case NAME:
-        return entry.name();
-    default :
-        return QVariant();
-    }
+    const QString &field = this->headerText(column);
+    return entry.getField(field);
 }
 
 QVariant DirectoryEntryModel::dataDecoration(const DirectoryEntry & entry, int column) const
