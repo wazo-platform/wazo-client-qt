@@ -72,6 +72,7 @@ Directory::Directory(QWidget *parent)
             this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
+    b_engine->sendJsonCommand(MessageFactory::getSwitchboardDirectoryHeaders());
 }
 
 Directory::~Directory()

@@ -40,9 +40,9 @@ DirectoryEntryModel::DirectoryEntryModel(const DirectoryEntryManager & directory
     : QAbstractTableModel(parent),
       m_directory_entry_manager(directory_entry_manager)
 {
-    m_headers[STATUS_ICON] = "";
-    m_headers[NAME] = tr("Name");
-    m_headers[NUMBER] = tr("Number");
+    m_fields.append("");
+    m_fields.append(tr("Name"));
+    m_fields.append(tr("Number"));
 
     connect(b_engine, SIGNAL(clearingCache()),
             this, SLOT(clearingCache()));
@@ -52,6 +52,18 @@ DirectoryEntryModel::DirectoryEntryModel(const DirectoryEntryManager & directory
             this, SLOT(directoryEntryUpdated(int)));
     connect(&m_directory_entry_manager, SIGNAL(directoryEntryDeleted(int)),
             this, SLOT(directoryEntryDeleted(int)));
+
+    this->registerListener("directory_headers");
+}
+
+void DirectoryEntryModel::addField(const QString &field)
+{
+    foreach (const QString &compared_field, m_fields) {
+        if (compared_field == field) {
+            return;
+        }
+    }
+    m_fields.append(field);
 }
 
 void DirectoryEntryModel::directoryEntryAdded(int entry_index) {
@@ -77,7 +89,7 @@ void DirectoryEntryModel::clearingCache()
 void DirectoryEntryModel::refreshEntry(int row_id)
 {
     unsigned first_column_index = 0;
-    unsigned last_column_index = NB_COL - 1;
+    unsigned last_column_index = this->columnCount() - 1;
     QModelIndex cell_changed_start = createIndex(row_id, first_column_index);
     QModelIndex cell_changed_end = createIndex(row_id, last_column_index);
     emit dataChanged(cell_changed_start, cell_changed_end);
@@ -88,9 +100,14 @@ int DirectoryEntryModel::rowCount(const QModelIndex&) const
     return m_directory_entry_manager.entryCount();
 }
 
+int DirectoryEntryModel::columnCount() const
+{
+    return m_fields.size();
+}
+
 int DirectoryEntryModel::columnCount(const QModelIndex&) const
 {
-    return NB_COL;
+    return this->columnCount();
 }
 
 QVariant DirectoryEntryModel::data(const QModelIndex &index, int role) const
@@ -124,7 +141,7 @@ QVariant DirectoryEntryModel::headerData(int column,
 
     switch(role) {
     case  Qt::DisplayRole:
-        return this->m_headers[column];
+        return this->m_fields[column];
     default:
         return QVariant();
     }
@@ -170,4 +187,11 @@ bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & ind
         endRemoveRows();
     }
     return true;
+}
+
+void DirectoryEntryModel::parseCommand(const QVariantMap &command)
+{
+    foreach (const QVariant &field, command["headers"].toList()) {
+        this->addField(field.toString());
+    }
 }

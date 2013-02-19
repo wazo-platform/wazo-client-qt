@@ -31,11 +31,13 @@
 #define __DIRECTORY_ENTRY_MODEL_H__
 
 #include <QAbstractTableModel>
+#include <QStringList>
+#include <ipbxlistener.h>
 
 class DirectoryEntryManager;
 class DirectoryEntry;
 
-class DirectoryEntryModel : public QAbstractTableModel
+class DirectoryEntryModel : public QAbstractTableModel, IPBXListener
 {
     Q_OBJECT
 
@@ -45,6 +47,7 @@ class DirectoryEntryModel : public QAbstractTableModel
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const;
         int columnCount(const QModelIndex &) const;
+        int columnCount() const;
 
         bool removeRows(int, int, const QModelIndex &);
 
@@ -57,13 +60,13 @@ class DirectoryEntryModel : public QAbstractTableModel
         void directoryEntryUpdated(int entry_index);
         void directoryEntryDeleted(int entry_index);
         void clearingCache();
+        void parseCommand(const QVariantMap &command);
 
     public:
         enum Columns {
           STATUS_ICON,
           NAME,
           NUMBER,
-          NB_COL
         };
 
     private:
@@ -72,8 +75,9 @@ class DirectoryEntryModel : public QAbstractTableModel
         QVariant dataDecoration(const DirectoryEntry & entry, int column) const;
         QVariant dataTooltip(const DirectoryEntry & entry, int column) const;
         QVariant dataSearch(const DirectoryEntry & entry) const;
+        void addField(const QString &field);
 
-        QString m_headers[NB_COL];
+        QStringList m_fields;
         const DirectoryEntryManager & m_directory_entry_manager;
 };
 
