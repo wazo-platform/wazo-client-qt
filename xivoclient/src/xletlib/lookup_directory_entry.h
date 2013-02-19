@@ -44,6 +44,7 @@ class XLETLIB_EXPORT LookupDirectoryEntry: public DirectoryEntry
 {
     public:
         LookupDirectoryEntry(const QVariant &lookup_result);
+        QString getField(const QString &) const;
         QString number() const;
         QString name() const;
         QPixmap statusIcon() const;

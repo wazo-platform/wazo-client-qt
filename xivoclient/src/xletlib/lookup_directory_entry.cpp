@@ -57,6 +57,17 @@ QStringList LookupDirectoryEntry::searchList() const
     return list;
 }
 
+QString LookupDirectoryEntry::getField(const QString &field) const
+{
+    if (field == QObject::tr("Number")) {
+        return this->number();
+    } else if (field == QObject::tr("Name")) {
+        return this->name();
+    } else {
+        return m_lookup_result.value(field).toString();
+    }
+}
+
 QString LookupDirectoryEntry::number() const
 {
     return this->m_number;

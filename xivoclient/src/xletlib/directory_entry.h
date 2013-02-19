@@ -32,6 +32,8 @@
 
 #include <xletlib/xletlib_export.h>
 
+#include <QStringList>
+
 class QString;
 class QPixmap;
 class PhoneInfo;
@@ -41,6 +43,15 @@ class QVariant;
 class XLETLIB_EXPORT DirectoryEntry
 {
     public:
+        virtual QString getField(const QString &field) const {
+            if (field == QObject::tr("Name"))
+              return name();
+            else if (field == QObject::tr("Number"))
+              return number();
+            else
+              return "";
+        }
+
         virtual QString number() const = 0;
         virtual QString name() const = 0;
         virtual QPixmap statusIcon() const = 0;
