@@ -40,10 +40,17 @@ class PhoneInfo;
 class UserInfo;
 class QVariant;
 
+enum ColumnType {
+  STATUS_ICON,
+  NAME,
+  NUMBER,
+  OTHER
+};
+
 class XLETLIB_EXPORT DirectoryEntry
 {
     public:
-        virtual QString getField(const QString &field) const;
+        virtual QString getField(const QString &field, enum ColumnType type) const;
         virtual QString number() const = 0;
         virtual QString name() const = 0;
         virtual QPixmap statusIcon() const = 0;

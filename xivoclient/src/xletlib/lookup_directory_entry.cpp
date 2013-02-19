@@ -57,14 +57,17 @@ QStringList LookupDirectoryEntry::searchList() const
     return list;
 }
 
-QString LookupDirectoryEntry::getField(const QString &field) const
+QString LookupDirectoryEntry::getField(const QString &field, enum ColumnType type) const
 {
-    if (field == QObject::tr("Number")) {
+    switch(type) {
+    case NUMBER:
         return this->number();
-    } else if (field == QObject::tr("Name")) {
+    case NAME:
         return this->name();
-    } else {
+    case OTHER:
         return m_lookup_result.value(field).toString();
+    default:
+        return "";
     }
 }
 

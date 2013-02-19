@@ -30,12 +30,16 @@
 #include <QObject>
 #include "directory_entry.h"
 
-QString DirectoryEntry::getField(const QString &field) const
+QString DirectoryEntry::getField(const QString &, enum ColumnType type) const
 {
-    if (field == QObject::tr("Name"))
+    switch(type) {
+    case NAME:
         return name();
-    else if (field == QObject::tr("Number"))
+    case NUMBER:
         return number();
-    else
+    case OTHER:
+    case STATUS_ICON:
+    default:
         return "";
+    }
 }

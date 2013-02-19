@@ -33,6 +33,7 @@
 #include <QAbstractTableModel>
 #include <QStringList>
 #include <ipbxlistener.h>
+#include <xletlib/directory_entry.h>
 
 class DirectoryEntryManager;
 class DirectoryEntry;
@@ -62,23 +63,17 @@ class DirectoryEntryModel : public QAbstractTableModel, IPBXListener
         void clearingCache();
         void parseCommand(const QVariantMap &command);
 
-    public:
-        enum Columns {
-          STATUS_ICON,
-          NAME,
-          NUMBER,
-        };
-
     private:
         void refreshEntry(int entry_index);
         QVariant dataDisplay(const DirectoryEntry & entry, int column) const;
         QVariant dataDecoration(const DirectoryEntry & entry, int column) const;
         QVariant dataTooltip(const DirectoryEntry & entry, int column) const;
         QVariant dataSearch(const DirectoryEntry & entry) const;
-        void addField(const QString &field);
+        void addField(const QString &name, const QString &type);
         QString headerText(int column) const;
+        enum ColumnType headerType(int column) const;
 
-        QStringList m_fields;
+        QList< QPair<QString, enum ColumnType> >  m_fields;
         const DirectoryEntryManager & m_directory_entry_manager;
 };
 

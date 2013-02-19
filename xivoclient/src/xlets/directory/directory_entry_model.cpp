@@ -40,10 +40,6 @@ DirectoryEntryModel::DirectoryEntryModel(const DirectoryEntryManager & directory
     : QAbstractTableModel(parent),
       m_directory_entry_manager(directory_entry_manager)
 {
-    m_fields.append("");
-    m_fields.append(tr("Name"));
-    m_fields.append(tr("Number"));
-
     connect(b_engine, SIGNAL(clearingCache()),
             this, SLOT(clearingCache()));
     connect(&m_directory_entry_manager, SIGNAL(directoryEntryAdded(int)),
@@ -56,19 +52,19 @@ DirectoryEntryModel::DirectoryEntryModel(const DirectoryEntryManager & directory
     this->registerListener("directory_headers");
 }
 
-void DirectoryEntryModel::addField(const QString &field)
+void DirectoryEntryModel::addField(const QString &name, const QString &type)
 {
-    static QStringList fields_to_ignore = QStringList()
-        << "" << "name" << "number";
-    foreach (const QString &compared_field, m_fields) {
-        if (fields_to_ignore.contains(field.toLower())) {
-            return;
-        }
-        if (compared_field == field) {
-            return;
-        }
+    enum ColumnType t;
+    if (type == "name") {
+        t = NAME;
+    } else if (type == "number") {
+        t = NUMBER;
+    } else if (type == "status") {
+        t = STATUS_ICON;
+    } else {
+        t = OTHER;
     }
-    m_fields.append(field);
+    m_fields.append(QPair<QString, enum ColumnType>(name, t));
 }
 
 void DirectoryEntryModel::directoryEntryAdded(int entry_index) {
@@ -154,18 +150,26 @@ QVariant DirectoryEntryModel::headerData(int column,
 
 QString DirectoryEntryModel::headerText(int column) const
 {
-    return this->m_fields.value(column);
+    return this->m_fields[column].first;
 }
+
+enum ColumnType DirectoryEntryModel::headerType(int column) const
+{
+    return this->m_fields[column].second;
+}
+
 
 QVariant DirectoryEntryModel::dataDisplay(const DirectoryEntry & entry, int column) const
 {
-    const QString &field = this->headerText(column);
-    return entry.getField(field);
+    const QString &name = this->headerText(column);
+    enum ColumnType type = this->headerType(column);
+    return entry.getField(name, type);
 }
 
 QVariant DirectoryEntryModel::dataDecoration(const DirectoryEntry & entry, int column) const
 {
-    if (column != STATUS_ICON) {
+    enum ColumnType type = this->headerType(column);
+    if (type != STATUS_ICON) {
         return QVariant();
     }
     return entry.statusIcon();
@@ -173,7 +177,8 @@ QVariant DirectoryEntryModel::dataDecoration(const DirectoryEntry & entry, int c
 
 QVariant DirectoryEntryModel::dataTooltip(const DirectoryEntry & entry, int column) const
 {
-    if (column != STATUS_ICON) {
+    enum ColumnType type = this->headerType(column);
+    if (type != STATUS_ICON) {
         return QVariant();
     }
     return entry.statusText();
@@ -195,7 +200,12 @@ bool DirectoryEntryModel::removeRows(int row, int count, const QModelIndex & ind
 
 void DirectoryEntryModel::parseCommand(const QVariantMap &command)
 {
-    foreach (const QVariant &field, command["headers"].toList()) {
-        this->addField(field.toString());
+    const QVariantList &headers = command["headers"].toList();
+    foreach (const QVariant &field, headers) {
+        const QVariantList &field_info = field.toList();
+        const QString &name = field_info[0].toString();
+        const QString &type = field_info[1].toString();
+
+        this->addField(name, type);
     }
 }

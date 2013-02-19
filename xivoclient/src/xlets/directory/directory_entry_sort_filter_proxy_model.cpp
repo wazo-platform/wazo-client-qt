@@ -29,6 +29,7 @@
 
 #include "directory_entry_model.h"
 #include "directory_entry_sort_filter_proxy_model.h"
+#include <xletlib/directory_entry.h>
 
 DirectoryEntrySortFilterProxyModel::DirectoryEntrySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
@@ -42,7 +43,7 @@ bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const Q
     }
 
     QModelIndex directory_entry_number_index = sourceModel()->index(sourceRow,
-                                                                    DirectoryEntryModel::NUMBER,
+                                                                    NUMBER,
                                                                     sourceParent);
     QString directory_entry_number = sourceModel()->data(directory_entry_number_index).toString();
     if (directory_entry_number.isEmpty()) {
@@ -96,6 +97,6 @@ bool DirectoryEntrySortFilterProxyModel::filterMatchesEntry(int sourceRow, const
 
 QString DirectoryEntrySortFilterProxyModel::getNumber(const QModelIndex &index)
 {
-    QModelIndex number_index = this->index(index.row(), DirectoryEntryModel::NUMBER);
+    QModelIndex number_index = this->index(index.row(), NUMBER);
     return this->data(number_index, Qt::DisplayRole).toString();
 }
