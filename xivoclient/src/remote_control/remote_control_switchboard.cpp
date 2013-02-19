@@ -46,8 +46,8 @@ void RemoteControl::when_i_search_a_transfer_destination_1(const QVariantList & 
 
 void RemoteControl::assert_directory_has_entry(const QVariantList & args)
 {
-    QString display_name = args[0].toString();
-    QString phone_number = args[1].toString();
+    QVariantMap entry = args[0].toMap();
+    qDebug() << "entry" << entry;
 
     Directory *xlet = static_cast<Directory*>(m_exec_obj.win->m_xletlist.value("directory"));
     QAbstractItemModel *model = xlet->ui.entry_table->model();
@@ -55,11 +55,11 @@ void RemoteControl::assert_directory_has_entry(const QVariantList & args)
     int row_count = model->rowCount();
     this->assert(row_count > 0, "directory search returned no results");
     for (int row_index = 0; row_index < model->rowCount(); row_index++) {
-        if (this->_directory_row_matches(model, row_index, display_name, phone_number)) {
+        if (this->_directory_row_matches(model, row_index, entry)) {
             entry_found = true;
         }
     }
-    this->assert(entry_found, QString("Could not find directory entry %1 %2").arg(display_name, phone_number));
+    this->assert(entry_found, QString("Could not find directory entry %1").arg(prettyPrintMap(entry)));
 }
 
 void RemoteControl::then_i_see_no_transfer_destinations()
@@ -70,18 +70,44 @@ void RemoteControl::then_i_see_no_transfer_destinations()
     this->assert(row_count == 0, "Found directory results when none were expected");
 }
 
-bool RemoteControl::_directory_row_matches(QAbstractItemModel *model, int row_index, QString display_name, QString phone_number)
+bool RemoteControl::_directory_row_matches(QAbstractItemModel *model, int row_index, QVariantMap entry)
 {
-    QString model_display_name = this->getValueInModel(model, row_index, DirectoryEntryModel::NAME);
-    QString model_phone_number = this->getValueInModel(model, row_index, DirectoryEntryModel::NUMBER);
+    foreach(const QString &header, entry.keys()) {
+        QString entry_value = entry.value(header).toString();
 
-    if (model_display_name != display_name) {
-        return false;
+        int header_column = this->findColumnForHeader(model, header);
+        this->assert(header_column > 0, QString("header '%1' not found in directory").arg(header));
+
+        QString model_value = this->getValueInModel(model, row_index, header_column);
+
+        if (model_value != entry_value) {
+            return false;
+        }
     }
-    if (model_phone_number != phone_number) {
-        return false;
-    }
+
     return true;
+}
+
+int RemoteControl::findColumnForHeader(QAbstractItemModel *model, QString header)
+{
+    int nb_cols = model->columnCount();
+
+    for(int col = 0; col < nb_cols; col++) {
+        QString value = model->headerData(col, Qt::Horizontal).toString();
+        if (value == header) {
+            return col;
+        }
+    }
+
+    return -1;
+}
+
+QString RemoteControl::prettyPrintMap(QVariantMap map)
+{
+    QString prettyprint;
+    QDebug debug(&prettyprint);
+    debug << map;
+    return prettyprint;
 }
 
 #endif

@@ -125,8 +125,7 @@ class RemoteControl : public QObject
         QStringList _get_agent_numbers_from_queue_members();
         bool _directory_row_matches(QAbstractItemModel* model,
                                     int row_index,
-                                    QString display_name,
-                                    QString phone_number);
+                                    QVariantMap entry);
 
     public slots:
         void on_error(const QString &);
@@ -147,6 +146,8 @@ class RemoteControl : public QObject
         QAbstractItemModel* getConflistModel();
         int findRowWithItem(QAbstractItemModel* model, int column, QString search);
         QString getValueInModel(QAbstractItemModel* model, int row, int column);
+        int findColumnForHeader(QAbstractItemModel *model, QString header);
+        QString prettyPrintMap(QVariantMap map);
 
         ExecObjects m_exec_obj;
         bool m_command_found;
