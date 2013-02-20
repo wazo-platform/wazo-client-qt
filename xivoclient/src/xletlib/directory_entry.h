@@ -33,12 +33,13 @@
 #include <xletlib/xletlib_export.h>
 
 #include <QStringList>
+#include <QHash>
+#include <QVariantMap>
 
 class QString;
 class QPixmap;
 class PhoneInfo;
 class UserInfo;
-class QVariant;
 
 enum ColumnType {
   STATUS_ICON,
@@ -59,8 +60,12 @@ class XLETLIB_EXPORT DirectoryEntry
         virtual bool hasSource(const UserInfo */*user*/) const { return false; }
         virtual bool hasSource(const QVariant &/*lookup_result*/) const { return false; }
         virtual bool hasSource(const QString &/*current_search*/) const { return false; }
-        virtual QStringList searchList() const { return QStringList() << this->name() << this->number(); }
+        virtual QStringList searchList() const;
+        virtual void setExtraFields(const QVariantMap &fields);
         virtual ~DirectoryEntry() {}
+
+    private:
+        QHash<QString, QString> m_extra_fields;
 };
 
 #endif /* _LINE_DIRECTORY_ENTRY_H_ */

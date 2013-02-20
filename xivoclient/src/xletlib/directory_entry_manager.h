@@ -81,13 +81,15 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject, IPBXListener
         template<class T>
         int hasEntry(const T) const;
 
-        void addEntry(const DirectoryEntry *new_entry);
+        int findEntryByNumber(const QString &number) const;
+
+        void addEntry(DirectoryEntry *new_entry);
         void updateEntryAt(int index);
         void removeEntryAt(int index);
 
         const PhoneDAO &m_phone_dao;
         const UserDAO &m_user_dao;
-        QList<const DirectoryEntry *> m_directory_entries;
+        QList<DirectoryEntry *> m_directory_entries;
         CurrentFilterDirectoryEntry m_current_filter_directory_entry;
 };
 

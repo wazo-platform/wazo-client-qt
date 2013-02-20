@@ -166,17 +166,40 @@ void DirectoryEntryManager::removeUser(const QString &user_xid)
     }
 }
 
+int DirectoryEntryManager::findEntryByNumber(const QString &number) const
+{
+    for (int i = 0; i < m_directory_entries.size(); i++) {
+        DirectoryEntry *entry = m_directory_entries[i];
+        if (! entry) {
+            continue;
+        }
+        if (entry->name().isEmpty()) {
+            continue;
+        }
+        if (entry->number() == number) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 void DirectoryEntryManager::parseCommand(const QVariantMap &result)
 {
     const QList<QVariant> &entries = result["results"].toList();
     foreach (const QVariant &entry, entries) {
-        if (! this->hasEntry(entry)) {
+        const QString &number = entry.toMap()["number"].toString();
+        int matching_entry_index = this->findEntryByNumber(number);
+        if (matching_entry_index != -1) {
+            DirectoryEntry *matching_number_entry = m_directory_entries[matching_entry_index];
+            matching_number_entry->setExtraFields(entry.toMap());
+            this->updateEntryAt(matching_entry_index);
+        } else if (! this->hasEntry(entry)) {
             this->addEntry(new LookupDirectoryEntry(entry));
         }
     }
 }
 
-void DirectoryEntryManager::addEntry(const DirectoryEntry *entry)
+void DirectoryEntryManager::addEntry(DirectoryEntry *entry)
 {
     if (! entry) {
         qDebug() << Q_FUNC_INFO << "Tried to add a NULL entry";

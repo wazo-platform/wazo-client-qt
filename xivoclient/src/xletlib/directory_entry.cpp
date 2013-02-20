@@ -28,9 +28,21 @@
  */
 
 #include <QObject>
+
 #include "directory_entry.h"
 
-QString DirectoryEntry::getField(const QString &, enum ColumnType type) const
+void DirectoryEntry::setExtraFields(const QVariantMap &fields)
+{
+    foreach (const QString &field_name, fields.keys()) {
+        if (field_name == "name" || field_name.startsWith("number")) {
+            continue;
+        }
+        const QString &value = fields[field_name].toString();
+        m_extra_fields[field_name] = value;
+    }
+}
+
+QString DirectoryEntry::getField(const QString &field_name, enum ColumnType type) const
 {
     switch(type) {
     case NAME:
@@ -38,8 +50,14 @@ QString DirectoryEntry::getField(const QString &, enum ColumnType type) const
     case NUMBER:
         return number();
     case OTHER:
+        return m_extra_fields[field_name];
     case STATUS_ICON:
     default:
         return "";
     }
+}
+
+QStringList DirectoryEntry::searchList() const
+{
+    return QStringList() << this->name() << this->number() << m_extra_fields.values();
 }
