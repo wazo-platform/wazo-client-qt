@@ -66,6 +66,7 @@ class Directory: public XLet
 
         Ui::DirectoryWidget ui;
         DirectoryEntrySortFilterProxyModel *m_proxy_model;
+        DirectoryEntryModel *m_model;
         PhoneDAOImpl m_phone_dao;
         UserDAOImpl m_user_dao;
         DirectoryEntryManager m_directory_entry_manager;

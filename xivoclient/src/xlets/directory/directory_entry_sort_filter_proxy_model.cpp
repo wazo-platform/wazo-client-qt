@@ -42,12 +42,16 @@ bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const Q
         return false;
     }
 
-    QModelIndex directory_entry_number_index = sourceModel()->index(sourceRow,
-                                                                    NUMBER,
-                                                                    sourceParent);
-    QString directory_entry_number = sourceModel()->data(directory_entry_number_index).toString();
-    if (directory_entry_number.isEmpty()) {
-        return false;
+    int number_column = static_cast<DirectoryEntryModel *>(this->sourceModel())->getNumberColumnIndex();
+
+    if (number_column != -1) {
+        QModelIndex directory_entry_number_index = sourceModel()->index(sourceRow,
+                                                                        number_column,
+                                                                        sourceParent);
+        QString directory_entry_number = sourceModel()->data(directory_entry_number_index).toString();
+        if (directory_entry_number.isEmpty()) {
+            return false;
+        }
     }
 
     return this->filterMatchesEntry(sourceRow, sourceParent);
@@ -97,6 +101,7 @@ bool DirectoryEntrySortFilterProxyModel::filterMatchesEntry(int sourceRow, const
 
 QString DirectoryEntrySortFilterProxyModel::getNumber(const QModelIndex &index)
 {
-    QModelIndex number_index = this->index(index.row(), NUMBER);
+    int number_column = static_cast<DirectoryEntryModel *>(this->sourceModel())->getNumberColumnIndex();
+    QModelIndex number_index = this->index(index.row(), number_column);
     return this->data(number_index, Qt::DisplayRole).toString();
 }

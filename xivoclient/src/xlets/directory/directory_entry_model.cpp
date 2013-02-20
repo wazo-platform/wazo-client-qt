@@ -209,3 +209,25 @@ void DirectoryEntryModel::parseCommand(const QVariantMap &command)
         this->addField(name, type);
     }
 }
+
+int DirectoryEntryModel::getNumberColumnIndex() const
+{
+    for (int i = 0; i < m_fields.size(); ++i) {
+        const QPair<QString, enum ColumnType> &field = m_fields[i];
+        if (field.second == NUMBER) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int DirectoryEntryModel::getNameColumnIndex() const
+{
+    for (int i = 0; i < m_fields.size(); ++i) {
+        const QPair<QString, enum ColumnType> &field = m_fields[i];
+        if (field.second == NAME) {
+            return i;
+        }
+    }
+    return -1;
+}

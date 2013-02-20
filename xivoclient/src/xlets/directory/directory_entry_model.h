@@ -56,6 +56,8 @@ class DirectoryEntryModel : public QAbstractTableModel, IPBXListener
         QVariant headerData(int,
                             Qt::Orientation,
                             int) const;
+        int getNumberColumnIndex() const;
+        int getNameColumnIndex() const;
     public slots:
         void directoryEntryAdded(int entry_index);
         void directoryEntryUpdated(int entry_index);
