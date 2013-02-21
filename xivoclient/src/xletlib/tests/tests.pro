@@ -20,3 +20,6 @@ HEADERS += $${ROOT_DIR}/src/xletlib/line_directory_entry.h
 
 SOURCES += $${ROOT_DIR}/src/xletlib/taintedpixmap.cpp
 HEADERS += $${ROOT_DIR}/src/xletlib/taintedpixmap.h
+
+SOURCES += $${ROOT_DIR}/src/xletlib/directory_entry.cpp
+HEADERS += $${ROOT_DIR}/src/xletlib/directory_entry.h
