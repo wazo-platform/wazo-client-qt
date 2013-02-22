@@ -113,26 +113,6 @@ void BasePeerWidget::dial()
     b_engine->actionDialNumber(number);
 }
 
-void BasePeerWidget::dialMobilePhone()
-{
-    b_engine->actionDialNumber(m_ui_remote->mobileNumber());
-}
-
-void BasePeerWidget::peerdial()
-{
-    if (m_ui_remote) {
-        b_engine->actionCall("originate",
-                             QString("user:%1").arg(m_ui_remote->xid()),
-                             QString("exten:%0/%1")
-                             .arg(m_ui_remote->ipbxid())
-                             .arg(sender()->property("number").toString()));
-    } else {
-        b_engine->actionCall("originate",
-                             "ext:" + m_number,
-                             "ext:" + sender()->property("number").toString());
-    }
-}
-
 void BasePeerWidget::hangup()
 {
     if (! m_ui_remote) {

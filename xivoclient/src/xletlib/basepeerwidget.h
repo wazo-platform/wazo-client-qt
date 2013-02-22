@@ -100,14 +100,12 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         void selectedNumber(const QStringList &);
     protected slots:
         void dial();
-        void dialMobilePhone();
         void hangup();
         void intercept();
         void transfer();
         void inviteConfRoom();
         void itransfer();
         void itransfercancel();
-        void peerdial();
         void vmtransfer();
 
     protected:
