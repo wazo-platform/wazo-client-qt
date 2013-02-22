@@ -98,24 +98,19 @@ void BasePeerWidget::reloadSavedName()
 
 void BasePeerWidget::dial()
 {
-    QString number;
-    if (sender()) {
-        number = sender()->property("number").toString();
+    if (! sender()) {
+        qDebug() << "Failed to dial: No sender";
+        return;
     }
 
-    if (m_ui_remote) {
-        const QString &phone_id = m_ui_remote->phonelist().value(0);
-        const PhoneInfo *p = b_engine->phone(phone_id);
-        if (p) {
-            number = p->number();
-        }
-    }
+    const QString &number = sender()->property("number").toString();
 
-    if (! number.isEmpty()) {
-        b_engine->actionDialNumber(number);
-    } else {
+    if (number.isEmpty()) {
         qDebug() << "Failed to dial: Empty number";
+        return;
     }
+
+    b_engine->actionDialNumber(number);
 }
 
 void BasePeerWidget::dialMobilePhone()
