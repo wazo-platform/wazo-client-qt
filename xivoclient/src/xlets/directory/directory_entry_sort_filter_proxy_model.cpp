@@ -38,7 +38,11 @@ DirectoryEntrySortFilterProxyModel::DirectoryEntrySortFilterProxyModel(QObject *
 
 bool DirectoryEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (m_filter.isEmpty()) {
+    if (m_filter.isEmpty() || sourceRow < 0) {
+        return false;
+    }
+
+    if (this->sourceModel()->columnCount() <= 0) {
         return false;
     }
 
@@ -88,6 +92,7 @@ void DirectoryEntrySortFilterProxyModel::setFilter(const QString & filter)
 
 bool DirectoryEntrySortFilterProxyModel::filterMatchesEntry(int sourceRow, const QModelIndex & sourceParent) const
 {
+
     QModelIndex directory_entry_index = sourceModel()->index(sourceRow,
                                                              0,
                                                              sourceParent);
