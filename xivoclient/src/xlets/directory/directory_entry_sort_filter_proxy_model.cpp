@@ -107,6 +107,11 @@ bool DirectoryEntrySortFilterProxyModel::filterMatchesEntry(int sourceRow, const
 QString DirectoryEntrySortFilterProxyModel::getNumber(const QModelIndex &index)
 {
     int number_column = static_cast<DirectoryEntryModel *>(this->sourceModel())->getNumberColumnIndex();
+
+    if (number_column < 0) {
+        return QString("");
+    }
+
     QModelIndex number_index = this->index(index.row(), number_column);
     return this->data(number_index, Qt::DisplayRole).toString();
 }
