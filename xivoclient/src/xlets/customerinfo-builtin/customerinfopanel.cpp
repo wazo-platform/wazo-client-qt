@@ -106,7 +106,8 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
     for(int i = m_popups.size() - 1; i >= 0; i --) {
         if(id == m_popups[i]->id()) {
             qDebug() << Q_FUNC_INFO << "fiche id already there" << i << id;
-            return;
+            popup = m_popups[i];
+            break;
         }
     }
 
@@ -174,10 +175,9 @@ void CustomerInfoPanel::desactivateRemarkArea(const QString & id)
 void CustomerInfoPanel::addNewRemark(const QString & id, const QVariantMap & entry)
 {
     qDebug() << Q_FUNC_INFO << id << entry;
-    foreach (Popup *mpopup, m_popups) {
-        if (mpopup->id() == id) {
+    foreach(Popup *mpopup, m_popups) {
+        if(mpopup->id() == id)
             mpopup->addRemark(entry);
-        }
     }
 }
 
