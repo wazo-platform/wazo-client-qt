@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="75"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="440"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="415"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Onderscheppen</translation>
     </message>
@@ -25,58 +25,58 @@
         <translation>Oproep onderscheppen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="358"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="380"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="333"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="355"/>
         <source>&amp;Call</source>
         <translation>&amp;Bellen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="390"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="365"/>
         <source>Call &amp;mobile</source>
         <translation>Bel &amp;mobiel</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="408"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="383"/>
         <source>&amp;Edit</source>
         <translation>&amp;Bewerken</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="425"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="400"/>
         <source>&amp;Hangup call</source>
         <translation>&amp;Oproep beëindigen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="440"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="415"/>
         <source>Cancel transfer</source>
         <translation>Doorschakeling annuleren</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="456"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="431"/>
         <source>Invite in conference room</source>
         <translation>Uitnodigen voor conference gesprek</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="484"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="459"/>
         <source>Blind &amp;Transfer</source>
         <translation>&amp;Niet aangekondigde doorschakeling</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="484"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="459"/>
         <source>&amp;Attended Transfer</source>
         <translation>&amp;Aangekondigde doorschakeling</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="560"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="535"/>
         <source>Blind transfer &lt;%0&gt;</source>
         <translation>Niet aangekondigde doorschakeling&lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="577"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="552"/>
         <source>Attended transfer &lt;%0&gt;</source>
         <translation>Aangekondigde doorschakeling &lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="603"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="578"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Doorschakelen naar &amp;voicemail</translation>
     </message>
@@ -262,17 +262,17 @@ Bezette lijnen: %6</translation>
     <message>
         <location filename="../src/xletlib/lookup_directory_entry.cpp" line="98"/>
         <source>Remote search result</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultaat externe zoekopdracht</translation>
     </message>
     <message>
         <location filename="../src/xletlib/mobile_directory_entry.cpp" line="84"/>
         <source>Mobile phone</source>
-        <translation type="unfinished"></translation>
+        <translation>GSM</translation>
     </message>
     <message>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Huidige Zoekopdracht</translation>
     </message>
 </context>
 <context>

@@ -119,17 +119,17 @@
     <message>
         <location filename="../src/configwidget.cpp" line="254"/>
         <source>Switchboard queue name</source>
-        <translation type="unfinished"></translation>
+        <translation>Schakelbord wachtrij naam</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="255"/>
         <source>Switchboard call on hold queue name</source>
-        <translation type="unfinished"></translation>
+        <translation>schakelbord wachtrij naam voor wachtende oproepen </translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="257"/>
         <source>Switchboard</source>
-        <translation type="unfinished">Schakelbord</translation>
+        <translation>Schakelbord</translation>
     </message>
     <message>
         <location filename="../src/configwidget.cpp" line="266"/>

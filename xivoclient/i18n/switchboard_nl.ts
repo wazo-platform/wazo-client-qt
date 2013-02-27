@@ -39,12 +39,12 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation>Antwoorden</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
