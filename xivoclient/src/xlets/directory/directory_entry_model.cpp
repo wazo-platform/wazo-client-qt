@@ -41,13 +41,13 @@ DirectoryEntryModel::DirectoryEntryModel(const DirectoryEntryManager & directory
       m_directory_entry_manager(directory_entry_manager)
 {
     connect(b_engine, SIGNAL(clearingCache()),
-            this, SLOT(clearingCache()));
+            this, SLOT(clearCache()));
     connect(&m_directory_entry_manager, SIGNAL(directoryEntryAdded(int)),
-            this, SLOT(directoryEntryAdded(int)));
+            this, SLOT(addDirectoryEntry(int)));
     connect(&m_directory_entry_manager, SIGNAL(directoryEntryUpdated(int)),
-            this, SLOT(directoryEntryUpdated(int)));
+            this, SLOT(updateDirectoryEntry(int)));
     connect(&m_directory_entry_manager, SIGNAL(directoryEntryDeleted(int)),
-            this, SLOT(directoryEntryDeleted(int)));
+            this, SLOT(deleteDirectoryEntry(int)));
 
     this->registerListener("directory_headers");
 }
@@ -67,22 +67,22 @@ void DirectoryEntryModel::addField(const QString &name, const QString &type)
     m_fields.append(QPair<QString, enum ColumnType>(name, t));
 }
 
-void DirectoryEntryModel::directoryEntryAdded(int entry_index) {
+void DirectoryEntryModel::addDirectoryEntry(int entry_index) {
     int inserted_row = entry_index;
     beginInsertRows(QModelIndex(), inserted_row, inserted_row);
     endInsertRows();
     this->refreshEntry(inserted_row);
 }
 
-void DirectoryEntryModel::directoryEntryUpdated(int entry_index) {
+void DirectoryEntryModel::updateDirectoryEntry(int entry_index) {
     this->refreshEntry(entry_index);
 }
 
-void DirectoryEntryModel::directoryEntryDeleted(int entry_index) {
+void DirectoryEntryModel::deleteDirectoryEntry(int entry_index) {
     this->removeRow(entry_index);
 }
 
-void DirectoryEntryModel::clearingCache()
+void DirectoryEntryModel::clearCache()
 {
     this->removeRows(0, this->rowCount(), QModelIndex());
 }

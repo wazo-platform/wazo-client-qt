@@ -59,10 +59,10 @@ class DirectoryEntryModel : public QAbstractTableModel, IPBXListener
         int getNumberColumnIndex() const;
         int getNameColumnIndex() const;
     public slots:
-        void directoryEntryAdded(int entry_index);
-        void directoryEntryUpdated(int entry_index);
-        void directoryEntryDeleted(int entry_index);
-        void clearingCache();
+        void addDirectoryEntry(int entry_index);
+        void updateDirectoryEntry(int entry_index);
+        void deleteDirectoryEntry(int entry_index);
+        void clearCache();
         void parseCommand(const QVariantMap &command);
 
     private:
