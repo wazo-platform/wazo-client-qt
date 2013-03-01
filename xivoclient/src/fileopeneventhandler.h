@@ -34,13 +34,16 @@
 #include <QString>
 #include <QEvent>
 
+#include "powerawareapplication.h"
+
 class FileOpenEventHandler: public QObject
 {
     Q_OBJECT
 
     public:
-        FileOpenEventHandler(QObject* parent = NULL);
+        FileOpenEventHandler(PowerAwareApplication* app, QObject* parent = NULL);
         ~FileOpenEventHandler();
+        void setActivationWindow(bool activate);
 
     signals:
         QString dialNumber(QString number);
@@ -51,6 +54,8 @@ class FileOpenEventHandler: public QObject
     private:
         bool isXivoUrl(QString url);
         void handleUrl(QString url);
+        PowerAwareApplication* m_app;
+        bool m_activate;
 
 };
 

@@ -67,7 +67,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setApplicationName("XIVO_Client");
     PowerAwareApplication *app = new PowerAwareApplication(argc, argv);
 
-    FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app);
+    FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app, app);
     app->installEventFilter(fileOpenHandler);
 
     QSettings * settings = new QSettings(QSettings::IniFormat,
@@ -142,8 +142,10 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     MainWidget *window = new MainWidget(Context::get<QSystemTrayIcon>(),
                                         Context::get<SystrayManager>());
+
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
     app->setActivationWindow(window, activate_on_tel);
+    fileOpenHandler->setActivationWindow(activate_on_tel);
 
     app->setQuitOnLastWindowClosed(false);
     app->setProperty("stopper", "lastwindow");
