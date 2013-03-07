@@ -236,7 +236,12 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
                                     QString("chan:%1:%2").arg(m_ui_remote->xid()).arg(channel->id()),
                                     "user:special:me");
     }
-    dial();
+
+    const QString &phone_id = m_ui_remote->phonelist().value(0);
+    const PhoneInfo *p = b_engine->phone(phone_id);
+    if (p) {
+        b_engine->actionDialNumber(p->number());
+    }
 }
 
 void BasePeerWidget::mousePressEvent(QMouseEvent *event)
