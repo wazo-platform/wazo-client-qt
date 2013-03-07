@@ -238,9 +238,9 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
     }
 
     const QString &phone_id = m_ui_remote->phonelist().value(0);
-    const PhoneInfo *p = b_engine->phone(phone_id);
-    if (p) {
-        b_engine->actionDialNumber(p->number());
+    const PhoneInfo *phone = b_engine->phone(phone_id);
+    if (phone) {
+        b_engine->actionDialNumber(phone->number());
     }
 }
 
