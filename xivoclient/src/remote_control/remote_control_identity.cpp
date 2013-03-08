@@ -72,7 +72,7 @@ void RemoteControl::then_the_xlet_identity_shows_a_voicemail_1(const QVariantLis
     QLabel *vm_num = xlet->findChild<QLabel*>(QString("voicemail_num"));
     this->assert(vm_num != NULL, "no vm num label");
 
-    this->assert(vm_num->text().endsWith(expected_voicemail_number), QString("vm num is ") + vm_num->text());
+    this->assert(vm_num->text().endsWith(expected_voicemail_number), QString("vm num is %1").arg(vm_num->text()));
 
     QPushButton * vm_button = xlet->findChild<QPushButton*>(QString("voicemail_button"));
     QIcon vm_icon = vm_button->icon();
@@ -84,10 +84,10 @@ void RemoteControl::then_the_xlet_identity_shows_an_agent_1(const QVariantList &
     QString expected_agent_number = args[0].toString();
 
     IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
-    this->assert(xlet != NULL);
+    this->assert(xlet != NULL, "xlet null");
 
     QLabel *agent_number_label = xlet->findChild<QLabel*>(QString("agent_number"));
-    this->assert(agent_number_label->text().endsWith(expected_agent_number));
+    this->assert(agent_number_label->text().endsWith(expected_agent_number), QString("could not match agent num %1").arg(agent_number_label->text()));
 }
 
 void RemoteControl::then_the_xlet_identity_does_not_show_any_agent()
