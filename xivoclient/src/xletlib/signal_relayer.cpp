@@ -38,12 +38,12 @@ SignalRelayer::SignalRelayer(QObject *parent)
     : QObject(parent)
 {}
 
-void SignalRelayer::relayAttendedTransferRequested()
+void SignalRelayer::relayNumberSelectionRequested()
 {
-    emit attendedTransferRequested();
+    emit numberSelectionRequested();
 }
 
-void SignalRelayer::relayAttendedTransferSent()
+void SignalRelayer::relayNumberSelected(const QString &number)
 {
-    emit attendedTransferSent();
+    emit numberSelected(number);
 }

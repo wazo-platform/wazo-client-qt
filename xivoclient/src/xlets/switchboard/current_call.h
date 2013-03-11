@@ -38,6 +38,10 @@ namespace Ui {
     class CurrentCallWidget;
 }
 
+enum RequestedAction {
+    ATTENDED_TRANSFER
+};
+
 class CurrentCall: public QObject, public IPBXListener
 {
     Q_OBJECT
@@ -56,8 +60,9 @@ class CurrentCall: public QObject, public IPBXListener
         void hold();
     private slots:
         void updateCallInfo();
-        void transferringMode();
+        void numberSelected(const QString &number);
     private:
+        void transferringMode();
         void clear();
         void updateCallerID(const QString &name, const QString &number);
         void updateCall(const QVariantList &calls);
@@ -81,6 +86,8 @@ class CurrentCall: public QObject, public IPBXListener
         QString m_cancel_transfer_label;
         static QKeySequence attended_transfer_key;
         static QKeySequence hangup_key;
+
+        RequestedAction m_requested_action;
 };
 
 #endif /* __CURRENT_CALL_H__ */

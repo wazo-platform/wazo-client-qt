@@ -55,9 +55,9 @@ class Directory: public XLet
         Directory(QWidget *parent=0);
         ~Directory();
     public slots:
-        void attendedTransferRequested();
+        void numberSelectionRequested();
         void focusEntryTable();
-        void attendedTransferSelectedIndex(const QModelIndex &index);
+        void entrySelectedIndex(const QModelIndex &index);
         void scheduleDirectoryLookup(const QString &lookup_pattern);
         void searchDirectory();
         void dataChanged(const QModelIndex &, const QModelIndex &);

@@ -41,12 +41,12 @@ class XLETLIB_EXPORT SignalRelayer: public QObject
     public:
         SignalRelayer(QObject *parent=NULL);
 
-        void relayAttendedTransferRequested();
-        void relayAttendedTransferSent();
+        void relayNumberSelectionRequested();
+        void relayNumberSelected(const QString &number);
 
     signals:
-        void attendedTransferRequested();
-        void attendedTransferSent();
+        void numberSelectionRequested();
+        void numberSelected(const QString &number);
 };
 
 extern XLETLIB_EXPORT SignalRelayer *signal_relayer;

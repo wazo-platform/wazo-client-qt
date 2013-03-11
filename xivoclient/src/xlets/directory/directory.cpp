@@ -60,12 +60,12 @@ Directory::Directory(QWidget *parent)
             &m_directory_entry_manager, SLOT(updateSearch(const QString &)));
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(scheduleDirectoryLookup(const QString &)));
-    connect(signal_relayer, SIGNAL(attendedTransferRequested()),
-            this, SLOT(attendedTransferRequested()));
+    connect(signal_relayer, SIGNAL(numberSelectionRequested()),
+            this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
     connect(this->ui.entry_table, SIGNAL(activated(const QModelIndex &)),
-            this, SLOT(attendedTransferSelectedIndex(const QModelIndex &)));
+            this, SLOT(entrySelectedIndex(const QModelIndex &)));
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchDirectory()));
     connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
@@ -79,7 +79,7 @@ Directory::~Directory()
 {
 }
 
-void Directory::attendedTransferRequested()
+void Directory::numberSelectionRequested()
 {
     this->ui.entry_filter->setFocus();
     int selection_length = this->ui.entry_filter->text().length();
@@ -91,11 +91,10 @@ void Directory::focusEntryTable()
     this->ui.entry_table->selectFirstRow();
 }
 
-void Directory::attendedTransferSelectedIndex(const QModelIndex &index)
+void Directory::entrySelectedIndex(const QModelIndex &index)
 {
     const QString &number = m_proxy_model->getNumber(index);
-    b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
-    signal_relayer->relayAttendedTransferSent();
+    signal_relayer->relayNumberSelected(number);
 }
 
 void Directory::scheduleDirectoryLookup(const QString &lookup_pattern)

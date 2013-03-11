@@ -68,8 +68,8 @@ void CurrentCall::setParentWidget(QWidget *parent)
     m_current_call_widget->setupUi(parent);
 
     this->noCallsMode();
-    connect(signal_relayer, SIGNAL(attendedTransferSent()),
-            this, SLOT(transferringMode()));
+    connect(signal_relayer, SIGNAL(numberSelected(const QString &)),
+            this, SLOT(numberSelected(const QString &)));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -121,6 +121,17 @@ void CurrentCall::clear()
     this->noCallsMode();
 }
 
+void CurrentCall::numberSelected(const QString &number)
+{
+    switch(m_requested_action) {
+    case ATTENDED_TRANSFER:
+        b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
+        this->transferringMode();
+    default:
+        break;
+    }
+}
+
 void CurrentCall::answer()
 {
     b_engine->sendJsonCommand(MessageFactory::answer());
@@ -139,7 +150,8 @@ void CurrentCall::hold()
 
 void CurrentCall::attendedTransfer()
 {
-    signal_relayer->relayAttendedTransferRequested();
+    m_requested_action = ATTENDED_TRANSFER;
+    signal_relayer->relayNumberSelectionRequested();
     this->m_current_call_widget->btn_attended_transfer->setShortcut(QString());
 }
 
