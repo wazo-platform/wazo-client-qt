@@ -71,6 +71,14 @@ QVariantMap MessageFactory::attendedTransfer(const QString &number)
     return message;
 }
 
+QVariantMap MessageFactory::directTransfer(const QString &number)
+{
+    QVariantMap message = MessageFactory::baseMessage("direct_transfer");
+    message["number"] = number;
+
+    return message;
+}
+
 QVariantMap MessageFactory::completeTransfer()
 {
     return MessageFactory::baseMessage("complete_transfer");

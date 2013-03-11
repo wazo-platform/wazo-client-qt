@@ -101,6 +101,18 @@ void TestMessageFactory::testAttendedTransfer()
     QCOMPARE(result, expected);
 }
 
+void TestMessageFactory::testDirectTransfer()
+{
+    QString number = "5432";
+    QVariantMap result = MessageFactory::directTransfer(number);
+
+    QVariantMap expected;
+    expected["class"] = "direct_transfer";
+    expected["number"] = number;
+
+    QCOMPARE(result, expected);
+}
+
 void TestMessageFactory::testCompleteTransfer()
 {
     QVariantMap result = MessageFactory::completeTransfer();
