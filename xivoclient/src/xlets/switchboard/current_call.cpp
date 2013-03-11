@@ -129,6 +129,11 @@ void CurrentCall::numberSelected(const QString &number)
     case ATTENDED_TRANSFER:
         b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
         this->transferringMode();
+        break;
+    case DIRECT_TRANSFER:
+        b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
+        this->noCallsMode();
+        break;
     default:
         break;
     }
@@ -159,7 +164,8 @@ void CurrentCall::attendedTransfer()
 
 void CurrentCall::directTransfer()
 {
-    qDebug() << Q_FUNC_INFO << "Direct transfer clicked";
+    m_requested_action = DIRECT_TRANSFER;
+    signal_relayer->relayNumberSelectionRequested();
 }
 
 void CurrentCall::completeTransfer()

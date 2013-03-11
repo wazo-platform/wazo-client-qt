@@ -39,7 +39,8 @@ namespace Ui {
 }
 
 enum RequestedAction {
-    ATTENDED_TRANSFER
+    ATTENDED_TRANSFER,
+    DIRECT_TRANSFER
 };
 
 class CurrentCall: public QObject, public IPBXListener
