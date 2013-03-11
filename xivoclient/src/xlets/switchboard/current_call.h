@@ -54,6 +54,7 @@ class CurrentCall: public QObject, public IPBXListener
     public slots:
         void answer();
         void attendedTransfer();
+        void directTransfer();
         void completeTransfer();
         void cancelTransfer();
         void hangup();

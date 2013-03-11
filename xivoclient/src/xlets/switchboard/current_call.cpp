@@ -70,6 +70,8 @@ void CurrentCall::setParentWidget(QWidget *parent)
     this->noCallsMode();
     connect(signal_relayer, SIGNAL(numberSelected(const QString &)),
             this, SLOT(numberSelected(const QString &)));
+    connect(m_current_call_widget->btn_direct_transfer, SIGNAL(clicked()),
+            this, SLOT(directTransfer()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -153,6 +155,11 @@ void CurrentCall::attendedTransfer()
     m_requested_action = ATTENDED_TRANSFER;
     signal_relayer->relayNumberSelectionRequested();
     this->m_current_call_widget->btn_attended_transfer->setShortcut(QString());
+}
+
+void CurrentCall::directTransfer()
+{
+    qDebug() << Q_FUNC_INFO << "Direct transfer clicked";
 }
 
 void CurrentCall::completeTransfer()
