@@ -70,8 +70,6 @@ void CurrentCall::setParentWidget(QWidget *parent)
     this->noCallsMode();
     connect(signal_relayer, SIGNAL(numberSelected(const QString &)),
             this, SLOT(numberSelected(const QString &)));
-    connect(m_current_call_widget->btn_direct_transfer, SIGNAL(clicked()),
-            this, SLOT(directTransfer()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -185,6 +183,7 @@ void CurrentCall::noCallsMode()
     this->setAnswerButton();
     this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
     m_current_call_widget->btn_attended_transfer->setText(m_attended_transfer_label);
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
 
     this->m_current_call_widget->btn_hold->setEnabled(false);
 
@@ -196,6 +195,7 @@ void CurrentCall::answeringMode()
 {
     this->disconnectButtons();
     this->setAttendedTransferButton();
+    this->setDirectTransferButton();
 
     this->setHoldButton();
 
@@ -210,6 +210,7 @@ void CurrentCall::transferringMode()
     this->setCompleteTransferButton();
 
     this->m_current_call_widget->btn_hold->setEnabled(false);
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
 
     this->setCancelTransferButton();
 }
@@ -223,6 +224,8 @@ void CurrentCall::disconnectButtons()
                this, SLOT(attendedTransfer()));
     disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
                this, SLOT(completeTransfer()));
+    disconnect(m_current_call_widget->btn_direct_transfer, SIGNAL(clicked()),
+               this, SLOT(directTransfer()));
 
     disconnect(m_current_call_widget->btn_hold, SIGNAL(clicked()),
                this, SLOT(hold()));
@@ -250,6 +253,13 @@ void CurrentCall::setAttendedTransferButton()
     m_current_call_widget->btn_attended_transfer->setShortcut(attended_transfer_key);
     connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
             this, SLOT(attendedTransfer()));
+}
+
+void CurrentCall::setDirectTransferButton()
+{
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(true);
+    connect(m_current_call_widget->btn_direct_transfer, SIGNAL(clicked()),
+            this, SLOT(directTransfer()));
 }
 
 void CurrentCall::setCompleteTransferButton()
