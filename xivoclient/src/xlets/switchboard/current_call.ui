@@ -146,6 +146,9 @@
             <property name="text">
              <string>Dir T.</string>
             </property>
+            <property name="shortcut">
+             <string>F4</string>
+            </property>
            </widget>
           </item>
          </layout>
