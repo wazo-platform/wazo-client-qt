@@ -130,7 +130,6 @@ void CurrentCall::numberSelected(const QString &number)
         break;
     case DIRECT_TRANSFER:
         b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
-        this->noCallsMode();
         break;
     default:
         break;
