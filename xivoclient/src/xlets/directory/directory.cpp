@@ -88,7 +88,11 @@ void Directory::numberSelectionRequested()
 
 void Directory::focusEntryTable()
 {
-    this->ui.entry_table->selectFirstRow();
+    if (this->m_proxy_model->rowCount() > 0) {
+        this->ui.entry_table->selectFirstRow();
+    } else {
+        signal_relayer->relayNoNumberSelected();
+    }
 }
 
 void Directory::entrySelectedIndex(const QModelIndex &index)

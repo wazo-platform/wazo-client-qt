@@ -61,6 +61,7 @@ class CurrentCall: public QObject, public IPBXListener
     private slots:
         void updateCallInfo();
         void numberSelected(const QString &number);
+        void noNumberSelected();
     private:
         void transferringMode();
         void clear();

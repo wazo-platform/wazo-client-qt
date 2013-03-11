@@ -47,3 +47,8 @@ void SignalRelayer::relayNumberSelected(const QString &number)
 {
     emit numberSelected(number);
 }
+
+void SignalRelayer::relayNoNumberSelected()
+{
+    emit noNumberSelected();
+}

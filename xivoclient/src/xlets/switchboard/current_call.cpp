@@ -70,6 +70,8 @@ void CurrentCall::setParentWidget(QWidget *parent)
     this->noCallsMode();
     connect(signal_relayer, SIGNAL(numberSelected(const QString &)),
             this, SLOT(numberSelected(const QString &)));
+    connect(signal_relayer, SIGNAL(noNumberSelected()),
+            this, SLOT(noNumberSelected()));
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -130,6 +132,11 @@ void CurrentCall::numberSelected(const QString &number)
     default:
         break;
     }
+}
+
+void CurrentCall::noNumberSelected()
+{
+    this->answeringMode();
 }
 
 void CurrentCall::answer()

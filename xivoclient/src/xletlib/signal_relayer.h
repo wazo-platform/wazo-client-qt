@@ -43,10 +43,12 @@ class XLETLIB_EXPORT SignalRelayer: public QObject
 
         void relayNumberSelectionRequested();
         void relayNumberSelected(const QString &number);
+        void relayNoNumberSelected();
 
     signals:
         void numberSelectionRequested();
         void numberSelected(const QString &number);
+        void noNumberSelected();
 };
 
 extern XLETLIB_EXPORT SignalRelayer *signal_relayer;
