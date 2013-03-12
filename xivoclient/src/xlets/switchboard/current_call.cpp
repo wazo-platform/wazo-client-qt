@@ -136,7 +136,7 @@ void CurrentCall::numberSelected(const QString &number)
     switch(m_requested_action) {
     case ATTENDED_TRANSFER:
         b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
-        this->transferringMode();
+        this->transferRingingMode();
         break;
     case DIRECT_TRANSFER:
         b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
@@ -218,7 +218,7 @@ void CurrentCall::answeringMode()
     m_current_call_widget->btn_answer->setEnabled(false);
 }
 
-void CurrentCall::transferringMode()
+void CurrentCall::transferRingingMode()
 {
     this->disconnectButtons();
     this->setCompleteTransferButton();
