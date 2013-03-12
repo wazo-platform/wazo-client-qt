@@ -51,6 +51,7 @@ CurrentCall::CurrentCall(QObject *parent)
       m_cancel_transfer_label(tr("Cancel T"))
 {
     this->registerListener("current_calls");
+    this->registerListener("current_call_attended_transfer_answered");
 
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
@@ -95,6 +96,8 @@ void CurrentCall::parseCommand(const QVariantMap &message)
     QString message_class = message["class"].toString();
     if (message_class == "current_calls") {
         this->parseCurrentCalls(message);
+    } else if (message_class == "current_call_attended_transfer_answered") {
+        this->parseAttendedTransferAnswered(message);
     }
 }
 
@@ -106,6 +109,11 @@ void CurrentCall::parseCurrentCalls(const QVariantMap &message)
     } else {
         this->updateCall(calls);
     }
+}
+
+void CurrentCall::parseAttendedTransferAnswered(const QVariantMap &message)
+{
+    this->transferAnsweredMode();
 }
 
 void CurrentCall::updateCall(const QVariantList &calls)
@@ -221,6 +229,17 @@ void CurrentCall::answeringMode()
 void CurrentCall::transferRingingMode()
 {
     this->disconnectButtons();
+
+    this->m_current_call_widget->btn_hold->setEnabled(false);
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
+    this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
+
+    this->setCancelTransferButton();
+}
+
+void CurrentCall::transferAnsweredMode()
+{
+    this->disconnectButtons();
     this->setCompleteTransferButton();
 
     this->m_current_call_widget->btn_hold->setEnabled(false);
@@ -228,7 +247,6 @@ void CurrentCall::transferRingingMode()
 
     this->setCancelTransferButton();
 }
-
 
 void CurrentCall::disconnectButtons()
 {
