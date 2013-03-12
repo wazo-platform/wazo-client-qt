@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="75"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="415"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="420"/>
         <source>&amp;Intercept</source>
         <translation>&amp;Intercept</translation>
     </message>
@@ -25,58 +25,58 @@
         <translation>Intercept call</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="333"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="355"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="338"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="360"/>
         <source>&amp;Call</source>
         <translation>&amp;Call</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="365"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="370"/>
         <source>Call &amp;mobile</source>
         <translation>Call &amp;mobile</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="383"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="388"/>
         <source>&amp;Edit</source>
         <translation>&amp;Edit</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="400"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="405"/>
         <source>&amp;Hangup call</source>
         <translation>&amp;Hangup call</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="415"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="420"/>
         <source>Cancel transfer</source>
         <translation>Cancel transfer</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="431"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="436"/>
         <source>Invite in conference room</source>
         <translation>Invite in conference room</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="459"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="464"/>
         <source>Blind &amp;Transfer</source>
         <translation>Blind &amp;Transfer</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="459"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="464"/>
         <source>&amp;Attended Transfer</source>
         <translation>&amp;Attended Transfer</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="535"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="540"/>
         <source>Blind transfer &lt;%0&gt;</source>
         <translation>Blind transfer &lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="552"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="557"/>
         <source>Attended transfer &lt;%0&gt;</source>
         <translation>Attended transfer &lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="578"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="583"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Transfer to &amp;voice mail</translation>
     </message>
