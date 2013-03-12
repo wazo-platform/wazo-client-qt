@@ -45,7 +45,7 @@ CurrentCall::CurrentCall(QObject *parent)
     : QObject(parent),
       m_current_call_widget(NULL),
       m_call_start(0),
-      m_attended_transfer_label(tr("Indirect T")),
+      m_attended_transfer_label(tr("Attended T")),
       m_complete_transfer_label(tr("Complete T")),
       m_hangup_label(tr("Hangup")),
       m_cancel_transfer_label(tr("Cancel T"))

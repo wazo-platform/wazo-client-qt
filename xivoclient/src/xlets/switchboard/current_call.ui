@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
+    <width>729</width>
     <height>153</height>
    </rect>
   </property>
@@ -143,8 +143,11 @@
               <bold>false</bold>
              </font>
             </property>
+            <property name="toolTip">
+             <string>Blind Transfer</string>
+            </property>
             <property name="text">
-             <string>Dir T.</string>
+             <string>Blind T</string>
             </property>
             <property name="shortcut">
              <string>F4</string>
@@ -180,10 +183,10 @@
              </font>
             </property>
             <property name="toolTip">
-             <string>Indirect Transfer</string>
+             <string>Attended Transfer</string>
             </property>
             <property name="text">
-             <string>Indirect T</string>
+             <string>Attended T</string>
             </property>
             <property name="shortcut">
              <string>F5</string>
