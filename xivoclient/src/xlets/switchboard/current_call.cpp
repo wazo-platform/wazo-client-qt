@@ -90,9 +90,17 @@ void CurrentCall::updateCallInfo()
     this->m_current_call_widget->lbl_call_info->setText(info);
 }
 
-void CurrentCall::parseCommand(const QVariantMap &current_calls)
+void CurrentCall::parseCommand(const QVariantMap &message)
 {
-    const QVariantList &calls = current_calls["current_calls"].toList();
+    QString message_class = message["class"].toString();
+    if (message_class == "current_calls") {
+        this->parseCurrentCalls(message);
+    }
+}
+
+void CurrentCall::parseCurrentCalls(const QVariantMap &message)
+{
+    const QVariantList &calls = message["current_calls"].toList();
     if (calls.isEmpty()) {
         this->clear();
     } else {
