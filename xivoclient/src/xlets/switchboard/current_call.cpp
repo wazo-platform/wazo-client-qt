@@ -38,6 +38,7 @@
 
 #include "current_call.h"
 
+QKeySequence CurrentCall::direct_transfer_key = QKeySequence("F4");
 QKeySequence CurrentCall::attended_transfer_key = QKeySequence("F5");
 QKeySequence CurrentCall::hangup_key = QKeySequence("F8");
 
@@ -186,6 +187,7 @@ void CurrentCall::directTransfer()
 {
     m_requested_action = DIRECT_TRANSFER;
     signal_relayer->relayNumberSelectionRequested();
+    this->m_current_call_widget->btn_direct_transfer->setShortcut(QString());
 }
 
 void CurrentCall::completeTransfer()
@@ -290,6 +292,7 @@ void CurrentCall::setAttendedTransferButton()
 void CurrentCall::setDirectTransferButton()
 {
     this->m_current_call_widget->btn_direct_transfer->setEnabled(true);
+    m_current_call_widget->btn_direct_transfer->setShortcut(direct_transfer_key);
     connect(m_current_call_widget->btn_direct_transfer, SIGNAL(clicked()),
             this, SLOT(directTransfer()));
 }

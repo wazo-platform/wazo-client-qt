@@ -91,6 +91,7 @@ class CurrentCall: public QObject, public IPBXListener
         QString m_complete_transfer_label;
         QString m_hangup_label;
         QString m_cancel_transfer_label;
+        static QKeySequence direct_transfer_key;
         static QKeySequence attended_transfer_key;
         static QKeySequence hangup_key;
 
