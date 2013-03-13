@@ -51,6 +51,7 @@ CurrentCall::CurrentCall(QObject *parent)
       m_cancel_transfer_label(tr("Cancel T"))
 {
     this->registerListener("current_calls");
+    this->registerListener("current_call_attended_transfer_answered");
 
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
@@ -90,14 +91,29 @@ void CurrentCall::updateCallInfo()
     this->m_current_call_widget->lbl_call_info->setText(info);
 }
 
-void CurrentCall::parseCommand(const QVariantMap &current_calls)
+void CurrentCall::parseCommand(const QVariantMap &message)
 {
-    const QVariantList &calls = current_calls["current_calls"].toList();
+    QString message_class = message["class"].toString();
+    if (message_class == "current_calls") {
+        this->parseCurrentCalls(message);
+    } else if (message_class == "current_call_attended_transfer_answered") {
+        this->parseAttendedTransferAnswered(message);
+    }
+}
+
+void CurrentCall::parseCurrentCalls(const QVariantMap &message)
+{
+    const QVariantList &calls = message["current_calls"].toList();
     if (calls.isEmpty()) {
         this->clear();
     } else {
         this->updateCall(calls);
     }
+}
+
+void CurrentCall::parseAttendedTransferAnswered(const QVariantMap &message)
+{
+    this->transferAnsweredMode();
 }
 
 void CurrentCall::updateCall(const QVariantList &calls)
@@ -128,7 +144,11 @@ void CurrentCall::numberSelected(const QString &number)
     switch(m_requested_action) {
     case ATTENDED_TRANSFER:
         b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
-        this->transferringMode();
+        this->transferRingingMode();
+        break;
+    case DIRECT_TRANSFER:
+        b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
+        break;
     default:
         break;
     }
@@ -162,6 +182,12 @@ void CurrentCall::attendedTransfer()
     this->m_current_call_widget->btn_attended_transfer->setShortcut(QString());
 }
 
+void CurrentCall::directTransfer()
+{
+    m_requested_action = DIRECT_TRANSFER;
+    signal_relayer->relayNumberSelectionRequested();
+}
+
 void CurrentCall::completeTransfer()
 {
     b_engine->sendJsonCommand(MessageFactory::completeTransfer());
@@ -179,6 +205,7 @@ void CurrentCall::noCallsMode()
     this->setAnswerButton();
     this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
     m_current_call_widget->btn_attended_transfer->setText(m_attended_transfer_label);
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
 
     this->m_current_call_widget->btn_hold->setEnabled(false);
 
@@ -190,6 +217,7 @@ void CurrentCall::answeringMode()
 {
     this->disconnectButtons();
     this->setAttendedTransferButton();
+    this->setDirectTransferButton();
 
     this->setHoldButton();
 
@@ -198,16 +226,27 @@ void CurrentCall::answeringMode()
     m_current_call_widget->btn_answer->setEnabled(false);
 }
 
-void CurrentCall::transferringMode()
+void CurrentCall::transferRingingMode()
+{
+    this->disconnectButtons();
+
+    this->m_current_call_widget->btn_hold->setEnabled(false);
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
+    this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
+
+    this->setCancelTransferButton();
+}
+
+void CurrentCall::transferAnsweredMode()
 {
     this->disconnectButtons();
     this->setCompleteTransferButton();
 
     this->m_current_call_widget->btn_hold->setEnabled(false);
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
 
     this->setCancelTransferButton();
 }
-
 
 void CurrentCall::disconnectButtons()
 {
@@ -217,6 +256,8 @@ void CurrentCall::disconnectButtons()
                this, SLOT(attendedTransfer()));
     disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
                this, SLOT(completeTransfer()));
+    disconnect(m_current_call_widget->btn_direct_transfer, SIGNAL(clicked()),
+               this, SLOT(directTransfer()));
 
     disconnect(m_current_call_widget->btn_hold, SIGNAL(clicked()),
                this, SLOT(hold()));
@@ -244,6 +285,13 @@ void CurrentCall::setAttendedTransferButton()
     m_current_call_widget->btn_attended_transfer->setShortcut(attended_transfer_key);
     connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
             this, SLOT(attendedTransfer()));
+}
+
+void CurrentCall::setDirectTransferButton()
+{
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(true);
+    connect(m_current_call_widget->btn_direct_transfer, SIGNAL(clicked()),
+            this, SLOT(directTransfer()));
 }
 
 void CurrentCall::setCompleteTransferButton()
