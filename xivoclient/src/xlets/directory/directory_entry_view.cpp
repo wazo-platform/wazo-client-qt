@@ -50,7 +50,8 @@ void DirectoryEntryView::selectFirstRow()
 
 void DirectoryEntryView::keyPressEvent(QKeyEvent * event)
 {
-    if (event && event->key() == Qt::Key_F5) {
+    if (event && (event->key() == Qt::Key_F5
+                  || event->key() == Qt::Key_F4)) {
         emit activated(this->currentIndex());
     } else {
         AbstractTableView::keyPressEvent(event);
