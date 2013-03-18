@@ -59,4 +59,12 @@ void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & a
     this->assert(isValueInTable(user, "Nom", panel->m_table));
 }
 
+void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariantList & args)
+{
+    const QString& user = args[0].toString();
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
+
+    this->assert(!isValueInTable(user, "Nom", panel->m_table));
+}
+
 #endif

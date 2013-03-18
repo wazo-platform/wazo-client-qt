@@ -107,6 +107,7 @@ class RemoteControl : public QObject
         void when_i_search_for_1_in_the_directory_xlet(const QVariantList &);
         void then_nothing_shows_up_in_the_directory_xlet();
         void then_1_shows_up_in_the_directory_xlet(const QVariantList &);
+        void then_1_does_not_show_up_in_the_directory_xlet(const QVariantList &);
 
         void assert_conference_room_1_has_number_2_in_xlet(const QVariantList &);
         void assert_conference_room_1_has_pin_code_2_in_xlet(const QVariantList &);
