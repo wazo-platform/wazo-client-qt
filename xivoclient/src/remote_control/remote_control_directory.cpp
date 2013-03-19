@@ -56,7 +56,7 @@ void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & a
     const QString& user = args[0].toString();
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
-    this->assert(isValueInTable(user, "Nom", panel->m_table));
+    this->assert(isValueInTable(user, "Nom", panel->m_table), QString("%1 not found in list").arg(user));
 }
 
 void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariantList & args)
@@ -64,7 +64,7 @@ void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariant
     const QString& user = args[0].toString();
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
-    this->assert(!isValueInTable(user, "Nom", panel->m_table));
+    this->assert(!isValueInTable(user, "Nom", panel->m_table), QString("%1 found in list").arg(user));
 }
 
 #endif
