@@ -26,8 +26,10 @@
 
 #include <QVBoxLayout>
 #include <QTimer>
+#include <QListView>
 
 #include <baseengine.h>
+#include <xletlib/agents_model.h>
 
 #include "agent_status_dashboard.h"
 
@@ -43,4 +45,12 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Agent status dashboard"));
+
+    AgentsModel model;
+
+    QListView view;
+    view.setModel(&model);
+
+    QVBoxLayout layout(this);
+    layout.addWidget(&view);
 }
