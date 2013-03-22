@@ -31,6 +31,7 @@
 #include <baseengine.h>
 #include <xletlib/agents_model.h>
 
+#include "agent_status_delegate.h"
 #include "agent_status_dashboard.h"
 
 Q_EXPORT_PLUGIN2(xletagentstatusdashboardplugin, XLetAgentStatusDashboardPlugin);
@@ -48,8 +49,11 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
     AgentsModel * model = new AgentsModel();
 
+    AgentStatusDelegate * delegate = new AgentStatusDelegate();
+
     QListView * view = new QListView();
     view->setModel(model);
+    view->setItemDelegate(delegate);
     view->setViewMode(QListView::IconMode);
     view->setSpacing(10);
     view->setResizeMode(QListView::Adjust);
