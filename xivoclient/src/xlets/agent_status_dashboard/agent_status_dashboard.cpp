@@ -46,11 +46,11 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 {
     setTitle(tr("Agent status dashboard"));
 
-    AgentsModel model;
+    AgentsModel * model = new AgentsModel();
 
-    QListView view;
-    view.setModel(&model);
+    QListView * view = new QListView();
+    view->setModel(model);
 
     QVBoxLayout layout(this);
-    layout.addWidget(&view);
+    layout.addWidget(view);
 }
