@@ -35,7 +35,9 @@
 
 #include <storage/agentinfo.h>
 
-class AgentsModel : public QAbstractTableModel
+#include "xletlib_export.h"
+
+class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
 {
     Q_OBJECT
 

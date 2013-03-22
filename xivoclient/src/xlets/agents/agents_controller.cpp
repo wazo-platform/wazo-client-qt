@@ -29,7 +29,7 @@
 
 #include <baseengine.h>
 #include "agents_controller.h"
-#include "agents_model.h"
+#include <xletlib/agents_model.h>
 
 AgentsController::AgentsController(QObject *parent, QAbstractItemModel *model)
     : QObject(parent), m_model(model)

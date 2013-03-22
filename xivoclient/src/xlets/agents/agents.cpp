@@ -32,7 +32,7 @@
 #include "agents.h"
 #include "agents_view.h"
 #include "agents_sort_filter_proxy_model.h"
-#include "agents_model.h"
+#include <xletlib/agents_model.h>
 #include "agents_controller.h"
 
 Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
