@@ -3,6 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS  = \
     src/xlets/agents \
     src/xlets/agentdetails \
+    src/xlets/agent_status_dashboard \
     src/xlets/conference \
     src/xlets/directory \
     src/xlets/datetime \

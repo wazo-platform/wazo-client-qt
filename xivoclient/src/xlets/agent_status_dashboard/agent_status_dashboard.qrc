@@ -1,0 +1,14 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../obj/agent_status_dashboard_fr.qm</file>
+        <file>../../../obj/agent_status_dashboard_en.qm</file>
+        <file>../../../obj/agent_status_dashboard_es_ES.qm</file>
+        <file>../../../obj/agent_status_dashboard_pt_BR.qm</file>
+        <file>../../../obj/agent_status_dashboard_hu.qm</file>
+        <file>../../../obj/agent_status_dashboard_de.qm</file>
+        <file>../../../obj/agent_status_dashboard_ja.qm</file>
+        <file>../../../obj/agent_status_dashboard_it.qm</file>
+        <file>../../../obj/agent_status_dashboard_nl.qm</file>
+    </qresource>
+</RCC>
