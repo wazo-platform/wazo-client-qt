@@ -50,6 +50,9 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
     QListView * view = new QListView();
     view->setModel(model);
+    view->setViewMode(QListView::IconMode);
+    view->setSpacing(10);
+    view->setResizeMode(QListView::Adjust);
 
     QVBoxLayout layout(this);
     layout.addWidget(view);
