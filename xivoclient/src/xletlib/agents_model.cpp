@@ -198,6 +198,10 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
         return tr("Listen");
     case AVAILABILITY:
         return this->dataDisplayAvailability(agent);
+    case STATUS_LABEL:
+        return this->dataDisplayStatusLabel(agent);
+    case STATUS_SINCE:
+        return this->dataDisplayStatusSince(agent);
     case LOGGED_STATUS:
         return this->dataDisplayLogged(agent->logged());
     case JOINED_QUEUES :
@@ -299,6 +303,16 @@ QString AgentsModel::dataDisplayAvailability(const AgentInfo * agent) const
     }
 }
 
+QString AgentsModel::dataDisplayStatusLabel(const AgentInfo * agent) const
+{
+    return this->convertAgentAvailabilityToString(agent->availability());
+}
+
+QString AgentsModel::dataDisplayStatusSince(const AgentInfo * agent) const
+{
+    return agent->availabilitySince();
+}
+
 QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailability availability) const
 {
     switch (availability) {
@@ -376,4 +390,5 @@ QVariant AgentsModel::dataBackgroundPaused(enum AgentPauseStatus pause_status) c
 void AgentsModel::increaseAvailability()
 {
     this->refreshColumn(AVAILABILITY);
+    this->refreshColumn(STATUS_SINCE);
 }
