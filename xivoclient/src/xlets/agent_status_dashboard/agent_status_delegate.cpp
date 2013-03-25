@@ -31,7 +31,7 @@ void AgentStatusDelegate::paint(QPainter * painter, const QStyleOptionViewItem &
 
     QWidget & widget = m_widget_storage.getWidget(index);
     QLabel * agent_name_label = widget.findChild<QLabel *>("agent_name_label");
-    agent_name_label->setText(QString("%1 %2").arg(this->getInitials(agent_firstname), agent_lastname));
+    agent_name_label->setText(QString("%1 %2").arg(this->getInitials(agent_firstname), agent_lastname).left(this->agent_name_max_length));
     QLabel * agent_status_label_label = widget.findChild<QLabel *>("agent_status_label");
     agent_status_label_label->setText(agent_status_label);
     QLabel * agent_status_since_label = widget.findChild<QLabel *>("agent_status_since_label");
