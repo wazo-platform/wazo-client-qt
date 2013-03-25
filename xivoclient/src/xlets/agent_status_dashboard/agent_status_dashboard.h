@@ -30,13 +30,25 @@
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 
+class AgentsModel;
+class AgentStatusDelegate;
+class AgentStatusWidgetBuilder;
+class AgentStatusWidgetStorage;
+class QListView;
+
 class XletAgentStatusDashboard : public XLet
 {
     Q_OBJECT
     public:
         XletAgentStatusDashboard(QWidget *parent);
+        ~XletAgentStatusDashboard();
 
     private:
+        AgentsModel * m_model;
+        AgentStatusDelegate * m_delegate;
+        AgentStatusWidgetBuilder * m_widget_builder;
+        AgentStatusWidgetStorage * m_widget_storage;
+        QListView * m_view;
 };
 
 class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface

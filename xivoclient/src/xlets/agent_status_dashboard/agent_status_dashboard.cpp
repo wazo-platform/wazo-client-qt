@@ -33,6 +33,8 @@
 
 #include "agent_status_delegate.h"
 #include "agent_status_dashboard.h"
+#include "agent_status_widget_builder.h"
+#include "agent_status_widget_storage.h"
 
 Q_EXPORT_PLUGIN2(xletagentstatusdashboardplugin, XLetAgentStatusDashboardPlugin);
 
@@ -47,17 +49,27 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 {
     setTitle(tr("Agent status dashboard"));
 
-    AgentsModel * model = new AgentsModel();
+    this->m_model = new AgentsModel();
 
-    AgentStatusDelegate * delegate = new AgentStatusDelegate();
+    this->m_widget_builder = new AgentStatusWidgetBuilder;
+    this->m_widget_storage = new AgentStatusWidgetStorage(*(this->m_widget_builder));
+    this->m_delegate = new AgentStatusDelegate(*(this->m_widget_storage));
 
-    QListView * view = new QListView();
-    view->setModel(model);
-    view->setItemDelegate(delegate);
-    view->setViewMode(QListView::IconMode);
-    view->setSpacing(10);
-    view->setResizeMode(QListView::Adjust);
+    QListView * m_view = new QListView();
+    m_view->setModel(m_model);
+    m_view->setItemDelegate(m_delegate);
+    m_view->setViewMode(QListView::IconMode);
+    m_view->setSpacing(10);
+    m_view->setResizeMode(QListView::Adjust);
 
-    QVBoxLayout layout(this);
-    layout.addWidget(view);
+    QVBoxLayout * layout = new QVBoxLayout(this);
+    layout->addWidget(m_view);
+}
+
+XletAgentStatusDashboard::~XletAgentStatusDashboard()
+{
+    delete m_delegate;
+    delete m_widget_storage;
+    delete m_widget_builder;
+    delete m_model;
 }

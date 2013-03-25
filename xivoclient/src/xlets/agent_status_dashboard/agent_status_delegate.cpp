@@ -1,6 +1,8 @@
+#include "agent_status_widget_storage.h"
 #include "agent_status_delegate.h"
 
-AgentStatusDelegate::AgentStatusDelegate()
+AgentStatusDelegate::AgentStatusDelegate(AgentStatusWidgetStorage & widget_storage)
+    : m_widget_storage(widget_storage)
 {
 }
 
