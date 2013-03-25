@@ -19,7 +19,7 @@ void AgentStatusDelegate::paint(QPainter * painter, const QStyleOptionViewItem &
     widget.render(painter, painter->deviceTransform().map(offset));
 }
 
-QSize AgentStatusDelegate::sizeHint(const QStyleOptionViewItem & style, const QModelIndex & index) const
+QSize AgentStatusDelegate::sizeHint(const QStyleOptionViewItem & /*style*/, const QModelIndex & index) const
 {
     QWidget & widget = m_widget_storage.getWidget(index);
     return widget.size();
