@@ -290,21 +290,29 @@ QVariant AgentsModel::dataBackground(int row, int column) const
 
 QString AgentsModel::dataDisplayAvailability(const AgentInfo * agent) const
 {
-    QString availability;
-    switch (agent->availability()) {
+    QString availability = this->convertAgentAvailabilityToString(agent->availability());
+    QString time_since = agent->availabilitySince();
+    if (agent->availability() != AgentInfo::LOGGED_OUT) {
+        return QString("%1 (%2)").arg(availability).arg(time_since);
+    } else {
+        return availability;
+    }
+}
+
+QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailability availability) const
+{
+    switch (availability) {
     case AgentInfo::LOGGED_OUT:
         return "-";
     case AgentInfo::AVAILABLE:
-        availability = tr("Not in use");
+        return tr("Not in use");
         break;
     case AgentInfo::UNAVAILABLE:
-        availability = tr("In use");
+        return tr("In use");
         break;
     default:
         return QString();
     }
-    QString time_since = agent->availabilitySince();
-    return QString("%1 (%2)").arg(availability).arg(time_since);
 }
 
 QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
