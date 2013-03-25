@@ -57,6 +57,7 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
     QListView * m_view = new QListView();
     m_view->setModel(m_model);
+    m_view->setModelColumn(AgentsModel::AVAILABILITY);
     m_view->setItemDelegate(m_delegate);
     m_view->setViewMode(QListView::IconMode);
     m_view->setSpacing(10);
@@ -64,6 +65,11 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->addWidget(m_view);
+
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            m_model, SLOT(increaseAvailability()));
+    timer_display->start(1000);
 }
 
 XletAgentStatusDashboard::~XletAgentStatusDashboard()
