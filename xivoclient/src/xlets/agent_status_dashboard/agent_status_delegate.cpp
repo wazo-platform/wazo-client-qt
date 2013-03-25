@@ -1,3 +1,5 @@
+#include <QPainter>
+
 #include "agent_status_widget_storage.h"
 #include "agent_status_delegate.h"
 
@@ -14,7 +16,7 @@ void AgentStatusDelegate::paint(QPainter * painter, const QStyleOptionViewItem &
 {
     QWidget & widget = m_widget_storage.getWidget(index);
     QPoint offset = option.rect.topLeft();
-    widget.render(painter, offset);
+    widget.render(painter, painter->deviceTransform().map(offset));
 }
 
 QSize AgentStatusDelegate::sizeHint(const QStyleOptionViewItem & style, const QModelIndex & index) const
