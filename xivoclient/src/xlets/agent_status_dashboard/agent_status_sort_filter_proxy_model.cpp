@@ -1,4 +1,7 @@
-/* Copyright (C) 2007-2013, Avencall
+/* XiVO Client
+ * Copyright (C) 2007-2013, Avencall
+ *
+ * This file is part of XiVO Client.
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,43 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENT_STATUS_DASHBOARD_H__
-#define __AGENT_STATUS_DASHBOARD_H__
+#include "agent_status_sort_filter_proxy_model.h"
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
-
-class AgentsModel;
-class AgentStatusDelegate;
-class AgentStatusSortFilterProxyModel;
-class AgentStatusWidgetBuilder;
-class AgentStatusWidgetStorage;
-class QListView;
-
-class XletAgentStatusDashboard : public XLet
+AgentStatusSortFilterProxyModel::AgentStatusSortFilterProxyModel(QObject *parent)
+    : AbstractSortFilterProxyModel(parent)
 {
-    Q_OBJECT
-    public:
-        XletAgentStatusDashboard(QWidget *parent);
-        ~XletAgentStatusDashboard();
+}
 
-    private:
-        AgentsModel * m_model;
-        AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
-        AgentStatusDelegate * m_delegate;
-        AgentStatusWidgetBuilder * m_widget_builder;
-        AgentStatusWidgetStorage * m_widget_storage;
-        QListView * m_view;
-};
-
-class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface
+AgentStatusSortFilterProxyModel::~AgentStatusSortFilterProxyModel()
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+}
 
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-
-#endif /* __AGENT_STATUS_DASHBOARD_H__ */
+bool AgentStatusSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
+{
+    return true;
+}

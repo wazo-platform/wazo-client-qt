@@ -33,6 +33,7 @@
 
 #include "agent_status_delegate.h"
 #include "agent_status_dashboard.h"
+#include "agent_status_sort_filter_proxy_model.h"
 #include "agent_status_widget_builder.h"
 #include "agent_status_widget_storage.h"
 
@@ -51,12 +52,15 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
     this->m_model = new AgentsModel();
 
+    this->m_sort_filter_proxy_model = new AgentStatusSortFilterProxyModel(this);
+    this->m_sort_filter_proxy_model->setSourceModel(m_model);
+
     this->m_widget_builder = new AgentStatusWidgetBuilder;
     this->m_widget_storage = new AgentStatusWidgetStorage(*(this->m_widget_builder));
     this->m_delegate = new AgentStatusDelegate(*(this->m_widget_storage));
 
     QListView * m_view = new QListView();
-    m_view->setModel(m_model);
+    m_view->setModel(m_sort_filter_proxy_model);
     m_view->setModelColumn(AgentsModel::AVAILABILITY);
     m_view->setItemDelegate(m_delegate);
     m_view->setViewMode(QListView::IconMode);
