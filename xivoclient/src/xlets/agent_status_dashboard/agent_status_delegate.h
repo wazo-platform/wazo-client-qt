@@ -13,6 +13,7 @@ class AgentStatusDelegate: public QAbstractItemDelegate
     void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
     QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
  private:
+    QString getInitials(const QString & full_string) const;
     AgentStatusWidgetStorage & m_widget_storage;
 };
 

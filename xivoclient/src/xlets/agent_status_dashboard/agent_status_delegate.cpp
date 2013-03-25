@@ -31,7 +31,7 @@ void AgentStatusDelegate::paint(QPainter * painter, const QStyleOptionViewItem &
 
     QWidget & widget = m_widget_storage.getWidget(index);
     QLabel * agent_name_label = widget.findChild<QLabel *>("agent_name_label");
-    agent_name_label->setText(QString("%1 %2").arg(agent_firstname, agent_lastname));
+    agent_name_label->setText(QString("%1 %2").arg(this->getInitials(agent_firstname), agent_lastname));
     QLabel * agent_status_label_label = widget.findChild<QLabel *>("agent_status_label");
     agent_status_label_label->setText(agent_status_label);
     QLabel * agent_status_since_label = widget.findChild<QLabel *>("agent_status_since_label");
@@ -40,6 +40,16 @@ void AgentStatusDelegate::paint(QPainter * painter, const QStyleOptionViewItem &
 
     QPoint offset = option.rect.topLeft();
     widget.render(painter, painter->deviceTransform().map(offset));
+}
+
+QString AgentStatusDelegate::getInitials(const QString & full_string) const
+{
+    QStringList separated_string = full_string.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+    QString return_value;
+    foreach(QString word_alone, separated_string) {
+        return_value.append(word_alone.left(1)).append(".");
+    }
+    return return_value;
 }
 
 QSize AgentStatusDelegate::sizeHint(const QStyleOptionViewItem & /*style*/, const QModelIndex & index) const
