@@ -64,6 +64,7 @@ XletAgents::XletAgents(QWidget *parent)
     m_view->hideColumn(AgentsModel::ID);
     m_view->hideColumn(AgentsModel::STATUS_LABEL);
     m_view->hideColumn(AgentsModel::STATUS_SINCE);
+    m_view->hideColumn(AgentsModel::JOINED_QUEUE_LIST);
     m_view->sortByColumn(AgentsModel::LASTNAME, Qt::AscendingOrder);
 
     xletLayout->addWidget(m_view);

@@ -206,6 +206,8 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
         return this->dataDisplayLogged(agent->logged());
     case JOINED_QUEUES :
         return agent->joinedQueueCount();
+    case JOINED_QUEUE_LIST :
+        return this->dataDisplayQueueList(agent_id);
     case PAUSED_STATUS:
         return this->dataDisplayPaused(agent->pausedStatus());
     case PAUSED_QUEUES :
@@ -392,3 +394,9 @@ void AgentsModel::increaseAvailability()
     this->refreshColumn(AVAILABILITY);
     this->refreshColumn(STATUS_SINCE);
 }
+
+QStringList AgentsModel::dataDisplayQueueList(QString agent_id) const
+{
+   return QueueMemberDAO::queueListFromAgentId(agent_id);
+}
+

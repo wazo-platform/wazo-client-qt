@@ -75,6 +75,7 @@ class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
             STATUS_SINCE,
             LOGGED_STATUS,
             JOINED_QUEUES,
+            JOINED_QUEUE_LIST,
             PAUSED_STATUS,
             PAUSED_QUEUES,
             NB_COL
@@ -96,6 +97,7 @@ class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
         QVariant dataBackgroundPaused(enum AgentPauseStatus pause_status) const;
         QString dataTooltipPausedQueues(const AgentInfo *agent) const;
         QString dataTooltipJoinedQueues(const AgentInfo *agent) const;
+        QStringList dataDisplayQueueList(const QString agent_id) const;
 
         QString m_headers[NB_COL];
         QStringList m_row2id;
