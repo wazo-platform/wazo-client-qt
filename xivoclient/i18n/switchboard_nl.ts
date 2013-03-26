@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="49"/>
         <source>Attended T</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangekondigd D</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="50"/>
@@ -49,27 +49,27 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
         <source>Blind Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet aangekondigde doorschakeling</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="150"/>
         <source>Blind T</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet aangekondigd D</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="153"/>
         <source>F4</source>
-        <translation type="unfinished">F4</translation>
+        <translation>F4</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="186"/>
         <source>Attended Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangekondigde doorschakeling</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="189"/>
         <source>Attended T</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangekondigd D</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="192"/>
