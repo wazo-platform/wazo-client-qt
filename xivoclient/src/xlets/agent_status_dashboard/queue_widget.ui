@@ -28,6 +28,9 @@
           <height>110</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QListView {background-color: #d0d0d0}</string>
+        </property>
        </widget>
       </item>
      </layout>
