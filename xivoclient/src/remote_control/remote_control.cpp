@@ -66,7 +66,7 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
         qDebug() << "No more sockets available for remote control";
     }
 
-    connect(m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)),
+    connect(m_exec_obj.baseengine, SIGNAL(emitTextMessage(const QString &)),
             this, SLOT(on_error(const QString &)));
     disconnect(m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)),
                m_exec_obj.win, SLOT(showMessageBox(const QString &)));
