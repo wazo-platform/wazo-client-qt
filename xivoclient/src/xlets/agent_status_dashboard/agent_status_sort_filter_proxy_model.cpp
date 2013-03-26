@@ -27,11 +27,15 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+#include <xletlib/agents_model.h>
+
 #include "agent_status_sort_filter_proxy_model.h"
 
-AgentStatusSortFilterProxyModel::AgentStatusSortFilterProxyModel(QObject *parent)
+AgentStatusSortFilterProxyModel::AgentStatusSortFilterProxyModel(QString queue_id, QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
+    m_queue_id = queue_id;
 }
 
 AgentStatusSortFilterProxyModel::~AgentStatusSortFilterProxyModel()
@@ -40,5 +44,7 @@ AgentStatusSortFilterProxyModel::~AgentStatusSortFilterProxyModel()
 
 bool AgentStatusSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
-    return true;
+    QModelIndex agent_model_index = this->sourceModel()->index(source_row, AgentsModel::JOINED_QUEUE_LIST, source_parent);
+    QVariantList queue_list = agent_model_index.data().toList();
+    return queue_list.contains(this->m_queue_id);
 }

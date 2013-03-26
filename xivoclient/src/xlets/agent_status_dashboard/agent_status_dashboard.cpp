@@ -26,16 +26,15 @@
 
 #include <QVBoxLayout>
 #include <QTimer>
-#include <QListView>
 
 #include <baseengine.h>
 #include <xletlib/agents_model.h>
+#include <storage/queueinfo.h>
 
-#include "agent_status_delegate.h"
 #include "agent_status_dashboard.h"
-#include "agent_status_sort_filter_proxy_model.h"
 #include "agent_status_widget_builder.h"
 #include "agent_status_widget_storage.h"
+#include "queue_dashboard.h"
 
 Q_EXPORT_PLUGIN2(xletagentstatusdashboardplugin, XLetAgentStatusDashboardPlugin);
 
@@ -52,23 +51,15 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
     this->m_model = new AgentsModel();
 
-    this->m_sort_filter_proxy_model = new AgentStatusSortFilterProxyModel(this);
-    this->m_sort_filter_proxy_model->setSourceModel(m_model);
-
     this->m_widget_builder = new AgentStatusWidgetBuilder;
     this->m_widget_storage = new AgentStatusWidgetStorage(*(this->m_widget_builder));
     this->m_delegate = new AgentStatusDelegate(*(this->m_widget_storage));
 
-    QListView * m_view = new QListView();
-    m_view->setModel(m_sort_filter_proxy_model);
-    m_view->setModelColumn(AgentsModel::AVAILABILITY);
-    m_view->setItemDelegate(m_delegate);
-    m_view->setViewMode(QListView::IconMode);
-    m_view->setSpacing(10);
-    m_view->setResizeMode(QListView::Adjust);
 
-    QVBoxLayout * layout = new QVBoxLayout(this);
-    layout->addWidget(m_view);
+    this->m_layout = new QVBoxLayout(this);
+
+    connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
+            this, SLOT(updateQueueConfig(const QString &)));
 
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
@@ -82,4 +73,15 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
     delete m_widget_storage;
     delete m_widget_builder;
     delete m_model;
+}
+
+void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
+{
+    QueueDashboard * queue_dashboard = new QueueDashboard(queue_id,
+                                                          *(this->m_model),
+                                                          *(this->m_delegate));
+
+    QWidget * queue_widget_container = queue_dashboard->findChild<QWidget *>("QueueWidgetContainer");
+
+    this->m_layout->addWidget(queue_widget_container);
 }

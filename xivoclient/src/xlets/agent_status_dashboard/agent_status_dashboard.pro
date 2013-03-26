@@ -1,6 +1,7 @@
 include(../../../common-xlets.pri)
 
 FORMS += agent_status.ui
+FORMS += queue_widget.ui
 
 HEADERS = *.h
 SOURCES = *.cpp

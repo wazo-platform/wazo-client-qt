@@ -30,12 +30,13 @@
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 
+#include "agent_status_delegate.h"
+
 class AgentsModel;
 class AgentStatusDelegate;
-class AgentStatusSortFilterProxyModel;
 class AgentStatusWidgetBuilder;
 class AgentStatusWidgetStorage;
-class QListView;
+class QVBoxLayout;
 
 class XletAgentStatusDashboard : public XLet
 {
@@ -44,13 +45,17 @@ class XletAgentStatusDashboard : public XLet
         XletAgentStatusDashboard(QWidget *parent);
         ~XletAgentStatusDashboard();
 
+    private slots:
+        void updateQueueConfig(const QString & queue_id);
+
     private:
+        QString getQueueName(QString queue_id);
+
         AgentsModel * m_model;
-        AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
         AgentStatusDelegate * m_delegate;
         AgentStatusWidgetBuilder * m_widget_builder;
         AgentStatusWidgetStorage * m_widget_storage;
-        QListView * m_view;
+        QVBoxLayout * m_layout;
 };
 
 class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface

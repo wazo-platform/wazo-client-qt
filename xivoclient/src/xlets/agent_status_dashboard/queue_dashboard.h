@@ -1,7 +1,4 @@
-/* XiVO Client
- * Copyright (C) 2007-2013, Avencall
- *
- * This file is part of XiVO Client.
+/* Copyright (C) 2007-2013, Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,22 +24,29 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENT_STATUS_SORT_FILTER_PROXY_MODEL_H__
-#define __AGENT_STATUS_SORT_FILTER_PROXY_MODEL_H__
+#ifndef __QUEUE_DASHBOARD_H__
+#define __QUEUE_DASHBOARD_H__
 
-#include <xletlib/abstract_sort_filter_proxy_model.h>
+#include "ui_queue_widget.h"
 
-class QModelIndex;
+class AgentStatusDelegate;
+class AgentStatusSortFilterProxyModel;
+class AgentsModel;
 
-class AgentStatusSortFilterProxyModel: public AbstractSortFilterProxyModel
+class QueueDashboard : public QWidget
 {
-public:
-    AgentStatusSortFilterProxyModel(QString queue_id, QObject * parent = NULL);
-    virtual ~AgentStatusSortFilterProxyModel();
-protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex & source_parent) const;
-private:
-    QString m_queue_id;
+    Q_OBJECT
+    public:
+        QueueDashboard(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate);
+        ~QueueDashboard();
+
+    private:
+        QString getQueueName(QString queue_id);
+
+        QString m_queue_id;
+        AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
+        Ui::QueueWidget m_ui;
+        QWidget * m_queue_widget;
 };
 
-#endif
+#endif /* __QUEUE_DASHBOARD_H__ */
