@@ -21,7 +21,14 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QListView" name="queue_agent_list"/>
+       <widget class="QListView" name="queue_agent_list">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>110</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
