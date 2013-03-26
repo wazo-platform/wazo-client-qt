@@ -85,6 +85,7 @@ class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
         QVariant dataDisplay(int row, int column) const;
         QVariant dataBackground(int row, int column) const;
         QVariant dataTooltip(int row, int column) const;
+        QVariant dataUser(int row, int column) const;
         QString dataDisplayAvailability(const AgentInfo * agent) const;
         QString dataDisplayStatusLabel(const AgentInfo * agent) const;
         QString dataDisplayStatusSince(const AgentInfo * agent) const;

@@ -41,6 +41,8 @@ public:
     virtual ~AgentStatusSortFilterProxyModel();
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex & source_parent) const;
+    bool agentInQueue(int source_row, const QModelIndex & source_parent) const;
+    bool agentLogged(int source_row, const QModelIndex & source_parent) const;
 private:
     QString m_queue_id;
 };

@@ -169,6 +169,8 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
         return this->dataBackground(row, column);
     case Qt::ToolTipRole:
         return this->dataTooltip(row, column);
+    case Qt::UserRole:
+        return this->dataUser(row, column);
     default:
         return QVariant();
     }
@@ -400,3 +402,21 @@ QStringList AgentsModel::dataDisplayQueueList(QString agent_id) const
    return QueueMemberDAO::queueListFromAgentId(agent_id);
 }
 
+QVariant AgentsModel::dataUser(int row, int column) const
+{
+    QString agent_id;
+
+    if (m_row2id.size() > row) {
+        agent_id = m_row2id[row];
+    }
+
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) return QVariant();
+
+    switch(column) {
+    case LOGGED_STATUS:
+        return agent->logged();
+    default:
+        return QVariant();
+    }
+}

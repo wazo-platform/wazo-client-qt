@@ -44,7 +44,20 @@ AgentStatusSortFilterProxyModel::~AgentStatusSortFilterProxyModel()
 
 bool AgentStatusSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
+    return this->agentInQueue(source_row, source_parent)
+        && this->agentLogged(source_row, source_parent);
+}
+
+bool AgentStatusSortFilterProxyModel::agentInQueue(int source_row, const QModelIndex & source_parent) const
+{
     QModelIndex agent_model_index = this->sourceModel()->index(source_row, AgentsModel::JOINED_QUEUE_LIST, source_parent);
     QVariantList queue_list = agent_model_index.data().toList();
     return queue_list.contains(this->m_queue_id);
+}
+
+bool AgentStatusSortFilterProxyModel::agentLogged(int source_row, const QModelIndex & source_parent) const
+{
+    QModelIndex agent_model_index = this->sourceModel()->index(source_row, AgentsModel::LOGGED_STATUS, source_parent);
+    bool agent_logged = agent_model_index.data(Qt::UserRole).toBool();
+    return agent_logged;
 }
