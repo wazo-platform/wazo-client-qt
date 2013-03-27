@@ -53,6 +53,7 @@ XletAgents::XletAgents(QWidget *parent)
     xletLayout->setSpacing(0);
 
     m_model = new AgentsModel(this);
+    m_model->setObjectName("agents_model");
 
     AgentsSortFilterProxyModel * proxy_model = new AgentsSortFilterProxyModel(this);
     proxy_model->setSourceModel(m_model);

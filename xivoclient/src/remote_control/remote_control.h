@@ -99,6 +99,10 @@ class RemoteControl : public QObject
         void set_search_for_remote_directory(const QVariantList &);
         void exec_double_click_on_number_for_name(const QVariantList &);
 
+        void then_the_agent_list_xlet_shows_agent_as_in_use(const QVariantList &);
+        void then_the_agent_list_xlet_shows_agent_as_not_in_use(const QVariantList &);
+        void then_the_agent_list_xlet_shows_agent_as_unlogged(const QVariantList &);
+
     signals:
         void select_queue(const QString & queue_id);
         void itemDoubleClicked(QTableWidgetItem*);
@@ -118,6 +122,12 @@ class RemoteControl : public QObject
               QVariantMap return_value = QVariantMap());
         bool commandMatches(RemoteControlCommand, std::string);
 
+        void assertValueInConferenceXlet(QString roomName, int column, QString value);
+        QAbstractItemModel* getConflistModel();
+        QAbstractItemModel* getAgentListModel();
+        QString getStatusForAgent(QString);
+
+        int findRowWithItem(QAbstractItemModel* model, int column, QString search);
         QString getValueInModel(QAbstractItemModel* model, int row, int column);
         QString getHeaderValueInModel(QAbstractItemModel* model, int section);
         QString prettyPrintMap(QVariantMap map);
