@@ -69,6 +69,7 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
 XletAgentStatusDashboard::~XletAgentStatusDashboard()
 {
+    // TODO clean dashboards
     delete m_delegate;
     delete m_widget_storage;
     delete m_widget_builder;
@@ -77,6 +78,7 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
 
 void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
 {
+    // TODO Dashboards should be deleted when the queue is updated or deleted
     QueueDashboard * queue_dashboard = new QueueDashboard(queue_id,
                                                           *(this->m_model),
                                                           *(this->m_delegate));

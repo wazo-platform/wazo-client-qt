@@ -36,6 +36,9 @@ AgentStatusWidgetStorage::AgentStatusWidgetStorage(AgentStatusWidgetBuilder & bu
 
 AgentStatusWidgetStorage::~AgentStatusWidgetStorage()
 {
+    foreach (QWidget *widget, this->m_widgets.values()) {
+        delete widget;
+    }
 }
 
 QWidget & AgentStatusWidgetStorage::getWidget(const QModelIndex & index)
