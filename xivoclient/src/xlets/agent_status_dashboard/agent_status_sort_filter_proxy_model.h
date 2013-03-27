@@ -1,4 +1,7 @@
-/* Copyright (C) 2007-2013, Avencall
+/* XiVO Client
+ * Copyright (C) 2007-2013, Avencall
+ *
+ * This file is part of XiVO Client.
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,48 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENT_STATUS_DASHBOARD_H__
-#define __AGENT_STATUS_DASHBOARD_H__
+#ifndef __AGENT_STATUS_SORT_FILTER_PROXY_MODEL_H__
+#define __AGENT_STATUS_SORT_FILTER_PROXY_MODEL_H__
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
 
-#include "agent_status_delegate.h"
+class QModelIndex;
 
-class AgentsModel;
-class AgentStatusDelegate;
-class AgentStatusWidgetBuilder;
-class AgentStatusWidgetStorage;
-class QVBoxLayout;
-
-class XletAgentStatusDashboard : public XLet
+class AgentStatusSortFilterProxyModel: public AbstractSortFilterProxyModel
 {
-    Q_OBJECT
-    public:
-        XletAgentStatusDashboard(QWidget *parent);
-        ~XletAgentStatusDashboard();
-
-    private slots:
-        void updateQueueConfig(const QString & queue_id);
-
-    private:
-        QString getQueueName(QString queue_id);
-
-        AgentsModel * m_model;
-        AgentStatusDelegate * m_delegate;
-        AgentStatusWidgetBuilder * m_widget_builder;
-        AgentStatusWidgetStorage * m_widget_storage;
-        QVBoxLayout * m_layout;
+public:
+    AgentStatusSortFilterProxyModel(QString queue_id, QObject * parent = NULL);
+    virtual ~AgentStatusSortFilterProxyModel();
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex & source_parent) const;
+    bool agentInQueue(int source_row, const QModelIndex & source_parent) const;
+    bool agentLogged(int source_row, const QModelIndex & source_parent) const;
+private:
+    QString m_queue_id;
 };
 
-class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-
-#endif /* __AGENT_STATUS_DASHBOARD_H__ */
+#endif

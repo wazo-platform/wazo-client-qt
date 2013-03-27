@@ -24,48 +24,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENT_STATUS_DASHBOARD_H__
-#define __AGENT_STATUS_DASHBOARD_H__
+#include <xletlib/agents_model.h>
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include "agent_status_widget_builder.h"
+#include "agent_status_widget_storage.h"
 
-#include "agent_status_delegate.h"
-
-class AgentsModel;
-class AgentStatusDelegate;
-class AgentStatusWidgetBuilder;
-class AgentStatusWidgetStorage;
-class QVBoxLayout;
-
-class XletAgentStatusDashboard : public XLet
+AgentStatusWidgetStorage::AgentStatusWidgetStorage(AgentStatusWidgetBuilder & builder)
+    : m_builder(builder)
 {
-    Q_OBJECT
-    public:
-        XletAgentStatusDashboard(QWidget *parent);
-        ~XletAgentStatusDashboard();
+}
 
-    private slots:
-        void updateQueueConfig(const QString & queue_id);
-
-    private:
-        QString getQueueName(QString queue_id);
-
-        AgentsModel * m_model;
-        AgentStatusDelegate * m_delegate;
-        AgentStatusWidgetBuilder * m_widget_builder;
-        AgentStatusWidgetStorage * m_widget_storage;
-        QVBoxLayout * m_layout;
-};
-
-class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface
+AgentStatusWidgetStorage::~AgentStatusWidgetStorage()
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+    foreach (QWidget *widget, this->m_widgets.values()) {
+        delete widget;
+    }
+}
 
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-
-#endif /* __AGENT_STATUS_DASHBOARD_H__ */
+QWidget & AgentStatusWidgetStorage::getWidget(const QModelIndex & index)
+{
+    const QAbstractItemModel * model = index.model();
+    QString agent_id = model->data(index, AgentsModel::ID).toString();
+    QWidget * return_value;
+    if (this->m_widgets.contains(agent_id)) {
+        return_value = this->m_widgets.value(agent_id);
+    } else {
+        QWidget * new_widget = this->m_builder.build();
+        this->m_widgets.insert(agent_id, new_widget);
+        return_value = new_widget;
+    }
+    return * return_value;
+}

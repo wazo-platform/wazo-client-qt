@@ -71,8 +71,11 @@ class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
             LASTNAME,
             LISTEN,
             AVAILABILITY,
+            STATUS_LABEL,
+            STATUS_SINCE,
             LOGGED_STATUS,
             JOINED_QUEUES,
+            JOINED_QUEUE_LIST,
             PAUSED_STATUS,
             PAUSED_QUEUES,
             NB_COL
@@ -82,7 +85,11 @@ class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
         QVariant dataDisplay(int row, int column) const;
         QVariant dataBackground(int row, int column) const;
         QVariant dataTooltip(int row, int column) const;
+        QVariant dataUser(int row, int column) const;
         QString dataDisplayAvailability(const AgentInfo * agent) const;
+        QString dataDisplayStatusLabel(const AgentInfo * agent) const;
+        QString dataDisplayStatusSince(const AgentInfo * agent) const;
+        QString convertAgentAvailabilityToString(enum AgentInfo::AgentAvailability availability) const;
         QVariant dataBackgroundAvailability(const AgentInfo * agent) const;
         QString dataTooltipAvailability(enum AgentInfo::AgentAvailability availability) const;
         QString dataDisplayLogged(bool logged_status) const;
@@ -91,6 +98,7 @@ class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
         QVariant dataBackgroundPaused(enum AgentPauseStatus pause_status) const;
         QString dataTooltipPausedQueues(const AgentInfo *agent) const;
         QString dataTooltipJoinedQueues(const AgentInfo *agent) const;
+        QStringList dataDisplayQueueList(const QString agent_id) const;
 
         QString m_headers[NB_COL];
         QStringList m_row2id;

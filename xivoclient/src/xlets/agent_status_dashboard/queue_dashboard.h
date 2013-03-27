@@ -24,48 +24,29 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENT_STATUS_DASHBOARD_H__
-#define __AGENT_STATUS_DASHBOARD_H__
+#ifndef __QUEUE_DASHBOARD_H__
+#define __QUEUE_DASHBOARD_H__
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include "ui_queue_widget.h"
 
-#include "agent_status_delegate.h"
-
-class AgentsModel;
 class AgentStatusDelegate;
-class AgentStatusWidgetBuilder;
-class AgentStatusWidgetStorage;
-class QVBoxLayout;
+class AgentStatusSortFilterProxyModel;
+class AgentsModel;
 
-class XletAgentStatusDashboard : public XLet
+class QueueDashboard : public QWidget
 {
     Q_OBJECT
     public:
-        XletAgentStatusDashboard(QWidget *parent);
-        ~XletAgentStatusDashboard();
-
-    private slots:
-        void updateQueueConfig(const QString & queue_id);
+        QueueDashboard(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate);
+        ~QueueDashboard();
 
     private:
         QString getQueueName(QString queue_id);
 
-        AgentsModel * m_model;
-        AgentStatusDelegate * m_delegate;
-        AgentStatusWidgetBuilder * m_widget_builder;
-        AgentStatusWidgetStorage * m_widget_storage;
-        QVBoxLayout * m_layout;
+        QString m_queue_id;
+        AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
+        Ui::QueueWidget m_ui;
+        QWidget * m_queue_widget;
 };
 
-class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-
-#endif /* __AGENT_STATUS_DASHBOARD_H__ */
+#endif /* __QUEUE_DASHBOARD_H__ */

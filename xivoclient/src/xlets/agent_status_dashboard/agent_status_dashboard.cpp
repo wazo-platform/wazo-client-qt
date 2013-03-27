@@ -26,12 +26,15 @@
 
 #include <QVBoxLayout>
 #include <QTimer>
-#include <QListView>
 
 #include <baseengine.h>
 #include <xletlib/agents_model.h>
+#include <storage/queueinfo.h>
 
 #include "agent_status_dashboard.h"
+#include "agent_status_widget_builder.h"
+#include "agent_status_widget_storage.h"
+#include "queue_dashboard.h"
 
 Q_EXPORT_PLUGIN2(xletagentstatusdashboardplugin, XLetAgentStatusDashboardPlugin);
 
@@ -46,11 +49,41 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 {
     setTitle(tr("Agent status dashboard"));
 
-    AgentsModel model;
+    this->m_model = new AgentsModel();
 
-    QListView view;
-    view.setModel(&model);
+    this->m_widget_builder = new AgentStatusWidgetBuilder;
+    this->m_widget_storage = new AgentStatusWidgetStorage(*(this->m_widget_builder));
+    this->m_delegate = new AgentStatusDelegate(*(this->m_widget_storage));
 
-    QVBoxLayout layout(this);
-    layout.addWidget(&view);
+
+    this->m_layout = new QVBoxLayout(this);
+
+    connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
+            this, SLOT(updateQueueConfig(const QString &)));
+
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            m_model, SLOT(increaseAvailability()));
+    timer_display->start(1000);
+}
+
+XletAgentStatusDashboard::~XletAgentStatusDashboard()
+{
+    // TODO clean dashboards
+    delete m_delegate;
+    delete m_widget_storage;
+    delete m_widget_builder;
+    delete m_model;
+}
+
+void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
+{
+    // TODO Dashboards should be deleted when the queue is updated or deleted
+    QueueDashboard * queue_dashboard = new QueueDashboard(queue_id,
+                                                          *(this->m_model),
+                                                          *(this->m_delegate));
+
+    QWidget * queue_widget_container = queue_dashboard->findChild<QWidget *>("QueueWidgetContainer");
+
+    this->m_layout->addWidget(queue_widget_container);
 }

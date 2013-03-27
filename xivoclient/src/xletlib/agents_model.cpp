@@ -169,6 +169,8 @@ QVariant AgentsModel::data(const QModelIndex &index, int role) const
         return this->dataBackground(row, column);
     case Qt::ToolTipRole:
         return this->dataTooltip(row, column);
+    case Qt::UserRole:
+        return this->dataUser(row, column);
     default:
         return QVariant();
     }
@@ -198,10 +200,16 @@ QVariant AgentsModel::dataDisplay(int row, int column) const
         return tr("Listen");
     case AVAILABILITY:
         return this->dataDisplayAvailability(agent);
+    case STATUS_LABEL:
+        return this->dataDisplayStatusLabel(agent);
+    case STATUS_SINCE:
+        return this->dataDisplayStatusSince(agent);
     case LOGGED_STATUS:
         return this->dataDisplayLogged(agent->logged());
     case JOINED_QUEUES :
         return agent->joinedQueueCount();
+    case JOINED_QUEUE_LIST :
+        return this->dataDisplayQueueList(agent_id);
     case PAUSED_STATUS:
         return this->dataDisplayPaused(agent->pausedStatus());
     case PAUSED_QUEUES :
@@ -290,21 +298,39 @@ QVariant AgentsModel::dataBackground(int row, int column) const
 
 QString AgentsModel::dataDisplayAvailability(const AgentInfo * agent) const
 {
-    QString availability;
-    switch (agent->availability()) {
+    QString availability = this->convertAgentAvailabilityToString(agent->availability());
+    QString time_since = agent->availabilitySince();
+    if (agent->availability() != AgentInfo::LOGGED_OUT) {
+        return QString("%1 (%2)").arg(availability).arg(time_since);
+    } else {
+        return availability;
+    }
+}
+
+QString AgentsModel::dataDisplayStatusLabel(const AgentInfo * agent) const
+{
+    return this->convertAgentAvailabilityToString(agent->availability());
+}
+
+QString AgentsModel::dataDisplayStatusSince(const AgentInfo * agent) const
+{
+    return agent->availabilitySince();
+}
+
+QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailability availability) const
+{
+    switch (availability) {
     case AgentInfo::LOGGED_OUT:
         return "-";
     case AgentInfo::AVAILABLE:
-        availability = tr("Not in use");
+        return tr("Not in use");
         break;
     case AgentInfo::UNAVAILABLE:
-        availability = tr("In use");
+        return tr("In use");
         break;
     default:
         return QString();
     }
-    QString time_since = agent->availabilitySince();
-    return QString("%1 (%2)").arg(availability).arg(time_since);
 }
 
 QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
@@ -313,7 +339,7 @@ QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
     case AgentInfo::AVAILABLE:
         return Qt::green;
     case AgentInfo::UNAVAILABLE:
-        return Qt::red;
+        return QColor("#ed8114");
     default:
         return QVariant();
     }
@@ -368,4 +394,29 @@ QVariant AgentsModel::dataBackgroundPaused(enum AgentPauseStatus pause_status) c
 void AgentsModel::increaseAvailability()
 {
     this->refreshColumn(AVAILABILITY);
+    this->refreshColumn(STATUS_SINCE);
+}
+
+QStringList AgentsModel::dataDisplayQueueList(QString agent_id) const
+{
+   return QueueMemberDAO::queueListFromAgentId(agent_id);
+}
+
+QVariant AgentsModel::dataUser(int row, int column) const
+{
+    QString agent_id;
+
+    if (m_row2id.size() > row) {
+        agent_id = m_row2id[row];
+    }
+
+    const AgentInfo * agent = b_engine->agent(agent_id);
+    if (agent == NULL) return QVariant();
+
+    switch(column) {
+    case LOGGED_STATUS:
+        return agent->logged();
+    default:
+        return QVariant();
+    }
 }

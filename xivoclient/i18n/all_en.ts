@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>BaseEngine</name>
     <message>
@@ -140,7 +138,7 @@ Please upgrade it.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1324"/>
-        <source>Your client&apos;s major version (%1)
+        <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</translation>
@@ -211,8 +209,8 @@ Please upgrade it.</translation>
     <message>
         <location filename="json_jsonqt/lib/ParseException.cpp" line="35"/>
         <source>A parsing error occurred:
-	Got: &apos;%1&apos;
-	Expected: &apos;%2&apos;
+	Got: '%1'
+	Expected: '%2'
 	At: &apos;%3&apos;</source>
         <translation>A parsing error occurred:
 	Got: &apos;%1&apos;
@@ -612,18 +610,12 @@ Please upgrade it.</translation>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
         <source>%n agent(s)</source>
-        <translation>
-            <numerusform>%n agent(s)</numerusform>
-            <numerusform>%n agent(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n agent(s)</numerusform><numerusform>%n agent(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="110"/>
         <source>%n phone(s)</source>
-        <translation>
-            <numerusform>%n phone(s)</numerusform>
-            <numerusform>%n phone(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n phone(s)</numerusform><numerusform>%n phone(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="111"/>
@@ -952,96 +944,6 @@ Context: %4</translation>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="138"/>
         <source>%1 new</source>
         <translation>%1 new</translation>
-    </message>
-</context>
-<context>
-    <name>AgentsModel</name>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="43"/>
-        <source>Number</source>
-        <translation>Number</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="44"/>
-        <source>First name</source>
-        <translation>First name</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="45"/>
-        <source>Last name</source>
-        <translation>Last name</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="46"/>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="198"/>
-        <source>Listen</source>
-        <translation>Listen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="47"/>
-        <source>Status since</source>
-        <translation>Status since</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="48"/>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="325"/>
-        <source>Logged</source>
-        <translation>Logged</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="49"/>
-        <source>Joined
-queues</source>
-        <translation>Joined
-queues</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="50"/>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="346"/>
-        <source>Paused</source>
-        <translation>Paused</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="51"/>
-        <source>Paused
-queues</source>
-        <translation>Paused
-queues</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="260"/>
-        <source>Agent ready to receive a call</source>
-        <translation>Agent ready to receive a call</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="262"/>
-        <source>Agent processing a call or paused</source>
-        <translation>Agent processing a call or paused</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="298"/>
-        <source>Not in use</source>
-        <translation>Not in use</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="301"/>
-        <source>In use</source>
-        <translation>In use</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="327"/>
-        <source>Unlogged</source>
-        <translation>Unlogged</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="344"/>
-        <source>Unpaused</source>
-        <translation>Unpaused</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agents/agents_model.cpp" line="348"/>
-        <source>Partially Paused</source>
-        <translation>Partially Paused</translation>
     </message>
 </context>
 <context>
@@ -1435,10 +1337,7 @@ queues parameters for the Stats on slice:</translation>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="247"/>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="257"/>
         <source>%n call(s)</source>
-        <translation>
-            <numerusform>%n call</numerusform>
-            <numerusform>%n calls</numerusform>
-        </translation>
+        <translation><numerusform>%n call</numerusform><numerusform>%n calls</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2497,6 +2396,96 @@ Are you sure ?</translation>
     </message>
 </context>
 <context>
+    <name>AgentsModel</name>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="43"/>
+        <source>Number</source>
+        <translation>Number</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="44"/>
+        <source>First name</source>
+        <translation>First name</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="45"/>
+        <source>Last name</source>
+        <translation>Last name</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="46"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="200"/>
+        <source>Listen</source>
+        <translation>Listen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="47"/>
+        <source>Status since</source>
+        <translation>Status since</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="48"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="351"/>
+        <source>Logged</source>
+        <translation>Logged</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="49"/>
+        <source>Joined
+queues</source>
+        <translation>Joined
+queues</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="50"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="372"/>
+        <source>Paused</source>
+        <translation>Paused</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="51"/>
+        <source>Paused
+queues</source>
+        <translation>Paused
+queues</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="268"/>
+        <source>Agent ready to receive a call</source>
+        <translation>Agent ready to receive a call</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="270"/>
+        <source>Agent processing a call or paused</source>
+        <translation>Agent processing a call or paused</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="326"/>
+        <source>Not in use</source>
+        <translation>Not in use</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="329"/>
+        <source>In use</source>
+        <translation>In use</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="353"/>
+        <source>Unlogged</source>
+        <translation>Unlogged</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="370"/>
+        <source>Unpaused</source>
+        <translation>Unpaused</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="374"/>
+        <source>Partially Paused</source>
+        <translation>Partially Paused</translation>
+    </message>
+</context>
+<context>
     <name>BasePeerWidget</name>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="68"/>
@@ -2826,11 +2815,47 @@ Busy lines: %6</translation>
     </message>
 </context>
 <context>
+    <name>AgentStatus</name>
+    <message>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="36"/>
+        <source>66:66</source>
+        <translation>66:66</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="59"/>
+        <source>Pierre Jean Jacques</source>
+        <translation>Pierre Jean Jacques</translation>
+    </message>
+    <message utf8="true">
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="82"/>
+        <source>Très occupé</source>
+        <translation>Très occupé</translation>
+    </message>
+</context>
+<context>
+    <name>QueueWidget</name>
+    <message>
+        <location filename="../src/xlets/agent_status_dashboard/queue_widget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agent_status_dashboard/queue_widget.ui" line="20"/>
+        <source>Unnamed Queue</source>
+        <translation>Unnamed Queue</translation>
+    </message>
+</context>
+<context>
     <name>XletAgentStatusDashboard</name>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="45"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="50"/>
         <source>Agent status dashboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent status dashboard</translation>
     </message>
 </context>
 </TS>

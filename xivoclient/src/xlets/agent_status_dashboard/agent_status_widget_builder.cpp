@@ -24,48 +24,21 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENT_STATUS_DASHBOARD_H__
-#define __AGENT_STATUS_DASHBOARD_H__
+#include <QWidget>
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include "agent_status_widget_builder.h"
 
-#include "agent_status_delegate.h"
-
-class AgentsModel;
-class AgentStatusDelegate;
-class AgentStatusWidgetBuilder;
-class AgentStatusWidgetStorage;
-class QVBoxLayout;
-
-class XletAgentStatusDashboard : public XLet
+AgentStatusWidgetBuilder::AgentStatusWidgetBuilder()
 {
-    Q_OBJECT
-    public:
-        XletAgentStatusDashboard(QWidget *parent);
-        ~XletAgentStatusDashboard();
+}
 
-    private slots:
-        void updateQueueConfig(const QString & queue_id);
-
-    private:
-        QString getQueueName(QString queue_id);
-
-        AgentsModel * m_model;
-        AgentStatusDelegate * m_delegate;
-        AgentStatusWidgetBuilder * m_widget_builder;
-        AgentStatusWidgetStorage * m_widget_storage;
-        QVBoxLayout * m_layout;
-};
-
-class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface
+AgentStatusWidgetBuilder::~AgentStatusWidgetBuilder()
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
+}
 
-    public:
-        XLet *newXLetInstance(QWidget *parent=0);
-};
-
-
-#endif /* __AGENT_STATUS_DASHBOARD_H__ */
+QWidget * AgentStatusWidgetBuilder::build()
+{
+    QWidget * new_widget = new QWidget();
+    this->widget_ui.setupUi(new_widget);
+    return new_widget;
+}
