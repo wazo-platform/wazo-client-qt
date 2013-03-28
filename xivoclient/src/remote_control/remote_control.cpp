@@ -203,6 +203,7 @@ void RemoteControl::sendResponse(RemoteControlResponse response, const char * me
         break;
     }
 
+    qDebug() << Q_FUNC_INFO << "Lettuce test returning" << response_string;
     m_client_cnx->write(response_string.toUtf8().data());
     m_client_cnx->flush();
 }
