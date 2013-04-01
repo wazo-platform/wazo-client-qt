@@ -2,6 +2,7 @@
 doc
 obj
 bin
+dmg
 
 # Generated files
 *.mak
