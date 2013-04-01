@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 if [ -r versions.mak ]
 then
     source versions.mak
@@ -8,86 +10,50 @@ else
     exit 1
 fi
 
-QT_PATH="$1"
-XC_PATH="$2"
-PACK_CONTENTS="${XC_PATH}/bin/xivoclient.app/Contents"
+XC_PATH="$(cd "$1" && pwd)"
 
-function link_baselib {
-    lib="$1"
-    install_name_tool -change \
-        libxivoclient.1.dylib \
-        @executable_path/libxivoclient.1.dylib \
-        ${lib}
+BUNDLE_NAME="xivoclient.app"
+DMG_NAME="xivoclient.dmg"
+
+BUILD_PATH="${XC_PATH}/dmg"
+BUNDLE_PATH="${BUILD_PATH}/${BUNDLE_NAME}"
+
+
+function clean_build() {
+	rm -rf ${BUILD_PATH}
+	rm -f ${XC_PATH}/*.dmg
 }
 
-function link_xletlib {
-    lib="$1"
-    install_name_tool -change \
-        libxivoclientxlets.1.dylib \
-        @executable_path/libxivoclientxlets.1.dylib \
-        ${lib}
+function prepare_build() {
+	mkdir -p ${BUILD_PATH}
+	cp -r ${XC_PATH}/bin/* ${BUILD_PATH}
 }
 
-function link_qt {
-    lib="$1"
-    install_name_tool -change \
-        ${QT_PATH}/lib/QtGui.framework/Versions/4/QtGui \
-        @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-        ${lib}
-    install_name_tool -change \
-        ${QT_PATH}/lib/QtNetwork.framework/Versions/4/QtNetwork \
-        @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork \
-        ${lib}
-    install_name_tool -change \
-        ${QT_PATH}/lib/QtCore.framework/Versions/4/QtCore \
-        @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-        ${lib}
+function move_resources() {
+	mkdir -p ${BUNDLE_PATH}/Contents/Frameworks/
+	mv ${BUILD_PATH}/*.dylib ${BUNDLE_PATH}/Contents/Frameworks/
 }
 
-function link_baselib_from_app {
-    app="$1"
-    install_name_tool -change \
-        '@executable_path/../Frameworks/libxivoclient.1.dylib' \
-        '@executable_path/libxivoclient.1.dylib' \
-        ${app}
+function set_version() {
+    /usr/libexec/PlistBuddy -c "Add CFBundleShortVersionString String ${XC_VERSION}" ${BUNDLE_PATH}/Contents/Info.plist
 }
 
-function link_xletlib_from_app {
-    app="$1"
-    install_name_tool -change \
-        '@executable_path/../Frameworks/libxivoclientxlets.1.dylib' \
-        '@executable_path/libxivoclientxlets.1.dylib' \
-        ${app}
+function build_package() {
+	macdeployqt ${BUNDLE_PATH} -dmg
+	mv ${BUILD_PATH}/${DMG_NAME} ${XC_PATH}/xivoclient-${XC_VERSION}.dmg
 }
 
 function package {
-    echo "Including Qt ..."
-    macdeployqt ${XC_PATH}/bin/xivoclient.app
-
-    echo "Including XiVO Client libs ..."
-    cp -R ${XC_PATH}/bin/*.dylib ${PACK_CONTENTS}/MacOS
-
-    echo "Making bundle depend on embedded Qt ..."
-
-    link_baselib_from_app ${PACK_CONTENTS}/MacOS/xivoclient
-    link_xletlib_from_app ${PACK_CONTENTS}/MacOS/xivoclient
-
-    link_qt ${PACK_CONTENTS}/MacOS/libxivoclient.1.dylib
-
-    link_baselib ${PACK_CONTENTS}/MacOS/libxivoclientxlets.1.dylib
-    link_qt      ${PACK_CONTENTS}/MacOS/libxivoclientxlets.1.dylib
-
-    for plugin in ${PACK_CONTENTS}/Resources/plugins/*.dylib ; do
-        link_qt ${plugin}
-        link_baselib ${plugin}
-        link_xletlib ${plugin}
-    done
-
-    echo "Setting version ..."
-
-    /usr/libexec/PlistBuddy -c "Add CFBundleShortVersionString String ${XC_VERSION}" bin/xivoclient.app/Contents/Info.plist
-
-    echo "Creating .dmg package ..."
-    hdiutil create xivoclient-${XC_VERSION}.dmg -srcfolder ${XC_PATH}/bin/xivoclient.app -format UDZO
+	echo "Cleaning build ..."
+	clean_build
+	echo "Preparing build ..."
+	prepare_build
+	echo "Moving resources ..."
+	move_resources
+	echo "Setting version ..."
+	set_version
+	echo "Building .dmg package ..."
+	build_package
 }
+
 package

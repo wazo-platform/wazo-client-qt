@@ -64,9 +64,7 @@ tests {
     mac {
         pack.target = pack
         pack.input = packaging/resources/macos-info.plist
-        pack.commands = packaging/xc-package-macos.sh \
-            $${MAC_QT_PATH} \
-            .
+        pack.commands = packaging/xc-package-macos.sh .
     }
     QMAKE_EXTRA_TARGETS += pack
 
