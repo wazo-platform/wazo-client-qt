@@ -106,7 +106,7 @@ static bool findPluginDir()
         }
     }
 #else
-    QString pluginDirPath = qApp->applicationDirPath() + "/../Resources/plugins";
+    QString pluginDirPath = qApp->applicationDirPath() + "/../PlugIns";
     pluginDirFound = pluginDir.cd(pluginDirPath);
     if (!pluginDirFound) {
         qDebug() << Q_FUNC_INFO << "cannot find plugins directory (tried: " << pluginDirPath << ")";
