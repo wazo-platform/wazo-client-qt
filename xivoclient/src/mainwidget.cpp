@@ -570,11 +570,22 @@ void MainWidget::confUpdated()
 void MainWidget::showWindow()
 {
     qDebug() << Q_FUNC_INFO;
+    this->setVisible(true);
     this->showNormal();
     this->activateWindow();
 }
 
 void MainWidget::hideWindow()
+{
+    qDebug() << Q_FUNC_INFO;
+    if(QSystemTrayIcon::isSystemTrayAvailable()) {
+        this->setVisible(false);
+    } else {
+        this->minimizeWindow();
+    }
+}
+
+void MainWidget::minimizeWindow()
 {
     qDebug() << Q_FUNC_INFO;
     this->showMinimized();

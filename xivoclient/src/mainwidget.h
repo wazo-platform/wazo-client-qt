@@ -85,6 +85,7 @@ class MainWidget : public QMainWindow
         void setAvailability();  //!< set user status from menu
         void showWindow();
         void hideWindow();
+        void minimizeWindow();
     protected:
         virtual void closeEvent(QCloseEvent *);
         virtual void resizeEvent(QResizeEvent *);
