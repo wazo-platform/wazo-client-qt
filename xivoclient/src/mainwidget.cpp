@@ -364,17 +364,13 @@ void MainWidget::createActions()
         m_systraymin = new QAction(tr("To S&ystray"), this);
         m_systraymin->setStatusTip(tr("Enter the system tray"));
         connect(m_systraymin, SIGNAL(triggered()),
-                 this, SLOT(hide()));
+                 this, SLOT(hideWindow()));
         m_systraymin->setEnabled(QSystemTrayIcon::isSystemTrayAvailable());
 
         m_systraymax = new QAction(tr("&Show window"), this);
         m_systraymax->setStatusTip(tr("Leave the system tray"));
         connect(m_systraymax, SIGNAL(triggered()),
-                this, SLOT(showNormal()));
-        connect(m_systraymax, SIGNAL(triggered()),
-                this, SLOT(show()));
-        connect(m_systraymax, SIGNAL(triggered()),
-                this, SLOT(raise()));
+                this, SLOT(showWindow()));
         m_systraymax->setEnabled(QSystemTrayIcon::isSystemTrayAvailable());
     }
 
@@ -571,6 +567,16 @@ void MainWidget::confUpdated()
     setAgentLoginWidgetsVisible();
 }
 
+void MainWidget::showWindow()
+{
+    this->showNormal();
+}
+
+void MainWidget::hideWindow()
+{
+    this->showMinimized();
+}
+
 /*! \brief process clicks to the systray icon
  *
  * This slot is connected to the activated() signal of the
@@ -578,33 +584,14 @@ void MainWidget::confUpdated()
  * of the MainWidget on a simple left click. */
 void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug() << Q_FUNC_INFO
-             << "reason =" << reason
-             << "isMinimized =" << isMinimized()
-             << "isVisible =" << isVisible()
-             << "isActiveWindow =" << isActiveWindow();
-    // QSystemTrayIcon::DoubleClick
-    // QSystemTrayIcon::Trigger
+    qDebug() << Q_FUNC_INFO;
     if (reason == QSystemTrayIcon::Trigger) {
-#ifdef Q_WS_MAC
-        // try to reduce potential problems under MacOS X
-        if (isVisible())
-            setVisible(false);
-#else
-        if (isVisible() && !isActiveWindow()) {
-            showNormal();
-            activateWindow();
-            raise();
+        qDebug() << "visible " << isVisible() << "toggling visibility";
+        if(isVisible()) {
+            this->showWindow();
         } else {
-            // Toggle visibility
-            setVisible(!isVisible());
-            if (isVisible()) {
-                showNormal();
-                activateWindow();
-                raise();
-            }
+            this->hideWindow();
         }
-#endif
     }
 }
 
@@ -620,9 +607,8 @@ void MainWidget::showMessageBox(const QString & message)
 void MainWidget::systrayMsgClicked()
 {
     qDebug() << Q_FUNC_INFO;
-    setVisible(true);
-    activateWindow();
-    raise();
+    qDebug() << "showing window";
+    this->showWindow();
 }
 
 /*! \brief show this XLet on top of others
@@ -980,39 +966,8 @@ void MainWidget::customerInfoPopup(const QString & msgtitle,
 
     // to be customisable, if the user wants the window to popup
     if (options.contains("p")) {
-        setVisible(true);
-        activateWindow();
-        raise();
+        this->showWindow();
     }
-}
-
-void MainWidget::hideEvent(QHideEvent *event)
-{
-    // called when minimized
-    // if systray available
-    // qDebug() << Q_FUNC_INFO;
-    // << "spontaneous =" << event->spontaneous()
-    // << "isMinimized =" << isMinimized()
-    // << "isVisible ="   << isVisible()
-    // << "isActiveWindow =" << isActiveWindow();
-
-#ifdef Q_WS_MAC
-    if (event->spontaneous()) {
-        event->ignore();
-    }
-    setVisible(false);
-#else
-    if (event->spontaneous()) {
-        event->ignore();
-    } else {
-        event->accept();
-    }
-#endif
-}
-
-void MainWidget::showEvent(QShowEvent *event)
-{
-    setVisible(true);
 }
 
 /*! \brief Catch the Close event
@@ -1023,24 +978,13 @@ void MainWidget::showEvent(QShowEvent *event)
  */
 void MainWidget::closeEvent(QCloseEvent *event)
 {
-    qDebug() << Q_FUNC_INFO
-             << "spontaneous =" << event->spontaneous()
-             << "type =" << event->type();
-    // << "isMinimized =" << isMinimized()
-    // << "isVisible ="   << isVisible()
-    // << "isActiveWindow =" << isActiveWindow();
+    qDebug() << Q_FUNC_INFO;
     if (m_withsystray == false)
         return;
 
-#ifdef Q_WS_MAC
-    setVisible(false);
-#else
-    if (QSystemTrayIcon::isSystemTrayAvailable())
-        setVisible(false);
-    else
-        showMinimized();
-#endif
     event->ignore();
+    qDebug() << "hiding window";
+    this->hideWindow();
 }
 
 /*! \brief Displays the about box
