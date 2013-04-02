@@ -87,6 +87,7 @@ class MainWidget : public QMainWindow
         virtual void hideEvent(QHideEvent *);  //!< Catch hide events
         virtual void closeEvent(QCloseEvent *);
         virtual void resizeEvent(QResizeEvent *);
+        virtual void showEvent(QShowEvent *);
 
         void addPanel(const QString &, const QString &, QWidget *);
         void removePanel(const QString &, QWidget *);

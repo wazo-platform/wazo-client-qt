@@ -1010,6 +1010,11 @@ void MainWidget::hideEvent(QHideEvent *event)
 #endif
 }
 
+void MainWidget::showEvent(QShowEvent *event)
+{
+    setVisible(true);
+}
+
 /*! \brief Catch the Close event
  *
  * This method is called when the user click the upper right X of the
