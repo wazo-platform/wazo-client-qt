@@ -600,12 +600,14 @@ void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
     qDebug() << Q_FUNC_INFO;
     if (reason == QSystemTrayIcon::Trigger) {
+        #ifndef Q_WS_MAC
         qDebug() << "visible " << isVisible() << "toggling visibility";
         if(isVisible()) {
             this->hideWindow();
         } else {
             this->showWindow();
         }
+        #endif
     }
 }
 
