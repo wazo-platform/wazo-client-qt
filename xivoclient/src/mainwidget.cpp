@@ -591,9 +591,9 @@ void MainWidget::systrayActivated(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::Trigger) {
         qDebug() << "visible " << isVisible() << "toggling visibility";
         if(isVisible()) {
-            this->showWindow();
-        } else {
             this->hideWindow();
+        } else {
+            this->showWindow();
         }
     }
 }
