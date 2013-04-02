@@ -569,11 +569,13 @@ void MainWidget::confUpdated()
 
 void MainWidget::showWindow()
 {
+    qDebug() << Q_FUNC_INFO;
     this->showNormal();
 }
 
 void MainWidget::hideWindow()
 {
+    qDebug() << Q_FUNC_INFO;
     this->showMinimized();
 }
 
