@@ -571,6 +571,7 @@ void MainWidget::showWindow()
 {
     qDebug() << Q_FUNC_INFO;
     this->showNormal();
+    this->activateWindow();
 }
 
 void MainWidget::hideWindow()
