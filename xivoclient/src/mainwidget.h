@@ -83,8 +83,10 @@ class MainWidget : public QMainWindow
         void showWidgetOnTop(QWidget *);
         void updateUserStatus(const QString &);
         void setAvailability();  //!< set user status from menu
+        void showWindow();
+        void hideWindow();
+        void minimizeWindow();
     protected:
-        virtual void hideEvent(QHideEvent *);  //!< Catch hide events
         virtual void closeEvent(QCloseEvent *);
         virtual void resizeEvent(QResizeEvent *);
 
