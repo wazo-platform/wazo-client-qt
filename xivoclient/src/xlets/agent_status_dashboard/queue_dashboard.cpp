@@ -46,7 +46,7 @@ QueueDashboard::QueueDashboard(QString queue_id, AgentsModel & model, AgentStatu
     agent_list_view->setModelColumn(AgentsModel::AVAILABILITY);
     agent_list_view->setItemDelegate( (QAbstractItemDelegate *) (&delegate));
     agent_list_view->setViewMode(QListView::IconMode);
-    agent_list_view->setSpacing(10);
+    agent_list_view->setSpacing(3);
     agent_list_view->setResizeMode(QListView::Adjust);
 }
 
