@@ -27,7 +27,7 @@
 #ifndef __QUEUE_DASHBOARD_H__
 #define __QUEUE_DASHBOARD_H__
 
-#include "ui_queue_widget.h"
+#include <QWidget>
 
 class AgentStatusDelegate;
 class AgentStatusSortFilterProxyModel;
@@ -45,8 +45,6 @@ class QueueDashboard : public QWidget
 
         QString m_queue_id;
         AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
-        Ui::QueueWidget m_ui;
-        QWidget * m_queue_widget;
 };
 
 #endif /* __QUEUE_DASHBOARD_H__ */

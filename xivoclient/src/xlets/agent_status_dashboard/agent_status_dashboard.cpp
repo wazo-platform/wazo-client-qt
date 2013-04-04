@@ -83,7 +83,7 @@ void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
                                                           *(this->m_model),
                                                           *(this->m_delegate));
 
-    QWidget * queue_widget_container = queue_dashboard->findChild<QWidget *>("QueueWidgetContainer");
+    QWidget * agent_list_view = queue_dashboard->findChild<QWidget *>("AgentListView");
 
-    this->m_layout->addWidget(queue_widget_container);
+    this->m_layout->addWidget(agent_list_view);
 }

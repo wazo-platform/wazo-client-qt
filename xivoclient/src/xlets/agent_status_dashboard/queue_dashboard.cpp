@@ -25,7 +25,6 @@
  */
 
 #include <QListView>
-#include <QLabel>
 
 #include <baseengine.h>
 #include <xletlib/agents_model.h>
@@ -42,14 +41,8 @@ QueueDashboard::QueueDashboard(QString queue_id, AgentsModel & model, AgentStatu
     this->m_sort_filter_proxy_model = new AgentStatusSortFilterProxyModel(this->m_queue_id, this);
     this->m_sort_filter_proxy_model->setSourceModel(&model);
 
-    this->m_queue_widget = new QWidget(this);
-    this->m_ui.setupUi(this->m_queue_widget);
-    this->m_queue_widget->setObjectName("QueueWidgetContainer");
-
-    QGroupBox * queue_name_frame = this->m_queue_widget->findChild<QGroupBox *>("queue_name_frame");
-    queue_name_frame->setTitle(queue_name);
-
-    QListView * agent_list_view = this->m_queue_widget->findChild<QListView *>("agent_list_view");
+    QListView * agent_list_view = new QListView(this);
+    agent_list_view->setObjectName("AgentListView");
     agent_list_view->setModel(this->m_sort_filter_proxy_model);
     agent_list_view->setModelColumn(AgentsModel::AVAILABILITY);
     agent_list_view->setItemDelegate( (QAbstractItemDelegate *) (&delegate));
