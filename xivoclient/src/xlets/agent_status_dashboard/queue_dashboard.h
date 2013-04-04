@@ -40,9 +40,9 @@ class QueueDashboard : public QWidget
         QueueDashboard(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate);
         ~QueueDashboard();
 
-    private:
-        QString getQueueName(QString queue_id);
+        QString getQueueName();
 
+    private:
         QString m_queue_id;
         AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
 };

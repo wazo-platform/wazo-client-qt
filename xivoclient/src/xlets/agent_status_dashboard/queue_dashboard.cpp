@@ -36,7 +36,6 @@
 QueueDashboard::QueueDashboard(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate)
 {
     this->m_queue_id = queue_id;
-    QString queue_name = this->getQueueName(this->m_queue_id);
 
     this->m_sort_filter_proxy_model = new AgentStatusSortFilterProxyModel(this->m_queue_id, this);
     this->m_sort_filter_proxy_model->setSourceModel(&model);
@@ -55,9 +54,9 @@ QueueDashboard::~QueueDashboard()
 {
 }
 
-QString QueueDashboard::getQueueName(QString queue_id)
+QString QueueDashboard::getQueueName()
 {
-    const QueueInfo * queue = b_engine->queue(queue_id);
+    const QueueInfo * queue = b_engine->queue(this->m_queue_id);
     if (queue == NULL) {
         return "N/A - Yet Unknown";
     }

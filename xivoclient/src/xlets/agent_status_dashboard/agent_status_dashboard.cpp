@@ -24,12 +24,12 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QVBoxLayout>
+#include <QMainWindow>
+#include <QDockWidget>
 #include <QTimer>
 
 #include <baseengine.h>
 #include <xletlib/agents_model.h>
-#include <storage/queueinfo.h>
 
 #include "agent_status_dashboard.h"
 #include "agent_status_widget_builder.h"
@@ -55,8 +55,14 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
     this->m_widget_storage = new AgentStatusWidgetStorage(*(this->m_widget_builder));
     this->m_delegate = new AgentStatusDelegate(*(this->m_widget_storage));
 
+    this->m_window = new QMainWindow();
+    this->m_window->setDockNestingEnabled(true);
+    this->m_window->show();
+    // When embedding QMainWindow in a widget, setParent must be called after instantiation.
+    this->m_window->setParent(this);
 
-    this->m_layout = new QVBoxLayout(this);
+    QVBoxLayout * layout = new QVBoxLayout(this);
+    layout->addWidget(this->m_window);
 
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
             this, SLOT(updateQueueConfig(const QString &)));
@@ -84,6 +90,9 @@ void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
                                                           *(this->m_delegate));
 
     QWidget * agent_list_view = queue_dashboard->findChild<QWidget *>("AgentListView");
-
-    this->m_layout->addWidget(agent_list_view);
+    QDockWidget *dock = new QDockWidget(this->m_window);
+    dock->setWidget(agent_list_view);
+    dock->setWindowTitle(queue_dashboard->getQueueName());
+    this->m_window->addDockWidget(Qt::TopDockWidgetArea, dock);
+    dock->show();
 }

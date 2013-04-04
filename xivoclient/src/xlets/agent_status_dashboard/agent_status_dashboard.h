@@ -36,7 +36,7 @@ class AgentsModel;
 class AgentStatusDelegate;
 class AgentStatusWidgetBuilder;
 class AgentStatusWidgetStorage;
-class QVBoxLayout;
+class QMainWindow;
 
 class XletAgentStatusDashboard : public XLet
 {
@@ -55,7 +55,7 @@ class XletAgentStatusDashboard : public XLet
         AgentStatusDelegate * m_delegate;
         AgentStatusWidgetBuilder * m_widget_builder;
         AgentStatusWidgetStorage * m_widget_storage;
-        QVBoxLayout * m_layout;
+        QMainWindow * m_window;
 };
 
 class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface
