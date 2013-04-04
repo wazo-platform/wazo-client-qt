@@ -26,6 +26,7 @@
 
 #include <QMainWindow>
 #include <QDockWidget>
+#include <QVBoxLayout>
 #include <QTimer>
 
 #include <baseengine.h>
