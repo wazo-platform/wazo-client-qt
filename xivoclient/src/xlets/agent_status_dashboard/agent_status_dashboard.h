@@ -47,6 +47,7 @@ class XletAgentStatusDashboard : public XLet
 
     private slots:
         void updateQueueConfig(const QString & queue_id);
+        void restoreState();
 
     private:
         QString getQueueName(QString queue_id);

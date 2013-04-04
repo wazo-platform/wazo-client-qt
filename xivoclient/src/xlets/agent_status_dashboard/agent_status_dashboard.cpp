@@ -64,6 +64,9 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->addWidget(this->m_window);
 
+    connect(b_engine, SIGNAL(initialized()),
+            this, SLOT(restoreState()));
+
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
             this, SLOT(updateQueueConfig(const QString &)));
 
@@ -75,6 +78,8 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
 XletAgentStatusDashboard::~XletAgentStatusDashboard()
 {
+    b_engine->setConfig("agent_status_dashboard.main_window_state", m_window->saveState());
+
     // TODO clean dashboards
     delete m_delegate;
     delete m_widget_storage;
@@ -93,6 +98,13 @@ void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
     QDockWidget *dock = new QDockWidget(this->m_window);
     dock->setWidget(agent_list_view);
     dock->setWindowTitle(queue_dashboard->getQueueName());
+    dock->setObjectName(queue_id);
     this->m_window->addDockWidget(Qt::TopDockWidgetArea, dock);
     dock->show();
+}
+
+void XletAgentStatusDashboard::restoreState()
+{
+    QByteArray main_window_state = b_engine->getConfig("agent_status_dashboard.main_window_state").toByteArray();
+    this->m_window->restoreState(main_window_state);
 }
