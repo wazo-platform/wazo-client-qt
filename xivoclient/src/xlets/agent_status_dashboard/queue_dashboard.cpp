@@ -49,7 +49,7 @@ QueueDashboard::QueueDashboard(QString queue_id, AgentsModel & model, AgentStatu
     QGroupBox * queue_name_frame = this->m_queue_widget->findChild<QGroupBox *>("queue_name_frame");
     queue_name_frame->setTitle(queue_name);
 
-    QListView * agent_list_view = this->m_queue_widget->findChild<QListView *>("queue_agent_list");
+    QListView * agent_list_view = this->m_queue_widget->findChild<QListView *>("agent_list_view");
     agent_list_view->setModel(this->m_sort_filter_proxy_model);
     agent_list_view->setModelColumn(AgentsModel::AVAILABILITY);
     agent_list_view->setItemDelegate( (QAbstractItemDelegate *) (&delegate));
