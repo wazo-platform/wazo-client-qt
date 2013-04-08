@@ -339,7 +339,7 @@ QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
     case AgentInfo::AVAILABLE:
         return Qt::green;
     case AgentInfo::UNAVAILABLE:
-        return QColor("#ed8114");
+        return Qt::red;
     default:
         return QVariant();
     }
