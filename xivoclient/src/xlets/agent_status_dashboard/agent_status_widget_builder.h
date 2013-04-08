@@ -29,14 +29,14 @@
 
 #include "ui_agent_status.h"
 
-class QWidget;
+class AgentStatusWidget;
 
 class AgentStatusWidgetBuilder
 {
     public:
         AgentStatusWidgetBuilder();
         ~AgentStatusWidgetBuilder();
-        QWidget * build();
+        AgentStatusWidget * build();
 
     private:
         Ui::AgentStatus widget_ui;

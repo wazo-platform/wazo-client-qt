@@ -29,7 +29,7 @@
 
 #include <QHash>
 
-class QWidget;
+class AgentStatusWidget;
 class QModelIndex;
 class AgentStatusWidgetBuilder;
 
@@ -38,10 +38,10 @@ class AgentStatusWidgetStorage
     public:
         AgentStatusWidgetStorage(AgentStatusWidgetBuilder & builder);
         virtual ~AgentStatusWidgetStorage();
-        QWidget & getWidget(const QModelIndex & index);
+        AgentStatusWidget & getWidget(const QModelIndex & index);
     private:
         AgentStatusWidgetBuilder & m_builder;
-        QHash<QString, QWidget *> m_widgets;
+        QHash<QString, AgentStatusWidget *> m_widgets;
 };
 
 #endif

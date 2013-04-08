@@ -24,36 +24,26 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xletlib/agents_model.h>
+#ifndef _AGENT_STATUS_WIDGET_H_
+#define _AGENT_STATUS_WIDGET_H_
 
-#include "agent_status_widget.h"
-#include "agent_status_widget_builder.h"
-#include "agent_status_widget_storage.h"
+#include <QWidget>
 
-AgentStatusWidgetStorage::AgentStatusWidgetStorage(AgentStatusWidgetBuilder & builder)
-    : m_builder(builder)
+class AgentStatusWidget: public QWidget
 {
-}
+    Q_OBJECT
 
-AgentStatusWidgetStorage::~AgentStatusWidgetStorage()
-{
-    foreach (AgentStatusWidget *widget, this->m_widgets.values()) {
-        delete widget;
-    }
-}
+public:
+    AgentStatusWidget(QWidget * parent = NULL);
+    ~AgentStatusWidget();
 
-AgentStatusWidget & AgentStatusWidgetStorage::getWidget(const QModelIndex & index)
-{
-    const QAbstractItemModel * model = index.model();
-    QModelIndex agent_id_index = model->index(index.row(), AgentsModel::ID);
-    QString agent_id = model->data(agent_id_index).toString();
-    AgentStatusWidget * return_value;
-    if (this->m_widgets.contains(agent_id)) {
-        return_value = this->m_widgets.value(agent_id);
-    } else {
-        AgentStatusWidget * new_widget = this->m_builder.build();
-        this->m_widgets.insert(agent_id, new_widget);
-        return_value = new_widget;
-    }
-    return * return_value;
-}
+    void setAvailabilityStyle(QString object_name);
+    void setAvailabilityText(QString availability_text);
+    void setAgentName(QString agent_name);
+    void setStatusSince(QString status_since);
+
+protected:
+    void paintEvent(QPaintEvent* paint_event);
+};
+
+#endif /* _AGENT_STATUS_WIDGET_H_ */

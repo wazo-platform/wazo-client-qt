@@ -24,36 +24,53 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xletlib/agents_model.h>
+#include <QStyle>
+#include <QStylePainter>
+#include <QStyleOption>
+#include <QLabel>
 
 #include "agent_status_widget.h"
-#include "agent_status_widget_builder.h"
-#include "agent_status_widget_storage.h"
 
-AgentStatusWidgetStorage::AgentStatusWidgetStorage(AgentStatusWidgetBuilder & builder)
-    : m_builder(builder)
+AgentStatusWidget::AgentStatusWidget(QWidget * parent)
+    : QWidget(parent)
 {
 }
 
-AgentStatusWidgetStorage::~AgentStatusWidgetStorage()
+AgentStatusWidget::~AgentStatusWidget()
 {
-    foreach (AgentStatusWidget *widget, this->m_widgets.values()) {
-        delete widget;
-    }
 }
 
-AgentStatusWidget & AgentStatusWidgetStorage::getWidget(const QModelIndex & index)
+void AgentStatusWidget::setAvailabilityStyle(QString object_name)
 {
-    const QAbstractItemModel * model = index.model();
-    QModelIndex agent_id_index = model->index(index.row(), AgentsModel::ID);
-    QString agent_id = model->data(agent_id_index).toString();
-    AgentStatusWidget * return_value;
-    if (this->m_widgets.contains(agent_id)) {
-        return_value = this->m_widgets.value(agent_id);
-    } else {
-        AgentStatusWidget * new_widget = this->m_builder.build();
-        this->m_widgets.insert(agent_id, new_widget);
-        return_value = new_widget;
-    }
-    return * return_value;
+    this->setObjectName(object_name);
+    this->style()->unpolish(this);
+    this->style()->polish(this);
 }
+
+void AgentStatusWidget::setAvailabilityText(QString availability_text)
+{
+    QLabel * agent_availability_label = this->findChild<QLabel *>("agent_status_label");
+    agent_availability_label->setText(availability_text);
+}
+
+void AgentStatusWidget::setAgentName(QString agent_name)
+{
+    QLabel * agent_name_label = this->findChild<QLabel *>("agent_name_label");
+    agent_name_label->setText(agent_name);
+}
+
+void AgentStatusWidget::setStatusSince(QString status_since)
+{
+    QLabel * agent_status_since_label = this->findChild<QLabel *>("agent_status_since_label");
+    agent_status_since_label->setText(status_since);
+}
+
+/* This function is needed in order to apply QSS on QWidget subclass. */
+void AgentStatusWidget::paintEvent(QPaintEvent* /*paint_event*/)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QStylePainter p(this);
+    p.drawPrimitive(QStyle::PE_Widget, opt);
+}
+
