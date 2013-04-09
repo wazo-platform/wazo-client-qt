@@ -24,27 +24,41 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUE_DASHBOARD_H__
-#define __QUEUE_DASHBOARD_H__
+#include <QListView>
 
-#include <QWidget>
+#include <baseengine.h>
+#include <xletlib/agents_model.h>
+#include <storage/queueinfo.h>
 
-class AgentStatusDelegate;
-class AgentStatusSortFilterProxyModel;
-class AgentsModel;
+#include "agent_status_sort_filter_proxy_model.h"
+#include "filtered_agent_list.h"
 
-class QueueDashboard : public QWidget
+FilteredAgentList::FilteredAgentList(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate)
 {
-    Q_OBJECT
-    public:
-        QueueDashboard(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate);
-        ~QueueDashboard();
+    this->m_queue_id = queue_id;
 
-        QString getQueueName();
+    this->m_sort_filter_proxy_model = new AgentStatusSortFilterProxyModel(this->m_queue_id, this);
+    this->m_sort_filter_proxy_model->setSourceModel(&model);
 
-    private:
-        QString m_queue_id;
-        AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
-};
+    QListView * agent_list_view = new QListView(this);
+    agent_list_view->setObjectName("AgentListView");
+    agent_list_view->setModel(this->m_sort_filter_proxy_model);
+    agent_list_view->setModelColumn(AgentsModel::AVAILABILITY);
+    agent_list_view->setItemDelegate( (QAbstractItemDelegate *) (&delegate));
+    agent_list_view->setViewMode(QListView::IconMode);
+    agent_list_view->setSpacing(3);
+    agent_list_view->setResizeMode(QListView::Adjust);
+}
 
-#endif /* __QUEUE_DASHBOARD_H__ */
+FilteredAgentList::~FilteredAgentList()
+{
+}
+
+QString FilteredAgentList::getQueueName()
+{
+    const QueueInfo * queue = b_engine->queue(this->m_queue_id);
+    if (queue == NULL) {
+        return "N/A - Yet Unknown";
+    }
+    return queue->queueDisplayName();
+}

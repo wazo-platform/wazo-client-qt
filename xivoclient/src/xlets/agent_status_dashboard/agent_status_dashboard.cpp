@@ -35,7 +35,7 @@
 #include "agent_status_dashboard.h"
 #include "agent_status_widget_builder.h"
 #include "agent_status_widget_storage.h"
-#include "queue_dashboard.h"
+#include "filtered_agent_list.h"
 
 Q_EXPORT_PLUGIN2(xletagentstatusdashboardplugin, XLetAgentStatusDashboardPlugin);
 
@@ -91,14 +91,14 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
 void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
 {
     // TODO Dashboards should be deleted when the queue is updated or deleted
-    QueueDashboard * queue_dashboard = new QueueDashboard(queue_id,
+    FilteredAgentList * filtered_agent_list = new FilteredAgentList(queue_id,
                                                           *(this->m_model),
                                                           *(this->m_delegate));
 
-    QWidget * agent_list_view = queue_dashboard->findChild<QWidget *>("AgentListView");
+    QWidget * agent_list_view = filtered_agent_list->findChild<QWidget *>("AgentListView");
     QDockWidget *dock = new QDockWidget(this->m_window);
     dock->setWidget(agent_list_view);
-    dock->setWindowTitle(queue_dashboard->getQueueName());
+    dock->setWindowTitle(filtered_agent_list->getQueueName());
     dock->setObjectName(queue_id);
     this->m_window->addDockWidget(Qt::TopDockWidgetArea, dock);
     dock->show();
