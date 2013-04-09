@@ -37,7 +37,7 @@ class FilteredAgentList : public QWidget
 {
     Q_OBJECT
     public:
-        FilteredAgentList(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate);
+        FilteredAgentList(QString queue_id, AgentsModel * model, AgentStatusDelegate * delegate);
         ~FilteredAgentList();
 
         QString getQueueName();

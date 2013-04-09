@@ -36,11 +36,11 @@ class AgentStatusWidgetBuilder;
 class AgentStatusWidgetStorage
 {
     public:
-        AgentStatusWidgetStorage(AgentStatusWidgetBuilder & builder);
+        AgentStatusWidgetStorage(AgentStatusWidgetBuilder * builder);
         virtual ~AgentStatusWidgetStorage();
-        AgentStatusWidget & getWidget(const QModelIndex & index);
+        AgentStatusWidget * getWidget(const QModelIndex & index);
     private:
-        AgentStatusWidgetBuilder & m_builder;
+        AgentStatusWidgetBuilder * m_builder;
         QHash<QString, AgentStatusWidget *> m_widgets;
 };
 

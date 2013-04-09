@@ -24,13 +24,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
 #include <xletlib/agents_model.h>
 
 #include "agent_status_widget.h"
 #include "agent_status_widget_builder.h"
 #include "agent_status_widget_storage.h"
 
-AgentStatusWidgetStorage::AgentStatusWidgetStorage(AgentStatusWidgetBuilder & builder)
+AgentStatusWidgetStorage::AgentStatusWidgetStorage(AgentStatusWidgetBuilder * builder)
     : m_builder(builder)
 {
 }
@@ -42,7 +43,7 @@ AgentStatusWidgetStorage::~AgentStatusWidgetStorage()
     }
 }
 
-AgentStatusWidget & AgentStatusWidgetStorage::getWidget(const QModelIndex & index)
+AgentStatusWidget * AgentStatusWidgetStorage::getWidget(const QModelIndex & index)
 {
     const QAbstractItemModel * model = index.model();
     QModelIndex agent_id_index = model->index(index.row(), AgentsModel::ID);
@@ -51,9 +52,13 @@ AgentStatusWidget & AgentStatusWidgetStorage::getWidget(const QModelIndex & inde
     if (this->m_widgets.contains(agent_id)) {
         return_value = this->m_widgets.value(agent_id);
     } else {
-        AgentStatusWidget * new_widget = this->m_builder.build();
+        if (m_builder == NULL) {
+            qDebug() << Q_FUNC_INFO << "Builder is NULL";
+            return_value = NULL; 
+        }
+        AgentStatusWidget * new_widget = this->m_builder->build();
         this->m_widgets.insert(agent_id, new_widget);
         return_value = new_widget;
     }
-    return * return_value;
+    return return_value;
 }

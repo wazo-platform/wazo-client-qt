@@ -53,8 +53,8 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
     this->m_model = new AgentsModel();
 
     this->m_widget_builder = new AgentStatusWidgetBuilder;
-    this->m_widget_storage = new AgentStatusWidgetStorage(*(this->m_widget_builder));
-    this->m_delegate = new AgentStatusDelegate(*(this->m_widget_storage));
+    this->m_widget_storage = new AgentStatusWidgetStorage(this->m_widget_builder);
+    this->m_delegate = new AgentStatusDelegate(this->m_widget_storage);
 
     this->m_window = new QMainWindow();
     this->m_window->setDockNestingEnabled(true);
@@ -92,8 +92,8 @@ void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
 {
     // TODO Dashboards should be deleted when the queue is updated or deleted
     FilteredAgentList * filtered_agent_list = new FilteredAgentList(queue_id,
-                                                          *(this->m_model),
-                                                          *(this->m_delegate));
+                                                                    this->m_model,
+                                                                    this->m_delegate);
 
     QWidget * agent_list_view = filtered_agent_list->findChild<QWidget *>("AgentListView");
     QDockWidget *dock = new QDockWidget(this->m_window);

@@ -33,18 +33,18 @@
 #include "agent_status_sort_filter_proxy_model.h"
 #include "filtered_agent_list.h"
 
-FilteredAgentList::FilteredAgentList(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate)
+FilteredAgentList::FilteredAgentList(QString queue_id, AgentsModel * model, AgentStatusDelegate * delegate)
 {
     this->m_queue_id = queue_id;
 
     this->m_sort_filter_proxy_model = new AgentStatusSortFilterProxyModel(this->m_queue_id, this);
-    this->m_sort_filter_proxy_model->setSourceModel(&model);
+    this->m_sort_filter_proxy_model->setSourceModel(model);
 
     QListView * agent_list_view = new QListView(this);
     agent_list_view->setObjectName("AgentListView");
     agent_list_view->setModel(this->m_sort_filter_proxy_model);
     agent_list_view->setModelColumn(AgentsModel::AVAILABILITY);
-    agent_list_view->setItemDelegate( (QAbstractItemDelegate *) (&delegate));
+    agent_list_view->setItemDelegate((QAbstractItemDelegate*) delegate);
     agent_list_view->setViewMode(QListView::IconMode);
     agent_list_view->setSpacing(3);
     agent_list_view->setResizeMode(QListView::Adjust);
