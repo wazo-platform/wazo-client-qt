@@ -37,6 +37,7 @@ class AgentStatusDelegate;
 class AgentStatusWidgetBuilder;
 class AgentStatusWidgetStorage;
 class QMainWindow;
+class FilteredAgentList;
 
 class XletAgentStatusDashboard : public XLet
 {
@@ -47,16 +48,18 @@ class XletAgentStatusDashboard : public XLet
 
     private slots:
         void updateQueueConfig(const QString & queue_id);
+        void removeQueueConfig(const QString & queue_id);
         void restoreState();
 
     private:
-        QString getQueueName(QString queue_id);
+        void destroyQueue(const QString & queue_id);
 
         AgentsModel * m_model;
         AgentStatusDelegate * m_delegate;
         AgentStatusWidgetBuilder * m_widget_builder;
         AgentStatusWidgetStorage * m_widget_storage;
         QMainWindow * m_window;
+        QHash<QString, FilteredAgentList *> m_filtered_agent_lists;
 };
 
 class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface

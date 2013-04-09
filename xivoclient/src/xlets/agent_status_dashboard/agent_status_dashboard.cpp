@@ -71,6 +71,9 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
             this, SLOT(updateQueueConfig(const QString &)));
 
+    connect(b_engine, SIGNAL(removeQueueConfig(const QString &)),
+            this, SLOT(removeQueueConfig(const QString &)));
+
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
             m_model, SLOT(increaseAvailability()));
@@ -86,17 +89,22 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
     delete m_widget_storage;
     delete m_widget_builder;
     delete m_model;
+
+    foreach(QString queue_id, m_filtered_agent_lists.keys()){
+        this->destroyQueue(queue_id);
+    }
 }
 
 void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
 {
-    // TODO Dashboards should be deleted when the queue is updated or deleted
+    // TODO FilteredAgentLists should be updated when the queue is updated.
     FilteredAgentList * filtered_agent_list = new FilteredAgentList(queue_id,
                                                                     this->m_model,
                                                                     this->m_delegate);
 
+    this->m_filtered_agent_lists.insert(queue_id, filtered_agent_list);
     QWidget * agent_list_view = filtered_agent_list->findChild<QWidget *>("AgentListView");
-    QDockWidget *dock = new QDockWidget(this->m_window);
+    QDockWidget * dock = new QDockWidget(this->m_window);
     dock->setWidget(agent_list_view);
     dock->setWindowTitle(filtered_agent_list->getQueueName());
     dock->setObjectName(queue_id);
@@ -104,8 +112,25 @@ void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
     dock->show();
 }
 
+void XletAgentStatusDashboard::removeQueueConfig(const QString & queue_id)
+{
+    this->destroyQueue(queue_id);
+}
+
 void XletAgentStatusDashboard::restoreState()
 {
     QByteArray main_window_state = b_engine->getConfig("agent_status_dashboard.main_window_state").toByteArray();
     this->m_window->restoreState(main_window_state);
+}
+
+void XletAgentStatusDashboard::destroyQueue(const QString & queue_id)
+{
+    if (this->m_filtered_agent_lists.contains(queue_id)) {
+        QDockWidget * dock = this->m_window->findChild<QDockWidget *>(queue_id);
+        this->m_window->removeDockWidget(dock);
+        delete dock;
+
+        FilteredAgentList * filtered_agent_list = this->m_filtered_agent_lists.take(queue_id);
+        delete filtered_agent_list;
+    }
 }
