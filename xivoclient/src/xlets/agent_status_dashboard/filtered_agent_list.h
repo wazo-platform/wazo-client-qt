@@ -32,6 +32,7 @@
 class AgentStatusDelegate;
 class AgentStatusSortFilterProxyModel;
 class AgentsModel;
+class QListView;
 
 class FilteredAgentList : public QWidget
 {
@@ -41,6 +42,7 @@ class FilteredAgentList : public QWidget
         ~FilteredAgentList();
 
         QString getQueueName();
+        QListView * getView();
 
     private:
         QString m_queue_id;

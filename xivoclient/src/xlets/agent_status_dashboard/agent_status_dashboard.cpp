@@ -103,7 +103,7 @@ void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
                                                                     this->m_delegate);
 
     this->m_filtered_agent_lists.insert(queue_id, filtered_agent_list);
-    QWidget * agent_list_view = filtered_agent_list->findChild<QWidget *>("AgentListView");
+    QWidget * agent_list_view = (QWidget *) filtered_agent_list->getView();
     QDockWidget * dock = new QDockWidget(this->m_window);
     dock->setWidget(agent_list_view);
     dock->setWindowTitle(filtered_agent_list->getQueueName());

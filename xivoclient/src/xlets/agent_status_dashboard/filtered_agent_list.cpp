@@ -62,3 +62,8 @@ QString FilteredAgentList::getQueueName()
     }
     return queue->queueDisplayName();
 }
+
+QListView * FilteredAgentList::getView()
+{
+    return this->findChild<QListView *>("AgentListView");
+}
