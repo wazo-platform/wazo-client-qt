@@ -84,7 +84,6 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
 {
     b_engine->setConfig("agent_status_dashboard.main_window_state", m_window->saveState());
 
-    // TODO clean dashboards
     delete m_delegate;
     delete m_widget_storage;
     delete m_widget_builder;
@@ -97,19 +96,39 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
 
 void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
 {
-    // TODO FilteredAgentLists should be updated when the queue is updated.
+    QDockWidget * dock;
+    FilteredAgentList * filtered_agent_list;
+    if (m_filtered_agent_lists.contains(queue_id)) {
+        dock = this->m_window->findChild<QDockWidget *>(queue_id);
+        filtered_agent_list = this->m_filtered_agent_lists.value(queue_id);
+    } else {
+        dock = this->createDock(queue_id);
+        filtered_agent_list = this->createFilteredAgentList(queue_id);
+        QWidget * agent_list_view = (QWidget *) filtered_agent_list->getView();
+        dock->setWidget(agent_list_view);
+        dock->show();
+    }
+    dock->setWindowTitle(filtered_agent_list->getQueueName());
+}
+
+QDockWidget * XletAgentStatusDashboard::createDock(const QString & queue_id)
+{
+    QDockWidget * new_dock = new QDockWidget(this->m_window);
+    new_dock->setObjectName(queue_id);
+    this->m_window->addDockWidget(Qt::TopDockWidgetArea, new_dock);
+
+    return new_dock;
+}
+
+FilteredAgentList * XletAgentStatusDashboard::createFilteredAgentList(const QString & queue_id)
+{
     FilteredAgentList * filtered_agent_list = new FilteredAgentList(queue_id,
                                                                     this->m_model,
                                                                     this->m_delegate);
 
     this->m_filtered_agent_lists.insert(queue_id, filtered_agent_list);
-    QWidget * agent_list_view = (QWidget *) filtered_agent_list->getView();
-    QDockWidget * dock = new QDockWidget(this->m_window);
-    dock->setWidget(agent_list_view);
-    dock->setWindowTitle(filtered_agent_list->getQueueName());
-    dock->setObjectName(queue_id);
-    this->m_window->addDockWidget(Qt::TopDockWidgetArea, dock);
-    dock->show();
+
+    return filtered_agent_list;
 }
 
 void XletAgentStatusDashboard::removeQueueConfig(const QString & queue_id)

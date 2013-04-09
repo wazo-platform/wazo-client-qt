@@ -36,8 +36,9 @@ class AgentsModel;
 class AgentStatusDelegate;
 class AgentStatusWidgetBuilder;
 class AgentStatusWidgetStorage;
-class QMainWindow;
 class FilteredAgentList;
+class QDockWidget;
+class QMainWindow;
 
 class XletAgentStatusDashboard : public XLet
 {
@@ -52,6 +53,8 @@ class XletAgentStatusDashboard : public XLet
         void restoreState();
 
     private:
+        FilteredAgentList * createFilteredAgentList(const QString & queue_id);
+        QDockWidget * createDock(const QString & queue_id);
         void destroyQueue(const QString & queue_id);
 
         AgentsModel * m_model;
