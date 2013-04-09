@@ -21,9 +21,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#AgentStatus {border:7px solid #0f0; border-radius: 8px;}
-#AgentAvailable {border:7px solid #6aa84f; border-radius: 8px; }
-#AgentInUse {border:7px solid #e69138; border-radius: 8px; }</string>
+   <string notr="true">#AgentStatus {background: #0f0;}
+#AgentAvailable {background: #6aa84f;}
+#AgentInUse {background: #e69138;}</string>
   </property>
   <widget class="QLabel" name="agent_status_since_label">
    <property name="geometry">
@@ -36,7 +36,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>7</pointsize>
+     <pointsize>8</pointsize>
      <weight>50</weight>
      <bold>false</bold>
     </font>
@@ -59,7 +59,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>7</pointsize>
+     <pointsize>8</pointsize>
      <weight>50</weight>
      <bold>false</bold>
     </font>
@@ -82,7 +82,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>7</pointsize>
+     <pointsize>8</pointsize>
      <weight>50</weight>
      <bold>false</bold>
     </font>
