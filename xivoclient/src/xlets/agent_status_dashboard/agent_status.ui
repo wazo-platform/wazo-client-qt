@@ -28,9 +28,9 @@
   <widget class="QLabel" name="agent_status_since_label">
    <property name="geometry">
     <rect>
-     <x>9</x>
+     <x>0</x>
      <y>37</y>
-     <width>61</width>
+     <width>78</width>
      <height>10</height>
     </rect>
    </property>
@@ -51,9 +51,9 @@
   <widget class="QLabel" name="agent_status_label">
    <property name="geometry">
     <rect>
-     <x>9</x>
+     <x>0</x>
      <y>24</y>
-     <width>61</width>
+     <width>78</width>
      <height>10</height>
     </rect>
    </property>
@@ -74,9 +74,9 @@
   <widget class="QLabel" name="agent_name_label">
    <property name="geometry">
     <rect>
-     <x>9</x>
+     <x>0</x>
      <y>10</y>
-     <width>61</width>
+     <width>78</width>
      <height>10</height>
     </rect>
    </property>
