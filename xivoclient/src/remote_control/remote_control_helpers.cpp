@@ -41,20 +41,6 @@ TableWidgetHelper::~TableWidgetHelper()
 
 }
 
-int TableWidgetHelper::getColumnIndex(const QString column)
-{
-    int nb_columns = this->m_table->columnCount();
-    int index = -1;
-
-    for(int i = 0; i < nb_columns && index < 0; i++) {
-        if( this->m_table->horizontalHeaderItem(i)->text() == column) {
-            index = i;
-        }
-    }
-
-    return index;
-}
-
 bool TableWidgetHelper::hasValue(const QString column, const QString value)
 {
     int column_index = this->getColumnIndex(column);
@@ -67,6 +53,32 @@ bool TableWidgetHelper::hasValue(const QString column, const QString value)
     }
 
     return found;
+}
+
+bool TableWidgetHelper::hasLine(const QVariantMap line)
+{
+    foreach(QString column, line.keys()) {
+        QString value = line.value(column).toString();
+        if(!this->hasValue(column, value)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int TableWidgetHelper::getColumnIndex(const QString column)
+{
+    int nb_columns = this->m_table->columnCount();
+    int index = -1;
+
+    for(int i = 0; i < nb_columns && index < 0; i++) {
+        if( this->m_table->horizontalHeaderItem(i)->text() == column) {
+            index = i;
+        }
+    }
+
+    return index;
 }
 
 #endif

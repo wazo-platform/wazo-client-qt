@@ -33,6 +33,7 @@
 #define __REMOTE_CONTROL_HELPERS_H__
 
 #include <QTableWidget>
+#include <QVariantMap>
 
 class TableWidgetHelper {
 
@@ -41,6 +42,7 @@ class TableWidgetHelper {
         ~TableWidgetHelper();
 
         bool hasValue(const QString column, const QString value);
+        bool hasLine(const QVariantMap line);
 
     private:
         const QTableWidget* m_table;
