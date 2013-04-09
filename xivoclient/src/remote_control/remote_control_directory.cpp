@@ -31,6 +31,7 @@
 
 #include "xlets/remotedirectory-builtin/directorypanel.h"
 #include "remote_control.h"
+#include "remote_control_helpers.h"
 
 
 void RemoteControl::when_i_search_for_1_in_the_directory_xlet(const QVariantList & args)
@@ -56,7 +57,10 @@ void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & a
     const QString& user = args[0].toString();
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
-    this->assert(isValueInTable(user, "Nom", panel->m_table), QString("%1 not found in list").arg(user));
+    TableWidgetHelper helper = TableWidgetHelper(panel->m_table);
+    bool has_value = helper.hasValue("Nom", user);
+
+    this->assert(has_value, QString("%1 not found in list").arg(user));
 }
 
 void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariantList & args)
@@ -64,7 +68,10 @@ void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariant
     const QString& user = args[0].toString();
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
-    this->assert(!isValueInTable(user, "Nom", panel->m_table), QString("%1 found in list").arg(user));
+    TableWidgetHelper helper = TableWidgetHelper(panel->m_table);
+    bool has_value = helper.hasValue("Nom", user);
+
+    this->assert(!has_value, QString("%1 found in list").arg(user));
 }
 
 #endif

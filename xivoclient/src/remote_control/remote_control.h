@@ -140,8 +140,6 @@ class RemoteControl : public QObject
         void sendResponse(RemoteControlResponse response, const char * message = "");
         void assert(bool condition, const QString & message = "");
         bool commandMatches(RemoteControlCommand, std::string);
-        bool isValueInTable(QString value, QString column_header, QTableWidget* table);
-        int getColumnIndex(QTableWidget* table, QString header);
 
         void assertValueInConferenceXlet(QString roomName, int column, QString value);
         QAbstractItemModel* getConflistModel();

@@ -233,32 +233,5 @@ void RemoteControl::assert(bool condition, const QString & message)
     }
 }
 
-int RemoteControl::getColumnIndex(QTableWidget* table, QString header)
-{
-    int nb_columns = table->columnCount();
-    int index = -1;
-
-    for(int i = 0; i < nb_columns && index < 0; i++) {
-        if( table->horizontalHeaderItem(i)->text() == header) {
-            index = i;
-        }
-    }
-
-    return index;
-}
-
-bool RemoteControl::isValueInTable(QString value, QString column_header, QTableWidget* table)
-{
-    int column = getColumnIndex(table, column_header);
-    int nb_rows = table->rowCount();
-    bool found = false;
-
-    for(int count = 0; count < nb_rows && !found; count++) {
-        QString item_text = table->item(count, column)->text();
-        found = (item_text == value);
-    }
-
-    return found;
-}
 
 #endif
