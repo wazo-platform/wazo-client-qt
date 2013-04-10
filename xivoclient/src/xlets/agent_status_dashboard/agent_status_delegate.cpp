@@ -21,16 +21,16 @@ AgentStatusDelegate::~AgentStatusDelegate()
 void AgentStatusDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
     const QAbstractItemModel * model = index.model();
-    QModelIndex agent_firstname_index = model->index(index.row(), AgentsModel::FIRSTNAME);
-    QString agent_firstname = model->data(agent_firstname_index).toString();
-    QModelIndex agent_lastname_index = model->index(index.row(), AgentsModel::LASTNAME);
-    QString agent_lastname = model->data(agent_lastname_index).toString();
-    QModelIndex agent_availability_text_index = model->index(index.row(), AgentsModel::STATUS_LABEL);
-    QString agent_availability_text = model->data(agent_availability_text_index).toString();
-    QModelIndex agent_status_since_index = model->index(index.row(), AgentsModel::STATUS_SINCE);
-    QString agent_status_since = model->data(agent_status_since_index).toString();
-    QModelIndex agent_availability_index = model->index(index.row(), AgentsModel::AVAILABILITY);
-    QString agent_availability = model->data(agent_availability_index, Qt::UserRole).toString();
+    const QModelIndex &agent_firstname_index = model->index(index.row(), AgentsModel::FIRSTNAME);
+    const QString &agent_firstname = model->data(agent_firstname_index).toString();
+    const QModelIndex &agent_lastname_index = model->index(index.row(), AgentsModel::LASTNAME);
+    const QString &agent_lastname = model->data(agent_lastname_index).toString();
+    const QModelIndex &agent_availability_text_index = model->index(index.row(), AgentsModel::STATUS_LABEL);
+    const QString &agent_availability_text = model->data(agent_availability_text_index).toString();
+    const QModelIndex &agent_status_since_index = model->index(index.row(), AgentsModel::STATUS_SINCE);
+    const QString &agent_status_since = model->data(agent_status_since_index).toString();
+    const QModelIndex &agent_availability_index = model->index(index.row(), AgentsModel::AVAILABILITY);
+    const QString &agent_availability = model->data(agent_availability_index, Qt::UserRole).toString();
 
     QString formatted_agent_name = (QString("%1 %2").arg(this->getInitials(agent_firstname), agent_lastname).left(this->agent_name_max_length));
 
@@ -57,7 +57,7 @@ QString AgentStatusDelegate::getInitials(const QString & full_string) const
 {
     QStringList separated_string = full_string.split(QRegExp("\\W+"), QString::SkipEmptyParts);
     QString return_value;
-    foreach(QString word_alone, separated_string) {
+    foreach(const QString &word_alone, separated_string) {
         return_value.append(word_alone.left(1)).append(".");
     }
 
