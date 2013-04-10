@@ -34,12 +34,20 @@
 TableWidgetHelper::TableWidgetHelper(QTableWidget* table)
 {
     this->m_table = table;
+    this->connectSignals();
 }
 
 TableWidgetHelper::~TableWidgetHelper()
 {
 
 }
+
+void TableWidgetHelper::connectSignals()
+{
+    connect(this, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
+            this->m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem*)));
+}
+
 
 int TableWidgetHelper::findRow(const QString column, const QString value)
 {
@@ -120,6 +128,12 @@ int TableWidgetHelper::getColumnIndex(const QString column)
     }
 
     return index;
+}
+
+void TableWidgetHelper::doubleClickItem(int row, int column)
+{
+    QTableWidgetItem* item = this->m_table->item(row, column);
+    emit itemDoubleClicked(item);
 }
 
 #endif

@@ -36,8 +36,11 @@
 #include <QVariantMap>
 #include <QDebug>
 #include <QMap>
+#include <QObject>
 
-class TableWidgetHelper {
+class TableWidgetHelper: public QObject {
+
+    Q_OBJECT
 
     public:
         TableWidgetHelper(QTableWidget* table);
@@ -46,14 +49,22 @@ class TableWidgetHelper {
         bool hasValue(const QString column, const QString value);
         bool hasRow(const QVariantMap received_row);
         int findRow(const QString column, const QString value);
+        void doubleClickItem(int row, int column);
 
     private:
         QTableWidget* m_table;
+
+        void connectSignals();
 
         QMap<QString, QString> toStringMap(const QVariantMap variant_map);
         QMap<QString, QString> rowToMap(int row);
 
         int getColumnIndex(const QString column);
+
+
+    signals:
+        void itemDoubleClicked(QTableWidgetItem*);
+
 };
 
 #endif /* ifdef FUNCTESTS */
