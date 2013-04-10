@@ -51,14 +51,8 @@
 
 #include "main.h"
 
-/*
- * Set some static Qt parameters for using QSettings,
- * instantiate a MainWidget window and a BaseEngine object.
- *
- * argc has to be a reference, or QCoreApplication will segfault
- *
- * \sa MainWidget, BaseEngine
- */
+
+// argc has to be a reference, or QCoreApplication will segfault
 ExecObjects init_xivoclient(int & argc, char **argv)
 {
     ExecObjects ret;
@@ -193,9 +187,6 @@ void clean_xivoclient(ExecObjects exec_obj)
     delete exec_obj.app;
 }
 
-/*! \brief program entry point
- *
- */
 int main(int argc, char **argv)
 {
     ExecObjects exec_obj= init_xivoclient(argc, argv);
