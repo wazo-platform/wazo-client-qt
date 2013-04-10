@@ -60,7 +60,7 @@ void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & a
     TableWidgetHelper helper = TableWidgetHelper(panel->m_table);
     bool has_value = helper.hasValue("Nom", user);
 
-    this->assert(has_value, QString("%1 not found in list").arg(user));
+    this->assert(has_value, QString("%1 not found in directory xlet").arg(user));
 }
 
 void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariantList & args)
@@ -71,7 +71,20 @@ void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariant
     TableWidgetHelper helper = TableWidgetHelper(panel->m_table);
     bool has_value = helper.hasValue("Nom", user);
 
-    this->assert(!has_value, QString("%1 found in list").arg(user));
+    this->assert(!has_value, QString("%1 found in directory xlet").arg(user));
+}
+
+void RemoteControl::assert_row_shows_up_in_the_directory_xlet(const QVariantList & args)
+{
+    QVariantMap row = args[0].toMap();
+    qDebug() << "row" << row;
+
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
+
+    TableWidgetHelper helper = TableWidgetHelper(panel->m_table);
+    bool has_row = helper.hasRow(row);
+
+    this->assert(has_row, QString("row %1 not found in directory xlet").arg(prettyPrintMap(row)));
 }
 
 #endif
