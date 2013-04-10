@@ -114,6 +114,8 @@ void RemoteControl::processCommands()
         m_no_error = true;
         m_command_found = false;
 
+        QVariantMap return_value;
+
         try {
             RC_EXECUTE(i_stop_the_xivo_client);
 
@@ -156,11 +158,11 @@ void RemoteControl::processCommands()
             RC_EXECUTE(then_i_see_no_transfer_destinations);
 
             if (this->m_no_error == false) {
-                this->sendResponse(TEST_FAILED);
+                this->sendResponse(TEST_FAILED, "", return_value);
             } else if (this->m_command_found) {
-                this->sendResponse(TEST_PASSED);
+                this->sendResponse(TEST_PASSED, "", return_value);
             } else {
-                this->sendResponse(TEST_UNKNOWN);
+                this->sendResponse(TEST_UNKNOWN, command.action);
             }
         } catch (TestFailedException & e) {
             this->sendResponse(TEST_FAILED, e.what());
@@ -191,25 +193,26 @@ RemoteControlCommand RemoteControl::parseCommand(const QByteArray & raw_command)
     return return_command;
 }
 
-void RemoteControl::sendResponse(RemoteControlResponse response, const char * message)
+void RemoteControl::sendResponse(RemoteControlResponse test_result, QString message, QVariantMap return_value)
 {
-    QString response_string;
-    switch (response) {
-    case TEST_FAILED:
-        response_string = QString("KO ") + message;
-        break;
-    case TEST_UNKNOWN:
-        response_string = "test unknown";
-        break;
-    case TEST_PASSED:
-        response_string = "OK";
-        break;
+    QVariantMap response;
+
+    switch (test_result) {
+        case TEST_FAILED:
+            response["test_result"] = "failed";
+            break;
+        case TEST_UNKNOWN:
+            response["test_result"] = "unknown";
+            break;
+        case TEST_PASSED:
+            response["test_result"] = "passed";
+            break;
     }
 
-    QVariantMap sent_response;
-    sent_response["test_result"] = response_string;
+    response["message"] = message;
+    response["return_value"] = return_value;
 
-    QString encoded_command = JsonQt::VariantToJson::parse(sent_response);
+    QString encoded_command = JsonQt::VariantToJson::parse(response);
 
     m_client_cnx->write(encoded_command.toUtf8().data());
     m_client_cnx->flush();

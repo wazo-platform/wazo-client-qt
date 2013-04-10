@@ -139,7 +139,7 @@ class RemoteControl : public QObject
 
     private:
         RemoteControlCommand parseCommand(const QByteArray & raw_command);
-        void sendResponse(RemoteControlResponse response, const char * message = "");
+        void sendResponse(RemoteControlResponse response, QString message = "", QVariantMap return_value = QVariantMap());
         void assert(bool condition, const QString & message = "");
         bool commandMatches(RemoteControlCommand, std::string);
 
