@@ -50,6 +50,50 @@ void RemoteControl::i_close_the_xivo_client_configuration()
     m_exec_obj.win->m_configwindow->m_btnbox->button(QDialogButtonBox::Ok)->click();
 }
 
+void RemoteControl::configure(const QVariantList &list)
+{
+    QVariantMap args = list[0].toMap();
+
+    const QString & xivo_address = args["main_server_address"].toString();
+    int xivo_port = args["main_server_port"].toInt();
+    const QString & login = args["login"].toString();
+    const QString & password = args["password"].toString();
+    const QString & agent_option = args["agent_option"].toString();
+    bool customerinfo = args["customerinfo"].toBool();
+    bool show_agent_option = args["show_agent_option"].toBool();
+
+    i_go_to_the_xivo_client_configuration();
+
+    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(0);
+    m_exec_obj.win->m_configwindow->m_main_server_address_input->setText(xivo_address);
+    m_exec_obj.win->m_configwindow->m_main_server_port_input->setValue(xivo_port);
+
+
+     m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(1);
+     m_exec_obj.win->m_configwindow->m_userid->setText(login);
+     m_exec_obj.win->m_configwindow->m_password->setText(password);
+
+     if(show_agent_option)
+         m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
+     else
+         m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
+
+
+    if(agent_option == "no")
+        m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(0);
+    if(agent_option == "unlogged")
+        m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(1);
+    if(agent_option == "logged")
+        m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(2);
+
+
+    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(3);
+    QCheckBox *customer_info_box = m_exec_obj.win->m_configwindow->findChild<QCheckBox*>(QString("enable_customer_info"));
+    customer_info_box->setChecked(customerinfo);
+
+    i_close_the_xivo_client_configuration();
+}
+
 void RemoteControl::i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QVariantList &args)
 {
     const QString & xivo_address = args[0].toString();
