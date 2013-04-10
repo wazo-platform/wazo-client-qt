@@ -74,7 +74,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                                          QSettings::UserScope,
                                          QCoreApplication::organizationName(),
                                          QCoreApplication::applicationName());
-    qDebug() << Q_FUNC_INFO << "style" << app->style() << settings->fileName();
+    qDebug() << "Reading configuration file" << settings->fileName();
 
     QString profile = "default-user";
     QString msg = "";
@@ -92,7 +92,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         // to learn how to handle "tel:0123456" uri scheme
         bool sentmsg = app->sendMessage(msg);
         // warning : this sends the message only to the first instance, if ever there are >1 instances running
-        qDebug() << Q_FUNC_INFO << "sent message" << msg << sentmsg;
     }
 
     app->setWindowIcon(QIcon(":/images/xivo-login.png"));
@@ -119,7 +118,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         .arg(info_endianness)
         .arg(app->applicationPid());
 #endif
-    qDebug() << Q_FUNC_INFO << "osname=" << info_osname;
 
     bool shallbeunique = settings->value("display/unique").toBool();
     if (shallbeunique && app->isRunning()) {
@@ -202,6 +200,7 @@ int main(int argc, char **argv)
 {
     ExecObjects exec_obj= init_xivoclient(argc, argv);
     int ret = run_xivoclient(exec_obj);
+    qDebug() << "Exiting";
     clean_xivoclient(exec_obj);
     return ret;
 }
