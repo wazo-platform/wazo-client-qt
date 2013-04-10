@@ -333,13 +333,28 @@ QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailabili
     }
 }
 
+QString AgentsModel::convertAgentAvailabilityToObjectName(AgentInfo::AgentAvailability availability) const
+{
+    switch (availability) {
+    case AgentInfo::AVAILABLE:
+        return "AgentAvailable";
+        break;
+    case AgentInfo::UNAVAILABLE:
+        return "AgentInUse";
+        break;
+    case AgentInfo::LOGGED_OUT:
+    default:
+        return "AgentStatus";
+    }
+}
+
 QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
 {
     switch (agent->availability()) {
     case AgentInfo::AVAILABLE:
         return Qt::green;
     case AgentInfo::UNAVAILABLE:
-        return QColor("#ed8114");
+        return Qt::red;
     default:
         return QVariant();
     }
@@ -416,6 +431,9 @@ QVariant AgentsModel::dataUser(int row, int column) const
     switch(column) {
     case LOGGED_STATUS:
         return agent->logged();
+    case AVAILABILITY:
+    case STATUS_LABEL:
+        return this->convertAgentAvailabilityToObjectName(agent->availability());
     default:
         return QVariant();
     }

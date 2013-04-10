@@ -32,7 +32,7 @@
 
 #include "agent_status_sort_filter_proxy_model.h"
 
-AgentStatusSortFilterProxyModel::AgentStatusSortFilterProxyModel(QString queue_id, QObject *parent)
+AgentStatusSortFilterProxyModel::AgentStatusSortFilterProxyModel(const QString &queue_id, QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
     m_queue_id = queue_id;

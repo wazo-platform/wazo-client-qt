@@ -24,29 +24,26 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __QUEUE_DASHBOARD_H__
-#define __QUEUE_DASHBOARD_H__
+#ifndef _AGENT_STATUS_WIDGET_H_
+#define _AGENT_STATUS_WIDGET_H_
 
-#include "ui_queue_widget.h"
+#include <QWidget>
 
-class AgentStatusDelegate;
-class AgentStatusSortFilterProxyModel;
-class AgentsModel;
-
-class QueueDashboard : public QWidget
+class AgentStatusWidget: public QWidget
 {
     Q_OBJECT
-    public:
-        QueueDashboard(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate);
-        ~QueueDashboard();
 
-    private:
-        QString getQueueName(QString queue_id);
+public:
+    AgentStatusWidget(QWidget * parent = NULL);
+    ~AgentStatusWidget();
 
-        QString m_queue_id;
-        AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
-        Ui::QueueWidget m_ui;
-        QWidget * m_queue_widget;
+    void setAvailabilityStyle(const QString &object_name);
+    void setAvailabilityText(const QString &availability_text);
+    void setAgentName(const QString &agent_name);
+    void setStatusSince(const QString &status_since);
+
+protected:
+    void paintEvent(QPaintEvent* paint_event);
 };
 
-#endif /* __QUEUE_DASHBOARD_H__ */
+#endif /* _AGENT_STATUS_WIDGET_H_ */

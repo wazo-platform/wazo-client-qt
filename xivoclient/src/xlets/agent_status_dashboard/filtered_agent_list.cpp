@@ -25,48 +25,45 @@
  */
 
 #include <QListView>
-#include <QLabel>
 
 #include <baseengine.h>
 #include <xletlib/agents_model.h>
 #include <storage/queueinfo.h>
 
 #include "agent_status_sort_filter_proxy_model.h"
-#include "queue_dashboard.h"
+#include "filtered_agent_list.h"
 
-QueueDashboard::QueueDashboard(QString queue_id, AgentsModel & model, AgentStatusDelegate & delegate)
+FilteredAgentList::FilteredAgentList(const QString &queue_id, AgentsModel * model, AgentStatusDelegate * delegate)
 {
     this->m_queue_id = queue_id;
-    QString queue_name = this->getQueueName(this->m_queue_id);
 
     this->m_sort_filter_proxy_model = new AgentStatusSortFilterProxyModel(this->m_queue_id, this);
-    this->m_sort_filter_proxy_model->setSourceModel(&model);
+    this->m_sort_filter_proxy_model->setSourceModel(model);
 
-    this->m_queue_widget = new QWidget(this);
-    this->m_ui.setupUi(this->m_queue_widget);
-    this->m_queue_widget->setObjectName("QueueWidgetContainer");
-
-    QGroupBox * queue_name_frame = this->m_queue_widget->findChild<QGroupBox *>("queue_name_frame");
-    queue_name_frame->setTitle(queue_name);
-
-    QListView * queue_agent_list = this->m_queue_widget->findChild<QListView *>("queue_agent_list");
-    queue_agent_list->setModel(this->m_sort_filter_proxy_model);
-    queue_agent_list->setModelColumn(AgentsModel::AVAILABILITY);
-    queue_agent_list->setItemDelegate( (QAbstractItemDelegate *) (&delegate));
-    queue_agent_list->setViewMode(QListView::IconMode);
-    queue_agent_list->setSpacing(10);
-    queue_agent_list->setResizeMode(QListView::Adjust);
+    QListView * agent_list_view = new QListView(this);
+    agent_list_view->setObjectName("AgentListView");
+    agent_list_view->setModel(this->m_sort_filter_proxy_model);
+    agent_list_view->setModelColumn(AgentsModel::AVAILABILITY);
+    agent_list_view->setItemDelegate((QAbstractItemDelegate*) delegate);
+    agent_list_view->setViewMode(QListView::IconMode);
+    agent_list_view->setSpacing(3);
+    agent_list_view->setResizeMode(QListView::Adjust);
 }
 
-QueueDashboard::~QueueDashboard()
+FilteredAgentList::~FilteredAgentList()
 {
 }
 
-QString QueueDashboard::getQueueName(QString queue_id)
+QString FilteredAgentList::getQueueName()
 {
-    const QueueInfo * queue = b_engine->queue(queue_id);
+    const QueueInfo * queue = b_engine->queue(this->m_queue_id);
     if (queue == NULL) {
         return "N/A - Yet Unknown";
     }
     return queue->queueDisplayName();
+}
+
+QListView * FilteredAgentList::getView()
+{
+    return this->findChild<QListView *>("AgentListView");
 }

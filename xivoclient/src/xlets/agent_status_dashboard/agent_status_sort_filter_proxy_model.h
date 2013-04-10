@@ -37,7 +37,7 @@ class QModelIndex;
 class AgentStatusSortFilterProxyModel: public AbstractSortFilterProxyModel
 {
 public:
-    AgentStatusSortFilterProxyModel(QString queue_id, QObject * parent = NULL);
+    AgentStatusSortFilterProxyModel(const QString &queue_id, QObject * parent = NULL);
     virtual ~AgentStatusSortFilterProxyModel();
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex & source_parent) const;

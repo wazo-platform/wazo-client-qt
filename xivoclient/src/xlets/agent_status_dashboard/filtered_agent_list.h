@@ -24,22 +24,29 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AGENT_STATUS_WIDGET_BUILDER_H__
-#define __AGENT_STATUS_WIDGET_BUILDER_H__
+#ifndef __FILTERED_AGENT_LIST_H__
+#define __FILTERED_AGENT_LIST_H__
 
-#include "ui_agent_status.h"
+#include <QWidget>
 
-class AgentStatusWidget;
+class AgentStatusDelegate;
+class AgentStatusSortFilterProxyModel;
+class AgentsModel;
+class QListView;
 
-class AgentStatusWidgetBuilder
+class FilteredAgentList : public QWidget
 {
+    Q_OBJECT
     public:
-        AgentStatusWidgetBuilder();
-        ~AgentStatusWidgetBuilder();
-        AgentStatusWidget * build();
+        FilteredAgentList(const QString &queue_id, AgentsModel * model, AgentStatusDelegate * delegate);
+        ~FilteredAgentList();
+
+        QString getQueueName();
+        QListView * getView();
 
     private:
-        Ui::AgentStatus widget_ui;
+        QString m_queue_id;
+        AgentStatusSortFilterProxyModel * m_sort_filter_proxy_model;
 };
 
-#endif /* __AGENT_STATUS_DASHBOARD_H__ */
+#endif /* __FILTERED_AGENT_LIST_H__ */

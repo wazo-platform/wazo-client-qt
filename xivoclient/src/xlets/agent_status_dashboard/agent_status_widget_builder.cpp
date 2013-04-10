@@ -24,8 +24,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QWidget>
-
+#include "agent_status_widget.h"
 #include "agent_status_widget_builder.h"
 
 AgentStatusWidgetBuilder::AgentStatusWidgetBuilder()
@@ -36,9 +35,9 @@ AgentStatusWidgetBuilder::~AgentStatusWidgetBuilder()
 {
 }
 
-QWidget * AgentStatusWidgetBuilder::build()
+AgentStatusWidget * AgentStatusWidgetBuilder::build()
 {
-    QWidget * new_widget = new QWidget();
+    AgentStatusWidget * new_widget = new AgentStatusWidget();
     this->widget_ui.setupUi(new_widget);
     return new_widget;
 }

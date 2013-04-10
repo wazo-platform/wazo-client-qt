@@ -245,6 +245,8 @@ void BaseEngine::loadSettings()
         m_config["switchboard_queue_name"] = m_settings->value("switchboard.queue", "__switchboard").toString();
         m_config["switchboard_hold_queue_name"] = m_settings->value("switchboard.queue_hold", "__switchboard_hold").toString();
 
+        m_config["agent_status_dashboard.main_window_state"] = m_settings->value("agent_status_dashboard.main_window_state");
+
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
         m_settings->endGroup();
@@ -335,6 +337,8 @@ void BaseEngine::saveSettings()
 
         m_settings->setValue("switchboard.queue", m_config["switchboard_queue_name"].toString());
         m_settings->setValue("switchboard.queue_hold", m_config["switchboard_hold_queue_name"].toString());
+
+        m_settings->setValue("agent_status_dashboard.main_window_state", m_config["agent_status_dashboard.main_window_state"]);
 
         if (m_config["keeppass"].toBool())
             m_settings->setValue("password", m_config["password"].toString());
