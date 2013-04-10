@@ -41,22 +41,28 @@ TableWidgetHelper::~TableWidgetHelper()
 
 }
 
-bool TableWidgetHelper::hasValue(const QString column, const QString value)
+int TableWidgetHelper::findRow(const QString column, const QString value)
 {
     int column_index = this->getColumnIndex(column);
     int nb_rows = this->m_table->rowCount();
-    bool found = false;
 
     if (column_index < 0) {
-        return false;
+        return -1;
     }
 
-    for(int count = 0; count < nb_rows && !found; count++) {
-        QString item_text = this->m_table->item(count, column_index)->text();
-        found = (item_text == value);
+    for(int row = 0; row < nb_rows; row++) {
+        QString item_text = this->m_table->item(row, column_index)->text();
+        if(item_text == value) {
+            return row;
+        }
     }
 
-    return found;
+    return -1;
+}
+
+bool TableWidgetHelper::hasValue(const QString column, const QString value)
+{
+    return (this->findRow(column, value) >= 0);
 }
 
 bool TableWidgetHelper::hasRow(const QVariantMap received_row)

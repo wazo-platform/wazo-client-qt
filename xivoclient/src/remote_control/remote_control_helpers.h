@@ -45,6 +45,7 @@ class TableWidgetHelper {
 
         bool hasValue(const QString column, const QString value);
         bool hasRow(const QVariantMap received_row);
+        int findRow(const QString column, const QString value);
 
     private:
         QTableWidget* m_table;
