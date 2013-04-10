@@ -4,45 +4,32 @@
 <context>
     <name>AgentStatus</name>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="14"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="21"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulier</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="36"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="45"/>
         <source>66:66</source>
+        <translation>66:66</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="68"/>
+        <source>Disponible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="59"/>
-        <source>Pierre Jean Jacques</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="82"/>
-        <source>Très occupé</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QueueWidget</name>
-    <message>
-        <location filename="../src/xlets/agent_status_dashboard/queue_widget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agent_status_dashboard/queue_widget.ui" line="20"/>
-        <source>Unnamed Queue</source>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="91"/>
+        <source>P. J. Jacques</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>XletAgentStatusDashboard</name>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="50"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="52"/>
         <source>Agent status dashboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Overzicht scherm agenten status</translation>
     </message>
 </context>
 </TS>

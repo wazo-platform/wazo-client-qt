@@ -31,7 +31,7 @@
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="351"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="366"/>
         <source>Logged</source>
         <translation>Logué</translation>
     </message>
@@ -44,7 +44,7 @@ jointes</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="372"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="387"/>
         <source>Paused</source>
         <translation>En retrait</translation>
     </message>
@@ -76,17 +76,17 @@ en retrait</translation>
         <translation>ECT</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="353"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="368"/>
         <source>Unlogged</source>
         <translation>Délogué</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="370"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="385"/>
         <source>Unpaused</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="374"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="389"/>
         <source>Partially Paused</source>
         <translation>Retrait partiel</translation>
     </message>
