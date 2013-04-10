@@ -89,7 +89,7 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
     delete m_widget_storage;
     delete m_widget_builder;
 
-    foreach(QString queue_id, m_filtered_agent_lists.keys()){
+    foreach(const QString &queue_id, m_filtered_agent_lists.keys()){
         this->destroyQueue(queue_id);
     }
 }
