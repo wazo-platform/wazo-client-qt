@@ -33,6 +33,7 @@
 #include <QLocalSocket>
 #include <QFile>
 #include <JsonToVariant.h>
+#include <VariantToJson.h>
 
 #include "remote_control.h"
 
@@ -205,8 +206,12 @@ void RemoteControl::sendResponse(RemoteControlResponse response, const char * me
         break;
     }
 
-    qDebug() << Q_FUNC_INFO << "Lettuce test returning" << response_string;
-    m_client_cnx->write(response_string.toUtf8().data());
+    QVariantMap sent_response;
+    sent_response["test_result"] = response_string;
+
+    QString encoded_command = JsonQt::VariantToJson::parse(sent_response);
+
+    m_client_cnx->write(encoded_command.toUtf8().data());
     m_client_cnx->flush();
 }
 
