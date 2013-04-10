@@ -87,12 +87,7 @@ class RemoteControl : public QObject
         void i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent(const QVariantList &);
         void i_log_out_of_the_xivo_client();
 
-        void then_the_xlet_identity_shows_name_as_1_2(const QVariantList &);
-        void then_the_xlet_identity_shows_server_name_as_field_1_modified(const QVariantList &);
-        void then_the_xlet_identity_shows_phone_number_as_1(const QVariantList &);
-        void then_the_xlet_identity_shows_a_voicemail_1(const QVariantList &);
-        void then_the_xlet_identity_shows_an_agent_1(const QVariantList &);
-        void then_the_xlet_identity_does_not_show_any_agent();
+        QVariantMap get_identity_infos();
 
         void when_i_enable_screen_pop_up();
         void then_i_see_a_sheet_with_variables_and_values(const QVariantList &);
