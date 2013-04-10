@@ -51,17 +51,17 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 {
     setTitle(tr("Agent status dashboard"));
 
-    this->m_model = new AgentsModel();
+    this->m_model = new AgentsModel(this);
 
     this->m_widget_builder = new AgentStatusWidgetBuilder;
     this->m_widget_storage = new AgentStatusWidgetStorage(this->m_widget_builder);
     this->m_delegate = new AgentStatusDelegate(this->m_widget_storage);
 
+    // When embedding QMainWindow in a widget, setParent must be called after instantiation.
     this->m_window = new QMainWindow();
+    this->m_window->setParent(this);
     this->m_window->setDockNestingEnabled(true);
     this->m_window->show();
-    // When embedding QMainWindow in a widget, setParent must be called after instantiation.
-    this->m_window->setParent(this);
 
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->addWidget(this->m_window);
@@ -88,7 +88,6 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
     delete m_delegate;
     delete m_widget_storage;
     delete m_widget_builder;
-    delete m_model;
 
     foreach(QString queue_id, m_filtered_agent_lists.keys()){
         this->destroyQueue(queue_id);
