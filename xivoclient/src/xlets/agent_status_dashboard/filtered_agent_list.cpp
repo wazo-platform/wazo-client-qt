@@ -33,7 +33,7 @@
 #include "agent_status_sort_filter_proxy_model.h"
 #include "filtered_agent_list.h"
 
-FilteredAgentList::FilteredAgentList(QString queue_id, AgentsModel * model, AgentStatusDelegate * delegate)
+FilteredAgentList::FilteredAgentList(const QString &queue_id, AgentsModel * model, AgentStatusDelegate * delegate)
 {
     this->m_queue_id = queue_id;
 
