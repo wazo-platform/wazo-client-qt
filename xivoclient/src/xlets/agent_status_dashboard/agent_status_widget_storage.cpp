@@ -54,7 +54,7 @@ AgentStatusWidget * AgentStatusWidgetStorage::getWidget(const QModelIndex & inde
     } else {
         if (m_builder == NULL) {
             qDebug() << Q_FUNC_INFO << "Builder is NULL";
-            return_value = NULL; 
+            return_value = NULL;
         }
         AgentStatusWidget * new_widget = this->m_builder->build();
         this->m_widgets.insert(agent_id, new_widget);
