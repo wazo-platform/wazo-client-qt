@@ -34,18 +34,23 @@
 
 #include <QTableWidget>
 #include <QVariantMap>
+#include <QDebug>
+#include <QMap>
 
 class TableWidgetHelper {
 
     public:
-        TableWidgetHelper(const QTableWidget* table);
+        TableWidgetHelper(QTableWidget* table);
         ~TableWidgetHelper();
 
         bool hasValue(const QString column, const QString value);
-        bool hasLine(const QVariantMap line);
+        bool hasRow(const QVariantMap received_row);
 
     private:
-        const QTableWidget* m_table;
+        QTableWidget* m_table;
+
+        QMap<QString, QString> toStringMap(const QVariantMap variant_map);
+        QMap<QString, QString> rowToMap(int row);
 
         int getColumnIndex(const QString column);
 };

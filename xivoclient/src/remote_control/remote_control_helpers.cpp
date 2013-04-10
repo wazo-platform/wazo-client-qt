@@ -31,7 +31,7 @@
 
 #include "remote_control_helpers.h"
 
-TableWidgetHelper::TableWidgetHelper(const QTableWidget* table)
+TableWidgetHelper::TableWidgetHelper(QTableWidget* table)
 {
     this->m_table = table;
 }
@@ -47,6 +47,10 @@ bool TableWidgetHelper::hasValue(const QString column, const QString value)
     int nb_rows = this->m_table->rowCount();
     bool found = false;
 
+    if (column_index < 0) {
+        return false;
+    }
+
     for(int count = 0; count < nb_rows && !found; count++) {
         QString item_text = this->m_table->item(count, column_index)->text();
         found = (item_text == value);
@@ -55,16 +59,47 @@ bool TableWidgetHelper::hasValue(const QString column, const QString value)
     return found;
 }
 
-bool TableWidgetHelper::hasLine(const QVariantMap line)
+bool TableWidgetHelper::hasRow(const QVariantMap received_row)
 {
-    foreach(QString column, line.keys()) {
-        QString value = line.value(column).toString();
-        if(!this->hasValue(column, value)) {
-            return false;
+    QMap<QString, QString> search_row = toStringMap(received_row);
+
+    int nb_rows = this->m_table->rowCount();
+
+    for(int count = 0; count < nb_rows; count++) {
+        QMap<QString, QString> row = rowToMap(count);
+        if (row == search_row) {
+            return true;
         }
     }
 
-    return true;
+    return false;
+}
+
+QMap<QString, QString> TableWidgetHelper::toStringMap(const QVariantMap variant_map)
+{
+    QMap<QString, QString> converted_map;
+
+    foreach(QString key, variant_map.keys()) {
+        QString value = variant_map.value(key).toString();
+        converted_map.insert(key, value);
+    }
+
+    return converted_map;
+}
+
+QMap<QString, QString> TableWidgetHelper::rowToMap(int row)
+{
+    QMap<QString, QString> map;
+
+    int nb_columns = this->m_table->columnCount();
+
+    for(int column = 0; column < nb_columns; column++) {
+        QString key = this->m_table->horizontalHeaderItem(column)->text();
+        QString value = this->m_table->item(row, column)->text();
+        map.insert(key, value);
+    }
+
+    return map;
 }
 
 int TableWidgetHelper::getColumnIndex(const QString column)
