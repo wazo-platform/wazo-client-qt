@@ -48,7 +48,7 @@ AgentStatusWidget * AgentStatusWidgetStorage::getWidget(const QModelIndex & inde
     const QAbstractItemModel * model = index.model();
     QModelIndex agent_id_index = model->index(index.row(), AgentsModel::ID);
     QString agent_id = model->data(agent_id_index).toString();
-    AgentStatusWidget * return_value;
+    AgentStatusWidget * return_value = NULL;
     if (this->m_widgets.contains(agent_id)) {
         return_value = this->m_widgets.value(agent_id);
     } else {
