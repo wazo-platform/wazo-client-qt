@@ -145,6 +145,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(then_1_shows_up_in_the_directory_xlet);
             RC_EXECUTE_ARG(then_1_does_not_show_up_in_the_directory_xlet);
             RC_EXECUTE_ARG(assert_row_shows_up_in_the_directory_xlet);
+            RC_EXECUTE_ARG(when_i_double_click_on_the_phone_number_for_name);
 
             RC_EXECUTE_ARG(assert_conference_room_1_has_number_2_in_xlet);
             RC_EXECUTE_ARG(assert_conference_room_1_has_pin_code_2_in_xlet);

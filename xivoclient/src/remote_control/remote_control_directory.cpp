@@ -81,10 +81,27 @@ void RemoteControl::assert_row_shows_up_in_the_directory_xlet(const QVariantList
 
     DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
-    TableWidgetHelper helper = TableWidgetHelper(panel->m_table);
+    TableWidgetHelper helper(panel->m_table);
     bool has_row = helper.hasRow(row);
 
     this->assert(has_row, QString("row %1 not found in directory xlet").arg(prettyPrintMap(row)));
+}
+
+void RemoteControl::when_i_double_click_on_the_phone_number_for_name(const QVariantList &args)
+{
+    QString name = args[0].toString();
+
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
+
+    TableWidgetHelper helper(panel->m_table);
+
+    int row = helper.findRow("Nom", name);
+
+    if (row < 0) {
+        this->assert(false, QString("Name %1 not found in directory xlet").arg(name));
+    }
+
+    helper.doubleClickItem(row, 1);
 }
 
 #endif
