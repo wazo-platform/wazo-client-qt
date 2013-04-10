@@ -27,6 +27,7 @@
 #include <QMainWindow>
 #include <QDockWidget>
 #include <QVBoxLayout>
+#include <QListView>
 #include <QTimer>
 
 #include <baseengine.h>
@@ -104,7 +105,7 @@ void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)
     } else {
         dock = this->createDock(queue_id);
         filtered_agent_list = this->createFilteredAgentList(queue_id);
-        QWidget * agent_list_view = (QWidget *) filtered_agent_list->getView();
+        QWidget * agent_list_view = dynamic_cast<QWidget *>(filtered_agent_list->getView());
         dock->setWidget(agent_list_view);
         dock->show();
     }
