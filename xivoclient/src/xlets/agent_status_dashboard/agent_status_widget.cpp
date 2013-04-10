@@ -40,26 +40,26 @@ AgentStatusWidget::~AgentStatusWidget()
 {
 }
 
-void AgentStatusWidget::setAvailabilityStyle(QString object_name)
+void AgentStatusWidget::setAvailabilityStyle(const QString &object_name)
 {
     this->setObjectName(object_name);
     this->style()->unpolish(this);
     this->style()->polish(this);
 }
 
-void AgentStatusWidget::setAvailabilityText(QString availability_text)
+void AgentStatusWidget::setAvailabilityText(const QString &availability_text)
 {
     QLabel * agent_availability_label = this->findChild<QLabel *>("agent_status_label");
     agent_availability_label->setText(availability_text);
 }
 
-void AgentStatusWidget::setAgentName(QString agent_name)
+void AgentStatusWidget::setAgentName(const QString &agent_name)
 {
     QLabel * agent_name_label = this->findChild<QLabel *>("agent_name_label");
     agent_name_label->setText(agent_name);
 }
 
-void AgentStatusWidget::setStatusSince(QString status_since)
+void AgentStatusWidget::setStatusSince(const QString &status_since)
 {
     QLabel * agent_status_since_label = this->findChild<QLabel *>("agent_status_since_label");
     agent_status_since_label->setText(status_since);

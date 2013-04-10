@@ -37,10 +37,10 @@ public:
     AgentStatusWidget(QWidget * parent = NULL);
     ~AgentStatusWidget();
 
-    void setAvailabilityStyle(QString object_name);
-    void setAvailabilityText(QString availability_text);
-    void setAgentName(QString agent_name);
-    void setStatusSince(QString status_since);
+    void setAvailabilityStyle(const QString &object_name);
+    void setAvailabilityText(const QString &availability_text);
+    void setAgentName(const QString &agent_name);
+    void setStatusSince(const QString &status_since);
 
 protected:
     void paintEvent(QPaintEvent* paint_event);
