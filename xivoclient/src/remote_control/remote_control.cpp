@@ -140,7 +140,6 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_is_empty_);
             RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_displays_agents);
 
-            RC_EXECUTE(when_i_enable_screen_pop_up);
             RC_EXECUTE_ARG(then_i_see_a_sheet_with_variables_and_values);
             RC_EXECUTE(then_i_should_not_see_any_sheet);
 
