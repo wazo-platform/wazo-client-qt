@@ -131,8 +131,6 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(configure);
             RC_EXECUTE_WITH_RETURN(get_identity_infos);
 
-            RC_EXECUTE(when_i_enable_the_hide_unlogged_agents_option);
-            RC_EXECUTE(when_i_disable_the_hide_unlogged_agents_option);
             RC_EXECUTE(then_the_queue_members_xlet_is_empty);
             RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_is_empty_);
             RC_EXECUTE_ARG(then_the_queue_members_xlet_for_queue_1_displays_agents);

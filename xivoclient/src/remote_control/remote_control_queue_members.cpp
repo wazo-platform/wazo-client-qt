@@ -44,24 +44,6 @@ QString convert_id_to_xid(QString element_id)
     return QString("xivo/%1").arg(element_id);
 }
 
-void RemoteControl::when_i_enable_the_hide_unlogged_agents_option()
-{
-    this->i_go_to_the_xivo_client_configuration();
-
-    m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
-
-    this->i_close_the_xivo_client_configuration();
-}
-
-void RemoteControl::when_i_disable_the_hide_unlogged_agents_option()
-{
-    this->i_go_to_the_xivo_client_configuration();
-
-    m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
-
-    this->i_close_the_xivo_client_configuration();
-}
-
 void RemoteControl::then_the_queue_members_xlet_is_empty()
 {
     this->queue_members_xlet_is_empty();
