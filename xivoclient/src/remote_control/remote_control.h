@@ -84,8 +84,7 @@ class RemoteControl : public QObject
         void i_close_the_xivo_client_configuration();
         void configure(const QVariantList &);
 
-        void i_log_in_the_xivo_client_to_host_1_as_2_pass_3(const QVariantList &);
-        void i_log_in_the_xivo_client_to_host_1_as_2_pass_3_unlogged_agent(const QVariantList &);
+        void i_log_in_the_xivo_client();
         void i_log_out_of_the_xivo_client();
 
         QVariantMap get_identity_infos();
