@@ -112,7 +112,7 @@ void CurrentCall::parseCurrentCalls(const QVariantMap &message)
     }
 }
 
-void CurrentCall::parseAttendedTransferAnswered(const QVariantMap &message)
+void CurrentCall::parseAttendedTransferAnswered(const QVariantMap & /*message*/)
 {
     this->transferAnsweredMode();
 }

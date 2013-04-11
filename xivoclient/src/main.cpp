@@ -84,7 +84,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         // send message if there is an argument.
         // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
         // to learn how to handle "tel:0123456" uri scheme
-        bool sentmsg = app->sendMessage(msg);
+        app->sendMessage(msg);
         // warning : this sends the message only to the first instance, if ever there are >1 instances running
     }
 
