@@ -40,14 +40,18 @@ QVariantMap RemoteControl::get_identity_infos()
     QLabel *phonenum = xlet->findChild<QLabel*>(QString("phonenum"));
     QLabel *vm_num = xlet->findChild<QLabel*>(QString("voicemail_num"));
     QPushButton * vm_button = xlet->findChild<QPushButton*>(QString("voicemail_button"));
-    QIcon vm_icon = vm_button->icon();
     QLabel *agent_number_label = xlet->findChild<QLabel*>(QString("agent_number"));
 
     QVariantMap args;
     args["fullname"] = fullname->text();
     args["phonenum"] = phonenum->text();
     args["voicemail_num"] = vm_num->text();
-    args["voicemail_button"] = !vm_icon.isNull();
+    if (vm_button != NULL) {
+        QIcon vm_icon = vm_button->icon();
+        args["voicemail_button"] = !vm_icon.isNull();
+    } else {
+        args["voicemail_button"] = false;
+    }
     args["agent_number"] = agent_number_label->text();
 
     return args;
