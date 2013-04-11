@@ -158,14 +158,14 @@ void RemoteControl::processCommands()
             RC_EXECUTE(then_i_see_no_transfer_destinations);
 
             if (this->m_no_error == false) {
-                this->sendResponse(TEST_FAILED, "", return_value);
+                this->sendResponse(TEST_FAILED, command.action, "", return_value);
             } else if (this->m_command_found) {
-                this->sendResponse(TEST_PASSED, "", return_value);
+                this->sendResponse(TEST_PASSED, command.action, "", return_value);
             } else {
                 this->sendResponse(TEST_UNKNOWN, command.action);
             }
         } catch (TestFailedException & e) {
-            this->sendResponse(TEST_FAILED, e.what());
+            this->sendResponse(TEST_FAILED, command.action, e.what());
         }
     }
 }
@@ -193,7 +193,10 @@ RemoteControlCommand RemoteControl::parseCommand(const QByteArray & raw_command)
     return return_command;
 }
 
-void RemoteControl::sendResponse(RemoteControlResponse test_result, QString message, QVariantMap return_value)
+void RemoteControl::sendResponse(RemoteControlResponse test_result,
+    QString command,
+    QString message,
+    QVariantMap return_value)
 {
     QVariantMap response;
 
@@ -209,6 +212,7 @@ void RemoteControl::sendResponse(RemoteControlResponse test_result, QString mess
             break;
     }
 
+    response["command"] = command;
     response["message"] = message;
     response["return_value"] = return_value;
 
