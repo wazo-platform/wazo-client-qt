@@ -35,6 +35,8 @@
 #include <JsonToVariant.h>
 #include <VariantToJson.h>
 
+#include <QDebug>
+
 #include "remote_control.h"
 
 TestFailedException::TestFailedException(const QString & message)
