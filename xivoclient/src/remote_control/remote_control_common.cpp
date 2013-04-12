@@ -59,8 +59,6 @@ void RemoteControl::configure(const QVariantList &list)
     const QString & login = args["login"].toString();
     const QString & password = args["password"].toString();
     const QString & agent_option = args["agent_option"].toString();
-    bool customerinfo = args["customerinfo"].toBool();
-    bool show_agent_option = args["show_agent_option"].toBool();
 
     i_go_to_the_xivo_client_configuration();
 
@@ -69,14 +67,17 @@ void RemoteControl::configure(const QVariantList &list)
     m_exec_obj.win->m_configwindow->m_main_server_port_input->setValue(xivo_port);
 
 
-     m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(1);
-     m_exec_obj.win->m_configwindow->m_userid->setText(login);
-     m_exec_obj.win->m_configwindow->m_password->setText(password);
+    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(1);
+    m_exec_obj.win->m_configwindow->m_userid->setText(login);
+    m_exec_obj.win->m_configwindow->m_password->setText(password);
 
-     if(show_agent_option)
-         m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
-     else
-         m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
+    if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
+        bool hide_unlogged_agents_for_xlet_queue_members = args["hide_unlogged_agents_for_xlet_queue_members"].toBool();
+        if(hide_unlogged_agents_for_xlet_queue_members)
+            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
+        else
+            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
+    }
 
 
     if(agent_option == "no")
@@ -88,8 +89,12 @@ void RemoteControl::configure(const QVariantList &list)
 
 
     m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(3);
-    QCheckBox *customer_info_box = m_exec_obj.win->m_configwindow->findChild<QCheckBox*>(QString("enable_customer_info"));
-    customer_info_box->setChecked(customerinfo);
+
+    if (args.find("customerinfo") != args.end()) {
+        bool customerinfo = args["customerinfo"].toBool();
+        QCheckBox *customer_info_box = m_exec_obj.win->m_configwindow->findChild<QCheckBox*>(QString("enable_customer_info"));
+        customer_info_box->setChecked(customerinfo);
+    }
 
     i_close_the_xivo_client_configuration();
 }
