@@ -44,71 +44,25 @@ QString convert_id_to_xid(QString element_id)
     return QString("xivo/%1").arg(element_id);
 }
 
-void RemoteControl::then_the_queue_members_xlet_is_empty()
-{
-    this->queue_members_xlet_is_empty();
-}
-
-void RemoteControl::then_the_queue_members_xlet_for_queue_1_is_empty_(const QVariantList & args)
+void RemoteControl::set_queue_for_queue_members(const QVariantList & args)
 {
     QString queue_id = args[0].toString();
     QString queue_xid = convert_id_to_xid(queue_id);
     emit select_queue(queue_xid);
-    this->queue_members_xlet_is_empty();
 }
 
-void RemoteControl::queue_members_xlet_is_empty()
+QVariantMap RemoteControl::get_queue_members_infos()
 {
     XletQueueMembers *xlet = static_cast<XletQueueMembers *>(m_exec_obj.win->m_xletlist.value("queuemembers"));
-    this->assert(xlet != NULL, "Queue members xlet is null");
-
     QueueMembersView *view = xlet->m_view;
-    this->assert(view != NULL, "The view is null");
-
     QAbstractItemModel * model = view->model();
-    this->assert(model != NULL, "The model is null");
-    this->assert(model->rowCount() == 0, QString("The view is not empty, it has %1 rows")
-                 .arg(model->rowCount()));
-}
 
-void RemoteControl::then_the_queue_members_xlet_for_queue_1_displays_agents(const QVariantList & args)
-{
-    QString queue_id = args[0].toString();
-    QString queue_xid = convert_id_to_xid(queue_id);
-    QVariantList agents = args[1].toList();
+    QVariantMap return_value;
 
-    emit select_queue(queue_xid);
-
-    QStringList expected_agent_numbers = this->_extract_agent_numbers(agents);
-    QStringList displayed_agent_numbers = this->_get_agent_numbers_from_queue_members();
-
-    this->assert(equalsUnordered(displayed_agent_numbers, expected_agent_numbers),
-                 "Queue members displayed wrong elements");
-}
-
-QStringList RemoteControl::_extract_agent_numbers(const QVariantList & agents)
-{
-    QStringList ret;
-
-    foreach(QVariant agent, agents) {
-        QVariantMap agent_map = agent.toMap();
-        QString agent_number = agent_map.value("number").toString();
-        ret << agent_number;
-    }
-
-    return ret;
-}
-
-QStringList RemoteControl::_get_agent_numbers_from_queue_members()
-{
-    XletQueueMembers *xlet = static_cast<XletQueueMembers *>(m_exec_obj.win->m_xletlist.value("queuemembers"));
-    this->assert(xlet != NULL, "Queue members xlet is null");
-
-    QueueMembersView *view = xlet->m_view;
-    this->assert(view != NULL, "The view is null");
-
-    QAbstractItemModel * model = view->model();
-    this->assert(model != NULL, "The model is null");
+    return_value["xlet"] = xlet != NULL;
+    return_value["view"] = view != NULL;
+    return_value["model"] = model != NULL;
+    return_value["row_count"] = model->rowCount();
 
     QStringList agent_numbers;
 
@@ -117,8 +71,9 @@ QStringList RemoteControl::_get_agent_numbers_from_queue_members()
         QString agent_number = model->index(row_index, QueueMembersModel::NUMBER).data().toString();
         agent_numbers << agent_number;
     }
+    return_value["members"] = agent_numbers;
 
-    return agent_numbers;
+    return return_value;
 }
 
 #endif
