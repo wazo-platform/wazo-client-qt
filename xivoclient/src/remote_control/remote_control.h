@@ -113,9 +113,6 @@ class RemoteControl : public QObject
 
     private:
         void create_signals();
-        void queue_members_xlet_is_empty();
-        QStringList _extract_agent_numbers(const QVariantList & agents);
-        QStringList _get_agent_numbers_from_queue_members();
         bool _directory_row_matches(QAbstractItemModel* model,
                                     int row_index,
                                     QVariantMap entry);
