@@ -88,11 +88,11 @@ class RemoteControl : public QObject
         void i_log_out_of_the_xivo_client();
 
         QVariantMap get_identity_infos();
+
         QVariantMap get_queue_members_infos();
         void set_queue_for_queue_members(const QVariantList &);
 
-        void then_i_see_a_sheet_with_variables_and_values(const QVariantList &);
-        void then_i_should_not_see_any_sheet();
+        QVariantMap get_sheet_infos();
 
         void when_i_search_for_1_in_the_directory_xlet(const QVariantList &);
         void then_nothing_shows_up_in_the_directory_xlet();

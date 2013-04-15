@@ -35,55 +35,42 @@
 
 #include "remote_control.h"
 
-void RemoteControl::then_i_see_a_sheet_with_variables_and_values(const QVariantList& args)
+QVariantMap RemoteControl::get_sheet_infos()
 {
-    const QVariantList & variables = args[0].toList();
-
+    QVariantMap args;
     CustomerInfoPanel *xlet = static_cast<CustomerInfoPanel*>(m_exec_obj.win->m_xletlist.value("customerinfo"));
-    this->assert(xlet != NULL, "xlet null");
+    if (xlet == NULL)
+        return args;
 
     QTabWidget *sheet_tab = xlet->m_tabs;
-    this->assert(sheet_tab != NULL, "sheet tab widget null");
-
     QWidget *current_tab = sheet_tab->currentWidget();
-    this->assert(current_tab != NULL, "current sheet tab null");
 
+    args["xlet"] = xlet != NULL;
+    args["sheet_tab"] = sheet_tab != NULL;
+    args["current_tab"] = current_tab != NULL;
+
+    QVariantMap results;
+    bool iter_line_sheet = true;
     int layout_header_offset = 4;
-
-    QHash<QString, QString> results;
-    for (int i = layout_header_offset; i < variables.size() + layout_header_offset; ++i) {
+    int i = layout_header_offset;
+    while (iter_line_sheet) {
         QString name_of_name_label = QString("label_name_%1").arg(i);
         QString name_of_value_label = QString("label_value_%1").arg(i);
 
         QLabel *variable_name_label = current_tab->findChild<QLabel*>(name_of_name_label);
-        this->assert(variable_name_label != NULL, QString("can't find label %1").arg(name_of_name_label));
-
         QLabel *variable_value_label = current_tab->findChild<QLabel*>(name_of_value_label);
-        this->assert(variable_value_label != NULL, QString("can't find label %1").arg(name_of_value_label));
+
+        if (variable_name_label == NULL || variable_value_label == NULL) {
+            iter_line_sheet = false;
+            continue;
+        }
 
         results[variable_name_label->text()] = variable_value_label->text();
+        i++;
     }
+    args["content"] = results;
 
-    foreach (const QVariant &variable, variables) {
-        QVariantMap variable_map = variable.toMap();
-        const QString &expected_variable_name = variable_map["Variable"].toString();
-        const QString &expected_variable_value = variable_map["Value"].toString();
-
-        this->assert(results.contains(expected_variable_name), QString("No variable %1 on sheet").arg(expected_variable_name));
-        this->assert(results[expected_variable_name] == expected_variable_value, QString("wrong value %1").arg(results[expected_variable_name]));
-    }
-}
-
-void RemoteControl::then_i_should_not_see_any_sheet()
-{
-    CustomerInfoPanel *xlet = static_cast<CustomerInfoPanel*>(m_exec_obj.win->m_xletlist.value("customerinfo"));
-    this->assert(xlet != NULL, "xlet null");
-
-    QTabWidget *sheet_tab = xlet->m_tabs;
-    this->assert(sheet_tab != NULL, "sheet tab widget null");
-
-    QWidget *current_tab = sheet_tab->currentWidget();
-    this->assert(current_tab == NULL, "Current tab should be NULL");
+    return args;
 }
 
 #endif

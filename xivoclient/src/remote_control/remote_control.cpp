@@ -133,9 +133,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_queue_members_infos);
             RC_EXECUTE_ARG(set_queue_for_queue_members);
 
-
-            RC_EXECUTE_ARG(then_i_see_a_sheet_with_variables_and_values);
-            RC_EXECUTE(then_i_should_not_see_any_sheet);
+            RC_EXECUTE_WITH_RETURN(get_sheet_infos);
 
             RC_EXECUTE_ARG(when_i_search_for_1_in_the_directory_xlet);
             RC_EXECUTE(then_nothing_shows_up_in_the_directory_xlet);
