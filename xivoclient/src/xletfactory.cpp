@@ -151,8 +151,6 @@ namespace XLetFactory {
             "lib" + id + "plugin.dylib";
 #endif
 
-            qDebug() << Q_FUNC_INFO << "Trying to load plugin" << fileName;
-            qDebug() << Q_FUNC_INFO << "location" << pluginDir.absoluteFilePath(fileName);
             QPluginLoader loader(pluginDir.absoluteFilePath(fileName));
             QObject *plugin = loader.instance();
 
@@ -171,4 +169,3 @@ namespace XLetFactory {
         return xlet;
     }
 }
-

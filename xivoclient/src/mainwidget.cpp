@@ -267,11 +267,6 @@ void MainWidget::setAppearance(const QVariantList & dockoptions)
             }
         }
     }
-
-    qDebug() << "dock : " << m_docknames;
-    qDebug() << "grid : " << m_gridnames;
-    qDebug() << "tab  : " << m_tabnames;
-    qDebug() << "all  : " << m_allnames;
 }
 
 void MainWidget::clearAppearance()
@@ -654,7 +649,6 @@ QDockWidget* MainWidget::createDockXlet(const QString& name,
 void MainWidget::addPanel(const QString &name, const QString &title, QWidget *widget)
 {
     if (m_docknames.contains(name)) {
-        qDebug() << Q_FUNC_INFO << "(dock)" << name << m_dockoptions[name];
         QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
         if (m_dockoptions[name].contains("c"))
             features |= QDockWidget::DockWidgetClosable;
@@ -667,11 +661,8 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
         }
         m_docks[name]->prepend(createDockXlet(name, title, features, widget));
     } else if (m_gridnames.contains(name)) {
-        qDebug() << Q_FUNC_INFO << "(grid)" << name << m_dockoptions[name] << title << m_dockoptions[name].toInt();
-        qDebug() << Q_FUNC_INFO << "inserting" << m_dockoptions[name].toInt();
         m_vL->insertWidget(m_dockoptions[name].toInt(), widget);
     } else if (m_tabnames.contains(name)) {
-        qDebug() << Q_FUNC_INFO << "(tab) " << name << m_dockoptions[name] << m_tabwidget->count() << title;
         QString tabTitle = "  " + title + "  ";
         if (m_dockoptions[name].size() > 0) {
             m_tabwidget->insertTab(m_dockoptions[name].toInt(), widget, tabTitle);
@@ -762,7 +753,6 @@ void MainWidget::engineStarted()
         }
     }
 
-    qDebug() << Q_FUNC_INFO << "the xlets have been created";
     m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
 
     foreach (QString name, m_docks.keys())

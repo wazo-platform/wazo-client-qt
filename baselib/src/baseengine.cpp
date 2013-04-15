@@ -168,7 +168,6 @@ void BaseEngine::sslErrors(const QList<QSslError> & qlse)
  */
 BaseEngine::~BaseEngine()
 {
-    qDebug() << Q_FUNC_INFO;
     clearLists();
     clearChannelList();
 }
@@ -422,9 +421,7 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  */
 void BaseEngine::start()
 {
-    qDebug() << "XiVO client starting:" << m_config["cti_address"].toString()
-            << port_to_use() << m_config["cti_encrypt"].toBool()
-            << m_config.getSubSet("checked_function");
+    qDebug() << "Connecting to" << m_config["cti_address"].toString() << "port" << port_to_use();
 
     ConnectionConfig connection_config = m_config.getConnectionConfig();
     m_cti_server->connectToServer(connection_config);
@@ -461,6 +458,7 @@ void BaseEngine::clearInternalData()
 
 void BaseEngine::stop()
 {
+    qDebug() << "Disconnecting";
     disconnectAndClean();
 }
 
@@ -473,7 +471,6 @@ void BaseEngine::disconnectAndClean()
 
 void BaseEngine::stopConnection()
 {
-    qDebug() << Q_FUNC_INFO;
     m_cti_server->disconnectFromServer();
     stopKeepAliveTimer();
 }
