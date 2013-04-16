@@ -37,77 +37,35 @@
 #include "xlets/conference/conflist.h"
 #include "remote_control.h"
 
-void RemoteControl::assert_conference_room_1_has_number_2_in_xlet(const QVariantList & args)
+QVariantMap RemoteControl::get_conference_room_infos()
 {
-    QString roomName = args[0].toString();
-    QString roomNumber = args[1].toString();
-    assertValueInConferenceXlet(roomName, ConfListModel::NUMBER, roomNumber);
-}
-
-void RemoteControl::assert_conference_room_1_has_pin_code_2_in_xlet(const QVariantList & args)
-{
-    QString roomName = args[0].toString();
-    QString pinCode = args[1].toString();
-    assertValueInConferenceXlet(roomName, ConfListModel::PIN_REQUIRED, pinCode);
-}
-
-void RemoteControl::assertValueInConferenceXlet(QString roomName, int column, QString value)
-{
-    qDebug() << "searching for conference room name" << roomName  << "with value" << value;
-    QAbstractItemModel* conflist_model = getConflistModel();
-
-    int row = findRowWithItem(conflist_model, ConfListModel::NAME, roomName);
-    qDebug() << "row" << row;
-
-    if (row == -1) {
-        this->assert(false, QString("conference room with name %1 not found").arg(roomName));
-    }
-
-    QString result = getValueInModel(conflist_model, row, column);
-    qDebug() << "result" << result;
-
-    this->assert(result == value);
-}
-
-QAbstractItemModel* RemoteControl::getConflistModel()
-{
+    QVariantMap args;
     XletConference* conference_xlet = static_cast<XletConference*>(m_exec_obj.win->m_xletlist.value("conference"));
-
-    if (conference_xlet == NULL) {
-        this->assert(false, "conference xlet was not found");
-    }
-
     QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
 
-    if (conflist_model == NULL) {
-        this->assert(false, "Conflist model was not found");
-    }
+    args["conference_xlet"] = conference_xlet != NULL;
+    args["conflist_model"] = conflist_model != NULL;
 
-    return conflist_model;
-}
+    QVariantList content;
+    QVariantMap header_data;
+    header_data["name"] = ConfListModel::NAME;
+    header_data["number"] = ConfListModel::NUMBER;
+    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
+    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
+    header_data["started_since"] = ConfListModel::STARTED_SINCE;
 
-int RemoteControl::findRowWithItem(QAbstractItemModel* model, int column, QString search) 
-{
-    int maxRows = model->rowCount(QModelIndex());
-    int rowSearch = -1;
-
-    for (int row = 0; row < maxRows && rowSearch < 0; ++row) {
-
-        QString result = getValueInModel(model, row, column);
-        if (result == search) {
-            rowSearch = row;
+    int nb_rows = conflist_model->rowCount(QModelIndex());
+    for (int row = 0; row < nb_rows; row++) {
+        QVariantMap header_value;
+        QVariantMap::const_iterator i;
+        for(i = header_data.begin(); i != header_data.end(); ++i) {
+            header_value[i.key()] = getValueInModel(conflist_model, row, i.value().toInt());
         }
-
+        content.append(header_value);
     }
+    args["content"] = content;
 
-    return rowSearch;
-}
-
-QString RemoteControl::getValueInModel(QAbstractItemModel* model, int row, int column)
-{
-    QModelIndex index = model->index(row, column);
-    QVariant data = model->data(index, Qt::DisplayRole);
-    return data.toString();
+    return args;
 }
 
 #endif

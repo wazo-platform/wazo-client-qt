@@ -121,5 +121,12 @@ void RemoteControl::i_stop_the_xivo_client()
     m_exec_obj.win->m_quitact->trigger();
 }
 
+QString RemoteControl::getValueInModel(QAbstractItemModel* model, int row, int column)
+{
+    QModelIndex index = model->index(row, column);
+    QVariant data = model->data(index, Qt::DisplayRole);
+    return data.toString();
+}
+
 
 #endif

@@ -93,15 +93,13 @@ class RemoteControl : public QObject
         void set_queue_for_queue_members(const QVariantList &);
 
         QVariantMap get_sheet_infos();
+        QVariantMap get_conference_room_infos();
 
         void when_i_search_for_1_in_the_directory_xlet(const QVariantList &);
         void then_nothing_shows_up_in_the_directory_xlet();
         void then_1_shows_up_in_the_directory_xlet(const QVariantList &);
         void then_1_does_not_show_up_in_the_directory_xlet(const QVariantList &);
         void assert_row_shows_up_in_the_directory_xlet(const QVariantList &);
-
-        void assert_conference_room_1_has_number_2_in_xlet(const QVariantList &);
-        void assert_conference_room_1_has_pin_code_2_in_xlet(const QVariantList &);
 
         void when_i_search_a_transfer_destination_1(const QVariantList &);
         void assert_directory_has_entry(const QVariantList &);
@@ -133,9 +131,6 @@ class RemoteControl : public QObject
         void assert(bool condition, const QString & message = "");
         bool commandMatches(RemoteControlCommand, std::string);
 
-        void assertValueInConferenceXlet(QString roomName, int column, QString value);
-        QAbstractItemModel* getConflistModel();
-        int findRowWithItem(QAbstractItemModel* model, int column, QString search);
         QString getValueInModel(QAbstractItemModel* model, int row, int column);
         int findColumnForHeader(QAbstractItemModel *model, QString header);
         QString prettyPrintMap(QVariantMap map);
