@@ -128,5 +128,18 @@ QString RemoteControl::getValueInModel(QAbstractItemModel* model, int row, int c
     return data.toString();
 }
 
+QString RemoteControl::getHeaderValueInModel(QAbstractItemModel* model, int section)
+{
+    QVariant header_data = model->headerData(section, Qt::Horizontal);
+    return header_data.toString();
+}
+
+QString RemoteControl::prettyPrintMap(QVariantMap map)
+{
+    QString prettyprint;
+    QDebug debug(&prettyprint);
+    debug << map;
+    return prettyprint;
+}
 
 #endif

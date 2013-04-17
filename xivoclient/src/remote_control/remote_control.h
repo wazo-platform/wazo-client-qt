@@ -79,21 +79,18 @@ class RemoteControl : public QObject
 
     public:
         void i_stop_the_xivo_client();
-
         void i_go_to_the_xivo_client_configuration();
         void i_close_the_xivo_client_configuration();
         void configure(const QVariantList &);
-
         void i_log_in_the_xivo_client();
         void i_log_out_of_the_xivo_client();
-
         QVariantMap get_identity_infos();
-
         QVariantMap get_queue_members_infos();
         void set_queue_for_queue_members(const QVariantList &);
-
         QVariantMap get_sheet_infos();
         QVariantMap get_conference_room_infos();
+        QVariantMap get_switchboard_infos();
+        void set_search_for_directory(const QVariantList &);
 
         void when_i_search_for_1_in_the_directory_xlet(const QVariantList &);
         void then_nothing_shows_up_in_the_directory_xlet();
@@ -101,9 +98,6 @@ class RemoteControl : public QObject
         void then_1_does_not_show_up_in_the_directory_xlet(const QVariantList &);
         void assert_row_shows_up_in_the_directory_xlet(const QVariantList &);
 
-        void when_i_search_a_transfer_destination_1(const QVariantList &);
-        void assert_directory_has_entry(const QVariantList &);
-        void then_i_see_no_transfer_destinations();
         void when_i_double_click_on_the_phone_number_for_name(const QVariantList &);
 
     signals:
@@ -111,9 +105,6 @@ class RemoteControl : public QObject
 
     private:
         void create_signals();
-        bool _directory_row_matches(QAbstractItemModel* model,
-                                    int row_index,
-                                    QVariantMap entry);
 
     public slots:
         void on_error(const QString &);
@@ -132,7 +123,7 @@ class RemoteControl : public QObject
         bool commandMatches(RemoteControlCommand, std::string);
 
         QString getValueInModel(QAbstractItemModel* model, int row, int column);
-        int findColumnForHeader(QAbstractItemModel *model, QString header);
+        QString getHeaderValueInModel(QAbstractItemModel* model, int section);
         QString prettyPrintMap(QVariantMap map);
 
         ExecObjects m_exec_obj;
