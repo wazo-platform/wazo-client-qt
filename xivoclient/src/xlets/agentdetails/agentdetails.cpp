@@ -231,6 +231,10 @@ void XletAgentDetails::updateAvailability()
         availability_status = tr("In use");
         style = "QLabel { background-color : red; }";
         break;
+    case AgentInfo::ON_CALL_NONACD:
+        availability_status = tr("Out of queue");
+        style = "QLabel { background-color : red; }";
+        break;
     default:
         availability_status = tr("Unlogged");
         style = "QLabel { background-color : none; }";

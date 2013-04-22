@@ -267,6 +267,7 @@ QString AgentsModel::dataTooltipAvailability(enum AgentInfo::AgentAvailability a
     case AgentInfo::AVAILABLE:
         return tr("Agent ready to receive a call");
     case AgentInfo::UNAVAILABLE:
+    case AgentInfo::ON_CALL_NONACD:
         return tr("Agent processing a call or paused");
     default:
         return QString();
@@ -328,6 +329,9 @@ QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailabili
     case AgentInfo::UNAVAILABLE:
         return tr("In use");
         break;
+    case AgentInfo::ON_CALL_NONACD:
+        return tr("Out of queue");
+        break;
     default:
         return QString();
     }
@@ -342,6 +346,9 @@ QString AgentsModel::convertAgentAvailabilityToObjectName(AgentInfo::AgentAvaila
     case AgentInfo::UNAVAILABLE:
         return "AgentInUse";
         break;
+    case AgentInfo::ON_CALL_NONACD:
+        return "AgentOnCallNonACD";
+        break;
     case AgentInfo::LOGGED_OUT:
     default:
         return "AgentStatus";
@@ -354,6 +361,7 @@ QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
     case AgentInfo::AVAILABLE:
         return Qt::green;
     case AgentInfo::UNAVAILABLE:
+    case AgentInfo::ON_CALL_NONACD:
         return Qt::red;
     default:
         return QVariant();

@@ -103,6 +103,8 @@ enum AgentInfo::AgentAvailability AgentInfo::availability() const
         return AVAILABLE;
     } else if (m_availability == "unavailable") {
         return UNAVAILABLE;
+    } else if (m_availability == "on_call_nonacd") {
+        return ON_CALL_NONACD;
     } else {
         return LOGGED_OUT;
     }
