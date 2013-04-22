@@ -136,13 +136,9 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_conference_room_infos);
             RC_EXECUTE_WITH_RETURN(get_switchboard_infos);
             RC_EXECUTE_ARG(set_search_for_directory);
-
-            RC_EXECUTE_ARG(when_i_search_for_1_in_the_directory_xlet);
-            RC_EXECUTE(then_nothing_shows_up_in_the_directory_xlet);
-            RC_EXECUTE_ARG(then_1_shows_up_in_the_directory_xlet);
-            RC_EXECUTE_ARG(then_1_does_not_show_up_in_the_directory_xlet);
-            RC_EXECUTE_ARG(assert_row_shows_up_in_the_directory_xlet);
-            RC_EXECUTE_ARG(when_i_double_click_on_the_phone_number_for_name);
+            RC_EXECUTE_WITH_RETURN(get_remote_directory_infos);
+            RC_EXECUTE_ARG(set_search_for_remote_directory);
+            RC_EXECUTE_ARG(exec_double_click_on_number_for_name);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED, command.action, "", return_value);

@@ -31,10 +31,37 @@
 
 #include "xlets/remotedirectory-builtin/directorypanel.h"
 #include "remote_control.h"
-#include "remote_control_helpers.h"
 
 
-void RemoteControl::when_i_search_for_1_in_the_directory_xlet(const QVariantList & args)
+QVariantMap RemoteControl::get_remote_directory_infos()
+{
+    QVariantMap args;
+
+    DirectoryPanel* xlet = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
+    if (xlet == NULL)
+        return args;
+
+    int nb_rows = xlet->m_table->rowCount();
+    int nb_cols = xlet->m_table->columnCount();
+
+    args["nb_rows"] = nb_rows;
+
+    QVariantList content;
+    for (int row = 0; row < nb_rows; row++) {
+        QVariantMap header_value;
+        for (int col = 0; col < nb_cols; col++) {
+            QString key = xlet->m_table->horizontalHeaderItem(col)->text();
+            QString value = xlet->m_table->item(row, col)->text();
+            header_value[key] = value;
+        }
+        content.append(header_value);
+    }
+    args["content"] = content;
+
+    return args;
+}
+
+void RemoteControl::set_search_for_remote_directory(const QVariantList & args)
 {
     const QString& search = args[0].toString();
 
@@ -42,66 +69,23 @@ void RemoteControl::when_i_search_for_1_in_the_directory_xlet(const QVariantList
 
     panel->m_searchText->setText(search);
     panel->startSearch();
-    pause(2000);
 }
 
-void RemoteControl::then_nothing_shows_up_in_the_directory_xlet()
-{
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
-    int nb_rows = panel->m_table->rowCount();
-    this->assert(nb_rows == 0);
-}
-
-void RemoteControl::then_1_shows_up_in_the_directory_xlet(const QVariantList & args)
-{
-    const QString& user = args[0].toString();
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
-
-    TableWidgetHelper helper(panel->m_table);
-    bool has_value = helper.hasValue("Nom", user);
-
-    this->assert(has_value, QString("%1 not found in directory xlet").arg(user));
-}
-
-void RemoteControl::then_1_does_not_show_up_in_the_directory_xlet(const QVariantList & args)
-{
-    const QString& user = args[0].toString();
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
-
-    TableWidgetHelper helper(panel->m_table);
-    bool has_value = helper.hasValue("Nom", user);
-
-    this->assert(!has_value, QString("%1 found in directory xlet").arg(user));
-}
-
-void RemoteControl::assert_row_shows_up_in_the_directory_xlet(const QVariantList & args)
-{
-    QVariantMap row = args[0].toMap();
-    qDebug() << "row" << row;
-
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
-
-    TableWidgetHelper helper(panel->m_table);
-    bool has_row = helper.hasRow(row);
-
-    this->assert(has_row, QString("row %1 not found in directory xlet").arg(prettyPrintMap(row)));
-}
-
-void RemoteControl::when_i_double_click_on_the_phone_number_for_name(const QVariantList &args)
+void RemoteControl::exec_double_click_on_number_for_name(const QVariantList &args)
 {
     QString name = args[0].toString();
 
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
+    DirectoryPanel* xlet = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
-    TableWidgetHelper helper(panel->m_table);
-
-    int row = helper.findRow("Nom", name);
-
-    if (row < 0) {
-        this->assert(false, QString("Name %1 not found in directory xlet").arg(name));
+    int nb_rows = xlet->m_table->rowCount();
+    for (int row = 0; row < nb_rows; row++) {
+        QString value = xlet->m_table->item(row, 1)->text();
+        if(name == value) {
+            QTableWidgetItem* item = xlet->m_table->item(row, 1);
+            emit itemDoubleClicked(item);
+            break;
+        }
     }
-
-    helper.doubleClickItem(row, 1);
 }
 
 #endif
