@@ -77,13 +77,22 @@ void RemoteControl::exec_double_click_on_number_for_name(const QVariantList &arg
 
     DirectoryPanel* xlet = static_cast<DirectoryPanel*>(m_exec_obj.win->m_xletlist.value("remotedirectory"));
 
+    connect(this,
+            SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
+            xlet->m_table,
+            SIGNAL(itemDoubleClicked(QTableWidgetItem*)));
+
     int nb_rows = xlet->m_table->rowCount();
+    int nb_cols = xlet->m_table->columnCount();
     for (int row = 0; row < nb_rows; row++) {
-        QString value = xlet->m_table->item(row, 1)->text();
-        if(name == value) {
-            QTableWidgetItem* item = xlet->m_table->item(row, 1);
-            emit itemDoubleClicked(item);
-            break;
+        for (int col = 0; col < nb_cols; col++) {
+            QString column_name = xlet->m_table->horizontalHeaderItem(col)->text();
+            QString value = xlet->m_table->item(row, col)->text();
+            if (column_name == "Nom" && name == value) {
+                QTableWidgetItem* item = xlet->m_table->item(row, 1);
+                emit itemDoubleClicked(item);
+                break;
+            }
         }
     }
 }
