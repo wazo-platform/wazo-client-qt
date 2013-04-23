@@ -325,13 +325,10 @@ QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailabili
         return "-";
     case AgentInfo::AVAILABLE:
         return tr("Not in use");
-        break;
     case AgentInfo::UNAVAILABLE:
         return tr("In use");
-        break;
     case AgentInfo::ON_CALL_NONACD:
         return tr("Out of queue");
-        break;
     default:
         return QString();
     }
@@ -342,13 +339,10 @@ QString AgentsModel::convertAgentAvailabilityToObjectName(AgentInfo::AgentAvaila
     switch (availability) {
     case AgentInfo::AVAILABLE:
         return "AgentAvailable";
-        break;
     case AgentInfo::UNAVAILABLE:
         return "AgentInUse";
-        break;
     case AgentInfo::ON_CALL_NONACD:
         return "AgentOnCallNonACD";
-        break;
     case AgentInfo::LOGGED_OUT:
     default:
         return "AgentStatus";
