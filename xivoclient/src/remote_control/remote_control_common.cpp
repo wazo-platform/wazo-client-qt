@@ -98,6 +98,11 @@ void RemoteControl::configure(const QVariantList &list)
     if(agent_option == "logged")
         m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(2);
 
+    if (args.find("display_profile") != args.end()) {
+        bool display_profile = args["display_profile"].toBool();
+        QCheckBox *display_profile_box = m_exec_obj.win->m_configwindow->m_displayprofile;
+        display_profile_box->setChecked(display_profile);
+    }
 
     if (args.find("customerinfo") != args.end()) {
         bool customerinfo = args["customerinfo"].toBool();
