@@ -66,7 +66,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Disponible</string>
+    <string notr="true">Disponible</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -89,7 +89,7 @@
     </font>
    </property>
    <property name="text">
-    <string>P. J. Jacques</string>
+    <string notr="true">P. J. Jacques</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
