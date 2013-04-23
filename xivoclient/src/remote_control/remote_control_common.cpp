@@ -63,6 +63,13 @@ void RemoteControl::configure(const QVariantList &list)
     m_exec_obj.win->m_configwindow->m_userid->setText(login);
     m_exec_obj.win->m_configwindow->m_password->setText(password);
 
+    if (args.find("autoconnect") != args.end()) {
+        if(args["autoconnect"].toBool())
+            m_exec_obj.win->m_configwindow->m_autoconnect->setChecked(true);
+        else
+            m_exec_obj.win->m_configwindow->m_autoconnect->setChecked(false);
+    }
+
     if (args.find("show_agent_option") != args.end()) {
         bool show_agent_option = args["show_agent_option"].toBool();
         if(show_agent_option)
