@@ -44,6 +44,20 @@ void RemoteControl::i_close_the_xivo_client_configuration()
     m_exec_obj.win->m_configwindow->m_btnbox->button(QDialogButtonBox::Ok)->click();
 }
 
+QVariantMap RemoteControl::get_xlets()
+{
+    QVariantMap args;
+    QHash<QString, XLet*> xlets = m_exec_obj.win->m_xletlist;
+    QVariantList xlet_list;
+    foreach (QString xlet, xlets.keys()) {
+        xlet_list.append(xlet);
+    }
+
+    args["xlets"] = xlet_list;
+
+    return args;
+}
+
 void RemoteControl::configure(const QVariantList &list)
 {
     QVariantMap args = list[0].toMap();

@@ -126,6 +126,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE(i_close_the_xivo_client_configuration);
             RC_EXECUTE_ARG(configure);
             RC_EXECUTE_WITH_RETURN(get_login_screen_infos);
+            RC_EXECUTE_WITH_RETURN(get_xlets);
             RC_EXECUTE_WITH_RETURN(get_identity_infos);
             RC_EXECUTE_WITH_RETURN(get_queue_members_infos);
             RC_EXECUTE_ARG(set_queue_for_queue_members);

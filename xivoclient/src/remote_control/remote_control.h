@@ -85,6 +85,7 @@ class RemoteControl : public QObject
         void i_log_in_the_xivo_client();
         void i_log_out_of_the_xivo_client();
         QVariantMap get_login_screen_infos();
+        QVariantMap get_xlets();
         QVariantMap get_identity_infos();
         QVariantMap get_queue_members_infos();
         void set_queue_for_queue_members(const QVariantList &);
