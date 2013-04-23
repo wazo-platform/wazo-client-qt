@@ -34,12 +34,6 @@
 
 #include "remote_control.h"
 
-void RemoteControl::create_signals()
-{
-    connect(this, SIGNAL(select_queue(const QString &)),
-            b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)));
-}
-
 void RemoteControl::i_go_to_the_xivo_client_configuration()
 {
     m_exec_obj.win->m_cfgact->trigger();

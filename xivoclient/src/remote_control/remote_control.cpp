@@ -73,8 +73,6 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
             this, SLOT(on_error(const QString &)));
     disconnect(m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)),
                m_exec_obj.win, SLOT(showMessageBox(const QString &)));
-
-    this->create_signals();
 }
 
 RemoteControl::~RemoteControl()

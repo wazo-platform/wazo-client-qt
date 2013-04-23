@@ -48,6 +48,12 @@ void RemoteControl::set_queue_for_queue_members(const QVariantList & args)
 {
     QString queue_id = args[0].toString();
     QString queue_xid = convert_id_to_xid(queue_id);
+
+    connect(this,
+            SIGNAL(select_queue(const QString &)),
+            b_engine,
+            SIGNAL(changeWatchedQueueSignal(const QString &)));
+
     emit select_queue(queue_xid);
 }
 

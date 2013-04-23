@@ -99,9 +99,6 @@ class RemoteControl : public QObject
         void select_queue(const QString & queue_id);
         void itemDoubleClicked(QTableWidgetItem*);
 
-    private:
-        void create_signals();
-
     public slots:
         void on_error(const QString &);
 
