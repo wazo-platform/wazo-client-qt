@@ -56,23 +56,20 @@ void RemoteControl::configure(const QVariantList &list)
 
     i_go_to_the_xivo_client_configuration();
 
-    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(0);
     m_exec_obj.win->m_configwindow->m_main_server_address_input->setText(xivo_address);
     m_exec_obj.win->m_configwindow->m_main_server_port_input->setValue(xivo_port);
 
 
-    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(1);
     m_exec_obj.win->m_configwindow->m_userid->setText(login);
     m_exec_obj.win->m_configwindow->m_password->setText(password);
 
-    if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
-        bool hide_unlogged_agents_for_xlet_queue_members = args["hide_unlogged_agents_for_xlet_queue_members"].toBool();
-        if(hide_unlogged_agents_for_xlet_queue_members)
-            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
+    if (args.find("show_agent_option") != args.end()) {
+        bool show_agent_option = args["show_agent_option"].toBool();
+        if(show_agent_option)
+            m_exec_obj.win->m_configwindow->m_showagselect->setChecked(true);
         else
-            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
+            m_exec_obj.win->m_configwindow->m_showagselect->setChecked(false);
     }
-
 
     if(agent_option == "no")
         m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(0);
@@ -82,12 +79,18 @@ void RemoteControl::configure(const QVariantList &list)
         m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(2);
 
 
-    m_exec_obj.win->m_configwindow->m_tabwidget->setCurrentIndex(3);
-
     if (args.find("customerinfo") != args.end()) {
         bool customerinfo = args["customerinfo"].toBool();
         QCheckBox *customer_info_box = m_exec_obj.win->m_configwindow->findChild<QCheckBox*>(QString("enable_customer_info"));
         customer_info_box->setChecked(customerinfo);
+    }
+
+    if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
+        bool hide_unlogged_agents_for_xlet_queue_members = args["hide_unlogged_agents_for_xlet_queue_members"].toBool();
+        if(hide_unlogged_agents_for_xlet_queue_members)
+            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
+        else
+            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
     }
 
     i_close_the_xivo_client_configuration();
