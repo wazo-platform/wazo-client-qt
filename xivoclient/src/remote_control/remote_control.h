@@ -99,9 +99,7 @@ class RemoteControl : public QObject
         void set_search_for_remote_directory(const QVariantList &);
         void exec_double_click_on_number_for_name(const QVariantList &);
 
-        void then_the_agent_list_xlet_shows_agent_as_in_use(const QVariantList &);
-        void then_the_agent_list_xlet_shows_agent_as_not_in_use(const QVariantList &);
-        void then_the_agent_list_xlet_shows_agent_as_unlogged(const QVariantList &);
+        QVariantMap get_agent_list_infos();
 
     signals:
         void select_queue(const QString & queue_id);

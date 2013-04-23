@@ -140,9 +140,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(set_search_for_remote_directory);
             RC_EXECUTE_ARG(exec_double_click_on_number_for_name);
 
-            RC_EXECUTE_ARG(then_the_agent_list_xlet_shows_agent_as_in_use);
-            RC_EXECUTE_ARG(then_the_agent_list_xlet_shows_agent_as_not_in_use);
-            RC_EXECUTE_ARG(then_the_agent_list_xlet_shows_agent_as_unlogged);
+            RC_EXECUTE_WITH_RETURN(get_agent_list_infos);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED, command.action, "", return_value);

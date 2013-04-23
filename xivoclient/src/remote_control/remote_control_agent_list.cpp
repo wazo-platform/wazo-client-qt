@@ -33,68 +33,41 @@
 #include "xletlib/agents_model.h"
 #include "remote_control.h"
 
-QAbstractItemModel* RemoteControl::getAgentListModel()
+QVariantMap RemoteControl::get_agent_list_infos()
 {
-
-    qDebug() << "xlet list" << m_exec_obj.win->m_xletlist;
+    QVariantMap args;
     XletAgents* agents_xlet = static_cast<XletAgents*>(m_exec_obj.win->m_xletlist.value("agents"));
-
-    if (agents_xlet == NULL) {
-        this->assert(false, "agent list xlet was not found");
-    }
-
     QAbstractItemModel* agents_model = agents_xlet->findChild<QAbstractItemModel*>("agents_model");
 
-    if (agents_model == NULL) {
-        this->assert(false, "agent model was not found");
+    args["agents_xlet"] = agents_xlet != NULL;
+    args["agents_model"] = agents_model != NULL;
+
+    QVariantList content;
+    QMap<QString, int> header_data;
+    header_data["firstname"] = AgentsModel::FIRSTNAME;
+    header_data["lastname"] = AgentsModel::LASTNAME;
+    header_data["number"] = AgentsModel::NUMBER;
+    header_data["availability"] = AgentsModel::AVAILABILITY;
+    header_data["status_label"] = AgentsModel::STATUS_LABEL;
+    header_data["status_since"] = AgentsModel::STATUS_SINCE;
+    header_data["logged_status"] = AgentsModel::LOGGED_STATUS;
+    header_data["joined_queues"] = AgentsModel::JOINED_QUEUES;
+    header_data["joined_queue_list"] = AgentsModel::JOINED_QUEUE_LIST;
+    header_data["paused_status"] = AgentsModel::PAUSED_STATUS;
+    header_data["paused_queues"] = AgentsModel::PAUSED_QUEUES;
+
+    int nb_rows = agents_model->rowCount(QModelIndex());
+    for (int row = 0; row < nb_rows; row++) {
+        QVariantMap row_data;
+        QMap<QString, int>::const_iterator column_map;
+        for(column_map = header_data.begin(); column_map != header_data.end(); column_map++) {
+            row_data[column_map.key()] = getValueInModel(agents_model, row, column_map.value());
+        }
+        content.append(row_data);
     }
+    args["content"] = content;
 
-    return agents_model;
-}
-
-QString RemoteControl::getStatusForAgent(QString agent_number)
-{
-    QAbstractItemModel* agents_model = this->getAgentListModel();
-
-    int row = this->findRowWithItem(agents_model, AgentsModel::NUMBER, agent_number);
-
-    if (row == -1) {
-        this->assert(false, QString("agent %1 was not found in agent list").arg(agent_number));
-    }
-
-    QString status = this->getValueInModel(agents_model, row, AgentsModel::AVAILABILITY);
-    return status;
-}
-
-void RemoteControl::then_the_agent_list_xlet_shows_agent_as_in_use(const QVariantList &args)
-{
-    QString agent_number = args[0].toString();
-
-    QString status = getStatusForAgent(agent_number);
-
-    this->assert(status.startsWith(tr("In use")), QString("agent status for %1 is not 'In use' (got '%2')")
-            .arg(agent_number, status));
-}
-
-
-void RemoteControl::then_the_agent_list_xlet_shows_agent_as_not_in_use(const QVariantList &args)
-{
-    QString agent_number = args[0].toString();
-
-    QString status = getStatusForAgent(agent_number);
-
-    this->assert(status.startsWith(tr("Not in use")), QString("agent status for %1 is not 'Not in use' (got '%2')")
-            .arg(agent_number, status));
-}
-
-void RemoteControl::then_the_agent_list_xlet_shows_agent_as_unlogged(const QVariantList &args)
-{
-    QString agent_number = args[0].toString();
-
-    QString status = this->getStatusForAgent(agent_number);
-    this->assert(status == "-", QString("agent status for %1 is not '-' (got '%2')")
-            .arg(agent_number, status));
-
+    return args;
 }
 
 #endif
