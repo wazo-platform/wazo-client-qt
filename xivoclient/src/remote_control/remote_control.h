@@ -112,7 +112,6 @@ class RemoteControl : public QObject
               QString command,
               QString message = "",
               QVariantMap return_value = QVariantMap());
-        void assert(bool condition, const QString & message = "");
         bool commandMatches(RemoteControlCommand, std::string);
 
         QString getValueInModel(QAbstractItemModel* model, int row, int column);

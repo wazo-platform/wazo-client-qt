@@ -35,8 +35,6 @@
 #include <JsonToVariant.h>
 #include <VariantToJson.h>
 
-#include <QDebug>
-
 #include "remote_control.h"
 
 TestFailedException::TestFailedException(const QString & message)
@@ -219,13 +217,6 @@ void RemoteControl::pause(unsigned millisec)
 
     timer.start(millisec);
     loop.exec();
-}
-
-void RemoteControl::assert(bool condition, const QString & message)
-{
-    if (!condition) {
-        throw TestFailedException(message);
-    }
 }
 
 
