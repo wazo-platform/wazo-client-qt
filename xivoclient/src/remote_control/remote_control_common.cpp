@@ -71,8 +71,7 @@ void RemoteControl::configure(const QVariantList &list)
     }
 
     if (args.find("show_agent_option") != args.end()) {
-        bool show_agent_option = args["show_agent_option"].toBool();
-        if(show_agent_option)
+        if(args["show_agent_option"].toBool())
             m_exec_obj.win->m_configwindow->m_showagselect->setChecked(true);
         else
             m_exec_obj.win->m_configwindow->m_showagselect->setChecked(false);
@@ -93,8 +92,7 @@ void RemoteControl::configure(const QVariantList &list)
     }
 
     if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
-        bool hide_unlogged_agents_for_xlet_queue_members = args["hide_unlogged_agents_for_xlet_queue_members"].toBool();
-        if(hide_unlogged_agents_for_xlet_queue_members)
+        if(args["hide_unlogged_agents_for_xlet_queue_members"].toBool())
             m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
         else
             m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
