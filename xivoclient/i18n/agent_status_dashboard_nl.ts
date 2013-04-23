@@ -9,19 +9,9 @@
         <translation>Formulier</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="45"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="46"/>
         <source>66:66</source>
         <translation>66:66</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="68"/>
-        <source>Disponible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="91"/>
-        <source>P. J. Jacques</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
