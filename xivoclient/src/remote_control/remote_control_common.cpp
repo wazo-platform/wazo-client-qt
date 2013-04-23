@@ -58,6 +58,17 @@ QVariantMap RemoteControl::get_xlets()
     return args;
 }
 
+QVariantMap RemoteControl::get_status_bar_infos()
+{
+    QVariantMap args;
+
+    args["status"] = m_exec_obj.win->m_status->text();
+    args["padlock"] = m_exec_obj.win->m_padlock->text();
+    args["profilename"] = m_exec_obj.win->m_profilename->text();
+
+    return args;
+}
+
 void RemoteControl::configure(const QVariantList &list)
 {
     QVariantMap args = list[0].toMap();
