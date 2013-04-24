@@ -199,7 +199,7 @@ void RemoteControl::sendResponse(RemoteControlResponse test_result,
     response["message"] = message;
     response["return_value"] = return_value;
 
-    QString encoded_command = JsonQt::VariantToJson::parse(response);
+    QString encoded_command = JsonQt::VariantToJson::parse(response) + '\n';
 
     m_client_cnx->write(encoded_command.toUtf8().data());
     m_client_cnx->flush();
