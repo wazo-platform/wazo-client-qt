@@ -62,9 +62,8 @@ QVariantMap RemoteControl::get_status_bar_infos()
 {
     QVariantMap args;
 
-    args["status"] = m_exec_obj.win->m_status->text();
-    args["padlock"] = m_exec_obj.win->m_padlock->text();
-    args["profilename"] = m_exec_obj.win->m_profilename->text();
+    args["profilename_value"] = m_exec_obj.win->m_profilename->text();
+    args["profilename_is_hidden"] = m_exec_obj.win->m_profilename->isHidden();
 
     return args;
 }
