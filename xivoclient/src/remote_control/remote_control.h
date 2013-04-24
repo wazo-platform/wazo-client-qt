@@ -84,6 +84,7 @@ class RemoteControl : public QObject
         void configure(const QVariantList &);
         void i_log_in_the_xivo_client();
         void i_log_out_of_the_xivo_client();
+        QVariantMap get_configuration();
         QVariantMap get_login_screen_infos();
         QVariantMap get_status_bar_infos();
         QVariantMap get_xlets();

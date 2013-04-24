@@ -68,6 +68,11 @@ QVariantMap RemoteControl::get_status_bar_infos()
     return args;
 }
 
+QVariantMap RemoteControl::get_configuration()
+{
+    return b_engine->getConfig();
+}
+
 void RemoteControl::configure(const QVariantList &list)
 {
     QVariantMap args = list[0].toMap();
