@@ -31,7 +31,7 @@
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="374"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="368"/>
         <source>Logged</source>
         <translation>Logué</translation>
     </message>
@@ -44,7 +44,7 @@ jointes</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="395"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="389"/>
         <source>Paused</source>
         <translation>En retrait</translation>
     </message>
@@ -71,27 +71,27 @@ en retrait</translation>
         <translation>Libre</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="330"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="329"/>
         <source>In use</source>
         <translation>ECT</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="333"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="331"/>
         <source>Out of queue</source>
         <translation>Com. hors FA</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="376"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="370"/>
         <source>Unlogged</source>
         <translation>Délogué</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="393"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="387"/>
         <source>Unpaused</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="397"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="391"/>
         <source>Partially Paused</source>
         <translation>Retrait partiel</translation>
     </message>
