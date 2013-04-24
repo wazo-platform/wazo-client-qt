@@ -2,67 +2,67 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="483"/>
+        <location filename="src/baseengine.cpp" line="480"/>
         <source>Connection lost with XiVO CTI server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="829"/>
+        <location filename="src/baseengine.cpp" line="826"/>
         <source>Received Services Data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="834"/>
+        <location filename="src/baseengine.cpp" line="831"/>
         <source>Could not modify the Services data.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="834"/>
+        <location filename="src/baseengine.cpp" line="831"/>
         <source>Maybe Asterisk is down.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1243"/>
+        <location filename="src/baseengine.cpp" line="1240"/>
         <source>Server has sent an Error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1247"/>
+        <location filename="src/baseengine.cpp" line="1244"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1252"/>
+        <location filename="src/baseengine.cpp" line="1249"/>
         <source>You entered a wrong login / password.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1255"/>
+        <location filename="src/baseengine.cpp" line="1252"/>
         <source>Your profile identifier &lt;%1&gt; is not defined.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1259"/>
+        <location filename="src/baseengine.cpp" line="1256"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1264"/>
+        <location filename="src/baseengine.cpp" line="1261"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1267"/>
+        <location filename="src/baseengine.cpp" line="1264"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1271"/>
+        <location filename="src/baseengine.cpp" line="1268"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1275"/>
+        <location filename="src/baseengine.cpp" line="1272"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -70,113 +70,113 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1281"/>
+        <location filename="src/baseengine.cpp" line="1278"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1285"/>
+        <location filename="src/baseengine.cpp" line="1282"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1289"/>
+        <location filename="src/baseengine.cpp" line="1286"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1294"/>
+        <location filename="src/baseengine.cpp" line="1291"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1298"/>
+        <location filename="src/baseengine.cpp" line="1295"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1301"/>
+        <location filename="src/baseengine.cpp" line="1298"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1305"/>
+        <location filename="src/baseengine.cpp" line="1302"/>
         <source>You are already connected from %1:%2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1307"/>
+        <location filename="src/baseengine.cpp" line="1304"/>
         <source>No capability allowed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1310"/>
+        <location filename="src/baseengine.cpp" line="1307"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1312"/>
+        <location filename="src/baseengine.cpp" line="1309"/>
         <source>Missing Argument(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1316"/>
+        <location filename="src/baseengine.cpp" line="1313"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1321"/>
+        <location filename="src/baseengine.cpp" line="1318"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1328"/>
+        <location filename="src/baseengine.cpp" line="1325"/>
         <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1335"/>
+        <location filename="src/baseengine.cpp" line="1332"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1340"/>
+        <location filename="src/baseengine.cpp" line="1337"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1344"/>
+        <location filename="src/baseengine.cpp" line="1341"/>
         <source>You were disconnected by the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1346"/>
+        <location filename="src/baseengine.cpp" line="1343"/>
         <source>You were forced to disconnect by the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1348"/>
+        <location filename="src/baseengine.cpp" line="1345"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1350"/>
+        <location filename="src/baseengine.cpp" line="1347"/>
         <source>Could not log agent: extension already in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1354"/>
+        <location filename="src/baseengine.cpp" line="1351"/>
         <source>ERROR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1648"/>
+        <location filename="src/baseengine.cpp" line="1645"/>
         <source>Attempting to reconnect to server</source>
         <translation type="unfinished"/>
     </message>
@@ -527,7 +527,7 @@ Please upgrade it.</source>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="366"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="374"/>
         <source>Logged</source>
         <translation type="unfinished"/>
     </message>
@@ -539,7 +539,7 @@ queues</source>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="387"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="395"/>
         <source>Paused</source>
         <translation type="unfinished"/>
     </message>
@@ -555,32 +555,37 @@ queues</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="270"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="271"/>
         <source>Agent processing a call or paused</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="326"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="327"/>
         <source>Not in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="329"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="330"/>
         <source>In use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="368"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="333"/>
+        <source>Out of queue</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="376"/>
         <source>Unlogged</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="385"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="393"/>
         <source>Unpaused</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="389"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="397"/>
         <source>Partially Paused</source>
         <translation type="unfinished"/>
     </message>
@@ -1338,18 +1343,8 @@ queues parameters for the Stats on slice:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="45"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="46"/>
         <source>66:66</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="68"/>
-        <source>Disponible</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="91"/>
-        <source>P. J. Jacques</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2008,7 +2003,7 @@ Reason given : %3.</source>
     <name>MainWidget</name>
     <message>
         <location filename="../src/mainwidget.cpp" line="66"/>
-        <location filename="../src/mainwidget.cpp" line="935"/>
+        <location filename="../src/mainwidget.cpp" line="925"/>
         <source>Client %1</source>
         <translation>クライアント %1</translation>
     </message>
@@ -2048,197 +2043,197 @@ Reason given : %3.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="348"/>
+        <location filename="../src/mainwidget.cpp" line="343"/>
         <source>Confi&amp;gure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="350"/>
+        <location filename="../src/mainwidget.cpp" line="345"/>
         <source>Configure account and connection options</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="354"/>
+        <location filename="../src/mainwidget.cpp" line="349"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="356"/>
+        <location filename="../src/mainwidget.cpp" line="351"/>
         <source>Close the application</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="357"/>
+        <location filename="../src/mainwidget.cpp" line="352"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="364"/>
+        <location filename="../src/mainwidget.cpp" line="359"/>
         <source>To S&amp;ystray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="365"/>
+        <location filename="../src/mainwidget.cpp" line="360"/>
         <source>Enter the system tray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="370"/>
+        <location filename="../src/mainwidget.cpp" line="365"/>
         <source>&amp;Show window</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="371"/>
+        <location filename="../src/mainwidget.cpp" line="366"/>
         <source>Leave the system tray</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="377"/>
+        <location filename="../src/mainwidget.cpp" line="372"/>
         <source>&amp;Connect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="378"/>
+        <location filename="../src/mainwidget.cpp" line="373"/>
         <source>Connect to the server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="382"/>
+        <location filename="../src/mainwidget.cpp" line="377"/>
         <source>&amp;Disconnect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="384"/>
+        <location filename="../src/mainwidget.cpp" line="379"/>
         <source>Disconnect from the server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="471"/>
+        <location filename="../src/mainwidget.cpp" line="466"/>
         <source>&amp;Availability</source>
         <translation>利用可能(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="474"/>
+        <location filename="../src/mainwidget.cpp" line="469"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="475"/>
+        <location filename="../src/mainwidget.cpp" line="470"/>
         <source>&amp;About XiVO Client</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="476"/>
+        <location filename="../src/mainwidget.cpp" line="471"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="477"/>
+        <location filename="../src/mainwidget.cpp" line="472"/>
         <source>&amp;Credits</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="616"/>
+        <location filename="../src/mainwidget.cpp" line="611"/>
         <source>XiVO CTI Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="725"/>
+        <location filename="../src/mainwidget.cpp" line="716"/>
         <source>Client %1 (%2 profile)</source>
         <translation>クライアント %1 (%2 プロファイル)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="737"/>
+        <location filename="../src/mainwidget.cpp" line="728"/>
         <source>Tabs</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="850"/>
+        <location filename="../src/mainwidget.cpp" line="840"/>
         <source>Connected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="859"/>
+        <location filename="../src/mainwidget.cpp" line="849"/>
         <source>Disconnected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1016"/>
+        <location filename="../src/mainwidget.cpp" line="1006"/>
         <source>Fetch the last one</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1023"/>
+        <location filename="../src/mainwidget.cpp" line="1013"/>
         <source>About XiVO Client</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1025"/>
+        <location filename="../src/mainwidget.cpp" line="1015"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1030"/>
+        <location filename="../src/mainwidget.cpp" line="1020"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1031"/>
+        <location filename="../src/mainwidget.cpp" line="1021"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1032"/>
+        <location filename="../src/mainwidget.cpp" line="1022"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1035"/>
+        <location filename="../src/mainwidget.cpp" line="1025"/>
         <source>(Application Built on : %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1036"/>
+        <location filename="../src/mainwidget.cpp" line="1026"/>
         <source>(Application Launched on : %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1037"/>
+        <location filename="../src/mainwidget.cpp" line="1027"/>
         <source>(Config File Location : %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1040"/>
+        <location filename="../src/mainwidget.cpp" line="1030"/>
         <source>E-mail : </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1041"/>
+        <location filename="../src/mainwidget.cpp" line="1031"/>
         <source>Phone : </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1042"/>
+        <location filename="../src/mainwidget.cpp" line="1032"/>
         <source>Authors : </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1042"/>
+        <location filename="../src/mainwidget.cpp" line="1032"/>
         <source>Avencall Development Team</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1044"/>
+        <location filename="../src/mainwidget.cpp" line="1034"/>
         <source>License : </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1046"/>
+        <location filename="../src/mainwidget.cpp" line="1036"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1052"/>
+        <location filename="../src/mainwidget.cpp" line="1042"/>
         <source>Credits</source>
         <translation type="unfinished"/>
     </message>
@@ -2584,21 +2579,26 @@ Are you sure ?</source>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>Unlogged</source>
+        <source>Out of queue</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
+        <source>Unlogged</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>%1 since %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="330"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="334"/>
         <source>Server: %1</source>
         <translation>サーバ: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="331"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="335"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
     </message>

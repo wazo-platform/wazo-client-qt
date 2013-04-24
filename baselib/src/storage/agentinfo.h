@@ -48,7 +48,8 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         enum AgentAvailability {
             LOGGED_OUT,
             AVAILABLE,
-            UNAVAILABLE
+            UNAVAILABLE,
+            ON_CALL_NONACD
         };
 
         AgentInfo(const QString &, const QString &);
