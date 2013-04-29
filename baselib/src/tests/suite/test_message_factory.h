@@ -39,6 +39,7 @@ class TestMessageFactory: public QObject
     private slots:
         void testSubscribeCurrentCalls();
         void testAnswer();
+        void testDial();
         void testHangup();
         void testHoldSwitchboard();
         void testUnholdSwitchboard();

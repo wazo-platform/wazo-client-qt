@@ -41,6 +41,7 @@ class BASELIB_EXPORT MessageFactory
         ~MessageFactory();
         static QVariantMap subscribeCurrentCalls();
         static QVariantMap answer();
+        static QVariantMap dial(const QString &number);
         static QVariantMap hangup();
         static QVariantMap holdSwitchboard(const QString &queue_name);
         static QVariantMap unholdSwitchboard(const QString &unique_id);
@@ -53,6 +54,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap getSwitchboardDirectoryHeaders();
     private:
         static QVariantMap baseMessage(const QString &class_name);
+        static QVariantMap ipbxcommand(const QString &action_name);
 };
 
 #endif /* __MESSAGE_FACTORY_H__ */

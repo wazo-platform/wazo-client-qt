@@ -55,6 +55,19 @@ void TestMessageFactory::testAnswer()
     QCOMPARE(result, expected);
 }
 
+void TestMessageFactory::testDial()
+{
+    QString number = "1234";
+    QVariantMap result = MessageFactory::dial(number);
+
+    QVariantMap expected;
+    expected["class"] = "ipbxcommand";
+    expected["command"] = "dial";
+    expected["destination"] = number;
+
+    QCOMPARE(result, expected);
+}
+
 void TestMessageFactory::testHangup()
 {
     QVariantMap result = MessageFactory::hangup();
