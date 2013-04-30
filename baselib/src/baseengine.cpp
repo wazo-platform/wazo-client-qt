@@ -197,7 +197,7 @@ void BaseEngine::loadSettings()
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
 #endif /* Q_WS_WIN */
 
-    m_config["logfilename"] = m_settings->value("display/logfilename", "XiVO_Client.log").toString();
+    m_config["logfilename"] = "XiVO_Client.log";
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
     openLogFile ();
 
@@ -303,7 +303,6 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/unique", m_config["uniqueinstance"].toBool());
     m_settings->setValue("display/qss", m_config["qss"].toString());
     m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
-    m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
 
     m_settings->beginGroup(m_profilename_write);
