@@ -168,6 +168,9 @@ void CurrentCall::numberSelected(const QString &number)
         b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
         break;
     default:
+        if (this->hasCurrentCall() == false) {
+            b_engine->sendJsonCommand(MessageFactory::dial(number));
+        }
         break;
     }
 }
