@@ -128,7 +128,7 @@
              </font>
             </property>
             <property name="text">
-             <string>F3</string>
+             <string notr="true">F3</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -144,7 +144,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Call</string>
+             <string notr="true">Call</string>
             </property>
             <property name="shortcut">
              <string notr="true"/>
