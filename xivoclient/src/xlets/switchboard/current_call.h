@@ -46,6 +46,7 @@ enum RequestedAction {
     DIRECT_TRANSFER
 };
 
+
 class CurrentCall: public QObject, public IPBXListener
 {
     Q_OBJECT
@@ -55,6 +56,7 @@ class CurrentCall: public QObject, public IPBXListener
         ~CurrentCall();
         void setParentWidget(QWidget *parent);
         virtual void parseCommand(const QVariantMap &command);
+        void noticeIncoming(bool);
     public slots:
         void answer();
         void attendedTransfer();

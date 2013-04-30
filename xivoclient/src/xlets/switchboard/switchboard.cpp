@@ -213,6 +213,7 @@ void Switchboard::keyPressEvent(QKeyEvent *event)
 void Switchboard::focusOnIncomingCalls()
 {
     this->ui.incomingCallsView->setFocus();
+    this->m_current_call->noticeIncoming(ui.incomingCallsView->model()->rowCount() != 0);
 }
 
 void Switchboard::focusOnWaitingCalls()

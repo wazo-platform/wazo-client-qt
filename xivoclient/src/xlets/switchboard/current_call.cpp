@@ -83,6 +83,13 @@ bool CurrentCall::hasCurrentCall() const
     return this->m_call_start != 0;
 }
 
+void CurrentCall::noticeIncoming(bool hasIncoming)
+{
+    if (hasIncoming && !this->hasCurrentCall()) {
+        ringingMode();
+    }
+}
+
 void CurrentCall::updateCallerID(const QString &name,
                                  const QString &number)
 {
