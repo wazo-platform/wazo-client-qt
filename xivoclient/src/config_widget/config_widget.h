@@ -73,17 +73,11 @@ class ConfigWidget: public QDialog
 
     private slots:
         void saveAndClose();
-        void loginKindChanged(int);
 
     private:
         void load_values();
 
         QVariantMap m_config;
-        QLineEdit * m_userid;
-        QLineEdit * m_password;
-        QCheckBox * m_keeppass;
-        QComboBox * m_loginkind;
-        QLineEdit * m_agentphonenumber;
 
         Ui::ConfigWidget ui;
 };
