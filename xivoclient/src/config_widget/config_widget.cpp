@@ -241,7 +241,6 @@ void ConfigWidget::saveAndClose()
     m_config["userlogin"] = m_userid->text();
     m_config["agentphonenumber"] = m_agentphonenumber->text();
     m_config["password"] = m_password->text();
-    m_config["logtofile"] = m_logtofile->isChecked();
     m_config["logfilename"] = m_logfilename->text();
     m_config["displayprofile"] = m_displayprofile->isChecked();
     m_config["dialpanel.history_length"] = m_dial_history_size->value();
