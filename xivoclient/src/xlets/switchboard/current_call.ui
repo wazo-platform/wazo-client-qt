@@ -144,7 +144,7 @@
              </font>
             </property>
             <property name="text">
-             <string notr="true">Call</string>
+             <string>Call</string>
             </property>
             <property name="shortcut">
              <string notr="true"/>
