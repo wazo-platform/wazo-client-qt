@@ -288,13 +288,34 @@ void CurrentCall::disconnectButtons()
 }
 
 void CurrentCall::setAnswerButton()
+void CurrentCall::setButton(QPushButton *b, const char *slot)
 {
-    QPushButton *answer_button = this->m_current_call_widget->btn_answer;
-    if (! answer_button) {
+    if (! b) {
+        qDebug() << Q_FUNC_INFO << "Tried to enable a NULL button";
         return;
     }
-    answer_button->setEnabled(true);
-    connect(answer_button, SIGNAL(clicked()), this, SLOT(answer()));
+    b->setEnabled(true);
+    connect(b, SIGNAL(clicked()), this, slot);
+}
+
+void CurrentCall::setButton(QPushButton *b, const QKeySequence &k, const char *slot)
+{
+    this->setButton(b, slot);
+    if (! b) {
+        return;
+    }
+    b->setShortcut(k);
+}
+
+void CurrentCall::setButton(QPushButton *b, const QString &l, const QKeySequence &k, const char *slot)
+{
+    this->setButton(b, k, slot);
+    if (! b) {
+        return;
+    }
+    b->setText(l);
+}
+
 }
 
 void CurrentCall::setAttendedTransferButton()

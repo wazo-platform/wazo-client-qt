@@ -34,6 +34,8 @@
 #include <QObject>
 
 class QWidget;
+class QPushButton;
+
 namespace Ui {
     class CurrentCallWidget;
 }
@@ -79,6 +81,11 @@ class CurrentCall: public QObject, public IPBXListener
         void transferRingingMode();
         void transferAnsweredMode();
         void disconnectButtons();
+
+        void setButton(QPushButton*, const QString &, const QKeySequence &, const char *);
+        void setButton(QPushButton*, const QKeySequence &, const char *);
+        void setButton(QPushButton*, const char *);
+
         void setAnswerButton();
         void setAttendedTransferButton();
         void setDirectTransferButton();
