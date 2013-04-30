@@ -70,6 +70,8 @@ class CurrentCall: public QObject, public IPBXListener
         void updateCall(const QVariantList &calls);
         void parseCurrentCalls(const QVariantMap &message);
         void parseAttendedTransferAnswered(const QVariantMap &message);
+        bool hasCurrentCall() const;
+
         void noCallsMode();
         void answeringMode();
         void transferRingingMode();

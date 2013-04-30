@@ -76,6 +76,11 @@ void CurrentCall::setParentWidget(QWidget *parent)
             this, SLOT(noNumberSelected()));
 }
 
+bool CurrentCall::hasCurrentCall() const
+{
+    return this->m_call_start != 0;
+}
+
 void CurrentCall::updateCallerID(const QString &name,
                                  const QString &number)
 {
