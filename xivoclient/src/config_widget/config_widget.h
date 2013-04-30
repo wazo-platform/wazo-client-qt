@@ -78,37 +78,13 @@ class ConfigWidget: public QDialog
         void loginKindChanged(int);
 
     private:
-        void createColors();
-        void _insert_connection_tab();
-        void _insert_account_tab();
-        void _insert_guisetting_tab();
-        void _insert_function_tab();
-        void _insert_advanced_tab();
+        void load_values();
 
         QWidget * m_parent;
-
+        QTabWidget * m_tabwidget;
         QVariantMap m_config;
-
-        struct ColorLevelStruct {
-            QString id;
-            QString label;
-        };
-        QList<ColorLevelStruct> m_queue_colors;
-
         QMap<QString, QString> m_dblclick_actions;
 
-        QLineEdit * m_main_server_address_input;
-        QSpinBox  * m_main_server_port_input;
-        QCheckBox * m_main_server_encrypt_input;
-        QCheckBox * m_backup_server_enabled;
-        QLineEdit * m_backup_server_address_input;
-        QSpinBox  * m_backup_server_port_input;
-        QCheckBox * m_backup_server_encrypt_input;
-        QCheckBox * m_trytoreconnect;
-        QSpinBox  * m_tryinterval_sbox;
-        QSpinBox  * m_keepalive_input;
-
-        QLineEdit * m_context;
         QLineEdit * m_userid;
         QLineEdit * m_password;
         QCheckBox * m_keeppass;
@@ -116,50 +92,6 @@ class ConfigWidget: public QDialog
         QCheckBox * m_showagselect;
         QComboBox * m_loginkind;
         QLineEdit * m_agentphonenumber;
-
-        QComboBox * m_locale_cbox;
-        QCheckBox * m_systrayed;
-        QCheckBox * m_unique;
-        QComboBox * m_qss;
-        QCheckBox * m_clipboard;
-
-        QLineEdit * m_switchboard_queue_name;
-        QLineEdit * m_switchboard_hold_queue_name;
-
-        QHash<QString, QCheckBox *> m_function;
-
-        QTabWidget * m_function_tabwidget;
-
-        QSpinBox * m_presenceIndicatorSize;
-
-        QCheckBox * m_autourl_allowed;
-        QSpinBox  * m_tablimit_sbox;
-
-        QSpinBox  * m_dial_history_size;
-
-        QSpinBox  * m_history_sbox;
-
-        QSpinBox  * m_contactssize_sbox;
-        QSpinBox  * m_contactswidth_sbox;
-        QComboBox * m_contacts_dblclick;
-
-        QCheckBox * m_hide_unlogged_agents;
-
-        QHash<QString, QSpinBox *> m_queuelevels;
-        QHash<QString, QSpinBox *> m_queuelevels_wait;
-        QCheckBox * m_queue_longestwait;
-        QCheckBox * m_queue_displaynu;
-
-        QDialogButtonBox * m_btnbox;
-        QTabWidget * m_tabwidget;
-
-        QCheckBox * m_logtofile;
-        QLineEdit * m_logfilename;
-
-        QCheckBox * m_displayprofile;
-        QCheckBox * m_activate_on_tel;
-
-        QPushButton * m_reset_gui;
 
         Ui::ConfigWidget ui;
 };
