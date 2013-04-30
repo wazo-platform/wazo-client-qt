@@ -197,12 +197,9 @@ void BaseEngine::loadSettings()
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
 #endif /* Q_WS_WIN */
 
-    m_config["logtofile"] = m_settings->value("display/logtofile", false).toBool();
     m_config["logfilename"] = m_settings->value("display/logfilename", "XiVO_Client.log").toString();
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
-    if (m_config["logtofile"].toBool()) {
-        openLogFile ();
-    }
+    openLogFile ();
 
     m_config["profilename"] = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + m_config["profilename"].toString();
@@ -306,7 +303,6 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/unique", m_config["uniqueinstance"].toBool());
     m_settings->setValue("display/qss", m_config["qss"].toString());
     m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
-    m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
     m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
 
@@ -395,7 +391,7 @@ void BaseEngine::openLogFile()
 
 void BaseEngine::logAction(const QString & logstring)
 {
-    if (m_config["logtofile"].toBool() && m_logfile != NULL) {
+    if (m_logfile != NULL) {
         QString tolog = QDateTime::currentDateTime().toString(Qt::ISODate) + " " + logstring + "\n";
         m_logfile->write(tolog.toUtf8());
         m_logfile->flush();
