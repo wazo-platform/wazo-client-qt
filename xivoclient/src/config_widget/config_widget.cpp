@@ -163,15 +163,6 @@ void ConfigWidget::load_values()
     this->ui.show_displayprofile->setChecked(this->m_config["displayprofile"].toBool());
 }
 
-void ConfigWidget::loginKindChanged(int index)
-{
-    if (index == 0) {
-        this->m_agentphonenumber->setEnabled(false);
-    } else {
-        this->m_agentphonenumber->setEnabled(true);
-    }
-}
-
 void ConfigWidget::saveAndClose()
 {
     // User
