@@ -325,6 +325,15 @@ void CurrentCall::setAttendedTransferButton()
     m_current_call_widget->btn_attended_transfer->setShortcut(attended_transfer_key);
     connect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
             this, SLOT(attendedTransfer()));
+
+void CurrentCall::setCallButton()
+{
+    this->setButton(
+        this->m_current_call_widget->btn_call,
+        m_call_label,
+        call_key,
+        SLOT(call())
+    );
 }
 
 void CurrentCall::setDirectTransferButton()

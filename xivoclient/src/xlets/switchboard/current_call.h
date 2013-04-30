@@ -88,6 +88,7 @@ class CurrentCall: public QObject, public IPBXListener
 
         void setAnswerButton();
         void setAttendedTransferButton();
+        void setCallButton();
         void setDirectTransferButton();
         void setCompleteTransferButton();
         void setHoldButton();
