@@ -62,6 +62,7 @@
 #include "baseengine.h"
 #include "cti_server.h"
 #include "phonenumber.h"
+#include "message_factory.h"
 
 
 /*! \brief Constructor.
@@ -1462,9 +1463,6 @@ void BaseEngine::actionCall(const QString & action,
     } else if ((action == "hangup") || (action == "transfercancel")) {
         ipbxcommand["command"] = action;
         ipbxcommand["channelids"] = src;
-    } else if (action == "dial") {
-        ipbxcommand["command"] = action;
-        ipbxcommand["destination"] = dst;
     } else if (action == "answer") {
         ipbxcommand["command"] = action;
         ipbxcommand["phoneids"] = src;
@@ -1479,16 +1477,9 @@ void BaseEngine::actionCall(const QString & action,
     ipbxCommand(ipbxcommand);
 }
 
-/*! \brief make the user dial a number
- *
- * \param action originate/transfer/atxfer/hangup/answer/refuse
- */
-void BaseEngine::actionDialNumber(const QString & number)
+void BaseEngine::actionDial(const QString &destination)
 {
-    QVariantMap ipbxcommand;
-    ipbxcommand["command"] = "dial";
-    ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(number);
-    ipbxCommand(ipbxcommand);
+    this->sendJsonCommand(MessageFactory::dial(destination));
 }
 
 /*! \brief Receive a number list from xlets and signal this list
@@ -1941,7 +1932,7 @@ void BaseEngine::handleOtherInstanceMessage(const QString & msg)
     // todo : handle also other commands
     QString phonenum = msg;
     qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
-    actionDialNumber(phonenum);
+    actionDial(phonenum);
 }
 
 int BaseEngine::forwardToListeners(QString event_dest, const QVariantMap & map)

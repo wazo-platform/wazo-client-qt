@@ -277,7 +277,7 @@ void LogTableView::callOnClick(bool)
 {
     QAction *calling_action = qobject_cast<QAction *>(sender());
     QString num_to_call = calling_action->property("num_to_call").toString();
-    b_engine->actionDialNumber(num_to_call);
+    b_engine->actionDial(num_to_call);
 }
 
 void LogTableView::onViewClick(const QModelIndex &model)

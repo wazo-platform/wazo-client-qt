@@ -90,7 +90,7 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
     if( PhoneNumber::phone_re().exactMatch(item->text()) ) {
-        b_engine->actionDialNumber(item->text());
+        b_engine->actionDial(item->text());
     }
 
     if(item && item->text().contains("@")) {

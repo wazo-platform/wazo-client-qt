@@ -149,7 +149,7 @@ void ExtendedTableWidget::dialNumber()
 {
     QString number = sender()->property("number").toString();
     if (! number.isEmpty()) {
-        b_engine->actionDialNumber(number);
+        b_engine->actionDial(number);
     }
 }
 

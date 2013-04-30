@@ -42,10 +42,10 @@ QVariantMap MessageFactory::answer()
     return MessageFactory::baseMessage("answer");
 }
 
-QVariantMap MessageFactory::dial(const QString &number)
+QVariantMap MessageFactory::dial(const QString &destination)
 {
     QVariantMap command = MessageFactory::ipbxcommand("dial");
-    command["destination"] = number;
+    command["destination"] = destination;
 
     return command;
 }

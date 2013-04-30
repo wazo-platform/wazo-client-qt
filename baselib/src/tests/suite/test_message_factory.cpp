@@ -57,13 +57,13 @@ void TestMessageFactory::testAnswer()
 
 void TestMessageFactory::testDial()
 {
-    QString number = "1234";
-    QVariantMap result = MessageFactory::dial(number);
+    QString destination = "exten:xivo/1234";
+    QVariantMap result = MessageFactory::dial(destination);
 
     QVariantMap expected;
     expected["class"] = "ipbxcommand";
     expected["command"] = "dial";
-    expected["destination"] = number;
+    expected["destination"] = destination;
 
     QCOMPARE(result, expected);
 }
