@@ -29,10 +29,11 @@
 
 #include "mainwidget.h"
 #include "baseengine.h"
-#include "config_widget/config_widget.h"
+
 #include "xivoconsts.h"
 #include "xletfactory.h"
 #include "application_status_icon.h"
+#include "config_widget/config_widget.h"
 
 /*! \brief Constructor
  *

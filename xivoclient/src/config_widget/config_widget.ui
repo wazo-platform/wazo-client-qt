@@ -6,20 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>451</height>
+    <width>496</width>
+    <height>488</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>XiVO Client Configuration</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="xivoclient.qrc">
+   <iconset resource="../../xivoclient.qrc">
     <normaloff>:/images/xivoicon.png</normaloff>:/images/xivoicon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -41,57 +44,10 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="language">
-           <item>
-            <property name="text">
-             <string>System Language</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>English</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>French</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Dutch</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Italian (incomplete)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Portuguese (incomplete)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Hungarian (incomplete)</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="language"/>
          </item>
          <item row="1" column="1">
-          <widget class="QComboBox" name="style">
-           <item>
-            <property name="text">
-             <string>Default</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>XiVO</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="style"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="style_label">
@@ -245,8 +201,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>410</width>
-            <height>163</height>
+            <width>456</width>
+            <height>230</height>
            </rect>
           </property>
           <attribute name="label">
@@ -270,8 +226,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>292</width>
-            <height>107</height>
+            <width>282</width>
+            <height>94</height>
            </rect>
           </property>
           <attribute name="label">
@@ -328,8 +284,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>153</width>
-            <height>45</height>
+            <width>148</width>
+            <height>38</height>
            </rect>
           </property>
           <attribute name="label">
@@ -363,8 +319,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>410</width>
-            <height>163</height>
+            <width>273</width>
+            <height>44</height>
            </rect>
           </property>
           <attribute name="label">
@@ -395,8 +351,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>409</width>
-            <height>139</height>
+            <width>456</width>
+            <height>230</height>
            </rect>
           </property>
           <attribute name="label">
@@ -447,7 +403,7 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QSpinBox" name="spinBox">
+              <widget class="QSpinBox" name="longest_wait_time_green">
                <property name="maximum">
                 <number>99999</number>
                </property>
@@ -457,7 +413,7 @@
               </widget>
              </item>
              <item row="1" column="2">
-              <widget class="QSpinBox" name="spinBox_2">
+              <widget class="QSpinBox" name="longest_wait_time_orange">
                <property name="maximum">
                 <number>99999</number>
                </property>
@@ -474,7 +430,7 @@
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QSpinBox" name="spinBox_3">
+              <widget class="QSpinBox" name="waiting_calls_green">
                <property name="maximum">
                 <number>99999</number>
                </property>
@@ -484,7 +440,7 @@
               </widget>
              </item>
              <item row="2" column="2">
-              <widget class="QSpinBox" name="spinBox_4">
+              <widget class="QSpinBox" name="waiting_calls_orange">
                <property name="maximum">
                 <number>99999</number>
                </property>
@@ -529,8 +485,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>192</width>
-            <height>40</height>
+            <width>188</width>
+            <height>37</height>
            </rect>
           </property>
           <attribute name="label">
@@ -590,8 +546,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>images/padlock.png</normaloff>images/padlock.png</iconset>
+            <iconset resource="../../xivoclient.qrc">
+             <normaloff>:/images/padlock.png</normaloff>:/images/padlock.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -633,8 +589,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="config.qrc">
-             <normaloff>:/padlock.png/images/padlock.png</normaloff>:/padlock.png/images/padlock.png</iconset>
+            <iconset resource="../../xivoclient.qrc">
+             <normaloff>:/images/padlock.png</normaloff>:/images/padlock.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -723,14 +679,14 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="keepalive_interval">
+        <widget class="QLabel" name="keepalive_interval_label">
          <property name="text">
           <string>Keepalive interval</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QSpinBox" name="keepalive_interval_2">
+        <widget class="QSpinBox" name="keepalive_interval">
          <property name="minimum">
           <number>1</number>
          </property>
@@ -766,8 +722,8 @@
   </layout>
  </widget>
  <resources>
-  <include location="config.qrc"/>
-  <include location="xivoclient.qrc"/>
+  <include location="../../xivoclient.qrc"/>
+  <include location="../../xivoclient.qrc"/>
  </resources>
  <connections/>
 </ui>
