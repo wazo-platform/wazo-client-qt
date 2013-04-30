@@ -38,6 +38,7 @@
 
 #include "current_call.h"
 
+QKeySequence CurrentCall::call_key = QKeySequence("F3");
 QKeySequence CurrentCall::direct_transfer_key = QKeySequence("F4");
 QKeySequence CurrentCall::attended_transfer_key = QKeySequence("F5");
 QKeySequence CurrentCall::hangup_key = QKeySequence("F8");
@@ -47,6 +48,7 @@ CurrentCall::CurrentCall(QObject *parent)
       m_current_call_widget(NULL),
       m_call_start(0),
       m_attended_transfer_label(tr("Attended T")),
+      m_call_label(tr("Call")),
       m_complete_transfer_label(tr("Complete T")),
       m_hangup_label(tr("Hangup")),
       m_cancel_transfer_label(tr("Cancel T"))
@@ -152,6 +154,9 @@ void CurrentCall::numberSelected(const QString &number)
         b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
         this->transferRingingMode();
         break;
+    case CALL:
+        b_engine->sendJsonCommand(MessageFactory::dial(number));
+        break;
     case DIRECT_TRANSFER:
         b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
         break;
@@ -168,6 +173,13 @@ void CurrentCall::noNumberSelected()
 void CurrentCall::answer()
 {
     b_engine->sendJsonCommand(MessageFactory::answer());
+}
+
+void CurrentCall::call()
+{
+    m_requested_action = CALL;
+    signal_relayer->relayNumberSelectionRequested();
+    this->m_current_call_widget->btn_call->setShortcut(QString());
 }
 
 void CurrentCall::hangup()

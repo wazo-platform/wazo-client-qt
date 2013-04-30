@@ -40,6 +40,7 @@ namespace Ui {
 
 enum RequestedAction {
     ATTENDED_TRANSFER,
+    CALL,
     DIRECT_TRANSFER
 };
 
@@ -55,6 +56,7 @@ class CurrentCall: public QObject, public IPBXListener
     public slots:
         void answer();
         void attendedTransfer();
+        void call();
         void directTransfer();
         void completeTransfer();
         void cancelTransfer();
@@ -90,10 +92,12 @@ class CurrentCall: public QObject, public IPBXListener
         QString m_caller_id;
 
         QString m_attended_transfer_label;
+        QString m_call_label;
         QString m_complete_transfer_label;
         QString m_hangup_label;
         QString m_cancel_transfer_label;
         static QKeySequence direct_transfer_key;
+        static QKeySequence call_key;
         static QKeySequence attended_transfer_key;
         static QKeySequence hangup_key;
 
