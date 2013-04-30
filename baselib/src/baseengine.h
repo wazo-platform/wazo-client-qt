@@ -384,7 +384,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         BaseConfig m_config;            //!< Stores the configuration values.
 
-        QString m_xuserid;              //!< Full Id (userid + company)
+        QString m_xuserid;              //!< Full Id (userid)
         QString m_ipbxid;               //!< IPBX id of the current user
         QString m_userid;               //!< xivo user id of the current user
         QString m_profilename_read;     //!< CTI profile name of the current user
