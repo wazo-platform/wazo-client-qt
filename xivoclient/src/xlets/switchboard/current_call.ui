@@ -146,6 +146,9 @@
             <property name="text">
              <string>Call</string>
             </property>
+            <property name="shortcut">
+             <string notr="true"/>
+            </property>
            </widget>
           </item>
          </layout>
