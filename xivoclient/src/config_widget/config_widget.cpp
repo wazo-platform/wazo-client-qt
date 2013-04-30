@@ -141,6 +141,10 @@ void ConfigWidget::load_values()
     /// Queue members
     this->ui.hide_unlogged_agents->setChecked(this->m_config["guioptions.queue_members_hide_unlogged_agents"].toBool());
 
+    /// Switchboard
+    this->ui.switchboard_queue_name->setText(this->m_config["switchboard_queue_name"].toString());
+    this->ui.switchboard_call_on_hold_queue_name->setText(this->m_config["switchboard_hold_queue_name"].toString());
+
 
     // Administration
     this->ui.server->setText(this->m_config["cti_address"].toString());
@@ -208,6 +212,10 @@ void ConfigWidget::saveAndClose()
 
     /// Queue members
     this->m_config["guioptions.queue_members_hide_unlogged_agents"] = this->ui.hide_unlogged_agents->isChecked();
+
+    /// Switchboard
+    this->m_config["switchboard_queue_name"] = this->ui.switchboard_queue_name->text();
+    this->m_config["switchboard_hold_queue_name"] = this->ui.switchboard_call_on_hold_queue_name->text();
 
 
     // Administration

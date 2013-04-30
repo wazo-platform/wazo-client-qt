@@ -505,6 +505,51 @@
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="switchboard">
+          <attribute name="icon">
+           <iconset resource="../../xivoclient.qrc">
+            <normaloff>:/images/agent-trans.png</normaloff>:/images/agent-trans.png</iconset>
+          </attribute>
+          <attribute name="label">
+           <string>Switchboard</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="switchboard_call_on_hold_queue_name"/>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="switchboard_queue_name">
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="switchboard_queue_name_label">
+               <property name="text">
+                <string>Switchboard queue name</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="switchboard_call_on_hold_queue_name_label">
+               <property name="text">
+                <string>Switchboard call on hold queue name</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
