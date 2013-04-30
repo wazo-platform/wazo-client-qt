@@ -224,7 +224,6 @@ void BaseEngine::loadSettings()
         m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
-        m_config["company"] = m_settings->value("company", "default").toString();
         m_config["password"] = m_settings->value("password").toString();
         // keeppass and showagselect are booleans in memory, integers (Qt::checkState) in qsettings/config file (due to compatibility)
         m_config["keeppass"] = (m_settings->value("keeppass", Qt::Unchecked).toUInt() == Qt::Checked);
@@ -320,7 +319,6 @@ void BaseEngine::saveSettings()
         m_settings->setValue("backup_server_encryption", m_config["cti_backup_encrypt"].toBool());
         m_settings->setValue("userid", m_config["userloginsimple"].toString());
         m_settings->setValue("useridopt", m_config["userloginopt"].toString());
-        m_settings->setValue("company", m_config["company"].toString());
         // keeppass and showagselect are booleans in memory, but integers (Qt::checkType) in qsettings/config file (due to compatibility)
         m_settings->setValue("keeppass", m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
         m_settings->setValue("showagselect", m_config["showagselect"].toBool() ? Qt::Checked : Qt::Unchecked);
@@ -455,7 +453,7 @@ void BaseEngine::authenticate()
     QVariantMap command;
     command["class"] = "login_id";
     command["userlogin"] = m_config["userloginsimple"].toString();
-    command["company"] = m_config["company"].toString();
+    command["company"] = "xivo";
     command["ident"] = m_osname;
     command["version"] = "9999";
     command["xivoversion"] = __cti_protocol_version__;
@@ -1308,7 +1306,6 @@ void BaseEngine::popupError(const QString & errorid,
     if (errorid.toLower() == "user_not_found") {
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
-            .arg(m_config["userloginsimple"].toString()).arg(m_config["company"].toString())
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
