@@ -77,6 +77,7 @@ class CurrentCall: public QObject, public IPBXListener
         bool hasCurrentCall() const;
 
         void noCallsMode();
+        void ringingMode();
         void answeringMode();
         void transferRingingMode();
         void transferAnsweredMode();
