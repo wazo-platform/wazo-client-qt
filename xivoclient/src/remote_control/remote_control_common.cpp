@@ -41,7 +41,7 @@ void RemoteControl::i_go_to_the_xivo_client_configuration()
 
 void RemoteControl::i_close_the_xivo_client_configuration()
 {
-    m_exec_obj.win->m_configwindow->m_btnbox->button(QDialogButtonBox::Ok)->click();
+    m_exec_obj.win->m_configwindow->ui.buttonBox->button(QDialogButtonBox::Ok)->click();
 }
 
 QVariantMap RemoteControl::get_xlets()
@@ -83,53 +83,52 @@ void RemoteControl::configure(const QVariantList &list)
     const QString & password = args["password"].toString();
     const QString & agent_option = args["agent_option"].toString();
 
+    // login widget
+    m_exec_obj.win->m_qlab1->setText(login);
+    m_exec_obj.win->m_qlab2->setText(password);
+    if(agent_option == "no")
+        m_exec_obj.win->m_loginkind->setCurrentIndex(0);
+    if(agent_option == "unlogged")
+        m_exec_obj.win->m_loginkind->setCurrentIndex(1);
+    if(agent_option == "logged")
+        m_exec_obj.win->m_loginkind->setCurrentIndex(2);
+
+
+    // config widget
     i_go_to_the_xivo_client_configuration();
 
-    m_exec_obj.win->m_configwindow->m_main_server_address_input->setText(xivo_address);
-    m_exec_obj.win->m_configwindow->m_main_server_port_input->setValue(xivo_port);
-
-
-    m_exec_obj.win->m_configwindow->m_userid->setText(login);
-    m_exec_obj.win->m_configwindow->m_password->setText(password);
+    m_exec_obj.win->m_configwindow->ui.server->setText(xivo_address);
+    m_exec_obj.win->m_configwindow->ui.port->setValue(xivo_port);
 
     if (args.find("autoconnect") != args.end()) {
         if(args["autoconnect"].toBool())
-            m_exec_obj.win->m_configwindow->m_autoconnect->setChecked(true);
+            m_exec_obj.win->m_configwindow->ui.startup_connect->setChecked(true);
         else
-            m_exec_obj.win->m_configwindow->m_autoconnect->setChecked(false);
+            m_exec_obj.win->m_configwindow->ui.startup_connect->setChecked(false);
     }
 
     if (args.find("show_agent_option") != args.end()) {
         if(args["show_agent_option"].toBool())
-            m_exec_obj.win->m_configwindow->m_showagselect->setChecked(true);
+            m_exec_obj.win->m_configwindow->ui.show_agent_options->setChecked(true);
         else
-            m_exec_obj.win->m_configwindow->m_showagselect->setChecked(false);
+            m_exec_obj.win->m_configwindow->ui.show_agent_options->setChecked(false);
     }
-
-    if(agent_option == "no")
-        m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(0);
-    if(agent_option == "unlogged")
-        m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(1);
-    if(agent_option == "logged")
-        m_exec_obj.win->m_configwindow->m_loginkind->setCurrentIndex(2);
 
     if (args.find("display_profile") != args.end()) {
         bool display_profile = args["display_profile"].toBool();
-        QCheckBox *display_profile_box = m_exec_obj.win->m_configwindow->m_displayprofile;
-        display_profile_box->setChecked(display_profile);
+        m_exec_obj.win->m_configwindow->ui.show_displayprofile->setChecked(display_profile);
     }
 
-    if (args.find("enable_screen_popup") != args.end()) {
-        bool is_enable_screen_popup = args["enable_screen_popup"].toBool();
-        QCheckBox *enable_screen_popup = m_exec_obj.win->m_configwindow->findChild<QCheckBox*>(QString("enable_customer_info"));
-        enable_screen_popup->setChecked(is_enable_screen_popup);
+    if (args.find("customerinfo") != args.end()) {
+        bool customerinfo = args["customerinfo"].toBool();
+        m_exec_obj.win->m_configwindow->ui.enable_screen_popup->setChecked(customerinfo);
     }
 
     if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
         if(args["hide_unlogged_agents_for_xlet_queue_members"].toBool())
-            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(true);
+            m_exec_obj.win->m_configwindow->ui.hide_unlogged_agents->setChecked(true);
         else
-            m_exec_obj.win->m_configwindow->m_hide_unlogged_agents->setChecked(false);
+            m_exec_obj.win->m_configwindow->ui.hide_unlogged_agents->setChecked(false);
     }
 
     i_close_the_xivo_client_configuration();
