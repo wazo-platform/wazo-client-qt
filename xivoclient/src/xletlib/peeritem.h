@@ -34,8 +34,6 @@
 
 #include <QtGui>
 
-#include "basicpeerwidget.h"
-
 class PeerWidget;
 class UserInfo;
 
