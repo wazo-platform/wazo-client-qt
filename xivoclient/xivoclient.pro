@@ -29,6 +29,7 @@ mac {
 }
 
 FORMS += $${ROOT_DIR}/src/config_widget/config_widget.ui
+FORMS += $${ROOT_DIR}/src/login_widget/login_widget.ui
 
 # this should just tell lrelease to compile these files
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
@@ -50,6 +51,8 @@ HEADERS += $${ROOT_DIR}/src/*.h
 SOURCES += $${ROOT_DIR}/src/*.cpp
 HEADERS += $${ROOT_DIR}/src/config_widget/*.h
 SOURCES += $${ROOT_DIR}/src/config_widget/*.cpp
+HEADERS += $${ROOT_DIR}/src/login_widget/*.h
+SOURCES += $${ROOT_DIR}/src/login_widget/*.cpp
 HEADERS += $${ROOT_DIR}/src/remote_control/*.h
 SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 

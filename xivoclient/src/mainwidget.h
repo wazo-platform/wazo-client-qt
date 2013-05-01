@@ -36,9 +36,11 @@
 #include <xletlib/functests.h>
 
 #include "systray_manager.h"
+#include "config_widget/config_widget.h"
 
 class XLet;
 class ConfigWidget;
+class LoginWidget;
 
 class MainWidget : public QMainWindow
 {
@@ -71,10 +73,6 @@ class MainWidget : public QMainWindow
         void checksAvailState();
         void about();
         void showCredits();
-        void setConfigAndStart();
-        void setAgentLoginWidgetsVisible();
-        void syncAgentLoginWidgets();
-        void fetchConfig();
         void confUpdated();
         void updatePresence();
         void showMessageBox(const QString &);
@@ -98,8 +96,6 @@ class MainWidget : public QMainWindow
         void createSystrayIcon();  //!< Create the systray Icon and its menu
         void updateAppliName();
         void clearPresence();
-        void makeLoginWidget();
-        void setConfig();
         void setMenuAvailabilityEnabled(bool);
         QDockWidget* createDockXlet(const QString& name,
                                     const QString& title,
@@ -123,11 +119,11 @@ class MainWidget : public QMainWindow
         QDockWidget *m_resizingHelper;
 
         QWidget *m_wid;  //!< "Main" Widget
-        QWidget *m_loginWidget;  //!< Central Widget for login
+        LoginWidget *m_loginWidget;  //!< Central Widget for login
+        ConfigWidget *m_configwindow;  //!< Config Widget
 
         QByteArray m_defaultState;
 
-        ConfigWidget *m_configwindow;
 
         // Widgets for Xlets
         QTabWidget *m_tabwidget;        //!< Area to display messages, services and histories
@@ -154,15 +150,6 @@ class MainWidget : public QMainWindow
         QActionGroup *m_availgrp;  //!< Availability action group
 
         QVBoxLayout *m_vL;
-        QLabel *m_lab1;
-        QLabel *m_lab2;
-        QLabel *m_lab3;
-        QLineEdit *m_qlab1;
-        QLineEdit *m_qlab2;
-        QLineEdit *m_qlab3;
-        QPushButton *m_ack;
-        QCheckBox *m_kpass;
-        QComboBox *m_loginkind;
 
         QMenu *m_avail;  //!< Availability submenu
         QHash<QString, QAction *>m_avact;  //!< Actions

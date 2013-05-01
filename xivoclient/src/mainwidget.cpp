@@ -34,6 +34,7 @@
 #include "xletfactory.h"
 #include "application_status_icon.h"
 #include "config_widget/config_widget.h"
+#include "login_widget/login_widget.h"
 
 /*! \brief Constructor
  *
@@ -62,7 +63,6 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
 {
     b_engine->setParent(this); // take ownership of the engine object
     qt_system_tray_icon.setParent(this);
-    fetchConfig();
 
     m_appliname = tr("Client %1").arg(XC_VERSION);
 
@@ -133,7 +133,10 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
 
     m_launchDateTime = QDateTime::currentDateTime();
 
-    makeLoginWidget();
+    // Login widget
+    this->m_loginWidget = new LoginWidget(this->m_centralWidget);
+    this->m_centralWidget->addWidget(this->m_loginWidget);
+    this->m_loginWidget->setConfig();
     showLogin();
 
     bool systrayed = b_engine->getConfig("systrayed").toBool();
@@ -151,67 +154,6 @@ MainWidget::~MainWidget()
 {
     b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
     b_engine->logAction("application quit");
-}
-
-void MainWidget::makeLoginWidget()
-{
-    m_loginWidget = new QWidget(m_centralWidget);
-    m_loginWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    m_centralWidget->addWidget(m_loginWidget);
-    QGridLayout *loginL = new QGridLayout(m_loginWidget);
-    loginL->setRowStretch(0, 1);
-    loginL->setColumnStretch(0, 1);
-    loginL->setColumnStretch(2, 1);
-    loginL->setRowStretch(6, 1);
-
-    QLabel *xivoBg = new QLabel();
-    xivoBg->setPixmap(QPixmap(":/images/xivoicon.png"));
-    xivoBg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    loginL->addWidget(xivoBg, 1, 1, Qt::AlignHCenter | Qt::AlignVCenter);
-
-    m_lab1 = new QLabel(tr("Login"));
-    loginL->addWidget(m_lab1, 2, 0, Qt::AlignRight);
-    m_lab2 = new QLabel(tr("Password"));
-    loginL->addWidget(m_lab2, 3, 0, Qt::AlignRight);
-    m_lab3 = new QLabel(tr("Phone"));
-    loginL->addWidget(m_lab3, 4, 0, Qt::AlignRight);
-
-    m_qlab1 = new QLineEdit();
-    m_qlab1->setText(m_config["userlogin"].toString());
-    loginL->addWidget(m_qlab1, 2, 1);
-    m_qlab2 = new QLineEdit();
-    m_qlab2->setText(m_config["password"].toString());
-    m_qlab2->setEchoMode(QLineEdit::Password);
-    loginL->addWidget(m_qlab2, 3, 1);
-    m_qlab3 = new QLineEdit();
-    m_qlab3->setText(m_config["agentphonenumber"].toString());
-    loginL->addWidget(m_qlab3, 4, 1);
-
-    m_ack = new QPushButton("OK");
-    loginL->addWidget(m_ack, 2, 2, Qt::AlignLeft);
-    m_kpass = new QCheckBox(tr("Keep Password"));
-    m_kpass->setChecked(m_config["keeppass"].toBool());
-    loginL->addWidget(m_kpass, 3, 2, Qt::AlignLeft);
-    m_loginkind = new QComboBox();
-    m_loginkind->addItem(QString(tr("No Agent")));
-    m_loginkind->addItem(QString(tr("Agent (unlogged)")));
-    m_loginkind->addItem(QString(tr("Agent (logged)")));
-    m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
-    loginL->addWidget(m_loginkind, 4, 2, Qt::AlignLeft);
-
-    setAgentLoginWidgetsVisible();
-    m_qlab1->setFocus();
-
-    connect(m_qlab1, SIGNAL(returnPressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_qlab2, SIGNAL(returnPressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_qlab3, SIGNAL(returnPressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_ack, SIGNAL(pressed()),
-             this, SLOT(setConfigAndStart()));
-    connect(m_loginkind, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(syncAgentLoginWidgets()));
 }
 
 void MainWidget::clipselection()
@@ -276,52 +218,6 @@ void MainWidget::clearAppearance()
     m_gridnames.clear();
     m_tabnames.clear();
     m_allnames.clear();
-}
-
-void MainWidget::setConfig()
-{
-    m_config["userlogin"] = m_qlab1->text();
-    m_config["password"] = m_qlab2->text();
-    m_config["agentphonenumber"] = m_qlab3->text();
-    m_config["keeppass"] = m_kpass->isChecked();
-    m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
-    b_engine->setConfig(m_config);
-}
-
-void MainWidget::setConfigAndStart()
-{
-    setConfig();
-    b_engine->start();
-}
-
-/*! \brief Displays the agent login widgets or not, according to the config
- */
-
-void MainWidget::setAgentLoginWidgetsVisible() {
-    bool showagselect = b_engine->getConfig("showagselect").toBool();
-    if (showagselect) {
-        m_loginkind->show();
-        syncAgentLoginWidgets();
-    } else {
-        m_lab3->hide();
-        m_qlab3->hide();
-        m_loginkind->hide();
-    }
-}
-
-/*! \brief Displays the right agent login widgets, according to m_loginkind
- */
-void MainWidget::syncAgentLoginWidgets()
-{
-    int index = m_loginkind->currentIndex();
-    if (index == 0) {
-        m_lab3->hide();
-        m_qlab3->hide();
-    } else if (index > 0) {
-        m_lab3->show();
-        m_qlab3->show();
-    }
-    m_loginkind->show();
 }
 
 /*! \brief hide "main" window and show login widget
@@ -520,8 +416,8 @@ void MainWidget::createSystrayIcon()
  */
 void MainWidget::showConfDialog()
 {
-    setConfig();
-    m_configwindow = new ConfigWidget(this);
+    this->m_loginWidget->saveConfig();
+    m_configwindow = new ConfigWidget();
     m_configwindow->setModal(true);
     m_configwindow->show();
     connect(m_configwindow, SIGNAL(finished(int)),
@@ -535,32 +431,13 @@ void MainWidget::cleanConfDialog()
     m_configwindow = NULL;
 }
 
-void MainWidget::fetchConfig()
-{
-    foreach (QString key, QStringList() << "userlogin"
-                                        << "password"
-                                        << "agentphonenumber"
-                                        << "keeppass"
-                                        << "guioptions.loginkind") {
-        m_config[key] = b_engine->getConfig(key);
-    }
-}
-
 void MainWidget::confUpdated()
 {
-    // qDebug() << Q_FUNC_INFO;
-    fetchConfig();
-    m_qlab1->setText(m_config["userlogin"].toString());
-    m_qlab2->setText(m_config["password"].toString());
-    m_qlab3->setText(m_config["agentphonenumber"].toString());
-    m_kpass->setChecked(m_config["keeppass"].toBool());
-    m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
-
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
     m_profilename->setVisible(displayprofile);
 
     setMenuAvailabilityEnabled(true);
-    setAgentLoginWidgetsVisible();
+    this->m_loginWidget->setAgentLoginWidgetsVisible();
 }
 
 void MainWidget::showWindow()
