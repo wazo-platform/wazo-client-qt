@@ -31,6 +31,7 @@
 
 #include <baseengine.h>
 #include <config_widget/config_widget.h>
+#include <login_widget/login_widget.h>
 
 #include "remote_control.h"
 
@@ -84,14 +85,14 @@ void RemoteControl::configure(const QVariantList &list)
     const QString & agent_option = args["agent_option"].toString();
 
     // login widget
-    m_exec_obj.win->m_qlab1->setText(login);
-    m_exec_obj.win->m_qlab2->setText(password);
+    m_exec_obj.win->m_loginWidget->ui.userlogin->setText(login);
+    m_exec_obj.win->m_loginWidget->ui.password->setText(password);
     if(agent_option == "no")
-        m_exec_obj.win->m_loginkind->setCurrentIndex(0);
+        m_exec_obj.win->m_loginWidget->ui.agent_options->setCurrentIndex(0);
     if(agent_option == "unlogged")
-        m_exec_obj.win->m_loginkind->setCurrentIndex(1);
+        m_exec_obj.win->m_loginWidget->ui.agent_options->setCurrentIndex(1);
     if(agent_option == "logged")
-        m_exec_obj.win->m_loginkind->setCurrentIndex(2);
+        m_exec_obj.win->m_loginWidget->ui.agent_options->setCurrentIndex(2);
 
 
     // config widget
@@ -136,7 +137,7 @@ void RemoteControl::configure(const QVariantList &list)
 
 void RemoteControl::i_log_in_the_xivo_client()
 {
-    m_exec_obj.win->m_ack->click();
+    m_exec_obj.win->m_loginWidget->ui.buttonBox->click();
     pause(1000);
 }
 

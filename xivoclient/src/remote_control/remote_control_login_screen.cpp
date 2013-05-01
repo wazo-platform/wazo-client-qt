@@ -29,34 +29,38 @@
 
 #ifdef FUNCTESTS
 
-#include "mainwidget.h"
+#include <login_widget/login_widget.h>
+
 #include "remote_control.h"
 
 QVariantMap RemoteControl::get_login_screen_infos()
 {
     QVariantMap args;
 
-    args["login"] = m_exec_obj.win->m_qlab1->text();
-    args["password"] = m_exec_obj.win->m_qlab2->text();
-
+    args["login"] = m_exec_obj.win->m_loginWidget->ui.userlogin->text();
+    args["password"] = m_exec_obj.win->m_loginWidget->ui.password->text();
 
     args["show_agent_option"] = true;
-    if (m_exec_obj.win->m_lab3->isHidden() && m_exec_obj.win->m_qlab3->isHidden() && m_exec_obj.win->m_loginkind->isHidden()) {
+    if (m_exec_obj.win->m_loginWidget->ui.agentphonenumber_label->isHidden() \
+        && m_exec_obj.win->m_loginWidget->ui.agentphonenumber->isHidden() \
+        && m_exec_obj.win->m_loginWidget->ui.agent_options->isHidden()) {
         args["show_agent_option"] = false;
     }
 
-    args["agentphonenumber"] = m_exec_obj.win->m_qlab3->text();
-    int current_index = m_exec_obj.win->m_loginkind->currentIndex();
+    args["agentphonenumber"] = m_exec_obj.win->m_loginWidget->ui.agentphonenumber->text();
+    int current_index = m_exec_obj.win->m_loginWidget->ui.agent_options->currentIndex();
     QString current_agent_option;
-    if(current_index == 0)
+    if(current_index == 0) {
         current_agent_option = "no";
-    if(current_index == 1)
+    }
+    else if(current_index == 1) {
         current_agent_option = "unlogged";
-    if(current_index == 2)
+    }
+    else if(current_index == 2) {
         current_agent_option = "logged";
+    }
 
     args["agent_option"] = current_agent_option;
-
 
     return args;
 }

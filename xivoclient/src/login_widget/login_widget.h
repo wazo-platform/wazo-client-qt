@@ -32,11 +32,13 @@
 
 #include <QWidget>
 
+#include <xletlib/functests.h>
 #include <ui_login_widget.h>
 
 class LoginWidget: public QWidget
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         LoginWidget(QWidget * parent);
