@@ -120,9 +120,9 @@ void RemoteControl::configure(const QVariantList &list)
     }
 
     if (args.find("enable_screen_popup") != args.end()) {
-        bool enable_screen_popup = args["enable_screen_popup"].toBool();
+        bool is_enable_screen_popup = args["enable_screen_popup"].toBool();
         QCheckBox *enable_screen_popup = m_exec_obj.win->m_configwindow->findChild<QCheckBox*>(QString("enable_customer_info"));
-        customer_info_box->setChecked(enable_screen_popup);
+        enable_screen_popup->setChecked(is_enable_screen_popup);
     }
 
     if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
