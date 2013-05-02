@@ -62,7 +62,7 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
     b_engine->setParent(this); // take ownership of the engine object
     qt_system_tray_icon.setParent(this);
     fetchConfig();
-    
+
     m_appliname = tr("Client %1").arg(XC_VERSION);
 
     m_profilename = new QLabel(this);
@@ -134,7 +134,7 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
 
     makeLoginWidget();
     showLogin();
-    
+
     bool systrayed = b_engine->getConfig("systrayed").toBool();
     if ((m_withsystray && ( systrayed == false)) || (! m_withsystray)) {
         show();
@@ -372,7 +372,7 @@ void MainWidget::createActions()
     m_connectact = new QAction(tr("&Connect"), this);
     m_connectact->setStatusTip(tr("Connect to the server"));
     connect(m_connectact, SIGNAL(triggered()),
-            b_engine, SLOT(start()));
+            this, SLOT(setConfigAndStart()));
 
     m_disconnectact = new QAction(tr("&Disconnect"), this);
     m_disconnectact->setProperty("stopper", "disconnect");
@@ -554,10 +554,10 @@ void MainWidget::confUpdated()
     m_qlab3->setText(m_config["agentphonenumber"].toString());
     m_kpass->setChecked(m_config["keeppass"].toBool());
     m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
-    
+
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
     m_profilename->setVisible(displayprofile);
-    
+
     setMenuAvailabilityEnabled(true);
     setAgentLoginWidgetsVisible();
 }
@@ -895,7 +895,7 @@ void MainWidget::engineStopped()
       if(m_docks.contains(dname)) {
         for(QList<QDockWidget *>::iterator i = m_docks[dname]->begin(); i != m_docks[dname]->end(); i++)
           removePanel(dname, *i);
-      
+
         delete m_docks[dname];
         m_docks.remove(dname);
       }
