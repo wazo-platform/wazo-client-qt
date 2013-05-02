@@ -287,8 +287,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>679</width>
-            <height>243</height>
+            <width>157</width>
+            <height>43</height>
            </rect>
           </property>
           <attribute name="label">
@@ -677,6 +677,9 @@
              <width>20</width>
              <height>20</height>
             </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
