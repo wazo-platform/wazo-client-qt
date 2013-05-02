@@ -91,9 +91,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void setConfig(const QString &, QVariant);    //!< set one setting
 
         // public setters/getters for properties
-
         EngineState state();               //!< Engine state (Logged/Not Logged)
-        void setState(EngineState state);  //!< see state()
 
         const QString& getAvailState() const;  //!< returns availability status
 
@@ -182,7 +180,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void setOSInfos(const QString &);
 
-
         // private operations
 
         void loadSettings();  //!< load server settings from QSettings (conf file)
@@ -257,7 +254,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void changeState();  //!< Change the presence status
 
-        void ctiSocketConnected();
+
+        void authenticate();
+        void authenticated();
         void ctiSocketReadyRead();
         void onCTIServerDisconnected();
 
@@ -359,11 +358,13 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void stopTryAgainTimer();   //!< Stop the "try to reconnect" timer
         void sendKeepAliveMsg();
         void disconnectNoKeepAlive();
-        void disconnectAndClean();
+
+        void emitLogged();
+        void emitDelogged();
 
         void initFeatureFields(const QString &);
 
-        void connectToServer();
+        void startConnection();
         void sendCommand(const QString &);
         void parseCommand(const QString &);
         void configsLists(const QString &, const QString &, const QVariantMap &);

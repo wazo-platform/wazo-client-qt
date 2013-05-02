@@ -121,7 +121,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
             this, SLOT(sslErrors(const QList<QSslError> & )));
     connect(m_ctiserversocket, SIGNAL(connected()),
-            this, SLOT(ctiSocketConnected()));
+            this, SLOT(authenticate()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
     connect(m_cti_server, SIGNAL(disconnected()),
@@ -419,12 +419,75 @@ void BaseEngine::powerEvent(const QString & eventinfo)
  * This method starts the login process by connection
  * to the server.
  */
-void BaseEngine::start()
+void BaseEngine::startConnection()
 {
     qDebug() << "Connecting to" << m_config["cti_address"].toString() << "port" << port_to_use();
 
     ConnectionConfig connection_config = m_config.getConnectionConfig();
     m_cti_server->connectToServer(connection_config);
+}
+
+void BaseEngine::start()
+{
+    startConnection();
+}
+
+void BaseEngine::authenticated()
+{
+    stopTryAgainTimer();
+    emitLogged();
+}
+
+void BaseEngine::emitLogged()
+{
+    if(this->m_state != ELogged) {
+        this->m_state = ELogged;
+        emit logged();
+    }
+}
+
+void BaseEngine::authenticate()
+{
+    stopTryAgainTimer();
+    /* do the login/identification */
+    m_attempt_loggedin = false;
+    QVariantMap command;
+    command["class"] = "login_id";
+    command["userlogin"] = m_config["userloginsimple"].toString();
+    command["company"] = m_config["company"].toString();
+    command["ident"] = m_osname;
+    command["version"] = "9999";
+    command["xivoversion"] = __cti_protocol_version__;
+
+    // for debuging purposes :
+    command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
+    command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
+    m_settings->remove("lastlogout/stopper");
+    m_settings->remove("lastlogout/datetime");
+
+    sendJsonCommand(command);
+}
+
+void BaseEngine::stop()
+{
+    qDebug() << "Disconnecting";
+    stopConnection();
+    stopKeepAliveTimer();
+    emitDelogged();
+    clearInternalData();
+}
+
+void BaseEngine::emitDelogged()
+{
+    if(m_state != ENotLogged) {
+        m_state = ENotLogged;
+        emit delogged();
+    }
+}
+
+void BaseEngine::stopConnection()
+{
+    m_cti_server->disconnectFromServer();
 }
 
 /*! \brief Closes the connection to the server
@@ -456,24 +519,7 @@ void BaseEngine::clearInternalData()
     m_listeners.clear();
 }
 
-void BaseEngine::stop()
-{
-    qDebug() << "Disconnecting";
-    disconnectAndClean();
-}
 
-void BaseEngine::disconnectAndClean()
-{
-    stopConnection();
-    setState(ENotLogged);
-    clearInternalData();
-}
-
-void BaseEngine::stopConnection()
-{
-    m_cti_server->disconnectFromServer();
-    stopKeepAliveTimer();
-}
 
 void BaseEngine::onCTIServerDisconnected()
 {
@@ -617,32 +663,6 @@ void BaseEngine::monitorPeerRequest(const QString & xuserid)
     }
 }
 
-/*! \brief called when the socket is first connected
- *
- * currently send the identification to login
- * \todo read correctly the banner
- */
-void BaseEngine::ctiSocketConnected()
-{
-    stopTryAgainTimer();
-    /* do the login/identification */
-    m_attempt_loggedin = false;
-    QVariantMap command;
-    command["class"] = "login_id";
-    command["userlogin"] = m_config["userloginsimple"].toString();
-    command["company"] = m_config["company"].toString();
-    command["ident"] = m_osname;
-    command["version"] = "9999";
-    command["xivoversion"] = __cti_protocol_version__;
-
-    // for debuging purposes :
-    command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
-    command["lastlogout-datetime"] = m_settings->value("lastlogout/datetime").toString();
-    m_settings->remove("lastlogout/stopper");
-    m_settings->remove("lastlogout/datetime");
-
-    sendJsonCommand(command);
-}
 
 /*! \brief send filetransfer command
  */
@@ -838,7 +858,7 @@ void BaseEngine::parseCommand(const QString &line)
         popupError(datamap.value("error_string").toString());
     } else if (thisclass == "login_id") {
         if (datamap.contains("error_string")) {
-            disconnectAndClean();
+            stop();
             popupError(datamap.value("error_string").toString());
         } else {
             m_sessionid = datamap.value("sessionid").toString();
@@ -852,7 +872,7 @@ void BaseEngine::parseCommand(const QString &line)
         }
     } else if (thisclass == "login_pass") {
         if (datamap.contains("error_string")) {
-            disconnectAndClean();
+            stop();
             popupError(datamap.value("error_string").toString());
         } else {
             QStringList capas = datamap.value("capalist").toStringList();
@@ -926,14 +946,14 @@ void BaseEngine::parseCommand(const QString &line)
         }
 
         fetchIPBXList();
-        setState(ELogged); // calls logged()
+        this->authenticated();
         m_timerid_keepalive = startTimer(m_config["keepaliveinterval"].toUInt());
         m_attempt_loggedin = true;
 
     } else if (thisclass == "disconnect") {
         qDebug() << thisclass << datamap;
         QString type = datamap.value("type").toString();
-        disconnectAndClean();
+        stop();
         if (type=="force") {
             m_forced_to_disconnect = true; // disable autoreconnect
             popupError("forcedisconnected");
@@ -1748,28 +1768,6 @@ BaseEngine::EngineState BaseEngine::state()
     return m_state;
 }
 
-/*!
- * setter for the m_state property.
- * If the state is becoming ELogged, the
- * signal logged() is thrown.
- * If the state is becoming ENotLogged, the
- * signal delogged() is thrown.
- */
-void BaseEngine::setState(EngineState state)
-{
-    if (state != m_state) {
-        m_state = state;
-        if (state == ELogged) {
-            stopTryAgainTimer();
-            emit logged();
-            // emit updatePresence();
-        } else if (state == ENotLogged) {
-            emit delogged();
-            // reset some variables when disconnecting
-        }
-    }
-}
-
 void BaseEngine::changeWatchedAgent(const QString & agentid, bool force)
 {
     if ((force || (agentid.size() > 0)) && (hasAgent(agentid))) {
@@ -1819,7 +1817,7 @@ void BaseEngine::keepLoginAlive()
 
 void BaseEngine::disconnectNoKeepAlive()
 {
-    disconnectAndClean();
+    stop();
     popupError("no_keepalive_from_server");
     m_pendingkeepalivemsg = 0;
     startTryAgainTimer();
