@@ -66,13 +66,13 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
 
     m_appliname = tr("Client %1").arg(XC_VERSION);
 
-    m_profilename = new QLabel(this);
+    this->m_profilename = new QLabel(this);
+    this->m_profilename->setText(b_engine->getConfig("profilename").toString());
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
-    if (m_profilename && displayprofile)
-        m_profilename->show();
-    else
-        m_profilename->hide();
-    statusBar()->addPermanentWidget(m_profilename);
+    if (this->m_profilename) {
+        this->m_profilename->setVisible(displayprofile);
+    }
+    statusBar()->addPermanentWidget(this->m_profilename);
 
     m_padlock = new QLabel(this);
     QPixmap padlock_pixmap = QPixmap(":/images/padlock.png")
@@ -717,7 +717,6 @@ void MainWidget::connectionStateChanged()
         m_disconnectact->setEnabled(true);
         m_status->setPixmap(m_pixmap_connected);
         m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
-        m_profilename->setText(b_engine->getConfig("profilename").toString());
         setMenuAvailabilityEnabled(true);
         b_engine->logAction("connection started");
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
@@ -726,7 +725,6 @@ void MainWidget::connectionStateChanged()
         m_disconnectact->setEnabled(false);
         m_status->setPixmap(m_pixmap_disconnected);
         m_padlock->hide();
-        m_profilename->setText("");
         setMenuAvailabilityEnabled(false);
         b_engine->logAction("connection stopped");
     }
