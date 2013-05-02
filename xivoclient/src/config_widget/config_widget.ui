@@ -283,6 +283,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="composer">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>679</width>
+            <height>243</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Composer</string>
           </attribute>
@@ -534,8 +542,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>679</width>
-            <height>243</height>
+            <width>300</width>
+            <height>74</height>
            </rect>
           </property>
           <attribute name="label">
