@@ -62,8 +62,8 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     this->m_config = b_engine->getConfig();
 
-    QVBoxLayout * config_layout = new QVBoxLayout();
-    QWidget * config_widget = new QWidget(this);
+    QWidget * config_widget = new QWidget(parent);
+    QVBoxLayout * config_layout = new QVBoxLayout(this);
     this->ui.setupUi(config_widget);
     config_layout->addWidget(config_widget);
 
@@ -71,9 +71,6 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
     connect(this->ui.buttonBox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
     connect(this->ui.buttonBox, SIGNAL(rejected()), this, SLOT(close()));
-
-    QHBoxLayout * both_versions_layout = new QHBoxLayout(this);
-    both_versions_layout->addLayout(config_layout);
 }
 
 ConfigWidget::~ConfigWidget()
