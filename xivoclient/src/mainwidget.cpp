@@ -66,13 +66,13 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
 
     m_appliname = tr("Client %1").arg(XC_VERSION);
 
-    this->m_profilename = new QLabel(this);
-    this->m_profilename->setText(b_engine->getConfig("profilename").toString());
+    this->m_config_profile = new QLabel(this);
+    this->m_config_profile->setText(b_engine->getConfig("profilename").toString());
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
-    if (this->m_profilename) {
-        this->m_profilename->setVisible(displayprofile);
+    if (this->m_config_profile) {
+        this->m_config_profile->setVisible(displayprofile);
     }
-    statusBar()->addPermanentWidget(this->m_profilename);
+    statusBar()->addPermanentWidget(this->m_config_profile);
 
     m_padlock = new QLabel(this);
     QPixmap padlock_pixmap = QPixmap(":/images/padlock.png")
@@ -433,7 +433,7 @@ void MainWidget::cleanConfDialog()
 
 void MainWidget::confUpdated()
 {
-    this->m_profilename->setVisible(b_engine->getConfig("displayprofile").toBool());
+    this->m_config_profile->setVisible(b_engine->getConfig("displayprofile").toBool());
     this->m_loginWidget->setAgentLoginWidgetsVisible();
 }
 

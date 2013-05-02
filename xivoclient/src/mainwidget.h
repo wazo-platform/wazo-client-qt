@@ -114,7 +114,7 @@ class MainWidget : public QMainWindow
 
         QLabel *m_status;  //!< status indicator
         QLabel *m_padlock; //!< padlock icon (SSL indicator)
-        QLabel * m_profilename; //!< profile indicator (status bar)
+        QLabel * m_config_profile; //!< profile indicator (status bar)
         QStackedWidget *m_centralWidget;  //!< central widget
         QDockWidget *m_resizingHelper;
 

@@ -63,8 +63,8 @@ QVariantMap RemoteControl::get_status_bar_infos()
 {
     QVariantMap args;
 
-    args["profilename_value"] = m_exec_obj.win->m_profilename->text();
-    args["profilename_is_hidden"] = m_exec_obj.win->m_profilename->isHidden();
+    args["profilename_value"] = m_exec_obj.win->m_config_profile->text();
+    args["profilename_is_hidden"] = m_exec_obj.win->m_config_profile->isHidden();
 
     return args;
 }
