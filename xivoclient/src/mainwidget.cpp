@@ -433,10 +433,7 @@ void MainWidget::cleanConfDialog()
 
 void MainWidget::confUpdated()
 {
-    bool displayprofile = b_engine->getConfig("displayprofile").toBool();
-    m_profilename->setVisible(displayprofile);
-
-    setMenuAvailabilityEnabled(true);
+    this->m_profilename->setVisible(b_engine->getConfig("displayprofile").toBool());
     this->m_loginWidget->setAgentLoginWidgetsVisible();
 }
 
@@ -741,7 +738,7 @@ void MainWidget::connectionStateChanged()
 void MainWidget::setMenuAvailabilityEnabled(bool enabled) {
     if (enabled) {
         bool presence_enabled = b_engine->getConfig("checked_function.presence").toBool();
-        // qDebug() << Q_FUNC_INFO << presence_enabled;
+        qDebug() << Q_FUNC_INFO << presence_enabled;
         m_avail->setEnabled(presence_enabled);
     } else {
         m_avail->setEnabled(false);
