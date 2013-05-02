@@ -65,7 +65,7 @@ class ConfigWidget: public QDialog
     FUNCTESTED
 
     public:
-        ConfigWidget(QWidget *parent=0);
+        ConfigWidget(QWidget *parent=NULL);
         ~ConfigWidget();
 
     public slots:

@@ -417,7 +417,7 @@ void MainWidget::createSystrayIcon()
 void MainWidget::showConfDialog()
 {
     this->m_loginWidget->saveConfig();
-    m_configwindow = new ConfigWidget();
+    m_configwindow = new ConfigWidget(this->m_wid);
     m_configwindow->setModal(true);
     m_configwindow->show();
     connect(m_configwindow, SIGNAL(finished(int)),
