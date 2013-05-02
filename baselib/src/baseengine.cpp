@@ -464,8 +464,8 @@ void BaseEngine::stop()
 
 void BaseEngine::disconnectAndClean()
 {
-    setState(ENotLogged);
     stopConnection();
+    setState(ENotLogged);
     clearInternalData();
 }
 
