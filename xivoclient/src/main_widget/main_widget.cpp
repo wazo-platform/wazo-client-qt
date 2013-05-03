@@ -84,7 +84,7 @@ void MainWindow::showLogin()
 
 void MainWindow::hideLogin()
 {
-    this->ui.stacked_widget->setCurrentWidget(this);
+    this->ui.stacked_widget->setCurrentWidget(this->m_main_widget);
 }
 
 void MainWindow::showConfDialog()
