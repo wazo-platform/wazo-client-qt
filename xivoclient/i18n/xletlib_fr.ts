@@ -177,31 +177,6 @@ en retrait</translation>
     </message>
 </context>
 <context>
-    <name>BasicPeerWidget</name>
-    <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="54"/>
-        <source>Phone Numbers : %1</source>
-        <translation>Extensions : %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="58"/>
-        <source>(No callerid yet)</source>
-        <translation>(appelant non encore connu)</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="115"/>
-        <source>User Name : %1
-Phone Numbers : %2</source>
-        <translation>Utilisateur : %1
-Extensions : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basicpeerwidget.cpp" line="123"/>
-        <source>Status : %1</source>
-        <translation>Statut : %1</translation>
-    </message>
-</context>
-<context>
     <name>ChitChatWindow</name>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="80"/>
