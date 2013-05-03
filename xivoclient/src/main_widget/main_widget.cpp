@@ -52,9 +52,10 @@ MainWindow::MainWindow(QWidget* parent)
 
     this->connect(b_engine, SIGNAL(logged()), SLOT(engineStarted()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(engineStopped()));
+    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
     this->connect(this->ui.action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
-    b_engine->connect(this->ui.action_quit, SIGNAL(triggered()), SLOT(stop()));
     qApp->connect(this->ui.action_quit, SIGNAL(triggered()), SLOT(quit()));
+    b_engine->connect(this->ui.action_quit, SIGNAL(triggered()), SLOT(stop()));
     b_engine->connect(this->ui.action_connect, SIGNAL(triggered()), SLOT(start()));
     b_engine->connect(this->ui.action_disconnect, SIGNAL(triggered()), SLOT(stop()));
 
@@ -63,7 +64,7 @@ MainWindow::MainWindow(QWidget* parent)
     this->ui.stacked_widget->addWidget(this->m_login_widget);
     this->m_main_widget = new QWidget(this->ui.stacked_widget);
     this->ui.stacked_widget->addWidget(this->m_main_widget);
-    showLogin();
+    this->showLogin();
 }
 
 MainWindow::~MainWindow()
@@ -90,16 +91,21 @@ void MainWindow::hideLogin()
 void MainWindow::showConfDialog()
 {
     this->m_login_widget->saveConfig();
-    this->m_config_widget = new ConfigWidget(this);
-    this->m_config_widget->setModal(true);
+    this->m_config_widget = new ConfigWidget(this->ui.stacked_widget);
     this->m_config_widget->show();
     this->connect(this->m_config_widget, SIGNAL(finished(int)), SLOT(cleanConfDialog()));
 }
 
 void MainWindow::cleanConfDialog()
 {
-    this->disconnect(SIGNAL(finished(int)), this->m_config_widget, SLOT(cleanConfDialog()));
+    this->disconnect(this->m_config_widget, SIGNAL(finished(int)));
     this->m_config_widget = NULL;
+}
+
+void MainWindow::confUpdated()
+{
+    //this->m_config_profile->setVisible(b_engine->getConfig("displayprofile").toBool());
+    this->m_login_widget->setAgentLoginWidgetsVisible();
 }
 
 void MainWindow::engineStarted()
@@ -112,8 +118,8 @@ void MainWindow::engineStarted()
 void MainWindow::engineStopped()
 {
     qDebug() << Q_FUNC_INFO;
-    connectionStateChanged();
-    showLogin();
+    this->connectionStateChanged();
+    this->showLogin();
 }
 
 void MainWindow::connectionStateChanged()

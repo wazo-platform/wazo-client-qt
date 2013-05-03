@@ -56,6 +56,7 @@ class MainWindow : public QMainWindow
         void hideLogin();
         void showConfDialog();
         void cleanConfDialog();
+        void confUpdated();
         void engineStopped();
         void engineStarted();
         void connectionStateChanged();
