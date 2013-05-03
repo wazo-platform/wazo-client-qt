@@ -1247,9 +1247,8 @@ void BaseEngine::popupError(const QString & errorid,
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");
-    } else if (errorid.startsWith("capaid_undefined:")) {
-        QStringList capainfo = errorid.split(":");
-        errormsg = tr("Your profile identifier <%1> is not defined.").arg(capainfo[1]);
+    } else if (errorid.startsWith("capaid_undefined")) {
+        errormsg = tr("You have no profile defined.");
 
     // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
