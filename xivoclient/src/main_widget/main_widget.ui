@@ -65,6 +65,9 @@
     <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menu_availability">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>&amp;Availability</string>
     </property>
@@ -119,6 +122,9 @@
    <property name="statusTip">
     <string>Disconnect from the server</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="action_quit">
    <property name="text">
@@ -132,11 +138,17 @@
    </property>
   </action>
   <action name="action_show_window">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Show window</string>
    </property>
    <property name="statusTip">
     <string>Show window</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="action_about_client">
