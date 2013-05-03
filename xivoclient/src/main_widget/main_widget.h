@@ -27,18 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAINWIDGETNEW_H__
-#define __MAINWIDGETNEW_H__
+#ifndef __MAINWINDOW_H__
+#define __MAINWINDOW_H__
 
 #include <QtGui>
 #include <QList>
 #include <QMainWindow>
 
-#include <xletlib/functests.h>
-
-#include "systray_manager.h"
-#include "config_widget/config_widget.h"
+#include <systray_manager.h>
+#include <login_widget/login_widget.h>
+#include <config_widget/config_widget.h>
 #include <ui_main_widget.h>
+#include <xletlib/functests.h>
 
 
 class MainWindow : public QMainWindow
@@ -52,8 +52,19 @@ class MainWindow : public QMainWindow
 
     private slots:
         void showMessageBox(const QString &);
+        void showLogin();
+        void hideLogin();
+        void showConfDialog();
+        void cleanConfDialog();
+        void engineStopped();
+        void engineStarted();
+        void connectionStateChanged();
 
     private:
+        QWidget *m_main_widget;
+        ConfigWidget *m_config_widget;
+        LoginWidget *m_login_widget;
+
         QString m_appliname;
 
         Ui::MainWindow ui;

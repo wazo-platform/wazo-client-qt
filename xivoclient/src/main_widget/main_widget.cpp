@@ -36,15 +36,34 @@
 
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+      m_config_widget(NULL)
 {
-    b_engine->setParent(this); // take ownership of the engine object
+    b_engine->setParent(this);
     this->ui.setupUi(this);
 
     this->m_appliname = tr("Client %1").arg(XC_VERSION);
     setWindowTitle(QString("XiVO %1").arg(this->m_appliname));
 
+    QSettings *qsettings = b_engine->getSettings();
+    restoreGeometry(qsettings->value("display/mainwingeometry").toByteArray());
+
     b_engine->logAction("application started on " + b_engine->osname());
+
+    this->connect(b_engine, SIGNAL(logged()), SLOT(engineStarted()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(engineStopped()));
+    this->connect(this->ui.action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
+    b_engine->connect(this->ui.action_quit, SIGNAL(triggered()), SLOT(stop()));
+    qApp->connect(this->ui.action_quit, SIGNAL(triggered()), SLOT(quit()));
+    b_engine->connect(this->ui.action_connect, SIGNAL(triggered()), SLOT(start()));
+    b_engine->connect(this->ui.action_disconnect, SIGNAL(triggered()), SLOT(stop()));
+
+    this->m_login_widget = new LoginWidget(this->ui.stacked_widget);
+    this->m_login_widget->setConfig();
+    this->ui.stacked_widget->addWidget(this->m_login_widget);
+    this->m_main_widget = new QWidget(this->ui.stacked_widget);
+    this->ui.stacked_widget->addWidget(this->m_main_widget);
+    showLogin();
 }
 
 MainWindow::~MainWindow()
@@ -56,4 +75,58 @@ MainWindow::~MainWindow()
 void MainWindow::showMessageBox(const QString & message)
 {
     QMessageBox::critical(NULL, tr("XiVO CTI Error"), message);
+}
+
+void MainWindow::showLogin()
+{
+    this->ui.stacked_widget->setCurrentWidget(this->m_login_widget);
+}
+
+void MainWindow::hideLogin()
+{
+    this->ui.stacked_widget->setCurrentWidget(this);
+}
+
+void MainWindow::showConfDialog()
+{
+    this->m_login_widget->saveConfig();
+    this->m_config_widget = new ConfigWidget(this);
+    this->m_config_widget->setModal(true);
+    this->m_config_widget->show();
+    this->connect(this->m_config_widget, SIGNAL(finished(int)), SLOT(cleanConfDialog()));
+}
+
+void MainWindow::cleanConfDialog()
+{
+    this->disconnect(SIGNAL(finished(int)), this->m_config_widget, SLOT(cleanConfDialog()));
+    this->m_config_widget = NULL;
+}
+
+void MainWindow::engineStarted()
+{
+    qDebug() << Q_FUNC_INFO;
+    this->hideLogin();
+    this->connectionStateChanged();
+}
+
+void MainWindow::engineStopped()
+{
+    qDebug() << Q_FUNC_INFO;
+    connectionStateChanged();
+    showLogin();
+}
+
+void MainWindow::connectionStateChanged()
+{
+    if (b_engine->state() == BaseEngine::ELogged) {
+        statusBar()->showMessage(tr("Connected"));
+        b_engine->logAction("connection started");
+        this->ui.action_connect->setEnabled(false);
+        this->ui.action_disconnect->setEnabled(true);
+    } else if (b_engine->state() == BaseEngine::ENotLogged) {
+        statusBar()->showMessage(tr("Disconnected"));
+        this->ui.action_connect->setEnabled(true);
+        this->ui.action_disconnect->setEnabled(false);
+        b_engine->logAction("connection stopped");
+    }
 }

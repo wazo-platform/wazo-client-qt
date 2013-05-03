@@ -26,132 +26,21 @@
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>true</bool>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="padlock">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>440</y>
-      <width>48</width>
-      <height>48</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../../xivoclient.qrc">:/images/padlock.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="xivo_login">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>400</y>
-      <width>64</width>
-      <height>64</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../../xivoclient.qrc">:/images/xivo-login.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="xivoicon_red">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>390</y>
-      <width>64</width>
-      <height>64</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../../xivoclient.qrc">:/images/xivoicon-red.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="xivoicon_green">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>240</y>
-      <width>64</width>
-      <height>64</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../../xivoclient.qrc">:/images/xivoicon-green.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="xivoicon_black">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>240</y>
-      <width>64</width>
-      <height>64</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../../xivoclient.qrc">:/images/xivoicon-black.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="disconnected">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>150</y>
-      <width>40</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../../xivoclient.qrc">:/images/disconnected.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="connected">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>80</y>
-      <width>40</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../../xivoclient.qrc">:/images/connected.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="config_profile">
-    <property name="geometry">
-     <rect>
-      <x>510</x>
-      <y>130</y>
-      <width>0</width>
-      <height>14</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
+  <widget class="QWidget" name="central_widget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="stacked_widget">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>80</height>
+       </size>
+      </property>
+      <widget class="QWidget" name="login"/>
+      <widget class="QWidget" name="page_2"/>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -221,6 +110,9 @@
    </property>
   </action>
   <action name="action_disconnect">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Disconnect</string>
    </property>
@@ -234,6 +126,9 @@
    </property>
    <property name="statusTip">
     <string>Close the application</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="action_show_window">
