@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,44 +27,36 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __MAINWIDGETNEW_H__
+#define __MAINWIDGETNEW_H__
 
-#include <baseengine.h>
+#include <QtGui>
+#include <QList>
+#include <QMainWindow>
 
-#include "powerawareapplication.h"
-#include "mainwidget.h"
-#include "main_widget/main_widget.h"
+#include <xletlib/functests.h>
 
-#ifdef FUNCTESTS
-class RemoteControl;
-#endif
+#include "systray_manager.h"
+#include "config_widget/config_widget.h"
+#include <ui_main_widget.h>
 
-struct ExecObjects {
-    PowerAwareApplication *app;
-    MainWindow *win;
-    BaseEngine *baseengine;
-#ifdef FUNCTESTS
-    RemoteControl *rc;
-#endif
-    bool initOK;
 
-    ExecObjects()
-    : app(NULL),
-      win(NULL),
-      baseengine(NULL),
-#ifdef FUNCTESTS
-      rc(NULL),
-#endif
-      initOK(false)
-    {
-    }
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+    FUNCTESTED
+
+    public:
+        MainWindow(QWidget* parent = 0);
+        ~MainWindow();
+
+    private slots:
+        void showMessageBox(const QString &);
+
+    private:
+        QString m_appliname;
+
+        Ui::MainWindow ui;
 };
-
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
-
-int main(int, char **);
 
 #endif

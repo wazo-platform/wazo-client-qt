@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>758</width>
+    <height>646</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>XiVO Client</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../xivoclient.qrc">
+    <normaloff>:/images/xivoicon.png</normaloff>:/images/xivoicon.png</iconset>
+  </property>
+  <property name="animated">
+   <bool>false</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks</set>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="padlock">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>440</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../xivoclient.qrc">:/images/padlock.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="xivo_login">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>400</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../xivoclient.qrc">:/images/xivo-login.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="xivoicon_red">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>390</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../xivoclient.qrc">:/images/xivoicon-red.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="xivoicon_green">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>240</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../xivoclient.qrc">:/images/xivoicon-green.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="xivoicon_black">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>240</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../xivoclient.qrc">:/images/xivoicon-black.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="disconnected">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>150</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../xivoclient.qrc">:/images/disconnected.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="connected">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>80</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../xivoclient.qrc">:/images/connected.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="config_profile">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>130</y>
+      <width>0</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>758</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_client">
+    <property name="title">
+     <string>&amp;XiVO Client</string>
+    </property>
+    <addaction name="action_configure"/>
+    <addaction name="action_to_systray"/>
+    <addaction name="action_show_window"/>
+    <addaction name="separator"/>
+    <addaction name="action_connect"/>
+    <addaction name="action_disconnect"/>
+    <addaction name="separator"/>
+    <addaction name="action_quit"/>
+   </widget>
+   <widget class="QMenu" name="menu_availability">
+    <property name="title">
+     <string>&amp;Availability</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_about_client"/>
+    <addaction name="action_about_qt"/>
+    <addaction name="action_credits"/>
+   </widget>
+   <addaction name="menu_client"/>
+   <addaction name="menu_availability"/>
+   <addaction name="menu_help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_configure">
+   <property name="text">
+    <string>Confi&amp;gure</string>
+   </property>
+   <property name="statusTip">
+    <string>Configure account and connection options</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="action_to_systray">
+   <property name="text">
+    <string>To S&amp;ystray</string>
+   </property>
+   <property name="statusTip">
+    <string>Enter the system tray</string>
+   </property>
+  </action>
+  <action name="action_connect">
+   <property name="text">
+    <string>&amp;Connect</string>
+   </property>
+   <property name="statusTip">
+    <string>Connect to the server</string>
+   </property>
+  </action>
+  <action name="action_disconnect">
+   <property name="text">
+    <string>&amp;Disconnect</string>
+   </property>
+   <property name="statusTip">
+    <string>Disconnect from the server</string>
+   </property>
+  </action>
+  <action name="action_quit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="statusTip">
+    <string>Close the application</string>
+   </property>
+  </action>
+  <action name="action_show_window">
+   <property name="text">
+    <string>&amp;Show window</string>
+   </property>
+   <property name="statusTip">
+    <string>Show window</string>
+   </property>
+  </action>
+  <action name="action_about_client">
+   <property name="text">
+    <string>&amp;About XiVO Client</string>
+   </property>
+  </action>
+  <action name="action_about_qt">
+   <property name="text">
+    <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="action_credits">
+   <property name="text">
+    <string>&amp;Credits</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../xivoclient.qrc"/>
+ </resources>
+ <connections/>
+</ui>

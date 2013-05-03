@@ -40,6 +40,7 @@
 #include <phonenumber.h>
 
 #include "mainwidget.h"
+#include "main_widget/main_widget.h"
 #include "powerawareapplication.h"
 #include "fileopeneventhandler.h"
 
@@ -79,6 +80,8 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         else
             msg = PhoneNumber::extract(arg_str);
     }
+
+    qDebug() << "Selected profile: " << profile;
 
     if (! msg.isEmpty()) {
         // send message if there is an argument.
@@ -127,13 +130,18 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     QString qsskind = b_engine->getConfig("qss").toString();
 
+    qDebug() << "Selected style: " << qsskind;
+
     QFile qssFile(QString(":/%1.qss").arg(qsskind));
     if(qssFile.open(QIODevice::ReadOnly)) {
         app->setStyleSheet(qssFile.readAll());
     }
-
+/*
     MainWidget *window = new MainWidget(Context::get<QSystemTrayIcon>(),
                                         Context::get<SystrayManager>());
+*/
+    MainWindow *window = new MainWindow();
+    window->show();
 
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
     app->setActivationWindow(window, activate_on_tel);

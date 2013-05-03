@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,44 +27,33 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
-
 #include <baseengine.h>
+#include <xivoconsts.h>
+#include <xletfactory.h>
+#include <application_status_icon.h>
 
-#include "powerawareapplication.h"
-#include "mainwidget.h"
-#include "main_widget/main_widget.h"
+#include "main_widget.h"
 
-#ifdef FUNCTESTS
-class RemoteControl;
-#endif
 
-struct ExecObjects {
-    PowerAwareApplication *app;
-    MainWindow *win;
-    BaseEngine *baseengine;
-#ifdef FUNCTESTS
-    RemoteControl *rc;
-#endif
-    bool initOK;
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent)
+{
+    b_engine->setParent(this); // take ownership of the engine object
+    this->ui.setupUi(this);
 
-    ExecObjects()
-    : app(NULL),
-      win(NULL),
-      baseengine(NULL),
-#ifdef FUNCTESTS
-      rc(NULL),
-#endif
-      initOK(false)
-    {
-    }
-};
+    this->m_appliname = tr("Client %1").arg(XC_VERSION);
+    setWindowTitle(QString("XiVO %1").arg(this->m_appliname));
 
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
+    b_engine->logAction("application started on " + b_engine->osname());
+}
 
-int main(int, char **);
+MainWindow::~MainWindow()
+{
+    b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
+    b_engine->logAction("application quit");
+}
 
-#endif
+void MainWindow::showMessageBox(const QString & message)
+{
+    QMessageBox::critical(NULL, tr("XiVO CTI Error"), message);
+}
