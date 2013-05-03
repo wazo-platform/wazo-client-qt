@@ -127,12 +127,13 @@ void MainWindow::connectionStateChanged()
     if (b_engine->state() == BaseEngine::ELogged) {
         statusBar()->showMessage(tr("Connected"));
         b_engine->logAction("connection started");
-        this->ui.action_connect->setEnabled(false);
+        this->ui.action_connect->setVisible(false);
+        this->ui.action_disconnect->setVisible(true);
         this->ui.action_disconnect->setEnabled(true);
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
         statusBar()->showMessage(tr("Disconnected"));
-        this->ui.action_connect->setEnabled(true);
-        this->ui.action_disconnect->setEnabled(false);
+        this->ui.action_connect->setVisible(true);
+        this->ui.action_disconnect->setVisible(false);
         b_engine->logAction("connection stopped");
     }
 }
