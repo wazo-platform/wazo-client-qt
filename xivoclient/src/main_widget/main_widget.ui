@@ -36,8 +36,8 @@
         <height>80</height>
        </size>
       </property>
-      <widget class="QWidget" name="login"/>
-      <widget class="QWidget" name="page_2"/>
+      <widget class="QWidget" name="login_widget"/>
+      <widget class="QWidget" name="main_widget"/>
      </widget>
     </item>
    </layout>
