@@ -33,17 +33,17 @@
 #include <application_status_icon.h>
 
 #include "main_widget.h"
+#include "menu_availability.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-      m_config_widget(NULL)
+      m_config_widget(NULL),
+      m_appliname(tr("Client %1").arg(XC_VERSION))
 {
     b_engine->setParent(this);
     this->ui.setupUi(this);
-
-    this->m_appliname = tr("Client %1").arg(XC_VERSION);
-    setWindowTitle(QString("XiVO %1").arg(this->m_appliname));
+    this->updateAppliName();
 
     QSettings *qsettings = b_engine->getSettings();
     restoreGeometry(qsettings->value("display/mainwingeometry").toByteArray());
@@ -59,11 +59,15 @@ MainWindow::MainWindow(QWidget* parent)
     b_engine->connect(this->ui.action_connect, SIGNAL(triggered()), SLOT(start()));
     b_engine->connect(this->ui.action_disconnect, SIGNAL(triggered()), SLOT(stop()));
 
+    this->m_menu_availability = new MenuAvailability(this->ui.menu_availability);
+    this->m_menu_statusbar = new Statusbar(this->ui.statusbar);
     this->m_login_widget = new LoginWidget(this->ui.stacked_widget);
-    this->m_login_widget->setConfig();
-    this->ui.stacked_widget->addWidget(this->m_login_widget);
     this->m_main_widget = new QWidget(this->ui.stacked_widget);
+
+    this->ui.stacked_widget->addWidget(this->m_login_widget);
     this->ui.stacked_widget->addWidget(this->m_main_widget);
+
+    this->m_login_widget->setConfig();
     this->showLogin();
 }
 
@@ -71,6 +75,14 @@ MainWindow::~MainWindow()
 {
     b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
     b_engine->logAction("application quit");
+}
+
+void MainWindow::updateAppliName()
+{
+    setWindowTitle(QString("XiVO %1").arg(this->m_appliname));
+    //if (m_withsystray) {
+    //    m_systrayIcon.setToolTip(QString("XiVO %1").arg(m_appliname));
+    //}
 }
 
 void MainWindow::showMessageBox(const QString & message)
@@ -104,8 +116,9 @@ void MainWindow::cleanConfDialog()
 
 void MainWindow::confUpdated()
 {
-    //this->m_config_profile->setVisible(b_engine->getConfig("displayprofile").toBool());
     this->m_login_widget->setAgentLoginWidgetsVisible();
+    this->m_menu_statusbar->confUpdated();
+
 }
 
 void MainWindow::engineStarted()
@@ -119,6 +132,8 @@ void MainWindow::engineStopped()
 {
     qDebug() << Q_FUNC_INFO;
     this->connectionStateChanged();
+    b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
+    this->m_menu_availability->clearPresence();
     this->showLogin();
 }
 
@@ -127,11 +142,14 @@ void MainWindow::connectionStateChanged()
     if (b_engine->state() == BaseEngine::ELogged) {
         statusBar()->showMessage(tr("Connected"));
         b_engine->logAction("connection started");
+        this->m_menu_availability->setMenuAvailabilityEnabled(true);
         this->ui.action_connect->setVisible(false);
         this->ui.action_disconnect->setVisible(true);
         this->ui.action_disconnect->setEnabled(true);
+
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
         statusBar()->showMessage(tr("Disconnected"));
+        this->m_menu_availability->setMenuAvailabilityEnabled(false);
         this->ui.action_connect->setVisible(true);
         this->ui.action_disconnect->setVisible(false);
         b_engine->logAction("connection stopped");

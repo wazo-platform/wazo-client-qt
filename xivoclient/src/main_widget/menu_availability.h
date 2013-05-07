@@ -27,56 +27,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#ifndef __MENUAVAILABILITY_H__
+#define __MENUAVAILABILITY_H__
 
-#include <QtGui>
-#include <QList>
-#include <QMainWindow>
+#include <QMenu>
 
-#include <systray_manager.h>
-#include <login_widget/login_widget.h>
-#include <config_widget/config_widget.h>
-#include <ui_main_widget.h>
-#include <xletlib/functests.h>
-
-#include "menu_availability.h"
-#include "statusbar.h"
-
-
-class MainWindow : public QMainWindow
+class MenuAvailability : public QMenu
 {
     Q_OBJECT
-    FUNCTESTED
 
     public:
-        MainWindow(QWidget* parent = 0);
-        ~MainWindow();
+        MenuAvailability(QMenu *parent);
+        ~MenuAvailability();
+        void setMenuAvailabilityEnabled(bool);
+        void clearPresence();
 
     private slots:
-        void showMessageBox(const QString &);
-        void showLogin();
-        void hideLogin();
-        void showConfDialog();
-        void cleanConfDialog();
-        void confUpdated();
-        void engineStopped();
-        void engineStarted();
-        void connectionStateChanged();
+        void checksAvailState();
+        void updatePresence();
+        void setAvailability();
+        void updateUserStatus(const QString &);
+
+    protected:
+        void setEnabledMenus(const QString & state);
+        void syncPresence();
 
     private:
-        void updateAppliName();
-
-        QWidget *m_main_widget;
-        QStackedWidget *m_central_widget;
-        ConfigWidget *m_config_widget;
-        LoginWidget *m_login_widget;
-        MenuAvailability *m_menu_availability;
-        Statusbar *m_menu_statusbar;
-
-        QString m_appliname;
-
-        Ui::MainWindow ui;
+        QMenu *m_menu_availability;
+        QHash<QString, QAction *>m_availabilitys;
+        QActionGroup *m_availability_action_group;
 };
 
 #endif

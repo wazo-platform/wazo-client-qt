@@ -27,56 +27,37 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#ifndef __STATUSBAR_H__
+#define __STATUSBAR_H__
 
 #include <QtGui>
 #include <QList>
 #include <QMainWindow>
+#include <QStatusBar>
 
-#include <systray_manager.h>
-#include <login_widget/login_widget.h>
-#include <config_widget/config_widget.h>
-#include <ui_main_widget.h>
-#include <xletlib/functests.h>
-
-#include "menu_availability.h"
-#include "statusbar.h"
-
-
-class MainWindow : public QMainWindow
+class Statusbar : public QStatusBar
 {
     Q_OBJECT
-    FUNCTESTED
 
     public:
-        MainWindow(QWidget* parent = 0);
-        ~MainWindow();
+        Statusbar(QStatusBar *parent);
+        ~Statusbar();
+        void confUpdated();
 
     private slots:
-        void showMessageBox(const QString &);
-        void showLogin();
-        void hideLogin();
-        void showConfDialog();
-        void cleanConfDialog();
-        void confUpdated();
-        void engineStopped();
-        void engineStarted();
         void connectionStateChanged();
 
+    protected:
+
     private:
-        void updateAppliName();
+        QStatusBar *m_statusbar;
 
-        QWidget *m_main_widget;
-        QStackedWidget *m_central_widget;
-        ConfigWidget *m_config_widget;
-        LoginWidget *m_login_widget;
-        MenuAvailability *m_menu_availability;
-        Statusbar *m_menu_statusbar;
+        QLabel *m_status;  //!< status indicator
+        QLabel *m_padlock; //!< padlock icon (SSL indicator)
+        QLabel *m_config_profile; //!< profile indicator (status bar)
 
-        QString m_appliname;
-
-        Ui::MainWindow ui;
+        QPixmap m_pixmap_disconnected;
+        QPixmap m_pixmap_connected;
 };
 
 #endif
