@@ -68,6 +68,8 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(restoreState()));
+    connect(b_engine, SIGNAL(delogged()),
+            this, SLOT(saveState()));
 
     connect(b_engine, SIGNAL(updateQueueConfig(const QString &)),
             this, SLOT(updateQueueConfig(const QString &)));
@@ -83,8 +85,6 @@ XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
 
 XletAgentStatusDashboard::~XletAgentStatusDashboard()
 {
-    b_engine->setConfig("agent_status_dashboard.main_window_state", m_window->saveState());
-
     delete m_delegate;
     delete m_widget_storage;
     delete m_widget_builder;
@@ -92,6 +92,11 @@ XletAgentStatusDashboard::~XletAgentStatusDashboard()
     foreach(const QString &queue_id, m_filtered_agent_lists.keys()){
         this->destroyQueue(queue_id);
     }
+}
+
+void XletAgentStatusDashboard::saveState()
+{
+    b_engine->setConfig("agent_status_dashboard.main_window_state", m_window->saveState());
 }
 
 void XletAgentStatusDashboard::updateQueueConfig(const QString & queue_id)

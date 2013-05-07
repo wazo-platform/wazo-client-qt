@@ -51,6 +51,7 @@ class XletAgentStatusDashboard : public XLet
         void updateQueueConfig(const QString & queue_id);
         void removeQueueConfig(const QString & queue_id);
         void restoreState();
+        void saveState();
 
     private:
         FilteredAgentList * createFilteredAgentList(const QString & queue_id);
