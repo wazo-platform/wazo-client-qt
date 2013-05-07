@@ -50,7 +50,7 @@ class MainWindow : public QMainWindow
     FUNCTESTED
 
     public:
-        MainWindow(QWidget* parent = 0);
+        MainWindow(QWidget *parent = 0);
         ~MainWindow();
 
     private slots:
@@ -65,21 +65,33 @@ class MainWindow : public QMainWindow
         void engineStopped();
         void engineStarted();
         void connectionStateChanged();
+        void showWindow();
+        void hideWindow();
+        void minimizeWindow();
+        void systrayActivated(QSystemTrayIcon::ActivationReason);
+        void systrayMsgClicked();
 
     private:
         void updateAppliName();
+        void createSystrayIcon();
 
+        Ui::MainWindow *ui;
         QWidget *m_main_widget;
+        QSystemTrayIcon *m_systray_icon;
+
+        QIcon m_icon_transp;
+        QIcon m_icon_red;
+        QIcon m_icon_green;
+        QIcon m_icon_black;
+
         QStackedWidget *m_central_widget;
         ConfigWidget *m_config_widget;
         LoginWidget *m_login_widget;
         MenuAvailability *m_menu_availability;
         Statusbar *m_menu_statusbar;
-
         QString m_appliname;
         QClipboard * m_clipboard;
 
-        Ui::MainWindow ui;
 };
 
 #endif

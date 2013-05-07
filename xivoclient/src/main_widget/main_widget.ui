@@ -155,7 +155,7 @@
     <string>&amp;Show window</string>
    </property>
    <property name="statusTip">
-    <string>Show window</string>
+    <string>Leave the system tray</string>
    </property>
    <property name="visible">
     <bool>false</bool>
