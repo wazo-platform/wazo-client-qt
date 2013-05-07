@@ -1346,6 +1346,9 @@ void BaseEngine::popupError(const QString & errorid,
         errormsg = tr("Could not log agent: invalid extension.");
     } else if (errorid == "agent_login_exten_in_use") {
         errormsg = tr("Could not log agent: extension already in use.");
+    } else if (errorid.startsWith("unreachable_extension:")) {
+        QString extension = errorid.split(":")[1];
+        errormsg = tr("Unreachable number: %1").arg(extension);
     }
 
     // logs a message before sending any popup that would block
