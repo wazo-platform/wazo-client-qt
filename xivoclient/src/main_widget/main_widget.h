@@ -54,6 +54,8 @@ class MainWindow : public QMainWindow
         ~MainWindow();
 
     private slots:
+        void clipselection();
+        void clipdata();
         void showMessageBox(const QString &);
         void showLogin();
         void hideLogin();
@@ -75,6 +77,7 @@ class MainWindow : public QMainWindow
         Statusbar *m_menu_statusbar;
 
         QString m_appliname;
+        QClipboard * m_clipboard;
 
         Ui::MainWindow ui;
 };

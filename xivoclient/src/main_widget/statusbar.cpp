@@ -48,13 +48,13 @@ Statusbar::Statusbar(QStatusBar *parent)
     }
     this->m_statusbar->addPermanentWidget(this->m_config_profile);
 
-    this->m_padlock = new QLabel(parent);
+    this->m_padlock = new QLabel();
     QPixmap padlock_pixmap = QPixmap(":/images/padlock.png").scaledToHeight(18, Qt::SmoothTransformation);
     this->m_padlock->setPixmap(padlock_pixmap);
     this->m_padlock->hide();
     this->m_statusbar->addPermanentWidget(this->m_padlock);
 
-    this->m_status = new QLabel(parent);
+    this->m_status = new QLabel();
     this->m_status->setPixmap(this->m_pixmap_disconnected);
     this->m_statusbar->addPermanentWidget(this->m_status);
 

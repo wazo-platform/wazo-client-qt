@@ -39,7 +39,8 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
       m_config_widget(NULL),
-      m_appliname(tr("Client %1").arg(XC_VERSION))
+      m_appliname(tr("Client %1").arg(XC_VERSION)),
+      m_clipboard(NULL)
 {
     b_engine->setParent(this);
     this->ui.setupUi(this);
@@ -53,11 +54,20 @@ MainWindow::MainWindow(QWidget* parent)
     this->connect(b_engine, SIGNAL(logged()), SLOT(engineStarted()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(engineStopped()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
+    this->connect(b_engine, SIGNAL(emitMessageBox(const QString &)), SLOT(showMessageBox(const QString &)), Qt::QueuedConnection);
     this->connect(this->ui.action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
     qApp->connect(this->ui.action_quit, SIGNAL(triggered()), SLOT(quit()));
     b_engine->connect(this->ui.action_quit, SIGNAL(triggered()), SLOT(stop()));
     b_engine->connect(this->ui.action_connect, SIGNAL(triggered()), SLOT(start()));
     b_engine->connect(this->ui.action_disconnect, SIGNAL(triggered()), SLOT(stop()));
+
+    bool enableclipboard =  b_engine->getConfig("enableclipboard").toBool();
+    if (enableclipboard) {
+        this->m_clipboard = QApplication::clipboard();
+        this->connect(this->m_clipboard, SIGNAL(selectionChanged()), SLOT(clipselection()));
+        this->connect(this->m_clipboard, SIGNAL(dataChanged()), SLOT(clipdata()));
+        this->m_clipboard->setText("", QClipboard::Selection);
+    }
 
     this->m_menu_availability = new MenuAvailability(this->ui.menu_availability);
     this->m_menu_statusbar = new Statusbar(this->ui.statusbar);
@@ -83,6 +93,17 @@ void MainWindow::updateAppliName()
     //if (m_withsystray) {
     //    m_systrayIcon.setToolTip(QString("XiVO %1").arg(m_appliname));
     //}
+}
+
+void MainWindow::clipselection()
+{
+    QString selected = m_clipboard->text(QClipboard::Selection);
+    b_engine->pasteToDial(selected);
+}
+
+void MainWindow::clipdata()
+{
+    b_engine->pasteToDial(m_clipboard->text(QClipboard::Clipboard));
 }
 
 void MainWindow::showMessageBox(const QString & message)
