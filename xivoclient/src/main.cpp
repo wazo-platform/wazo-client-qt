@@ -39,7 +39,6 @@
 #include <baseengine.h>
 #include <phonenumber.h>
 
-#include "mainwidget.h"
 #include "main_widget/main_widget.h"
 #include "powerawareapplication.h"
 #include "fileopeneventhandler.h"
@@ -141,7 +140,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                                         Context::get<SystrayManager>());
 */
     MainWindow *window = new MainWindow();
-    window->show();
+    window->initialize();
 
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
     app->setActivationWindow(window, activate_on_tel);

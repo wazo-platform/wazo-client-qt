@@ -31,7 +31,6 @@
 #include <xivoconsts.h>
 #include <xletfactory.h>
 #include <application_status_icon.h>
-#include <QDesktopWidget>
 
 #include "main_widget.h"
 #include "menu_availability.h"
@@ -53,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     b_engine->setParent(this);
 
     QSettings *qsettings = b_engine->getSettings();
-    restoreGeometry(qsettings->value("display/mainwingeometry").toByteArray());
+    this->restoreGeometry(qsettings->value("display/mainwingeometry").toByteArray());
 
     b_engine->logAction("application started on " + b_engine->osname());
 
@@ -71,14 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
     b_engine->connect(this->ui->action_connect, SIGNAL(triggered()), SLOT(start()));
     b_engine->connect(this->ui->action_disconnect, SIGNAL(triggered()), SLOT(stop()));
 
-    bool enableclipboard =  b_engine->getConfig("enableclipboard").toBool();
-    if (enableclipboard) {
-        this->m_clipboard = QApplication::clipboard();
-        this->connect(this->m_clipboard, SIGNAL(selectionChanged()), SLOT(clipselection()));
-        this->connect(this->m_clipboard, SIGNAL(dataChanged()), SLOT(clipdata()));
-        this->m_clipboard->setText("", QClipboard::Selection);
-    }
-
     this->m_menu_availability = new MenuAvailability(this->ui->menu_availability);
     this->m_menu_statusbar = new Statusbar(this->ui->statusbar);
     this->m_login_widget = new LoginWidget(this->ui->stacked_widget);
@@ -88,16 +79,24 @@ MainWindow::MainWindow(QWidget *parent)
     this->ui->stacked_widget->addWidget(this->m_main_widget);
 
     this->m_login_widget->setConfig();
-
-    this->updateAppliName();
-    this->createSystrayIcon();
-    this->showLogin();
 }
 
 MainWindow::~MainWindow()
 {
     b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
     b_engine->logAction("application quit");
+}
+
+void MainWindow::initialize()
+{
+    this->confUpdated();
+    this->updateAppliName();
+    this->createSystrayIcon();
+    this->showLogin();
+    if (! b_engine->getConfig("systrayed").toBool()) {
+        this->show();
+    }
+    this->setFocusPolicy(Qt::StrongFocus);
 }
 
 void MainWindow::createSystrayIcon()
@@ -115,14 +114,39 @@ void MainWindow::createSystrayIcon()
     menu->addAction(this->ui->action_quit);
 
     this->m_systray_icon->setContextMenu(menu);
-    this->m_systray_icon->setIcon(this->m_icon_black);
+    this->setSystrayIcon("xivo-black");
     this->m_systray_icon->setToolTip(QString("XiVO %1").arg(m_appliname));
     this->m_systray_icon->show();
 }
 
+void MainWindow::setSystrayIcon(const QString & def)
+{
+    qDebug() << Q_FUNC_INFO;
+    QIcon icon;
+    ApplicationStatusIcon icon_id;
+    if (def == "xivo-transp") {
+        icon = this->m_icon_transp;
+        icon_id = icon_connected;
+    } else if (def == "xivo-red") {
+        icon = this->m_icon_red;
+        icon_id = icon_agent_paused;
+    } else if (def == "xivo-green") {
+        icon = this->m_icon_green;
+        icon_id = icon_agent_logged;
+    } else if (def == "xivo-black") {
+        icon = this->m_icon_black;
+        icon_id = icon_disconnected;
+    } else {
+        icon = this->m_icon_black;
+        icon_id = icon_disconnected;
+    }
+    this->m_systray_icon->setIcon(icon);
+    this->setWindowIcon(icon);
+}
+
 void MainWindow::updateAppliName()
 {
-    setWindowTitle(QString("XiVO %1").arg(this->m_appliname));
+    this->setWindowTitle(QString("XiVO %1").arg(this->m_appliname));
     this->m_systray_icon->setToolTip(QString("XiVO %1").arg(m_appliname));
 }
 
@@ -226,12 +250,25 @@ void MainWindow::confUpdated()
     this->m_login_widget->setAgentLoginWidgetsVisible();
     this->m_menu_statusbar->confUpdated();
 
+    bool enableclipboard =  b_engine->getConfig("enableclipboard").toBool();
+    if (enableclipboard) {
+        this->m_clipboard = QApplication::clipboard();
+        this->connect(this->m_clipboard, SIGNAL(selectionChanged()), SLOT(clipselection()));
+        this->connect(this->m_clipboard, SIGNAL(dataChanged()), SLOT(clipdata()));
+        this->m_clipboard->setText("", QClipboard::Selection);
+    }
 }
 
 void MainWindow::engineStarted()
 {
     qDebug() << Q_FUNC_INFO;
+    this->m_appliname = tr("Client %1 (%2 profile)")
+        .arg(XC_VERSION)
+        .arg(b_engine->getCapaApplication());
+
+    this->updateAppliName();
     this->hideLogin();
+
     this->connectionStateChanged();
 }
 

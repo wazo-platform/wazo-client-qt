@@ -33,8 +33,8 @@
 #include <QtGui>
 #include <QList>
 #include <QMainWindow>
+#include <QIcon>
 
-#include <systray_manager.h>
 #include <login_widget/login_widget.h>
 #include <config_widget/config_widget.h>
 #include <ui_main_widget.h>
@@ -52,6 +52,10 @@ class MainWindow : public QMainWindow
     public:
         MainWindow(QWidget *parent = 0);
         ~MainWindow();
+        void initialize();
+
+    public slots:
+        void setSystrayIcon(const QString &);
 
     private slots:
         void clipselection();

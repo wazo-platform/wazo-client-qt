@@ -33,7 +33,6 @@
 #include <baseengine.h>
 
 #include "powerawareapplication.h"
-#include "mainwidget.h"
 #include "main_widget/main_widget.h"
 
 #ifdef FUNCTESTS
