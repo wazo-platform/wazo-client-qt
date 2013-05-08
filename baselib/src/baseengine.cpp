@@ -1027,18 +1027,20 @@ bool BaseEngine::isMeetmeMember(const QString &room, int number) const
 
 void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
+    if (! GenLists.contains(listname)) {
+        return;
+    }
+
     m_init_watcher.watchList(listname, listid);
 
     foreach (const QString &id, listid) {
         QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-        if (GenLists.contains(listname)) {
-            if (! m_anylist.contains(listname))
-                m_anylist[listname].clear();
+        if (! m_anylist.contains(listname))
+            m_anylist[listname].clear();
+        if (! m_anylist[listname].contains(xid)) {
             newXInfoProto construct = m_xinfoList.value(listname);
             XInfo * xinfo = construct(ipbxid, id);
-            if (! m_anylist[listname].contains(xid)) {
-                m_anylist[listname][xid] = xinfo;
-            }
+            m_anylist[listname][xid] = xinfo;
         }
     }
 }
