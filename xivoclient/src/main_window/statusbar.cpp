@@ -76,9 +76,11 @@ void Statusbar::connectionStateChanged()
 {
     qDebug() << Q_FUNC_INFO;
     if (b_engine->state() == BaseEngine::ELogged) {
+        this->showMessage(tr("Connected"));
         this->m_status->setPixmap(m_pixmap_connected);
         this->m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
+        this->showMessage(tr("Disconnected"));
         this->m_status->setPixmap(m_pixmap_disconnected);
         this->m_padlock->hide();
     }
