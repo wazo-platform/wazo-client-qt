@@ -200,7 +200,6 @@ void MainWindow::setStatusLogged()
 
     this->setTitle(app_title);
     this->hideLogin();
-    this->m_menu_availability->setMenuAvailabilityEnabled(true);
     this->ui->action_connect->setVisible(false);
     this->ui->action_disconnect->setVisible(true);
     this->ui->action_disconnect->setEnabled(true);
@@ -210,11 +209,9 @@ void MainWindow::setStatusLogged()
 void MainWindow::setStatusNotLogged()
 {
     qDebug() << Q_FUNC_INFO;
-    this->m_menu_availability->setMenuAvailabilityEnabled(false);
     this->ui->action_connect->setVisible(true);
     this->ui->action_disconnect->setVisible(false);
-    b_engine->logAction("connection stopped");
     b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
-    this->m_menu_availability->clearPresence();
     this->showLogin();
+    b_engine->logAction("connection stopped");
 }

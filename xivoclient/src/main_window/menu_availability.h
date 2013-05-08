@@ -27,10 +27,11 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MENUAVAILABILITY_H__
-#define __MENUAVAILABILITY_H__
+#ifndef __MENU_AVAILABILITY_H__
+#define __MENU_AVAILABILITY_H__
 
 #include <QMenu>
+#include <QDebug>
 
 class MenuAvailability : public QMenu
 {
@@ -39,20 +40,21 @@ class MenuAvailability : public QMenu
     public:
         MenuAvailability(QMenu *parent);
         ~MenuAvailability();
-        void setMenuAvailabilityEnabled(bool);
-        void clearPresence();
 
     private slots:
         void checksAvailState();
         void updatePresence();
         void setAvailability();
         void updateUserStatus(const QString &);
-
-    protected:
-        void setEnabledMenus(const QString & state);
-        void syncPresence();
+        void setStatusNotLogged();
+        void setStatusLogged();
 
     private:
+        void setMenuAvailabilityEnabled(bool);
+        void setEnabledMenus(const QString & state);
+        void clearPresence();
+        void syncPresence();
+
         QMenu *m_menu_availability;
         QHash<QString, QAction *>m_availabilitys;
         QActionGroup *m_availability_action_group;

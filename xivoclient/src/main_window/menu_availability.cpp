@@ -42,10 +42,25 @@ MenuAvailability::MenuAvailability(QMenu *parent)
 
     this->connect(b_engine, SIGNAL(localUserInfoDefined()), SLOT(updatePresence()));
     this->connect(b_engine, SIGNAL(updateUserStatus(const QString &)), SLOT(updateUserStatus(const QString &)));
+    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
 }
 
 MenuAvailability::~MenuAvailability()
 {
+}
+
+void MenuAvailability::setStatusLogged()
+{
+    qDebug() << Q_FUNC_INFO;
+    this->setMenuAvailabilityEnabled(true);
+}
+
+void MenuAvailability::setStatusNotLogged()
+{
+    qDebug() << Q_FUNC_INFO;
+    this->setMenuAvailabilityEnabled(false);
+    this->clearPresence();
 }
 
 /*!
