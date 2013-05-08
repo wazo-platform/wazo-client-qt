@@ -179,7 +179,7 @@ queues</source>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="54"/>
         <source>Phone Numbers : %1</source>
-        <translation>Los números de teléfono : %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="58"/>
@@ -190,8 +190,7 @@ queues</source>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="115"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
-        <translation>Nombre de usuario: %1
-Los números de teléfono : %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="123"/>

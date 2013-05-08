@@ -179,23 +179,23 @@ queues</source>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="54"/>
         <source>Phone Numbers : %1</source>
-        <translation>Numeri di telefono: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="58"/>
         <source>(No callerid yet)</source>
-        <translation>(Ancora nessun id chiamante)</translation>
+        <translation type="unfinished">(Ancora nessun id chiamante)</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="115"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
-        <translation>Nome Utente: %1 Numeri di telefono : %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="123"/>
         <source>Status : %1</source>
-        <translation>Stato : %1</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

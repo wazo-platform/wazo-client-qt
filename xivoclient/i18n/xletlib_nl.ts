@@ -181,24 +181,23 @@ wachtrijen</translation>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="54"/>
         <source>Phone Numbers : %1</source>
-        <translation>Telefoonnummers: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="58"/>
         <source>(No callerid yet)</source>
-        <translation>(Nog zonder callerid)</translation>
+        <translation type="unfinished">(Nog zonder callerid)</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="115"/>
         <source>User Name : %1
 Phone Numbers : %2</source>
-        <translation>Gebruikersnaam: %1
-Telefoonnummers: %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="123"/>
         <source>Status : %1</source>
-        <translation>Status: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

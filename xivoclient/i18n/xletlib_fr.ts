@@ -181,12 +181,12 @@ en retrait</translation>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="54"/>
         <source>Phone Numbers : %1</source>
-        <translation>Extensions : %1</translation>
+        <translation>Numéros de téléphone : %1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="58"/>
         <source>(No callerid yet)</source>
-        <translation>(appelant non encore connu)</translation>
+        <translation>(Callerid en attente)</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basicpeerwidget.cpp" line="115"/>
