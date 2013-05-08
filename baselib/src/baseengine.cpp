@@ -1032,11 +1032,11 @@ void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipb
     }
 
     m_init_watcher.watchList(listname, listid);
+    if (! m_anylist.contains(listname))
+        m_anylist[listname].clear();
 
     foreach (const QString &id, listid) {
         QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-        if (! m_anylist.contains(listname))
-            m_anylist[listname].clear();
         if (! m_anylist[listname].contains(xid)) {
             newXInfoProto construct = m_xinfoList.value(listname);
             XInfo * xinfo = construct(ipbxid, id);
