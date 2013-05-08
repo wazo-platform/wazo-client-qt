@@ -41,16 +41,12 @@ LoginWidget::LoginWidget(QWidget * parent)
     this->setAgentLoginWidgetsVisible();
     this->ui.userlogin->setFocus();
 
-    connect(this->ui.userlogin, SIGNAL(returnPressed()),
-             this, SLOT(saveConfigAndStart()));
-    connect(this->ui.password, SIGNAL(returnPressed()),
-             this, SLOT(saveConfigAndStart()));
-    connect(this->ui.agentphonenumber, SIGNAL(returnPressed()),
-             this, SLOT(saveConfigAndStart()));
-    connect(this->ui.buttonBox, SIGNAL(pressed()),
-             this, SLOT(saveConfigAndStart()));
-    connect(this->ui.agent_options, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(syncAgentLoginWidgets()));
+    this->connect(this->ui.userlogin, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.password, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.agentphonenumber, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.buttonBox, SIGNAL(pressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.agent_options, SIGNAL(currentIndexChanged(int)), SLOT(syncAgentLoginWidgets()));
+    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
 }
 
 LoginWidget::~LoginWidget()
@@ -120,4 +116,9 @@ void LoginWidget::saveConfigAndStart()
 {
     this->saveConfig();
     b_engine->start();
+}
+
+void LoginWidget::confUpdated()
+{
+    this->setAgentLoginWidgetsVisible();
 }

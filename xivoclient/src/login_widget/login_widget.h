@@ -48,11 +48,10 @@ class LoginWidget: public QWidget
         void saveConfig();
         void setAgentLoginWidgetsVisible();
 
-    public slots:
-
     private slots:
         void syncAgentLoginWidgets();
         void saveConfigAndStart();
+        void confUpdated();
 
     private:
         Ui::LoginWidget ui;

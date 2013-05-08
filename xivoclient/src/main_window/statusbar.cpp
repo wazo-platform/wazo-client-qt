@@ -59,6 +59,7 @@ Statusbar::Statusbar(QStatusBar *parent)
 
     this->connect(b_engine, SIGNAL(logged()), SLOT(connectionStateChanged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(connectionStateChanged()));
+    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
     this->connect(b_engine, SIGNAL(emitTextMessage(const QString &)), SLOT(showMessage(const QString &)));
 }
 

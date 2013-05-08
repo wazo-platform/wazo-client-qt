@@ -42,10 +42,10 @@ class Statusbar : public QStatusBar
     public:
         Statusbar(QStatusBar *parent);
         ~Statusbar();
-        void confUpdated();
 
     private slots:
         void connectionStateChanged();
+        void confUpdated();
 
     protected:
 

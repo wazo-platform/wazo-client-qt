@@ -183,9 +183,6 @@ void MainWindow::cleanConfDialog()
 
 void MainWindow::confUpdated()
 {
-    this->m_login_widget->setAgentLoginWidgetsVisible();
-    this->m_menu_statusbar->confUpdated();
-
     bool enableclipboard =  b_engine->getConfig("enableclipboard").toBool();
     if (enableclipboard) {
         this->m_clipboard = QApplication::clipboard();
@@ -226,7 +223,6 @@ void MainWindow::connectionStateChanged()
         this->ui->action_connect->setVisible(false);
         this->ui->action_disconnect->setVisible(true);
         this->ui->action_disconnect->setEnabled(true);
-
     } else if (b_engine->state() == BaseEngine::ENotLogged) {
         statusBar()->showMessage(tr("Disconnected"));
         this->m_menu_availability->setMenuAvailabilityEnabled(false);
