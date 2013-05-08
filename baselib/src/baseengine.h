@@ -210,7 +210,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void handleOtherInstanceMessage(const QString &);
 
         void actionCall(const QString &, const QString &src="", const QString &dst="");
-        void actionDialNumber(const QString &);
+        void actionDial(const QString &);
 
         void receiveNumberSelection(const QStringList &);  //!< relay the selection
 

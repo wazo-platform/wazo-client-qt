@@ -110,7 +110,7 @@ void BasePeerWidget::dial()
         return;
     }
 
-    b_engine->actionDialNumber(number);
+    b_engine->actionDial(number);
 }
 
 void BasePeerWidget::hangup()
@@ -203,7 +203,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
     if (const QWidget *w = childAt(event->pos())) {
         const QString &subwidgetkind = w->property("kind").toString();
         if (subwidgetkind == "mobile") {
-            return b_engine->actionDialNumber(m_ui_remote->mobileNumber());
+            return b_engine->actionDial(m_ui_remote->mobileNumber());
         }
     }
 
@@ -240,7 +240,7 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
     const QString &phone_id = m_ui_remote->phonelist().value(0);
     const PhoneInfo *phone = b_engine->phone(phone_id);
     if (phone) {
-        b_engine->actionDialNumber(phone->number());
+        b_engine->actionDial(phone->number());
     }
 }
 

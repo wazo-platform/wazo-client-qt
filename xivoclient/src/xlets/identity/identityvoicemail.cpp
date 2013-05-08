@@ -95,13 +95,13 @@ void IdentityVoiceMail::svcSummary(QVariantMap &svcstatus, const UserInfo * ui)
     }
 }
 
-/*! \brief call voicemail on click
- */
 void IdentityVoiceMail::callVoiceMail()
 {
-    if (m_voicemailinfo)
-        b_engine->actionCall("dial", "",
-                             QString("voicemail:%1").arg(m_voicemailinfo->xid()));
+    if (! m_voicemailinfo) {
+        return;
+    }
+
+    b_engine->actionDial(QString("vm_consult:%1").arg(m_voicemailinfo->xid()));
 }
 
 /*! \brief Send an event to get complete voicemail status */

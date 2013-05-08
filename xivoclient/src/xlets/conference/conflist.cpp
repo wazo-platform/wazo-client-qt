@@ -246,7 +246,7 @@ void ConfList::phoneConfRoom()
     const QString &roomNumber = sender()->property("number").toString();
     QVariantMap members = m_model->getMembers(roomNumber);
 
-    b_engine->actionDialNumber(roomNumber);
+    b_engine->actionDial(roomNumber);
     m_manager->openConfRoom(roomNumber, members);
 }
 

@@ -42,6 +42,14 @@ QVariantMap MessageFactory::answer()
     return MessageFactory::baseMessage("answer");
 }
 
+QVariantMap MessageFactory::dial(const QString &destination)
+{
+    QVariantMap command = MessageFactory::ipbxcommand("dial");
+    command["destination"] = destination;
+
+    return command;
+}
+
 QVariantMap MessageFactory::hangup()
 {
     return MessageFactory::baseMessage("hangup");
@@ -118,5 +126,12 @@ QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;
     message["class"] = class_name;
+    return message;
+}
+
+QVariantMap MessageFactory::ipbxcommand(const QString &action)
+{
+    QVariantMap message = MessageFactory::baseMessage("ipbxcommand");
+    message["command"] = action;
     return message;
 }

@@ -118,7 +118,7 @@ void DialPanel::inputValidated()
     QString ext = m_input->currentText();
     if (ext.isEmpty())
         return;
-    b_engine->actionDialNumber(ext);
+    b_engine->actionDial(ext);
     addHistory(ext);
     m_input->clearEditText();
 }
