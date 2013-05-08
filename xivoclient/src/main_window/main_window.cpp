@@ -62,13 +62,14 @@ MainWindow::MainWindow(QWidget *parent)
     b_engine->connect(this->ui->action_disconnect, SIGNAL(triggered()), SLOT(stop()));
 
     this->m_systray_icon = new SystemTrayIcon(this);
+    this->m_central_widget = this->ui->stacked_widget;
     this->m_menu_availability = new MenuAvailability(this->ui->menu_availability);
     this->m_menu_statusbar = new Statusbar(this->ui->statusbar);
-    this->m_login_widget = new LoginWidget(this->ui->stacked_widget);
-    this->m_main_widget = new QWidget(this->ui->stacked_widget);
+    this->m_login_widget = new LoginWidget(this->m_central_widget);
+    this->m_main_widget = new QWidget(this->m_central_widget);
 
-    this->ui->stacked_widget->addWidget(this->m_login_widget);
-    this->ui->stacked_widget->addWidget(this->m_main_widget);
+    this->m_central_widget->addWidget(this->m_login_widget);
+    this->m_central_widget->addWidget(this->m_main_widget);
 
     this->m_login_widget->setConfig();
     this->setAppIcon("default");
@@ -158,18 +159,18 @@ void MainWindow::showMessageBox(const QString & message)
 
 void MainWindow::showLogin()
 {
-    this->ui->stacked_widget->setCurrentWidget(this->m_login_widget);
+    this->m_central_widget->setCurrentWidget(this->m_login_widget);
 }
 
 void MainWindow::hideLogin()
 {
-    this->ui->stacked_widget->setCurrentWidget(this->m_main_widget);
+    this->m_central_widget->setCurrentWidget(this->m_main_widget);
 }
 
 void MainWindow::showConfDialog()
 {
     this->m_login_widget->saveConfig();
-    this->m_config_widget = new ConfigWidget(this->ui->stacked_widget);
+    this->m_config_widget = new ConfigWidget(this);
     this->m_config_widget->show();
     this->connect(this->m_config_widget, SIGNAL(finished(int)), SLOT(cleanConfDialog()));
 }

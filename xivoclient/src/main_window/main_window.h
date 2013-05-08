@@ -80,6 +80,7 @@ class MainWindow : public QMainWindow
 
         Ui::MainWindow *ui;
 
+        QStackedWidget *m_central_widget;
         QWidget *m_main_widget;
         SystemTrayIcon *m_systray_icon;
         ConfigWidget *m_config_widget;
