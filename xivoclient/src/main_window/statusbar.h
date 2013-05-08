@@ -44,7 +44,8 @@ class Statusbar : public QStatusBar
         ~Statusbar();
 
     private slots:
-        void connectionStateChanged();
+        void setStatusLogged();
+        void setStatusNotLogged();
         void confUpdated();
 
     protected:

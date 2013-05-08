@@ -71,9 +71,8 @@ class MainWindow : public QMainWindow
         void showConfDialog();
         void cleanConfDialog();
         void confUpdated();
-        void engineStopped();
-        void engineStarted();
-        void connectionStateChanged();
+        void setStatusNotLogged();
+        void setStatusLogged();
         void minimizeWindow();
 
     private:

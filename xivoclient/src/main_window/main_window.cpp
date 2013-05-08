@@ -49,8 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     b_engine->logAction("application started on " + b_engine->osname());
 
-    this->connect(b_engine, SIGNAL(logged()), SLOT(engineStarted()));
-    this->connect(b_engine, SIGNAL(delogged()), SLOT(engineStopped()));
+    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
     this->connect(b_engine, SIGNAL(emitMessageBox(const QString &)), SLOT(showMessageBox(const QString &)), Qt::QueuedConnection);
     this->connect(this->ui->action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
@@ -191,7 +191,7 @@ void MainWindow::confUpdated()
     }
 }
 
-void MainWindow::engineStarted()
+void MainWindow::setStatusLogged()
 {
     qDebug() << Q_FUNC_INFO;
     QString app_title = tr("Client %1 (%2 profile)")
@@ -200,31 +200,21 @@ void MainWindow::engineStarted()
 
     this->setTitle(app_title);
     this->hideLogin();
-
-    this->connectionStateChanged();
+    this->m_menu_availability->setMenuAvailabilityEnabled(true);
+    this->ui->action_connect->setVisible(false);
+    this->ui->action_disconnect->setVisible(true);
+    this->ui->action_disconnect->setEnabled(true);
+    b_engine->logAction("connection started");
 }
 
-void MainWindow::engineStopped()
+void MainWindow::setStatusNotLogged()
 {
     qDebug() << Q_FUNC_INFO;
-    this->connectionStateChanged();
+    this->m_menu_availability->setMenuAvailabilityEnabled(false);
+    this->ui->action_connect->setVisible(true);
+    this->ui->action_disconnect->setVisible(false);
+    b_engine->logAction("connection stopped");
     b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
     this->m_menu_availability->clearPresence();
     this->showLogin();
-}
-
-void MainWindow::connectionStateChanged()
-{
-    if (b_engine->state() == BaseEngine::ELogged) {
-        b_engine->logAction("connection started");
-        this->m_menu_availability->setMenuAvailabilityEnabled(true);
-        this->ui->action_connect->setVisible(false);
-        this->ui->action_disconnect->setVisible(true);
-        this->ui->action_disconnect->setEnabled(true);
-    } else if (b_engine->state() == BaseEngine::ENotLogged) {
-        this->m_menu_availability->setMenuAvailabilityEnabled(false);
-        this->ui->action_connect->setVisible(true);
-        this->ui->action_disconnect->setVisible(false);
-        b_engine->logAction("connection stopped");
-    }
 }

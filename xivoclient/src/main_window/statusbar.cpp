@@ -57,8 +57,8 @@ Statusbar::Statusbar(QStatusBar *parent)
     this->m_status->setPixmap(this->m_pixmap_disconnected);
     this->m_statusbar->addPermanentWidget(this->m_status);
 
-    this->connect(b_engine, SIGNAL(logged()), SLOT(connectionStateChanged()));
-    this->connect(b_engine, SIGNAL(delogged()), SLOT(connectionStateChanged()));
+    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
     this->connect(b_engine, SIGNAL(emitTextMessage(const QString &)), SLOT(showMessage(const QString &)));
 }
@@ -72,16 +72,18 @@ void Statusbar::confUpdated()
     this->m_config_profile->setVisible(b_engine->getConfig("displayprofile").toBool());
 }
 
-void Statusbar::connectionStateChanged()
+void Statusbar::setStatusLogged()
 {
     qDebug() << Q_FUNC_INFO;
-    if (b_engine->state() == BaseEngine::ELogged) {
-        this->showMessage(tr("Connected"));
-        this->m_status->setPixmap(m_pixmap_connected);
-        this->m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
-    } else if (b_engine->state() == BaseEngine::ENotLogged) {
-        this->showMessage(tr("Disconnected"));
-        this->m_status->setPixmap(m_pixmap_disconnected);
-        this->m_padlock->hide();
-    }
+    this->showMessage(tr("Connected"));
+    this->m_status->setPixmap(m_pixmap_connected);
+    this->m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
+}
+
+void Statusbar::setStatusNotLogged()
+{
+    qDebug() << Q_FUNC_INFO;
+    this->showMessage(tr("Disconnected"));
+    this->m_status->setPixmap(m_pixmap_disconnected);
+    this->m_padlock->hide();
 }
