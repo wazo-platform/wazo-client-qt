@@ -358,6 +358,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void sendCommand(const QString &);
         void parseCommand(const QString &);
         void configsLists(const QString &, const QString &, const QVariantMap &);
+        void handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &ids);
         void updatePhone(const QString &, const QString &, const QVariantMap &);
 
         void clearLists();

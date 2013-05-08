@@ -1025,6 +1025,23 @@ bool BaseEngine::isMeetmeMember(const QString &room, int number) const
     return false;
 }
 
+void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &listid) {
+    m_init_watcher.watchList(listname, listid);
+
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (GenLists.contains(listname)) {
+            if (! m_anylist.contains(listname))
+                m_anylist[listname].clear();
+            newXInfoProto construct = m_xinfoList.value(listname);
+            XInfo * xinfo = construct(ipbxid, id);
+            if (! m_anylist[listname].contains(xid)) {
+                m_anylist[listname][xid] = xinfo;
+            }
+        }
+    }
+}
+
 void BaseEngine::configsLists(const QString & thisclass, const QString & function,
                               const QVariantMap & datamap)
 {
@@ -1034,22 +1051,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
         if (function == "listid") {
             QStringList listid = datamap.value("list").toStringList();
-
-            m_init_watcher.watchList(listname, listid);
-
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (GenLists.contains(listname)) {
-                    if (! m_anylist.contains(listname))
-                        m_anylist[listname].clear();
-                    newXInfoProto construct = m_xinfoList.value(listname);
-                    XInfo * xinfo = construct(ipbxid, id);
-                    if (! m_anylist[listname].contains(xid)) {
-                        m_anylist[listname][xid] = xinfo;
-                    }
-                }
-            }
-
+            this->handleGetlistListId(listname, ipbxid, listid);
             QVariantMap command;
             command["class"] = "getlist";
             command["function"] = "updateconfig";
