@@ -143,13 +143,12 @@ void MainWindow::minimizeWindow()
 
 void MainWindow::clipselection()
 {
-    QString selected = m_clipboard->text(QClipboard::Selection);
-    b_engine->pasteToDial(selected);
+    b_engine->pasteToDial(this->m_clipboard->text(QClipboard::Selection));
 }
 
 void MainWindow::clipdata()
 {
-    b_engine->pasteToDial(m_clipboard->text(QClipboard::Clipboard));
+    b_engine->pasteToDial(this->m_clipboard->text(QClipboard::Clipboard));
 }
 
 void MainWindow::showMessageBox(const QString & message)
