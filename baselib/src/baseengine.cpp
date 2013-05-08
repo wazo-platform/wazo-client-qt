@@ -1025,7 +1025,8 @@ bool BaseEngine::isMeetmeMember(const QString &room, int number) const
     return false;
 }
 
-void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &listid) {
+void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &listid)
+{
     m_init_watcher.watchList(listname, listid);
 
     foreach (const QString &id, listid) {
@@ -1042,6 +1043,20 @@ void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipb
     }
 }
 
+void BaseEngine::requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)
+{
+    QVariantMap command;
+    command["class"] = "getlist";
+    command["function"] = "updateconfig";
+    command["listname"] = listname;
+    command["tipbxid"] = ipbxid;
+    foreach (const QString &id, listid) {
+        command["tid"] = id;
+        sendJsonCommand(command);
+    }
+}
+
+
 void BaseEngine::configsLists(const QString & thisclass, const QString & function,
                               const QVariantMap & datamap)
 {
@@ -1052,16 +1067,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
         if (function == "listid") {
             QStringList listid = datamap.value("list").toStringList();
             this->handleGetlistListId(listname, ipbxid, listid);
-            QVariantMap command;
-            command["class"] = "getlist";
-            command["function"] = "updateconfig";
-            command["listname"] = listname;
-            command["tipbxid"] = ipbxid;
-            foreach (QString id, listid) {
-                command["tid"] = id;
-                sendJsonCommand(command);
-            }
-
+            this->requestListConfig(listname, ipbxid, listid);
         } else if (function == "delconfig") {
             QStringList listid = datamap.value("list").toStringList();
             foreach (QString id, listid) {
@@ -1222,15 +1228,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                     }
                 }
             }
-            QVariantMap command;
-            command["class"] = "getlist";
-            command["function"] = "updateconfig";
-            command["listname"] = listname;
-            command["tipbxid"] = ipbxid;
-            foreach (QString id, listid) {
-                command["tid"] = id;
-                sendJsonCommand(command);
-            }
+            this->requestListConfig(listname, ipbxid, listid);
         }
     }
 }
