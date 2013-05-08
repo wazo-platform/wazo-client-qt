@@ -31,7 +31,7 @@
 #include <xivoconsts.h>
 #include <xletfactory.h>
 
-#include "main_widget.h"
+#include "main_window.h"
 #include "menu_availability.h"
 
 

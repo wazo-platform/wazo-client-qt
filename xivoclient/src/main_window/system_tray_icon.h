@@ -27,69 +27,32 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#ifndef __SYSTEM_TRAY_ICON_H__
+#define __SYSTEM_TRAY_ICON_H__
 
-#include <QtGui>
-#include <QList>
-#include <QMainWindow>
+#include <QSystemTrayIcon>
 
-#include <login_widget/login_widget.h>
-#include <config_widget/config_widget.h>
-#include <ui_main_widget.h>
-#include <xletlib/functests.h>
+#include "main_window.h"
 
-#include "menu_availability.h"
-#include "statusbar.h"
-#include "system_tray_icon.h"
+class MainWindow;
 
-
-class SystemTrayIcon;
-
-
-class MainWindow : public QMainWindow
+class SystemTrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
-    FUNCTESTED
 
     public:
-        MainWindow(QWidget *parent = 0);
-        ~MainWindow();
-        void initialize();
+        SystemTrayIcon(MainWindow *parent);
+        ~SystemTrayIcon();
+        void setUi(Ui::MainWindow *ui);
+        void setSystrayTitle(const QString &);
 
     public slots:
-        void setAppIcon(const QString & def);
-        void showWindow();
-        void hideWindow();
-
-    private slots:
-        void clipselection();
-        void clipdata();
-        void showMessageBox(const QString &);
-        void showLogin();
-        void hideLogin();
-        void showConfDialog();
-        void cleanConfDialog();
-        void confUpdated();
-        void engineStopped();
-        void engineStarted();
-        void connectionStateChanged();
-        void minimizeWindow();
+        void setSystrayIcon(const QIcon & icon);
+        void systrayActivated(QSystemTrayIcon::ActivationReason);
+        void systrayMsgClicked();
 
     private:
-        void setTitle(const QString &);
-
-        Ui::MainWindow *ui;
-
-        QWidget *m_main_widget;
-        SystemTrayIcon *m_systray_icon;
-
-        ConfigWidget *m_config_widget;
-        LoginWidget *m_login_widget;
-        MenuAvailability *m_menu_availability;
-        Statusbar *m_menu_statusbar;
-        QClipboard * m_clipboard;
-
+        MainWindow *m_main_window;
 };
 
 #endif

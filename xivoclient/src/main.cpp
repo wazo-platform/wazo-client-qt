@@ -39,7 +39,7 @@
 #include <baseengine.h>
 #include <phonenumber.h>
 
-#include "main_widget/main_widget.h"
+#include "main_window/main_window.h"
 #include "powerawareapplication.h"
 #include "fileopeneventhandler.h"
 

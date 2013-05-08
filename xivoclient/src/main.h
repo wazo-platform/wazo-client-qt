@@ -33,7 +33,7 @@
 #include <baseengine.h>
 
 #include "powerawareapplication.h"
-#include "main_widget/main_widget.h"
+#include "main_window/main_window.h"
 
 #ifdef FUNCTESTS
 class RemoteControl;
