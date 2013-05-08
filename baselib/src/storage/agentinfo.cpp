@@ -97,6 +97,21 @@ const QString & AgentInfo::lastname() const
     return m_lastname;
 }
 
+const QString & AgentInfo::phonenumber() const
+{
+    return m_phonenumber;
+}
+
+const QVariantMap & AgentInfo::properties() const
+{
+    return m_properties;
+}
+
+const QStringList & AgentInfo::xqueueids() const
+{
+    return m_xqueueids;
+}
+
 enum AgentInfo::AgentAvailability AgentInfo::availability() const
 {
     if (m_availability == "available") {
