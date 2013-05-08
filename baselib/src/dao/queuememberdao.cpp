@@ -43,15 +43,9 @@ QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_id)
 {
     QStringList ret;
     QString agent_number = agentNumberFromAgentId(agent_id);
-    foreach (QString queuemember_xid_config, b_engine->iterover("queuemembers").keys()) {
-        const QueueMemberInfo *queuememberinfo_config = b_engine->queuemember(queuemember_xid_config);
-        if (queuememberinfo_config != NULL) {
-            if (queuememberinfo_config->agentNumber() == agent_number) {
-                QString queue_name = queuememberinfo_config->queueName();
-                QString queue_xid = queueIdFromQueueName(queue_name);
-                ret << queue_xid;
-            }
-        }
+    const AgentInfo *agent = b_engine->agent(agent_id);
+    if (agent) {
+        ret = agent->xqueueids();
     }
     return ret;
 }
