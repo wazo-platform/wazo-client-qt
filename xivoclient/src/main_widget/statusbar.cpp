@@ -30,7 +30,6 @@
 #include <baseengine.h>
 #include <xivoconsts.h>
 #include <xletfactory.h>
-#include <application_status_icon.h>
 
 #include "statusbar.h"
 

@@ -47,8 +47,6 @@
 #include "remote_control/remote_control.h"
 #endif
 
-#include "context.h"
-
 #include "main.h"
 
 
@@ -135,10 +133,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     if(qssFile.open(QIODevice::ReadOnly)) {
         app->setStyleSheet(qssFile.readAll());
     }
-/*
-    MainWidget *window = new MainWidget(Context::get<QSystemTrayIcon>(),
-                                        Context::get<SystrayManager>());
-*/
     MainWindow *window = new MainWindow();
     window->initialize();
 
