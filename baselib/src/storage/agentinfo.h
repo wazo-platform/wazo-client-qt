@@ -65,10 +65,10 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         bool logged() const;
         enum AgentAvailability availability() const;
         QString availabilitySince() const;
-        const QString & phonenumber() const { return m_phonenumber; };
-        const QVariantMap & properties() const { return m_properties; } ;
+        const QString & phonenumber() const;
+        const QVariantMap & properties() const;
 
-        const QStringList & xqueueids() const { return m_xqueueids; };
+        const QStringList & queue_ids() const;
 
         int joinedQueueCount() const;
         int pausedQueueCount() const;
@@ -93,7 +93,7 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         QString m_phonenumber;
         QVariantMap m_properties;
 
-        QStringList m_xqueueids;
+        QStringList m_queue_ids;
 };
 
 #endif
