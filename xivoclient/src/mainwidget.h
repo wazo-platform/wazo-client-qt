@@ -40,8 +40,6 @@
 class XLet;
 class ConfigWidget;
 
-/*! \brief Main window class
- */
 class MainWidget : public QMainWindow
 {
     Q_OBJECT
