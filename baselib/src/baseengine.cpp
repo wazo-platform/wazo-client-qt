@@ -1143,11 +1143,6 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
                 qDebug() << "received " << function << "for unknown list" << listname << "id" << xid;
             }
 
-            if (! haschanged) {
-                // qDebug() << "got an unchanged" << function << listname << xid;
-            }
-
-            // updating relations ...
             if (listname == "phones") {
                 emit peersReceived();
             }
