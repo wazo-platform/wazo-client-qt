@@ -1030,11 +1030,15 @@ void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipb
     if (! GenLists.contains(listname)) {
         return;
     }
-
     m_init_watcher.watchList(listname, listid);
     if (! m_anylist.contains(listname))
         m_anylist[listname].clear();
 
+    this->addConfigs(listname, ipbxid, listid);
+}
+
+void BaseEngine::addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid)
+{
     foreach (const QString &id, listid) {
         QString xid = QString("%1/%2").arg(ipbxid).arg(id);
         if (! m_anylist[listname].contains(xid)) {
@@ -1220,16 +1224,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
 
         } else if (function == "addconfig") {
             QStringList listid = datamap.value("list").toStringList();
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (GenLists.contains(listname)) {
-                    newXInfoProto construct = m_xinfoList.value(listname);
-                    XInfo * xinfo = construct(ipbxid, id);
-                    if (! m_anylist[listname].contains(xid)) {
-                        m_anylist[listname][xid] = xinfo;
-                    }
-                }
-            }
+            this->addConfigs(listname, ipbxid, listid);
             this->requestListConfig(listname, ipbxid, listid);
         }
     }
