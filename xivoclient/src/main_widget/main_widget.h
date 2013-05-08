@@ -33,7 +33,6 @@
 #include <QtGui>
 #include <QList>
 #include <QMainWindow>
-#include <QIcon>
 
 #include <login_widget/login_widget.h>
 #include <config_widget/config_widget.h>
@@ -42,6 +41,10 @@
 
 #include "menu_availability.h"
 #include "statusbar.h"
+#include "system_tray_icon.h"
+
+
+class SystemTrayIcon;
 
 
 class MainWindow : public QMainWindow
@@ -55,7 +58,9 @@ class MainWindow : public QMainWindow
         void initialize();
 
     public slots:
-        void setSystrayIcon(const QString &);
+        void setAppIcon(const QString & def);
+        void showWindow();
+        void hideWindow();
 
     private slots:
         void clipselection();
@@ -69,31 +74,20 @@ class MainWindow : public QMainWindow
         void engineStopped();
         void engineStarted();
         void connectionStateChanged();
-        void showWindow();
-        void hideWindow();
         void minimizeWindow();
-        void systrayActivated(QSystemTrayIcon::ActivationReason);
-        void systrayMsgClicked();
 
     private:
-        void updateAppliName();
-        void createSystrayIcon();
+        void setTitle(const QString &);
 
         Ui::MainWindow *ui;
+
         QWidget *m_main_widget;
-        QSystemTrayIcon *m_systray_icon;
+        SystemTrayIcon *m_systray_icon;
 
-        QIcon m_icon_transp;
-        QIcon m_icon_red;
-        QIcon m_icon_green;
-        QIcon m_icon_black;
-
-        QStackedWidget *m_central_widget;
         ConfigWidget *m_config_widget;
         LoginWidget *m_login_widget;
         MenuAvailability *m_menu_availability;
         Statusbar *m_menu_statusbar;
-        QString m_appliname;
         QClipboard * m_clipboard;
 
 };

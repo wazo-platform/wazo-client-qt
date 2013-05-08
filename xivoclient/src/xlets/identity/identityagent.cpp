@@ -91,9 +91,9 @@ void IdentityAgent::updateAgentStatus(const QString & xagentid)
         return;
 
     if (agentinfo->logged()) {
-            emit setSystrayIcon(icon_agent_logged);
+            emit setAppIcon(icon_agent_logged);
     } else {
-            emit setSystrayIcon(icon_user_logged);
+            emit setAppIcon(icon_user_logged);
     }
     setStatusColors();
 
@@ -124,7 +124,7 @@ void IdentityAgent::setPausedColors(int nj, int np)
     QPixmap square(10, 10);
     if(nj > 0) {
         if(np == nj) {
-            emit setSystrayIcon(icon_agent_paused);
+            emit setAppIcon(icon_agent_paused);
             square.fill("#ff0000");
             m_pause->setToolTip(tr("Paused"));
             m_pausetxt->setText(tr("Paused"));
@@ -134,9 +134,9 @@ void IdentityAgent::setPausedColors(int nj, int np)
             m_pause->setToolTip(tr("Unpaused"));
             m_pausetxt->setText(tr("Unpaused"));
             if(agentinfo->logged()) {
-                emit setSystrayIcon(icon_agent_logged);
+                emit setAppIcon(icon_agent_logged);
             } else {
-                emit setSystrayIcon(icon_user_logged);
+                emit setAppIcon(icon_user_logged);
             }
         } else {
             square.fill(Orange);

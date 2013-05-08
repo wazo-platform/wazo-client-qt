@@ -38,13 +38,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      m_systray_icon(new QSystemTrayIcon(this)),
-      m_icon_transp(":/images/xivo-login.png"),
-      m_icon_red(":/images/xivoicon-red.png"),
-      m_icon_green(":/images/xivoicon-green.png"),
-      m_icon_black(":/images/xivoicon-black.png"),
       m_config_widget(NULL),
-      m_appliname(tr("Client %1").arg(XC_VERSION)),
       m_clipboard(NULL)
 {
     this->ui->setupUi(this);
@@ -62,13 +56,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->connect(this->ui->action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
     this->connect(this->ui->action_to_systray, SIGNAL(triggered()), SLOT(hideWindow()));
     this->connect(this->ui->action_show_window, SIGNAL(triggered()), SLOT(showWindow()));
-    this->connect(this->m_systray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
-    this->connect(this->m_systray_icon, SIGNAL(messageClicked()), SLOT(systrayMsgClicked()));
     qApp->connect(this->ui->action_quit, SIGNAL(triggered()), SLOT(quit()));
     b_engine->connect(this->ui->action_quit, SIGNAL(triggered()), SLOT(stop()));
     b_engine->connect(this->ui->action_connect, SIGNAL(triggered()), SLOT(start()));
     b_engine->connect(this->ui->action_disconnect, SIGNAL(triggered()), SLOT(stop()));
 
+    this->m_systray_icon = new SystemTrayIcon(this);
     this->m_menu_availability = new MenuAvailability(this->ui->menu_availability);
     this->m_menu_statusbar = new Statusbar(this->ui->statusbar);
     this->m_login_widget = new LoginWidget(this->ui->stacked_widget);
@@ -78,6 +71,9 @@ MainWindow::MainWindow(QWidget *parent)
     this->ui->stacked_widget->addWidget(this->m_main_widget);
 
     this->m_login_widget->setConfig();
+    this->setAppIcon("default");
+    this->m_systray_icon->setUi(this->ui);
+    this->m_systray_icon->show();
 }
 
 MainWindow::~MainWindow()
@@ -88,9 +84,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::initialize()
 {
+    qDebug() << Q_FUNC_INFO;
     this->confUpdated();
-    this->updateAppliName();
-    this->createSystrayIcon();
+    this->setTitle(tr("Client %1").arg(XC_VERSION));
     this->showLogin();
     if (! b_engine->getConfig("systrayed").toBool()) {
         this->show();
@@ -98,54 +94,27 @@ void MainWindow::initialize()
     this->setFocusPolicy(Qt::StrongFocus);
 }
 
-void MainWindow::createSystrayIcon()
+void MainWindow::setAppIcon(const QString & def)
 {
-    QMenu *menu = new QMenu(QString("SystrayMenu"), this);
-    menu->addAction(this->ui->action_configure);
-    menu->addSeparator();
-    menu->addMenu(this->ui->menu_availability);
-    menu->addSeparator();
-    menu->addAction(this->ui->action_connect);
-    menu->addAction(this->ui->action_disconnect);
-    menu->addSeparator();
-    menu->addAction(this->ui->action_show_window);
-    menu->addSeparator();
-    menu->addAction(this->ui->action_quit);
-
-    this->m_systray_icon->setContextMenu(menu);
-    this->setSystrayIcon("xivo-black");
-    this->m_systray_icon->setToolTip(QString("XiVO %1").arg(m_appliname));
-    this->m_systray_icon->show();
-}
-
-void MainWindow::setSystrayIcon(const QString & def)
-{
-    qDebug() << Q_FUNC_INFO;
     QIcon icon;
-    if (def == "xivo-transp") {
-        // connected;
-        icon = this->m_icon_transp;
-    } else if (def == "xivo-red") {
-        // agent_paused;
-        icon = this->m_icon_red;
-    } else if (def == "xivo-green") {
-        // agent_logged;
-        icon = this->m_icon_green;
-    } else if (def == "xivo-black") {
-        // disconnected;
-        icon = this->m_icon_black;
-    } else {
-        // disconnected;
-        icon = this->m_icon_black;
+    if (def == "xivo-transp") { // connected
+        icon = QIcon(":/images/xivo-login.png");
+    } else if (def == "xivo-red") { // agent_paused
+        icon = QIcon(":/images/xivoicon-red.png");
+    } else if (def == "xivo-green") { // agent_logged
+        icon = QIcon(":/images/xivoicon-green.png");
+    } else { // disconnected
+        icon = QIcon(":/images/xivoicon-black.png");
     }
-    this->m_systray_icon->setIcon(icon);
     this->setWindowIcon(icon);
+    this->m_systray_icon->setSystrayIcon(icon);
 }
 
-void MainWindow::updateAppliName()
+void MainWindow::setTitle(const QString & app_title)
 {
-    this->setWindowTitle(QString("XiVO %1").arg(this->m_appliname));
-    this->m_systray_icon->setToolTip(QString("XiVO %1").arg(m_appliname));
+    QString title = QString("XiVO %1").arg(app_title);
+    this->setWindowTitle(title);
+    this->m_systray_icon->setSystrayTitle(title);
 }
 
 void MainWindow::showWindow()
@@ -170,37 +139,6 @@ void MainWindow::minimizeWindow()
 {
     qDebug() << Q_FUNC_INFO;
     this->showMinimized();
-}
-
-/*! \brief process clicks to the systray icon
- *
- * This slot is connected to the activated() signal of the
- * System Tray icon. It currently toggle the visibility
- * of the MainWidget on a simple left click. */
-void MainWindow::systrayActivated(QSystemTrayIcon::ActivationReason reason)
-{
-    qDebug() << Q_FUNC_INFO;
-    if (reason == QSystemTrayIcon::Trigger) {
-        #ifndef Q_WS_MAC
-        qDebug() << "visible " << isVisible() << "toggling visibility";
-        if(isVisible()) {
-            this->hideWindow();
-        } else {
-            this->showWindow();
-        }
-        #endif
-    }
-}
-
-/*!
- * This slot implementation show, activate (and raise) the
- * window.
- */
-void MainWindow::systrayMsgClicked()
-{
-    qDebug() << Q_FUNC_INFO;
-    qDebug() << "showing window";
-    this->showWindow();
 }
 
 void MainWindow::clipselection()
@@ -260,11 +198,11 @@ void MainWindow::confUpdated()
 void MainWindow::engineStarted()
 {
     qDebug() << Q_FUNC_INFO;
-    this->m_appliname = tr("Client %1 (%2 profile)")
+    QString app_title = tr("Client %1 (%2 profile)")
         .arg(XC_VERSION)
         .arg(b_engine->getCapaApplication());
 
-    this->updateAppliName();
+    this->setTitle(app_title);
     this->hideLogin();
 
     this->connectionStateChanged();

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,28 +27,32 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __XLETNULL_H__
-#define __XLETNULL_H__
+#ifndef __SYSTEM_TRAY_ICON_H__
+#define __SYSTEM_TRAY_ICON_H__
 
-#include <QObject>
+#include <QSystemTrayIcon>
 
-#include <xletlib/xlet.h>
+#include "main_widget.h"
 
-class QLabel;
+class MainWindow;
 
-/*! \brief XletNull Panel
- *
- * This is a sample XLet, just displaying "Hello World!"
- */
-class XletNull : public XLet
+class SystemTrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
-public:
-    XletNull(QWidget *parent=0);
-    ~XletNull();
-public slots:
-private:
-    QLabel *m_label;
+
+    public:
+        SystemTrayIcon(MainWindow *parent);
+        ~SystemTrayIcon();
+        void setUi(Ui::MainWindow *ui);
+        void setSystrayTitle(const QString &);
+
+    public slots:
+        void setSystrayIcon(const QIcon & icon);
+        void systrayActivated(QSystemTrayIcon::ActivationReason);
+        void systrayMsgClicked();
+
+    private:
+        MainWindow *m_main_window;
 };
 
-#endif /* __XLETNULL_H__ */
+#endif
