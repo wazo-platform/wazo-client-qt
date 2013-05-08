@@ -183,8 +183,7 @@ void MainWindow::cleanConfDialog()
 
 void MainWindow::confUpdated()
 {
-    bool enableclipboard =  b_engine->getConfig("enableclipboard").toBool();
-    if (enableclipboard) {
+    if (b_engine->getConfig("enableclipboard").toBool()) {
         this->m_clipboard = QApplication::clipboard();
         this->connect(this->m_clipboard, SIGNAL(selectionChanged()), SLOT(clipselection()));
         this->connect(this->m_clipboard, SIGNAL(dataChanged()), SLOT(clipdata()));
