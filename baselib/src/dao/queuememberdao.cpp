@@ -44,7 +44,7 @@ QStringList QueueMemberDAO::queueListFromAgentId(const QString & agent_id)
     QStringList ret;
     const AgentInfo *agent = b_engine->agent(agent_id);
     if (agent) {
-        ret = agent->xqueueids();
+        ret = agent->queue_ids();
     }
     return ret;
 }

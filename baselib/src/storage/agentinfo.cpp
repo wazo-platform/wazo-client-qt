@@ -61,10 +61,10 @@ bool AgentInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "phonenumber", & m_phonenumber);
 
     if (prop.contains("queues")) {
-        m_xqueueids.clear();
+        m_queue_ids.clear();
         foreach (QString queueid, prop.value("queues").toStringList()) {
             QString xqueueid = QString("%1/%2").arg(m_ipbxid).arg(queueid);
-            m_xqueueids.append(xqueueid);
+            m_queue_ids.append(xqueueid);
         }
         haschanged = true;
     }
@@ -107,9 +107,9 @@ const QVariantMap & AgentInfo::properties() const
     return m_properties;
 }
 
-const QStringList & AgentInfo::xqueueids() const
+const QStringList & AgentInfo::queue_ids() const
 {
-    return m_xqueueids;
+    return m_queue_ids;
 }
 
 enum AgentInfo::AgentAvailability AgentInfo::availability() const

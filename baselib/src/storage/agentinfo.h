@@ -68,7 +68,7 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         const QString & phonenumber() const;
         const QVariantMap & properties() const;
 
-        const QStringList & xqueueids() const;
+        const QStringList & queue_ids() const;
 
         int joinedQueueCount() const;
         int pausedQueueCount() const;
@@ -93,7 +93,7 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         QString m_phonenumber;
         QVariantMap m_properties;
 
-        QStringList m_xqueueids;
+        QStringList m_queue_ids;
 };
 
 #endif
