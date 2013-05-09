@@ -125,32 +125,32 @@ void MainWidget::setStatusNotLogged()
 {
     qDebug() << Q_FUNC_INFO;
     b_engine->getSettings()->setValue("display/mainwindowstate", this->m_main_window->saveState());
-    if (m_tabwidget->currentIndex() > -1) {
-        b_engine->getSettings()->setValue("display/lastfocusedtab", m_tabwidget->currentIndex());
+    if (this->m_tabwidget->currentIndex() > -1) {
+        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tabwidget->currentIndex());
     }
 
-    foreach (QString dname, m_docknames) {
-      if(m_docks.contains(dname)) {
-        for(QList<QDockWidget *>::iterator i = m_docks[dname]->begin(); i != m_docks[dname]->end(); i++)
+    foreach (QString dname, this->m_docknames) {
+      if(this->m_docks.contains(dname)) {
+        for(QList<QDockWidget *>::iterator i = this->m_docks[dname]->begin(); i != this->m_docks[dname]->end(); i++)
           removePanel(dname, *i);
 
-        delete m_docks[dname];
-        m_docks.remove(dname);
+        delete this->m_docks[dname];
+        this->m_docks.remove(dname);
       }
     }
 
     // delete all xlets
-    foreach (XLet *xlet, m_xletlist) {
+    foreach (XLet *xlet, this->m_xletlist) {
         xlet->deleteLater();
     }
-    m_xletlist.clear();
+    this->m_xletlist.clear();
 
-    if (m_docknames.contains("tabber")) {
-        removePanel("tabber", m_tabwidget);
+    if (this->m_docknames.contains("tabber")) {
+        removePanel("tabber", this->m_tabwidget);
     }
-    if (m_gridnames.contains("tabber")) {
-        m_vL->removeWidget(m_tabwidget);
-        m_tabwidget->deleteLater();
+    if (this->m_gridnames.contains("tabber")) {
+        this->m_vL->removeWidget(this->m_tabwidget);
+        this->m_tabwidget->deleteLater();
     }
 }
 
@@ -201,20 +201,20 @@ void MainWidget::addPanel(const QString &name, const QString &title, QWidget *wi
 
 void MainWidget::removePanel(const QString & name, QWidget * widget)
 {
-    if (m_docknames.contains(name)) {
-      for(QList<QDockWidget *>::iterator i = m_docks[name]->begin(); i != m_docks[name]->end(); i++) {
+    if (this->m_docknames.contains(name)) {
+      for(QList<QDockWidget *>::iterator i = this->m_docks[name]->begin(); i != this->m_docks[name]->end(); i++) {
           this->m_main_window->removeDockWidget(*i);
         (*i)->deleteLater();
       }
     }
-    if (m_tabnames.contains(name)) {
+    if (this->m_tabnames.contains(name)) {
         int thisindex = m_tabwidget->indexOf(widget);
         if (thisindex > -1) {
             qDebug() << Q_FUNC_INFO << "removing tab" << name << thisindex;
-            m_tabwidget->removeTab(thisindex);
+            this->m_tabwidget->removeTab(thisindex);
         }
     }
-    if (m_gridnames.contains(name)) {
+    if (this->m_gridnames.contains(name)) {
         //m_gridlayout->removeWidget(widget);
         //delete widget;
         //widget->deleteLater();
@@ -227,8 +227,8 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
  */
 void MainWidget::showWidgetOnTop(QWidget * widget)
 {
-    if (m_tabwidget)
-        m_tabwidget->setCurrentWidget(widget);
+    if (this->m_tabwidget)
+        this->m_tabwidget->setCurrentWidget(widget);
 }
 
 void MainWidget::setAppearance(const QVariantList & dockoptions)
