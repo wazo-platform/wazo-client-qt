@@ -27,33 +27,46 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SYSTEM_TRAY_ICON_H__
-#define __SYSTEM_TRAY_ICON_H__
-
-#include <QSystemTrayIcon>
 #include <QDebug>
 
-#include "main_window.h"
+#include <baseengine.h>
 
-class MainWindow;
+#include "central_widget.h"
 
-class SystemTrayIcon : public QSystemTrayIcon
+
+CentralWidget::CentralWidget(QWidget *parent)
+    : QStackedWidget(parent),
+      m_login_widget(new LoginWidget(this)),
+      m_main_widget(new QWidget())
 {
-    Q_OBJECT
+    this->addWidget(this->m_login_widget);
+    this->addWidget(this->m_main_widget);
 
-    public:
-        SystemTrayIcon(MainWindow *parent);
-        ~SystemTrayIcon();
-        void setUi(Ui::MainWindow *ui);
-        void setSystrayTitle(const QString &);
+    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
 
-    public slots:
-        void setSystrayIcon(const QIcon & icon);
-        void systrayActivated(QSystemTrayIcon::ActivationReason);
-        void systrayMsgClicked();
+    this->m_login_widget->setConfig();
+}
 
-    private:
-        MainWindow *m_main_window;
-};
+CentralWidget::~CentralWidget()
+{
+}
 
-#endif
+void CentralWidget::setDefaultWidget()
+{
+    qDebug() << Q_FUNC_INFO;
+    this->setCurrentWidget(this->m_login_widget);
+}
+
+void CentralWidget::setStatusLogged()
+{
+    qDebug() << Q_FUNC_INFO;
+    this->m_login_widget->saveConfig();
+    this->setCurrentWidget(this->m_main_widget);
+}
+
+void CentralWidget::setStatusNotLogged()
+{
+    qDebug() << Q_FUNC_INFO;
+    this->setCurrentWidget(this->m_login_widget);
+}

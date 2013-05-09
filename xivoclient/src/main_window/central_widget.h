@@ -27,33 +27,33 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SYSTEM_TRAY_ICON_H__
-#define __SYSTEM_TRAY_ICON_H__
+#ifndef __CENTRAL_WIDGET_H__
+#define __CENTRAL_WIDGET_H__
 
-#include <QSystemTrayIcon>
-#include <QDebug>
+#include <QStackedWidget>
 
-#include "main_window.h"
+#include <login_widget/login_widget.h>
 
-class MainWindow;
+class LoginWidget;
 
-class SystemTrayIcon : public QSystemTrayIcon
+
+class CentralWidget : public QStackedWidget
 {
     Q_OBJECT
 
     public:
-        SystemTrayIcon(MainWindow *parent);
-        ~SystemTrayIcon();
-        void setUi(Ui::MainWindow *ui);
-        void setSystrayTitle(const QString &);
+        CentralWidget(QWidget *parent);
+        ~CentralWidget();
+        void setDefaultWidget();
 
-    public slots:
-        void setSystrayIcon(const QIcon & icon);
-        void systrayActivated(QSystemTrayIcon::ActivationReason);
-        void systrayMsgClicked();
+    private slots:
+        void setStatusNotLogged();
+        void setStatusLogged();
 
     private:
-        MainWindow *m_main_window;
+        LoginWidget *m_login_widget;
+        QWidget *m_main_widget;
+
 };
 
 #endif

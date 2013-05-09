@@ -42,8 +42,13 @@
 #include "menu_availability.h"
 #include "statusbar.h"
 #include "system_tray_icon.h"
+#include "central_widget.h"
 
 
+class CentralWidget;
+class ConfigWidget;
+class MenuAvailability;
+class Statusbar;
 class SystemTrayIcon;
 
 
@@ -66,8 +71,6 @@ class MainWindow : public QMainWindow
         void clipselection();
         void clipdata();
         void showMessageBox(const QString &);
-        void showLogin();
-        void hideLogin();
         void showConfDialog();
         void cleanConfDialog();
         void confUpdated();
@@ -80,11 +83,9 @@ class MainWindow : public QMainWindow
 
         Ui::MainWindow *ui;
 
-        QStackedWidget *m_central_widget;
-        QWidget *m_main_widget;
+        CentralWidget *m_central_widget;
         SystemTrayIcon *m_systray_icon;
         ConfigWidget *m_config_widget;
-        LoginWidget *m_login_widget;
         MenuAvailability *m_menu_availability;
         Statusbar *m_menu_statusbar;
         QClipboard * m_clipboard;

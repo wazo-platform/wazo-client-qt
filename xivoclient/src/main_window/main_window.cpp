@@ -33,6 +33,7 @@
 
 #include "main_window.h"
 #include "menu_availability.h"
+#include "central_widget.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -62,16 +63,9 @@ MainWindow::MainWindow(QWidget *parent)
     b_engine->connect(this->ui->action_disconnect, SIGNAL(triggered()), SLOT(stop()));
 
     this->m_systray_icon = new SystemTrayIcon(this);
-    this->m_central_widget = this->ui->stacked_widget;
+    this->m_central_widget = new CentralWidget(this->ui->central_widget);
     this->m_menu_availability = new MenuAvailability(this->ui->menu_availability);
     this->m_menu_statusbar = new Statusbar(this->ui->statusbar);
-    this->m_login_widget = new LoginWidget(this->m_central_widget);
-    this->m_main_widget = new QWidget(this->m_central_widget);
-
-    this->m_central_widget->addWidget(this->m_login_widget);
-    this->m_central_widget->addWidget(this->m_main_widget);
-
-    this->m_login_widget->setConfig();
     this->setAppIcon("default");
     this->m_systray_icon->setUi(this->ui);
     this->m_systray_icon->show();
@@ -88,7 +82,8 @@ void MainWindow::initialize()
     qDebug() << Q_FUNC_INFO;
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
-    this->showLogin();
+    this->m_central_widget->setDefaultWidget();
+    this->setCentralWidget(this->m_central_widget);
     if (! b_engine->getConfig("systrayed").toBool()) {
         this->show();
     }
@@ -157,19 +152,8 @@ void MainWindow::showMessageBox(const QString & message)
     QMessageBox::critical(NULL, tr("XiVO CTI Error"), message);
 }
 
-void MainWindow::showLogin()
-{
-    this->m_central_widget->setCurrentWidget(this->m_login_widget);
-}
-
-void MainWindow::hideLogin()
-{
-    this->m_central_widget->setCurrentWidget(this->m_main_widget);
-}
-
 void MainWindow::showConfDialog()
 {
-    this->m_login_widget->saveConfig();
     this->m_config_widget = new ConfigWidget(this);
     this->m_config_widget->show();
     this->connect(this->m_config_widget, SIGNAL(finished(int)), SLOT(cleanConfDialog()));
@@ -199,7 +183,6 @@ void MainWindow::setStatusLogged()
         .arg(b_engine->getCapaApplication());
 
     this->setTitle(app_title);
-    this->hideLogin();
     this->ui->action_connect->setVisible(false);
     this->ui->action_disconnect->setVisible(true);
     this->ui->action_disconnect->setEnabled(true);
@@ -212,6 +195,5 @@ void MainWindow::setStatusNotLogged()
     this->ui->action_connect->setVisible(true);
     this->ui->action_disconnect->setVisible(false);
     b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
-    this->showLogin();
     b_engine->logAction("connection stopped");
 }
