@@ -27,38 +27,61 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CENTRAL_WIDGET_H__
-#define __CENTRAL_WIDGET_H__
+#ifndef __MAIN_WIDGET_H__
+#define __MAIN_WIDGET_H__
 
-#include <QStackedWidget>
+#include <QWidget>
+#include <QtGui>
+#include <QList>
 
-#include <login_widget/login_widget.h>
-
-#include "main_widget.h"
 #include "main_window.h"
 
-class LoginWidget;
-class MainWidget;
+class XLet;
 class MainWindow;
 
-class CentralWidget : public QStackedWidget
+class MainWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        CentralWidget(QWidget *parent);
-        ~CentralWidget();
-        void setDefaultWidget();
+        MainWidget(QWidget *parent);
+        ~MainWidget();
         void setMainWindow(MainWindow *);
+
+    public slots:
+        void setAppIcon(const QString & def);
+        void resetState();
+        void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
 
     private slots:
         void setStatusNotLogged();
         void setStatusLogged();
+        void showWidgetOnTop(QWidget *);
 
     private:
-        LoginWidget *m_login_widget;
-        MainWidget *m_main_widget;
+        void setAppearance(const QVariantList &);
+        void clearAppearance();
+        void addPanel(const QString &, const QString &, QWidget *);
+        void removePanel(const QString &, QWidget *);
+        QDockWidget* createDockXlet(const QString& name,
+                                    const QString& title,
+                                    QDockWidget::DockWidgetFeatures features,
+                                    QWidget *widget);
 
+        MainWindow *m_main_window;
+
+        // Widgets for Xlets
+        QDockWidget *m_resizingHelper;
+        QVBoxLayout *m_vL;
+        QByteArray m_defaultState;
+        QTabWidget *m_tabwidget;
+        QHash<QString, XLet *> m_xletlist;
+        QHash<QString, QString> m_dockoptions;
+        QHash<QString, QList<QDockWidget *>* > m_docks;
+        QStringList m_docknames;
+        QStringList m_gridnames;
+        QStringList m_tabnames;
+        QStringList m_allnames;
 };
 
 #endif

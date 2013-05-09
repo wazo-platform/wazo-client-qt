@@ -37,7 +37,7 @@
 CentralWidget::CentralWidget(QWidget *parent)
     : QStackedWidget(parent),
       m_login_widget(new LoginWidget(this)),
-      m_main_widget(new QWidget())
+      m_main_widget(new MainWidget(this))
 {
     this->addWidget(this->m_login_widget);
     this->addWidget(this->m_main_widget);
@@ -50,6 +50,11 @@ CentralWidget::CentralWidget(QWidget *parent)
 
 CentralWidget::~CentralWidget()
 {
+}
+
+void CentralWidget::setMainWindow(MainWindow * main_window)
+{
+    this->m_main_widget->setMainWindow(main_window);
 }
 
 void CentralWidget::setDefaultWidget()
