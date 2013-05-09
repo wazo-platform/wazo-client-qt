@@ -183,6 +183,7 @@ void MainWindow::setStatusLogged()
         .arg(b_engine->getCapaApplication());
 
     this->setTitle(app_title);
+    this->setAppIcon("xivo-transp");
     this->ui->action_connect->setVisible(false);
     this->ui->action_disconnect->setVisible(true);
     this->ui->action_disconnect->setEnabled(true);
@@ -196,4 +197,6 @@ void MainWindow::setStatusNotLogged()
     this->ui->action_disconnect->setVisible(false);
     b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
     b_engine->logAction("connection stopped");
+    this->setAppIcon("xivo-black");
+    this->setTitle(tr("Client %1").arg(XC_VERSION));
 }
