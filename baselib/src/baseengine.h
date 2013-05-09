@@ -187,7 +187,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         int forwardToListeners(QString className, const QVariantMap &map); //!< forward IPBX message to XLets listening
 
-        void stopConnection();     //!< stop the engine
+        void stopConnection();
+        void sendLogout(const QString & stopper);
+        void saveLogoutData(const QString & stopper);
         void clearInternalData();  //!< clear the engine internal data
 
         void openLogFile();

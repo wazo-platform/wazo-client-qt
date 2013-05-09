@@ -488,29 +488,36 @@ void BaseEngine::emitDelogged()
 
 void BaseEngine::stopConnection()
 {
+    if (m_attempt_loggedin) {
+        QString stopper = sender() ? sender()->property("stopper").toString() : "unknown";
+        sendLogout(stopper);
+        saveLogoutData(stopper);
+
+        m_attempt_loggedin = false;
+    }
     m_cti_server->disconnectFromServer();
 }
 
-/*! \brief Closes the connection to the server
- * This method disconnect the engine from the server
- */
+void BaseEngine::sendLogout(const QString & stopper)
+{
+    QVariantMap command;
+    command["class"] = "logout";
+    command["stopper"] = stopper;
+    sendJsonCommand(command);
+}
+
+void BaseEngine::saveLogoutData(const QString & stopper)
+{
+    m_settings->setValue("lastlogout/stopper", stopper);
+    m_settings->setValue("lastlogout/datetime",
+                         QDateTime::currentDateTime().toString(Qt::ISODate));
+    m_settings->beginGroup(m_profilename_write);
+    m_settings->setValue("availstate", m_availstate);
+    m_settings->endGroup();
+}
+
 void BaseEngine::clearInternalData()
 {
-    if (m_attempt_loggedin) {
-        QString stopper = sender() ? sender()->property("stopper").toString() : "unknown";
-        QVariantMap command;
-        command["class"] = "logout";
-        command["stopper"] = stopper;
-        sendJsonCommand(command);
-        m_settings->setValue("lastlogout/stopper", stopper);
-        m_settings->setValue("lastlogout/datetime",
-                             QDateTime::currentDateTime().toString(Qt::ISODate));
-        m_settings->beginGroup(m_profilename_write);
-        m_settings->setValue("availstate", m_availstate);
-        m_settings->endGroup();
-        m_attempt_loggedin = false;
-    }
-
     m_sessionid = "";
 
     clearLists();
@@ -519,8 +526,6 @@ void BaseEngine::clearInternalData()
     /* cleaning the registered listeners */
     m_listeners.clear();
 }
-
-
 
 void BaseEngine::onCTIServerDisconnected()
 {
