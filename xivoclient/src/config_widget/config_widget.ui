@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
-    <height>488</height>
+    <width>719</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -190,6 +190,9 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QToolBox" name="features_chooser">
+         <property name="styleSheet">
+          <string notr="true">border-color: rgb(255, 85, 0);</string>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>

@@ -59,18 +59,9 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent)
 {
     reboot_message = tr("You must restart the program for this setting to apply.");
-    m_parent = parent;
-    setWindowTitle(tr("Configuration"));
-    setAttribute(Qt::WA_DeleteOnClose);
-
-    // OLD
-    QVBoxLayout * vlayout = new QVBoxLayout();
-    m_tabwidget = new QTabWidget();
 
     this->m_config = b_engine->getConfig();
 
-
-    // NEW
     QVBoxLayout * config_layout = new QVBoxLayout();
     QWidget * config_widget = new QWidget(this);
     this->ui.setupUi(config_widget);
@@ -81,9 +72,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     connect(this->ui.buttonBox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
     connect(this->ui.buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 
-    // TEMP
     QHBoxLayout * both_versions_layout = new QHBoxLayout(this);
-    both_versions_layout->addLayout(vlayout);
     both_versions_layout->addLayout(config_layout);
 }
 
@@ -139,7 +128,7 @@ void ConfigWidget::load_values()
     /// History
     this->ui.history_size->setValue(this->m_config["historysize"].toUInt());
 
-    // Contact
+    /// Contact
     this->ui.max_contacts_displayed->setValue(this->m_config["guioptions.contacts-max"].toUInt());
 
     /// Queue list
@@ -210,8 +199,8 @@ void ConfigWidget::saveAndClose()
     this->m_config["guioptions.queue_longestwait"] = this->ui.show_longest_wait_time->isChecked();
 
     QVariantMap qvm, qvm2;
-    qvm["green"] = QVariant(this->ui.longest_wait_time_green->value());
-    qvm["orange"] = QVariant(this->ui.longest_wait_time_orange->value());
+    qvm["green"] = QVariant(this->ui.waiting_calls_green->value());
+    qvm["orange"] = QVariant(this->ui.waiting_calls_orange->value());
     qvm2["green"] = QVariant(this->ui.longest_wait_time_green->value());
     qvm2["orange"] = QVariant(this->ui.longest_wait_time_orange->value());
     this->m_config["guioptions.queuelevels"] = qvm;
@@ -238,16 +227,6 @@ void ConfigWidget::saveAndClose()
     this->m_config["displayprofile"] = this->ui.show_displayprofile->isChecked();
 
 /*
-    m_config["keeppass"] = m_keeppass->isChecked();
-    m_config["userlogin"] = m_userid->text();
-    m_config["agentphonenumber"] = m_agentphonenumber->text();
-    m_config["password"] = m_password->text();
-    m_config["dialpanel.history_length"] = m_dial_history_size->value();
-    m_config["switchboard_queue_name"] = m_switchboard_queue_name->text();
-    m_config["switchboard_hold_queue_name"] = m_switchboard_hold_queue_name->text();
-
-    m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
-    m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
     // ????????
     this->m_config["dialpanel.history_length"] = m_dial_history_size->value();
 */
@@ -258,6 +237,5 @@ void ConfigWidget::saveAndClose()
 
 bool ConfigWidget::close()
 {
-    b_engine->getSettings()->setValue("display/configtab", m_tabwidget->currentIndex());
     return QDialog::close();
 }

@@ -37,7 +37,6 @@
 #include <QHBoxLayout>
 
 #include <xletlib/functests.h>
-
 #include <ui_config_widget.h>
 
 class QCheckBox;
@@ -67,7 +66,6 @@ class ConfigWidget: public QDialog
 
     public:
         ConfigWidget(QWidget *parent=0);
-        QSize sizeHint();
         ~ConfigWidget();
 
     public slots:
@@ -80,14 +78,10 @@ class ConfigWidget: public QDialog
     private:
         void load_values();
 
-        QWidget * m_parent;
-        QTabWidget * m_tabwidget;
         QVariantMap m_config;
         QLineEdit * m_userid;
         QLineEdit * m_password;
         QCheckBox * m_keeppass;
-        QCheckBox * m_autoconnect;
-        QCheckBox * m_showagselect;
         QComboBox * m_loginkind;
         QLineEdit * m_agentphonenumber;
 

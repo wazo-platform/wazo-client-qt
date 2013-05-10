@@ -54,8 +54,7 @@ void QueuesView::init()
 void QueuesView::updateColumnHidden()
 {
     {
-        bool display_column =
-            b_engine->getConfig("guioptions.queue_longestwait").toBool();
+        bool display_column = b_engine->getConfig("guioptions.queue_longestwait").toBool();
         setColumnHidden(QueuesModel::CURRENT_MAX_WAIT, !display_column);
     }
 
