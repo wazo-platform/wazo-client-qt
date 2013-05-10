@@ -1159,6 +1159,18 @@ void BaseEngine::requestListConfig(const QString &listname, const QString &ipbxi
     }
 }
 
+void BaseEngine::requestStatus(const QString &listname, const QString &ipbxid, const QString &id)
+{
+    QVariantMap command;
+    command["class"] = "getlist";
+    command["function"] = "updatestatus";
+    command["listname"] = listname;
+    command["tipbxid"] = ipbxid;
+    command["tid"] = id;
+    sendJsonCommand(command);
+}
+
+
 
 void BaseEngine::configsLists(const QString & thisclass, const QString & function,
                               const QVariantMap & datamap)
@@ -1177,15 +1189,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
         } else if (function == "updateconfig") {
             QString id = datamap.value("tid").toString();
             this->handleGetlistUpdateConfig(listname, ipbxid, id, datamap);
-
-            QVariantMap command;
-            command["class"] = "getlist";
-            command["function"] = "updatestatus";
-            command["listname"] = listname;
-            command["tipbxid"] = ipbxid;
-            command["tid"] = id;
-            sendJsonCommand(command);
-
+            this->requestStatus(listname, ipbxid, id);
         } else if (function == "updatestatus") {
             QString id = datamap.value("tid").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
@@ -1213,14 +1217,8 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             } else if (listname == "phones") {
                 emit updatePhoneStatus(xid);
                 if (hasPhone(xid)) {
-                    QVariantMap command;
-                    command["class"] = "getlist";
-                    command["function"] = "updatestatus";
-                    command["listname"] = "channels";
-                    command["tipbxid"] = ipbxid;
                     foreach (QString cid, phone(xid)->channels()) {
-                        command["tid"] = cid;
-                        sendJsonCommand(command);
+                        this->requestStatus("channels", ipbxid, cid);
                     }
                 }
             } else if (listname == "agents")
