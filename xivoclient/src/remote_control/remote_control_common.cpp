@@ -30,7 +30,7 @@
 #ifdef FUNCTESTS
 
 #include <baseengine.h>
-#include <configwidget.h>
+#include <config_widget/config_widget.h>
 
 #include "remote_control.h"
 

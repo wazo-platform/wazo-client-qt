@@ -50,7 +50,7 @@
 #include <xivoconsts.h>
 #include <xletlib/warningwidget.h>
 
-#include "configwidget.h"
+#include "config_widget.h"
 
 QHash<QString, QString> func_legend;
 QString reboot_message;

@@ -29,7 +29,7 @@
 
 #ifdef FUNCTESTS
 
-#include "configwidget.h"
+#include <config_widget/config_widget.h>
 
 #include "xlets/queue_members/queue_members.h"
 #include "xlets/queue_members/queue_members_view.h"

@@ -20,14 +20,13 @@ mac {
 QT += xml
 
 RESOURCES += xivoclient.qrc
-RESOURCES += config.qrc
 mac {
     ICON = ../packaging/resources/xivoicon-mac.icns
 } else {
     RC_FILE = xivoclient.rc
 }
 
-FORMS += config_widget.ui
+FORMS += $${ROOT_DIR}/src/config_widget/config_widget.ui
 
 # this should just tell lrelease to compile these files
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
@@ -47,6 +46,8 @@ INCLUDEPATH += $${ROOT_DIR}/src
 
 HEADERS += $${ROOT_DIR}/src/*.h
 SOURCES += $${ROOT_DIR}/src/*.cpp
+HEADERS += $${ROOT_DIR}/src/config_widget/*.h
+SOURCES += $${ROOT_DIR}/src/config_widget/*.cpp
 HEADERS += $${ROOT_DIR}/src/remote_control/*.h
 SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 
