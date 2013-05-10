@@ -701,10 +701,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QCheckBox" name="allow_multiple_instances">
          <property name="text">
           <string>Allow multiple instances</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QCheckBox" name="show_displayprofile">
+         <property name="text">
+          <string>Display the configuration profile</string>
          </property>
         </widget>
        </item>
