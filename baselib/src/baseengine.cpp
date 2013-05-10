@@ -1107,7 +1107,6 @@ void BaseEngine::handleGetlistUpdateConfig(
 {
     QString xid = QString("%1/%2").arg(ipbxid).arg(id);
     QVariantMap config = data.value("config").toMap();
-    bool haschanged = false;
     if (GenLists.contains(listname)) {
         if (! m_anylist.value(listname).contains(xid)) {
             newXInfoProto construct = m_xinfoList.value(listname);
@@ -1115,7 +1114,7 @@ void BaseEngine::handleGetlistUpdateConfig(
             m_anylist[listname][xid] = xinfo;
         }
         if (m_anylist.value(listname).value(xid) != NULL) {
-            haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
+            m_anylist.value(listname)[xid]->updateConfig(config);
         } else {
             qDebug() << "received updateconfig for inexisting" << listname << xid;
         }
