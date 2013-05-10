@@ -69,7 +69,6 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     this->m_config = b_engine->getConfig();
 
-    m_dblclick_actions["call"] = tr("Call");
 
     // NEW
     QVBoxLayout * config_layout = new QVBoxLayout();
@@ -244,7 +243,6 @@ void ConfigWidget::saveAndClose()
     m_config["password"] = m_password->text();
     m_config["displayprofile"] = m_displayprofile->isChecked();
     m_config["dialpanel.history_length"] = m_dial_history_size->value();
-    m_config["doubleclick.searchpanel"] = m_contacts_dblclick->itemData(m_contacts_dblclick->currentIndex());
     m_config["switchboard_queue_name"] = m_switchboard_queue_name->text();
     m_config["switchboard_hold_queue_name"] = m_switchboard_hold_queue_name->text();
 
@@ -252,6 +250,8 @@ void ConfigWidget::saveAndClose()
     m_config["guioptions.contacts-width"] = m_contactswidth_sbox->value();
     m_config["guioptions.queue_displaynu"] = m_queue_displaynu->isChecked();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
+    // ????????
+    this->m_config["dialpanel.history_length"] = m_dial_history_size->value();
 */
     b_engine->setConfig(m_config);
 

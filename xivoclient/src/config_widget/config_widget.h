@@ -83,8 +83,6 @@ class ConfigWidget: public QDialog
         QWidget * m_parent;
         QTabWidget * m_tabwidget;
         QVariantMap m_config;
-        QMap<QString, QString> m_dblclick_actions;
-
         QLineEdit * m_userid;
         QLineEdit * m_password;
         QCheckBox * m_keeppass;
