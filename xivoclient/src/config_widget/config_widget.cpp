@@ -167,6 +167,7 @@ void ConfigWidget::load_values()
     this->ui.auto_reconnect_interval->setValue(this->m_config["trytoreconnectinterval"].toUInt() / 1000);
     this->ui.keepalive_interval->setValue(this->m_config["keepaliveinterval"].toUInt() / 1000);
     this->ui.allow_multiple_instances->setChecked(!this->m_config["uniqueinstance"].toBool());
+    this->ui.show_displayprofile->setChecked(this->m_config["displayprofile"].toBool());
 }
 
 void ConfigWidget::loginKindChanged(int index)
@@ -241,7 +242,6 @@ void ConfigWidget::saveAndClose()
     m_config["userlogin"] = m_userid->text();
     m_config["agentphonenumber"] = m_agentphonenumber->text();
     m_config["password"] = m_password->text();
-    m_config["displayprofile"] = m_displayprofile->isChecked();
     m_config["dialpanel.history_length"] = m_dial_history_size->value();
     m_config["switchboard_queue_name"] = m_switchboard_queue_name->text();
     m_config["switchboard_hold_queue_name"] = m_switchboard_hold_queue_name->text();
