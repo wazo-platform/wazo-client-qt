@@ -1049,6 +1049,56 @@ void BaseEngine::addConfigs(const QString &listname, const QString &ipbxid, cons
     }
 }
 
+void BaseEngine::handleGetlistDelConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)
+{
+    // Pre delete actions
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (listname == "phones")
+            emit removePhoneConfig(xid);
+        else if (listname == "users")
+            emit removeUserConfig(xid);
+        else if (listname == "agents")
+            emit removeAgentConfig(xid);
+        else if (listname == "queues")
+            emit removeQueueConfig(xid);
+        else if (listname == "queuemembers")
+            emit removeQueueMemberConfig(xid);
+    }
+
+    // Delete
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (GenLists.contains(listname)) {
+            if (m_anylist.value(listname).contains(xid)) {
+                delete m_anylist[listname][xid];
+                m_anylist[listname].remove(xid);
+            }
+        } else if (listname == "channels") {
+            if (m_channels.contains(xid)) {
+                delete m_channels[xid];
+                m_channels.remove(xid);
+            }
+        }
+        if (listname == "queuemembers") {
+            if (m_queuemembers.contains(xid)) {
+                delete m_queuemembers[xid];
+                m_queuemembers.remove(xid);
+            }
+        }
+    }
+
+    // Post delete
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (listname == "queuemembers") {
+            emit postRemoveQueueMemberConfig(xid);
+        } else if (listname == "queues") {
+            emit postRemoveQueueConfig(xid);
+        }
+    }
+}
+
 void BaseEngine::requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
     QVariantMap command;
@@ -1076,50 +1126,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             this->requestListConfig(listname, ipbxid, listid);
         } else if (function == "delconfig") {
             QStringList listid = datamap.value("list").toStringList();
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (listname == "phones")
-                    emit removePhoneConfig(xid);
-                else if (listname == "users")
-                    emit removeUserConfig(xid);
-                else if (listname == "agents")
-                    emit removeAgentConfig(xid);
-                else if (listname == "queues")
-                    emit removeQueueConfig(xid);
-                else if (listname == "queuemembers")
-                    emit removeQueueMemberConfig(xid);
-            }
-
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (GenLists.contains(listname)) {
-                    if (m_anylist.value(listname).contains(xid)) {
-                        delete m_anylist[listname][xid];
-                        m_anylist[listname].remove(xid);
-                    }
-                } else if (listname == "channels") {
-                    if (m_channels.contains(xid)) {
-                        delete m_channels[xid];
-                        m_channels.remove(xid);
-                    }
-                }
-                if (listname == "queuemembers") {
-                    if (m_queuemembers.contains(xid)) {
-                        delete m_queuemembers[xid];
-                        m_queuemembers.remove(xid);
-                    }
-                }
-            }
-
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (listname == "queuemembers") {
-                    emit postRemoveQueueMemberConfig(xid);
-                } else if (listname == "queues") {
-                    emit postRemoveQueueConfig(xid);
-                }
-            }
-
+            this->handleGetlistDelConfig(listname, ipbxid, listid);
         } else if (function == "updateconfig") {
             QString id = datamap.value("tid").toString();
             QString xid = QString("%1/%2").arg(ipbxid).arg(id);
