@@ -154,7 +154,8 @@ void MainWidget::setStatusNotLogged()
     }
 }
 
-void MainWidget::resetState() {
+void MainWidget::resetState()
+{
     this->m_main_window->restoreState(this->m_defaultState);
 }
 
@@ -208,14 +209,14 @@ void MainWidget::removePanel(const QString & name, QWidget * widget)
       }
     }
     if (this->m_tabnames.contains(name)) {
-        int thisindex = m_tabwidget->indexOf(widget);
+        int thisindex = this->m_tabwidget->indexOf(widget);
         if (thisindex > -1) {
             qDebug() << Q_FUNC_INFO << "removing tab" << name << thisindex;
             this->m_tabwidget->removeTab(thisindex);
         }
     }
     if (this->m_gridnames.contains(name)) {
-        //m_gridlayout->removeWidget(widget);
+        //this->m_gridlayout->removeWidget(widget);
         //delete widget;
         //widget->deleteLater();
     }
