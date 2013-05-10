@@ -67,7 +67,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     QVBoxLayout * vlayout = new QVBoxLayout();
     m_tabwidget = new QTabWidget();
 
-    m_config = b_engine->getConfig();
+    this->m_config = b_engine->getConfig();
 
     m_dblclick_actions["call"] = tr("Call");
 
@@ -173,68 +173,69 @@ void ConfigWidget::load_values()
 void ConfigWidget::loginKindChanged(int index)
 {
     if (index == 0) {
-        m_agentphonenumber->setEnabled(false);
+        this->m_agentphonenumber->setEnabled(false);
     } else {
-        m_agentphonenumber->setEnabled(true);
+        this->m_agentphonenumber->setEnabled(true);
     }
 }
 
 void ConfigWidget::saveAndClose()
 {
     // User
-    m_config["forcelocale"] = this->ui.language->itemData(this->ui.language->currentIndex());
-    m_config["qss"] = this->ui.style->itemData(this->ui.style->currentIndex());
-    m_config["trytoreconnect"] = this->ui.auto_reconnect->isChecked();
-    m_config["autoconnect"] = this->ui.startup_connect->isChecked();
-    m_config["systrayed"] = this->ui.start_systrayed->isChecked();
-    m_config["activate_on_tel"] = this->ui.show_window_on_call->isChecked();
-    m_config["enableclipboard"] = this->ui.enable_clipboard->isChecked();
+    this->m_config["forcelocale"] = this->ui.language->itemData(this->ui.language->currentIndex());
+    this->m_config["qss"] = this->ui.style->itemData(this->ui.style->currentIndex());
+    this->m_config["trytoreconnect"] = this->ui.auto_reconnect->isChecked();
+    this->m_config["autoconnect"] = this->ui.startup_connect->isChecked();
+    this->m_config["systrayed"] = this->ui.start_systrayed->isChecked();
+    this->m_config["activate_on_tel"] = this->ui.show_window_on_call->isChecked();
+    this->m_config["enableclipboard"] = this->ui.enable_clipboard->isChecked();
 
 
     // Features
     /// Presence
-    m_config["checked_function.presence"] = this->ui.enable_presence_reporting->isChecked();
+    this->m_config["checked_function.presence"] = this->ui.enable_presence_reporting->isChecked();
 
     /// Screen popup
-    m_config["checked_function.customerinfo"] = this->ui.enable_screen_popup->isChecked();
-    m_config["guioptions.autourl_allowed"] = this->ui.enable_auto_open_url->isChecked();
-    m_config["guioptions.sheet-tablimit"] = this->ui.max_screen_popups->value();
+    this->m_config["checked_function.customerinfo"] = this->ui.enable_screen_popup->isChecked();
+    this->m_config["guioptions.autourl_allowed"] = this->ui.enable_auto_open_url->isChecked();
+    this->m_config["guioptions.sheet-tablimit"] = this->ui.max_screen_popups->value();
 
     /// History
-    m_config["historysize"] = this->ui.history_size->value();
+    this->m_config["historysize"] = this->ui.history_size->value();
 
-    // Contact
-    m_config["guioptions.contacts-max"] = this->ui.max_contacts_displayed->value();
+    /// Contact
+    this->m_config["guioptions.contacts-max"] = this->ui.max_contacts_displayed->value();
 
     /// Queue list
-    m_config["guioptions.queue_longestwait"] = this->ui.show_longest_wait_time->isChecked();
+    this->m_config["guioptions.queue_longestwait"] = this->ui.show_longest_wait_time->isChecked();
 
     QVariantMap qvm, qvm2;
     qvm["green"] = QVariant(this->ui.longest_wait_time_green->value());
     qvm["orange"] = QVariant(this->ui.longest_wait_time_orange->value());
     qvm2["green"] = QVariant(this->ui.longest_wait_time_green->value());
     qvm2["orange"] = QVariant(this->ui.longest_wait_time_orange->value());
-    m_config["guioptions.queuelevels"] = qvm;
-    m_config["guioptions.queuelevels_wait"] = qvm2;
+    this->m_config["guioptions.queuelevels"] = qvm;
+    this->m_config["guioptions.queuelevels_wait"] = qvm2;
 
     /// Queue members
-    m_config["guioptions.queue_members_hide_unlogged_agents"] = this->ui.hide_unlogged_agents->isChecked();
+    this->m_config["guioptions.queue_members_hide_unlogged_agents"] = this->ui.hide_unlogged_agents->isChecked();
 
 
     // Administration
-    m_config["cti_address"] = this->ui.server->text();
-    m_config["cti_port"] = this->ui.port->value();
-    m_config["cti_encrypt"] = this->ui.encrypted->isChecked();
-    m_config["cti_backup_address"] = this->ui.backup_server->text();
-    m_config["cti_backup_port"] = this->ui.backup_port->value();
-    m_config["cti_backup_encrypt"] = this->ui.backup_encrypted->isChecked();
-    m_config["showagselect"] = this->ui.show_agent_options->isChecked();
+    this->m_config["cti_address"] = this->ui.server->text();
+    this->m_config["cti_port"] = this->ui.port->value();
+    this->m_config["cti_encrypt"] = this->ui.encrypted->isChecked();
+    this->m_config["cti_backup_address"] = this->ui.backup_server->text();
+    this->m_config["cti_backup_port"] = this->ui.backup_port->value();
+    this->m_config["cti_backup_encrypt"] = this->ui.backup_encrypted->isChecked();
+    this->m_config["showagselect"] = this->ui.show_agent_options->isChecked();
 
 
     // Advanced
-    m_config["trytoreconnectinterval"] = this->ui.auto_reconnect_interval->value() * 1000;
-    m_config["keepaliveinterval"] = this->ui.keepalive_interval->value() * 1000;
-    m_config["uniqueinstance"] = !this->ui.allow_multiple_instances->isChecked();
+    this->m_config["trytoreconnectinterval"] = this->ui.auto_reconnect_interval->value() * 1000;
+    this->m_config["keepaliveinterval"] = this->ui.keepalive_interval->value() * 1000;
+    this->m_config["uniqueinstance"] = !this->ui.allow_multiple_instances->isChecked();
+    this->m_config["displayprofile"] = this->ui.show_displayprofile->isChecked();
 
 /*
     m_config["keeppass"] = m_keeppass->isChecked();
@@ -254,7 +255,7 @@ void ConfigWidget::saveAndClose()
 */
     b_engine->setConfig(m_config);
 
-    close();
+    this->close();
 }
 
 bool ConfigWidget::close()
