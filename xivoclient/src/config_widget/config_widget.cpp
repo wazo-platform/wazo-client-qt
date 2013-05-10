@@ -247,7 +247,6 @@ void ConfigWidget::saveAndClose()
     m_config["switchboard_hold_queue_name"] = m_switchboard_hold_queue_name->text();
 
     m_config["guioptions.loginkind"] = m_loginkind->currentIndex();
-    m_config["guioptions.queue_displaynu"] = m_queue_displaynu->isChecked();
     m_config["guioptions.presenceindicatorsize"] = m_presenceIndicatorSize->value();
     // ????????
     this->m_config["dialpanel.history_length"] = m_dial_history_size->value();
