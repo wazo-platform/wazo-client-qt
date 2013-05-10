@@ -51,7 +51,6 @@ class MainWidget : public QWidget
     public slots:
         void setAppIcon(const QString & def);
         void resetState();
-        void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
 
     private slots:
         void setStatusNotLogged();

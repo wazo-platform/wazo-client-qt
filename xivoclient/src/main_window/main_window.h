@@ -66,6 +66,7 @@ class MainWindow : public QMainWindow
         void setAppIcon(const QString & def);
         void showWindow();
         void hideWindow();
+        void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
 
     private slots:
         void clipselection();
