@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->m_systray_icon = new SystemTrayIcon(this);
     this->m_central_widget = new CentralWidget(this->ui->central_widget);
+    this->setCentralWidget(this->m_central_widget);
     this->m_central_widget->setMainWindow(this);
     this->m_menu_availability = new MenuAvailability(this->ui->menu_availability);
     this->m_menu_statusbar = new Statusbar(this->ui->statusbar);
@@ -84,7 +85,6 @@ void MainWindow::initialize()
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
     this->m_central_widget->setDefaultWidget();
-    this->setCentralWidget(this->m_central_widget);
     if (! b_engine->getConfig("systrayed").toBool()) {
         this->show();
     }
