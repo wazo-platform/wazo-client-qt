@@ -361,6 +361,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &ids);
         void handleGetlistDelConfig(const QString &listname, const QString &ipbxid, const QStringList &ids);
         void handleGetlistUpdateConfig(const QString &listname, const QString &ipbxid, const QString &id, const QVariantMap &data);
+        void handleGetlistUpdateStatus(const QString &listname, const QString &ipbxid, const QString &id, const QVariantMap &status);
         void requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid);
         void requestStatus(const QString &listname, const QString &ipbxid, const QString &id);
         void addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid);

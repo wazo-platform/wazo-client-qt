@@ -1146,6 +1146,51 @@ void BaseEngine::handleGetlistUpdateConfig(
         emit updateQueueMemberConfig(xid);
 }
 
+void BaseEngine::handleGetlistUpdateStatus(
+    const QString &listname,
+    const QString &ipbxid,
+    const QString &id,
+    const QVariantMap &status)
+{
+    QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+
+    m_init_watcher.sawItem(listname, id);
+
+    if (GenLists.contains(listname)) {
+        if (m_anylist.value(listname).contains(xid))
+            m_anylist.value(listname).value(xid)->updateStatus(status);
+    } else if (listname == "channels") {
+        if (! m_channels.contains(xid))
+            m_channels[xid] = new ChannelInfo(ipbxid, id);
+        m_channels[xid]->updateStatus(status);
+    }
+    if (listname == "queuemembers") {
+        if (! m_queuemembers.contains(xid))
+            m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
+        m_queuemembers[xid]->updateStatus(status);
+    }
+
+    if (listname == "users") {
+        setAvailState(status["availstate"].toString(), true);
+        emit updateUserStatus(xid);
+    } else if (listname == "phones") {
+        emit updatePhoneStatus(xid);
+        if (hasPhone(xid)) {
+            foreach (QString cid, phone(xid)->channels()) {
+                this->requestStatus("channels", ipbxid, cid);
+            }
+        }
+    } else if (listname == "agents")
+        emit updateAgentStatus(xid);
+    else if (listname == "queues") {
+        emit updateQueueStatus(xid);
+    }
+    else if (listname == "voicemails")
+        emit updateVoiceMailStatus(xid);
+    else if (listname == "channels")
+        emit updateChannelStatus(xid);
+}
+
 void BaseEngine::requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
     QVariantMap command;
@@ -1190,45 +1235,8 @@ void BaseEngine::configsLists(const QString & function, const QVariantMap & data
         this->requestStatus(listname, ipbxid, id);
     } else if (function == "updatestatus") {
         QString id = datamap.value("tid").toString();
-        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
         QVariantMap status = datamap.value("status").toMap();
-
-        m_init_watcher.sawItem(listname, id);
-
-        if (GenLists.contains(listname)) {
-            if (m_anylist.value(listname).contains(xid))
-                m_anylist.value(listname).value(xid)->updateStatus(status);
-        } else if (listname == "channels") {
-            if (! m_channels.contains(xid))
-                m_channels[xid] = new ChannelInfo(ipbxid, id);
-            m_channels[xid]->updateStatus(status);
-        }
-        if (listname == "queuemembers") {
-            if (! m_queuemembers.contains(xid))
-                m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
-            m_queuemembers[xid]->updateStatus(status);
-        }
-
-        if (listname == "users") {
-           setAvailState(status["availstate"].toString(), true);
-           emit updateUserStatus(xid);
-        } else if (listname == "phones") {
-            emit updatePhoneStatus(xid);
-            if (hasPhone(xid)) {
-                foreach (QString cid, phone(xid)->channels()) {
-                    this->requestStatus("channels", ipbxid, cid);
-                }
-            }
-        } else if (listname == "agents")
-            emit updateAgentStatus(xid);
-        else if (listname == "queues") {
-            emit updateQueueStatus(xid);
-        }
-        else if (listname == "voicemails")
-            emit updateVoiceMailStatus(xid);
-        else if (listname == "channels")
-            emit updateChannelStatus(xid);
-
+        this->handleGetlistUpdateStatus(listname, ipbxid, id, status);
     } else if (function == "addconfig") {
         QStringList listid = datamap.value("list").toStringList();
         this->addConfigs(listname, ipbxid, listid);
