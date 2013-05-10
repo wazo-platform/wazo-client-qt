@@ -821,7 +821,7 @@ void BaseEngine::parseCommand(const QString &line)
         }
 
     } else if (thisclass == "getlist") {
-        configsLists(thisclass, function, datamap);
+        configsLists(function, datamap);
     } else if (thisclass == "agentlisten") {
         emit statusListen(datamap.value("ipbxid").toString(),
                           datamap.value("agentid").toString(),
@@ -1172,70 +1172,67 @@ void BaseEngine::requestStatus(const QString &listname, const QString &ipbxid, c
 
 
 
-void BaseEngine::configsLists(const QString & thisclass, const QString & function,
-                              const QVariantMap & datamap)
+void BaseEngine::configsLists(const QString & function, const QVariantMap & datamap)
 {
-    if (thisclass == "getlist") {
-        QString listname = datamap.value("listname").toString();
-        QString ipbxid = datamap.value("tipbxid").toString();
+    QString listname = datamap.value("listname").toString();
+    QString ipbxid = datamap.value("tipbxid").toString();
 
-        if (function == "listid") {
-            QStringList listid = datamap.value("list").toStringList();
-            this->handleGetlistListId(listname, ipbxid, listid);
-            this->requestListConfig(listname, ipbxid, listid);
-        } else if (function == "delconfig") {
-            QStringList listid = datamap.value("list").toStringList();
-            this->handleGetlistDelConfig(listname, ipbxid, listid);
-        } else if (function == "updateconfig") {
-            QString id = datamap.value("tid").toString();
-            this->handleGetlistUpdateConfig(listname, ipbxid, id, datamap);
-            this->requestStatus(listname, ipbxid, id);
-        } else if (function == "updatestatus") {
-            QString id = datamap.value("tid").toString();
-            QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-            QVariantMap status = datamap.value("status").toMap();
+    if (function == "listid") {
+        QStringList listid = datamap.value("list").toStringList();
+        this->handleGetlistListId(listname, ipbxid, listid);
+        this->requestListConfig(listname, ipbxid, listid);
+    } else if (function == "delconfig") {
+        QStringList listid = datamap.value("list").toStringList();
+        this->handleGetlistDelConfig(listname, ipbxid, listid);
+    } else if (function == "updateconfig") {
+        QString id = datamap.value("tid").toString();
+        this->handleGetlistUpdateConfig(listname, ipbxid, id, datamap);
+        this->requestStatus(listname, ipbxid, id);
+    } else if (function == "updatestatus") {
+        QString id = datamap.value("tid").toString();
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        QVariantMap status = datamap.value("status").toMap();
 
-            m_init_watcher.sawItem(listname, id);
+        m_init_watcher.sawItem(listname, id);
 
-            if (GenLists.contains(listname)) {
-                if (m_anylist.value(listname).contains(xid))
-                    m_anylist.value(listname).value(xid)->updateStatus(status);
-            } else if (listname == "channels") {
-                if (! m_channels.contains(xid))
-                    m_channels[xid] = new ChannelInfo(ipbxid, id);
-                m_channels[xid]->updateStatus(status);
-            }
-            if (listname == "queuemembers") {
-                if (! m_queuemembers.contains(xid))
-                    m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
-                m_queuemembers[xid]->updateStatus(status);
-            }
-
-            if (listname == "users") {
-                setAvailState(status["availstate"].toString(), true);
-                emit updateUserStatus(xid);
-            } else if (listname == "phones") {
-                emit updatePhoneStatus(xid);
-                if (hasPhone(xid)) {
-                    foreach (QString cid, phone(xid)->channels()) {
-                        this->requestStatus("channels", ipbxid, cid);
-                    }
-                }
-            } else if (listname == "agents")
-                emit updateAgentStatus(xid);
-            else if (listname == "queues") {
-                emit updateQueueStatus(xid);
-            }
-            else if (listname == "voicemails")
-                emit updateVoiceMailStatus(xid);
-            else if (listname == "channels")
-                emit updateChannelStatus(xid);
-
-        } else if (function == "addconfig") {
-            QStringList listid = datamap.value("list").toStringList();
-            this->addConfigs(listname, ipbxid, listid);
-            this->requestListConfig(listname, ipbxid, listid);
+        if (GenLists.contains(listname)) {
+            if (m_anylist.value(listname).contains(xid))
+                m_anylist.value(listname).value(xid)->updateStatus(status);
+        } else if (listname == "channels") {
+            if (! m_channels.contains(xid))
+                m_channels[xid] = new ChannelInfo(ipbxid, id);
+            m_channels[xid]->updateStatus(status);
         }
+        if (listname == "queuemembers") {
+            if (! m_queuemembers.contains(xid))
+                m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
+            m_queuemembers[xid]->updateStatus(status);
+        }
+
+        if (listname == "users") {
+           setAvailState(status["availstate"].toString(), true);
+           emit updateUserStatus(xid);
+        } else if (listname == "phones") {
+            emit updatePhoneStatus(xid);
+            if (hasPhone(xid)) {
+                foreach (QString cid, phone(xid)->channels()) {
+                    this->requestStatus("channels", ipbxid, cid);
+                }
+            }
+        } else if (listname == "agents")
+            emit updateAgentStatus(xid);
+        else if (listname == "queues") {
+            emit updateQueueStatus(xid);
+        }
+        else if (listname == "voicemails")
+            emit updateVoiceMailStatus(xid);
+        else if (listname == "channels")
+            emit updateChannelStatus(xid);
+
+    } else if (function == "addconfig") {
+        QStringList listid = datamap.value("list").toStringList();
+        this->addConfigs(listname, ipbxid, listid);
+        this->requestListConfig(listname, ipbxid, listid);
     }
 }
 
