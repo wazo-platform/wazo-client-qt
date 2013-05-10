@@ -1099,6 +1099,53 @@ void BaseEngine::handleGetlistDelConfig(const QString &listname, const QString &
     }
 }
 
+void BaseEngine::handleGetlistUpdateConfig(
+    const QString &listname,
+    const QString &ipbxid,
+    const QString &id,
+    const QVariantMap &data)
+{
+    QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+    QVariantMap config = data.value("config").toMap();
+    bool haschanged = false;
+    if (GenLists.contains(listname)) {
+        if (! m_anylist.value(listname).contains(xid)) {
+            newXInfoProto construct = m_xinfoList.value(listname);
+            XInfo * xinfo = construct(ipbxid, id);
+            m_anylist[listname][xid] = xinfo;
+        }
+        if (m_anylist.value(listname).value(xid) != NULL) {
+            haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
+        } else {
+            qDebug() << "received updateconfig for inexisting" << listname << xid;
+        }
+        if ((xid == m_xuserid) && (listname == "users")) {
+            emit localUserInfoDefined();
+        }
+    } else {
+        qDebug() << "received updateconfig for unknown list" << listname << "id" << xid;
+    }
+
+    if (listname == "phones") {
+        emit peersReceived();
+    }
+
+    // transmission to xlets
+    if (listname == "users") {
+        emit updateUserConfig(xid);
+        emit updateUserConfig(xid,data);
+    } else if (listname == "phones")
+        emit updatePhoneConfig(xid);
+    else if (listname == "agents")
+        emit updateAgentConfig(xid);
+    else if (listname == "queues")
+        emit updateQueueConfig(xid);
+    else if (listname == "voicemails")
+        emit updateVoiceMailConfig(xid);
+    else if (listname == "queuemembers")
+        emit updateQueueMemberConfig(xid);
+}
+
 void BaseEngine::requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
     QVariantMap command;
@@ -1129,45 +1176,7 @@ void BaseEngine::configsLists(const QString & thisclass, const QString & functio
             this->handleGetlistDelConfig(listname, ipbxid, listid);
         } else if (function == "updateconfig") {
             QString id = datamap.value("tid").toString();
-            QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-            QVariantMap config = datamap.value("config").toMap();
-            bool haschanged = false;
-            if (GenLists.contains(listname)) {
-                if (! m_anylist.value(listname).contains(xid)) {
-                    newXInfoProto construct = m_xinfoList.value(listname);
-                    XInfo * xinfo = construct(ipbxid, id);
-                    m_anylist[listname][xid] = xinfo;
-                }
-                if (m_anylist.value(listname).value(xid) != NULL) {
-                    haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
-                } else {
-                    qDebug() << "received updateconfig for inexisting" << listname << xid;
-                }
-                if ((xid == m_xuserid) && (listname == "users")) {
-                    emit localUserInfoDefined();
-                }
-            } else {
-                qDebug() << "received " << function << "for unknown list" << listname << "id" << xid;
-            }
-
-            if (listname == "phones") {
-                emit peersReceived();
-            }
-
-            // transmission to xlets
-            if (listname == "users") {
-                emit updateUserConfig(xid);
-                emit updateUserConfig(xid,datamap);
-            } else if (listname == "phones")
-                emit updatePhoneConfig(xid);
-            else if (listname == "agents")
-                emit updateAgentConfig(xid);
-            else if (listname == "queues")
-                emit updateQueueConfig(xid);
-            else if (listname == "voicemails")
-                emit updateVoiceMailConfig(xid);
-            else if (listname == "queuemembers")
-                emit updateQueueMemberConfig(xid);
+            this->handleGetlistUpdateConfig(listname, ipbxid, id, datamap);
 
             QVariantMap command;
             command["class"] = "getlist";
