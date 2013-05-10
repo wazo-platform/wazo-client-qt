@@ -60,9 +60,7 @@ void QueuesView::updateColumnHidden()
     }
 
     {
-        bool display_column =
-            b_engine->getConfig("guioptions.queue_displaynu").toBool();
-        setColumnHidden(QueuesModel::NUMBER, !display_column);
+        setColumnHidden(QueuesModel::NUMBER, false);
     }
 }
 
