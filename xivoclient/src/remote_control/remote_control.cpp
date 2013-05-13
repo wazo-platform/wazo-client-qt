@@ -165,7 +165,7 @@ RemoteControlCommand RemoteControl::parseCommand(const QByteArray & raw_command)
     QVariant decoded_command_plain;
     try {
         decoded_command_plain = JsonQt::JsonToVariant::parse(encoded_command);
-    } catch(JsonQt::ParseException) {
+    } catch(const JsonQt::ParseException &) {
         qDebug() << "Failed to decode args";
         throw;
     }
