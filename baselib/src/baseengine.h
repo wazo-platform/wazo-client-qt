@@ -126,20 +126,13 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QHash<QString, XInfo *> iterover(const QString & listname) { return m_anylist.value(listname); };
 
-        const ChannelInfo * channel(const QString & id) const      //!< Return the channel to any xlet
-            { return channels().value(id); };
-        const UserInfo * user(const QString & id) const            //!< Return the user to any Xlet
-            { return (const UserInfo *) m_anylist.value("users").value(id); };
-        const PhoneInfo * phone(const QString & id) const          //!< Return the phone to any Xlet
-            { return (const PhoneInfo *) m_anylist.value("phones").value(id); };
-        const AgentInfo * agent(const QString & id) const          //!< Return the agent to any Xlet
-            { return (const AgentInfo *) m_anylist.value("agents").value(id); };
-        const QueueInfo * queue(const QString & id) const         //!< Return the queue to any Xlet
-            { return (const QueueInfo *) m_anylist.value("queues").value(id); };
-        const VoiceMailInfo * voicemail(const QString & id) const  //!< Return the voicemail to any Xlet
-            { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };
-        const QueueMemberInfo * queuemember(const QString & id) const  //!< Return the queuemember to any Xlet
-            { return (const QueueMemberInfo *) m_anylist.value("queuemembers").value(id); };
+        const ChannelInfo * channel(const QString & id) const;
+        const UserInfo * user(const QString & id) const;
+        const PhoneInfo * phone(const QString & id) const;
+        const AgentInfo * agent(const QString & id) const;
+        const QueueInfo * queue(const QString & id) const;
+        const VoiceMailInfo * voicemail(const QString & id) const;
+        const QueueMemberInfo * queuemember(const QString & id) const;
 
         const QHash<QString, ChannelInfo *> & channels() const
                 { return m_channels; };      //!< Return the channels to any Xlet
