@@ -844,12 +844,6 @@ void BaseEngine::parseCommand(const QString &line)
             }
         }
 
-    } else if (thisclass == "featuresget") {
-        QVariantMap featuresget_map = datamap.value("userfeatures").toMap();
-        foreach (QString featurekey, featuresget_map.keys()) {
-            initFeatureFields(featurekey);
-        }
-        emit emitTextMessage(tr("Received Services Data"));
     } else if (thisclass == "featuresput") {
         QString featuresput_status = datamap.value("status").toString();
         if (featuresput_status != "OK") {
@@ -1613,23 +1607,6 @@ uint BaseEngine::port_to_use() const
     } else {
         return m_config["cti_port_encrypted"].toUInt();
     }
-}
-
-void BaseEngine::initFeatureFields(const QString & field)
-{
-    if ( (field == "enablednd") ||
-         (field == "enablevoicemail") ||
-         (field == "incallfilter") )
-        emit optChanged(field);
-
-    // dnd, vm, unc, rna, busy ... ?
-    else if ( (field == "enableunc") ||
-              (field == "enablebusy") ||
-              (field == "enablerna") ||
-              (field == "destunc") ||
-              (field == "destbusy") ||
-              (field == "destrna"))
-        emit forwardUpdated(field);
 }
 
 void BaseEngine::stopKeepAliveTimer()
