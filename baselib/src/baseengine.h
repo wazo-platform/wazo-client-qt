@@ -335,9 +335,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void localUserInfoDefined();
         void monitoredUserInfoDefined();
 
-        void optChanged(const QString &);
-        void forwardUpdated(const QString &);
-
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
 
@@ -363,8 +360,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void emitLogged();
         void emitDelogged();
-
-        void initFeatureFields(const QString &);
 
         void startConnection();
         void sendCommand(const QString &);
