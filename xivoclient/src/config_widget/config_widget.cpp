@@ -62,10 +62,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     this->m_config = b_engine->getConfig();
 
-    QWidget * config_widget = new QWidget(parent);
-    QVBoxLayout * config_layout = new QVBoxLayout(this);
-    this->ui.setupUi(config_widget);
-    config_layout->addWidget(config_widget);
+    this->ui.setupUi(this);
 
     this->load_values();
     this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
