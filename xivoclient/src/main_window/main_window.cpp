@@ -153,6 +153,8 @@ void MainWindow::showConfDialog()
 void MainWindow::cleanConfDialog()
 {
     this->disconnect(this->m_config_widget, SIGNAL(finished(int)));
+    this->m_config_widget->hide();
+    delete this->m_config_widget;
     this->m_config_widget = NULL;
 }
 

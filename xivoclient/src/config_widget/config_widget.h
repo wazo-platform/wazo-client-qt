@@ -37,6 +37,7 @@
 #include <QHBoxLayout>
 
 #include <xletlib/functests.h>
+#include <main_window/main_window.h>
 #include <ui_config_widget.h>
 
 class QCheckBox;
@@ -48,6 +49,7 @@ class QSpinBox;
 class QTabWidget;
 
 class BaseEngine;
+class MainWindow;
 
 /*If you want to update the settings window, you need to look for every
  * setting wanted in the application.
@@ -65,7 +67,7 @@ class ConfigWidget: public QDialog
     FUNCTESTED
 
     public:
-        ConfigWidget(QWidget *parent=NULL);
+        ConfigWidget(MainWindow *parent=NULL);
         ~ConfigWidget();
 
     private slots:

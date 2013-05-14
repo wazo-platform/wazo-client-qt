@@ -34,10 +34,12 @@
 #include <QList>
 #include <QMainWindow>
 
-#include <config_widget/config_widget.h>
 #include <ui_main_window.h>
 #include <xletlib/functests.h>
+#include <config_widget/config_widget.h>
 
+
+class ConfigWidget;
 
 class MainWindow : public QMainWindow
 {

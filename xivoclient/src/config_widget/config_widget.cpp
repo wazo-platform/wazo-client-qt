@@ -46,6 +46,7 @@
 #include <QDir>
 #include <QFrame>
 
+#include <assembler.h>
 #include <baseengine.h>
 #include <xivoconsts.h>
 #include <xletlib/warningwidget.h>
@@ -55,7 +56,7 @@
 QHash<QString, QString> func_legend;
 QString reboot_message;
 
-ConfigWidget::ConfigWidget(QWidget *parent)
+ConfigWidget::ConfigWidget(MainWindow *parent)
     : QDialog(parent)
 {
     reboot_message = tr("You must restart the program for this setting to apply.");
@@ -66,9 +67,10 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     this->load_values();
     this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
-    connect(this->ui.buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(this->ui.buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    connect(this->ui.reset_docks, SIGNAL(pressed()), parent, SLOT(resetState()));
+
+    this->connect(this->ui.buttonBox, SIGNAL(accepted()), SLOT(accept()));
+    this->connect(this->ui.buttonBox, SIGNAL(rejected()), SLOT(reject()));
+    this->connect(this->ui.reset_docks, SIGNAL(pressed()), assembler->xletDispatcher(), SLOT(resetState()));
 }
 
 ConfigWidget::~ConfigWidget()
