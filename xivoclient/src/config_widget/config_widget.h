@@ -68,11 +68,8 @@ class ConfigWidget: public QDialog
         ConfigWidget(QWidget *parent=0);
         ~ConfigWidget();
 
-    public slots:
-        bool close();
-
     private slots:
-        void saveAndClose();
+        void accept();
 
     private:
         void load_values();
