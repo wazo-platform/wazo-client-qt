@@ -51,7 +51,11 @@ XLet* XLetServicesPlugin::newXLetInstance(QWidget *parent)
 }
 
 ServicesPanel::ServicesPanel(QWidget * parent)
-    : XLet(parent)
+    : XLet(parent),
+      m_nofwd(NULL),
+      m_uncfwd(NULL),
+      m_otherfwd(NULL),
+      m_fwdmode(NULL)
 {
     setTitle(tr("Services"));
     m_capalegend["enablevoicemail"] = tr("Voice &Mail");
@@ -115,7 +119,7 @@ ServicesPanel::ServicesPanel(QWidget * parent)
                 gridlayout2->addWidget(m_uncfwd, line, 0, 1, 2);
             } else {
                 // If the "simple forwarding calls" is not there yet
-                if (! m_fwdmode->buttons().contains(m_otherfwd)) {
+                if (m_otherfwd == NULL) {
                     m_otherfwd = new QRadioButton(tr("Simple call forwards"), this);
                     m_fwdmode->addButton(m_otherfwd);
                     gridlayout2->addWidget(m_otherfwd, line++, 0, 1, 2);
