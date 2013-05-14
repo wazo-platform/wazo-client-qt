@@ -42,7 +42,6 @@ Statusbar::Statusbar(MainWindow *parent)
       m_pixmap_disconnected(QPixmap(":/images/disconnected.png").scaledToHeight(18, Qt::SmoothTransformation)),
       m_pixmap_connected(QPixmap(":/images/connected.png").scaledToHeight(18, Qt::SmoothTransformation))
 {
-    qDebug() << Q_FUNC_INFO;
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
@@ -56,7 +55,6 @@ Statusbar::~Statusbar()
 
 void Statusbar::initialize()
 {
-    qDebug() << Q_FUNC_INFO;
     this->m_config_profile->setText(b_engine->getConfig("profilename").toString());
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
     if (displayprofile) {
@@ -75,13 +73,11 @@ void Statusbar::initialize()
 
 void Statusbar::confUpdated()
 {
-    qDebug() << Q_FUNC_INFO;
     this->m_config_profile->setVisible(b_engine->getConfig("displayprofile").toBool());
 }
 
 void Statusbar::setStatusLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     this->showMessage(tr("Connected"));
     this->m_status->setPixmap(m_pixmap_connected);
     this->m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
@@ -89,7 +85,6 @@ void Statusbar::setStatusLogged()
 
 void Statusbar::setStatusNotLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     this->showMessage(tr("Disconnected"));
     this->m_status->setPixmap(m_pixmap_disconnected);
     this->m_padlock->hide();

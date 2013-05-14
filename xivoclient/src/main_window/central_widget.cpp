@@ -57,19 +57,16 @@ CentralWidget::~CentralWidget()
 
 void CentralWidget::setDefaultWidget()
 {
-    qDebug() << Q_FUNC_INFO;
     this->setCurrentWidget(this->m_login_widget);
 }
 
 void CentralWidget::setStatusLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     this->m_login_widget->saveConfig();
     this->setCurrentWidget(this->m_main_widget);
 }
 
 void CentralWidget::setStatusNotLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     this->setCurrentWidget(this->m_login_widget);
 }

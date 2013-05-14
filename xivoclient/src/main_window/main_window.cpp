@@ -71,7 +71,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::initialize()
 {
-    qDebug() << Q_FUNC_INFO;
     this->setAppIcon("default");
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
@@ -107,7 +106,6 @@ void MainWindow::setTitle(const QString & app_title)
 
 void MainWindow::showWindow()
 {
-    qDebug() << Q_FUNC_INFO;
     this->setVisible(true);
     this->showNormal();
     this->activateWindow();
@@ -115,7 +113,6 @@ void MainWindow::showWindow()
 
 void MainWindow::hideWindow()
 {
-    qDebug() << Q_FUNC_INFO;
     if(QSystemTrayIcon::isSystemTrayAvailable()) {
         this->setVisible(false);
     } else {
@@ -125,7 +122,6 @@ void MainWindow::hideWindow()
 
 void MainWindow::minimizeWindow()
 {
-    qDebug() << Q_FUNC_INFO;
     this->showMinimized();
 }
 
@@ -171,7 +167,6 @@ void MainWindow::confUpdated()
 
 void MainWindow::setStatusLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     QString app_title = tr("Client %1 (%2 profile)")
         .arg(XC_VERSION)
         .arg(b_engine->getCapaApplication());
@@ -186,7 +181,6 @@ void MainWindow::setStatusLogged()
 
 void MainWindow::setStatusNotLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     this->ui->action_connect->setVisible(true);
     this->ui->action_disconnect->setVisible(false);
     b_engine->getSettings()->setValue("display/mainwindowstate", saveState());

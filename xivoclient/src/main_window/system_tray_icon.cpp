@@ -88,7 +88,6 @@ void SystemTrayIcon::setSystrayIcon(const QIcon & icon)
  * of the MainWidget on a simple left click. */
 void SystemTrayIcon::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug() << Q_FUNC_INFO;
     if (reason == QSystemTrayIcon::Trigger) {
         #ifndef Q_WS_MAC
         qDebug() << "visible " << this->isVisible() << "toggling visibility";
@@ -107,7 +106,5 @@ void SystemTrayIcon::systrayActivated(QSystemTrayIcon::ActivationReason reason)
  */
 void SystemTrayIcon::systrayMsgClicked()
 {
-    qDebug() << Q_FUNC_INFO;
-    qDebug() << "showing window";
     this->m_main_window->showWindow();
 }

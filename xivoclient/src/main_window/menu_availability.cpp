@@ -52,13 +52,11 @@ MenuAvailability::~MenuAvailability()
 
 void MenuAvailability::setStatusLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     this->setMenuAvailabilityEnabled(true);
 }
 
 void MenuAvailability::setStatusNotLogged()
 {
-    qDebug() << Q_FUNC_INFO;
     this->setMenuAvailabilityEnabled(false);
     this->clearPresence();
 }
