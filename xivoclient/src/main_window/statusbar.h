@@ -34,6 +34,8 @@
 #include <QList>
 #include <QStatusBar>
 
+#include <xletlib/functests.h>
+
 #include "main_window/main_window.h"
 
 class MainWindow;
@@ -41,6 +43,7 @@ class MainWindow;
 class Statusbar : public QStatusBar
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         Statusbar(MainWindow *parent);
