@@ -68,6 +68,7 @@ ConfigWidget::ConfigWidget(QWidget *parent)
     this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
     connect(this->ui.buttonBox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
     connect(this->ui.buttonBox, SIGNAL(rejected()), this, SLOT(close()));
+    connect(this->ui.reset_docks, SIGNAL(pressed()), parent, SLOT(resetState()));
 }
 
 ConfigWidget::~ConfigWidget()
