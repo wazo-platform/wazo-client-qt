@@ -36,7 +36,7 @@
 
 #include <xletlib/functests.h>
 
-#include "main_window/main_window.h"
+#include "main_window.h"
 
 class MainWindow;
 
@@ -50,11 +50,10 @@ class Statusbar : public QStatusBar
         ~Statusbar();
 
     private slots:
+        void initialize();
         void setStatusLogged();
         void setStatusNotLogged();
         void confUpdated();
-
-    protected:
 
     private:
         QStatusBar *m_statusbar;

@@ -36,10 +36,27 @@
 
 Statusbar::Statusbar(MainWindow *parent)
     : m_statusbar(parent->ui->statusbar),
+      m_status(new QLabel(this)),
+      m_padlock(new QLabel(this)),
+      m_config_profile(new QLabel(this)),
       m_pixmap_disconnected(QPixmap(":/images/disconnected.png").scaledToHeight(18, Qt::SmoothTransformation)),
       m_pixmap_connected(QPixmap(":/images/connected.png").scaledToHeight(18, Qt::SmoothTransformation))
 {
-    this->m_config_profile = new QLabel();
+    qDebug() << Q_FUNC_INFO;
+    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
+    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
+    this->connect(b_engine, SIGNAL(emitTextMessage(const QString &)), SLOT(showMessage(const QString &)));
+    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
+}
+
+Statusbar::~Statusbar()
+{
+}
+
+void Statusbar::initialize()
+{
+    qDebug() << Q_FUNC_INFO;
     this->m_config_profile->setText(b_engine->getConfig("profilename").toString());
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
     if (displayprofile) {
@@ -47,28 +64,18 @@ Statusbar::Statusbar(MainWindow *parent)
     }
     this->m_statusbar->addPermanentWidget(this->m_config_profile);
 
-    this->m_padlock = new QLabel();
     QPixmap padlock_pixmap = QPixmap(":/images/padlock.png").scaledToHeight(18, Qt::SmoothTransformation);
     this->m_padlock->setPixmap(padlock_pixmap);
     this->m_padlock->hide();
     this->m_statusbar->addPermanentWidget(this->m_padlock);
 
-    this->m_status = new QLabel();
     this->m_status->setPixmap(this->m_pixmap_disconnected);
     this->m_statusbar->addPermanentWidget(this->m_status);
-
-    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
-    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
-    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
-    this->connect(b_engine, SIGNAL(emitTextMessage(const QString &)), SLOT(showMessage(const QString &)));
-}
-
-Statusbar::~Statusbar()
-{
 }
 
 void Statusbar::confUpdated()
 {
+    qDebug() << Q_FUNC_INFO;
     this->m_config_profile->setVisible(b_engine->getConfig("displayprofile").toBool());
 }
 
