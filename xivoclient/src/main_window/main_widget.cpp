@@ -42,8 +42,3 @@ MainWidget::MainWidget(CentralWidget *parent)
 MainWidget::~MainWidget()
 {
 }
-
-void MainWidget::setAppIcon(const QString & def)
-{
-
-}

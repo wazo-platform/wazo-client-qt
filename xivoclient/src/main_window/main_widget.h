@@ -45,11 +45,6 @@ class MainWidget : public QWidget
     public:
         MainWidget(CentralWidget *parent);
         ~MainWidget();
-
-    public slots:
-        void setAppIcon(const QString & def);
-
-    private:
 };
 
 #endif
