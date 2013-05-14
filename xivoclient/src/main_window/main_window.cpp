@@ -95,14 +95,14 @@ void MainWindow::setAppIcon(const QString & def)
         icon = QIcon(":/images/xivoicon-black.png");
     }
     this->setWindowIcon(icon);
-    this->m_systray_icon->setSystrayIcon(icon);
+    emit this->iconUpdated(icon);
 }
 
 void MainWindow::setTitle(const QString & app_title)
 {
     QString title = QString("XiVO %1").arg(app_title);
     this->setWindowTitle(title);
-    this->m_systray_icon->setSystrayTitle(title);
+    emit this->titleUpdated(title);
 }
 
 void MainWindow::showWindow()

@@ -72,6 +72,8 @@ class MainWindow : public QMainWindow
 
     signals:
         void initialized();
+        void titleUpdated(const QString & title);
+        void iconUpdated(const QIcon & icon);
 
     private:
         void setTitle(const QString &);
