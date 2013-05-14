@@ -34,10 +34,6 @@
 #include <QtGui>
 #include <QList>
 
-#include "main_window.h"
-
-class XLet;
-class MainWindow;
 
 class MainWidget : public QWidget
 {
@@ -46,41 +42,11 @@ class MainWidget : public QWidget
     public:
         MainWidget(QWidget *parent);
         ~MainWidget();
-        void setMainWindow(MainWindow *);
 
     public slots:
         void setAppIcon(const QString & def);
-        void resetState();
-
-    private slots:
-        void setStatusNotLogged();
-        void setStatusLogged();
-        void showWidgetOnTop(QWidget *);
 
     private:
-        void setAppearance(const QVariantList &);
-        void clearAppearance();
-        void addPanel(const QString &, const QString &, QWidget *);
-        void removePanel(const QString &, QWidget *);
-        QDockWidget* createDockXlet(const QString& name,
-                                    const QString& title,
-                                    QDockWidget::DockWidgetFeatures features,
-                                    QWidget *widget);
-
-        MainWindow *m_main_window;
-
-        // Widgets for Xlets
-        QDockWidget *m_resizingHelper;
-        QVBoxLayout *m_vL;
-        QByteArray m_defaultState;
-        QTabWidget *m_tabwidget;
-        QHash<QString, XLet *> m_xletlist;
-        QHash<QString, QString> m_dockoptions;
-        QHash<QString, QList<QDockWidget *>* > m_docks;
-        QStringList m_docknames;
-        QStringList m_gridnames;
-        QStringList m_tabnames;
-        QStringList m_allnames;
 };
 
 #endif
