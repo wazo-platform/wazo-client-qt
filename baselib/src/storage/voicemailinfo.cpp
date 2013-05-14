@@ -32,12 +32,11 @@
 
 VoiceMailInfo::VoiceMailInfo(const QString & ipbxid,
                              const QString & id)
-    : XInfo(ipbxid, id)
+    : XInfo(ipbxid, id),
+      m_waiting(false),
+      m_old(0),
+      m_new(0)
 {
-    m_waiting = false;
-    m_old = 0;
-    m_new = 0;
-    m_mailbox = "";
 }
 
 bool VoiceMailInfo::updateConfig(const QVariantMap & prop)

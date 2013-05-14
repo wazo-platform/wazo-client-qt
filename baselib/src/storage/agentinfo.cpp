@@ -37,7 +37,8 @@
 
 AgentInfo::AgentInfo(const QString & ipbxid,
                      const QString & id)
-    : XInfo(ipbxid, id)
+    : XInfo(ipbxid, id),
+      m_availability_since(0.0)
 {
 }
 

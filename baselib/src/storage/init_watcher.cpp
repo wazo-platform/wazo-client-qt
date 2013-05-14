@@ -33,7 +33,7 @@
 #include "init_watcher.h"
 
 InitWatcher::InitWatcher()
-    :m_watching_started(false)
+    : m_watching_started(false)
 {
 }
 
