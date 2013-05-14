@@ -44,10 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     this->ui->setupUi(this);
     b_engine->setParent(this);
-
-    QSettings *qsettings = b_engine->getSettings();
-    this->restoreGeometry(qsettings->value("display/mainwingeometry").toByteArray());
-
     b_engine->logAction("application started on " + b_engine->osname());
 
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
@@ -71,6 +67,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initialize()
 {
+    this->restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
     this->setAppIcon("default");
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
