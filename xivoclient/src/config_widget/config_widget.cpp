@@ -226,6 +226,8 @@ void ConfigWidget::accept()
     this->m_config["uniqueinstance"] = !this->ui.allow_multiple_instances->isChecked();
     this->m_config["displayprofile"] = this->ui.show_displayprofile->isChecked();
 
+    b_engine->getSettings()->setValue("display/configtab", this->ui.tabWidget->currentIndex());
+
     b_engine->setConfig(m_config);
 
     QDialog::accept();
