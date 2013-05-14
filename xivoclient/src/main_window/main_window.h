@@ -70,6 +70,9 @@ class MainWindow : public QMainWindow
         void setStatusLogged();
         void minimizeWindow();
 
+    signals:
+        void initialized();
+
     private:
         void setTitle(const QString &);
 

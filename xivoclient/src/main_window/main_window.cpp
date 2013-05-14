@@ -79,6 +79,7 @@ void MainWindow::initialize()
         this->show();
     }
     this->setFocusPolicy(Qt::StrongFocus);
+    emit this->initialized();
 }
 
 void MainWindow::setAppIcon(const QString & def)
