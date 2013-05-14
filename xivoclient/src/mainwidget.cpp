@@ -532,6 +532,8 @@ void MainWidget::cleanConfDialog()
 {
     disconnect(m_configwindow, SIGNAL(finished(int)),
                this, SLOT(cleanConfDialog()));
+    this->m_configwindow->hide();
+    delete this->m_configwindow;
     m_configwindow = NULL;
 }
 

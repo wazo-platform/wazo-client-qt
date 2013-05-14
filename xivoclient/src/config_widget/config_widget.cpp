@@ -66,8 +66,8 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
     this->load_values();
     this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
-    connect(this->ui.buttonBox, SIGNAL(accepted()), this, SLOT(saveAndClose()));
-    connect(this->ui.buttonBox, SIGNAL(rejected()), this, SLOT(close()));
+    connect(this->ui.buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(this->ui.buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     connect(this->ui.reset_docks, SIGNAL(pressed()), parent, SLOT(resetState()));
 }
 
@@ -161,7 +161,7 @@ void ConfigWidget::load_values()
     this->ui.show_displayprofile->setChecked(this->m_config["displayprofile"].toBool());
 }
 
-void ConfigWidget::saveAndClose()
+void ConfigWidget::accept()
 {
     // User
     this->m_config["forcelocale"] = this->ui.language->itemData(this->ui.language->currentIndex());
@@ -228,10 +228,5 @@ void ConfigWidget::saveAndClose()
 
     b_engine->setConfig(m_config);
 
-    this->close();
-}
-
-bool ConfigWidget::close()
-{
-    return QDialog::close();
+    QDialog::accept();
 }
