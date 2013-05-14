@@ -44,15 +44,17 @@ class SystemTrayIcon : public QSystemTrayIcon
     public:
         SystemTrayIcon(MainWindow *parent);
         ~SystemTrayIcon();
-        void setUi(Ui::MainWindow *ui);
-        void setSystrayTitle(const QString &);
 
-    public slots:
+    private slots:
+        void initialize();
         void setSystrayIcon(const QIcon & icon);
+        void setSystrayTitle(const QString &);
         void systrayActivated(QSystemTrayIcon::ActivationReason);
         void systrayMsgClicked();
 
     private:
+        void setUi(Ui::MainWindow *ui);
+
         MainWindow *m_main_window;
 };
 

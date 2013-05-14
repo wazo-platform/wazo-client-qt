@@ -36,17 +36,23 @@ SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
     : QSystemTrayIcon(parent),
       m_main_window(parent)
 {
-    this->setUi(parent->ui);
-    this->show();
-
     this->connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
     this->connect(this, SIGNAL(messageClicked()), SLOT(systrayMsgClicked()));
+    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
+    this->connect(parent, SIGNAL(titleUpdated(const QString &)), SLOT(setSystrayTitle(const QString &)));
+    this->connect(parent, SIGNAL(iconUpdated(const QIcon &)), SLOT(setSystrayIcon(const QIcon &)));
 }
 
 SystemTrayIcon::~SystemTrayIcon()
 {
     b_engine->getSettings()->setValue("display/mainwingeometry", this->m_main_window->saveGeometry());
     b_engine->logAction("application quit");
+}
+
+void SystemTrayIcon::initialize()
+{
+    this->setUi(this->m_main_window->ui);
+    this->show();
 }
 
 void SystemTrayIcon::setUi(Ui::MainWindow *ui)
