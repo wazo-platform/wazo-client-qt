@@ -34,22 +34,9 @@
 #include <QList>
 #include <QMainWindow>
 
-#include <login_widget/login_widget.h>
 #include <config_widget/config_widget.h>
 #include <ui_main_window.h>
 #include <xletlib/functests.h>
-
-#include "menu_availability.h"
-#include "statusbar.h"
-#include "system_tray_icon.h"
-#include "central_widget.h"
-
-
-class CentralWidget;
-class ConfigWidget;
-class MenuAvailability;
-class Statusbar;
-class SystemTrayIcon;
 
 
 class MainWindow : public QMainWindow
@@ -61,6 +48,8 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void initialize();
+
+        Ui::MainWindow *ui;
 
     public slots:
         void setAppIcon(const QString & def);
@@ -82,15 +71,8 @@ class MainWindow : public QMainWindow
     private:
         void setTitle(const QString &);
 
-        Ui::MainWindow *ui;
-
-        CentralWidget *m_central_widget;
-        SystemTrayIcon *m_systray_icon;
         ConfigWidget *m_config_widget;
-        MenuAvailability *m_menu_availability;
-        Statusbar *m_menu_statusbar;
         QClipboard * m_clipboard;
-
 };
 
 #endif

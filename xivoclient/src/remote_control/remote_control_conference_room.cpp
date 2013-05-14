@@ -40,7 +40,7 @@
 QVariantMap RemoteControl::get_conference_room_infos()
 {
     QVariantMap args;
-    XletConference* conference_xlet = static_cast<XletConference*>(m_exec_obj.win->m_xletlist.value("conference"));
+    XletConference* conference_xlet = static_cast<XletConference*>(this->m_xlet_container->m_xletlist.value("conference"));
     QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
 
     args["conference_xlet"] = conference_xlet != NULL;

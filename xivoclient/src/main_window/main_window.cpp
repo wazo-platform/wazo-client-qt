@@ -61,16 +61,6 @@ MainWindow::MainWindow(QWidget *parent)
     b_engine->connect(this->ui->action_quit, SIGNAL(triggered()), SLOT(stop()));
     b_engine->connect(this->ui->action_connect, SIGNAL(triggered()), SLOT(start()));
     b_engine->connect(this->ui->action_disconnect, SIGNAL(triggered()), SLOT(stop()));
-
-    this->m_systray_icon = new SystemTrayIcon(this);
-    this->m_central_widget = new CentralWidget(this->ui->central_widget);
-    this->setCentralWidget(this->m_central_widget);
-    this->m_central_widget->setMainWindow(this);
-    this->m_menu_availability = new MenuAvailability(this->ui->menu_availability);
-    this->m_menu_statusbar = new Statusbar(this->ui->statusbar);
-    this->setAppIcon("default");
-    this->m_systray_icon->setUi(this->ui);
-    this->m_systray_icon->show();
 }
 
 MainWindow::~MainWindow()
@@ -82,9 +72,9 @@ MainWindow::~MainWindow()
 void MainWindow::initialize()
 {
     qDebug() << Q_FUNC_INFO;
+    this->setAppIcon("default");
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
-    this->m_central_widget->setDefaultWidget();
     if (! b_engine->getConfig("systrayed").toBool()) {
         this->show();
     }

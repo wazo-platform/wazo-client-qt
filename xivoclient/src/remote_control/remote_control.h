@@ -38,8 +38,13 @@
 #include <exception>
 
 #include <main.h>
-
-#include "xlets/conference/conflist.h"
+#include <assembler.h>
+#include <login_widget/login_widget.h>
+#include <config_widget/config_widget.h>
+#include <main_window/main_widget.h>
+#include <main_window/central_widget.h>
+#include <main_window/statusbar.h>
+#include <xlets/conference/conflist.h>
 
 using namespace std;
 
@@ -137,6 +142,13 @@ class RemoteControl : public QObject
         QString m_socket_name;
         QLocalServer *m_server;
         QLocalSocket *m_client_cnx;
+
+        LoginWidget *m_login_widget;
+        CentralWidget *m_central_widget;
+        MainWidget *m_main_widget;
+        Statusbar *m_statusbar;
+        XletDispatcher *m_xlet_dispatcher;
+        XletContainer *m_xlet_container;
 };
 
 #endif /* ifdef FUNCTESTS */

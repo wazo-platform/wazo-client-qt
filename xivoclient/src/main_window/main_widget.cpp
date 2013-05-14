@@ -34,7 +34,7 @@
 #include "main_widget.h"
 
 
-MainWidget::MainWidget(QWidget *parent)
+MainWidget::MainWidget(CentralWidget *parent)
     : QWidget(parent)
 {
 }

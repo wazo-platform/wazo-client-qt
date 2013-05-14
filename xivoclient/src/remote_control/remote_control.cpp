@@ -52,7 +52,15 @@ const char* TestFailedException::what() const throw()
 }
 
 RemoteControl::RemoteControl(ExecObjects exec_obj)
-    : m_no_error(true)
+    : m_command_found(false),
+      m_no_error(true),
+      m_client_cnx(NULL),
+      m_login_widget(assembler->loginWidget()),
+      m_central_widget(assembler->centralWidget()),
+      m_main_widget(assembler->mainWidget()),
+      m_statusbar(assembler->statusbar()),
+      m_xlet_dispatcher(assembler->xletDispatcher()),
+      m_xlet_container(assembler->xletContainer())
 {
     m_exec_obj = exec_obj;
     m_server = new QLocalServer;

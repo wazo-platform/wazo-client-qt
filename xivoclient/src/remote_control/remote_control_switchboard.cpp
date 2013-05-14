@@ -38,7 +38,7 @@ QVariantMap RemoteControl::get_switchboard_infos()
 {
     QVariantMap args;
 
-    Directory *xlet = static_cast<Directory*>(m_exec_obj.win->m_xletlist.value("directory"));
+    Directory *xlet = static_cast<Directory*>(this->m_xlet_container->m_xletlist.value("directory"));
     QAbstractItemModel *model = xlet->ui.entry_table->model();
 
     QVariantList content;
@@ -61,7 +61,7 @@ void RemoteControl::set_search_for_directory(const QVariantList & args)
 {
     QString search_string = args[0].toString();
 
-    Directory *xlet = static_cast<Directory*>(m_exec_obj.win->m_xletlist.value("directory"));
+    Directory *xlet = static_cast<Directory*>(this->m_xlet_container->m_xletlist.value("directory"));
     QLineEdit *entry_filter = xlet->findChild<QLineEdit*>(QString("entry_filter"));
 
     entry_filter->setText(search_string);

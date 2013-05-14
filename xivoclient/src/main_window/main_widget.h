@@ -34,13 +34,16 @@
 #include <QtGui>
 #include <QList>
 
+#include "central_widget.h"
+
+class CentralWidget;
 
 class MainWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        MainWidget(QWidget *parent);
+        MainWidget(CentralWidget *parent);
         ~MainWidget();
 
     public slots:

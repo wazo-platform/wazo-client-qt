@@ -36,7 +36,7 @@
 QVariantMap RemoteControl::get_identity_infos()
 {
     QVariantMap args;
-    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(m_exec_obj.win->m_xletlist.value("identity"));
+    IdentityDisplay *xlet = static_cast<IdentityDisplay*>(this->m_xlet_container->m_xletlist.value("identity"));
     if (xlet == NULL)
         return args;
 

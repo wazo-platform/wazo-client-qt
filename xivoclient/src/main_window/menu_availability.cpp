@@ -34,8 +34,8 @@
 #include "menu_availability.h"
 
 
-MenuAvailability::MenuAvailability(QMenu *parent)
-    : m_menu_availability(parent),
+MenuAvailability::MenuAvailability(MainWindow *parent)
+    : m_menu_availability(parent->ui->menu_availability),
       m_availability_action_group(new QActionGroup(parent))
 {
     this->m_availability_action_group->setExclusive(true);

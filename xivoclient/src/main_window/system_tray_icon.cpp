@@ -33,8 +33,12 @@
 
 
 SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
-    : m_main_window(parent)
+    : QSystemTrayIcon(parent),
+      m_main_window(parent)
 {
+    this->setUi(parent->ui);
+    this->show();
+
     this->connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
     this->connect(this, SIGNAL(messageClicked()), SLOT(systrayMsgClicked()));
 }

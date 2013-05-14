@@ -39,6 +39,7 @@
 #include <baseengine.h>
 #include <phonenumber.h>
 
+#include "assembler.h"
 #include "main_window/main_window.h"
 #include "powerawareapplication.h"
 #include "fileopeneventhandler.h"
@@ -133,11 +134,12 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     if(qssFile.open(QIODevice::ReadOnly)) {
         app->setStyleSheet(qssFile.readAll());
     }
-    MainWindow *window = new MainWindow();
-    window->initialize();
+    assembler = new Assembler();
+    MainWindow *main_window = assembler->mainWindow();
+    main_window->initialize();
 
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
-    app->setActivationWindow(window, activate_on_tel);
+    app->setActivationWindow(main_window, activate_on_tel);
     fileOpenHandler->setActivationWindow(activate_on_tel);
 
     app->setQuitOnLastWindowClosed(false);
@@ -155,7 +157,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                      b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
 
     ret.app = app;
-    ret.win = window;
+    ret.win = main_window;
     ret.baseengine = b_engine;
     ret.initOK = true;
 
@@ -185,6 +187,7 @@ void clean_xivoclient(ExecObjects exec_obj)
 #ifdef FUNCTESTS
     delete exec_obj.rc;
 #endif
+    delete assembler;
     delete exec_obj.app;
 }
 

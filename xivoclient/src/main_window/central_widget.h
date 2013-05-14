@@ -46,10 +46,9 @@ class CentralWidget : public QStackedWidget
     Q_OBJECT
 
     public:
-        CentralWidget(QWidget *parent);
+        CentralWidget(MainWindow *parent);
         ~CentralWidget();
         void setDefaultWidget();
-        void setMainWindow(MainWindow *);
 
     private slots:
         void setStatusNotLogged();
@@ -58,7 +57,6 @@ class CentralWidget : public QStackedWidget
     private:
         LoginWidget *m_login_widget;
         MainWidget *m_main_widget;
-
 };
 
 #endif

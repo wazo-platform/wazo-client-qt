@@ -33,12 +33,16 @@
 #include <QMenu>
 #include <QDebug>
 
+#include "main_window/main_window.h"
+
+class MainWindow;
+
 class MenuAvailability : public QMenu
 {
     Q_OBJECT
 
     public:
-        MenuAvailability(QMenu *parent);
+        MenuAvailability(MainWindow *parent);
         ~MenuAvailability();
 
     private slots:

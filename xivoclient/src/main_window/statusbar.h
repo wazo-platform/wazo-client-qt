@@ -32,15 +32,18 @@
 
 #include <QtGui>
 #include <QList>
-#include <QMainWindow>
 #include <QStatusBar>
+
+#include "main_window/main_window.h"
+
+class MainWindow;
 
 class Statusbar : public QStatusBar
 {
     Q_OBJECT
 
     public:
-        Statusbar(QStatusBar *parent);
+        Statusbar(MainWindow *parent);
         ~Statusbar();
 
     private slots:

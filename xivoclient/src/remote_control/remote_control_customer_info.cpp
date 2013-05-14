@@ -38,7 +38,7 @@
 QVariantMap RemoteControl::get_sheet_infos()
 {
     QVariantMap args;
-    CustomerInfoPanel *xlet = static_cast<CustomerInfoPanel*>(m_exec_obj.win->m_xletlist.value("customerinfo"));
+    CustomerInfoPanel *xlet = static_cast<CustomerInfoPanel*>(this->m_xlet_container->m_xletlist.value("customerinfo"));
     if (xlet == NULL)
         return args;
 

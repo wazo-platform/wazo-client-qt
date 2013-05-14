@@ -34,8 +34,8 @@
 #include "statusbar.h"
 
 
-Statusbar::Statusbar(QStatusBar *parent)
-    : m_statusbar(parent),
+Statusbar::Statusbar(MainWindow *parent)
+    : m_statusbar(parent->ui->statusbar),
       m_pixmap_disconnected(QPixmap(":/images/disconnected.png").scaledToHeight(18, Qt::SmoothTransformation)),
       m_pixmap_connected(QPixmap(":/images/connected.png").scaledToHeight(18, Qt::SmoothTransformation))
 {
