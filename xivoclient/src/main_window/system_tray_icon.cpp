@@ -45,8 +45,6 @@ SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
 
 SystemTrayIcon::~SystemTrayIcon()
 {
-    b_engine->getSettings()->setValue("display/mainwingeometry", this->m_main_window->saveGeometry());
-    b_engine->logAction("application quit");
 }
 
 void SystemTrayIcon::initialize()
