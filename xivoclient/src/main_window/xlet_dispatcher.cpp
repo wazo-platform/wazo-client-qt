@@ -69,7 +69,7 @@ void XletDispatcher::setStatusLogged()
         this->m_grid_container->addWidget(m_tab_container);
     }
 
-    foreach (QString xletid, this->m_xlets) {
+    foreach (QString xletid, this->m_xlets_name) {
         if (! QStringList("tabber").contains(xletid)) {
             bool withscrollbar = this->m_dockoptions[xletid].contains("s");
             XLet *xlet = XLetFactory::spawn(xletid, this->m_main_window);
@@ -224,27 +224,27 @@ void XletDispatcher::showWidgetOnTop(QWidget *widget)
         this->m_tab_container->setCurrentWidget(widget);
 }
 
-void XletDispatcher::setAppearance(const QVariantList &dockoptions)
+void XletDispatcher::setAppearance(const QVariantList &xlets_infos)
 {
-    foreach (QVariant dproperties, dockoptions) {
-        QStringList dopt = dproperties.toStringList();
-        if (dopt.size() > 0) {
-            QString wname = dopt[0];
-            if ((wname == "customerinfo") && (! b_engine->checkedFunction(wname)))
+    foreach (QVariant qvariant_xlet_infos, xlets_infos) {
+        QStringList xlet_infos = qvariant_xlet_infos.toStringList();
+        if (xlet_infos.size() > 0) {
+            QString name = xlet_infos[0];
+            if ((name == "customerinfo") && (! b_engine->checkedFunction(name)))
                 continue;
-            this->m_xlets.append(wname);
-            this->m_dockoptions[wname] = "";
-            if (dopt.size() > 1) {
-                if (dopt[1] == "dock") {
-                    this->m_xlets_dock.append(wname);
-                } else if (dopt[1] == "grid")
-                    this->m_xlets_grid.append(wname);
-                else if (dopt[1] == "tab")
-                    this->m_xlets_tab.append(wname);
-                if (dopt.size() > 2)
-                    this->m_dockoptions[wname] = dopt[2];
+            this->m_xlets_name.append(name);
+            this->m_dockoptions[name] = "";
+            if (xlet_infos.size() > 1) {
+                if (xlet_infos[1] == "dock") {
+                    this->m_xlets_dock.append(name);
+                } else if (xlet_infos[1] == "grid")
+                    this->m_xlets_grid.append(name);
+                else if (xlet_infos[1] == "tab")
+                    this->m_xlets_tab.append(name);
+                if (xlet_infos.size() > 2)
+                    this->m_dockoptions[name] = xlet_infos[2];
             } else {
-                this->m_xlets_dock.append(dopt[0]);
+                this->m_xlets_dock.append(xlet_infos[0]);
             }
         }
     }
@@ -255,5 +255,5 @@ void XletDispatcher::clearAppearance()
     this->m_xlets_dock.clear();
     this->m_xlets_grid.clear();
     this->m_xlets_tab.clear();
-    this->m_xlets.clear();
+    this->m_xlets_name.clear();
 }

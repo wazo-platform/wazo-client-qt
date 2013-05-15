@@ -82,7 +82,7 @@ class XletDispatcher : public QObject
         QHash<QString, QString> m_dockoptions;
         QHash<QString, QList<QDockWidget *>* > m_docks;
 
-        QStringList m_xlets;
+        QStringList m_xlets_name;
         QStringList m_xlets_dock;
         QStringList m_xlets_grid;
         QStringList m_xlets_tab;
