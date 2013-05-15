@@ -40,9 +40,9 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
     : QObject(parent),
       m_main_window(main_window),
       m_main_widget(main_widget),
-      m_resizingHelper(0),
-      m_vL(new QVBoxLayout(main_window)),
-      m_tabwidget(NULL)
+      m_dock_container(0),
+      m_grid_container(new QVBoxLayout(main_widget)),
+      m_tab_container(NULL)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
@@ -57,19 +57,19 @@ void XletDispatcher::setStatusLogged()
     qDebug() << Q_FUNC_INFO;
     this->setAppearance(b_engine->getCapaXlets());
 
-    this->m_tabwidget = new QTabWidget(this->m_main_window);
-    this->m_tabwidget->hide();
+    this->m_tab_container = new QTabWidget(this->m_main_widget);
+    this->m_tab_container->hide();
 
-    if (this->m_docknames.contains("tabber")) {
-        this->m_tabwidget->show();
-        this->addPanel("tabber", tr("Tabs"), this->m_tabwidget);
+    if (this->m_xlets_dock.contains("tabber")) {
+        this->m_tab_container->show();
+        this->addPanel("tabber", tr("Tabs"), this->m_tab_container);
     }
-    if (this->m_gridnames.contains("tabber")) {
-        this->m_tabwidget->show();
-        this->m_vL->addWidget(m_tabwidget);
+    if (this->m_xlets_grid.contains("tabber")) {
+        this->m_tab_container->show();
+        this->m_grid_container->addWidget(m_tab_container);
     }
 
-    foreach (QString xletid, this->m_allnames) {
+    foreach (QString xletid, this->m_xlets) {
         if (! QStringList("tabber").contains(xletid)) {
             bool withscrollbar = this->m_dockoptions[xletid].contains("s");
             XLet *xlet = XLetFactory::spawn(xletid, this->m_main_window);
@@ -90,7 +90,7 @@ void XletDispatcher::setStatusLogged()
         }
     }
 
-    this->m_tabwidget->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
+    this->m_tab_container->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
 
     foreach (QString name, this->m_docks.keys()) {
         for(QList<QDockWidget *>::iterator i = this->m_docks[name]->begin(); i != this->m_docks[name]->end(); i++) {
@@ -101,15 +101,15 @@ void XletDispatcher::setStatusLogged()
     // restore the saved state AFTER showing the docks
     this->m_main_window->restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 
-    if ((this->m_resizingHelper == 0) && (this->m_docks.size())) {
+    if ((this->m_dock_container == 0) && (this->m_docks.size())) {
         // we gonna resize this widget in resizeEvent
         // to force the mainWindow dockArea expand instead of the centralWidget
-        this->m_resizingHelper = new QDockWidget(this->m_main_window);
-        this->m_resizingHelper->setFixedWidth(1);
-        this->m_main_window->addDockWidget(Qt::BottomDockWidgetArea, this->m_resizingHelper);
-        this->m_resizingHelper->show(); // not a no-op, show is needed, to force Qt to calc
-        this->m_resizingHelper->hide(); // the widget size!
-        this->m_main_window->removeDockWidget(this->m_resizingHelper);
+        this->m_dock_container = new QDockWidget(this->m_main_window);
+        this->m_dock_container->setFixedWidth(1);
+        this->m_main_window->addDockWidget(Qt::BottomDockWidgetArea, this->m_dock_container);
+        this->m_dock_container->show(); // not a no-op, show is needed, to force Qt to calc
+        this->m_dock_container->hide(); // the widget size!
+        this->m_main_window->removeDockWidget(this->m_dock_container);
     }
 }
 
@@ -117,15 +117,15 @@ void XletDispatcher::setStatusNotLogged()
 {
     qDebug() << Q_FUNC_INFO;
     b_engine->getSettings()->setValue("display/mainwindowstate", this->m_main_window->saveState());
-    if (this->m_tabwidget->currentIndex() > -1) {
-        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tabwidget->currentIndex());
+    if (this->m_tab_container->currentIndex() > -1) {
+        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
     }
 
-    foreach (QString dname, this->m_docknames) {
+    foreach (QString dname, this->m_xlets_dock) {
       if(this->m_docks.contains(dname)) {
-        for(QList<QDockWidget *>::iterator i = this->m_docks[dname]->begin(); i != this->m_docks[dname]->end(); i++)
-          removePanel(dname, *i);
-
+        for(QList<QDockWidget *>::iterator i = this->m_docks[dname]->begin(); i != this->m_docks[dname]->end(); i++) {
+            removePanel(dname, *i);
+        }
         delete this->m_docks[dname];
         this->m_docks.remove(dname);
       }
@@ -137,12 +137,12 @@ void XletDispatcher::setStatusNotLogged()
     }
     this->m_xletlist.clear();
 
-    if (this->m_docknames.contains("tabber")) {
-        removePanel("tabber", this->m_tabwidget);
+    if (this->m_xlets_dock.contains("tabber")) {
+        removePanel("tabber", this->m_tab_container);
     }
-    if (this->m_gridnames.contains("tabber")) {
-        this->m_vL->removeWidget(this->m_tabwidget);
-        this->m_tabwidget->deleteLater();
+    if (this->m_xlets_grid.contains("tabber")) {
+        this->m_grid_container->removeWidget(this->m_tab_container);
+        this->m_tab_container->deleteLater();
     }
 }
 
@@ -168,7 +168,7 @@ QDockWidget* XletDispatcher::createDockXlet(const QString& name,
 
 void XletDispatcher::addPanel(const QString &name, const QString &title, QWidget *widget)
 {
-    if (this->m_docknames.contains(name)) {
+    if (this->m_xlets_dock.contains(name)) {
         QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
         if (this->m_dockoptions[name].contains("c"))
             features |= QDockWidget::DockWidgetClosable;
@@ -180,34 +180,34 @@ void XletDispatcher::addPanel(const QString &name, const QString &title, QWidget
             this->m_docks[name] = new QList<QDockWidget *>();
         }
         this->m_docks[name]->prepend(createDockXlet(name, title, features, widget));
-    } else if (this->m_gridnames.contains(name)) {
-        this->m_vL->insertWidget(this->m_dockoptions[name].toInt(), widget);
-    } else if (this->m_tabnames.contains(name)) {
+    } else if (this->m_xlets_grid.contains(name)) {
+        this->m_grid_container->insertWidget(this->m_dockoptions[name].toInt(), widget);
+    } else if (this->m_xlets_tab.contains(name)) {
         QString tabTitle = "  " + title + "  ";
         if (this->m_dockoptions[name].size() > 0) {
-            this->m_tabwidget->insertTab(this->m_dockoptions[name].toInt(), widget, tabTitle);
+            this->m_tab_container->insertTab(this->m_dockoptions[name].toInt(), widget, tabTitle);
         } else {
-            this->m_tabwidget->addTab(widget, tabTitle);
+            this->m_tab_container->addTab(widget, tabTitle);
         }
     }
 }
 
 void XletDispatcher::removePanel(const QString & name, QWidget * widget)
 {
-    if (this->m_docknames.contains(name)) {
+    if (this->m_xlets_dock.contains(name)) {
       for(QList<QDockWidget *>::iterator i = this->m_docks[name]->begin(); i != this->m_docks[name]->end(); i++) {
           this->m_main_window->removeDockWidget(*i);
-        (*i)->deleteLater();
+          (*i)->deleteLater();
       }
     }
-    if (this->m_tabnames.contains(name)) {
-        int thisindex = this->m_tabwidget->indexOf(widget);
+    if (this->m_xlets_tab.contains(name)) {
+        int thisindex = this->m_tab_container->indexOf(widget);
         if (thisindex > -1) {
             qDebug() << Q_FUNC_INFO << "removing tab" << name << thisindex;
-            this->m_tabwidget->removeTab(thisindex);
+            this->m_tab_container->removeTab(thisindex);
         }
     }
-    if (this->m_gridnames.contains(name)) {
+    if (this->m_xlets_grid.contains(name)) {
         //this->m_gridlayout->removeWidget(widget);
         //delete widget;
         //widget->deleteLater();
@@ -220,8 +220,8 @@ void XletDispatcher::removePanel(const QString & name, QWidget * widget)
  */
 void XletDispatcher::showWidgetOnTop(QWidget * widget)
 {
-    if (this->m_tabwidget)
-        this->m_tabwidget->setCurrentWidget(widget);
+    if (this->m_tab_container)
+        this->m_tab_container->setCurrentWidget(widget);
 }
 
 void XletDispatcher::setAppearance(const QVariantList & dockoptions)
@@ -232,19 +232,19 @@ void XletDispatcher::setAppearance(const QVariantList & dockoptions)
             QString wname = dopt[0];
             if ((wname == "customerinfo") && (! b_engine->checkedFunction(wname)))
                 continue;
-            this->m_allnames.append(wname);
+            this->m_xlets.append(wname);
             this->m_dockoptions[wname] = "";
             if (dopt.size() > 1) {
                 if (dopt[1] == "dock") {
-                    this->m_docknames.append(wname);
+                    this->m_xlets_dock.append(wname);
                 } else if (dopt[1] == "grid")
-                    this->m_gridnames.append(wname);
+                    this->m_xlets_grid.append(wname);
                 else if (dopt[1] == "tab")
-                    this->m_tabnames.append(wname);
+                    this->m_xlets_tab.append(wname);
                 if (dopt.size() > 2)
                     this->m_dockoptions[wname] = dopt[2];
             } else {
-                this->m_docknames.append(dopt[0]);
+                this->m_xlets_dock.append(dopt[0]);
             }
         }
     }
@@ -252,8 +252,8 @@ void XletDispatcher::setAppearance(const QVariantList & dockoptions)
 
 void XletDispatcher::clearAppearance()
 {
-    this->m_docknames.clear();
-    this->m_gridnames.clear();
-    this->m_tabnames.clear();
-    this->m_allnames.clear();
+    this->m_xlets_dock.clear();
+    this->m_xlets_grid.clear();
+    this->m_xlets_tab.clear();
+    this->m_xlets.clear();
 }

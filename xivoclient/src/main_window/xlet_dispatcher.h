@@ -36,8 +36,8 @@
 
 #include <xletlib/functests.h>
 
-#include "main_widget.h"
 #include "main_window.h"
+#include "main_widget.h"
 
 class XLet;
 class MainWindow;
@@ -73,18 +73,19 @@ class XletDispatcher : public QObject
         MainWindow *m_main_window;
         MainWidget *m_main_widget;
 
-        // Widgets for Xlets
-        QDockWidget *m_resizingHelper;
-        QVBoxLayout *m_vL;
+        QDockWidget *m_dock_container;
+        QVBoxLayout *m_grid_container;
+        QTabWidget *m_tab_container;
+
         QByteArray m_defaultState;
-        QTabWidget *m_tabwidget;
         QHash<QString, XLet *> m_xletlist;
         QHash<QString, QString> m_dockoptions;
         QHash<QString, QList<QDockWidget *>* > m_docks;
-        QStringList m_docknames;
-        QStringList m_gridnames;
-        QStringList m_tabnames;
-        QStringList m_allnames;
+
+        QStringList m_xlets;
+        QStringList m_xlets_dock;
+        QStringList m_xlets_grid;
+        QStringList m_xlets_tab;
 };
 
 #endif
