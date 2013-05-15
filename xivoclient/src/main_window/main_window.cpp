@@ -30,6 +30,7 @@
 #include <baseengine.h>
 #include <xivoconsts.h>
 #include <xletfactory.h>
+#include <assembler.h>
 
 #include "main_window.h"
 #include "menu_availability.h"
@@ -67,6 +68,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initialize()
 {
+    this->m_config_widget = assembler->configWidget();
     this->restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
     this->setAppIcon("default");
     this->confUpdated();
@@ -139,7 +141,6 @@ void MainWindow::showMessageBox(const QString & message)
 
 void MainWindow::showConfDialog()
 {
-    this->m_config_widget = new ConfigWidget(this);
     this->m_config_widget->show();
     this->connect(this->m_config_widget, SIGNAL(finished(int)), SLOT(cleanConfDialog()));
 }
@@ -148,8 +149,6 @@ void MainWindow::cleanConfDialog()
 {
     this->disconnect(this->m_config_widget, SIGNAL(finished(int)));
     this->m_config_widget->hide();
-    delete this->m_config_widget;
-    this->m_config_widget = NULL;
 }
 
 void MainWindow::confUpdated()

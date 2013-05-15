@@ -50,6 +50,7 @@ Assembler::Assembler()
     this->m_system_tray_icon = new SystemTrayIcon(this->m_main_window);
     this->m_xlet_dispatcher = new XletDispatcher(this->m_main_window, this->m_main_widget, qApp);
     this->m_xlet_container = new XletContainer(this->m_xlet_dispatcher);
+    this->m_config_widget = new ConfigWidget(this->m_xlet_dispatcher, this->m_main_window);
 }
 
 Assembler::~Assembler()
@@ -89,6 +90,11 @@ SystemTrayIcon *Assembler::systemTrayIcon()
 LoginWidget *Assembler::loginWidget()
 {
     return m_login_widget;
+}
+
+ConfigWidget *Assembler::configWidget()
+{
+    return m_config_widget;
 }
 
 XletDispatcher *Assembler::xletDispatcher()

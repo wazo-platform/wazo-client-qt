@@ -39,10 +39,12 @@
 #include "main_window/xlet_dispatcher.h"
 #include "main_window/xlet_container.h"
 #include "login_widget/login_widget.h"
+#include "config_widget/config_widget.h"
 
 class MainWindow;
 class CentralWidget;
 class MainWidget;
+class ConfigWidget;
 class MenuAvailability;
 class Statusbar;
 class SystemTrayIcon;
@@ -57,6 +59,7 @@ class Assembler
         virtual ~Assembler();
 
         MainWindow *mainWindow();
+        ConfigWidget *configWidget();
         CentralWidget *centralWidget();
         LoginWidget *loginWidget();
         MainWidget *mainWidget();
@@ -68,6 +71,7 @@ class Assembler
 
     private:
         MainWindow *m_main_window;
+        ConfigWidget *m_config_widget;
         CentralWidget *m_central_widget;
         LoginWidget *m_login_widget;
         MainWidget *m_main_widget;
