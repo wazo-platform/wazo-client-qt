@@ -343,10 +343,8 @@ QString XletAgentDetails::getQueueLabelText(const QString & queue_xid)
         return QString();
     }
 
-    bool show_number = b_engine->getConfig("guioptions.queue_displaynu").toBool();
     QString display_name = queueinfo->queueDisplayName();
-    if (show_number)
-        display_name += QString(" (%1)").arg(queueinfo->queueNumber());
+    display_name += QString(" (%1)").arg(queueinfo->queueNumber());
     return display_name;
 }
 

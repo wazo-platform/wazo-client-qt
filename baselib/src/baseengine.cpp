@@ -197,12 +197,9 @@ void BaseEngine::loadSettings()
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
 #endif /* Q_WS_WIN */
 
-    m_config["logtofile"] = m_settings->value("display/logtofile", false).toBool();
-    m_config["logfilename"] = m_settings->value("display/logfilename", "XiVO_Client.log").toString();
+    m_config["logfilename"] = "XiVO_Client.log";
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
-    if (m_config["logtofile"].toBool()) {
-        openLogFile ();
-    }
+    openLogFile ();
 
     m_config["profilename"] = m_settings->value("profile/lastused").toString();
     m_profilename_write = "engine-" + m_config["profilename"].toString();
@@ -224,7 +221,6 @@ void BaseEngine::loadSettings()
         m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
-        m_config["company"] = m_settings->value("company", "default").toString();
         m_config["password"] = m_settings->value("password").toString();
         // keeppass and showagselect are booleans in memory, integers (Qt::checkState) in qsettings/config file (due to compatibility)
         m_config["keeppass"] = (m_settings->value("keeppass", Qt::Unchecked).toUInt() == Qt::Checked);
@@ -239,8 +235,6 @@ void BaseEngine::loadSettings()
         m_availstate = m_settings->value("availstate", "available").toString();
         m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
         m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 10).toInt();
-
-        m_config["doubleclick.searchpanel"] = m_settings->value("doubleclick.searchpanel", "call").toString();
 
         m_config["switchboard_queue_name"] = m_settings->value("switchboard.queue", "__switchboard").toString();
         m_config["switchboard_hold_queue_name"] = m_settings->value("switchboard.queue_hold", "__switchboard_hold").toString();
@@ -307,8 +301,6 @@ void BaseEngine::saveSettings()
     m_settings->setValue("display/unique", m_config["uniqueinstance"].toBool());
     m_settings->setValue("display/qss", m_config["qss"].toString());
     m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
-    m_settings->setValue("display/logtofile", m_config["logtofile"].toBool());
-    m_settings->setValue("display/logfilename", m_config["logfilename"].toString());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
 
     m_settings->beginGroup(m_profilename_write);
@@ -320,7 +312,6 @@ void BaseEngine::saveSettings()
         m_settings->setValue("backup_server_encryption", m_config["cti_backup_encrypt"].toBool());
         m_settings->setValue("userid", m_config["userloginsimple"].toString());
         m_settings->setValue("useridopt", m_config["userloginopt"].toString());
-        m_settings->setValue("company", m_config["company"].toString());
         // keeppass and showagselect are booleans in memory, but integers (Qt::checkType) in qsettings/config file (due to compatibility)
         m_settings->setValue("keeppass", m_config["keeppass"].toBool() ? Qt::Checked : Qt::Unchecked);
         m_settings->setValue("showagselect", m_config["showagselect"].toBool() ? Qt::Checked : Qt::Unchecked);
@@ -332,8 +323,6 @@ void BaseEngine::saveSettings()
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
         m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
         m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
-
-        m_settings->setValue("doubleclick.searchpanel", m_config["doubleclick.searchpanel"].toString());
 
         m_settings->setValue("switchboard.queue", m_config["switchboard_queue_name"].toString());
         m_settings->setValue("switchboard.queue_hold", m_config["switchboard_hold_queue_name"].toString());
@@ -397,7 +386,7 @@ void BaseEngine::openLogFile()
 
 void BaseEngine::logAction(const QString & logstring)
 {
-    if (m_config["logtofile"].toBool() && m_logfile != NULL) {
+    if (m_logfile != NULL) {
         QString tolog = QDateTime::currentDateTime().toString(Qt::ISODate) + " " + logstring + "\n";
         m_logfile->write(tolog.toUtf8());
         m_logfile->flush();
@@ -455,7 +444,7 @@ void BaseEngine::authenticate()
     QVariantMap command;
     command["class"] = "login_id";
     command["userlogin"] = m_config["userloginsimple"].toString();
-    command["company"] = m_config["company"].toString();
+    command["company"] = "xivo";
     command["ident"] = m_osname;
     command["version"] = "9999";
     command["xivoversion"] = __cti_protocol_version__;
@@ -1308,7 +1297,6 @@ void BaseEngine::popupError(const QString & errorid,
     if (errorid.toLower() == "user_not_found") {
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
-            .arg(m_config["userloginsimple"].toString()).arg(m_config["company"].toString())
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "login_password") {
         errormsg = tr("You entered a wrong login / password.");

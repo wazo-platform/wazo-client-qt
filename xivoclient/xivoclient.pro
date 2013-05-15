@@ -26,6 +26,8 @@ mac {
     RC_FILE = xivoclient.rc
 }
 
+FORMS += $${ROOT_DIR}/src/config_widget/config_widget.ui
+
 # this should just tell lrelease to compile these files
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_nl.ts
@@ -44,6 +46,8 @@ INCLUDEPATH += $${ROOT_DIR}/src
 
 HEADERS += $${ROOT_DIR}/src/*.h
 SOURCES += $${ROOT_DIR}/src/*.cpp
+HEADERS += $${ROOT_DIR}/src/config_widget/*.h
+SOURCES += $${ROOT_DIR}/src/config_widget/*.cpp
 HEADERS += $${ROOT_DIR}/src/remote_control/*.h
 SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 

@@ -163,11 +163,8 @@ void SearchPanel::updateDisplay()
     // max number of peers displayed on the search panel
     unsigned maxdisplay = maxDisplay();
     // number of columns (0 = auto)
-    unsigned ncolumns = b_engine->getConfig("guioptions.contacts-width").toUInt();
-    if (ncolumns == 0) {
-        ncolumns = m_scrollarea->width() /
-            (PeerWidget::max_width + 2 * SearchPanel::peer_spacing);
-    }
+    unsigned ncolumns = 0;
+    ncolumns = m_scrollarea->width() / (PeerWidget::max_width + 2 * SearchPanel::peer_spacing);
     // Prevent arithmetic exception
     if (ncolumns == 0) {
         ncolumns = 1;

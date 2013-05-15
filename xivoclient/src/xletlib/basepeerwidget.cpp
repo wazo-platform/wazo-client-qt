@@ -207,25 +207,6 @@ void BasePeerWidget::mouseDoubleClickEvent(QMouseEvent *event)
         }
     }
 
-    foreach(const ChannelInfo * channelinfo, loopOverChannels(m_ui_local)) {
-        const QString &status = channelinfo->commstatus();
-        if ((status == CHAN_STATUS_LINKED_CALLER) ||
-            (status == CHAN_STATUS_LINKED_CALLED)) {
-            QString action = b_engine->getConfig("doubleclick.searchpanel").toString();
-            if (action == "atxfer") {
-                QString to;
-                if (m_ui_remote) {
-                    to = "user:" + m_ui_remote->xid();
-                } else {
-                    to = "ext:" + m_number;
-                }
-                return b_engine->actionCall("atxfer",
-                                            QString("chan:%1").arg(channelinfo->xid()),
-                                            to);
-            }
-        }
-    }
-
     // "I" have no current communications, intercept if the person is being called
     foreach(const ChannelInfo * channel, loopOverChannels(m_ui_remote)) {
         const QString &status = channel->commstatus();

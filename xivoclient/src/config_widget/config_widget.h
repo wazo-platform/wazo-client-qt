@@ -27,46 +27,56 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <baseengine.h>
+#ifndef __CONFIGWIDGET_H__
+#define __CONFIGWIDGET_H__
 
-#include "queuesview.h"
-#include "queuesmodel.h"
+#include <QDialog>
+#include <QHash>
+#include <QVariantMap>
+#include <QMessageBox>
+#include <QHBoxLayout>
 
-QueuesView::QueuesView(QWidget *parent)
-    : AbstractTableView(parent)
+#include <xletlib/functests.h>
+#include <ui_config_widget.h>
+
+class QCheckBox;
+class QComboBox;
+class QDialogButtonBox;
+class QLabel;
+class QLineEdit;
+class QSpinBox;
+class QTabWidget;
+
+class BaseEngine;
+
+/*If you want to update the settings window, you need to look for every
+ * setting wanted in the application.
+ * First you can get every QSettings variable with a command like :
+ *     grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib
+ * Then you can get every setting by typing a command like :
+ *     egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib
+ * where variables stands for the list of the variables obtained by the
+ * previous command, separated by |
+ */
+
+class ConfigWidget: public QDialog
 {
-    connect(this, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(changeWatchedQueue(const QModelIndex &)));
+    Q_OBJECT
+    FUNCTESTED
 
-    connect(b_engine, SIGNAL(settingsChanged()),
-            this, SLOT(updateColumnHidden()));
-}
+    public:
+        ConfigWidget(QWidget *parent=0);
+        ~ConfigWidget();
 
-QueuesView::~QueuesView()
-{
-}
+    private slots:
+        virtual void accept();
 
-void QueuesView::init()
-{
-    updateColumnHidden();
-}
+    private:
+        void load_values();
 
-void QueuesView::updateColumnHidden()
-{
-    {
-        bool display_column = b_engine->getConfig("guioptions.queue_longestwait").toBool();
-        setColumnHidden(QueuesModel::CURRENT_MAX_WAIT, !display_column);
-    }
+        QVariantMap m_config;
 
-    {
-        setColumnHidden(QueuesModel::NUMBER, false);
-    }
-}
+        Ui::ConfigWidget ui;
+};
 
-void QueuesView::changeWatchedQueue(const QModelIndex &index)
-{
-    QModelIndex id_index = model()->index(index.row(), QueuesModel::ID, index.parent());
-    QString id_string = model()->data(id_index).toString();
-
-    b_engine->changeWatchedQueue(id_string);
-}
+#endif
