@@ -122,13 +122,13 @@ void XletDispatcher::setStatusNotLogged()
     }
 
     foreach (QString dname, this->m_xlets_dock) {
-      if(this->m_docks.contains(dname)) {
-        for(QList<QDockWidget *>::iterator i = this->m_docks[dname]->begin(); i != this->m_docks[dname]->end(); i++) {
-            this->removePanel(dname, *i);
+        if(this->m_docks.contains(dname)) {
+            for(QList<QDockWidget *>::iterator i = this->m_docks[dname]->begin(); i != this->m_docks[dname]->end(); i++) {
+                this->removePanel(dname, *i);
+            }
+            delete this->m_docks[dname];
+            this->m_docks.remove(dname);
         }
-        delete this->m_docks[dname];
-        this->m_docks.remove(dname);
-      }
     }
 
     // delete all xlets
@@ -192,7 +192,7 @@ void XletDispatcher::addPanel(const QString &name, const QString &title, QWidget
     }
 }
 
-void XletDispatcher::removePanel(const QString & name, QWidget * widget)
+void XletDispatcher::removePanel(const QString &name, QWidget *widget)
 {
     if (this->m_xlets_dock.contains(name)) {
       for(QList<QDockWidget *>::iterator i = this->m_docks[name]->begin(); i != this->m_docks[name]->end(); i++) {
@@ -218,13 +218,13 @@ void XletDispatcher::removePanel(const QString & name, QWidget * widget)
  *
  * This slot Works when tabbed view is selected.
  */
-void XletDispatcher::showWidgetOnTop(QWidget * widget)
+void XletDispatcher::showWidgetOnTop(QWidget *widget)
 {
     if (this->m_tab_container)
         this->m_tab_container->setCurrentWidget(widget);
 }
 
-void XletDispatcher::setAppearance(const QVariantList & dockoptions)
+void XletDispatcher::setAppearance(const QVariantList &dockoptions)
 {
     foreach (QVariant dproperties, dockoptions) {
         QStringList dopt = dproperties.toStringList();
