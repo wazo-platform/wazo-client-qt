@@ -30,6 +30,7 @@
 #include <QDebug>
 
 #include <baseengine.h>
+#include <assembler.h>
 #include <login_widget/login_widget.h>
 
 #include "central_widget.h"
@@ -38,8 +39,8 @@
 CentralWidget::CentralWidget(MainWindow *parent)
     : QStackedWidget(parent),
       m_main_window(parent),
-      m_login_widget(new LoginWidget(this)),
-      m_main_widget(new MainWidget(this))
+      m_login_widget(NULL),
+      m_main_widget(NULL)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
@@ -52,6 +53,8 @@ CentralWidget::~CentralWidget()
 
 void CentralWidget::initialize()
 {
+    this->m_login_widget = assembler->loginWidget();
+    this->m_main_widget = assembler->mainWidget();
     this->m_main_window->setCentralWidget(this);
     this->addWidget(this->m_login_widget);
     this->addWidget(this->m_main_widget);
