@@ -73,6 +73,7 @@ class ConfigWidget: public QDialog
         ~ConfigWidget();
 
     private slots:
+        void initialize();
         virtual void accept();
 
     private:

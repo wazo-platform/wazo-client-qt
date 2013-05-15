@@ -53,29 +53,28 @@
 
 #include "config_widget.h"
 
-QHash<QString, QString> func_legend;
-QString reboot_message;
+const QString reboot_message = "You must restart the program for this setting to apply.";
 
 ConfigWidget::ConfigWidget(XletDispatcher *xlet_dispatcher, MainWindow *parent)
     : QDialog(parent)
 {
-    reboot_message = tr("You must restart the program for this setting to apply.");
-
-    this->m_config = b_engine->getConfig();
-
     this->ui.setupUi(this);
-
-    this->load_values();
-    this->setModal(true);
-    this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
-
     this->connect(this->ui.buttonBox, SIGNAL(accepted()), SLOT(accept()));
     this->connect(this->ui.buttonBox, SIGNAL(rejected()), SLOT(reject()));
     xlet_dispatcher->connect(this->ui.reset_docks, SIGNAL(pressed()), SLOT(resetState()));
+    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
 }
 
 ConfigWidget::~ConfigWidget()
 {
+}
+
+void ConfigWidget::initialize()
+{
+    this->m_config = b_engine->getConfig();
+    this->load_values();
+    this->setModal(true);
+    this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
 }
 
 void ConfigWidget::load_values()
