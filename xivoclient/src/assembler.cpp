@@ -43,7 +43,7 @@ Assembler::Assembler()
     qDebug() << Q_FUNC_INFO;
     this->m_main_window = new MainWindow();
     this->m_central_widget = new CentralWidget(this->m_main_window);
-    this->m_login_widget = new LoginWidget(this->m_central_widget);
+    this->m_login_widget = new LoginWidget(this->m_main_window, this->m_central_widget);
     this->m_main_widget = new MainWidget(this->m_central_widget);
     this->m_menu_availabilty = new MenuAvailability(this->m_main_window);
     this->m_statusbar = new Statusbar(this->m_main_window);

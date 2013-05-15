@@ -38,6 +38,7 @@
 
 
 class CentralWidget;
+class MainWindow;
 
 
 class LoginWidget: public QWidget
@@ -46,19 +47,21 @@ class LoginWidget: public QWidget
     FUNCTESTED
 
     public:
-        LoginWidget(CentralWidget * parent);
+        LoginWidget(MainWindow *main_window, CentralWidget *parent);
         ~LoginWidget();
         QVariantMap getConfig();
-        void setConfig();
         void saveConfig();
-        void setAgentLoginWidgetsVisible();
 
     private slots:
+        void initialize();
         void syncAgentLoginWidgets();
         void saveConfigAndStart();
         void confUpdated();
 
     private:
+        void setConfig();
+        void setAgentLoginWidgetsVisible();
+
         Ui::LoginWidget ui;
 };
 

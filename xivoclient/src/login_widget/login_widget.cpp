@@ -27,33 +27,38 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "baseengine.h"
+#include <baseengine.h>
 #include "login_widget.h"
 
-LoginWidget::LoginWidget(CentralWidget *parent)
+LoginWidget::LoginWidget(MainWindow *main_window, CentralWidget *parent)
     : QWidget(parent)
 {
     QVBoxLayout * login_layout = new QVBoxLayout(this);
     QWidget * login_widget = new QWidget(this);
-    this->ui.setupUi(login_widget);
     login_layout->addWidget(login_widget);
-
-    this->setAgentLoginWidgetsVisible();
-    this->ui.userlogin->setFocus();
-
+    this->ui.setupUi(login_widget);
     this->connect(this->ui.userlogin, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.password, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.agentphonenumber, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.buttonBox, SIGNAL(pressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.agent_options, SIGNAL(currentIndexChanged(int)), SLOT(syncAgentLoginWidgets()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
+    this->connect(main_window, SIGNAL(initialized()), SLOT(initialize()));
 }
 
 LoginWidget::~LoginWidget()
 {
 }
 
-void LoginWidget::setAgentLoginWidgetsVisible() {
+void LoginWidget::initialize()
+{
+    this->setConfig();
+    this->setAgentLoginWidgetsVisible();
+    this->ui.userlogin->setFocus();
+}
+
+void LoginWidget::setAgentLoginWidgetsVisible()
+{
     bool showagselect = b_engine->getConfig("showagselect").toBool();
     if (showagselect) {
         this->ui.agent_options->show();

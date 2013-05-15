@@ -59,7 +59,6 @@ void CentralWidget::initialize()
     this->addWidget(this->m_login_widget);
     this->addWidget(this->m_main_widget);
 
-    this->m_login_widget->setConfig();
     this->setDefaultWidget();
 }
 
