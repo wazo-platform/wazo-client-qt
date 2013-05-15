@@ -40,7 +40,7 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
     : QObject(parent),
       m_main_window(main_window),
       m_main_widget(main_widget),
-      m_dock_container(0),
+      m_dock_container(NULL),
       m_grid_container(new QVBoxLayout(main_widget)),
       m_tab_container(NULL)
 {
@@ -101,7 +101,7 @@ void XletDispatcher::setStatusLogged()
     // restore the saved state AFTER showing the docks
     this->m_main_window->restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 
-    if ((this->m_dock_container == 0) && (this->m_docks.size())) {
+    if ((this->m_dock_container == NULL) && (this->m_docks.size())) {
         // we gonna resize this widget in resizeEvent
         // to force the mainWindow dockArea expand instead of the centralWidget
         this->m_dock_container = new QDockWidget(this->m_main_window);
