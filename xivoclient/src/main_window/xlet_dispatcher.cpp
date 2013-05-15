@@ -44,6 +44,8 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_vL(new QVBoxLayout(main_window)),
       m_tabwidget(NULL)
 {
+    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
 }
 
 XletDispatcher::~XletDispatcher()
