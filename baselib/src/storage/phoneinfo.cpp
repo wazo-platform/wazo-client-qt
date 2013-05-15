@@ -31,11 +31,20 @@
 
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)
-    : XInfo(ipbxid, id)
+    : XInfo(ipbxid, id),
+      m_rules_order(0),
+      m_simultcalls(0),
+      m_initialized(false),
+      m_enable_hint(false),
+      m_enablerna(false),
+      m_enableunc(false),
+      m_enablebusy(false),
+      m_enableautomon(false),
+      m_enablednd(false),
+      m_enablevoicemail(false),
+      m_enablexfer(false),
+      m_incallfilter(false)
 {
-    m_simultcalls = 0;
-    m_initialized = false;
-    m_enable_hint = false;
 }
 
 
