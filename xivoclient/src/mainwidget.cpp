@@ -56,7 +56,7 @@ MainWidget::MainWidget(QSystemTrayIcon & qt_system_tray_icon,
       m_withsystray(true),
       m_centralWidget(new QStackedWidget(this)),
       m_resizingHelper(0),
-      m_configwindow(NULL),
+      m_configwindow (new ConfigWidget(this)),
       m_clipboard(NULL),
       m_systray_manager(systray_manager)
 {
@@ -521,7 +521,6 @@ void MainWidget::createSystrayIcon()
 void MainWidget::showConfDialog()
 {
     setConfig();
-    m_configwindow = new ConfigWidget(this);
     m_configwindow->setModal(true);
     m_configwindow->show();
     connect(m_configwindow, SIGNAL(finished(int)),
@@ -533,8 +532,6 @@ void MainWidget::cleanConfDialog()
     disconnect(m_configwindow, SIGNAL(finished(int)),
                this, SLOT(cleanConfDialog()));
     this->m_configwindow->hide();
-    delete this->m_configwindow;
-    m_configwindow = NULL;
 }
 
 void MainWidget::fetchConfig()

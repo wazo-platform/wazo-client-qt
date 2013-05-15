@@ -69,7 +69,7 @@ class ConfigWidget: public QDialog
         ~ConfigWidget();
 
     private slots:
-        void accept();
+        virtual void accept();
 
     private:
         void load_values();
