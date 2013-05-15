@@ -235,16 +235,20 @@ void XletDispatcher::setAppearance(const QVariantList &xlets_infos)
             this->m_xlets_name.append(name);
             this->m_dockoptions[name] = "";
             if (xlet_infos.size() > 1) {
-                if (xlet_infos[1] == "dock") {
+                QString type = xlet_infos[1];
+                if (type == "dock") {
                     this->m_xlets_dock.append(name);
-                } else if (xlet_infos[1] == "grid")
+                } else if (type == "grid") {
                     this->m_xlets_grid.append(name);
-                else if (xlet_infos[1] == "tab")
+                } else if (type == "tab") {
                     this->m_xlets_tab.append(name);
-                if (xlet_infos.size() > 2)
-                    this->m_dockoptions[name] = xlet_infos[2];
+                }
+                if (xlet_infos.size() > 2) {
+                    QString options = xlet_infos[2];
+                    this->m_dockoptions[name] = options;
+                }
             } else {
-                this->m_xlets_dock.append(xlet_infos[0]);
+                this->m_xlets_dock.append(name);
             }
         }
     }
