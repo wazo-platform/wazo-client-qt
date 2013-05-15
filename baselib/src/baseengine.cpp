@@ -821,7 +821,7 @@ void BaseEngine::parseCommand(const QString &line)
         }
 
     } else if (thisclass == "getlist") {
-        configsLists(thisclass, function, datamap);
+        configsLists(function, datamap);
     } else if (thisclass == "agentlisten") {
         emit statusListen(datamap.value("ipbxid").toString(),
                           datamap.value("agentid").toString(),
@@ -1025,211 +1025,221 @@ bool BaseEngine::isMeetmeMember(const QString &room, int number) const
     return false;
 }
 
-void BaseEngine::configsLists(const QString & thisclass, const QString & function,
-                              const QVariantMap & datamap)
+void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
-    if (thisclass == "getlist") {
-        QString listname = datamap.value("listname").toString();
-        QString ipbxid = datamap.value("tipbxid").toString();
+    if (! GenLists.contains(listname)) {
+        return;
+    }
+    m_init_watcher.watchList(listname, listid);
+    if (! m_anylist.contains(listname))
+        m_anylist[listname].clear();
 
-        if (function == "listid") {
-            QStringList listid = datamap.value("list").toStringList();
+    this->addConfigs(listname, ipbxid, listid);
+}
 
-            m_init_watcher.watchList(listname, listid);
+void BaseEngine::addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid)
+{
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (! m_anylist[listname].contains(xid)) {
+            newXInfoProto construct = m_xinfoList.value(listname);
+            XInfo * xinfo = construct(ipbxid, id);
+            m_anylist[listname][xid] = xinfo;
+        }
+    }
+}
 
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (GenLists.contains(listname)) {
-                    if (! m_anylist.contains(listname))
-                        m_anylist[listname].clear();
-                    newXInfoProto construct = m_xinfoList.value(listname);
-                    XInfo * xinfo = construct(ipbxid, id);
-                    if (! m_anylist[listname].contains(xid)) {
-                        m_anylist[listname][xid] = xinfo;
-                    }
-                }
+void BaseEngine::handleGetlistDelConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)
+{
+    // Pre delete actions
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (listname == "phones")
+            emit removePhoneConfig(xid);
+        else if (listname == "users")
+            emit removeUserConfig(xid);
+        else if (listname == "agents")
+            emit removeAgentConfig(xid);
+        else if (listname == "queues")
+            emit removeQueueConfig(xid);
+        else if (listname == "queuemembers")
+            emit removeQueueMemberConfig(xid);
+    }
+
+    // Delete
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (GenLists.contains(listname)) {
+            if (m_anylist.value(listname).contains(xid)) {
+                delete m_anylist[listname][xid];
+                m_anylist[listname].remove(xid);
             }
-
-            QVariantMap command;
-            command["class"] = "getlist";
-            command["function"] = "updateconfig";
-            command["listname"] = listname;
-            command["tipbxid"] = ipbxid;
-            foreach (QString id, listid) {
-                command["tid"] = id;
-                sendJsonCommand(command);
-            }
-
-        } else if (function == "delconfig") {
-            QStringList listid = datamap.value("list").toStringList();
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (listname == "phones")
-                    emit removePhoneConfig(xid);
-                else if (listname == "users")
-                    emit removeUserConfig(xid);
-                else if (listname == "agents")
-                    emit removeAgentConfig(xid);
-                else if (listname == "queues")
-                    emit removeQueueConfig(xid);
-                else if (listname == "queuemembers")
-                    emit removeQueueMemberConfig(xid);
-            }
-
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (GenLists.contains(listname)) {
-                    if (m_anylist.value(listname).contains(xid)) {
-                        delete m_anylist[listname][xid];
-                        m_anylist[listname].remove(xid);
-                    }
-                } else if (listname == "channels") {
-                    if (m_channels.contains(xid)) {
-                        delete m_channels[xid];
-                        m_channels.remove(xid);
-                    }
-                }
-                if (listname == "queuemembers") {
-                    if (m_queuemembers.contains(xid)) {
-                        delete m_queuemembers[xid];
-                        m_queuemembers.remove(xid);
-                    }
-                }
-            }
-
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (listname == "queuemembers") {
-                    emit postRemoveQueueMemberConfig(xid);
-                } else if (listname == "queues") {
-                    emit postRemoveQueueConfig(xid);
-                }
-            }
-
-        } else if (function == "updateconfig") {
-            QString id = datamap.value("tid").toString();
-            QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-            QVariantMap config = datamap.value("config").toMap();
-            bool haschanged = false;
-            if (GenLists.contains(listname)) {
-                if (! m_anylist.value(listname).contains(xid)) {
-                    newXInfoProto construct = m_xinfoList.value(listname);
-                    XInfo * xinfo = construct(ipbxid, id);
-                    m_anylist[listname][xid] = xinfo;
-                }
-                if (m_anylist.value(listname).value(xid) != NULL) {
-                    haschanged = m_anylist.value(listname)[xid]->updateConfig(config);
-                } else {
-                    qDebug() << "received updateconfig for inexisting" << listname << xid;
-                }
-                if ((xid == m_xuserid) && (listname == "users")) {
-                    emit localUserInfoDefined();
-                }
-            } else {
-                qDebug() << "received " << function << "for unknown list" << listname << "id" << xid;
-            }
-
-            if (! haschanged) {
-                // qDebug() << "got an unchanged" << function << listname << xid;
-            }
-
-            // updating relations ...
-            if (listname == "phones") {
-                emit peersReceived();
-            }
-
-            // transmission to xlets
-            if (listname == "users") {
-                emit updateUserConfig(xid);
-                emit updateUserConfig(xid,datamap);
-            } else if (listname == "phones")
-                emit updatePhoneConfig(xid);
-            else if (listname == "agents")
-                emit updateAgentConfig(xid);
-            else if (listname == "queues")
-                emit updateQueueConfig(xid);
-            else if (listname == "voicemails")
-                emit updateVoiceMailConfig(xid);
-            else if (listname == "queuemembers")
-                emit updateQueueMemberConfig(xid);
-
-            QVariantMap command;
-            command["class"] = "getlist";
-            command["function"] = "updatestatus";
-            command["listname"] = listname;
-            command["tipbxid"] = ipbxid;
-            command["tid"] = id;
-            sendJsonCommand(command);
-
-        } else if (function == "updatestatus") {
-            QString id = datamap.value("tid").toString();
-            QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-            QVariantMap status = datamap.value("status").toMap();
-
-            m_init_watcher.sawItem(listname, id);
-
-            if (GenLists.contains(listname)) {
-                if (m_anylist.value(listname).contains(xid))
-                    m_anylist.value(listname).value(xid)->updateStatus(status);
-            } else if (listname == "channels") {
-                if (! m_channels.contains(xid))
-                    m_channels[xid] = new ChannelInfo(ipbxid, id);
-                m_channels[xid]->updateStatus(status);
-            }
-            if (listname == "queuemembers") {
-                if (! m_queuemembers.contains(xid))
-                    m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
-                m_queuemembers[xid]->updateStatus(status);
-            }
-
-            if (listname == "users") {
-                setAvailState(status["availstate"].toString(), true);
-                emit updateUserStatus(xid);
-            } else if (listname == "phones") {
-                emit updatePhoneStatus(xid);
-                if (hasPhone(xid)) {
-                    QVariantMap command;
-                    command["class"] = "getlist";
-                    command["function"] = "updatestatus";
-                    command["listname"] = "channels";
-                    command["tipbxid"] = ipbxid;
-                    foreach (QString cid, phone(xid)->channels()) {
-                        command["tid"] = cid;
-                        sendJsonCommand(command);
-                    }
-                }
-            } else if (listname == "agents")
-                emit updateAgentStatus(xid);
-            else if (listname == "queues") {
-                emit updateQueueStatus(xid);
-            }
-            else if (listname == "voicemails")
-                emit updateVoiceMailStatus(xid);
-            else if (listname == "channels")
-                emit updateChannelStatus(xid);
-
-        } else if (function == "addconfig") {
-            QStringList listid = datamap.value("list").toStringList();
-            foreach (QString id, listid) {
-                QString xid = QString("%1/%2").arg(ipbxid).arg(id);
-                if (GenLists.contains(listname)) {
-                    newXInfoProto construct = m_xinfoList.value(listname);
-                    XInfo * xinfo = construct(ipbxid, id);
-                    if (! m_anylist[listname].contains(xid)) {
-                        m_anylist[listname][xid] = xinfo;
-                    }
-                }
-            }
-            QVariantMap command;
-            command["class"] = "getlist";
-            command["function"] = "updateconfig";
-            command["listname"] = listname;
-            command["tipbxid"] = ipbxid;
-            foreach (QString id, listid) {
-                command["tid"] = id;
-                sendJsonCommand(command);
+        } else if (listname == "channels") {
+            if (m_channels.contains(xid)) {
+                delete m_channels[xid];
+                m_channels.remove(xid);
             }
         }
+        if (listname == "queuemembers") {
+            if (m_queuemembers.contains(xid)) {
+                delete m_queuemembers[xid];
+                m_queuemembers.remove(xid);
+            }
+        }
+    }
+
+    // Post delete
+    foreach (const QString &id, listid) {
+        QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+        if (listname == "queuemembers") {
+            emit postRemoveQueueMemberConfig(xid);
+        } else if (listname == "queues") {
+            emit postRemoveQueueConfig(xid);
+        }
+    }
+}
+
+void BaseEngine::handleGetlistUpdateConfig(
+    const QString &listname,
+    const QString &ipbxid,
+    const QString &id,
+    const QVariantMap &data)
+{
+    QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+    QVariantMap config = data.value("config").toMap();
+    if (GenLists.contains(listname)) {
+        if (! m_anylist.value(listname).contains(xid)) {
+            newXInfoProto construct = m_xinfoList.value(listname);
+            XInfo * xinfo = construct(ipbxid, id);
+            m_anylist[listname][xid] = xinfo;
+        }
+        if (m_anylist.value(listname).value(xid) != NULL) {
+            m_anylist.value(listname)[xid]->updateConfig(config);
+        } else {
+            qDebug() << "received updateconfig for inexisting" << listname << xid;
+        }
+        if ((xid == m_xuserid) && (listname == "users")) {
+            emit localUserInfoDefined();
+        }
+    } else {
+        qDebug() << "received updateconfig for unknown list" << listname << "id" << xid;
+    }
+
+    if (listname == "phones") {
+        emit peersReceived();
+    }
+
+    // transmission to xlets
+    if (listname == "users") {
+        emit updateUserConfig(xid);
+        emit updateUserConfig(xid,data);
+    } else if (listname == "phones")
+        emit updatePhoneConfig(xid);
+    else if (listname == "agents")
+        emit updateAgentConfig(xid);
+    else if (listname == "queues")
+        emit updateQueueConfig(xid);
+    else if (listname == "voicemails")
+        emit updateVoiceMailConfig(xid);
+    else if (listname == "queuemembers")
+        emit updateQueueMemberConfig(xid);
+}
+
+void BaseEngine::handleGetlistUpdateStatus(
+    const QString &listname,
+    const QString &ipbxid,
+    const QString &id,
+    const QVariantMap &status)
+{
+    QString xid = QString("%1/%2").arg(ipbxid).arg(id);
+
+    m_init_watcher.sawItem(listname, id);
+
+    if (GenLists.contains(listname)) {
+        if (m_anylist.value(listname).contains(xid))
+            m_anylist.value(listname).value(xid)->updateStatus(status);
+    } else if (listname == "channels") {
+        if (! m_channels.contains(xid))
+            m_channels[xid] = new ChannelInfo(ipbxid, id);
+        m_channels[xid]->updateStatus(status);
+    }
+    if (listname == "queuemembers") {
+        if (! m_queuemembers.contains(xid))
+            m_queuemembers[xid] = new QueueMemberInfo(ipbxid, id);
+        m_queuemembers[xid]->updateStatus(status);
+    }
+
+    if (listname == "users") {
+        setAvailState(status["availstate"].toString(), true);
+        emit updateUserStatus(xid);
+    } else if (listname == "phones") {
+        emit updatePhoneStatus(xid);
+        if (hasPhone(xid)) {
+            foreach (QString cid, phone(xid)->channels()) {
+                this->requestStatus("channels", ipbxid, cid);
+            }
+        }
+    } else if (listname == "agents")
+        emit updateAgentStatus(xid);
+    else if (listname == "queues") {
+        emit updateQueueStatus(xid);
+    }
+    else if (listname == "voicemails")
+        emit updateVoiceMailStatus(xid);
+    else if (listname == "channels")
+        emit updateChannelStatus(xid);
+}
+
+void BaseEngine::requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)
+{
+    QVariantMap command;
+    command["class"] = "getlist";
+    command["function"] = "updateconfig";
+    command["listname"] = listname;
+    command["tipbxid"] = ipbxid;
+    foreach (const QString &id, listid) {
+        command["tid"] = id;
+        sendJsonCommand(command);
+    }
+}
+
+void BaseEngine::requestStatus(const QString &listname, const QString &ipbxid, const QString &id)
+{
+    QVariantMap command;
+    command["class"] = "getlist";
+    command["function"] = "updatestatus";
+    command["listname"] = listname;
+    command["tipbxid"] = ipbxid;
+    command["tid"] = id;
+    sendJsonCommand(command);
+}
+
+
+
+void BaseEngine::configsLists(const QString & function, const QVariantMap & datamap)
+{
+    QString listname = datamap.value("listname").toString();
+    QString ipbxid = datamap.value("tipbxid").toString();
+
+    if (function == "listid") {
+        QStringList listid = datamap.value("list").toStringList();
+        this->handleGetlistListId(listname, ipbxid, listid);
+        this->requestListConfig(listname, ipbxid, listid);
+    } else if (function == "delconfig") {
+        QStringList listid = datamap.value("list").toStringList();
+        this->handleGetlistDelConfig(listname, ipbxid, listid);
+    } else if (function == "updateconfig") {
+        QString id = datamap.value("tid").toString();
+        this->handleGetlistUpdateConfig(listname, ipbxid, id, datamap);
+        this->requestStatus(listname, ipbxid, id);
+    } else if (function == "updatestatus") {
+        QString id = datamap.value("tid").toString();
+        QVariantMap status = datamap.value("status").toMap();
+        this->handleGetlistUpdateStatus(listname, ipbxid, id, status);
+    } else if (function == "addconfig") {
+        QStringList listid = datamap.value("list").toStringList();
+        this->addConfigs(listname, ipbxid, listid);
+        this->requestListConfig(listname, ipbxid, listid);
     }
 }
 
