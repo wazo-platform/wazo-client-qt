@@ -55,7 +55,7 @@ XletDispatcher::~XletDispatcher()
 void XletDispatcher::setStatusLogged()
 {
     qDebug() << Q_FUNC_INFO;
-    this->setAppearance(b_engine->getCapaXlets());
+    this->prepareAppearance();
 
     this->m_tab_container = new QTabWidget(this->m_main_widget);
     this->m_tab_container->hide();
@@ -224,8 +224,9 @@ void XletDispatcher::showWidgetOnTop(QWidget *widget)
         this->m_tab_container->setCurrentWidget(widget);
 }
 
-void XletDispatcher::setAppearance(const QVariantList &xlets_infos)
+void XletDispatcher::prepareAppearance()
 {
+    QVariantList xlets_infos = b_engine->getCapaXlets();
     foreach (QVariant qvariant_xlet_infos, xlets_infos) {
         QStringList xlet_infos = qvariant_xlet_infos.toStringList();
         if (xlet_infos.size() > 0) {

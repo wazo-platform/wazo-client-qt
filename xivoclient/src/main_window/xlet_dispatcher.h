@@ -61,7 +61,7 @@ class XletDispatcher : public QObject
         void showWidgetOnTop(QWidget *);
 
     private:
-        void setAppearance(const QVariantList &);
+        void prepareAppearance();
         void clearAppearance();
         void addPanel(const QString &, const QString &, QWidget *);
         void removePanel(const QString &, QWidget *);
