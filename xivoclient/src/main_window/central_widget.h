@@ -51,10 +51,12 @@ class CentralWidget : public QStackedWidget
         void setDefaultWidget();
 
     private slots:
+        void initialize();
         void setStatusNotLogged();
         void setStatusLogged();
 
     private:
+        MainWindow *m_main_window;
         LoginWidget *m_login_widget;
         MainWidget *m_main_widget;
 };

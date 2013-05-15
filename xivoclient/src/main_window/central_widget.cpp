@@ -37,22 +37,27 @@
 
 CentralWidget::CentralWidget(MainWindow *parent)
     : QStackedWidget(parent),
+      m_main_window(parent),
       m_login_widget(new LoginWidget(this)),
       m_main_widget(new MainWidget(this))
 {
-    parent->setCentralWidget(this);
-    this->addWidget(this->m_login_widget);
-    this->addWidget(this->m_main_widget);
-
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
-
-    this->m_login_widget->setConfig();
-    this->setDefaultWidget();
+    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
 }
 
 CentralWidget::~CentralWidget()
 {
+}
+
+void CentralWidget::initialize()
+{
+    this->m_main_window->setCentralWidget(this);
+    this->addWidget(this->m_login_widget);
+    this->addWidget(this->m_main_widget);
+
+    this->m_login_widget->setConfig();
+    this->setDefaultWidget();
 }
 
 void CentralWidget::setDefaultWidget()
