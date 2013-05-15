@@ -124,7 +124,7 @@ void XletDispatcher::setStatusNotLogged()
     foreach (QString dname, this->m_xlets_dock) {
       if(this->m_docks.contains(dname)) {
         for(QList<QDockWidget *>::iterator i = this->m_docks[dname]->begin(); i != this->m_docks[dname]->end(); i++) {
-            removePanel(dname, *i);
+            this->removePanel(dname, *i);
         }
         delete this->m_docks[dname];
         this->m_docks.remove(dname);
@@ -138,7 +138,7 @@ void XletDispatcher::setStatusNotLogged()
     this->m_xletlist.clear();
 
     if (this->m_xlets_dock.contains("tabber")) {
-        removePanel("tabber", this->m_tab_container);
+        this->removePanel("tabber", this->m_tab_container);
     }
     if (this->m_xlets_grid.contains("tabber")) {
         this->m_grid_container->removeWidget(this->m_tab_container);
