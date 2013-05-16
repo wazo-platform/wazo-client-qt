@@ -144,6 +144,7 @@ void XletDispatcher::setStatusNotLogged()
         this->m_grid_container->removeWidget(this->m_tab_container);
         this->m_tab_container->deleteLater();
     }
+    this->clearAppearance();
 }
 
 void XletDispatcher::resetState()
