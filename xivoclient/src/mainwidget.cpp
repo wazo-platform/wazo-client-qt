@@ -549,11 +549,6 @@ void MainWidget::confUpdated()
 {
     // qDebug() << Q_FUNC_INFO;
     fetchConfig();
-    m_qlab1->setText(m_config["userlogin"].toString());
-    m_qlab2->setText(m_config["password"].toString());
-    m_qlab3->setText(m_config["agentphonenumber"].toString());
-    m_kpass->setChecked(m_config["keeppass"].toBool());
-    m_loginkind->setCurrentIndex(m_config["guioptions.loginkind"].toInt());
 
     bool displayprofile = b_engine->getConfig("displayprofile").toBool();
     m_profilename->setVisible(displayprofile);
