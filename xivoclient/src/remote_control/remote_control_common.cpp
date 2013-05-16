@@ -48,7 +48,7 @@ void RemoteControl::i_close_the_xivo_client_configuration()
 QVariantMap RemoteControl::get_xlets()
 {
     QVariantMap args;
-    QHash<QString, XLet*> xlets = this->m_xlet_container->m_xletlist;
+    QHash<QString, XLet*> xlets = this->m_xlet_dispatcher->m_xletlist;
     QVariantList xlet_list;
     foreach (QString xlet, xlets.keys()) {
         xlet_list.append(xlet);

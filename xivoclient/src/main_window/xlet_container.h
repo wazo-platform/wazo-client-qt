@@ -52,7 +52,6 @@ class XletContainer : public QObject
         ~XletContainer();
 
         XletDispatcher *m_xlet_dispatcher;
-        QHash<QString, XLet *> m_xletlist;
 };
 
 #endif

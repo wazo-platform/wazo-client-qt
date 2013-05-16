@@ -59,7 +59,7 @@ void RemoteControl::set_queue_for_queue_members(const QVariantList & args)
 
 QVariantMap RemoteControl::get_queue_members_infos()
 {
-    XletQueueMembers *xlet = static_cast<XletQueueMembers *>(this->m_xlet_container->m_xletlist.value("queuemembers"));
+    XletQueueMembers *xlet = static_cast<XletQueueMembers *>(this->m_xlet_dispatcher->m_xletlist.value("queuemembers"));
     QueueMembersView *view = xlet->m_view;
     QAbstractItemModel * model = view->model();
 

@@ -37,7 +37,7 @@ QVariantMap RemoteControl::get_remote_directory_infos()
 {
     QVariantMap args;
 
-    DirectoryPanel* xlet = static_cast<DirectoryPanel*>(this->m_xlet_container->m_xletlist.value("remotedirectory"));
+    DirectoryPanel* xlet = static_cast<DirectoryPanel*>(this->m_xlet_dispatcher->m_xletlist.value("remotedirectory"));
     if (xlet == NULL)
         return args;
 
@@ -65,7 +65,7 @@ void RemoteControl::set_search_for_remote_directory(const QVariantList & args)
 {
     const QString& search = args[0].toString();
 
-    DirectoryPanel* panel = static_cast<DirectoryPanel*>(this->m_xlet_container->m_xletlist.value("remotedirectory"));
+    DirectoryPanel* panel = static_cast<DirectoryPanel*>(this->m_xlet_dispatcher->m_xletlist.value("remotedirectory"));
 
     panel->m_searchText->setText(search);
     panel->startSearch();
@@ -75,7 +75,7 @@ void RemoteControl::exec_double_click_on_number_for_name(const QVariantList &arg
 {
     QString name = args[0].toString();
 
-    DirectoryPanel* xlet = static_cast<DirectoryPanel*>(this->m_xlet_container->m_xletlist.value("remotedirectory"));
+    DirectoryPanel* xlet = static_cast<DirectoryPanel*>(this->m_xlet_dispatcher->m_xletlist.value("remotedirectory"));
 
     connect(this,
             SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
