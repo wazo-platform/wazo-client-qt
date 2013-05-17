@@ -95,4 +95,5 @@ void CentralWidget::setStatusLogged()
 void CentralWidget::setStatusNotLogged()
 {
     this->setCurrentWidget(this->m_login_widget);
+    this->show();
 }
