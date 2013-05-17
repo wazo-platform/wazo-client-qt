@@ -71,7 +71,6 @@ void XletDispatcher::setStatusLogged()
 
 void XletDispatcher::setStatusNotLogged()
 {
-    b_engine->getSettings()->setValue("display/mainwindowstate", this->m_main_window->saveState());
     if (this->m_xlets_tab_widget.size()) {
         b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
     }
@@ -138,6 +137,7 @@ void XletDispatcher::prepareXletsTab()
 
 void XletDispatcher::cleanXletsTab()
 {
+    b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
     foreach (QWidget *widget, this->m_xlets_tab_widget.values()) {
         widget->deleteLater();
     }
