@@ -63,29 +63,30 @@ class XletDispatcher : public QObject
     private:
         void prepareAppearance();
         void clearAppearance();
-        void addPanel(const QString &, const QString &, QWidget *);
-        void removePanel(const QString &, QWidget *);
-        QDockWidget* createDockXlet(const QString& name,
-                                    const QString& title,
-                                    QDockWidget::DockWidgetFeatures features,
-                                    QWidget *widget);
+        void prepareXletsTab();
+        void cleanXletsTab();
+        void prepareXletsGrid();
+        void cleanXletsGrid();
+        void prepareXletsDock();
+        QDockWidget::DockWidgetFeatures getXletsDockFeatures(QString &options);
+        void cleanXletsDock();
 
         MainWindow *m_main_window;
         MainWidget *m_main_widget;
 
-        QDockWidget *m_dock_container;
-        QVBoxLayout *m_grid_container;
-        QTabWidget *m_tab_container;
-
         QByteArray m_defaultState;
-        QHash<QString, XLet *> m_xletlist;
-        QHash<QString, QString> m_dockoptions;
-        QHash<QString, QList<QDockWidget *>* > m_docks;
 
-        QStringList m_xlets_name;
-        QStringList m_xlets_dock;
-        QStringList m_xlets_grid;
-        QStringList m_xlets_tab;
+        QDockWidget *m_dock_container;
+        QMap<QString, QDockWidget *> m_xlets_dock_widget;
+        QMap<QString, QString> m_xlets_dock;
+
+        QVBoxLayout *m_grid_container;
+        QMap<QString, XLet *> m_xlets_grid_widget;
+        QMap<QString, QString> m_xlets_grid;
+
+        QTabWidget *m_tab_container;
+        QMap<QString, XLet *> m_xlets_tab_widget;
+        QMap<QString, QString> m_xlets_tab;
 };
 
 #endif
