@@ -69,6 +69,8 @@ class MainWindow : public QMainWindow
         void setStatusNotLogged();
         void setStatusLogged();
         void minimizeWindow();
+        void about();
+        void showCredits();
 
     signals:
         void initialized();
@@ -80,6 +82,8 @@ class MainWindow : public QMainWindow
 
         ConfigWidget *m_config_widget;
         QClipboard * m_clipboard;
+
+        QDateTime m_launch_date_time;
 };
 
 #endif
