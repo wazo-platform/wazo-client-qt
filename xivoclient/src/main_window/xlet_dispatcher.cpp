@@ -85,6 +85,10 @@ bool XletDispatcher::has_widget()
 
 void XletDispatcher::prepareXletsGrid()
 {
+    if (this->m_xlets_grid.size() == 0) {
+        return;
+    }
+
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
 
     foreach (QString xlet_id, this->m_xlets_grid.keys()) {
@@ -123,6 +127,10 @@ void XletDispatcher::cleanXletsGrid()
 
 void XletDispatcher::prepareXletsTab()
 {
+    if (this->m_xlets_tab.size() == 0) {
+        return;
+    }
+
     this->m_tab_container = new QTabWidget(this->m_main_widget);
 
     foreach (QString xlet_id, this->m_xlets_tab.keys()) {
