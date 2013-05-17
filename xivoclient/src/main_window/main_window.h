@@ -50,10 +50,12 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void initialize();
+        virtual QByteArray saveState();
 
         Ui::MainWindow *ui;
 
     public slots:
+        void restoreDefaultState();
         void setAppIcon(const QString & def);
         void showWindow();
         void hideWindow();
@@ -71,6 +73,7 @@ class MainWindow : public QMainWindow
         void minimizeWindow();
         void about();
         void showCredits();
+        void prepareState();
 
     signals:
         void initialized();
@@ -79,10 +82,13 @@ class MainWindow : public QMainWindow
 
     private:
         void setTitle(const QString &);
+        void saveDefaultState();
+        virtual void restoreState();
 
         ConfigWidget *m_config_widget;
         QClipboard * m_clipboard;
 
+        QByteArray m_default_state;
         QDateTime m_launch_date_time;
 };
 

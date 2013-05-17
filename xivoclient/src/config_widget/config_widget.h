@@ -69,7 +69,7 @@ class ConfigWidget: public QDialog
     FUNCTESTED
 
     public:
-        ConfigWidget(XletDispatcher *xlet_dispatcher, MainWindow *parent=NULL);
+        ConfigWidget(MainWindow *parent=NULL);
         ~ConfigWidget();
 
     private slots:

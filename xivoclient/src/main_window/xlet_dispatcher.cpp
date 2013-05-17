@@ -40,7 +40,6 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
     : QObject(parent),
       m_main_window(main_window),
       m_main_widget(main_widget),
-      m_default_state(NULL),
       m_dock_container(NULL),
       m_xlets_dock_widget(),
       m_xlets_dock(),
@@ -64,16 +63,11 @@ void XletDispatcher::setStatusLogged()
     this->prepareAppearance();
     this->prepareXletsGrid();
     this->prepareXletsDock();
-
-    this->m_default_state = this->m_main_window->saveState();
-    this->m_main_window->restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 }
 
 void XletDispatcher::setStatusNotLogged()
 {
-    if (this->m_xlets_tab_widget.size()) {
-        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
-    }
+    this->m_main_window->saveState();
 
     this->cleanXletsGrid();
     this->cleanXletsDock();
@@ -196,11 +190,6 @@ void XletDispatcher::cleanXletsDock()
         widget->deleteLater();
     }
     this->m_xlets_dock_widget.clear();
-}
-
-void XletDispatcher::resetState()
-{
-    this->m_main_window->restoreState(this->m_default_state);
 }
 
 /*! \brief show this XLet on top of others

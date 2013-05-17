@@ -52,9 +52,6 @@ class XletDispatcher : public QObject
         XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent=NULL);
         ~XletDispatcher();
 
-    public slots:
-        void resetState();
-
     private slots:
         void setStatusNotLogged();
         void setStatusLogged();
@@ -73,8 +70,6 @@ class XletDispatcher : public QObject
 
         MainWindow *m_main_window;
         MainWidget *m_main_widget;
-
-        QByteArray m_default_state;
 
         QDockWidget *m_dock_container;
         QMap<QString, QDockWidget *> m_xlets_dock_widget;

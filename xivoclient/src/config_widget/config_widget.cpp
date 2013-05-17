@@ -55,13 +55,13 @@
 
 const QString reboot_message = "You must restart the program for this setting to apply.";
 
-ConfigWidget::ConfigWidget(XletDispatcher *xlet_dispatcher, MainWindow *parent)
+ConfigWidget::ConfigWidget(MainWindow *parent)
     : QDialog(parent)
 {
     this->ui.setupUi(this);
     this->connect(this->ui.buttonBox, SIGNAL(accepted()), SLOT(accept()));
     this->connect(this->ui.buttonBox, SIGNAL(rejected()), SLOT(reject()));
-    xlet_dispatcher->connect(this->ui.reset_docks, SIGNAL(pressed()), SLOT(resetState()));
+    parent->connect(this->ui.reset_docks, SIGNAL(pressed()), SLOT(restoreDefaultState()));
     this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
 }
 

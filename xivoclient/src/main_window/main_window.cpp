@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow),
       m_config_widget(NULL),
       m_clipboard(NULL),
+      m_default_state(NULL),
       m_launch_date_time(QDateTime::currentDateTime())
 {
     this->ui->setupUi(this);
@@ -52,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
     this->connect(b_engine, SIGNAL(emitMessageBox(const QString &)), SLOT(showMessageBox(const QString &)), Qt::QueuedConnection);
+    this->connect(b_engine, SIGNAL(initialized()), SLOT(prepareState()));
     this->connect(this->ui->action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
     this->connect(this->ui->action_to_systray, SIGNAL(triggered()), SLOT(hideWindow()));
     this->connect(this->ui->action_show_window, SIGNAL(triggered()), SLOT(showWindow()));
@@ -183,10 +185,36 @@ void MainWindow::setStatusNotLogged()
 {
     this->ui->action_connect->setVisible(true);
     this->ui->action_disconnect->setVisible(false);
-    b_engine->getSettings()->setValue("display/mainwindowstate", saveState());
     b_engine->logAction("connection stopped");
     this->setAppIcon("xivo-black");
     this->setTitle(tr("Client %1").arg(XC_VERSION));
+}
+
+void MainWindow::prepareState()
+{
+    this->saveDefaultState();
+    this->restoreState();
+}
+
+void MainWindow::saveDefaultState()
+{
+    this->m_default_state = QMainWindow::saveState();
+}
+
+void MainWindow::restoreDefaultState()
+{
+    QMainWindow::restoreState(this->m_default_state);
+}
+
+QByteArray MainWindow::saveState()
+{
+    b_engine->getSettings()->setValue("display/mainwindowstate", QMainWindow::saveState());
+    return QMainWindow::saveState();
+}
+
+void MainWindow::restoreState()
+{
+    QMainWindow::restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 }
 
 void MainWindow::customerInfoPopup(const QString & msgtitle,
