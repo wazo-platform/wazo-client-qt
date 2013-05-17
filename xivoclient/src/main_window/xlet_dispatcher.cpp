@@ -65,7 +65,7 @@ void XletDispatcher::setStatusLogged()
     this->prepareXletsGrid();
     this->prepareXletsDock();
 
-    this->m_defaultState = this->m_main_window->saveState();
+    this->m_default_state = this->m_main_window->saveState();
     this->m_main_window->restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 }
 
@@ -200,7 +200,7 @@ void XletDispatcher::cleanXletsDock()
 
 void XletDispatcher::resetState()
 {
-    this->m_main_window->restoreState(this->m_defaultState);
+    this->m_main_window->restoreState(this->m_default_state);
 }
 
 /*! \brief show this XLet on top of others
