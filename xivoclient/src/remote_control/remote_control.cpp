@@ -59,8 +59,7 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
       m_central_widget(assembler->centralWidget()),
       m_main_widget(assembler->mainWidget()),
       m_statusbar(assembler->statusbar()),
-      m_xlet_dispatcher(assembler->xletDispatcher()),
-      m_xlet_container(assembler->xletContainer())
+      m_xlet_dispatcher(assembler->xletDispatcher())
 {
     m_exec_obj = exec_obj;
     m_server = new QLocalServer;

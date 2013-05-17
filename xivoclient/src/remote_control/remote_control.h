@@ -148,7 +148,6 @@ class RemoteControl : public QObject
         MainWidget *m_main_widget;
         Statusbar *m_statusbar;
         XletDispatcher *m_xlet_dispatcher;
-        XletContainer *m_xlet_container;
 };
 
 #endif /* ifdef FUNCTESTS */

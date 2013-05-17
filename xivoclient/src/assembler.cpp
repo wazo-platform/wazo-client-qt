@@ -49,7 +49,6 @@ Assembler::Assembler()
     this->m_statusbar = new Statusbar(this->m_main_window);
     this->m_system_tray_icon = new SystemTrayIcon(this->m_main_window);
     this->m_xlet_dispatcher = new XletDispatcher(this->m_main_window, this->m_main_widget, qApp);
-    this->m_xlet_container = new XletContainer(this->m_xlet_dispatcher);
     this->m_config_widget = new ConfigWidget(this->m_xlet_dispatcher, this->m_main_window);
 }
 
@@ -100,9 +99,4 @@ ConfigWidget *Assembler::configWidget()
 XletDispatcher *Assembler::xletDispatcher()
 {
     return m_xlet_dispatcher;
-}
-
-XletContainer *Assembler::xletContainer()
-{
-    return m_xlet_container;
 }

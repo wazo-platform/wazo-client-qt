@@ -37,7 +37,6 @@
 #include "main_window/statusbar.h"
 #include "main_window/system_tray_icon.h"
 #include "main_window/xlet_dispatcher.h"
-#include "main_window/xlet_container.h"
 #include "login_widget/login_widget.h"
 #include "config_widget/config_widget.h"
 
@@ -50,7 +49,6 @@ class Statusbar;
 class SystemTrayIcon;
 class LoginWidget;
 class XletDispatcher;
-class XletContainer;
 
 class Assembler
 {
@@ -67,7 +65,6 @@ class Assembler
         Statusbar *statusbar();
         SystemTrayIcon *systemTrayIcon();
         XletDispatcher *xletDispatcher();
-        XletContainer *xletContainer();
 
     private:
         MainWindow *m_main_window;
@@ -79,7 +76,6 @@ class Assembler
         Statusbar *m_statusbar;
         SystemTrayIcon *m_system_tray_icon;
         XletDispatcher *m_xlet_dispatcher;
-        XletContainer *m_xlet_container;
 };
 
 extern Assembler *assembler;
