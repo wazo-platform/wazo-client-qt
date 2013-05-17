@@ -85,9 +85,6 @@ bool XletDispatcher::has_widget()
 
 void XletDispatcher::prepareXletsGrid()
 {
-    if (this->m_xlets_grid.size() == 0)
-        return;
-
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
 
     foreach (QString xlet_id, this->m_xlets_grid.keys()) {
@@ -108,6 +105,10 @@ void XletDispatcher::prepareXletsGrid()
 
 void XletDispatcher::cleanXletsGrid()
 {
+    if (this->m_xlets_grid.size() == 0) {
+        return;
+    }
+
     foreach (QWidget *widget, this->m_xlets_grid_widget.values()) {
         this->m_grid_container->removeWidget(widget);
         widget->deleteLater();
@@ -122,9 +123,6 @@ void XletDispatcher::cleanXletsGrid()
 
 void XletDispatcher::prepareXletsTab()
 {
-    if (this->m_xlets_tab.size() == 0)
-        return;
-
     this->m_tab_container = new QTabWidget(this->m_main_widget);
 
     foreach (QString xlet_id, this->m_xlets_tab.keys()) {
@@ -143,6 +141,10 @@ void XletDispatcher::prepareXletsTab()
 
 void XletDispatcher::cleanXletsTab()
 {
+    if (this->m_xlets_tab.size() == 0) {
+        return;
+    }
+
     b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
     foreach (QWidget *widget, this->m_xlets_tab_widget.values()) {
         widget->deleteLater();
@@ -153,8 +155,9 @@ void XletDispatcher::cleanXletsTab()
 
 void XletDispatcher::prepareXletsDock()
 {
-    if (this->m_xlets_dock.size() == 0)
+    if (this->m_xlets_dock.size() == 0) {
         return;
+    }
 
     foreach (QString xlet_id, this->m_xlets_dock.keys()) {
         QString options = this->m_xlets_dock.value(xlet_id);
