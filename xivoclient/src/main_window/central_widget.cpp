@@ -34,6 +34,7 @@
 #include <login_widget/login_widget.h>
 
 #include "central_widget.h"
+#include "xlet_dispatcher.h"
 
 
 CentralWidget::CentralWidget(MainWindow *parent)
@@ -44,11 +45,18 @@ CentralWidget::CentralWidget(MainWindow *parent)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
+    this->connect(b_engine, SIGNAL(initializing()), SLOT(initializing()));
+    this->connect(b_engine, SIGNAL(initialized()), SLOT(initialized()));
     this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
 }
 
 CentralWidget::~CentralWidget()
 {
+}
+
+void CentralWidget::initializing()
+{
+    this->hide();
 }
 
 void CentralWidget::initialize()
@@ -60,6 +68,14 @@ void CentralWidget::initialize()
     this->addWidget(this->m_main_widget);
 
     this->setDefaultWidget();
+}
+
+void CentralWidget::initialized()
+{
+    XletDispatcher *xlet_dispatcher = assembler->xletDispatcher();
+    if (xlet_dispatcher->has_widget()) {
+        this->show();
+    }
 }
 
 void CentralWidget::setDefaultWidget()

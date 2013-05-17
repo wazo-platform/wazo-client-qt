@@ -52,6 +52,8 @@ class CentralWidget : public QStackedWidget
 
     private slots:
         void initialize();
+        void initializing();
+        void initialized();
         void setStatusNotLogged();
         void setStatusLogged();
 

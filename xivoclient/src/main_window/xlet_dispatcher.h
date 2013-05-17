@@ -51,6 +51,7 @@ class XletDispatcher : public QObject
     public:
         XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent=NULL);
         ~XletDispatcher();
+        bool has_widget();
 
     private slots:
         void setStatusNotLogged();

@@ -43,7 +43,7 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_dock_container(NULL),
       m_xlets_dock_widget(),
       m_xlets_dock(),
-      m_grid_container(new QVBoxLayout(main_widget)),
+      m_grid_container(NULL),
       m_xlets_grid_widget(),
       m_xlets_grid(),
       m_tab_container(NULL),
@@ -74,10 +74,21 @@ void XletDispatcher::setStatusNotLogged()
     this->clearAppearance();
 }
 
+bool XletDispatcher::has_widget()
+{
+    if (this->m_xlets_grid.size() == 0) {
+        return false;
+    }
+
+    return true;
+}
+
 void XletDispatcher::prepareXletsGrid()
 {
     if (this->m_xlets_grid.size() == 0)
         return;
+
+    this->m_grid_container = new QVBoxLayout(this->m_main_widget);
 
     foreach (QString xlet_id, this->m_xlets_grid.keys()) {
         QString options = this->m_xlets_grid.value(xlet_id);
@@ -105,6 +116,7 @@ void XletDispatcher::cleanXletsGrid()
         this->m_grid_container->removeWidget(this->m_tab_container);
         this->cleanXletsTab();
     }
+    this->m_grid_container->deleteLater();
     this->m_xlets_grid_widget.clear();
 }
 
