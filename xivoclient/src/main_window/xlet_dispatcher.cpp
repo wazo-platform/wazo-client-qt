@@ -215,6 +215,20 @@ void XletDispatcher::cleanXletsDock()
     this->m_xlets_dock_widget.clear();
 }
 
+void XletDispatcher::hideXletsDock()
+{
+    foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
+        widget->hide();
+    }
+}
+
+void XletDispatcher::showXletsDock()
+{
+    foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
+        widget->show();
+    }
+}
+
 /*! \brief show this XLet on top of others
  *
  * This slot Works when tabbed view is selected.
