@@ -221,7 +221,6 @@ void MainWindow::customerInfoPopup(const QString & msgtitle,
                                    const QString & options)
 {
     qDebug() << Q_FUNC_INFO;
-    /*
     // systray popup
     // to be customisable (yes or no)
     if (options.contains("s") && (msgtitle.size() > 0)) {
@@ -233,17 +232,16 @@ void MainWindow::customerInfoPopup(const QString & msgtitle,
             if (! linetodisp.isEmpty())
                 todisp.append(linetodisp);
         }
-        m_systrayIcon.showMessage(msgtitle,
-                                   todisp.join("\n"),
-                                   QSystemTrayIcon::Information,
-                                   5000);
+        assembler->systemTrayIcon()->showMessage(msgtitle,
+                                                 todisp.join("\n"),
+                                                 QSystemTrayIcon::Information,
+                                                 5000);
     }
 
     // to be customisable, if the user wants the window to popup
     if (options.contains("p")) {
         this->showWindow();
     }
-    */
 }
 
 /*! \brief Displays the about box
