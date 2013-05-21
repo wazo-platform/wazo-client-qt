@@ -1718,7 +1718,6 @@ QString BaseEngine::servicePutForward(const QString & capa, bool b, const QStrin
 }
 
 void BaseEngine::fetchIPBXList() {
-    emit initializing();
     QVariantMap command;
     command["class"] = "getipbxlist";
     sendJsonCommand(command);
