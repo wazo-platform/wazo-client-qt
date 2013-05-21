@@ -119,8 +119,8 @@ void RemoteControl::configure(const QVariantList &list)
         m_exec_obj.win->m_configwindow->ui.show_displayprofile->setChecked(display_profile);
     }
 
-    if (args.find("customerinfo") != args.end()) {
-        bool customerinfo = args["customerinfo"].toBool();
+    if (args.find("enable_screen_popup") != args.end()) {
+        bool customerinfo = args["enable_screen_popup"].toBool();
         m_exec_obj.win->m_configwindow->ui.enable_screen_popup->setChecked(customerinfo);
     }
 
