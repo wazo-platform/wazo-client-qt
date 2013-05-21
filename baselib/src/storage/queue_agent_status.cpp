@@ -34,6 +34,7 @@ const QColor Orange = QColor(255, 128, 0);
 QString QueueAgentStatus::logged_out_status = "101";
 
 QueueAgentStatus::QueueAgentStatus()
+    : m_display_status_darkfactor(0)
 {
 }
 

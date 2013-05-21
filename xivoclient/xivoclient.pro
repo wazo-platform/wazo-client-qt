@@ -8,12 +8,10 @@ TARGET = xivoclient
 
 CONFIG += uitools
 
-!profiling {
-    unix:LIBS += -lxivoclientxlets
-    win32 {
-        debug:LIBS += -lxivoclientxletsd
-        release:LIBS += -lxivoclientxlets
-    }
+unix:LIBS += -lxivoclientxlets
+win32 {
+    debug:LIBS += -lxivoclientxletsd
+    release:LIBS += -lxivoclientxlets
 }
 mac {
     QMAKE_INFO_PLIST = ../packaging/resources/macos-info.plist
@@ -87,8 +85,3 @@ isEmpty( PLUGINDIR ) {
     PLUGINDIR = /usr/share/xivoclient/plugins
 }
 DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"
-
-profiling {
-    QMAKE_CXXFLAGS += -g -pg
-    QMAKE_LFLAGS += -g -pg
-}

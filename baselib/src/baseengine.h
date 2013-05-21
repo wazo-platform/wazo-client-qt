@@ -126,20 +126,13 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QHash<QString, XInfo *> iterover(const QString & listname) { return m_anylist.value(listname); };
 
-        const ChannelInfo * channel(const QString & id) const      //!< Return the channel to any xlet
-            { return channels().value(id); };
-        const UserInfo * user(const QString & id) const            //!< Return the user to any Xlet
-            { return (const UserInfo *) m_anylist.value("users").value(id); };
-        const PhoneInfo * phone(const QString & id) const          //!< Return the phone to any Xlet
-            { return (const PhoneInfo *) m_anylist.value("phones").value(id); };
-        const AgentInfo * agent(const QString & id) const          //!< Return the agent to any Xlet
-            { return (const AgentInfo *) m_anylist.value("agents").value(id); };
-        const QueueInfo * queue(const QString & id) const         //!< Return the queue to any Xlet
-            { return (const QueueInfo *) m_anylist.value("queues").value(id); };
-        const VoiceMailInfo * voicemail(const QString & id) const  //!< Return the voicemail to any Xlet
-            { return (const VoiceMailInfo *) m_anylist.value("voicemails").value(id); };
-        const QueueMemberInfo * queuemember(const QString & id) const  //!< Return the queuemember to any Xlet
-            { return (const QueueMemberInfo *) m_anylist.value("queuemembers").value(id); };
+        const ChannelInfo * channel(const QString & id) const;
+        const UserInfo * user(const QString & id) const;
+        const PhoneInfo * phone(const QString & id) const;
+        const AgentInfo * agent(const QString & id) const;
+        const QueueInfo * queue(const QString & id) const;
+        const VoiceMailInfo * voicemail(const QString & id) const;
+        const QueueMemberInfo * queuemember(const QString & id) const;
 
         const QHash<QString, ChannelInfo *> & channels() const
                 { return m_channels; };      //!< Return the channels to any Xlet
@@ -187,7 +180,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         int forwardToListeners(QString className, const QVariantMap &map); //!< forward IPBX message to XLets listening
 
-        void stopConnection();     //!< stop the engine
+        void stopConnection();
+        void sendLogout(const QString & stopper);
+        void saveLogoutData(const QString & stopper);
         void clearInternalData();  //!< clear the engine internal data
 
         void openLogFile();
@@ -333,9 +328,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void localUserInfoDefined();
         void monitoredUserInfoDefined();
 
-        void optChanged(const QString &);
-        void forwardUpdated(const QString &);
-
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
 
@@ -362,12 +354,17 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitLogged();
         void emitDelogged();
 
-        void initFeatureFields(const QString &);
-
         void startConnection();
         void sendCommand(const QString &);
         void parseCommand(const QString &);
-        void configsLists(const QString &, const QString &, const QVariantMap &);
+        void configsLists(const QString &function, const QVariantMap &datamap);
+        void handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &ids);
+        void handleGetlistDelConfig(const QString &listname, const QString &ipbxid, const QStringList &ids);
+        void handleGetlistUpdateConfig(const QString &listname, const QString &ipbxid, const QString &id, const QVariantMap &data);
+        void handleGetlistUpdateStatus(const QString &listname, const QString &ipbxid, const QString &id, const QVariantMap &status);
+        void requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid);
+        void requestStatus(const QString &listname, const QString &ipbxid, const QString &id);
+        void addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid);
         void updatePhone(const QString &, const QString &, const QVariantMap &);
 
         void clearLists();
