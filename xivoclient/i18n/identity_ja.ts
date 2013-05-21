@@ -71,8 +71,8 @@
         <translation>現在の利用者一覧</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="292"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="312"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="290"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="310"/>
         <source>IPBXid: %1</source>
         <translation>IPBXid: %1</translation>
     </message>

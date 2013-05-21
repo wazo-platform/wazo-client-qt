@@ -2,67 +2,62 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="516"/>
+        <location filename="src/baseengine.cpp" line="521"/>
         <source>Connection lost with XiVO CTI server</source>
         <translation>Connexion au server CTI interrompue</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="836"/>
-        <source>Received Services Data</source>
-        <translation>Reçu les Informations de Services</translation>
-    </message>
-    <message>
-        <location filename="src/baseengine.cpp" line="841"/>
+        <location filename="src/baseengine.cpp" line="875"/>
         <source>Could not modify the Services data.</source>
         <translation>Impossible de modifier les données pour les Services.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="841"/>
+        <location filename="src/baseengine.cpp" line="875"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Asterisk est peut-être arrêté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1250"/>
+        <location filename="src/baseengine.cpp" line="1294"/>
         <source>Server has sent an Error.</source>
         <translation>Le serveur a renvoyé une Erreur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1254"/>
+        <location filename="src/baseengine.cpp" line="1298"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Votre nom &lt;%1@%2&gt; est inconnu par le serveur CTI XiVO sur %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1258"/>
+        <location filename="src/baseengine.cpp" line="1302"/>
         <source>You entered a wrong login / password.</source>
         <translation>Vous avez fourni un mauvais login / password.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1260"/>
+        <location filename="src/baseengine.cpp" line="1304"/>
         <source>You have no profile defined.</source>
         <translation>Votre profil n&apos;est pas défini.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1264"/>
+        <location filename="src/baseengine.cpp" line="1308"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 n&apos;a pas répondu au dernier keepalive.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1269"/>
+        <location filename="src/baseengine.cpp" line="1313"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation>Vous avez défini une adresse IP %1 qui est probablement un nom d&apos;hôte non résolu.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1272"/>
+        <location filename="src/baseengine.cpp" line="1316"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation>Timeout de socket (~ 60 s) : vous avez probablement essayé de joindre, via une passerelle, une adresse IP %1 qui n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1276"/>
+        <location filename="src/baseengine.cpp" line="1320"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation>Il semble qu&apos;une machine soit présente à cette adresse IP %1, mais il n&apos;y a pas de serveur CTI, ou votre port %2 est faux.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1280"/>
+        <location filename="src/baseengine.cpp" line="1324"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -73,123 +68,123 @@
 - un câble a été débranché sur votre réseau local, sur le chemin vers cette adresse IP (~ 30 s de timeout).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1286"/>
+        <location filename="src/baseengine.cpp" line="1330"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation>Il semble que le serveur à l&apos;adresse IP %1 n&apos;accepte pas le chiffrage sur son port %2. Changez soit le port soit la configuration de chiffrage.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1290"/>
+        <location filename="src/baseengine.cpp" line="1334"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Une erreur de socket inconnue s&apos;est produite en essayant de joindre l&apos;IP %1:%2 (adresse:port).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1294"/>
+        <location filename="src/baseengine.cpp" line="1338"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Une erreur de socket non gérée (numéro %1) s&apos;est produite en essayant de joindre l&apos;IP %1:%2 (adresse:port).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1299"/>
+        <location filename="src/baseengine.cpp" line="1343"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient de fermer la connexion.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1303"/>
+        <location filename="src/baseengine.cpp" line="1347"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être arrêté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1306"/>
+        <location filename="src/baseengine.cpp" line="1350"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>Le serveur CTI XiVO sur %1:%2 vient d&apos;être rechargé.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1310"/>
+        <location filename="src/baseengine.cpp" line="1354"/>
         <source>You are already connected from %1:%2.</source>
         <translation>Vous êtes déjà connecté depuis %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1312"/>
+        <location filename="src/baseengine.cpp" line="1356"/>
         <source>No capability allowed.</source>
         <translation>Aucune capacité autorisée.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1315"/>
+        <location filename="src/baseengine.cpp" line="1359"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Le nombre maximal (%1) de XiVO Clients est déjà connecté.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1317"/>
+        <location filename="src/baseengine.cpp" line="1361"/>
         <source>Missing Argument(s)</source>
         <translation>Argument(s) manquant(s)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1321"/>
+        <location filename="src/baseengine.cpp" line="1365"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1326"/>
+        <location filename="src/baseengine.cpp" line="1370"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>La version de votre client (%1) est trop ancienne pour ce serveur.
 Merci de mettre à jour votre client.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1333"/>
+        <location filename="src/baseengine.cpp" line="1377"/>
         <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>La version majeure de votre client (%1)
 est différente de celle du serveur (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1340"/>
+        <location filename="src/baseengine.cpp" line="1384"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur en %2 au moins.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1345"/>
+        <location filename="src/baseengine.cpp" line="1389"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>La version de votre serveur (%1) est trop ancienne pour ce client.
 Merci de mettre à jour votre serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1349"/>
+        <location filename="src/baseengine.cpp" line="1393"/>
         <source>You were disconnected by the server.</source>
         <translation>Vous avez été déconnecté par le serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1351"/>
+        <location filename="src/baseengine.cpp" line="1395"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Vous avez été déconnecté de force par le serveur.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1353"/>
+        <location filename="src/baseengine.cpp" line="1397"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
         <translation>Impossible de loguer l&apos;agent: extension invalide.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1355"/>
+        <location filename="src/baseengine.cpp" line="1399"/>
         <source>Could not log agent: extension already in use.</source>
         <translation>Impossible de loguer l&apos;agent: extension déjà utilisée.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1358"/>
+        <location filename="src/baseengine.cpp" line="1402"/>
         <source>Unreachable number: %1</source>
         <translation>Numéro %1 injoignable</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1362"/>
+        <location filename="src/baseengine.cpp" line="1406"/>
         <source>ERROR</source>
         <translation>ERREUR</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1646"/>
+        <location filename="src/baseengine.cpp" line="1673"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
@@ -254,62 +249,62 @@ Merci de mettre à jour votre serveur.</translation>
 <context>
     <name>QueueAgentStatus</name>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="50"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="51"/>
         <source>Dynamic membership</source>
         <translation>Adhésion dynamique</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="54"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="55"/>
         <source>Static/RT membership</source>
         <translation>Adhésion statique/RT</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="66"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="67"/>
         <source>Agent not in Queue</source>
         <translation>Agent pas dans la File</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="70"/>
-        <location filename="src/storage/queue_agent_status.cpp" line="82"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="71"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="83"/>
         <source>Agent in Queue</source>
         <translation>Agent dans la File</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="71"/>
-        <location filename="src/storage/queue_agent_status.cpp" line="75"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="72"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="76"/>
         <source>Logged</source>
         <oldsource>Logged in</oldsource>
         <translation>Logué</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="74"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="75"/>
         <source>Agent Called or Busy</source>
         <translation>Agent Appelé ou Occupé</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="78"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="79"/>
         <source>Agent in Queue but Invalid</source>
         <translation>Agent dans la File mais Invalide</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="83"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="84"/>
         <source>Unlogged</source>
         <oldsource>Logged out</oldsource>
         <translation>Délogué</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="91"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="92"/>
         <source>Unpaused</source>
         <oldsource>Not paused</oldsource>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="95"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="96"/>
         <source>Paused</source>
         <translation>En retrait</translation>
     </message>
     <message>
-        <location filename="src/storage/queue_agent_status.cpp" line="99"/>
+        <location filename="src/storage/queue_agent_status.cpp" line="100"/>
         <source>Not relevant</source>
         <translation>Non pertinent</translation>
     </message>
@@ -399,59 +394,59 @@ Merci de mettre à jour votre serveur.</translation>
 <context>
     <name>ServicesPanel</name>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="56"/>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="68"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="60"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="72"/>
         <source>Services</source>
         <translation>Services</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="57"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="61"/>
         <source>Voice &amp;Mail</source>
         <translation>Messagerie &amp;vocale</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="58"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="62"/>
         <source>Call &amp;Filtering</source>
         <translation>&amp;Filtrage d&apos;appel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="59"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="63"/>
         <source>Do Not &amp;Disturb</source>
         <translation>Ne &amp;Pas Déranger</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="60"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="64"/>
         <source>Forward on &amp;No Answer to</source>
         <translation>Renvoi sur non réponse vers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="61"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="65"/>
         <source>Forward on &amp;Busy to</source>
         <translation>Renvoi sur oc&amp;cupation vers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="62"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="66"/>
         <source>&amp;Unconditional Forward to</source>
         <translation>Renvoi &amp;inconditionnel vers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="83"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="87"/>
         <source>Call Forwards</source>
         <translation>Renvois d&apos;appel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="93"/>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="135"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="97"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="139"/>
         <source>Please enter a destination to activate the checkboxes</source>
         <translation>Veuillez saisir une destination pour pouvoir activer les renvois d&apos;appel.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="102"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="106"/>
         <source>No call forward</source>
         <translation>Aucun renvoi d&apos;appel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="119"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="123"/>
         <source>Simple call forwards</source>
         <translation>Renvois d&apos;appel simples</translation>
     </message>
@@ -1177,71 +1172,66 @@ Lignes occupées : %6</translation>
 <context>
     <name>ConfigWidget</name>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="61"/>
-        <source>You must restart the program for this setting to apply.</source>
-        <translation>Vous devez redémarrer le programme pour appliquer ce paramètre.</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="81"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="83"/>
         <source>System Language</source>
         <translation>Langue du système</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="82"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="84"/>
         <source>Dutch</source>
         <translation>Néerlandais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="83"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="85"/>
         <source>English</source>
         <translation>Anglais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="84"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
         <source>French</source>
         <translation>Français</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="85"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="87"/>
         <source>Italian</source>
         <translation>Italien</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="87"/>
         <location filename="../src/config_widget/config_widget.cpp" line="88"/>
         <location filename="../src/config_widget/config_widget.cpp" line="89"/>
         <location filename="../src/config_widget/config_widget.cpp" line="90"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="91"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
         <source>incomplete</source>
         <translation>incomplet</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="88"/>
         <source>German</source>
         <translation>Allemand</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="87"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="89"/>
         <source>Hungarian</source>
         <translation>Hongrois</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="88"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="90"/>
         <source>Japanese</source>
         <translation>Japonais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="89"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="91"/>
         <source>Portuguese</source>
         <translation>Portugais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="90"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
         <source>Spanish</source>
         <translation>Espagnol</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
         <source>Default style</source>
         <translation>Style par défaut</translation>
     </message>
@@ -1524,7 +1514,7 @@ Lignes occupées : %6</translation>
 <context>
     <name>CustomerInfoPanel</name>
     <message>
-        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="38"/>
+        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="39"/>
         <source>Sheets</source>
         <translation>Fiches</translation>
     </message>
@@ -1725,240 +1715,249 @@ Raison donnée : %3.</translation>
     </message>
 </context>
 <context>
-    <name>MainWidget</name>
+    <name>LoginWidget</name>
     <message>
-        <location filename="../src/mainwidget.cpp" line="67"/>
-        <location filename="../src/mainwidget.cpp" line="926"/>
-        <source>Client %1</source>
-        <translation>Client %1</translation>
+        <location filename="../src/login_widget/login_widget.ui" line="14"/>
+        <source>Login Screen</source>
+        <translation>Écran d&apos;identification</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="172"/>
+        <location filename="../src/login_widget/login_widget.ui" line="72"/>
         <source>Login</source>
-        <translation>Login</translation>
+        <translation>Identifiant</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="174"/>
+        <location filename="../src/login_widget/login_widget.ui" line="89"/>
         <source>Password</source>
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="176"/>
+        <location filename="../src/login_widget/login_widget.ui" line="96"/>
         <source>Phone</source>
-        <translation>Tél</translation>
+        <translation>Téléphone</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="192"/>
+        <location filename="../src/login_widget/login_widget.ui" line="103"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/login_widget/login_widget.ui" line="110"/>
         <source>Keep Password</source>
         <translation>Garder</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="196"/>
+        <location filename="../src/login_widget/login_widget.ui" line="118"/>
         <source>No Agent</source>
         <translation>Sans agent</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="197"/>
+        <location filename="../src/login_widget/login_widget.ui" line="123"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (non logué)</translation>
+        <translation>Agent (non loggé)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="198"/>
+        <location filename="../src/login_widget/login_widget.ui" line="128"/>
         <source>Agent (logged)</source>
-        <translation>Agent (logué)</translation>
+        <translation>Agent (loggé)</translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="17"/>
+        <source>XiVO Client</source>
+        <translation>XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="344"/>
-        <source>Confi&amp;gure</source>
-        <translation>Confi&amp;gurer</translation>
+        <location filename="../src/main_window/main_window.ui" line="53"/>
+        <source>&amp;XiVO Client</source>
+        <translation>&amp;XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="346"/>
-        <source>Configure account and connection options</source>
-        <translation>Configurer votre compte et vos options de connexion</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="350"/>
-        <source>&amp;Quit</source>
-        <translation>&amp;Quitter</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="352"/>
-        <source>Close the application</source>
-        <translation>Fermer l&apos;application</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="353"/>
-        <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="360"/>
-        <source>To S&amp;ystray</source>
-        <translation>&amp;Minimiser</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="361"/>
-        <source>Enter the system tray</source>
-        <translation>Minimiser l&apos;application dans la zone de notification système</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="366"/>
-        <source>&amp;Show window</source>
-        <translation>&amp;Afficher la fenêtre</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="367"/>
-        <source>Leave the system tray</source>
-        <translation>Sortir l&apos;application de la zone de notification système</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="373"/>
-        <source>&amp;Connect</source>
-        <translation>&amp;Connecter</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="374"/>
-        <source>Connect to the server</source>
-        <translation>Se connecter au serveur</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="378"/>
-        <source>&amp;Disconnect</source>
-        <translation>&amp;Déconnecter</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="380"/>
-        <source>Disconnect from the server</source>
-        <translation>Se déconnecter du serveur</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="467"/>
+        <location filename="../src/main_window/main_window.ui" line="69"/>
         <source>&amp;Availability</source>
         <translation>&amp;Disponibilité</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="470"/>
+        <location filename="../src/main_window/main_window.ui" line="74"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="471"/>
+        <location filename="../src/main_window/main_window.ui" line="97"/>
+        <source>Confi&amp;gure</source>
+        <translation>Confi&amp;gurer</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="100"/>
+        <source>Configure account and connection options</source>
+        <translation>Configurer votre compte et vos options de connexion</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="108"/>
+        <source>To S&amp;ystray</source>
+        <translation>&amp;Minimiser</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="111"/>
+        <source>Enter the system tray</source>
+        <translation>Minimiser l&apos;application dans la zone de notification système</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="116"/>
+        <source>&amp;Connect</source>
+        <translation>&amp;Connecter</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="119"/>
+        <source>Connect to the server</source>
+        <translation>Se connecter au serveur</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="127"/>
+        <source>&amp;Disconnect</source>
+        <translation>&amp;Déconnecter</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="130"/>
+        <source>Disconnect from the server</source>
+        <translation>Se déconnecter du serveur</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="138"/>
+        <source>&amp;Quit</source>
+        <translation>&amp;Quitter</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="141"/>
+        <source>Close the application</source>
+        <translation>Fermer l&apos;application</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="144"/>
+        <source>Ctrl+Q</source>
+        <translation>Ctrl+Q</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="152"/>
+        <source>&amp;Show window</source>
+        <translation>&amp;Afficher la fenêtre</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="155"/>
+        <source>Leave the system tray</source>
+        <translation>Sortir l&apos;application de la zone de notification système</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.ui" line="163"/>
         <source>&amp;About XiVO Client</source>
         <translation>À propos de &amp;XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="472"/>
+        <location filename="../src/main_window/main_window.ui" line="168"/>
         <source>About &amp;Qt</source>
         <translation>À propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="473"/>
+        <location filename="../src/main_window/main_window.ui" line="173"/>
         <source>&amp;Credits</source>
         <translation>&amp;Crédits</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="612"/>
+        <location filename="../src/main_window/main_window.cpp" line="80"/>
+        <location filename="../src/main_window/main_window.cpp" line="189"/>
+        <location filename="../src/main_window/main_window.cpp" line="265"/>
+        <source>Client %1</source>
+        <translation>Client %1</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.cpp" line="144"/>
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="717"/>
+        <location filename="../src/main_window/main_window.cpp" line="171"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (profil %2)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="729"/>
-        <source>Tabs</source>
-        <translation>Onglets</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="841"/>
-        <source>Connected</source>
-        <translation>Connecté</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="850"/>
-        <source>Disconnected</source>
-        <translation>Déconnecté</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwidget.cpp" line="1007"/>
+        <location filename="../src/main_window/main_window.cpp" line="257"/>
         <source>Fetch the last one</source>
         <translation>Récupérer la dernière</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1014"/>
+        <location filename="../src/main_window/main_window.cpp" line="264"/>
         <source>About XiVO Client</source>
         <translation>À propos de XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1016"/>
+        <location filename="../src/main_window/main_window.cpp" line="266"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>Les applications CTI XiVO, une fois connectées au serveur adéquat, complètent le système téléphonique XiVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1021"/>
+        <location filename="../src/main_window/main_window.cpp" line="271"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Information de version&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1022"/>
+        <location filename="../src/main_window/main_window.cpp" line="272"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Majeure : &lt;b&gt;%1&lt;/b&gt; (branche XiVO)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1023"/>
+        <location filename="../src/main_window/main_window.cpp" line="273"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Mineure : git hash &lt;b&gt;%1&lt;/b&gt; du : %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1026"/>
+        <location filename="../src/main_window/main_window.cpp" line="276"/>
         <source>(Application Built on : %1)</source>
         <translation>(Application compilée le : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1027"/>
+        <location filename="../src/main_window/main_window.cpp" line="277"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Application lancée le : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1028"/>
+        <location filename="../src/main_window/main_window.cpp" line="278"/>
         <source>(Config File Location : %1)</source>
         <translation>(Fichier de Configuration : %1)</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1031"/>
+        <location filename="../src/main_window/main_window.cpp" line="281"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1032"/>
+        <location filename="../src/main_window/main_window.cpp" line="282"/>
         <source>Phone : </source>
         <translation>Téléphone : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1033"/>
+        <location filename="../src/main_window/main_window.cpp" line="283"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1033"/>
+        <location filename="../src/main_window/main_window.cpp" line="283"/>
         <source>Avencall Development Team</source>
         <translation>Équipe de développement Avencall</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1035"/>
+        <location filename="../src/main_window/main_window.cpp" line="285"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1037"/>
+        <location filename="../src/main_window/main_window.cpp" line="287"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="1043"/>
+        <location filename="../src/main_window/main_window.cpp" line="293"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
@@ -2113,6 +2112,32 @@ Are you sure ?</source>
     </message>
 </context>
 <context>
+    <name>Statusbar</name>
+    <message>
+        <location filename="../src/main_window/statusbar.cpp" line="81"/>
+        <source>Connected</source>
+        <translation>Connecté</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/statusbar.cpp" line="88"/>
+        <source>Disconnected</source>
+        <translation>Déconnecté</translation>
+    </message>
+</context>
+<context>
+    <name>loading_dialog</name>
+    <message>
+        <location filename="../src/main_window/loading_dialog.ui" line="17"/>
+        <source>Loading Screen</source>
+        <translation>Écran de chargement</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/loading_dialog.ui" line="37"/>
+        <source>Loading...</source>
+        <translation>Chargement en cours...</translation>
+    </message>
+</context>
+<context>
     <name>IdentityAgent</name>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="113"/>
@@ -2182,8 +2207,8 @@ Are you sure ?</source>
         <translation>Panneau des détails utilisateur</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="292"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="312"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="290"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="310"/>
         <source>IPBXid: %1</source>
         <translation>IPBXid : %1</translation>
     </message>
