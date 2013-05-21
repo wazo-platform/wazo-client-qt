@@ -41,7 +41,9 @@ CentralWidget::CentralWidget(MainWindow *parent)
     : QStackedWidget(parent),
       m_main_window(parent),
       m_login_widget(NULL),
-      m_main_widget(NULL)
+      m_main_widget(NULL),
+      ui_loading_dialog(new Ui::loading_dialog),
+      m_loading_dialog(NULL)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
@@ -56,9 +58,7 @@ CentralWidget::~CentralWidget()
 
 void CentralWidget::initializing()
 {
-    this->hide();
-    XletDispatcher *xlet_dispatcher = assembler->xletDispatcher();
-    xlet_dispatcher->hideXletsDock();
+    this->showLoading();
 }
 
 void CentralWidget::initialize()
@@ -79,6 +79,7 @@ void CentralWidget::initialized()
         this->show();
     }
     xlet_dispatcher->showXletsDock();
+    this->hideLoading();
 }
 
 void CentralWidget::setDefaultWidget()
@@ -90,10 +91,26 @@ void CentralWidget::setStatusLogged()
 {
     this->m_login_widget->saveConfig();
     this->setCurrentWidget(this->m_main_widget);
+    this->hide();
 }
 
 void CentralWidget::setStatusNotLogged()
 {
     this->setCurrentWidget(this->m_login_widget);
     this->show();
+}
+
+void CentralWidget::showLoading()
+{
+    this->m_loading_dialog = new QDialog(this->m_main_window);
+    this->ui_loading_dialog->setupUi(this->m_loading_dialog);
+    this->m_loading_dialog->adjustSize();
+    this->m_loading_dialog->setFixedSize(this->m_loading_dialog->width(),this->m_loading_dialog->height());
+    this->m_loading_dialog->show();
+}
+
+void CentralWidget::hideLoading()
+{
+    this->m_loading_dialog->hide();
+    this->m_loading_dialog->deleteLater();
 }

@@ -30,6 +30,7 @@ mac {
 
 FORMS += $${ROOT_DIR}/src/config_widget/config_widget.ui
 FORMS += $${ROOT_DIR}/src/login_widget/login_widget.ui
+FORMS += $${ROOT_DIR}/src/main_window/loading_dialog.ui
 FORMS += $${ROOT_DIR}/src/main_window/main_window.ui
 
 # this should just tell lrelease to compile these files

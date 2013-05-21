@@ -33,6 +33,7 @@
 #include <QStackedWidget>
 
 #include <login_widget/login_widget.h>
+#include <ui_loading_dialog.h>
 
 #include "main_widget.h"
 #include "main_window.h"
@@ -40,6 +41,7 @@
 class LoginWidget;
 class MainWidget;
 class MainWindow;
+
 
 class CentralWidget : public QStackedWidget
 {
@@ -58,9 +60,15 @@ class CentralWidget : public QStackedWidget
         void setStatusLogged();
 
     private:
+        void showLoading();
+        void hideLoading();
+
         MainWindow *m_main_window;
         LoginWidget *m_login_widget;
         MainWidget *m_main_widget;
+
+        Ui::loading_dialog *ui_loading_dialog;
+        QDialog *m_loading_dialog;
 };
 
 #endif

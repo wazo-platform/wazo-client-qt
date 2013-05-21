@@ -187,6 +187,7 @@ void XletDispatcher::prepareXletsDock()
             }
             this->m_main_window->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
             this->m_xlets_dock_widget.insert(xlet_id, dockWidget);
+            dockWidget->hide();
         }
     }
 }
