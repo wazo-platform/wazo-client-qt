@@ -60,6 +60,7 @@ class MainWindow : public QMainWindow
         void showWindow();
         void hideWindow();
         void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
+        void prepareState();
 
     private slots:
         void clipselection();
@@ -73,7 +74,6 @@ class MainWindow : public QMainWindow
         void minimizeWindow();
         void about();
         void showCredits();
-        void prepareState();
 
     signals:
         void initialized();

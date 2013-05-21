@@ -80,6 +80,7 @@ void CentralWidget::initialized()
     }
     xlet_dispatcher->showXletsDock();
     this->hideLoading();
+    this->m_main_window->prepareState();
 }
 
 void CentralWidget::setDefaultWidget()

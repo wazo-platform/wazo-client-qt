@@ -53,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
     this->connect(b_engine, SIGNAL(emitMessageBox(const QString &)), SLOT(showMessageBox(const QString &)), Qt::QueuedConnection);
-    this->connect(b_engine, SIGNAL(initialized()), SLOT(prepareState()));
     this->connect(this->ui->action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
     this->connect(this->ui->action_to_systray, SIGNAL(triggered()), SLOT(hideWindow()));
     this->connect(this->ui->action_show_window, SIGNAL(triggered()), SLOT(showWindow()));
