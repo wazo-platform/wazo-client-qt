@@ -99,14 +99,6 @@ void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
         m_phone->setText(tr("Phone %1").arg(phonenumber));
     else
         m_phone->setText(tr("Phone <EMPTY>"));
-    m_phone->setToolTip(tr("Protocol: %1\n"
-                           "Order: %2\n"
-                           "IPBXid: %3\n"
-                           "Context: %4")
-                        .arg(phoneinfo->protocol())
-                        .arg(phoneinfo->rules_order())
-                        .arg(phoneinfo->ipbxid())
-                        .arg(phoneinfo->context()));
 }
 
 void IdentityPhone::updatePhoneStatus(const QString & xphoneid)
