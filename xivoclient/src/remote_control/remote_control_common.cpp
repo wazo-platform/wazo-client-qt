@@ -63,29 +63,46 @@ QVariantMap RemoteControl::get_configuration()
 void RemoteControl::configure(const QVariantList &list)
 {
     QVariantMap args = list[0].toMap();
+    this->configureLoginWidget(args);
+    this->configureConfigDialog(args);
+}
 
-    const QString & xivo_address = args["main_server_address"].toString();
-    int xivo_port = args["main_server_port"].toInt();
-    const QString & login = args["login"].toString();
-    const QString & password = args["password"].toString();
-    const QString & agent_option = args["agent_option"].toString();
+void RemoteControl::configureLoginWidget(const QVariantMap &args)
+{
+    if (args.find("login") != args.end()) {
+        const QString & login = args["login"].toString();
+        this->m_login_widget->ui.userlogin->setText(login);
+    }
 
-    // login widget
-    this->m_login_widget->ui.userlogin->setText(login);
-    this->m_login_widget->ui.password->setText(password);
-    if(agent_option == "no")
-        this->m_login_widget->ui.agent_options->setCurrentIndex(0);
-    if(agent_option == "unlogged")
-        this->m_login_widget->ui.agent_options->setCurrentIndex(1);
-    if(agent_option == "logged")
-        this->m_login_widget->ui.agent_options->setCurrentIndex(2);
+    if (args.find("login") != args.end()) {
+        const QString & password = args["password"].toString();
+        this->m_login_widget->ui.password->setText(password);
+    }
 
+    if (args.find("agent_option") != args.end()) {
+        const QString & agent_option = args["agent_option"].toString();
+        if(agent_option == "no")
+            this->m_login_widget->ui.agent_options->setCurrentIndex(0);
+        if(agent_option == "unlogged")
+            this->m_login_widget->ui.agent_options->setCurrentIndex(1);
+        if(agent_option == "logged")
+            this->m_login_widget->ui.agent_options->setCurrentIndex(2);
+    }
+}
 
-    // config widget
+void RemoteControl::configureConfigDialog(const QVariantMap &args)
+{
     i_go_to_the_xivo_client_configuration();
 
-    this->m_exec_obj.win->m_config_widget->ui.server->setText(xivo_address);
-    this->m_exec_obj.win->m_config_widget->ui.port->setValue(xivo_port);
+    if (args.find("main_server_address") != args.end()) {
+        const QString & xivo_address = args["main_server_address"].toString();
+        this->m_exec_obj.win->m_config_widget->ui.server->setText(xivo_address);
+    }
+
+    if (args.find("main_server_port") != args.end()) {
+        int xivo_port = args["main_server_port"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.port->setValue(xivo_port);
+    }
 
     if (args.find("autoconnect") != args.end()) {
         if(args["autoconnect"].toBool())

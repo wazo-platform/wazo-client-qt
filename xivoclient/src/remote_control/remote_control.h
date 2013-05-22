@@ -129,6 +129,9 @@ class RemoteControl : public QObject
         QAbstractItemModel* getAgentListModel();
         QString getStatusForAgent(QString);
 
+        void configureLoginWidget(const QVariantMap &args);
+        void configureConfigDialog(const QVariantMap &args);
+
         int findRowWithItem(QAbstractItemModel* model, int column, QString search);
         QString getValueInModel(QAbstractItemModel* model, int row, int column);
         QString getHeaderValueInModel(QAbstractItemModel* model, int section);
