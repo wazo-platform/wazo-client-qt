@@ -1,3 +1,4 @@
+
 /* XiVO Client
  * Copyright (C) 2013, Avencall
  *
@@ -27,45 +28,23 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MENU_AVAILABILITY_H__
-#define __MENU_AVAILABILITY_H__
+#ifdef FUNCTESTS
 
-#include <QMenu>
-#include <QDebug>
+#include "remote_control.h"
 
-#include <xletlib/functests.h>
-
-#include "main_window/main_window.h"
-
-class MainWindow;
-
-class MenuAvailability : public QMenu
+QVariantMap RemoteControl::get_menu_availability_infos()
 {
-    Q_OBJECT
-    FUNCTESTED
+    QVariantMap args;
 
-    public:
-        MenuAvailability(MainWindow *parent);
-        ~MenuAvailability();
+    args["enable"] = this->m_menu_availability->m_menu_availability->isEnabled();
 
-    private slots:
-        void checksAvailState();
-        void updatePresence();
-        void setAvailability();
-        void updateUserStatus(const QString &);
-        void setStatusNotLogged();
-        void setStatusLogged();
-        void confUpdated();
+    QVariantList content;
+    foreach (QString status, this->m_menu_availability->m_availabilitys.keys()) {
+        content.append(status);
+    }
+    args["content"] = content;
 
-    private:
-        void setMenuAvailabilityEnabled(bool);
-        void setEnabledMenus(const QString & state);
-        void clearPresence();
-        void syncPresence();
-
-        QMenu *m_menu_availability;
-        QHash<QString, QAction *>m_availabilitys;
-        QActionGroup *m_availability_action_group;
-};
+    return args;
+}
 
 #endif

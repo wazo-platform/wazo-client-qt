@@ -137,6 +137,8 @@ class RemoteControl : public QObject
         QString getHeaderValueInModel(QAbstractItemModel* model, int section);
         QString prettyPrintMap(QVariantMap map);
 
+        QVariantMap get_menu_availability_infos();
+
         //Xlets
         template <class T>
         T* get_xlet(const QString &xlet_name);
@@ -150,6 +152,8 @@ class RemoteControl : public QObject
         QLocalServer *m_server;
         QLocalSocket *m_client_cnx;
 
+        MainWindow *m_main_window;
+        MenuAvailability *m_menu_availability;
         LoginWidget *m_login_widget;
         CentralWidget *m_central_widget;
         MainWidget *m_main_widget;

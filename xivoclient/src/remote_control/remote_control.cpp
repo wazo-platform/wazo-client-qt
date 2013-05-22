@@ -55,6 +55,8 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
     : m_command_found(false),
       m_no_error(true),
       m_client_cnx(NULL),
+      m_main_window(assembler->mainWindow()),
+      m_menu_availability(assembler->menuAvailability()),
       m_login_widget(assembler->loginWidget()),
       m_central_widget(assembler->centralWidget()),
       m_main_widget(assembler->mainWidget()),
@@ -138,6 +140,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_xlets);
             RC_EXECUTE_WITH_RETURN(get_identity_infos);
             RC_EXECUTE_WITH_RETURN(get_queue_members_infos);
+            RC_EXECUTE_WITH_RETURN(get_menu_availability_infos);
             RC_EXECUTE_ARG(set_queue_for_queue_members);
             RC_EXECUTE_WITH_RETURN(get_sheet_infos);
             RC_EXECUTE_WITH_RETURN(get_conference_room_infos);
