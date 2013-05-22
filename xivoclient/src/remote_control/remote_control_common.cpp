@@ -106,9 +106,9 @@ void RemoteControl::configure(const QVariantList &list)
         this->m_exec_obj.win->m_config_widget->ui.show_displayprofile->setChecked(display_profile);
     }
 
-    if (args.find("customerinfo") != args.end()) {
-        bool customerinfo = args["customerinfo"].toBool();
-        this->m_exec_obj.win->m_config_widget->ui.enable_screen_popup->setChecked(customerinfo);
+    if (args.find("enable_screen_popup") != args.end()) {
+        bool is_enable_screen_popup = args["enable_screen_popup"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.enable_screen_popup->setChecked(is_enable_screen_popup);
     }
 
     if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
