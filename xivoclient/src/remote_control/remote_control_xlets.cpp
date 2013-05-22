@@ -1,4 +1,3 @@
-
 /* XiVO Client
  * Copyright (C) 2007-2013, Avencall
  *
@@ -30,41 +29,25 @@
 
 #ifdef FUNCTESTS
 
-#include <QModelIndex>
-#include <QVariant>
+#include <baseengine.h>
 
-#include "xlets/conference/conference.h"
-#include "xlets/conference/conflist.h"
 #include "remote_control.h"
 
-QVariantMap RemoteControl::get_conference_room_infos()
+
+QVariantMap RemoteControl::get_xlets()
 {
     QVariantMap args;
-    XletConference* conference_xlet = this->get_xlet<XletConference>("conference");
-    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
-
-    args["conference_xlet"] = conference_xlet != NULL;
-    args["conflist_model"] = conflist_model != NULL;
-
-    QVariantList content;
-    QVariantMap header_data;
-    header_data["name"] = ConfListModel::NAME;
-    header_data["number"] = ConfListModel::NUMBER;
-    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConfListModel::STARTED_SINCE;
-
-    int nb_rows = conflist_model->rowCount(QModelIndex());
-    for (int row = 0; row < nb_rows; row++) {
-        QVariantMap header_value;
-        QVariantMap::const_iterator i;
-        for(i = header_data.begin(); i != header_data.end(); ++i) {
-            header_value[i.key()] = getValueInModel(conflist_model, row, i.value().toInt());
-        }
-        content.append(header_value);
+    QVariantList return_value;
+    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_dock.keys()) {
+        return_value.append(xlet_name);
     }
-    args["content"] = content;
-
+    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_grid.keys()) {
+        return_value.append(xlet_name);
+    }
+    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_tab.keys()) {
+        return_value.append(xlet_name);
+    }
+    args["xlets"] = return_value;
     return args;
 }
 

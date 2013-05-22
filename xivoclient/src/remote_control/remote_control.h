@@ -92,7 +92,6 @@ class RemoteControl : public QObject
         QVariantMap get_configuration();
         QVariantMap get_login_screen_infos();
         QVariantMap get_status_bar_infos();
-        QVariantMap get_xlets();
         QVariantMap get_identity_infos();
         QVariantMap get_queue_members_infos();
         void set_queue_for_queue_members(const QVariantList &);
@@ -135,6 +134,11 @@ class RemoteControl : public QObject
         QString getHeaderValueInModel(QAbstractItemModel* model, int section);
         QString prettyPrintMap(QVariantMap map);
 
+        //Xlets
+        template <class T>
+        T* get_xlet(const QString &xlet_name);
+        QVariantMap get_xlets();
+
         ExecObjects m_exec_obj;
         bool m_command_found;
         bool m_no_error;
@@ -149,6 +153,12 @@ class RemoteControl : public QObject
         Statusbar *m_statusbar;
         XletDispatcher *m_xlet_dispatcher;
 };
+
+template <class T>
+T* RemoteControl::get_xlet(const QString &xlet_name)
+{
+    return static_cast<T*>(this->m_xlet_dispatcher->m_xlets[xlet_name]);
+}
 
 #endif /* ifdef FUNCTESTS */
 

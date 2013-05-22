@@ -102,6 +102,7 @@ void XletDispatcher::prepareXletsGrid()
                 xlet->doGUIConnects(this->m_main_window);
                 this->m_grid_container->insertWidget(options.toInt(), xlet);
                 this->m_xlets_grid_widget.insert(xlet_id, xlet);
+                this->m_xlets.insert(xlet_id, xlet);
             }
         }
     }
@@ -141,6 +142,7 @@ void XletDispatcher::prepareXletsTab()
             QString tabTitle = "  " + xlet->title() + "  ";
             this->m_tab_container->addTab(xlet, tabTitle);
             this->m_xlets_tab_widget.insert(xlet_id, xlet);
+            this->m_xlets.insert(xlet_id, xlet);
         }
     }
 
@@ -172,6 +174,7 @@ void XletDispatcher::prepareXletsDock()
         QDockWidget::DockWidgetFeatures features = this->getXletsDockFeatures(options);
         XLet *xlet = XLetFactory::spawn(xlet_id, this->m_main_widget);
         if (xlet) {
+            this->m_xlets.insert(xlet_id, xlet);
             xlet->doGUIConnects(this->m_main_window);
             QDockWidget *dockWidget = new QDockWidget(xlet->title(), this->m_main_widget);
             dockWidget->setFeatures(features);

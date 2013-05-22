@@ -74,6 +74,8 @@ class XletDispatcher : public QObject
         MainWindow *m_main_window;
         MainWidget *m_main_widget;
 
+        QHash<QString, XLet *> m_xlets;
+
         QDockWidget *m_dock_container;
         QMap<QString, QDockWidget *> m_xlets_dock_widget;
         QMap<QString, QString> m_xlets_dock;
