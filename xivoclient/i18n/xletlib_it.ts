@@ -268,18 +268,18 @@ Numero di telefono : %2</translation>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="242"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="235"/>
         <source>Agent Number : %1
 In Queues : %2</source>
         <translation>Numero Agente : %1 Nelle Code : %2</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="253"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="246"/>
         <source>Mobile number : %1</source>
         <translation>Numero di cellulare : %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="267"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="260"/>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
@@ -288,37 +288,29 @@ IPBXid: %2
 Stato: %3</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="328"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="315"/>
         <source>Status:%1</source>
         <translation>Stato: %1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="331"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="318"/>
         <source>No status (no phone number)</source>
         <translation>Nessuno stato (nessun numero di telefono)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="341"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="328"/>
         <source>&lt;EMPTY&gt;</source>
         <translation>&lt;VUOTO&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="342"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="329"/>
         <source>Phone Number: %1
-Order: %2
-IPBXid: %3
-Context: %4
-Status: %5
-Busy lines: %6</source>
-        <translation>Numero di telefono: %1
-Ordine: %2
-IPBXid: %3
-Contesto: %4
-Stato: %5
-Linee impegnate: %6</translation>
+Status: %2
+Busy lines: %3</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="369"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="350"/>
         <source>(No callerid yet)</source>
         <translation>(Ancora nessun id chiamante)</translation>
     </message>

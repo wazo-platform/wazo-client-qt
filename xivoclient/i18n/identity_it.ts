@@ -71,8 +71,8 @@
         <translation>Pannello Utente Corrente</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="292"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="312"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="290"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="310"/>
         <source>IPBXid: %1</source>
         <translation>IPBXid: %1</translation>
     </message>
@@ -81,8 +81,8 @@
     <name>IdentityPhone</name>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="65"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="160"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="161"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="152"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="153"/>
         <source>No option</source>
         <translation>Nessuna opzione</translation>
     </message>
@@ -97,69 +97,58 @@
         <translation>Telefono &lt;VUOTO&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="102"/>
-        <source>Protocol: %1
-Order: %2
-IPBXid: %3
-Context: %4</source>
-        <translation>Protocollo: %1
-Ordine: %2
-IPBXid: %3
-Contesto: %4</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="131"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="123"/>
         <source>Status:%1</source>
         <translation>Stato:%1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="134"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="126"/>
         <source>No status
 (no phone number)</source>
         <translation>Nessuno stato (nessun numero di telefono)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="146"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="138"/>
         <source>DND</source>
         <translation>DND</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="147"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="139"/>
         <source>Do Not Disturb</source>
         <translation>Non disturbare</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="149"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="141"/>
         <source>UNC %1</source>
         <translation>UNV %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="150"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="142"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Trasferimento incondizionato verso %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="152"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="144"/>
         <source>Busy %1</source>
         <translation>Occupato %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="153"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="145"/>
         <source>Busy Forward towards %1</source>
         <translation>Trasferimento se occupato verso %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="155"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="147"/>
         <source>FNA %1</source>
         <translation>FNA %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="156"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="148"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Trasferimento non risposte verso %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="158"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="150"/>
         <source>Call Filter</source>
         <translation>Filtro Chiamata</translation>
     </message>
