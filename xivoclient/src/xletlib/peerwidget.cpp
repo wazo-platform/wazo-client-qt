@@ -87,13 +87,12 @@ PeerWidget::PeerWidget(const UserInfo * ui)
         QString iduserfeatures = phoneinfo->iduserfeatures();
         if ((iduserfeatures.isEmpty()) || (iduserfeatures == "0"))
             continue;
-        int order = phoneinfo->rules_order();
 
         m_lblphones[xphoneid] = new QLabel(m_peer);
         m_lblphones[xphoneid]->setAlignment(Qt::AlignCenter);
         m_lblphones[xphoneid]->setMinimumSize(m_iconsize, m_iconsize);
         m_lblphones[xphoneid]->setProperty("kind", "term");
-        m_hLayout->insertWidget(order, m_lblphones[xphoneid]);
+        m_hLayout->addWidget(m_lblphones[xphoneid]);
     }
 
     if (! m_ui_remote->mobileNumber().isEmpty()) {
@@ -115,8 +114,6 @@ PeerWidget::PeerWidget(const UserInfo * ui)
             this, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
-    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
-            this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
             this, SLOT(updateQueueMemberConfig(const QString &)));
     connect(b_engine, SIGNAL(postRemoveQueueMemberConfig(const QString &)),
@@ -195,10 +192,6 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 
     m_agentlbl->setPixmap(TaintedPixmap(
        QString(":/images/agent-trans.png"), QColor(color)).getPixmap());
-}
-
-void PeerWidget::updateQueueStatus(const QString &)
-{
 }
 
 void PeerWidget::updateQueueMemberConfig(const QString & queuemember_xid)
@@ -281,7 +274,6 @@ void PeerWidget::updatePhoneConfig(const QString & xphoneid)
     const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
     if (phoneinfo == NULL)
         return;
-    int order = phoneinfo->rules_order();
 
     // Add a new phone if it does not exist
     if (! m_lblphones.contains(xphoneid)) {
@@ -289,12 +281,7 @@ void PeerWidget::updatePhoneConfig(const QString & xphoneid)
         m_lblphones[xphoneid]->setAlignment(Qt::AlignCenter);
         m_lblphones[xphoneid]->setMinimumSize(m_iconsize, m_iconsize);
         m_lblphones[xphoneid]->setProperty("kind", "term");
-        m_hLayout->insertWidget(order, m_lblphones[xphoneid]);
-    } else {
-        if (m_hLayout->indexOf(m_lblphones[xphoneid]) != order) {
-            m_hLayout->removeWidget(m_lblphones[xphoneid]);
-            m_hLayout->insertWidget(order, m_lblphones[xphoneid]);
-        }
+        m_hLayout->insertWidget(1, m_lblphones[xphoneid]);
     }
 }
 
@@ -340,15 +327,9 @@ void PeerWidget::updatePhoneStatus(const QString & xphoneid)
     if (phonenumber.isEmpty())
         phonenumber = tr("<EMPTY>");
     phone_label->setToolTip(tr("Phone Number: %1\n"
-                                         "Order: %2\n"
-                                         "IPBXid: %3\n"
-                                         "Context: %4\n"
-                                         "Status: %5\n"
-                                         "Busy lines: %6")
+                                         "Status: %2\n"
+                                         "Busy lines: %3")
                                       .arg(phonenumber)
-                                      .arg(phoneinfo->rules_order())
-                                      .arg(phoneinfo->ipbxid())
-                                      .arg(phoneinfo->context())
                                       .arg(longname)
                                       .arg(phoneinfo->channels().count())
                                       );
@@ -380,15 +361,6 @@ void PeerWidget::setName(const QString &/*name*/)
         m_textlbl->setText(text);
     }
 }
-
-bool PeerWidget::pOverMobileLbl(const QPoint &p)
-{
-    if (m_mobilelbl) {
-        return m_mobilelbl->rect().translated(m_mobilelbl->pos()).contains(p);
-    }
-    return false;
-}
-
 
 ChitchatButton::ChitchatButton(QWidget *parent, const UserInfo * * peerUi)
     : QPushButton(parent), m_ui(peerUi)

@@ -32,7 +32,6 @@
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)
     : XInfo(ipbxid, id),
-      m_rules_order(0),
       m_simultcalls(0),
       m_initialized(false),
       m_enable_hint(false),
@@ -60,7 +59,6 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
         m_identity.replace("\\/", "/");
     }
     haschanged |= setIfChangeString(prop, "iduserfeatures", & m_iduserfeatures);
-    haschanged |= setIfChangeInt(prop, "rules_order", & m_rules_order);
 
     haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
     haschanged |= setIfChangeBool(prop, "initialized", & m_initialized);
