@@ -123,6 +123,11 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
         this->m_exec_obj.win->m_config_widget->ui.show_displayprofile->setChecked(display_profile);
     }
 
+    if (args.find("enable_presence_reporting") != args.end()) {
+        bool is_enable_presence_reporting = args["enable_presence_reporting"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.enable_presence_reporting->setChecked(is_enable_presence_reporting);
+    }
+
     if (args.find("enable_screen_popup") != args.end()) {
         bool is_enable_screen_popup = args["enable_screen_popup"].toBool();
         this->m_exec_obj.win->m_config_widget->ui.enable_screen_popup->setChecked(is_enable_screen_popup);
