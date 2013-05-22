@@ -83,6 +83,18 @@ bool XletDispatcher::has_widget()
     return true;
 }
 
+XLet *XletDispatcher::xletFactory(const QString &xlet_id)
+{
+    XLet *xlet = XLetFactory::spawn(xlet_id, this->m_main_widget);
+    if (xlet) {
+        xlet->doGUIConnects(this->m_main_window);
+        this->m_xlets.insert(xlet_id, xlet);
+    } else {
+        qDebug() << Q_FUNC_INFO << "cannot instantiate XLet" << xlet_id;
+    }
+    return xlet;
+}
+
 void XletDispatcher::prepareXletsGrid()
 {
     if (this->m_xlets_grid.size() == 0) {
@@ -97,12 +109,10 @@ void XletDispatcher::prepareXletsGrid()
             this->prepareXletsTab();
             this->m_grid_container->insertWidget(options.toInt(), this->m_tab_container);
         } else {
-            XLet *xlet = XLetFactory::spawn(xlet_id, this->m_main_widget);
+            XLet *xlet = this->xletFactory(xlet_id);
             if (xlet) {
-                xlet->doGUIConnects(this->m_main_window);
                 this->m_grid_container->insertWidget(options.toInt(), xlet);
                 this->m_xlets_grid_widget.insert(xlet_id, xlet);
-                this->m_xlets.insert(xlet_id, xlet);
             }
         }
     }
@@ -136,13 +146,11 @@ void XletDispatcher::prepareXletsTab()
 
     foreach (QString xlet_id, this->m_xlets_tab.keys()) {
         QString options = this->m_xlets_tab.value(xlet_id);
-        XLet *xlet = XLetFactory::spawn(xlet_id, this->m_main_widget);
+        XLet *xlet = this->xletFactory(xlet_id);
         if (xlet) {
-            xlet->doGUIConnects(this->m_main_window);
             QString tabTitle = "  " + xlet->title() + "  ";
             this->m_tab_container->addTab(xlet, tabTitle);
             this->m_xlets_tab_widget.insert(xlet_id, xlet);
-            this->m_xlets.insert(xlet_id, xlet);
         }
     }
 
@@ -171,11 +179,9 @@ void XletDispatcher::prepareXletsDock()
 
     foreach (QString xlet_id, this->m_xlets_dock.keys()) {
         QString options = this->m_xlets_dock.value(xlet_id);
-        QDockWidget::DockWidgetFeatures features = this->getXletsDockFeatures(options);
-        XLet *xlet = XLetFactory::spawn(xlet_id, this->m_main_widget);
+        XLet *xlet = this->xletFactory(xlet_id);
         if (xlet) {
-            this->m_xlets.insert(xlet_id, xlet);
-            xlet->doGUIConnects(this->m_main_window);
+            QDockWidget::DockWidgetFeatures features = this->getXletsDockFeatures(options);
             QDockWidget *dockWidget = new QDockWidget(xlet->title(), this->m_main_widget);
             dockWidget->setFeatures(features);
             dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
@@ -195,7 +201,7 @@ void XletDispatcher::prepareXletsDock()
     }
 }
 
-QDockWidget::DockWidgetFeatures XletDispatcher::getXletsDockFeatures(QString &options)
+QDockWidget::DockWidgetFeatures XletDispatcher::getXletsDockFeatures(const QString &options)
 {
     QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
     if (options.contains("c")) {
