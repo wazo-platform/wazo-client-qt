@@ -44,6 +44,7 @@ MenuAvailability::MenuAvailability(MainWindow *parent)
     this->connect(b_engine, SIGNAL(updateUserStatus(const QString &)), SLOT(updateUserStatus(const QString &)));
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
+    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
 }
 
 MenuAvailability::~MenuAvailability()
@@ -59,6 +60,11 @@ void MenuAvailability::setStatusNotLogged()
 {
     this->setMenuAvailabilityEnabled(false);
     this->clearPresence();
+}
+
+void MenuAvailability::confUpdated()
+{
+    this->setMenuAvailabilityEnabled(true);
 }
 
 /*!

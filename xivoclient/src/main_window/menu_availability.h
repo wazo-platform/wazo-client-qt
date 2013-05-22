@@ -52,6 +52,7 @@ class MenuAvailability : public QMenu
         void updateUserStatus(const QString &);
         void setStatusNotLogged();
         void setStatusLogged();
+        void confUpdated();
 
     private:
         void setMenuAvailabilityEnabled(bool);
