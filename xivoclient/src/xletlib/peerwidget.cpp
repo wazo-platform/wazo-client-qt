@@ -114,8 +114,6 @@ PeerWidget::PeerWidget(const UserInfo * ui)
             this, SLOT(updateAgentConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
-    connect(b_engine, SIGNAL(updateQueueStatus(const QString &)),
-            this, SLOT(updateQueueStatus(const QString &)));
     connect(b_engine, SIGNAL(updateQueueMemberConfig(const QString &)),
             this, SLOT(updateQueueMemberConfig(const QString &)));
     connect(b_engine, SIGNAL(postRemoveQueueMemberConfig(const QString &)),
@@ -194,10 +192,6 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 
     m_agentlbl->setPixmap(TaintedPixmap(
        QString(":/images/agent-trans.png"), QColor(color)).getPixmap());
-}
-
-void PeerWidget::updateQueueStatus(const QString &)
-{
 }
 
 void PeerWidget::updateQueueMemberConfig(const QString & queuemember_xid)
@@ -367,15 +361,6 @@ void PeerWidget::setName(const QString &/*name*/)
         m_textlbl->setText(text);
     }
 }
-
-bool PeerWidget::pOverMobileLbl(const QPoint &p)
-{
-    if (m_mobilelbl) {
-        return m_mobilelbl->rect().translated(m_mobilelbl->pos()).contains(p);
-    }
-    return false;
-}
-
 
 ChitchatButton::ChitchatButton(QWidget *parent, const UserInfo * * peerUi)
     : QPushButton(parent), m_ui(peerUi)

@@ -37,8 +37,6 @@
 #include "taintedpixmap.h"
 #include "chitchat.h"
 
-class BaseEngine;
-class PeerChannel;
 class UserInfo;
 class ChitchatButton;
 
@@ -53,18 +51,15 @@ class XLETLIB_EXPORT PeerWidget : public BasePeerWidget
     public:
         PeerWidget(const UserInfo *);
         void setName(const QString &);
-        void setEngine(BaseEngine *);
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
         void removePhoneConfig(const QString &);
         void setMobileState(const QString &color);
         void updatePresence();  //!< update presence information displayed
         void updateAgentToolTip();
-        bool pOverMobileLbl(const QPoint &p);
     public slots:
         void updateAgentConfig(const QString &);
         void updateAgentStatus(const QString &);
-        void updateQueueStatus(const QString &);
         void updateQueueMemberConfig(const QString &);
         void removeQueueMemberConfig(const QString &);
     protected:
