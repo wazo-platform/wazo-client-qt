@@ -113,6 +113,8 @@ void MainWindow::showWindow()
     this->setVisible(true);
     this->showNormal();
     this->activateWindow();
+    this->ui->action_show_window->setVisible(false);
+    this->ui->action_to_systray->setVisible(true);
 }
 
 void MainWindow::hideWindow()
@@ -122,6 +124,9 @@ void MainWindow::hideWindow()
     } else {
         this->minimizeWindow();
     }
+    this->ui->action_show_window->setEnabled(true);
+    this->ui->action_show_window->setVisible(true);
+    this->ui->action_to_systray->setVisible(false);
 }
 
 void MainWindow::minimizeWindow()

@@ -65,6 +65,8 @@ void SystemTrayIcon::setUi(Ui::MainWindow *ui)
     menu->addSeparator();
     menu->addAction(ui->action_show_window);
     menu->addSeparator();
+    menu->addAction(ui->action_to_systray);
+    menu->addSeparator();
     menu->addAction(ui->action_quit);
     this->setContextMenu(menu);
 }
