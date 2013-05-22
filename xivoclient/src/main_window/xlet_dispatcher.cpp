@@ -145,7 +145,6 @@ void XletDispatcher::prepareXletsTab()
     this->m_tab_container = new QTabWidget(this->m_main_widget);
 
     foreach (QString xlet_id, this->m_xlets_tab.keys()) {
-        QString options = this->m_xlets_tab.value(xlet_id);
         XLet *xlet = this->xletFactory(xlet_id);
         if (xlet) {
             QString tabTitle = "  " + xlet->title() + "  ";
@@ -258,18 +257,17 @@ void XletDispatcher::prepareAppearance()
             QString name = xlet_infos_raw[0];
             if ((name == "customerinfo") && (! b_engine->checkedFunction(name)))
                 continue;
-
             if (xlet_infos_raw.size() > 1) {
+                QString type = xlet_infos_raw[1];
                 QString otions = "";
                 if (xlet_infos_raw.size() > 2) {
                     otions = xlet_infos_raw[2];
                 }
-                QString type = xlet_infos_raw[1];
-                if (type == "dock") {
+                if (type == "dock" && name != "tabber") {
                     this->m_xlets_dock.insert(name, otions);
                 } else if (type == "grid") {
                     this->m_xlets_grid.insert(name, otions);
-                } else if (type == "tab") {
+                } else if (type == "tab" && name != "tabber") {
                     this->m_xlets_tab.insert(name, otions);
                 }
             }
