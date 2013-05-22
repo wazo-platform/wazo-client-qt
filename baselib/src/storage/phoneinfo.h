@@ -51,7 +51,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         const QString & protocol() const { return m_protocol; };
         const QString & iduserfeatures() const { return m_iduserfeatures; };
         QString xid_user_features() const;
-        int rules_order() const { return m_rules_order; };
         int simultcalls() const { return m_simultcalls; };
 
         const QStringList & channels() const { return m_channels; };
@@ -65,7 +64,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         QString m_number;
         QString m_identity;
         QString m_iduserfeatures;
-        int m_rules_order;
         int m_simultcalls;
 
         bool m_initialized;
