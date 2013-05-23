@@ -61,7 +61,8 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
       m_central_widget(assembler->centralWidget()),
       m_main_widget(assembler->mainWidget()),
       m_statusbar(assembler->statusbar()),
-      m_xlet_dispatcher(assembler->xletDispatcher())
+      m_xlet_dispatcher(assembler->xletDispatcher()),
+      m_system_tray_icon(assembler->systemTrayIcon())
 {
     m_exec_obj = exec_obj;
     m_server = new QLocalServer;
@@ -151,6 +152,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(exec_double_click_on_number_for_name);
 
             RC_EXECUTE_WITH_RETURN(get_agent_list_infos);
+            RC_EXECUTE_WITH_RETURN(get_main_window_infos);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED, command.action, "", return_value);

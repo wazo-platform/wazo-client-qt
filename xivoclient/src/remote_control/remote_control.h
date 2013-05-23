@@ -138,6 +138,7 @@ class RemoteControl : public QObject
         QString prettyPrintMap(QVariantMap map);
 
         QVariantMap get_menu_availability_infos();
+        QVariantMap get_main_window_infos();
 
         //Xlets
         template <class T>
@@ -159,6 +160,7 @@ class RemoteControl : public QObject
         MainWidget *m_main_widget;
         Statusbar *m_statusbar;
         XletDispatcher *m_xlet_dispatcher;
+        SystemTrayIcon *m_system_tray_icon;
 };
 
 template <class T>
