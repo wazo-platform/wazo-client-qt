@@ -89,6 +89,11 @@ void RemoteControl::configureLoginWidget(const QVariantMap &args)
         this->m_login_widget->ui.password->setText(password);
     }
 
+    if (args.find("keep_password") != args.end()) {
+        bool is_keep_password = args["keep_password"].toBool();
+        this->m_login_widget->ui.keep_password->setChecked(is_keep_password);
+    }
+
     if (args.find("agent_option") != args.end()) {
         QString agent_option = args["agent_option"].toString();
         if(agent_option == "no") {
