@@ -35,6 +35,16 @@
 
 #include "remote_control.h"
 
+
+QVariantMap RemoteControl::is_logged()
+{
+    QVariantMap args;
+
+    args["logged"] =  (b_engine->state() == b_engine->ELogged);
+
+    return args;
+}
+
 void RemoteControl::i_go_to_the_xivo_client_configuration()
 {
     this->m_exec_obj.win->ui->action_configure->trigger();

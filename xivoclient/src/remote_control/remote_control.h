@@ -139,6 +139,7 @@ class RemoteControl : public QObject
 
         QVariantMap get_menu_availability_infos();
         QVariantMap get_main_window_infos();
+        QVariantMap is_logged();
 
         //Xlets
         template <class T>
