@@ -79,31 +79,7 @@ class RemoteControl : public QObject
 
     public:
         RemoteControl(ExecObjects);
-        void pause(unsigned);
         ~RemoteControl();
-
-    public:
-        void i_stop_the_xivo_client();
-        void i_go_to_the_xivo_client_configuration();
-        void i_close_the_xivo_client_configuration();
-        void configure(const QVariantList &);
-        void i_log_in_the_xivo_client();
-        void i_log_out_of_the_xivo_client();
-        QVariantMap get_configuration();
-        QVariantMap get_login_screen_infos();
-        QVariantMap get_status_bar_infos();
-        QVariantMap get_identity_infos();
-        QVariantMap get_queue_members_infos();
-        void set_queue_for_queue_members(const QVariantList &);
-        QVariantMap get_sheet_infos();
-        QVariantMap get_conference_room_infos();
-        QVariantMap get_switchboard_infos();
-        void set_search_for_directory(const QVariantList &);
-        QVariantMap get_remote_directory_infos();
-        void set_search_for_remote_directory(const QVariantList &);
-        void exec_double_click_on_number_for_name(const QVariantList &);
-
-        QVariantMap get_agent_list_infos();
 
     signals:
         void select_queue(const QString & queue_id);
@@ -129,14 +105,34 @@ class RemoteControl : public QObject
         QAbstractItemModel* getAgentListModel();
         QString getStatusForAgent(QString);
 
-        void configureLoginWidget(const QVariantMap &args);
-        void configureConfigDialog(const QVariantMap &args);
-
         int findRowWithItem(QAbstractItemModel* model, int column, QString search);
         QString getValueInModel(QAbstractItemModel* model, int row, int column);
         QString getHeaderValueInModel(QAbstractItemModel* model, int section);
         QString prettyPrintMap(QVariantMap map);
 
+        void i_stop_the_xivo_client();
+        void i_go_to_the_xivo_client_configuration();
+        void i_close_the_xivo_client_configuration();
+        void configure(const QVariantList &);
+        void configureLoginWidget(const QVariantMap &args);
+        void configureConfigDialog(const QVariantMap &args);
+        void i_log_in_the_xivo_client();
+        void i_log_out_of_the_xivo_client();
+        void pause(unsigned);
+        QVariantMap get_configuration();
+        QVariantMap get_login_screen_infos();
+        QVariantMap get_status_bar_infos();
+        QVariantMap get_identity_infos();
+        QVariantMap get_queue_members_infos();
+        void set_queue_for_queue_members(const QVariantList &);
+        QVariantMap get_sheet_infos();
+        QVariantMap get_conference_room_infos();
+        QVariantMap get_switchboard_infos();
+        void set_search_for_directory(const QVariantList &);
+        QVariantMap get_remote_directory_infos();
+        void set_search_for_remote_directory(const QVariantList &);
+        void exec_double_click_on_number_for_name(const QVariantList &);
+        QVariantMap get_agent_list_infos();
         QVariantMap get_menu_availability_infos();
         QVariantMap get_main_window_infos();
         QVariantMap is_logged();
