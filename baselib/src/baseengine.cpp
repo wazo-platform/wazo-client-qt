@@ -1028,6 +1028,9 @@ void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipb
 
 void BaseEngine::addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
+    if (! GenLists.contains(listname)) {
+        return;
+    }
     foreach (const QString &id, listid) {
         QString xid = QString("%1/%2").arg(ipbxid).arg(id);
         if (! m_anylist[listname].contains(xid)) {
