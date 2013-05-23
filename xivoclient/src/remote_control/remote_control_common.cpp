@@ -128,6 +128,11 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
         this->m_exec_obj.win->m_config_widget->ui.enable_presence_reporting->setChecked(is_enable_presence_reporting);
     }
 
+    if (args.find("enable_start_systrayed") != args.end()) {
+        bool is_enable_start_systrayed = args["enable_start_systrayed"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.start_systrayed->setChecked(is_enable_start_systrayed);
+    }
+
     if (args.find("enable_screen_popup") != args.end()) {
         bool is_enable_screen_popup = args["enable_screen_popup"].toBool();
         this->m_exec_obj.win->m_config_widget->ui.enable_screen_popup->setChecked(is_enable_screen_popup);
