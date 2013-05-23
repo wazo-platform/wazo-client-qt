@@ -70,23 +70,24 @@ void RemoteControl::configure(const QVariantList &list)
 void RemoteControl::configureLoginWidget(const QVariantMap &args)
 {
     if (args.find("login") != args.end()) {
-        const QString & login = args["login"].toString();
+        QString login = args["login"].toString();
         this->m_login_widget->ui.userlogin->setText(login);
     }
 
-    if (args.find("login") != args.end()) {
-        const QString & password = args["password"].toString();
+    if (args.find("password") != args.end()) {
+        QString password = args["password"].toString();
         this->m_login_widget->ui.password->setText(password);
     }
 
     if (args.find("agent_option") != args.end()) {
-        const QString & agent_option = args["agent_option"].toString();
-        if(agent_option == "no")
+        QString agent_option = args["agent_option"].toString();
+        if(agent_option == "no") {
             this->m_login_widget->ui.agent_options->setCurrentIndex(0);
-        if(agent_option == "unlogged")
+        } else if(agent_option == "unlogged") {
             this->m_login_widget->ui.agent_options->setCurrentIndex(1);
-        if(agent_option == "logged")
+        } else if(agent_option == "logged") {
             this->m_login_widget->ui.agent_options->setCurrentIndex(2);
+        }
     }
 }
 
@@ -95,7 +96,7 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
     i_go_to_the_xivo_client_configuration();
 
     if (args.find("main_server_address") != args.end()) {
-        const QString & xivo_address = args["main_server_address"].toString();
+        QString xivo_address = args["main_server_address"].toString();
         this->m_exec_obj.win->m_config_widget->ui.server->setText(xivo_address);
     }
 
@@ -105,10 +106,8 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
     }
 
     if (args.find("autoconnect") != args.end()) {
-        if(args["autoconnect"].toBool())
-            this->m_exec_obj.win->m_config_widget->ui.startup_connect->setChecked(true);
-        else
-            this->m_exec_obj.win->m_config_widget->ui.startup_connect->setChecked(false);
+        bool is_autoconnect = args["autoconnect"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.startup_connect->setChecked(is_autoconnect);
     }
 
     if (args.find("enable_auto_reconnect") != args.end()) {
@@ -122,10 +121,8 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
     }
 
     if (args.find("show_agent_option") != args.end()) {
-        if(args["show_agent_option"].toBool())
-            this->m_exec_obj.win->m_config_widget->ui.show_agent_options->setChecked(true);
-        else
-            this->m_exec_obj.win->m_config_widget->ui.show_agent_options->setChecked(false);
+        bool is_show_agent_option = args["show_agent_option"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.show_agent_options->setChecked(is_show_agent_option);
     }
 
     if (args.find("display_profile") != args.end()) {
@@ -149,10 +146,8 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
     }
 
     if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
-        if(args["hide_unlogged_agents_for_xlet_queue_members"].toBool())
-            this->m_exec_obj.win->m_config_widget->ui.hide_unlogged_agents->setChecked(true);
-        else
-            this->m_exec_obj.win->m_config_widget->ui.hide_unlogged_agents->setChecked(false);
+        bool is_hide = args["hide_unlogged_agents_for_xlet_queue_members"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.hide_unlogged_agents->setChecked(is_hide);
     }
 
     i_close_the_xivo_client_configuration();
