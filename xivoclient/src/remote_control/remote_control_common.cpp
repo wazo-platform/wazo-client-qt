@@ -111,6 +111,16 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
             this->m_exec_obj.win->m_config_widget->ui.startup_connect->setChecked(false);
     }
 
+    if (args.find("enable_auto_reconnect") != args.end()) {
+        bool is_enable_auto_reconnect = args["enable_auto_reconnect"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.auto_reconnect->setChecked(is_enable_auto_reconnect);
+    }
+
+    if (args.find("auto_reconnect_interval") != args.end()) {
+        int interval = args["auto_reconnect_interval"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.auto_reconnect_interval->setValue(interval);
+    }
+
     if (args.find("show_agent_option") != args.end()) {
         if(args["show_agent_option"].toBool())
             this->m_exec_obj.win->m_config_widget->ui.show_agent_options->setChecked(true);
