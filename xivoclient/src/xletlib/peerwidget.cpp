@@ -192,6 +192,8 @@ void PeerWidget::updateAgentStatus(const QString & xagentid)
 
     m_agentlbl->setPixmap(TaintedPixmap(
        QString(":/images/agent-trans.png"), QColor(color)).getPixmap());
+
+    this->updateAgentToolTip();
 }
 
 void PeerWidget::updateQueueMemberConfig(const QString & queuemember_xid)
