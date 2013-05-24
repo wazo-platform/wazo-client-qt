@@ -120,6 +120,26 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
         this->m_exec_obj.win->m_config_widget->ui.port->setValue(xivo_port);
     }
 
+    if (args.find("main_server_encrypted") != args.end()) {
+        bool is_main_server_encrypted = args["main_server_encrypted"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.encrypted->setChecked(is_main_server_encrypted);
+    }
+
+    if (args.find("backup_server_address") != args.end()) {
+        QString backup_server_address = args["backup_server_address"].toString();
+        this->m_exec_obj.win->m_config_widget->ui.backup_server->setText(backup_server_address);
+    }
+
+    if (args.find("backup_server_port") != args.end()) {
+        int backup_server_port = args["backup_server_port"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.backup_port->setValue(backup_server_port);
+    }
+
+    if (args.find("backup_server_encrypted") != args.end()) {
+        bool is_backup_server_encrypted = args["backup_server_encrypted"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.backup_encrypted->setChecked(is_backup_server_encrypted);
+    }
+
     if (args.find("autoconnect") != args.end()) {
         bool is_autoconnect = args["autoconnect"].toBool();
         this->m_exec_obj.win->m_config_widget->ui.startup_connect->setChecked(is_autoconnect);
@@ -163,6 +183,11 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
     if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
         bool is_hide = args["hide_unlogged_agents_for_xlet_queue_members"].toBool();
         this->m_exec_obj.win->m_config_widget->ui.hide_unlogged_agents->setChecked(is_hide);
+    }
+
+    if (args.find("enable_multiple_instances") != args.end()) {
+        bool state = args["enable_multiple_instances"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.allow_multiple_instances->setChecked(state);
     }
 
     i_close_the_xivo_client_configuration();
