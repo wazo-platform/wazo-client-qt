@@ -51,9 +51,12 @@ const char* TestFailedException::what() const throw()
     return this->message.toUtf8().data();
 }
 
-RemoteControl::RemoteControl(ExecObjects exec_obj)
-    : m_command_found(false),
+RemoteControl::RemoteControl(ExecObjects exec_obj, QString &socket)
+    : m_exec_obj(exec_obj),
+      m_command_found(false),
       m_no_error(true),
+      m_socket_name(socket),
+      m_server(new QLocalServer),
       m_client_cnx(NULL),
       m_main_window(assembler->mainWindow()),
       m_menu_availability(assembler->menuAvailability()),
@@ -64,35 +67,28 @@ RemoteControl::RemoteControl(ExecObjects exec_obj)
       m_xlet_dispatcher(assembler->xletDispatcher()),
       m_system_tray_icon(assembler->systemTrayIcon())
 {
-    m_exec_obj = exec_obj;
-    m_server = new QLocalServer;
-    connect(m_server, SIGNAL(newConnection()),
-            this, SLOT(newConnection()));
+    this->connect(this->m_server, SIGNAL(newConnection()), SLOT(newConnection()));
 
-    m_socket_name = "/tmp/xivoclient";
     QFile::remove(m_socket_name);
-    m_server->listen(m_socket_name);
+    this->m_server->listen(m_socket_name);
 
-    if (! m_server->isListening()) {
+    if (! this->m_server->isListening()) {
         qDebug() << "No more sockets available for remote control";
     }
 
-    connect(m_exec_obj.baseengine, SIGNAL(emitTextMessage(const QString &)),
-            this, SLOT(on_error(const QString &)));
-    disconnect(m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)),
-               m_exec_obj.win, SLOT(showMessageBox(const QString &)));
+    this->connect(this->m_exec_obj.baseengine, SIGNAL(emitTextMessage(const QString &)), SLOT(on_error(const QString &)));
+    disconnect(this->m_exec_obj.baseengine, SIGNAL(emitMessageBox(const QString &)), this->m_exec_obj.win, SLOT(showMessageBox(const QString &)));
 }
 
 RemoteControl::~RemoteControl()
 {
-    m_server->close();
+    this->m_server->close();
 }
 
 void RemoteControl::newConnection()
 {
-    m_client_cnx = m_server->nextPendingConnection();
-    connect(m_client_cnx, SIGNAL(readyRead()),
-            this, SLOT(processCommands()));
+    this->m_client_cnx = m_server->nextPendingConnection();
+    this->connect(this->m_client_cnx, SIGNAL(readyRead()), SLOT(processCommands()));
 }
 
 #define RC_EXECUTE(fct_name) { \
@@ -119,12 +115,12 @@ bool RemoteControl::commandMatches(RemoteControlCommand command, std::string fun
 
 void RemoteControl::processCommands()
 {
-    while (m_client_cnx->canReadLine()) {
-        QByteArray raw_command = m_client_cnx->readLine();
+    while (this->m_client_cnx->canReadLine()) {
+        QByteArray raw_command = this->m_client_cnx->readLine();
         RemoteControlCommand command = this->parseCommand(raw_command);
 
-        m_no_error = true;
-        m_command_found = false;
+        this->m_no_error = true;
+        this->m_command_found = false;
 
         QVariantMap return_value;
 
@@ -215,14 +211,14 @@ void RemoteControl::sendResponse(RemoteControlResponse test_result,
 
     QString encoded_command = JsonQt::VariantToJson::parse(response) + '\n';
 
-    m_client_cnx->write(encoded_command.toUtf8().data());
-    m_client_cnx->flush();
+    this->m_client_cnx->write(encoded_command.toUtf8().data());
+    this->m_client_cnx->flush();
 }
 
 void RemoteControl::on_error(const QString &error_string)
 {
     qDebug() << Q_FUNC_INFO << error_string;
-    m_no_error = false ;
+    this->m_no_error = false ;
 }
 
 void RemoteControl::pause(unsigned millisec)

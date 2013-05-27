@@ -50,6 +50,7 @@
 
 #include "main.h"
 
+const QString &str_socket_arg_prefix = "socket:";
 
 // argc has to be a reference, or QCoreApplication will segfault
 ExecObjects init_xivoclient(int & argc, char **argv)
@@ -73,10 +74,14 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QString msg = "";
     for (int i = 1; i < argc; i ++) {
         QString arg_str(argv[i]);
-        if(! PhoneNumber::isURI(arg_str))
+        if (arg_str.length() == 0 || arg_str.contains(str_socket_arg_prefix)) {
+            continue;
+        }
+        if(! PhoneNumber::isURI(arg_str)) {
             profile = arg_str;
-        else
+        } else {
             msg = PhoneNumber::extract(arg_str);
+        }
     }
 
     qDebug() << "Selected profile: " << profile;
@@ -162,7 +167,16 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     ret.initOK = true;
 
 #ifdef FUNCTESTS
-    ret.rc = new RemoteControl(ret);
+    QString socket = "/tmp/xc-default.sock";
+    for (int i = 1; i < argc; i ++) {
+        QString arg_str(argv[i]);
+        if (arg_str.contains(str_socket_arg_prefix)) {
+            socket = arg_str.replace(str_socket_arg_prefix, "");
+        }
+    }
+    qDebug() << "Selected RC socket: " << socket;
+
+    ret.rc = new RemoteControl(ret, socket);
 #endif
 
     return ret;

@@ -78,7 +78,7 @@ class RemoteControl : public QObject
     Q_OBJECT
 
     public:
-        RemoteControl(ExecObjects);
+        RemoteControl(ExecObjects, QString &socket);
         ~RemoteControl();
 
     signals:
