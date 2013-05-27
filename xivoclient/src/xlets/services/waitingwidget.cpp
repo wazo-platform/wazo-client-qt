@@ -47,7 +47,8 @@ WaitingWidget<WidgetType>::WaitingWidget(WidgetType * widget, bool showanim)
     // Waiting animation
     m_waitanim = new QLabel(this);
     // waitanim.gif comes from http://ajaxload.info/ (color XiVO #f37224)
-    m_waitanim->setMovie(new QMovie(":/images/services/waitanim.gif"));
+    QMovie * movie = new QMovie(":/images/services/waitanim.gif", QByteArray(), this);
+    m_waitanim->setMovie(movie);
     m_waitanim->hide();
 
     layout->addWidget(widget);
