@@ -23,15 +23,8 @@
    <iconset resource="../../xivoclient.qrc">
     <normaloff>:/images/xivoicon.png</normaloff>:/images/xivoicon.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4">
-   <item row="2" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="enabled">
       <bool>true</bool>
@@ -886,6 +879,13 @@
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
     </widget>
    </item>
   </layout>
