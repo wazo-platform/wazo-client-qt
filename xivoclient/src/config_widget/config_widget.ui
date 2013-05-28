@@ -813,8 +813,15 @@
        </item>
        <item row="2" column="0">
         <widget class="QCheckBox" name="allow_multiple_instances">
+         <property name="toolTip">
+          <string>You must restart the program for this setting to apply.</string>
+         </property>
          <property name="text">
           <string>Allow multiple instances</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../../xivoclient.qrc">
+           <normaloff>:/images/warning.png</normaloff>:/images/warning.png</iconset>
          </property>
         </widget>
        </item>
