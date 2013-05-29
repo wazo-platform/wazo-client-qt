@@ -52,14 +52,10 @@
 
 #include "config_widget.h"
 
-QHash<QString, QString> func_legend;
-QString reboot_message;
 
 ConfigWidget::ConfigWidget(QWidget *parent)
     : QDialog(parent)
 {
-    reboot_message = tr("You must restart the program for this setting to apply.");
-
     this->m_config = b_engine->getConfig();
 
     this->ui.setupUi(this);
