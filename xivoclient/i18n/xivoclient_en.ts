@@ -4,75 +4,6 @@
 <context>
     <name>ConfigWidget</name>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="61"/>
-        <source>You must restart the program for this setting to apply.</source>
-        <translation>You must restart the program for this setting to apply.</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="81"/>
-        <source>System Language</source>
-        <translation>System Language</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="82"/>
-        <source>Dutch</source>
-        <translation>Dutch</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="83"/>
-        <source>English</source>
-        <translation>English</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="84"/>
-        <source>French</source>
-        <translation>French</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="85"/>
-        <source>Italian</source>
-        <translation>Italian</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="87"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="88"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="89"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="90"/>
-        <source>incomplete</source>
-        <translation>incomplete</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
-        <source>German</source>
-        <translation>German</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="87"/>
-        <source>Hungarian</source>
-        <translation>Hungarian</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="88"/>
-        <source>Japanese</source>
-        <translation>Japanese</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="89"/>
-        <source>Portuguese</source>
-        <translation>Portuguese</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="90"/>
-        <source>Spanish</source>
-        <translation>Spanish</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
-        <source>Default style</source>
-        <translation>Default style</translation>
-    </message>
-    <message>
         <location filename="../src/config_widget/config_widget.ui" line="20"/>
         <source>XiVO Client Configuration</source>
         <translation>XiVO Client Configuration</translation>
@@ -83,226 +14,299 @@
         <translation>User</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="48"/>
+        <location filename="../src/config_widget/config_widget.ui" line="45"/>
         <source>Language</source>
         <translation>Language</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="61"/>
+        <location filename="../src/config_widget/config_widget.ui" line="58"/>
         <source>Style</source>
         <translation>Style</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="85"/>
-        <source>Auto-reconnect</source>
-        <translation>Auto-reconnect</translation>
+        <location filename="../src/config_widget/config_widget.ui" line="90"/>
+        <location filename="../src/config_widget/config_widget.ui" line="115"/>
+        <location filename="../src/config_widget/config_widget.ui" line="187"/>
+        <location filename="../src/config_widget/config_widget.ui" line="201"/>
+        <location filename="../src/config_widget/config_widget.ui" line="834"/>
+        <source>You must restart the program for this setting to apply.</source>
+        <translation>You must restart the program for this setting to apply.</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="92"/>
+        <location filename="../src/config_widget/config_widget.ui" line="148"/>
+        <source>Auto-reconnect </source>
+        <translation>Auto-reconnect </translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.ui" line="155"/>
         <source>Connect at startup</source>
         <translation>Connect at startup</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="99"/>
+        <location filename="../src/config_widget/config_widget.ui" line="162"/>
         <source>Start systrayed</source>
         <translation>Start systrayed</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="106"/>
+        <location filename="../src/config_widget/config_widget.ui" line="169"/>
         <source>Show agent options</source>
         <translation>Show agent options</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="124"/>
+        <location filename="../src/config_widget/config_widget.ui" line="190"/>
         <source>Show window when calling from external application</source>
         <translation>Show window when calling from external application</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="131"/>
+        <location filename="../src/config_widget/config_widget.ui" line="204"/>
         <source>Enable clipboard (GNU/Linux only)</source>
         <translation>Enable clipboard (GNU/Linux only)</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="165"/>
+        <location filename="../src/config_widget/config_widget.ui" line="242"/>
         <source>Reset dock positions</source>
         <translation>Reset dock positions</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="201"/>
+        <location filename="../src/config_widget/config_widget.ui" line="278"/>
         <source>Features</source>
         <translation>Features</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="225"/>
+        <location filename="../src/config_widget/config_widget.ui" line="302"/>
         <source>Presence</source>
         <translation>Presence</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="231"/>
+        <location filename="../src/config_widget/config_widget.ui" line="308"/>
         <source>Presence reporting</source>
         <translation>Presence reporting</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="250"/>
+        <location filename="../src/config_widget/config_widget.ui" line="327"/>
         <source>Screen popup</source>
         <translation>Screen popup</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="259"/>
+        <location filename="../src/config_widget/config_widget.ui" line="336"/>
         <source>Max screen popups</source>
         <translation>Max screen popups</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="279"/>
+        <location filename="../src/config_widget/config_widget.ui" line="356"/>
         <source>Screen Popup</source>
         <translation>Screen Popup</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="289"/>
+        <location filename="../src/config_widget/config_widget.ui" line="366"/>
         <source>Allow automatic URL opening</source>
         <translation>Allow automatic URL opening</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="308"/>
+        <location filename="../src/config_widget/config_widget.ui" line="385"/>
         <source>Composer</source>
         <translation>Composer</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="314"/>
-        <location filename="../src/config_widget/config_widget.ui" line="349"/>
+        <location filename="../src/config_widget/config_widget.ui" line="391"/>
+        <location filename="../src/config_widget/config_widget.ui" line="426"/>
         <source>History size</source>
         <translation>History size</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="340"/>
+        <location filename="../src/config_widget/config_widget.ui" line="417"/>
         <source>History</source>
         <translation>History</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="375"/>
+        <location filename="../src/config_widget/config_widget.ui" line="452"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="381"/>
+        <location filename="../src/config_widget/config_widget.ui" line="458"/>
         <source>Maximum of contacts displayed</source>
         <translation>Maximum of contacts displayed</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="407"/>
+        <location filename="../src/config_widget/config_widget.ui" line="484"/>
         <source>Queue list</source>
         <translation>Queue list</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="415"/>
+        <location filename="../src/config_widget/config_widget.ui" line="492"/>
         <source>Show longest wait time</source>
         <translation>Show longest wait time</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="429"/>
+        <location filename="../src/config_widget/config_widget.ui" line="506"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="439"/>
+        <location filename="../src/config_widget/config_widget.ui" line="516"/>
         <source>Red</source>
         <translation>Red</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="449"/>
+        <location filename="../src/config_widget/config_widget.ui" line="526"/>
         <source>Longest wait time thresholds</source>
         <translation>Longest wait time thresholds</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="476"/>
+        <location filename="../src/config_widget/config_widget.ui" line="553"/>
         <source>Waiting calls thresholds</source>
         <translation>Waiting calls thresholds</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="503"/>
+        <location filename="../src/config_widget/config_widget.ui" line="580"/>
         <source>calls</source>
         <translation>calls</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="510"/>
+        <location filename="../src/config_widget/config_widget.ui" line="587"/>
         <source>seconds</source>
         <translation>seconds</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="541"/>
+        <location filename="../src/config_widget/config_widget.ui" line="618"/>
         <source>Queue Members</source>
         <translation>Queue Members</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="547"/>
+        <location filename="../src/config_widget/config_widget.ui" line="624"/>
         <source>Hide unlogged agents</source>
         <translation>Hide unlogged agents</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="563"/>
+        <location filename="../src/config_widget/config_widget.ui" line="640"/>
         <source>Switchboard</source>
         <translation>Switchboard</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="572"/>
+        <location filename="../src/config_widget/config_widget.ui" line="649"/>
         <source>Switchboard call on hold queue name</source>
         <translation>Switchboard call on hold queue name</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="582"/>
+        <location filename="../src/config_widget/config_widget.ui" line="659"/>
         <source>Switchboard queue name</source>
         <translation>Switchboard queue name</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="604"/>
+        <location filename="../src/config_widget/config_widget.ui" line="681"/>
         <source>Administration</source>
         <translation>Administration</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="612"/>
+        <location filename="../src/config_widget/config_widget.ui" line="689"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="619"/>
+        <location filename="../src/config_widget/config_widget.ui" line="696"/>
         <source>demo.xivo.fr</source>
         <translation>demo.xivo.fr</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="626"/>
-        <location filename="../src/config_widget/config_widget.ui" line="669"/>
+        <location filename="../src/config_widget/config_widget.ui" line="703"/>
+        <location filename="../src/config_widget/config_widget.ui" line="746"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="659"/>
+        <location filename="../src/config_widget/config_widget.ui" line="736"/>
         <source>Backup server</source>
         <translation>Backup server</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="744"/>
+        <location filename="../src/config_widget/config_widget.ui" line="821"/>
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="753"/>
-        <source>Auto-reconnect interval</source>
-        <translation>Auto-reconnect interval</translation>
+        <location filename="../src/config_widget/config_widget.ui" line="827"/>
+        <source>Display the configuration profile</source>
+        <translation>Display the configuration profile</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="776"/>
-        <source>Keepalive interval</source>
-        <translation>Keepalive interval</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="799"/>
+        <location filename="../src/config_widget/config_widget.ui" line="837"/>
         <source>Allow multiple instances</source>
         <translation>Allow multiple instances</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="806"/>
-        <source>Display the configuration profile</source>
-        <translation>Display the configuration profile</translation>
+        <location filename="../src/config_widget/config_widget.ui" line="848"/>
+        <source>Auto-reconnect interval</source>
+        <translation>Auto-reconnect interval</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.ui" line="887"/>
+        <source>Keepalive interval</source>
+        <translation>Keepalive interval</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="77"/>
+        <source>System Language</source>
+        <translation>System Language</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="78"/>
+        <source>Dutch</source>
+        <translation>Dutch</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="79"/>
+        <source>English</source>
+        <translation>English</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="80"/>
+        <source>French</source>
+        <translation>French</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="81"/>
+        <source>Italian</source>
+        <translation>Italian</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="82"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="83"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="84"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="85"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
+        <source>incomplete</source>
+        <translation>incomplete</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="82"/>
+        <source>German</source>
+        <translation>German</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="83"/>
+        <source>Hungarian</source>
+        <translation>Hungarian</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="84"/>
+        <source>Japanese</source>
+        <translation>Japanese</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="85"/>
+        <source>Portuguese</source>
+        <translation>Portuguese</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
+        <source>Spanish</source>
+        <translation>Spanish</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
+        <source>Default style</source>
+        <translation>Default style</translation>
     </message>
 </context>
 <context>

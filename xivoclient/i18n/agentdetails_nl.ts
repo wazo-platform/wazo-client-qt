@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>Out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet in de wachtrij</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>

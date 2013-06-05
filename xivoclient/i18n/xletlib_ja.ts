@@ -267,47 +267,47 @@ Phone Number : %2</source>
 <context>
     <name>PeerWidget</name>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="235"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
         <source>Agent Number : %1
 In Queues : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="246"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="248"/>
         <source>Mobile number : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="260"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="262"/>
         <source>User Name: %1
 IPBXid: %2
 Status: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="315"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="317"/>
         <source>Status:%1</source>
         <translation type="unfinished">ステータス:%1</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="318"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="320"/>
         <source>No status (no phone number)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="328"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
         <source>&lt;EMPTY&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="329"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="331"/>
         <source>Phone Number: %1
 Status: %2
 Busy lines: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="350"/>
+        <location filename="../src/xletlib/peerwidget.cpp" line="352"/>
         <source>(No callerid yet)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -328,6 +328,11 @@ Busy lines: %3</source>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="37"/>
+        <source>N/A</source>
+        <translation type="unfinished">無し</translation>
     </message>
 </context>
 <context>
