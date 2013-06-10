@@ -30,18 +30,19 @@
 #ifndef __XLET_DISPATCHER_H__
 #define __XLET_DISPATCHER_H__
 
-#include <QWidget>
-#include <QtGui>
+#include <QObject>
 #include <QList>
+#include <QMap>
+#include <QDockWidget>
+#include <QHash>
 
 #include <xletlib/functests.h>
-
-#include "main_window.h"
-#include "main_widget.h"
 
 class XLet;
 class MainWindow;
 class MainWidget;
+class QVBoxLayout;
+class QTabWidget;
 
 class XletDispatcher : public QObject
 {

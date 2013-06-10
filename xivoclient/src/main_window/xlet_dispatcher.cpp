@@ -28,12 +28,13 @@
  */
 
 #include <QDebug>
-#include <QObject>
 
 #include <baseengine.h>
 #include <xletfactory.h>
 
 #include "xlet_dispatcher.h"
+#include "main_window.h"
+#include "main_widget.h"
 
 XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent)
     : QObject(parent),
