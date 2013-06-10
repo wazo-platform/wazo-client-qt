@@ -75,13 +75,9 @@ void XletDispatcher::setStatusNotLogged()
     this->clearAppearance();
 }
 
-bool XletDispatcher::has_widget()
+bool XletDispatcher::hasWidget()
 {
-    if (this->m_xlets_grid.size() == 0) {
-        return false;
-    }
-
-    return true;
+    return this->m_xlets_grid.size() != 0;
 }
 
 XLet *XletDispatcher::xletFactory(const QString &xlet_id)
@@ -98,7 +94,7 @@ XLet *XletDispatcher::xletFactory(const QString &xlet_id)
 
 void XletDispatcher::prepareXletsGrid()
 {
-    if (this->m_xlets_grid.size() == 0) {
+    if (!this->hasWidget()) {
         return;
     }
 
@@ -122,7 +118,7 @@ void XletDispatcher::prepareXletsGrid()
 
 void XletDispatcher::cleanXletsGrid()
 {
-    if (this->m_xlets_grid.size() == 0) {
+    if (!this->hasWidget()) {
         return;
     }
 

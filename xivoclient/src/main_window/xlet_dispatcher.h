@@ -52,7 +52,7 @@ class XletDispatcher : public QObject
     public:
         XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent=NULL);
         ~XletDispatcher();
-        bool has_widget();
+        bool hasWidget();
         void hideXletsDock();
         void showXletsDock();
 

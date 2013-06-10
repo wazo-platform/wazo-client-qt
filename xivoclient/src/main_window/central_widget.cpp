@@ -75,7 +75,7 @@ void CentralWidget::initialize()
 void CentralWidget::initialized()
 {
     XletDispatcher *xlet_dispatcher = assembler->xletDispatcher();
-    if (xlet_dispatcher->has_widget()) {
+    if (xlet_dispatcher->hasWidget()) {
         this->show();
     }
     xlet_dispatcher->showXletsDock();
