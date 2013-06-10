@@ -154,7 +154,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QStringList queueListFromAgentId(const QString & agent_xid);
 
         void registerTranslation(const QString &);
-        void changeTranslation(QString locale = "");
+        void setupTranslation();
+        QTranslator *createTranslator(const QString &translation_file);
 
         void urlAuto(const QString &);
 
@@ -369,6 +370,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void clearLists();
         void clearChannelList();
+        void deleteTranslators();
 
         /*! \brief Retrieve the initial presence
          *
@@ -392,8 +394,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         double m_timesrv;
 
         QString m_locale;
-        QStringList translationFiles;   //!< List of translation files
-        QVector<QTranslator *> translators;   //!< Vector of translators
+        QList<QTranslator *> m_translators;   //!< Vector of translators
 
         QHash<QString, bool> m_enabled_function;  //!< function enabled
 

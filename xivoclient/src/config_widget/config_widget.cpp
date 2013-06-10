@@ -53,11 +53,12 @@
 
 #include "config_widget.h"
 
-const QString reboot_message = "You must restart the program for this setting to apply.";
 
 ConfigWidget::ConfigWidget(MainWindow *parent)
     : QDialog(parent)
 {
+    this->m_config = b_engine->getConfig();
+
     this->ui.setupUi(this);
     this->connect(this->ui.buttonBox, SIGNAL(accepted()), SLOT(accept()));
     this->connect(this->ui.buttonBox, SIGNAL(rejected()), SLOT(reject()));

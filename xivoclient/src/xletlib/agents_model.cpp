@@ -34,7 +34,7 @@
 
 #include "agents_model.h"
 
-QString AgentsModel::not_available = tr("N/A");
+QString AgentsModel::not_available = QObject::tr("N/A");
 
 AgentsModel::AgentsModel(QObject *parent)
     : QAbstractTableModel(parent)

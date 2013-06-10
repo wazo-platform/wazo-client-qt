@@ -81,8 +81,8 @@
     <name>IdentityPhone</name>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="65"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="160"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="161"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="152"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="153"/>
         <source>No option</source>
         <translation>Geen optie</translation>
     </message>
@@ -97,70 +97,59 @@
         <translation>Telefoon &lt;LEEG&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="102"/>
-        <source>Protocol: %1
-Order: %2
-IPBXid: %3
-Context: %4</source>
-        <translation>Protocol: %1
-Volgorde: %2
-IPBXid: %3
-Context: %4</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="131"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="123"/>
         <source>Status:%1</source>
         <translation>Status: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="134"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="126"/>
         <source>No status
 (no phone number)</source>
         <translation>Geen status
 (geen telefoonnummer)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="146"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="138"/>
         <source>DND</source>
         <translation>NS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="147"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="139"/>
         <source>Do Not Disturb</source>
         <translation>Niet storen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="149"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="141"/>
         <source>UNC %1</source>
         <translation>ONV %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="150"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="142"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Onvoorwaardelijk doorschakelen naar %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="152"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="144"/>
         <source>Busy %1</source>
         <translation>Bezet %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="153"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="145"/>
         <source>Busy Forward towards %1</source>
         <translation>Indien bezet doorschakelen naar %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="155"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="147"/>
         <source>FNA %1</source>
         <translation>GAN %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="156"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="148"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Indien geen antwoord doorschakelen naar %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="158"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="150"/>
         <source>Call Filter</source>
         <translation>Oproepfilter</translation>
     </message>

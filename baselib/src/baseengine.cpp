@@ -145,12 +145,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
 
     if (m_config["autoconnect"].toBool())
         start();
-    translationFiles = \
-        (QStringList() << ":/obj/xivoclient_%1"
-                       << ":/obj/baselib_%1"
-                       << ":/obj/xletlib_%1"
-                       << QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_%1" );
-    changeTranslation();
+    setupTranslation();
 }
 
 void BaseEngine::sslErrors(const QList<QSslError> & qlse)
@@ -171,6 +166,7 @@ BaseEngine::~BaseEngine()
 {
     clearLists();
     clearChannelList();
+    deleteTranslators();
 }
 
 QSettings* BaseEngine::getSettings()
@@ -554,6 +550,14 @@ void BaseEngine::clearChannelList()
         delete iterq.value();
     }
     m_queuemembers.clear();
+}
+
+void BaseEngine::deleteTranslators()
+{
+    while (! m_translators.isEmpty()) {
+        QTranslator * translator_to_delete = m_translators.takeLast();
+        delete translator_to_delete;
+    }
 }
 
 /*! \brief gets m_capaxlets */
@@ -1028,6 +1032,9 @@ void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipb
 
 void BaseEngine::addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
+    if (! GenLists.contains(listname)) {
+        return;
+    }
     foreach (const QString &id, listid) {
         QString xid = QString("%1/%2").arg(ipbxid).arg(id);
         if (! m_anylist[listname].contains(xid)) {
@@ -1575,8 +1582,6 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
                            m_config["trytoreconnectinterval"].toUInt() != qvm["trytoreconnectinterval"].toUInt();
     bool reload_keepalive = qvm.contains("keepaliveinterval") &&
                             m_config["keepaliveinterval"].toUInt() != qvm["keepaliveinterval"].toUInt();
-    bool change_translation = qvm.contains("forcelocale") &&
-                            m_config["forcelocale"].toUInt() != qvm["forcelocale"].toUInt();
     bool toggle_presence_enabled = qvm.contains("checked_function.presence") &&
                             m_config["checked_function.presence"].toBool() != qvm["checked_function.presence"].toBool();
 
@@ -1592,9 +1597,6 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
     }
 
     setUserLogin(m_config["userlogin"].toString());
-
-    if (change_translation)
-        changeTranslation();
 
     if (toggle_presence_enabled) {
         if (m_config["checked_function.presence"].toBool()) {
@@ -1968,37 +1970,39 @@ void BaseEngine::registerListener(const QString & event_to_listen, IPBXListener 
 
 void BaseEngine::registerTranslation(const QString &path)
 {
-    QString locale = m_locale;
-    QTranslator *translator = new QTranslator;
-    translator->load(path.arg(locale));
-    qApp->installTranslator(translator);
+    QString translation_file = path.arg(m_locale);
+    QTranslator *translator = this->createTranslator(translation_file);
+    m_translators.append(translator);
 }
 
-void BaseEngine::changeTranslation(QString locale)
+void BaseEngine::setupTranslation()
 {
-    if (locale.isEmpty()) {
-        locale = m_config["forcelocale"].toString();
+    m_locale = m_config["forcelocale"].toString();
+
+    if (m_locale == "default") {
+        m_locale = QLocale::system().name();
     }
-    if (locale == "default") {
-        locale = QLocale::system().name();
-    }
 
-    m_locale = locale;
+    QStringList translation_files = QStringList()
+        << QString(":/obj/xivoclient_%1").arg(m_locale)
+        << QString(":/obj/baselib_%1").arg(m_locale)
+        << QString(":/obj/xletlib_%1").arg(m_locale)
+        << QString("%1/qt_%2").arg(QLibraryInfo::location(QLibraryInfo::TranslationsPath), m_locale);
 
-    QVector<QTranslator *> new_translators;
-
-    int i;
-    for(i=0;i<translationFiles.size();++i) {
-        if (locale != "en_US") {
-            new_translators.append(new QTranslator);
-            new_translators.at(i)->load(translationFiles.at(i).arg(locale));
-            qApp->installTranslator(new_translators.at(i));
-        } else if (!translators.isEmpty()) {
-            qApp->removeTranslator(translators.at(i));
+    foreach(QString translation_file, translation_files) {
+        if (m_locale != "en_US") {
+            QTranslator * new_translator = this->createTranslator(translation_file);
+            m_translators.append(new_translator);
         }
     }
+}
 
-    translators = new_translators;
+QTranslator * BaseEngine::createTranslator(const QString & translation_file)
+{
+    QTranslator * new_translator = new QTranslator;
+    new_translator->load(translation_file);
+    qApp->installTranslator(new_translator);
+    return new_translator;
 }
 
 void BaseEngine::sheetSocketConnected()
