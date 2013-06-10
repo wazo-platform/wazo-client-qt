@@ -61,6 +61,8 @@ class XletDispatcher : public QObject
         void showWidgetOnTop(QWidget *);
 
     private:
+        typedef QPair<QString, QString> XletAndOption;
+
         void prepareAppearance();
         void clearAppearance();
         void prepareXletsTab();
@@ -79,15 +81,17 @@ class XletDispatcher : public QObject
 
         QDockWidget *m_dock_container;
         QMap<QString, QDockWidget *> m_xlets_dock_widget;
-        QMap<QString, QString> m_xlets_dock;
+        QList<XletAndOption> m_xlets_dock;
 
         QVBoxLayout *m_grid_container;
         QMap<QString, XLet *> m_xlets_grid_widget;
-        QMap<QString, QString> m_xlets_grid;
+        QList<XletAndOption> m_xlets_grid;
 
         QTabWidget *m_tab_container;
         QMap<QString, XLet *> m_xlets_tab_widget;
-        QMap<QString, QString> m_xlets_tab;
+        QList<XletAndOption> m_xlets_tab;
+
+        bool m_has_tabber;
 };
 
 #endif

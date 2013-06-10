@@ -35,7 +35,6 @@
 
 #include "xlet_dispatcher.h"
 
-
 XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent)
     : QObject(parent),
       m_main_window(main_window),
@@ -48,7 +47,8 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_xlets_grid(),
       m_tab_container(NULL),
       m_xlets_tab_widget(),
-      m_xlets_tab()
+      m_xlets_tab(),
+      m_has_tabber(false)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
@@ -103,16 +103,17 @@ void XletDispatcher::prepareXletsGrid()
 
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
 
-    foreach (QString xlet_id, this->m_xlets_grid.keys()) {
-        QString options = this->m_xlets_grid.value(xlet_id);
-        if (xlet_id == "tabber") {
+    foreach (const XletAndOption &xlet_and_option, this->m_xlets_grid) {
+        const QString &name = xlet_and_option.first;
+        const QString &options = xlet_and_option.second;
+        if (name == "tabber") {
             this->prepareXletsTab();
             this->m_grid_container->insertWidget(options.toInt(), this->m_tab_container);
         } else {
-            XLet *xlet = this->xletFactory(xlet_id);
+            XLet *xlet = this->xletFactory(name);
             if (xlet) {
                 this->m_grid_container->insertWidget(options.toInt(), xlet);
-                this->m_xlets_grid_widget.insert(xlet_id, xlet);
+                this->m_xlets_grid_widget.insert(name, xlet);
             }
         }
     }
@@ -128,7 +129,7 @@ void XletDispatcher::cleanXletsGrid()
         this->m_grid_container->removeWidget(widget);
         widget->deleteLater();
     }
-    if (m_xlets_grid.contains("tabber")) {
+    if (this->m_has_tabber) {
         this->m_grid_container->removeWidget(this->m_tab_container);
         this->cleanXletsTab();
     }
@@ -143,13 +144,15 @@ void XletDispatcher::prepareXletsTab()
     }
 
     this->m_tab_container = new QTabWidget(this->m_main_widget);
+    this->m_has_tabber = true;
 
-    foreach (QString xlet_id, this->m_xlets_tab.keys()) {
-        XLet *xlet = this->xletFactory(xlet_id);
+    foreach (const XletAndOption &xlet_and_option, this->m_xlets_tab) {
+        const QString &name = xlet_and_option.first;
+        XLet *xlet = this->xletFactory(name);
         if (xlet) {
             QString tabTitle = "  " + xlet->title() + "  ";
             this->m_tab_container->addTab(xlet, tabTitle);
-            this->m_xlets_tab_widget.insert(xlet_id, xlet);
+            this->m_xlets_tab_widget.insert(name, xlet);
         }
     }
 
@@ -176,15 +179,17 @@ void XletDispatcher::prepareXletsDock()
         return;
     }
 
-    foreach (QString xlet_id, this->m_xlets_dock.keys()) {
-        QString options = this->m_xlets_dock.value(xlet_id);
-        XLet *xlet = this->xletFactory(xlet_id);
+    foreach (const XletAndOption &xlet_and_option, this->m_xlets_dock) {
+        const QString &name = xlet_and_option.first;
+        const QString &options = xlet_and_option.second;
+
+        XLet *xlet = this->xletFactory(name);
         if (xlet) {
             QDockWidget::DockWidgetFeatures features = this->getXletsDockFeatures(options);
             QDockWidget *dockWidget = new QDockWidget(xlet->title(), this->m_main_widget);
             dockWidget->setFeatures(features);
             dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
-            dockWidget->setObjectName(xlet_id);
+            dockWidget->setObjectName(name);
             if (options.contains("s")) { // with scrollbar ?
                 QScrollArea *dockWidgetContents = new QScrollArea(this->m_main_widget);
                 dockWidgetContents->setWidget(xlet);
@@ -194,7 +199,7 @@ void XletDispatcher::prepareXletsDock()
                 dockWidget->setWidget(xlet);
             }
             this->m_main_window->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
-            this->m_xlets_dock_widget.insert(xlet_id, dockWidget);
+            this->m_xlets_dock_widget.insert(name, dockWidget);
             dockWidget->hide();
         }
     }
@@ -260,20 +265,21 @@ void XletDispatcher::prepareAppearance()
 
         const QString &name = xlet_infos_raw[0];
         const QString &type = xlet_infos_raw[1];
-        QString otions = "";
+        QString options = "";
         if ((name == "customerinfo") && (! b_engine->checkedFunction(name))) {
                 continue;
         }
         if (xlet_infos_raw.size() > 2) {
-            otions = xlet_infos_raw[2];
+            options = xlet_infos_raw[2];
         }
 
+        XletAndOption pair = XletAndOption(name, options);
         if (type == "dock" && name != "tabber") {
-            this->m_xlets_dock.insert(name, otions);
+            this->m_xlets_dock << pair;
         } else if (type == "grid") {
-            this->m_xlets_grid.insert(name, otions);
+            this->m_xlets_grid << pair;
         } else if (type == "tab" && name != "tabber") {
-            this->m_xlets_tab.insert(name, otions);
+            this->m_xlets_tab << pair;
         }
     }
 }
