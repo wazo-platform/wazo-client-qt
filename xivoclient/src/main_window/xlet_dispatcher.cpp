@@ -99,6 +99,10 @@ void XletDispatcher::prepareXletsGrid()
     }
 
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
+    if (! m_grid_container) {
+        qDebug() << Q_FUNC_INFO << "Failed to instanciate the grid container";
+        return;
+    }
 
     foreach (const XletAndOption &xlet_and_option, this->m_xlets_grid) {
         const QString &name = xlet_and_option.first;
