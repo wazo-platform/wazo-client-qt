@@ -140,6 +140,10 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         app->setStyleSheet(qssFile.readAll());
     }
     assembler = new Assembler();
+    if (! assembler) {
+        qDebug() << Q_FUNC_INFO << "Failed to instantiate the Assembler";
+        return ret;
+    }
     MainWindow *main_window = assembler->mainWindow();
     main_window->initialize();
 
@@ -184,7 +188,8 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
 int run_xivoclient(ExecObjects exec_obj)
 {
-    if (exec_obj.initOK == true) {
+    bool should_start = exec_obj.initOK == true && exec_obj.app != NULL;
+    if (should_start) {
         return exec_obj.app->exec();
     } else {
         return 1;
@@ -193,16 +198,27 @@ int run_xivoclient(ExecObjects exec_obj)
 
 void clean_xivoclient(ExecObjects exec_obj)
 {
-
-    delete exec_obj.win;
+    if (exec_obj.win) {
+        delete exec_obj.win;
+        exec_obj.win = NULL;
+    }
 
     // BaseEngine is already deleted by MainWidget
 
 #ifdef FUNCTESTS
-    delete exec_obj.rc;
+    if (execexec_obj.rc) {
+        delete exec_obj.rc;
+        exec_obj.rc = NULL;
+    }
 #endif
-    delete assembler;
-    delete exec_obj.app;
+    if (assembler) {
+        delete assembler;
+        assembler = NULL;
+    }
+    if (exec_obj.app) {
+        delete exec_obj.app;
+        exec_obj.app = NULL;
+    }
 }
 
 int main(int argc, char **argv)
