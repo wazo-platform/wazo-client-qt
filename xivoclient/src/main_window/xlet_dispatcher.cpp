@@ -250,27 +250,30 @@ void XletDispatcher::showWidgetOnTop(QWidget *widget)
 
 void XletDispatcher::prepareAppearance()
 {
-    QVariantList xlets_infos = b_engine->getCapaXlets();
-    foreach (QVariant qvariant_xlet_infos, xlets_infos) {
-        QStringList xlet_infos_raw = qvariant_xlet_infos.toStringList();
-        if (xlet_infos_raw.size() > 0) {
-            QString name = xlet_infos_raw[0];
-            if ((name == "customerinfo") && (! b_engine->checkedFunction(name)))
+    const QVariantList &xlets_infos = b_engine->getCapaXlets();
+    foreach (const QVariant &qvariant_xlet_infos, xlets_infos) {
+        const QStringList &xlet_infos_raw = qvariant_xlet_infos.toStringList();
+
+        if (xlet_infos_raw.size() < 2) {
+            continue;
+        }
+
+        const QString &name = xlet_infos_raw[0];
+        const QString &type = xlet_infos_raw[1];
+        QString otions = "";
+        if ((name == "customerinfo") && (! b_engine->checkedFunction(name))) {
                 continue;
-            if (xlet_infos_raw.size() > 1) {
-                QString type = xlet_infos_raw[1];
-                QString otions = "";
-                if (xlet_infos_raw.size() > 2) {
-                    otions = xlet_infos_raw[2];
-                }
-                if (type == "dock" && name != "tabber") {
-                    this->m_xlets_dock.insert(name, otions);
-                } else if (type == "grid") {
-                    this->m_xlets_grid.insert(name, otions);
-                } else if (type == "tab" && name != "tabber") {
-                    this->m_xlets_tab.insert(name, otions);
-                }
-            }
+        }
+        if (xlet_infos_raw.size() > 2) {
+            otions = xlet_infos_raw[2];
+        }
+
+        if (type == "dock" && name != "tabber") {
+            this->m_xlets_dock.insert(name, otions);
+        } else if (type == "grid") {
+            this->m_xlets_grid.insert(name, otions);
+        } else if (type == "tab" && name != "tabber") {
+            this->m_xlets_tab.insert(name, otions);
         }
     }
 }
