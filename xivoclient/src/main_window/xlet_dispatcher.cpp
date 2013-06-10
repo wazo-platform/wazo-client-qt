@@ -185,24 +185,27 @@ void XletDispatcher::prepareXletsDock()
         const QString &options = xlet_and_option.second;
 
         XLet *xlet = this->xletFactory(name);
-        if (xlet) {
-            QDockWidget::DockWidgetFeatures features = this->getXletsDockFeatures(options);
-            QDockWidget *dockWidget = new QDockWidget(xlet->title(), this->m_main_widget);
-            dockWidget->setFeatures(features);
-            dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
-            dockWidget->setObjectName(name);
-            if (options.contains("s")) { // with scrollbar ?
-                QScrollArea *dockWidgetContents = new QScrollArea(this->m_main_widget);
-                dockWidgetContents->setWidget(xlet);
-                dockWidgetContents->setWidgetResizable(true);
-                dockWidget->setWidget(dockWidgetContents);
-            } else {
-                dockWidget->setWidget(xlet);
-            }
-            this->m_main_window->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
-            this->m_xlets_dock_widget.insert(name, dockWidget);
-            dockWidget->hide();
+        if (! xlet) {
+            qDebug() << Q_FUNC_INFO << "Failed to instanciate xlet" << name;
+            continue;
         }
+
+        QDockWidget::DockWidgetFeatures features = this->getXletsDockFeatures(options);
+        QDockWidget *dockWidget = new QDockWidget(xlet->title(), this->m_main_widget);
+        dockWidget->setFeatures(features);
+        dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
+        dockWidget->setObjectName(name);
+        if (options.contains("s")) { // with scrollbar ?
+            QScrollArea *dockWidgetContents = new QScrollArea(this->m_main_widget);
+            dockWidgetContents->setWidget(xlet);
+            dockWidgetContents->setWidgetResizable(true);
+            dockWidget->setWidget(dockWidgetContents);
+        } else {
+            dockWidget->setWidget(xlet);
+        }
+        this->m_main_window->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
+        this->m_xlets_dock_widget.insert(name, dockWidget);
+        dockWidget->hide();
     }
 }
 
