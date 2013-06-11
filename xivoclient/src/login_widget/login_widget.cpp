@@ -30,7 +30,9 @@
 #include <baseengine.h>
 #include "login_widget.h"
 
-LoginWidget::LoginWidget(MainWindow *main_window, CentralWidget *parent)
+#include "main_window/main_window.h"
+
+LoginWidget::LoginWidget(MainWindow *main_window, QWidget *parent)
     : QWidget(parent)
 {
     QVBoxLayout * login_layout = new QVBoxLayout(this);

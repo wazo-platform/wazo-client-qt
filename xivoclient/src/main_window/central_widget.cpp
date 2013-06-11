@@ -27,8 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-
 #include <baseengine.h>
 #include <assembler.h>
 #include <login_widget/login_widget.h>

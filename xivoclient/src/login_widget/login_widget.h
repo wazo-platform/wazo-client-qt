@@ -34,7 +34,6 @@
 
 #include <xletlib/functests.h>
 #include <ui_login_widget.h>
-#include <main_window/central_widget.h>
 
 
 class CentralWidget;
@@ -47,7 +46,7 @@ class LoginWidget: public QWidget
     FUNCTESTED
 
     public:
-        LoginWidget(MainWindow *main_window, CentralWidget *parent);
+        LoginWidget(MainWindow *main_window, QWidget *parent);
         ~LoginWidget();
         QVariantMap getConfig();
         void saveConfig();

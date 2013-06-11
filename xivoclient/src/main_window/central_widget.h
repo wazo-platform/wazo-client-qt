@@ -32,11 +32,7 @@
 
 #include <QStackedWidget>
 
-#include <login_widget/login_widget.h>
 #include <ui_loading_dialog.h>
-
-#include "main_widget.h"
-#include "main_window.h"
 
 class LoginWidget;
 class MainWidget;
