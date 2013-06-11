@@ -36,11 +36,11 @@ SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
     : QSystemTrayIcon(parent),
       m_main_window(parent)
 {
-    this->connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
-    this->connect(this, SIGNAL(messageClicked()), SLOT(systrayMsgClicked()));
-    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
-    this->connect(parent, SIGNAL(titleUpdated(const QString &)), SLOT(setSystrayTitle(const QString &)));
-    this->connect(parent, SIGNAL(iconUpdated(const QIcon &)), SLOT(setSystrayIcon(const QIcon &)));
+    this->connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
+    this->connect(this, SIGNAL(messageClicked()), this, SLOT(systrayMsgClicked()));
+    this->connect(parent, SIGNAL(initialized()), this, SLOT(initialize()));
+    this->connect(parent, SIGNAL(titleUpdated(const QString &)), this, SLOT(setSystrayTitle(const QString &)));
+    this->connect(parent, SIGNAL(iconUpdated(const QIcon &)), this, SLOT(setSystrayIcon(const QIcon &)));
 }
 
 SystemTrayIcon::~SystemTrayIcon()
