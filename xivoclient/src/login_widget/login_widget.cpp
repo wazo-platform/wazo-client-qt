@@ -39,13 +39,13 @@ LoginWidget::LoginWidget(MainWindow *main_window, QWidget *parent)
     QWidget * login_widget = new QWidget(this);
     login_layout->addWidget(login_widget);
     this->ui.setupUi(login_widget);
-    this->connect(this->ui.userlogin, SIGNAL(returnPressed()), this, SLOT(saveConfigAndStart()));
-    this->connect(this->ui.password, SIGNAL(returnPressed()), this, SLOT(saveConfigAndStart()));
-    this->connect(this->ui.agentphonenumber, SIGNAL(returnPressed()), this, SLOT(saveConfigAndStart()));
-    this->connect(this->ui.buttonBox, SIGNAL(pressed()), this, SLOT(saveConfigAndStart()));
-    this->connect(this->ui.agent_options, SIGNAL(currentIndexChanged(int)), this, SLOT(syncAgentLoginWidgets()));
-    this->connect(b_engine, SIGNAL(settingsChanged()), this, SLOT(confUpdated()));
-    this->connect(main_window, SIGNAL(initialized()), this, SLOT(initialize()));
+    this->connect(this->ui.userlogin, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.password, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.agentphonenumber, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.buttonBox, SIGNAL(pressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.agent_options, SIGNAL(currentIndexChanged(int)), SLOT(syncAgentLoginWidgets()));
+    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
+    this->connect(main_window, SIGNAL(initialized()), SLOT(initialize()));
 }
 
 LoginWidget::~LoginWidget()

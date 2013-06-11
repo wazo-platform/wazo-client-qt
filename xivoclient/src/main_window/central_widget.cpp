@@ -44,11 +44,11 @@ CentralWidget::CentralWidget(MainWindow *parent)
       ui_loading_dialog(new Ui::loading_dialog),
       m_loading_dialog(NULL)
 {
-    this->connect(b_engine, SIGNAL(logged()), this, SLOT(setStatusLogged()));
-    this->connect(b_engine, SIGNAL(delogged()), this, SLOT(setStatusNotLogged()));
-    this->connect(b_engine, SIGNAL(initializing()), this, SLOT(initializing()));
-    this->connect(b_engine, SIGNAL(initialized()), this, SLOT(initialized()));
-    this->connect(parent, SIGNAL(initialized()), this, SLOT(initialize()));
+    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
+    this->connect(b_engine, SIGNAL(initializing()), SLOT(initializing()));
+    this->connect(b_engine, SIGNAL(initialized()), SLOT(initialized()));
+    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
 }
 
 CentralWidget::~CentralWidget()
