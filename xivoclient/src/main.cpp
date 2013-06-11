@@ -199,7 +199,7 @@ int run_xivoclient(ExecObjects exec_obj)
 void clean_xivoclient(ExecObjects exec_obj)
 {
 #ifdef FUNCTESTS
-    if (execexec_obj.rc) {
+    if (exec_obj.rc) {
         delete exec_obj.rc;
     }
 #endif
