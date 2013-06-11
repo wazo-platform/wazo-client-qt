@@ -53,6 +53,7 @@ class Statusbar : public QStatusBar
         void confUpdated();
 
     private:
+        bool shouldDisplayProfile() const;
         QStatusBar *m_statusbar;
 
         QLabel *m_status;  //!< status indicator

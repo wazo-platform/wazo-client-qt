@@ -56,10 +56,7 @@ Statusbar::~Statusbar()
 void Statusbar::initialize()
 {
     this->m_config_profile->setText(b_engine->getConfig("profilename").toString());
-    bool displayprofile = b_engine->getConfig("displayprofile").toBool();
-    if (displayprofile) {
-        this->m_config_profile->setVisible(displayprofile);
-    }
+    this->m_config_profile->setVisible(this->shouldDisplayProfile());
     this->m_statusbar->addPermanentWidget(this->m_config_profile);
 
     QPixmap padlock_pixmap = QPixmap(":/images/padlock.png").scaledToHeight(18, Qt::SmoothTransformation);
@@ -73,7 +70,12 @@ void Statusbar::initialize()
 
 void Statusbar::confUpdated()
 {
-    this->m_config_profile->setVisible(b_engine->getConfig("displayprofile").toBool());
+    this->m_config_profile->setVisible(this->shouldDisplayProfile());
+}
+
+bool Statusbar::shouldDisplayProfile() const
+{
+    return b_engine->getConfig("displayprofile").toBool();
 }
 
 void Statusbar::setStatusLogged()
