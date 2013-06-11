@@ -87,12 +87,15 @@ void LoginWidget::syncAgentLoginWidgets()
 
 QVariantMap LoginWidget::getConfig()
 {
+    QStringList required = QStringList()
+        << "userlogin"
+        << "password"
+        << "agentphonenumber"
+        << "keeppass"
+        << "guioptions.loginkind";
     QVariantMap config;
-    foreach (QString key, QStringList() << "userlogin"
-                                        << "password"
-                                        << "agentphonenumber"
-                                        << "keeppass"
-                                        << "guioptions.loginkind") {
+
+    foreach (const QString &key, required) {
         config[key] = b_engine->getConfig(key);
     }
     return config;
