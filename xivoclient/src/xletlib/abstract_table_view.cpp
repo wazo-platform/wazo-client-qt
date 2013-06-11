@@ -31,6 +31,7 @@
 #include <QStyleFactory>
 
 #include "abstract_table_view.h"
+#include "RightClickableHeaderView.h"
 
 AbstractTableView::AbstractTableView(QWidget * parent)
     : QTableView(parent)
@@ -38,8 +39,10 @@ AbstractTableView::AbstractTableView(QWidget * parent)
     this->setSortingEnabled(true);
     this->setShowGrid(0);
 
-    this->horizontalHeader()->setMovable(true);
-    this->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    RightClickableHeaderView *horizontal_header = new RightClickableHeaderView(Qt::Horizontal, this);
+    horizontal_header->setMovable(true);
+    horizontal_header->setResizeMode(QHeaderView::ResizeToContents);
+    this->setHorizontalHeader(horizontal_header);
 
     this->verticalHeader()->hide();
 
