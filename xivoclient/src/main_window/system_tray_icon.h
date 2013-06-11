@@ -31,11 +31,11 @@
 #define __SYSTEM_TRAY_ICON_H__
 
 #include <QSystemTrayIcon>
-#include <QDebug>
-
-#include "main_window.h"
 
 class MainWindow;
+namespace Ui {
+    class MainWindow;
+}
 
 class SystemTrayIcon : public QSystemTrayIcon
 {

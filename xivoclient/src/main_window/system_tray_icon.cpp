@@ -30,6 +30,7 @@
 #include <baseengine.h>
 
 #include "system_tray_icon.h"
+#include "main_window.h"
 
 
 SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
