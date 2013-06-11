@@ -54,6 +54,10 @@ Assembler::Assembler()
 
 Assembler::~Assembler()
 {
+    if (this->m_main_window) {
+        delete m_main_window;
+        this->m_main_window = NULL;
+    }
 }
 
 MainWindow *Assembler::mainWindow()
