@@ -28,10 +28,10 @@
  */
 
 #include <baseengine.h>
-#include <xivoconsts.h>
-#include <xletfactory.h>
 
 #include "statusbar.h"
+
+#include "main_window.h"
 
 
 Statusbar::Statusbar(MainWindow *parent)

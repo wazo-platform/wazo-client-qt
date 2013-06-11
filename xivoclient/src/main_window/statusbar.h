@@ -30,15 +30,12 @@
 #ifndef __STATUSBAR_H__
 #define __STATUSBAR_H__
 
-#include <QtGui>
-#include <QList>
 #include <QStatusBar>
 
 #include <xletlib/functests.h>
 
-#include "main_window.h"
-
 class MainWindow;
+class QLabel;
 
 class Statusbar : public QStatusBar
 {
