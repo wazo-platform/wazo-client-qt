@@ -35,6 +35,7 @@
 #include "main_window/statusbar.h"
 #include "main_window/system_tray_icon.h"
 #include "login_widget/login_widget.h"
+#include <stdlib.h>
 
 Assembler *assembler;
 
@@ -50,6 +51,19 @@ Assembler::Assembler()
     this->m_system_tray_icon = new SystemTrayIcon(this->m_main_window);
     this->m_xlet_dispatcher = new XletDispatcher(this->m_main_window, this->m_main_widget, qApp);
     this->m_config_widget = new ConfigWidget(this->m_main_window);
+
+    if (this->m_main_window == NULL
+        || this->m_central_widget == NULL
+        || this->m_login_widget == NULL
+        || this->m_main_widget == NULL
+        || this->m_menu_availabilty == NULL
+        || this->m_statusbar == NULL
+        || this->m_system_tray_icon == NULL
+        || this->m_xlet_dispatcher == NULL
+        || this->m_config_widget == NULL) {
+        qDebug() << Q_FUNC_INFO << "Failed to instanciate the GUI";
+        exit(EXIT_FAILURE);
+    }
 }
 
 Assembler::~Assembler()

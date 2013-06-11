@@ -30,6 +30,7 @@
 #include <baseengine.h>
 #include <assembler.h>
 #include <login_widget/login_widget.h>
+#include <stdlib.h>
 
 #include "central_widget.h"
 #include "xlet_dispatcher.h"
@@ -102,6 +103,10 @@ void CentralWidget::setStatusNotLogged()
 void CentralWidget::showLoading()
 {
     this->m_loading_dialog = new QDialog(this->m_main_window);
+    if (! m_loading_dialog) {
+        qDebug() << Q_FUNC_INFO << "Failed to instanciate the main window UI";
+        exit(EXIT_FAILURE);
+    }
     this->ui_loading_dialog->setupUi(this->m_loading_dialog);
     this->m_loading_dialog->adjustSize();
     this->m_loading_dialog->setFixedSize(this->m_loading_dialog->width(),this->m_loading_dialog->height());
