@@ -73,18 +73,33 @@ void MenuAvailability::confUpdated()
 void MenuAvailability::updatePresence()
 {
     const QVariantMap & presencemap = b_engine->getOptionsUserStatus();
+
     foreach (const QString & presencestate, presencemap.keys()) {
+        if (this->isValidPresence(presencestate)) {
+            continue;
+        }
         const QVariantMap & pdetails = presencemap.value(presencestate).toMap();
         const QString & longname = pdetails.value("longname").toString();
-        if (! this->isValidPresence(presencestate)) {
-            this->m_availabilitys[presencestate] = new QAction(longname, this);
-            this->m_availabilitys[presencestate]->setProperty("availstate", presencestate);
-            connect(this->m_availabilitys[presencestate], SIGNAL(triggered()), this, SLOT(setAvailability()));
-            this->m_availability_action_group->addAction(this->m_availabilitys[presencestate]);
-        }
+
+        this->addNewPresence(presencestate, longname);
     }
+
     this->m_menu_availability->addActions(this->m_availability_action_group->actions());
     this->syncPresence();
+}
+
+void MenuAvailability::addNewPresence(const QString &state, const QString &name)
+{
+    QAction *new_presence = new QAction(name, this);
+    if (! new_presence) {
+        return;
+    }
+
+    new_presence->setProperty("availstate", state);
+    connect(new_presence, SIGNAL(triggered()), this, SLOT(setAvailability()));
+    this->m_availability_action_group->addAction(new_presence);
+
+    this->m_availabilitys[state] = new_presence;
 }
 
 /*!
