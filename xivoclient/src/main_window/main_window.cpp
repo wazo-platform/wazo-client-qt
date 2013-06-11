@@ -73,12 +73,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::initialize()
 {
+    bool start_minimized = b_engine->getConfig("systrayed").toBool();
+
     this->m_config_widget = assembler->configWidget();
     this->restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
     this->setAppIcon("default");
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
-    if (! b_engine->getConfig("systrayed").toBool()) {
+    if (! start_minimized) {
         this->show();
     }
     this->setFocusPolicy(Qt::StrongFocus);
