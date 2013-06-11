@@ -33,7 +33,7 @@
 #include <baseengine.h>
 
 #include "powerawareapplication.h"
-#include "mainwidget.h"
+#include "main_window/main_window.h"
 
 #ifdef FUNCTESTS
 class RemoteControl;
@@ -41,7 +41,7 @@ class RemoteControl;
 
 struct ExecObjects {
     PowerAwareApplication *app;
-    MainWidget *win;
+    MainWindow *win;
     BaseEngine *baseengine;
 #ifdef FUNCTESTS
     RemoteControl *rc;

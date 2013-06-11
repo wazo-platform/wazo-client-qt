@@ -31,6 +31,7 @@
 #define __XLETNULL_H__
 
 #include <QObject>
+
 #include <xletlib/xlet.h>
 
 class QLabel;

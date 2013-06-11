@@ -31,39 +31,36 @@
 
 #include <baseengine.h>
 #include <config_widget/config_widget.h>
+#include <login_widget/login_widget.h>
 
 #include "remote_control.h"
 
+
+QVariantMap RemoteControl::is_logged()
+{
+    QVariantMap args;
+
+    args["logged"] =  (b_engine->state() == b_engine->ELogged);
+
+    return args;
+}
+
 void RemoteControl::i_go_to_the_xivo_client_configuration()
 {
-    m_exec_obj.win->m_cfgact->trigger();
+    this->m_exec_obj.win->ui->action_configure->trigger();
 }
 
 void RemoteControl::i_close_the_xivo_client_configuration()
 {
-    m_exec_obj.win->m_configwindow->ui.buttonBox->button(QDialogButtonBox::Ok)->click();
-}
-
-QVariantMap RemoteControl::get_xlets()
-{
-    QVariantMap args;
-    QHash<QString, XLet*> xlets = m_exec_obj.win->m_xletlist;
-    QVariantList xlet_list;
-    foreach (QString xlet, xlets.keys()) {
-        xlet_list.append(xlet);
-    }
-
-    args["xlets"] = xlet_list;
-
-    return args;
+    this->m_exec_obj.win->m_config_widget->ui.buttonBox->button(QDialogButtonBox::Ok)->click();
 }
 
 QVariantMap RemoteControl::get_status_bar_infos()
 {
     QVariantMap args;
 
-    args["profilename_value"] = m_exec_obj.win->m_profilename->text();
-    args["profilename_is_hidden"] = m_exec_obj.win->m_profilename->isHidden();
+    args["profilename_value"] = this->m_statusbar->m_config_profile->text();
+    args["profilename_is_hidden"] = this->m_statusbar->m_config_profile->isHidden();
 
     return args;
 }
@@ -76,59 +73,121 @@ QVariantMap RemoteControl::get_configuration()
 void RemoteControl::configure(const QVariantList &list)
 {
     QVariantMap args = list[0].toMap();
+    this->configureLoginWidget(args);
+    this->configureConfigDialog(args);
+}
 
-    const QString & xivo_address = args["main_server_address"].toString();
-    int xivo_port = args["main_server_port"].toInt();
-    const QString & login = args["login"].toString();
-    const QString & password = args["password"].toString();
-    const QString & agent_option = args["agent_option"].toString();
+void RemoteControl::configureLoginWidget(const QVariantMap &args)
+{
+    if (args.find("login") != args.end()) {
+        QString login = args["login"].toString();
+        this->m_login_widget->ui.userlogin->setText(login);
+    }
 
-    // login widget
-    m_exec_obj.win->m_qlab1->setText(login);
-    m_exec_obj.win->m_qlab2->setText(password);
-    if(agent_option == "no")
-        m_exec_obj.win->m_loginkind->setCurrentIndex(0);
-    if(agent_option == "unlogged")
-        m_exec_obj.win->m_loginkind->setCurrentIndex(1);
-    if(agent_option == "logged")
-        m_exec_obj.win->m_loginkind->setCurrentIndex(2);
+    if (args.find("password") != args.end()) {
+        QString password = args["password"].toString();
+        this->m_login_widget->ui.password->setText(password);
+    }
 
+    if (args.find("keep_password") != args.end()) {
+        bool is_keep_password = args["keep_password"].toBool();
+        this->m_login_widget->ui.keep_password->setChecked(is_keep_password);
+    }
 
-    // config widget
+    if (args.find("agent_option") != args.end()) {
+        QString agent_option = args["agent_option"].toString();
+        if(agent_option == "no") {
+            this->m_login_widget->ui.agent_options->setCurrentIndex(0);
+        } else if(agent_option == "unlogged") {
+            this->m_login_widget->ui.agent_options->setCurrentIndex(1);
+        } else if(agent_option == "logged") {
+            this->m_login_widget->ui.agent_options->setCurrentIndex(2);
+        }
+    }
+}
+
+void RemoteControl::configureConfigDialog(const QVariantMap &args)
+{
     i_go_to_the_xivo_client_configuration();
 
-    m_exec_obj.win->m_configwindow->ui.server->setText(xivo_address);
-    m_exec_obj.win->m_configwindow->ui.port->setValue(xivo_port);
+    if (args.find("main_server_address") != args.end()) {
+        QString xivo_address = args["main_server_address"].toString();
+        this->m_exec_obj.win->m_config_widget->ui.server->setText(xivo_address);
+    }
+
+    if (args.find("main_server_port") != args.end()) {
+        int xivo_port = args["main_server_port"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.port->setValue(xivo_port);
+    }
+
+    if (args.find("main_server_encrypted") != args.end()) {
+        bool is_main_server_encrypted = args["main_server_encrypted"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.encrypted->setChecked(is_main_server_encrypted);
+    }
+
+    if (args.find("backup_server_address") != args.end()) {
+        QString backup_server_address = args["backup_server_address"].toString();
+        this->m_exec_obj.win->m_config_widget->ui.backup_server->setText(backup_server_address);
+    }
+
+    if (args.find("backup_server_port") != args.end()) {
+        int backup_server_port = args["backup_server_port"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.backup_port->setValue(backup_server_port);
+    }
+
+    if (args.find("backup_server_encrypted") != args.end()) {
+        bool is_backup_server_encrypted = args["backup_server_encrypted"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.backup_encrypted->setChecked(is_backup_server_encrypted);
+    }
 
     if (args.find("autoconnect") != args.end()) {
-        if(args["autoconnect"].toBool())
-            m_exec_obj.win->m_configwindow->ui.startup_connect->setChecked(true);
-        else
-            m_exec_obj.win->m_configwindow->ui.startup_connect->setChecked(false);
+        bool is_autoconnect = args["autoconnect"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.startup_connect->setChecked(is_autoconnect);
+    }
+
+    if (args.find("enable_auto_reconnect") != args.end()) {
+        bool is_enable_auto_reconnect = args["enable_auto_reconnect"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.auto_reconnect->setChecked(is_enable_auto_reconnect);
+    }
+
+    if (args.find("auto_reconnect_interval") != args.end()) {
+        int interval = args["auto_reconnect_interval"].toInt();
+        this->m_exec_obj.win->m_config_widget->ui.auto_reconnect_interval->setValue(interval);
     }
 
     if (args.find("show_agent_option") != args.end()) {
-        if(args["show_agent_option"].toBool())
-            m_exec_obj.win->m_configwindow->ui.show_agent_options->setChecked(true);
-        else
-            m_exec_obj.win->m_configwindow->ui.show_agent_options->setChecked(false);
+        bool is_show_agent_option = args["show_agent_option"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.show_agent_options->setChecked(is_show_agent_option);
     }
 
     if (args.find("display_profile") != args.end()) {
         bool display_profile = args["display_profile"].toBool();
-        m_exec_obj.win->m_configwindow->ui.show_displayprofile->setChecked(display_profile);
+        this->m_exec_obj.win->m_config_widget->ui.show_displayprofile->setChecked(display_profile);
+    }
+
+    if (args.find("enable_presence_reporting") != args.end()) {
+        bool is_enable_presence_reporting = args["enable_presence_reporting"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.enable_presence_reporting->setChecked(is_enable_presence_reporting);
+    }
+
+    if (args.find("enable_start_systrayed") != args.end()) {
+        bool is_enable_start_systrayed = args["enable_start_systrayed"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.start_systrayed->setChecked(is_enable_start_systrayed);
     }
 
     if (args.find("enable_screen_popup") != args.end()) {
-        bool customerinfo = args["enable_screen_popup"].toBool();
-        m_exec_obj.win->m_configwindow->ui.enable_screen_popup->setChecked(customerinfo);
+        bool is_enable_screen_popup = args["enable_screen_popup"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.enable_screen_popup->setChecked(is_enable_screen_popup);
     }
 
     if (args.find("hide_unlogged_agents_for_xlet_queue_members") != args.end()) {
-        if(args["hide_unlogged_agents_for_xlet_queue_members"].toBool())
-            m_exec_obj.win->m_configwindow->ui.hide_unlogged_agents->setChecked(true);
-        else
-            m_exec_obj.win->m_configwindow->ui.hide_unlogged_agents->setChecked(false);
+        bool is_hide = args["hide_unlogged_agents_for_xlet_queue_members"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.hide_unlogged_agents->setChecked(is_hide);
+    }
+
+    if (args.find("enable_multiple_instances") != args.end()) {
+        bool state = args["enable_multiple_instances"].toBool();
+        this->m_exec_obj.win->m_config_widget->ui.allow_multiple_instances->setChecked(state);
     }
 
     i_close_the_xivo_client_configuration();
@@ -136,24 +195,24 @@ void RemoteControl::configure(const QVariantList &list)
 
 void RemoteControl::i_log_in_the_xivo_client()
 {
-    m_exec_obj.win->m_ack->click();
+    this->m_login_widget->ui.buttonBox->click();
     pause(1000);
 }
 
 void RemoteControl::i_log_out_of_the_xivo_client()
 {
-    if (m_exec_obj.win->m_configwindow != NULL) {
-        m_exec_obj.win->m_configwindow->close();
+    if (this->m_exec_obj.win != NULL) {
+        this->m_exec_obj.win->close();
     }
-    m_exec_obj.win->m_disconnectact->trigger();
+    this->m_exec_obj.win->ui->action_disconnect->trigger();
 }
 
 void RemoteControl::i_stop_the_xivo_client()
 {
-    if (m_exec_obj.win->m_configwindow != NULL) {
-        m_exec_obj.win->m_configwindow->close();
+    if (this->m_exec_obj.win != NULL) {
+        this->m_exec_obj.win->close();
     }
-    m_exec_obj.win->m_quitact->trigger();
+    this->m_exec_obj.win->ui->action_quit->trigger();
 }
 
 QString RemoteControl::getValueInModel(QAbstractItemModel* model, int row, int column)

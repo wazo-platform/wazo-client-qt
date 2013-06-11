@@ -355,7 +355,7 @@
 <context>
     <name>CustomerInfoPanel</name>
     <message>
-        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="38"/>
+        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="39"/>
         <source>Sheets</source>
         <translation>Tabbladen</translation>
     </message>
@@ -556,7 +556,7 @@ Reden: %3.</translation>
     </message>
 </context>
 <context>
-    <name>MainWidget</name>
+    <name>LoginWidget</name>
     <message>
         <location filename="../src/mainwidget.cpp" line="67"/>
         <location filename="../src/mainwidget.cpp" line="920"/>
@@ -564,37 +564,37 @@ Reden: %3.</translation>
         <translation>Cliënt %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="172"/>
+        <location filename="../src/login_widget/login_widget.ui" line="72"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="174"/>
+        <location filename="../src/login_widget/login_widget.ui" line="89"/>
         <source>Password</source>
-        <translation>Paswoord</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="176"/>
+        <location filename="../src/login_widget/login_widget.ui" line="96"/>
         <source>Phone</source>
         <translation>Telefoon</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="192"/>
+        <location filename="../src/login_widget/login_widget.ui" line="110"/>
         <source>Keep Password</source>
         <translation>Houd paswoord bij</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="196"/>
+        <location filename="../src/login_widget/login_widget.ui" line="118"/>
         <source>No Agent</source>
-        <translation>Geen agent</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="197"/>
+        <location filename="../src/login_widget/login_widget.ui" line="123"/>
         <source>Agent (unlogged)</source>
-        <translation>Agent (niet ingelogd)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="198"/>
+        <location filename="../src/login_widget/login_widget.ui" line="128"/>
         <source>Agent (logged)</source>
         <translation>Agent (ingelogd)</translation>
     </message>
@@ -603,6 +603,9 @@ Reden: %3.</translation>
         <source>Confi&amp;gure</source>
         <translation>Confi&amp;gureer</translation>
     </message>
+</context>
+<context>
+    <name>MainWindow</name>
     <message>
         <location filename="../src/mainwidget.cpp" line="346"/>
         <source>Configure account and connection options</source>
@@ -619,9 +622,9 @@ Reden: %3.</translation>
         <translation>Sluit de toepassing</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="353"/>
-        <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
+        <location filename="../src/main_window/main_window.ui" line="74"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="360"/>
@@ -644,34 +647,34 @@ Reden: %3.</translation>
         <translation>Verlaat de taakbalk</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="373"/>
+        <location filename="../src/main_window/main_window.ui" line="116"/>
         <source>&amp;Connect</source>
         <translation>Maak verbinding</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="374"/>
+        <location filename="../src/main_window/main_window.ui" line="119"/>
         <source>Connect to the server</source>
         <translation>Maak verbinding met de server</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="378"/>
+        <location filename="../src/main_window/main_window.ui" line="127"/>
         <source>&amp;Disconnect</source>
         <translation>Verbreek de verbinding</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="380"/>
+        <location filename="../src/main_window/main_window.ui" line="130"/>
         <source>Disconnect from the server</source>
         <translation>Verbreek de verbinding met de server</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="467"/>
-        <source>&amp;Availability</source>
-        <translation>&amp;Beschikbaarheid</translation>
+        <location filename="../src/main_window/main_window.ui" line="138"/>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="470"/>
-        <source>&amp;Help</source>
-        <translation>&amp;Help</translation>
+        <location filename="../src/main_window/main_window.ui" line="141"/>
+        <source>Close the application</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="471"/>
@@ -679,14 +682,14 @@ Reden: %3.</translation>
         <translation>&amp;Over de XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="472"/>
-        <source>About &amp;Qt</source>
-        <translation>Over &amp;Qt</translation>
+        <location filename="../src/main_window/main_window.ui" line="152"/>
+        <source>&amp;Show window</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="473"/>
-        <source>&amp;Credits</source>
-        <translation>&amp;Credits</translation>
+        <location filename="../src/main_window/main_window.ui" line="155"/>
+        <source>Leave the system tray</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="606"/>
@@ -731,7 +734,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="1015"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
-        <translation>&lt;u&gt;Versie Informatie&lt;/u&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1016"/>
@@ -741,7 +744,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="1017"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
-        <translation>Minor : git hash &lt;b&gt;%1&lt;/b&gt; van : %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1020"/>
@@ -776,7 +779,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="1027"/>
         <source>Avencall Development Team</source>
-        <translation>Avencall Development Team</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainwidget.cpp" line="1029"/>
@@ -791,7 +794,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/mainwidget.cpp" line="1037"/>
         <source>Credits</source>
-        <translation>Credits</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +944,32 @@ Bent u zeker ?</translation>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="54"/>
         <source>N&amp;ame or number to search :</source>
         <translation>N&amp;aam of nummer om op te zoeken:</translation>
+    </message>
+</context>
+<context>
+    <name>Statusbar</name>
+    <message>
+        <location filename="../src/main_window/statusbar.cpp" line="81"/>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/statusbar.cpp" line="88"/>
+        <source>Disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>loading_dialog</name>
+    <message>
+        <location filename="../src/main_window/loading_dialog.ui" line="17"/>
+        <source>Loading Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/loading_dialog.ui" line="37"/>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

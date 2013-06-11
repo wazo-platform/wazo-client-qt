@@ -1777,6 +1777,9 @@ ainsi que les paramètres pour les statistiques:</translation>
         <source>Window (s)</source>
         <translation>Fenêtre (s)</translation>
     </message>
+</context>
+<context>
+    <name>MainWindow</name>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="193"/>
         <source>The window is the period of time used to compute the statistics</source>

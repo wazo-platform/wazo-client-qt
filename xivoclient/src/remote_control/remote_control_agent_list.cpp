@@ -36,7 +36,7 @@
 QVariantMap RemoteControl::get_agent_list_infos()
 {
     QVariantMap args;
-    XletAgents* agents_xlet = static_cast<XletAgents*>(m_exec_obj.win->m_xletlist.value("agents"));
+    XletAgents* agents_xlet = this->get_xlet<XletAgents>("agents");
     QAbstractItemModel* agents_model = agents_xlet->findChild<QAbstractItemModel*>("agents_model");
 
     args["agents_xlet"] = agents_xlet != NULL;

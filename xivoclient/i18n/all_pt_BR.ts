@@ -1719,6 +1719,9 @@ Are you sure ?</source>
         <source>Queues</source>
         <translation type="unfinished"/>
     </message>
+</context>
+<context>
+    <name>MainWindow</name>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="124"/>
         <source>Configure</source>

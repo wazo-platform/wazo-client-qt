@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,22 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QIcon>
+#ifndef __SYSTEM_TRAY_ICON_H__
+#define __SYSTEM_TRAY_ICON_H__
 
-#include "application_status_icon_manager.h"
+#include <QSystemTrayIcon>
 
-QIcon ApplicationStatusIconManager::getApplicationStatusIcon(ApplicationStatusIcon icon_id) const
-{
-    switch(icon_id) {
-    case icon_disconnected:
-        return QIcon(":images/xivoicon-black.png");
-    case icon_connected:
-        return QIcon(":images/xivo-login.png");
-    case icon_agent_logged:
-        return QIcon(":images/xivoicon-green.png");
-    case icon_agent_paused:
-        return QIcon(":images/xivoicon-red.png");
-    default:
-        return QIcon();
-    }
+class MainWindow;
+namespace Ui {
+    class MainWindow;
 }
+
+class SystemTrayIcon : public QSystemTrayIcon
+{
+    Q_OBJECT
+
+    public:
+        SystemTrayIcon(MainWindow *parent);
+        ~SystemTrayIcon();
+
+    private slots:
+        void initialize();
+        void setSystrayIcon(const QIcon & icon);
+        void setSystrayTitle(const QString &);
+        void systrayActivated(QSystemTrayIcon::ActivationReason);
+        void systrayMsgClicked();
+
+    private:
+        MainWindow *mainWindow() const;
+        void setUi(Ui::MainWindow *ui);
+};
+
+#endif

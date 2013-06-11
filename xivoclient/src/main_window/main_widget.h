@@ -27,43 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef FUNCTESTS
+#ifndef __MAIN_WIDGET_H__
+#define __MAIN_WIDGET_H__
 
-#include <login_widget/login_widget.h>
-
-#include "remote_control.h"
+#include <QWidget>
 
 
-QVariantMap RemoteControl::get_login_screen_infos()
+class MainWidget : public QWidget
 {
-    QVariantMap args;
+    Q_OBJECT
 
-    args["login"] = this->m_login_widget->ui.userlogin->text();
-    args["password"] = this->m_login_widget->ui.password->text();
-
-    args["show_agent_option"] = true;
-    if (this->m_login_widget->ui.agentphonenumber_label->isHidden() \
-        && this->m_login_widget->ui.agentphonenumber->isHidden() \
-        && this->m_login_widget->ui.agent_options->isHidden()) {
-        args["show_agent_option"] = false;
-    }
-
-    args["agentphonenumber"] = this->m_login_widget->ui.agentphonenumber->text();
-    int current_index = this->m_login_widget->ui.agent_options->currentIndex();
-    QString current_agent_option;
-    if(current_index == 0) {
-        current_agent_option = "no";
-    }
-    else if(current_index == 1) {
-        current_agent_option = "unlogged";
-    }
-    else if(current_index == 2) {
-        current_agent_option = "logged";
-    }
-
-    args["agent_option"] = current_agent_option;
-
-    return args;
-}
+    public:
+        MainWidget(QWidget *parent);
+        ~MainWidget();
+};
 
 #endif

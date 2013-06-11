@@ -1715,6 +1715,9 @@ Continuare?</translation>
         <source>QOS</source>
         <translation>QOS</translation>
     </message>
+</context>
+<context>
+    <name>MainWindow</name>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="71"/>
         <source>Ratio (Calls answered in less than X sec / Number of calls answered)</source>

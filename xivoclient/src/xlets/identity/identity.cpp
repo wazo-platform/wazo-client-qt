@@ -97,8 +97,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_icon_user->setContentsMargins(0, 0, 5, 0);
 
     m_agent = new IdentityAgent(this);
-    connect(m_agent, SIGNAL(setSystrayIcon(const QString &)),
-            this, SIGNAL(setSystrayIcon(const QString &)));
+    connect(m_agent, SIGNAL(setAppIcon(const QString &)),
+            this, SIGNAL(setAppIcon(const QString &)));
     m_agent->setContentsMargins(5, 0, 5, 0);
     m_agent->hide();
 
@@ -350,6 +350,6 @@ void IdentityDisplay::idxChanged(int newidx)
 
 void IdentityDisplay::doGUIConnects(QWidget * mainwindow)
 {
-    connect( this, SIGNAL(setSystrayIcon(const QString &)),
-             mainwindow, SLOT(setSystrayIcon(const QString &)) );
+    connect( this, SIGNAL(setAppIcon(const QString &)),
+             mainwindow, SLOT(setAppIcon(const QString &)) );
 }

@@ -27,34 +27,57 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SYSTRAY_MANAGER_H__
-#define __SYSTRAY_MANAGER_H__
+#ifndef _ASSEMBLER_H_
+#define _ASSEMBLER_H_
 
-#include "application_status_icon.h"
+#include "main_window/main_window.h"
+#include "main_window/central_widget.h"
+#include "main_window/main_widget.h"
+#include "main_window/menu_availability.h"
+#include "main_window/statusbar.h"
+#include "main_window/system_tray_icon.h"
+#include "main_window/xlet_dispatcher.h"
+#include "login_widget/login_widget.h"
+#include "config_widget/config_widget.h"
 
-class ApplicationStatusIconManager;
-class QIcon;
+class MainWindow;
+class CentralWidget;
+class MainWidget;
+class ConfigWidget;
+class MenuAvailability;
+class Statusbar;
+class SystemTrayIcon;
+class LoginWidget;
+class XletDispatcher;
 
-template <class _QSystemTrayIcon>
-class SystrayManagerTpl
+class Assembler
 {
     public:
-        SystrayManagerTpl(const ApplicationStatusIconManager & application_status_icon_manager,
-                          _QSystemTrayIcon & qt_system_tray_icon);
-        void changeIcon(ApplicationStatusIcon new_icon_id);
-        void showNotification(const QString & title, const QString & message);
+        Assembler();
+        virtual ~Assembler();
+
+        MainWindow *mainWindow();
+        ConfigWidget *configWidget();
+        CentralWidget *centralWidget();
+        LoginWidget *loginWidget();
+        MainWidget *mainWidget();
+        MenuAvailability *menuAvailability();
+        Statusbar *statusbar();
+        SystemTrayIcon *systemTrayIcon();
+        XletDispatcher *xletDispatcher();
 
     private:
-        const ApplicationStatusIconManager & m_application_status_icon_manager;
-        _QSystemTrayIcon & m_qt_system_tray_icon;
+        MainWindow *m_main_window;
+        ConfigWidget *m_config_widget;
+        CentralWidget *m_central_widget;
+        LoginWidget *m_login_widget;
+        MainWidget *m_main_widget;
+        MenuAvailability *m_menu_availabilty;
+        Statusbar *m_statusbar;
+        SystemTrayIcon *m_system_tray_icon;
+        XletDispatcher *m_xlet_dispatcher;
 };
 
-typedef SystrayManagerTpl<QSystemTrayIcon> SystrayManager;
+extern Assembler *assembler;
 
-/* Template class need to be implemented in the same place that it is defined.
- * This is because the compiler can't know with which type the template will be
- * used, this will be detected on compilation.
- */
-#include "systray_manager.cpp"
-
-#endif
+#endif /* _ASSEMBLER_H_ */

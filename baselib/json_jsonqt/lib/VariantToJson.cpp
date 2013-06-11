@@ -36,9 +36,8 @@ namespace JsonQt
 			case QVariant::StringList:
 				return parseStringList(value.toStringList());
 			case QVariant::Invalid:
-				return "null";
 			default:
-				return QString();
+				return "null";
 		}
 	}
 
@@ -51,7 +50,7 @@ namespace JsonQt
 		}
 		return "[" + parts.join(", ") + "]";
 	}
-	
+
 	QString VariantToJson::parseStringList(const QStringList& stringList)
 	{
 		QVariantList variantList;

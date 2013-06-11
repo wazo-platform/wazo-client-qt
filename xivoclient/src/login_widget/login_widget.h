@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,17 +27,41 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __APPLICATION_STATUS_ICON_MANAGER_H__
-#define __APPLICATION_STATUS_ICON_MANAGER_H__
+#ifndef __LOGINWIDGET_H__
+#define __LOGINWIDGET_H__
 
-#include "application_status_icon.h"
+#include <QWidget>
 
-class QIcon;
+#include <xletlib/functests.h>
+#include <ui_login_widget.h>
 
-class ApplicationStatusIconManager
+
+class CentralWidget;
+class MainWindow;
+
+
+class LoginWidget: public QWidget
 {
+    Q_OBJECT
+    FUNCTESTED
+
     public:
-       virtual QIcon getApplicationStatusIcon(ApplicationStatusIcon icon) const;
+        LoginWidget(MainWindow *main_window, QWidget *parent);
+        ~LoginWidget();
+        QVariantMap getConfig();
+        void saveConfig();
+
+    private slots:
+        void initialize();
+        void syncAgentLoginWidgets();
+        void saveConfigAndStart();
+        void confUpdated();
+
+    private:
+        void setConfig();
+        void setAgentLoginWidgetsVisible();
+
+        Ui::LoginWidget ui;
 };
 
 #endif

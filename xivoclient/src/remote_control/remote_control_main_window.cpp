@@ -1,5 +1,6 @@
+
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,34 +28,17 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-#include <QIcon>
+#ifdef FUNCTESTS
 
-#include "application_status_icon_manager.h"
+#include "remote_control.h"
 
-// Template class : the header includes the implementation
-// #include "systray_manager.h"
-
-template <class _QSystemTrayIcon>
-SystrayManagerTpl<_QSystemTrayIcon>::SystrayManagerTpl(const ApplicationStatusIconManager & application_status_icon_manager,
-                                  _QSystemTrayIcon & qt_system_tray_icon)
-    : m_application_status_icon_manager(application_status_icon_manager),
-      m_qt_system_tray_icon(qt_system_tray_icon)
+QVariantMap RemoteControl::get_main_window_infos()
 {
+    QVariantMap args;
+
+    args["visible"] = this->m_main_window->isVisible();
+
+    return args;
 }
 
-template <class _QSystemTrayIcon>
-void SystrayManagerTpl<_QSystemTrayIcon>::changeIcon(ApplicationStatusIcon new_icon_id)
-{
-    QIcon new_icon = this->m_application_status_icon_manager.getApplicationStatusIcon(new_icon_id);
-    this->m_qt_system_tray_icon.setIcon(new_icon);
-}
-
-template <class _QSystemTrayIcon>
-void SystrayManagerTpl<_QSystemTrayIcon>::showNotification(const QString & title, const QString & message)
-{
-    this->m_qt_system_tray_icon.showMessage(title,
-                                            message,
-                                            QSystemTrayIcon::Information,
-                                            5000);
-}
+#endif

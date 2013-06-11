@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,7 +27,41 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "context.h"
+#ifndef __STATUSBAR_H__
+#define __STATUSBAR_H__
 
-QMap<QString, void* > Context::type_instance_map;
-Context Context::instance;
+#include <QStatusBar>
+
+#include <xletlib/functests.h>
+
+class MainWindow;
+class QLabel;
+
+class Statusbar : public QStatusBar
+{
+    Q_OBJECT
+    FUNCTESTED
+
+    public:
+        Statusbar(MainWindow *parent);
+        ~Statusbar();
+
+    private slots:
+        void initialize();
+        void setStatusLogged();
+        void setStatusNotLogged();
+        void confUpdated();
+
+    private:
+        bool shouldDisplayProfile() const;
+        QStatusBar *m_statusbar;
+
+        QLabel *m_status;  //!< status indicator
+        QLabel *m_padlock; //!< padlock icon (SSL indicator)
+        QLabel *m_config_profile; //!< profile indicator (status bar)
+
+        QPixmap m_pixmap_disconnected;
+        QPixmap m_pixmap_connected;
+};
+
+#endif

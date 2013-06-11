@@ -1,6 +1,6 @@
 
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -30,38 +30,17 @@
 
 #ifdef FUNCTESTS
 
-#include <QModelIndex>
-#include <QVariant>
-
-#include "xlets/conference/conference.h"
-#include "xlets/conference/conflist.h"
 #include "remote_control.h"
 
-QVariantMap RemoteControl::get_conference_room_infos()
+QVariantMap RemoteControl::get_menu_availability_infos()
 {
     QVariantMap args;
-    XletConference* conference_xlet = this->get_xlet<XletConference>("conference");
-    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
 
-    args["conference_xlet"] = conference_xlet != NULL;
-    args["conflist_model"] = conflist_model != NULL;
+    args["enable"] = this->m_menu_availability->m_menu_availability->isEnabled();
 
     QVariantList content;
-    QVariantMap header_data;
-    header_data["name"] = ConfListModel::NAME;
-    header_data["number"] = ConfListModel::NUMBER;
-    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConfListModel::STARTED_SINCE;
-
-    int nb_rows = conflist_model->rowCount(QModelIndex());
-    for (int row = 0; row < nb_rows; row++) {
-        QVariantMap header_value;
-        QVariantMap::const_iterator i;
-        for(i = header_data.begin(); i != header_data.end(); ++i) {
-            header_value[i.key()] = getValueInModel(conflist_model, row, i.value().toInt());
-        }
-        content.append(header_value);
+    foreach (QString status, this->m_menu_availability->m_availabilitys.keys()) {
+        content.append(status);
     }
     args["content"] = content;
 

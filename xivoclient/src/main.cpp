@@ -39,7 +39,8 @@
 #include <baseengine.h>
 #include <phonenumber.h>
 
-#include "mainwidget.h"
+#include "assembler.h"
+#include "main_window/main_window.h"
 #include "powerawareapplication.h"
 #include "fileopeneventhandler.h"
 
@@ -47,10 +48,9 @@
 #include "remote_control/remote_control.h"
 #endif
 
-#include "context.h"
-
 #include "main.h"
 
+const QString &str_socket_arg_prefix = "socket:";
 
 // argc has to be a reference, or QCoreApplication will segfault
 ExecObjects init_xivoclient(int & argc, char **argv)
@@ -74,11 +74,17 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QString msg = "";
     for (int i = 1; i < argc; i ++) {
         QString arg_str(argv[i]);
-        if(! PhoneNumber::isURI(arg_str))
+        if (arg_str.length() == 0 || arg_str.contains(str_socket_arg_prefix)) {
+            continue;
+        }
+        if(! PhoneNumber::isURI(arg_str)) {
             profile = arg_str;
-        else
+        } else {
             msg = PhoneNumber::extract(arg_str);
+        }
     }
+
+    qDebug() << "Selected profile: " << profile;
 
     if (! msg.isEmpty()) {
         // send message if there is an argument.
@@ -127,16 +133,22 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     QString qsskind = b_engine->getConfig("qss").toString();
 
+    qDebug() << "Selected style: " << qsskind;
+
     QFile qssFile(QString(":/%1.qss").arg(qsskind));
     if(qssFile.open(QIODevice::ReadOnly)) {
         app->setStyleSheet(qssFile.readAll());
     }
-
-    MainWidget *window = new MainWidget(Context::get<QSystemTrayIcon>(),
-                                        Context::get<SystrayManager>());
+    assembler = new Assembler();
+    if (! assembler) {
+        qDebug() << Q_FUNC_INFO << "Failed to instantiate the Assembler";
+        return ret;
+    }
+    MainWindow *main_window = assembler->mainWindow();
+    main_window->initialize();
 
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
-    app->setActivationWindow(window, activate_on_tel);
+    app->setActivationWindow(main_window, activate_on_tel);
     fileOpenHandler->setActivationWindow(activate_on_tel);
 
     app->setQuitOnLastWindowClosed(false);
@@ -154,12 +166,21 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                      b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
 
     ret.app = app;
-    ret.win = window;
+    ret.win = main_window;
     ret.baseengine = b_engine;
     ret.initOK = true;
 
 #ifdef FUNCTESTS
-    ret.rc = new RemoteControl(ret);
+    QString socket = "/tmp/xc-default.sock";
+    for (int i = 1; i < argc; i ++) {
+        QString arg_str(argv[i]);
+        if (arg_str.contains(str_socket_arg_prefix)) {
+            socket = arg_str.replace(str_socket_arg_prefix, "");
+        }
+    }
+    qDebug() << "Selected RC socket: " << socket;
+
+    ret.rc = new RemoteControl(ret, socket);
 #endif
 
     return ret;
@@ -167,7 +188,8 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
 int run_xivoclient(ExecObjects exec_obj)
 {
-    if (exec_obj.initOK == true) {
+    bool should_start = exec_obj.initOK == true && exec_obj.app != NULL;
+    if (should_start) {
         return exec_obj.app->exec();
     } else {
         return 1;
@@ -176,15 +198,18 @@ int run_xivoclient(ExecObjects exec_obj)
 
 void clean_xivoclient(ExecObjects exec_obj)
 {
-
-    delete exec_obj.win;
-
-    // BaseEngine is already deleted by MainWidget
-
 #ifdef FUNCTESTS
-    delete exec_obj.rc;
+    if (execexec_obj.rc) {
+        delete exec_obj.rc;
+    }
 #endif
-    delete exec_obj.app;
+    if (assembler) {
+        delete assembler;
+        assembler = NULL;
+    }
+    if (exec_obj.app) {
+        delete exec_obj.app;
+    }
 }
 
 int main(int argc, char **argv)

@@ -65,7 +65,7 @@ class IdentityDisplay : public XLet
     signals:
         void setAvailState(const QString &, bool);
         void changeWatchedAgent(const QString &, bool);
-        void setSystrayIcon(const QString &);
+        void setAppIcon(const QString &);
 
     private:
         void svcSummary();

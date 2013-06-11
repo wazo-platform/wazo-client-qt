@@ -1688,6 +1688,9 @@ Are you sure ?</source>
         <source>Efficiency</source>
         <translation>効率</translation>
     </message>
+</context>
+<context>
+    <name>MainWindow</name>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="69"/>
         <source>Ratio (Answered) / (Received)</source>

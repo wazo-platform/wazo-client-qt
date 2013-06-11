@@ -27,6 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <assembler.h>
 
 #include "customerinfopanel.h"
 
@@ -51,7 +52,7 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
     m_glayout->addWidget( m_tabs, 0, 0 );
     m_glayout->setRowStretch(0, 1);
     m_glayout->setColumnStretch(0, 1);
-    
+
     m_tablimit = b_engine->getConfig("guioptions.sheet-tablimit").toUInt();
     m_autourl_allowed = b_engine->getConfig("guioptions.autourl_allowed").toBool();
 }
@@ -186,5 +187,5 @@ void CustomerInfoPanel::doGUIConnects(QWidget * mainwindow)
     connect(this, SIGNAL(newPopup(const QString &, const QHash<QString, QString> &, const QString &)),
             mainwindow, SLOT(customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &)));
     connect(this, SIGNAL(showWidgetOnTop(QWidget *)),
-            mainwindow, SLOT(showWidgetOnTop(QWidget *)));
+            assembler->xletDispatcher(), SLOT(showWidgetOnTop(QWidget *)));
 }

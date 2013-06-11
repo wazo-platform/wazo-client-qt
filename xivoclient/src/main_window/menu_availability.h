@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2013, Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,50 +27,45 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest/QtTest>
-#include <QObject>
-#include <QIcon>
-#include <QSystemTrayIcon>
+#ifndef __MENU_AVAILABILITY_H__
+#define __MENU_AVAILABILITY_H__
 
-#include <gmock/gmock.h>
+#include <QMenu>
+#include <xletlib/functests.h>
 
-#include <application_status_icon_manager.h>
+class MainWindow;
+class QAction;
 
-using namespace testing;
-
-class TestApplicationStatusIconManager: public QObject
+class MenuAvailability : public QMenu
 {
     Q_OBJECT
+    FUNCTESTED
+
+    public:
+        MenuAvailability(MainWindow *parent);
+        ~MenuAvailability();
 
     private slots:
-    void testGetApplicationStatusIconBlack()
-    {
-        ApplicationStatusIconManager application_status_icon_manager;
+        void checksAvailState();
+        void updatePresence();
+        void setAvailability();
+        void updateUserStatus(const QString &);
+        void setStatusNotLogged();
+        void setStatusLogged();
+        void confUpdated();
 
-        QIcon new_icon = application_status_icon_manager.getApplicationStatusIcon(icon_disconnected);
+    private:
+        void setMenuAvailabilityEnabled(bool);
+        void setEnabledMenus(const QString & state);
+        void clearPresence();
+        void syncPresence();
+        bool isValidPresence(const QString &presence) const;
+        void addNewPresence(const QString &state, const QString &name);
+        QString getCurrentState() const;
 
-        QCOMPARE(new_icon.pixmap(1000).toImage(),
-                 QIcon(":images/xivoicon-black.png").pixmap(1000).toImage());
-    }
-
-    void testGetApplicationStatusIconGreen()
-    {
-        ApplicationStatusIconManager application_status_icon_manager;
-
-        QIcon new_icon = application_status_icon_manager.getApplicationStatusIcon(icon_agent_logged);
-
-        QCOMPARE(new_icon.pixmap(1000).toImage(),
-                 QIcon(":images/xivoicon-green.png").pixmap(1000).toImage());
-    }
+        QMenu *m_menu_availability;
+        QHash<QString, QAction *>m_availabilities;
+        QActionGroup *m_availability_action_group;
 };
 
-int main (int argc, char *argv[])
-{
-    ::testing::GTEST_FLAG(throw_on_failure) = true;
-    ::testing::InitGoogleMock(&argc, argv);
-    QApplication app(argc, argv);
-    TestApplicationStatusIconManager test;
-    QTest::qExec(&test, argc, argv);
-}
-
-#include <test_application_status_icon_manager.moc>
+#endif

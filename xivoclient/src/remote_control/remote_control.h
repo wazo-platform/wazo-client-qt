@@ -38,8 +38,13 @@
 #include <exception>
 
 #include <main.h>
-
-#include "xlets/conference/conflist.h"
+#include <assembler.h>
+#include <login_widget/login_widget.h>
+#include <config_widget/config_widget.h>
+#include <main_window/main_widget.h>
+#include <main_window/central_widget.h>
+#include <main_window/statusbar.h>
+#include <xlets/conference/conflist.h>
 
 using namespace std;
 
@@ -73,33 +78,8 @@ class RemoteControl : public QObject
     Q_OBJECT
 
     public:
-        RemoteControl(ExecObjects);
-        void pause(unsigned);
+        RemoteControl(ExecObjects, QString &socket);
         ~RemoteControl();
-
-    public:
-        void i_stop_the_xivo_client();
-        void i_go_to_the_xivo_client_configuration();
-        void i_close_the_xivo_client_configuration();
-        void configure(const QVariantList &);
-        void i_log_in_the_xivo_client();
-        void i_log_out_of_the_xivo_client();
-        QVariantMap get_configuration();
-        QVariantMap get_login_screen_infos();
-        QVariantMap get_status_bar_infos();
-        QVariantMap get_xlets();
-        QVariantMap get_identity_infos();
-        QVariantMap get_queue_members_infos();
-        void set_queue_for_queue_members(const QVariantList &);
-        QVariantMap get_sheet_infos();
-        QVariantMap get_conference_room_infos();
-        QVariantMap get_switchboard_infos();
-        void set_search_for_directory(const QVariantList &);
-        QVariantMap get_remote_directory_infos();
-        void set_search_for_remote_directory(const QVariantList &);
-        void exec_double_click_on_number_for_name(const QVariantList &);
-
-        QVariantMap get_agent_list_infos();
 
     signals:
         void select_queue(const QString & queue_id);
@@ -130,6 +110,38 @@ class RemoteControl : public QObject
         QString getHeaderValueInModel(QAbstractItemModel* model, int section);
         QString prettyPrintMap(QVariantMap map);
 
+        void i_stop_the_xivo_client();
+        void i_go_to_the_xivo_client_configuration();
+        void i_close_the_xivo_client_configuration();
+        void configure(const QVariantList &);
+        void configureLoginWidget(const QVariantMap &args);
+        void configureConfigDialog(const QVariantMap &args);
+        void i_log_in_the_xivo_client();
+        void i_log_out_of_the_xivo_client();
+        void pause(unsigned);
+        QVariantMap get_configuration();
+        QVariantMap get_login_screen_infos();
+        QVariantMap get_status_bar_infos();
+        QVariantMap get_identity_infos();
+        QVariantMap get_queue_members_infos();
+        void set_queue_for_queue_members(const QVariantList &);
+        QVariantMap get_sheet_infos();
+        QVariantMap get_conference_room_infos();
+        QVariantMap get_switchboard_infos();
+        void set_search_for_directory(const QVariantList &);
+        QVariantMap get_remote_directory_infos();
+        void set_search_for_remote_directory(const QVariantList &);
+        void exec_double_click_on_number_for_name(const QVariantList &);
+        QVariantMap get_agent_list_infos();
+        QVariantMap get_menu_availability_infos();
+        QVariantMap get_main_window_infos();
+        QVariantMap is_logged();
+
+        //Xlets
+        template <class T>
+        T* get_xlet(const QString &xlet_name);
+        QVariantMap get_xlets();
+
         ExecObjects m_exec_obj;
         bool m_command_found;
         bool m_no_error;
@@ -137,7 +149,22 @@ class RemoteControl : public QObject
         QString m_socket_name;
         QLocalServer *m_server;
         QLocalSocket *m_client_cnx;
+
+        MainWindow *m_main_window;
+        MenuAvailability *m_menu_availability;
+        LoginWidget *m_login_widget;
+        CentralWidget *m_central_widget;
+        MainWidget *m_main_widget;
+        Statusbar *m_statusbar;
+        XletDispatcher *m_xlet_dispatcher;
+        SystemTrayIcon *m_system_tray_icon;
 };
+
+template <class T>
+T* RemoteControl::get_xlet(const QString &xlet_name)
+{
+    return static_cast<T*>(this->m_xlet_dispatcher->m_xlets[xlet_name]);
+}
 
 #endif /* ifdef FUNCTESTS */
 

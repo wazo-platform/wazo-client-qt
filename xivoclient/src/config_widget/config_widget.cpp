@@ -46,6 +46,7 @@
 #include <QDir>
 #include <QFrame>
 
+#include <assembler.h>
 #include <baseengine.h>
 #include <xivoconsts.h>
 #include <xletlib/warningwidget.h>
@@ -53,22 +54,28 @@
 #include "config_widget.h"
 
 
-ConfigWidget::ConfigWidget(QWidget *parent)
+ConfigWidget::ConfigWidget(MainWindow *parent)
     : QDialog(parent)
 {
     this->m_config = b_engine->getConfig();
 
     this->ui.setupUi(this);
-
-    this->load_values();
-    this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
-    connect(this->ui.buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(this->ui.buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    connect(this->ui.reset_docks, SIGNAL(pressed()), parent, SLOT(resetState()));
+    this->connect(this->ui.buttonBox, SIGNAL(accepted()), SLOT(accept()));
+    this->connect(this->ui.buttonBox, SIGNAL(rejected()), SLOT(reject()));
+    parent->connect(this->ui.reset_docks, SIGNAL(pressed()), SLOT(restoreDefaultState()));
+    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
 }
 
 ConfigWidget::~ConfigWidget()
 {
+}
+
+void ConfigWidget::initialize()
+{
+    this->m_config = b_engine->getConfig();
+    this->load_values();
+    this->setModal(true);
+    this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
 }
 
 void ConfigWidget::load_values()

@@ -1776,6 +1776,9 @@ queues parameters for the Stats on slice:</source>
         <source>Window (s)</source>
         <translation>Venster(s)</translation>
     </message>
+</context>
+<context>
+    <name>MainWindow</name>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="193"/>
         <source>The window is the period of time used to compute the statistics</source>

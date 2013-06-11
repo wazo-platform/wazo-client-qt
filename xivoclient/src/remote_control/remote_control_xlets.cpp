@@ -27,14 +27,28 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __APPLICATION_STATUS_ICON_H__
-#define __APPLICATION_STATUS_ICON_H__
+#ifdef FUNCTESTS
 
-enum ApplicationStatusIcon {
-    icon_disconnected,
-    icon_connected,
-    icon_agent_logged,
-    icon_agent_paused
-};
+#include <baseengine.h>
+
+#include "remote_control.h"
+
+
+QVariantMap RemoteControl::get_xlets()
+{
+    QVariantMap args;
+    QVariantList return_value;
+    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_dock.keys()) {
+        return_value.append(xlet_name);
+    }
+    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_grid.keys()) {
+        return_value.append(xlet_name);
+    }
+    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_tab.keys()) {
+        return_value.append(xlet_name);
+    }
+    args["xlets"] = return_value;
+    return args;
+}
 
 #endif
