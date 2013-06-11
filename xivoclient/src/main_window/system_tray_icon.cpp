@@ -61,6 +61,9 @@ void SystemTrayIcon::initialize()
 void SystemTrayIcon::setUi(Ui::MainWindow *ui)
 {
     QMenu *menu = new QMenu(QString("SystrayMenu"), this->mainWindow());
+    if (! menu) {
+        return;
+    }
     menu->addAction(ui->action_configure);
     menu->addSeparator();
     menu->addMenu(ui->menu_availability);
