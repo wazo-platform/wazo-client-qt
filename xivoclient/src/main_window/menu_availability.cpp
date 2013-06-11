@@ -76,14 +76,14 @@ void MenuAvailability::updatePresence()
     foreach (const QString & presencestate, presencemap.keys()) {
         const QVariantMap & pdetails = presencemap.value(presencestate).toMap();
         const QString & longname = pdetails.value("longname").toString();
-            if (! this->m_availabilitys.contains(presencestate)) {
-                this->m_availabilitys[presencestate] = new QAction(longname, this);
-                this->m_availabilitys[presencestate]->setProperty("availstate", presencestate);
-                connect(this->m_availabilitys[presencestate], SIGNAL(triggered()), this, SLOT(setAvailability()));
-                this->m_availability_action_group->addAction(this->m_availabilitys[presencestate]);
-            }
+        if (! this->m_availabilitys.contains(presencestate)) {
+            this->m_availabilitys[presencestate] = new QAction(longname, this);
+            this->m_availabilitys[presencestate]->setProperty("availstate", presencestate);
+            connect(this->m_availabilitys[presencestate], SIGNAL(triggered()), this, SLOT(setAvailability()));
+            this->m_availability_action_group->addAction(this->m_availabilitys[presencestate]);
         }
-        this->m_menu_availability->addActions(this->m_availability_action_group->actions());
+    }
+    this->m_menu_availability->addActions(this->m_availability_action_group->actions());
     this->syncPresence();
 }
 
