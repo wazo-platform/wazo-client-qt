@@ -107,12 +107,7 @@ void MenuAvailability::addNewPresence(const QString &state, const QString &name)
  */
 void MenuAvailability::syncPresence()
 {
-    const UserInfo * user = b_engine->getXivoClientUser();
-    if (! user) {
-        return;
-    }
-
-    const QString & state = user->availstate();
+    const QString & state = this->getCurrentState();
     if (this->isValidPresence(state)) {
         this->checksAvailState();
     }
@@ -143,13 +138,20 @@ void MenuAvailability::clearPresence()
  */
 void MenuAvailability::checksAvailState()
 {
-    if (const UserInfo * u = b_engine->getXivoClientUser()) {
-        const QString & state = u->availstate();
-        if (! state.isEmpty() && this->m_availabilities.contains(state)) {
-            this->setEnabledMenus(state);
-            this->m_availabilities[state]->setChecked(true);
-        }
+    const QString & state = this->getCurrentState();
+    if (this->isValidPresence(state)) {
+        this->setEnabledMenus(state);
+        this->m_availabilities[state]->setChecked(true);
     }
+}
+
+QString MenuAvailability::getCurrentState() const
+{
+    const UserInfo *user = b_engine->getXivoClientUser();
+    if (! user) {
+        return NULL;
+    }
+    return user->availstate();
 }
 
 /*!
@@ -198,9 +200,6 @@ void MenuAvailability::setMenuAvailabilityEnabled(bool enabled)
 void MenuAvailability::updateUserStatus(const QString & userxid)
 {
     if (b_engine->getFullId() == userxid) {
-        const UserInfo * user = b_engine->getXivoClientUser();
-        if (user && b_engine->getOptionsUserStatus().size()) {
-            this->syncPresence();
-        }
+        this->syncPresence();
     }
 }
