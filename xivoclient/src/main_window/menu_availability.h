@@ -62,6 +62,7 @@ class MenuAvailability : public QMenu
         void setEnabledMenus(const QString & state);
         void clearPresence();
         void syncPresence();
+        bool isValidPresence(const QString &presence) const;
 
         QMenu *m_menu_availability;
         QHash<QString, QAction *>m_availabilitys;

@@ -76,7 +76,7 @@ void MenuAvailability::updatePresence()
     foreach (const QString & presencestate, presencemap.keys()) {
         const QVariantMap & pdetails = presencemap.value(presencestate).toMap();
         const QString & longname = pdetails.value("longname").toString();
-        if (! this->m_availabilitys.contains(presencestate)) {
+        if (! this->isValidPresence(presencestate)) {
             this->m_availabilitys[presencestate] = new QAction(longname, this);
             this->m_availabilitys[presencestate]->setProperty("availstate", presencestate);
             connect(this->m_availabilitys[presencestate], SIGNAL(triggered()), this, SLOT(setAvailability()));
@@ -92,12 +92,20 @@ void MenuAvailability::updatePresence()
  */
 void MenuAvailability::syncPresence()
 {
-    if (const UserInfo * u = b_engine->getXivoClientUser()) {
-        const QString & state = u->availstate();
-        if (this->m_availabilitys.contains(state)) {
-            this->checksAvailState();
-        }
+    const UserInfo * user = b_engine->getXivoClientUser();
+    if (! user) {
+        return;
     }
+
+    const QString & state = user->availstate();
+    if (this->isValidPresence(state)) {
+        this->checksAvailState();
+    }
+}
+
+bool MenuAvailability::isValidPresence(const QString &presence) const
+{
+    return this->m_availabilitys.contains(presence);
 }
 
 void MenuAvailability::clearPresence()
