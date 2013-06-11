@@ -42,11 +42,11 @@ Statusbar::Statusbar(MainWindow *parent)
       m_pixmap_disconnected(QPixmap(":/images/disconnected.png").scaledToHeight(18, Qt::SmoothTransformation)),
       m_pixmap_connected(QPixmap(":/images/connected.png").scaledToHeight(18, Qt::SmoothTransformation))
 {
-    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
-    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
-    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
-    this->connect(b_engine, SIGNAL(emitTextMessage(const QString &)), SLOT(showMessage(const QString &)));
-    this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
+    this->connect(b_engine, SIGNAL(logged()), this, SLOT(setStatusLogged()));
+    this->connect(b_engine, SIGNAL(delogged()), this, SLOT(setStatusNotLogged()));
+    this->connect(b_engine, SIGNAL(settingsChanged()), this, SLOT(confUpdated()));
+    this->connect(b_engine, SIGNAL(emitTextMessage(const QString &)), this, SLOT(showMessage(const QString &)));
+    this->connect(parent, SIGNAL(initialized()), this, SLOT(initialize()));
 }
 
 Statusbar::~Statusbar()
