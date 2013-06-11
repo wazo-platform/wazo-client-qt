@@ -33,19 +33,23 @@
 
 #include "remote_control.h"
 
+typedef QPair<QString, QString> XletAndOption;
 
 QVariantMap RemoteControl::get_xlets()
 {
     QVariantMap args;
     QVariantList return_value;
-    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_dock.keys()) {
-        return_value.append(xlet_name);
+    foreach (const XletAndOption &xlet_and_option, this->m_xlet_dispatcher->m_xlets_dock) {
+        const QString &name = xlet_and_option.first;
+        return_value.append(name);
     }
-    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_grid.keys()) {
-        return_value.append(xlet_name);
+    foreach (const XletAndOption &xlet_and_option, this->m_xlet_dispatcher->m_xlets_grid) {
+        const QString &name = xlet_and_option.first;
+        return_value.append(name);
     }
-    foreach (QString xlet_name, this->m_xlet_dispatcher->m_xlets_tab.keys()) {
-        return_value.append(xlet_name);
+    foreach (const XletAndOption &xlet_and_option, this->m_xlet_dispatcher->m_xlets_tab) {
+        const QString &name = xlet_and_option.first;
+        return_value.append(name);
     }
     args["xlets"] = return_value;
     return args;

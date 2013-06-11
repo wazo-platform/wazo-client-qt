@@ -39,7 +39,7 @@ QVariantMap RemoteControl::get_menu_availability_infos()
     args["enable"] = this->m_menu_availability->m_menu_availability->isEnabled();
 
     QVariantList content;
-    foreach (QString status, this->m_menu_availability->m_availabilitys.keys()) {
+    foreach (QString status, this->m_menu_availability->m_availabilities.keys()) {
         content.append(status);
     }
     args["content"] = content;
