@@ -28,10 +28,11 @@
  */
 
 #include <baseengine.h>
-#include <xivoconsts.h>
-#include <xletfactory.h>
+#include <QAction>
 
 #include "menu_availability.h"
+#include "main_window.h"
+#include <storage/userinfo.h>
 
 
 MenuAvailability::MenuAvailability(MainWindow *parent)

@@ -31,13 +31,10 @@
 #define __MENU_AVAILABILITY_H__
 
 #include <QMenu>
-#include <QDebug>
-
 #include <xletlib/functests.h>
 
-#include "main_window/main_window.h"
-
 class MainWindow;
+class QAction;
 
 class MenuAvailability : public QMenu
 {
