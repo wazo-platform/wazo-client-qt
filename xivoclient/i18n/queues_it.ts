@@ -56,7 +56,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation>Collegato</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>

@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Unlogged</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Disconnesso</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
