@@ -34,8 +34,7 @@
 
 
 SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
-    : QSystemTrayIcon(parent),
-      m_main_window(parent)
+    : QSystemTrayIcon(parent)
 {
     this->connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
     this->connect(this, SIGNAL(messageClicked()), this, SLOT(systrayMsgClicked()));
@@ -48,15 +47,20 @@ SystemTrayIcon::~SystemTrayIcon()
 {
 }
 
+MainWindow *SystemTrayIcon::mainWindow() const
+{
+    return static_cast<MainWindow *>(this->parent());
+}
+
 void SystemTrayIcon::initialize()
 {
-    this->setUi(this->m_main_window->ui);
+    this->setUi(this->mainWindow()->ui);
     this->show();
 }
 
 void SystemTrayIcon::setUi(Ui::MainWindow *ui)
 {
-    QMenu *menu = new QMenu(QString("SystrayMenu"), this->m_main_window);
+    QMenu *menu = new QMenu(QString("SystrayMenu"), this->mainWindow());
     menu->addAction(ui->action_configure);
     menu->addSeparator();
     menu->addMenu(ui->menu_availability);
@@ -91,11 +95,11 @@ void SystemTrayIcon::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) {
         #ifndef Q_WS_MAC
-        qDebug() << "visible " << this->m_main_window->isVisible() << "toggling visibility";
-        if(this->m_main_window->isVisible()) {
-            this->m_main_window->hideWindow();
+        qDebug() << "visible " << this->mainWindow()->isVisible() << "toggling visibility";
+        if(this->mainWindow()->isVisible()) {
+            this->mainWindow()->hideWindow();
         } else {
-            this->m_main_window->showWindow();
+            this->mainWindow()->showWindow();
         }
         #endif
     }
@@ -107,5 +111,5 @@ void SystemTrayIcon::systrayActivated(QSystemTrayIcon::ActivationReason reason)
  */
 void SystemTrayIcon::systrayMsgClicked()
 {
-    this->m_main_window->showWindow();
+    this->mainWindow()->showWindow();
 }

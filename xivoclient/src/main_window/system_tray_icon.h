@@ -53,9 +53,8 @@ class SystemTrayIcon : public QSystemTrayIcon
         void systrayMsgClicked();
 
     private:
+        MainWindow *mainWindow() const;
         void setUi(Ui::MainWindow *ui);
-
-        MainWindow *m_main_window;
 };
 
 #endif
