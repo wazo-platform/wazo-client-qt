@@ -99,7 +99,7 @@ void MenuAvailability::addNewPresence(const QString &state, const QString &name)
     connect(new_presence, SIGNAL(triggered()), this, SLOT(setAvailability()));
     this->m_availability_action_group->addAction(new_presence);
 
-    this->m_availabilitys[state] = new_presence;
+    this->m_availabilities[state] = new_presence;
 }
 
 /*!
@@ -120,17 +120,17 @@ void MenuAvailability::syncPresence()
 
 bool MenuAvailability::isValidPresence(const QString &presence) const
 {
-    return this->m_availabilitys.contains(presence);
+    return this->m_availabilities.contains(presence);
 }
 
 void MenuAvailability::clearPresence()
 {
-    foreach (QAction *action, this->m_availabilitys) {
+    foreach (QAction *action, this->m_availabilities) {
         disconnect(action, SIGNAL(triggered()), this, SLOT(setAvailability()));
         this->m_availability_action_group->removeAction(action);
         delete action;
     }
-    this->m_availabilitys.clear();
+    this->m_availabilities.clear();
     this->m_menu_availability->clear();
 }
 
@@ -145,9 +145,9 @@ void MenuAvailability::checksAvailState()
 {
     if (const UserInfo * u = b_engine->getXivoClientUser()) {
         const QString & state = u->availstate();
-        if (! state.isEmpty() && this->m_availabilitys.contains(state)) {
+        if (! state.isEmpty() && this->m_availabilities.contains(state)) {
             this->setEnabledMenus(state);
-            this->m_availabilitys[state]->setChecked(true);
+            this->m_availabilities[state]->setChecked(true);
         }
     }
 }
@@ -161,10 +161,10 @@ void MenuAvailability::setEnabledMenus(const QString & state)
     const QVariantMap & states = b_engine->getOptionsUserStatus();
     if (states.contains(state)) {
         const QStringList & allowed = states.value(state).toMap().value("allowed").toStringList();
-        foreach (const QString & presence, this->m_availabilitys.keys()) {
+        foreach (const QString & presence, this->m_availabilities.keys()) {
             bool enabled = allowed.contains(presence);
-            this->m_availabilitys[presence]->setCheckable(enabled);
-            this->m_availabilitys[presence]->setEnabled(enabled);
+            this->m_availabilities[presence]->setCheckable(enabled);
+            this->m_availabilities[presence]->setEnabled(enabled);
         }
     }
 }

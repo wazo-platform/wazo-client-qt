@@ -66,7 +66,7 @@ class MenuAvailability : public QMenu
         void addNewPresence(const QString &state, const QString &name);
 
         QMenu *m_menu_availability;
-        QHash<QString, QAction *>m_availabilitys;
+        QHash<QString, QAction *>m_availabilities;
         QActionGroup *m_availability_action_group;
 };
 
