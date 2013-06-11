@@ -31,19 +31,14 @@
 #define __MAIN_WIDGET_H__
 
 #include <QWidget>
-#include <QtGui>
-#include <QList>
 
-#include "central_widget.h"
-
-class CentralWidget;
 
 class MainWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        MainWidget(CentralWidget *parent);
+        MainWidget(QWidget *parent);
         ~MainWidget();
 };
 

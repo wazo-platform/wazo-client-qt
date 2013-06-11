@@ -27,14 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-
-#include <baseengine.h>
-
 #include "main_widget.h"
 
 
-MainWidget::MainWidget(CentralWidget *parent)
+MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
 {
 }
