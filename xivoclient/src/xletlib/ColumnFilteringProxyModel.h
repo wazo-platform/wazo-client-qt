@@ -27,25 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ABSTRACT_TABLE_VIEW_H__
-#define __ABSTRACT_TABLE_VIEW_H__
+#ifndef COLUMNFILTERINGPROXYMODEL_H_
+#define COLUMNFILTERINGPROXYMODEL_H_
 
-#include <QTableView>
+
+#include <QSortFilterProxyModel>
+#include <QStringList>
 
 #include "xletlib_export.h"
 
-class XLETLIB_EXPORT AbstractTableView : public QTableView
-{
+class QContextMenuEvent;
+
+class XLETLIB_EXPORT ColumnFilteringProxyModel: public QSortFilterProxyModel {
+
     Q_OBJECT
 
     public:
-        AbstractTableView(QWidget *parent = NULL);
-        virtual ~AbstractTableView() = 0;
-        QSize sizeHint() const;
+        ColumnFilteringProxyModel(QWidget *parent);
+        virtual ~ColumnFilteringProxyModel();
+        virtual bool filterAcceptsColumn(int source_column, const QModelIndex & source_parent) const;
     public slots:
-        void headerRightClicked(QContextMenuEvent *e);
-    signals:
-        void headerContextMenuEvent(QContextMenuEvent *e);
+        virtual void columnHeaderRightClicked(QContextMenuEvent *e);
+        virtual void handleColumnClicked();
+    private:
+        bool isHidden(const QString &column_name) const;
+        QString columnName(int column) const;
+
+        QStringList getHeaders();
+        QStringList m_hidden_column;
 };
 
-#endif
+#endif /* COLUMNFILTERINGPROXYMODEL_H_ */

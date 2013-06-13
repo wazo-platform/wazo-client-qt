@@ -43,6 +43,7 @@
 #include <storage/queueinfo.h>
 
 #include "queues.h"
+#include "xletlib/ColumnFilteringProxyModel.h"
 
 Q_EXPORT_PLUGIN2(xletqueuesplugin, XLetQueuesPlugin);
 
@@ -72,13 +73,17 @@ XletQueues::XletQueues(QWidget *parent)
 
     m_model = new QueuesModel(this);
 
+    ColumnFilteringProxyModel *column_filter_proxy_model = new ColumnFilteringProxyModel(this);
+    column_filter_proxy_model->setSourceModel(m_model);
+
     m_proxyModel = new QueuesSortFilterProxyModel(this);
-    m_proxyModel->setSourceModel(m_model);
+    m_proxyModel->setSourceModel(column_filter_proxy_model);
     m_proxyModel->updateFilter();
 
     QueuesView *view = new QueuesView(this);
+    connect(view, SIGNAL(headerContextMenuEvent(QContextMenuEvent *)),
+            column_filter_proxy_model, SLOT(columnHeaderRightClicked(QContextMenuEvent *)));
     view->setModel(m_proxyModel);
-    view->hideColumn(QueuesModel::ID);
     view->sortByColumn(QueuesModel::NAME, Qt::AscendingOrder);
     view->init();
 

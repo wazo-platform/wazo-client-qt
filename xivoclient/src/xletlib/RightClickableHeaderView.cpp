@@ -9,6 +9,10 @@
 
 #include <QDebug>
 #include <QContextMenuEvent>
+#include <QAbstractItemModel>
+#include <QTableView>
+#include <QMenu>
+#include <QAction>
 
 RightClickableHeaderView::RightClickableHeaderView(Qt::Orientation orientation, QWidget *parent)
     : QHeaderView(orientation, parent)
@@ -21,6 +25,5 @@ RightClickableHeaderView::~RightClickableHeaderView()
 
 void RightClickableHeaderView::contextMenuEvent(QContextMenuEvent *e)
 {
-    qDebug() << Q_FUNC_INFO;
-    e->accept();
+    emit headerContextMenuEvent(e);
 }

@@ -29,6 +29,8 @@
 
 #include <QHeaderView>
 #include <QStyleFactory>
+#include <QDebug>
+#include <QContextMenuEvent>
 
 #include "abstract_table_view.h"
 #include "RightClickableHeaderView.h"
@@ -42,6 +44,7 @@ AbstractTableView::AbstractTableView(QWidget * parent)
     RightClickableHeaderView *horizontal_header = new RightClickableHeaderView(Qt::Horizontal, this);
     horizontal_header->setMovable(true);
     horizontal_header->setResizeMode(QHeaderView::ResizeToContents);
+    this->connect(horizontal_header, SIGNAL(headerContextMenuEvent(QContextMenuEvent *)), SLOT(headerRightClicked(QContextMenuEvent *)));
     this->setHorizontalHeader(horizontal_header);
 
     this->verticalHeader()->hide();
@@ -84,4 +87,9 @@ QSize AbstractTableView::sizeHint() const
     int width = this->horizontalHeader()->length();
     int heigth = this->verticalHeader()->length();
     return QSize(width, heigth);
+}
+
+void AbstractTableView::headerRightClicked(QContextMenuEvent *e)
+{
+    emit headerContextMenuEvent(e);
 }

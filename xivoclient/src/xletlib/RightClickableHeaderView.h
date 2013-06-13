@@ -9,13 +9,20 @@
 #define RIGHTCLICKABLEHEADERVIEW_H_
 
 #include <qheaderview.h>
+#include <QList>
+#include <QPair>
 
 class RightClickableHeaderView: public QHeaderView {
-public:
-    RightClickableHeaderView(Qt::Orientation orientation, QWidget *parent);
-    ~RightClickableHeaderView();
-protected:
-    virtual void contextMenuEvent(QContextMenuEvent *);
+
+    Q_OBJECT
+
+    public:
+        RightClickableHeaderView(Qt::Orientation orientation, QWidget *parent);
+        ~RightClickableHeaderView();
+    signals:
+        void headerContextMenuEvent(QContextMenuEvent *e);
+    protected:
+        virtual void contextMenuEvent(QContextMenuEvent *e);
 };
 
 #endif /* RIGHTCLICKABLEHEADERVIEW_H_ */
