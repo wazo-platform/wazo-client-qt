@@ -30,7 +30,6 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QScrollArea>
-#include <QDebug>
 
 #include <baseengine.h>
 #include <storage/phoneinfo.h>
@@ -107,19 +106,16 @@ SearchPanel::~SearchPanel()
 
 void SearchPanel::initializationStarting()
 {
-    qDebug() << "DISABLING UPDATES";
     this->disableLiveUpdate();
 }
 
 void SearchPanel::initializationComplete()
 {
-    qDebug() << "ENABLING UPDATES";
     this->enableLiveUpdate();
 }
 
 void SearchPanel::enableLiveUpdate()
 {
-    qDebug() << "Initialization complete received...";
     this->m_live_reload_enabled = true;
     this->updateDisplay();
 }
