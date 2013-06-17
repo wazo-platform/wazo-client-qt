@@ -133,8 +133,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     QString qsskind = b_engine->getConfig("qss").toString();
 
-    qDebug() << "Selected style: " << qsskind;
-
     QFile qssFile(QString(":/%1.qss").arg(qsskind));
     if(qssFile.open(QIODevice::ReadOnly)) {
         app->setStyleSheet(qssFile.readAll());

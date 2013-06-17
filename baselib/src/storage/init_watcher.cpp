@@ -27,6 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
 #include <QString>
 #include <QStringList>
 
@@ -45,6 +46,7 @@ void InitWatcher::watchList(QString list_name, QStringList ids)
     m_stack.insert(list_name, ids);
     if (m_watching_started == false) {
         m_watching_started = true;
+        qDebug() << "Initializing...";
         emit watching();
     }
 }
@@ -58,6 +60,7 @@ void InitWatcher::sawItem(const QString & list_name, const QString & item_id)
 
     if (m_stack.isEmpty() && m_watching_started) {
         m_watching_started = false;
+        qDebug() << "Initialization complete";
         emit sawAll();
     }
 }
