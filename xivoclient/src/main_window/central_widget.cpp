@@ -53,6 +53,8 @@ CentralWidget::CentralWidget(MainWindow *parent)
 
 CentralWidget::~CentralWidget()
 {
+    delete this->ui_loading_dialog;
+    this->ui_loading_dialog = NULL;
 }
 
 void CentralWidget::initializing()
