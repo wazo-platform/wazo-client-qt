@@ -267,10 +267,11 @@ QString AgentsModel::dataTooltipAvailability(enum AgentInfo::AgentAvailability a
     case AgentInfo::AVAILABLE:
         return tr("Agent ready to receive a call");
     case AgentInfo::UNAVAILABLE:
+        return tr("Agent processing a call or paused");
     case AgentInfo::ON_CALL_NONACD_INCOMING:
-        return tr("Agent processing a call or paused");
+        return tr("Agent receiving a call out of queue");
     case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        return tr("Agent processing a call or paused");
+        return tr("Agent calling");
     default:
         return QString();
     }
@@ -330,9 +331,9 @@ QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailabili
     case AgentInfo::UNAVAILABLE:
         return tr("In use");
     case AgentInfo::ON_CALL_NONACD_INCOMING:
-        return tr("OOQ In");
+        return tr("OOQ incoming");
     case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        return tr("OOQ Out");
+        return tr("OOQ outgoing");
     default:
         return QString();
     }

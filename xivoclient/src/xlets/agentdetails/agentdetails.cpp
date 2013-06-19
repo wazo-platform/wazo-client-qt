@@ -232,11 +232,11 @@ void XletAgentDetails::updateAvailability()
         style = "QLabel { background-color : red; }";
         break;
     case AgentInfo::ON_CALL_NONACD_INCOMING:
-        availability_status = tr("OOQ In");
+        availability_status = tr("OOQ incoming");
         style = "QLabel { background-color : red; }";
         break;
     case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        availability_status = tr("OOQ Out");
+        availability_status = tr("OOQ outgoing");
         style = "QLabel { background-color : red; }";
         break;
     default:
