@@ -31,3 +31,6 @@ translations
 *.log
 *.o
 *.a
+
+# Valgrind
+valgrind.supp
