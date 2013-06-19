@@ -37,7 +37,7 @@
 class MainWindow;
 class QLabel;
 
-class Statusbar : public QStatusBar
+class Statusbar : public QObject
 {
     Q_OBJECT
     FUNCTESTED
