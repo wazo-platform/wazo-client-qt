@@ -36,7 +36,8 @@
 
 
 MenuAvailability::MenuAvailability(MainWindow *parent)
-    : m_menu_availability(parent->ui->menu_availability),
+    : QMenu(parent),
+      m_menu_availability(parent->ui->menu_availability),
       m_availability_action_group(new QActionGroup(parent))
 {
     this->m_availability_action_group->setExclusive(true);
