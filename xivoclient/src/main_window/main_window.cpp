@@ -69,6 +69,8 @@ MainWindow::~MainWindow()
 {
     b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
     b_engine->logAction("application quit");
+    delete this->ui;
+    this->ui = NULL;
 }
 
 void MainWindow::initialize()
