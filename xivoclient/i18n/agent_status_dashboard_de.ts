@@ -9,7 +9,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="46"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="47"/>
         <source>66:66</source>
         <translation type="unfinished"></translation>
     </message>

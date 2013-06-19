@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="nl">
 <context>
     <name>BaseEngine</name>
     <message>
@@ -133,7 +135,7 @@ Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1384"/>
-        <source>Your client's major version (%1)
+        <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>De hoofdversie  (%1) van uw klant
 is niet dezelfde als deze van de server (%2).</translation>
@@ -209,8 +211,8 @@ Gelieve uw versie te upgraden.</translation>
     <message>
         <location filename="json_jsonqt/lib/ParseException.cpp" line="35"/>
         <source>A parsing error occurred:
-	Got: '%1'
-	Expected: '%2'
+	Got: &apos;%1&apos;
+	Expected: &apos;%2&apos;
 	At: &apos;%3&apos;</source>
         <translation>Er heeft zich een parsingfout voorgedaan:
 	Ontvangen: &apos;%1&apos;
@@ -309,994 +311,6 @@ Gelieve uw versie te upgraden.</translation>
         <location filename="src/storage/queue_agent_status.cpp" line="100"/>
         <source>Not relevant</source>
         <translation>Niet relevant</translation>
-    </message>
-</context>
-<context>
-    <name>AgentsModel</name>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="43"/>
-        <source>Number</source>
-        <translation>Nummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="44"/>
-        <source>First name</source>
-        <translation>Voornaam</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="45"/>
-        <source>Last name</source>
-        <translation>Achternaam</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="46"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="200"/>
-        <source>Listen</source>
-        <translation>Luisteren</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="47"/>
-        <source>Status since</source>
-        <translation>Status sinds</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="48"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="368"/>
-        <source>Logged</source>
-        <translation>ingelogged</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="49"/>
-        <source>Joined
-queues</source>
-        <translation>Ingelogde
-wachtrijen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="50"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="389"/>
-        <source>Paused</source>
-        <translation>Gepauzeerd</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="51"/>
-        <source>Paused
-queues</source>
-        <translation>Gepauzeerde
-wachtrijen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="268"/>
-        <source>Agent ready to receive a call</source>
-        <translation>Agent is klaar om oproepen te ontvangen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="271"/>
-        <source>Agent processing a call or paused</source>
-        <translation>Agent gepauzeerd of in gesprek</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="327"/>
-        <source>Not in use</source>
-        <translation>Niet in gebruik</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="329"/>
-        <source>In use</source>
-        <translation>In gebruik</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="331"/>
-        <source>Out of queue</source>
-        <translation>Niet in de wachtrij</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="370"/>
-        <source>Unlogged</source>
-        <translation>Uitgelogd</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="387"/>
-        <source>Unpaused</source>
-        <translation>Niet gepauzeerd</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="391"/>
-        <source>Partially Paused</source>
-        <translation>Gedeeltelijk gepauzeerd</translation>
-    </message>
-</context>
-<context>
-    <name>BasePeerWidget</name>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="68"/>
-        <source>&amp;Open a chat window</source>
-        <translation>&amp;Open een gespreksvenster</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="69"/>
-        <source>Open a chat window with this user</source>
-        <translation>Open een gespreksvenster met deze gebruiker</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="75"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
-        <source>&amp;Intercept</source>
-        <translation>&amp;Onderscheppen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="76"/>
-        <source>Intercept call</source>
-        <translation>Oproep onderscheppen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="319"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="341"/>
-        <source>&amp;Call</source>
-        <translation>&amp;Bellen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="351"/>
-        <source>Call &amp;mobile</source>
-        <translation>Bel &amp;mobiel</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="369"/>
-        <source>&amp;Edit</source>
-        <translation>&amp;Bewerken</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="386"/>
-        <source>&amp;Hangup call</source>
-        <translation>&amp;Oproep beëindigen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
-        <source>Cancel transfer</source>
-        <translation>Doorschakeling annuleren</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="417"/>
-        <source>Invite in conference room</source>
-        <translation>Uitnodigen voor conference gesprek</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
-        <source>Blind &amp;Transfer</source>
-        <translation>&amp;Niet aangekondigde doorschakeling</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
-        <source>&amp;Attended Transfer</source>
-        <translation>&amp;Aangekondigde doorschakeling</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="521"/>
-        <source>Blind transfer &lt;%0&gt;</source>
-        <translation>Niet aangekondigde doorschakeling&lt;%0&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="538"/>
-        <source>Attended transfer &lt;%0&gt;</source>
-        <translation>Aangekondigde doorschakeling &lt;%0&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
-        <source>Transfer to &amp;voice mail</source>
-        <translation>Doorschakelen naar &amp;voicemail</translation>
-    </message>
-</context>
-<context>
-    <name>ChitChatWindow</name>
-    <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="80"/>
-        <source>&amp;Clear history</source>
-        <translation>&amp;Historiek wissen/schrappen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="81"/>
-        <source>&amp;Send</source>
-        <translation>&amp;Verzenden</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="98"/>
-        <source>chitchat - %1 (%2)</source>
-        <translation>chitchat - %1 (%2)</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="138"/>
-        <location filename="../src/xletlib/chitchat.cpp" line="181"/>
-        <source>chat window opened with &quot;%1&quot; (%2)</source>
-        <translation>chat venster geopend met &quot;%1&quot; (%2</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="155"/>
-        <source>you said: </source>
-        <translation>U hebt gezegd: </translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="184"/>
-        <source>system: </source>
-        <translation>systeem: </translation>
-    </message>
-</context>
-<context>
-    <name>ExtendedTableWidget</name>
-    <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="66"/>
-        <source>&amp;Remove</source>
-        <translation>&amp;Verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="70"/>
-        <source>&amp;Dial</source>
-        <translation>&amp;Bellen</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="73"/>
-        <source>Send an E-mail</source>
-        <translation>Een e-mail verzenden</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="167"/>
-        <source>Removing this contact</source>
-        <translation>Dit contact wordt verwijderd</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="168"/>
-        <source>Removing this contact.
-Are you sure ?</source>
-        <translation>Dit contact wordt verwijderd.
-Bent u zeker?</translation>
-    </message>
-</context>
-<context>
-    <name>ExternalPhoneDialog</name>
-    <message>
-        <location filename="../src/xletlib/externalphonedialog.cpp" line="46"/>
-        <source>External phone number</source>
-        <translation>Extern telefoonnummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/externalphonedialog.cpp" line="49"/>
-        <source>Label</source>
-        <translation>Label</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/externalphonedialog.cpp" line="51"/>
-        <source>Phone number</source>
-        <translation>Telefoonnummer</translation>
-    </message>
-</context>
-<context>
-    <name>ExternalPhonePeerWidget</name>
-    <message>
-        <location filename="../src/xletlib/externalphonepeerwidget.cpp" line="45"/>
-        <source>Label : %1
-Phone Number : %2</source>
-        <translation>Label: %1
-Telefoonnumber: %2</translation>
-    </message>
-</context>
-<context>
-    <name>PeerWidget</name>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
-        <source>Agent Number : %1
-In Queues : %2</source>
-        <translation>Agent Nummer: %1
-In Wachtrijen: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="248"/>
-        <source>Mobile number : %1</source>
-        <translation>Mobiel nummer: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="262"/>
-        <source>User Name: %1
-IPBXid: %2
-Status: %3</source>
-        <translation>Gebruikersnaam: %1
-IPBXid: %2
-Status: %3</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="317"/>
-        <source>Status:%1</source>
-        <translation>Status: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="320"/>
-        <source>No status (no phone number)</source>
-        <translation>Geen status (geen telefoonnummer)</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
-        <source>&lt;EMPTY&gt;</source>
-        <translation>&lt;LEEG&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="331"/>
-        <source>Phone Number: %1
-Status: %2
-Busy lines: %3</source>
-        <translation>Telefoonnummer: %1
-Status: %2
-Bezette lijnen: %3</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/peerwidget.cpp" line="352"/>
-        <source>(No callerid yet)</source>
-        <translation>(Nog zonder callerid)</translation>
-    </message>
-</context>
-<context>
-    <name>QueueEntriesModel</name>
-    <message>
-        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="54"/>
-        <source>ID</source>
-        <translation>ID</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
-        <source>Position</source>
-        <translation>Positie</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
-        <source>Name</source>
-        <translation>Naam</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
-        <source>Number</source>
-        <translation>Nummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
-        <source>Time</source>
-        <translation>Tijd</translation>
-    </message>
-</context>
-<context>
-    <name>SearchDialog</name>
-    <message>
-        <location filename="../src/xletlib/searchdialog.cpp" line="39"/>
-        <source>Search :</source>
-        <translation>Opzoeking:</translation>
-    </message>
-</context>
-<context>
-    <name>XLetExperimental</name>
-    <message>
-        <location filename="../src/xletlib/xlet.cpp" line="63"/>
-        <source>experimental</source>
-        <translation>experimenteel</translation>
-    </message>
-</context>
-<context>
-    <name>XletAgents</name>
-    <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="49"/>
-        <source>Agents&apos; List (plain)</source>
-        <translation>Agentenlijst (standaard)</translation>
-    </message>
-</context>
-<context>
-    <name>LogTableView</name>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="293"/>
-        <source>Call %1</source>
-        <translation>Oproep %1</translation>
-    </message>
-</context>
-<context>
-    <name>LogWidget</name>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="231"/>
-        <source>History</source>
-        <translation>Historiek</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="241"/>
-        <source>Sent calls</source>
-        <translation>Gemaakte oproepen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="242"/>
-        <source>Received calls</source>
-        <translation>Ontvangen oproepen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="243"/>
-        <source>Missed calls</source>
-        <translation>Gemiste oproepen</translation>
-    </message>
-</context>
-<context>
-    <name>LogWidgetModel</name>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="128"/>
-        <source>%1 hr %2 min %3 s</source>
-        <translation>%1 u %2 min %3 s</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="130"/>
-        <source>%1 min %2 s</source>
-        <translation>%1 min %2 s</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="132"/>
-        <source>%1 s</source>
-        <translation>%1 s</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="197"/>
-        <source>Number</source>
-        <translation>Nummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="199"/>
-        <source>Date</source>
-        <translation>Datum</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="202"/>
-        <source>Duration</source>
-        <translation>Duur</translation>
-    </message>
-</context>
-<context>
-    <name>ConfListModel</name>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="39"/>
-        <source>Room UID</source>
-        <translation>UID van de kamer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="40"/>
-        <source>Number</source>
-        <translation>Nummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="41"/>
-        <source>Name</source>
-        <translation>Naam</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="42"/>
-        <source>Pin code</source>
-        <translation>Pincode</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="43"/>
-        <source>Member count</source>
-        <translation>Aantal deelnemers</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="44"/>
-        <source>Moderated</source>
-        <translation>Gemodereerd</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="45"/>
-        <source>Started since</source>
-        <translation>Gestart sinds</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="117"/>
-        <source>No</source>
-        <translation>Nee</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="132"/>
-        <source>Not started</source>
-        <translation>Niet gestart</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="134"/>
-        <source>Unknown</source>
-        <translation>Onbekend</translation>
-    </message>
-</context>
-<context>
-    <name>ConfListView</name>
-    <message>
-        <location filename="../src/xlets/conference/conflist.cpp" line="192"/>
-        <source>Get in room %1 (%2)</source>
-        <translation>Toegang tot kamer %1 (%2)</translation>
-    </message>
-</context>
-<context>
-    <name>ConfRoom</name>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="333"/>
-        <source> Conference room %1</source>
-        <translation> Conference room %1</translation>
-    </message>
-</context>
-<context>
-    <name>ConfRoomModel</name>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="53"/>
-        <source>ID</source>
-        <translation>ID</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="54"/>
-        <source>Number</source>
-        <translation>Nummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="55"/>
-        <source>Name</source>
-        <translation>Naam</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="56"/>
-        <source>Since</source>
-        <translation>Sinds</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="57"/>
-        <source>Admin</source>
-        <translation>Admin</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="58"/>
-        <source>K</source>
-        <translation>K</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="59"/>
-        <source>R</source>
-        <translation>R</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="60"/>
-        <source>A</source>
-        <translation>A</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="61"/>
-        <source>T</source>
-        <translation>T</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="62"/>
-        <source>M</source>
-        <translation>M</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="174"/>
-        <source>Mute/UnMute</source>
-        <translation>Geluid uit/Geluid aan</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="188"/>
-        <location filename="../src/xlets/conference/confroom.cpp" line="190"/>
-        <source>No</source>
-        <translation>Nee</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="194"/>
-        <source>Yes</source>
-        <translation>Ja</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="197"/>
-        <source>Unknown</source>
-        <translation>Onbekend</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/confroom.cpp" line="199"/>
-        <source>Not started</source>
-        <translation>Niet gestart</translation>
-    </message>
-</context>
-<context>
-    <name>XletConference</name>
-    <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="98"/>
-        <source>Conference</source>
-        <translation>Vergadering</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="104"/>
-        <source>Conference room list</source>
-        <translation>Lijst van de vergaderkamers</translation>
-    </message>
-</context>
-<context>
-    <name>ServicesPanel</name>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="60"/>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="72"/>
-        <source>Services</source>
-        <translation>Diensten</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="61"/>
-        <source>Voice &amp;Mail</source>
-        <translation>Voice&amp;mail</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="62"/>
-        <source>Call &amp;Filtering</source>
-        <translation>Oproep &amp;Filter</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="63"/>
-        <source>Do Not &amp;Disturb</source>
-        <translation>Niet &amp;Storen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="64"/>
-        <source>Forward on &amp;No Answer to</source>
-        <translation>Doorschakelen bij &amp;geen antwoord naar</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="65"/>
-        <source>Forward on &amp;Busy to</source>
-        <translation>Doorschakelen bij &amp;bezet naar</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="66"/>
-        <source>&amp;Unconditional Forward to</source>
-        <translation>&amp;Alle oproepen doorschakelen naar</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="87"/>
-        <source>Call Forwards</source>
-        <translation>Oproep Doorschakelingen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="97"/>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="139"/>
-        <source>Please enter a destination to activate the checkboxes</source>
-        <translation>Gelieve een bestemming op te geven om de checkbox te activeren</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="106"/>
-        <source>No call forward</source>
-        <translation>Geen doorschakeling</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="123"/>
-        <source>Simple call forwards</source>
-        <translation>Eénvoudige doorschakeling</translation>
-    </message>
-</context>
-<context>
-    <name>CurrentCall</name>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="50"/>
-        <source>Attended T</source>
-        <translation>Aangekondigd D</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="51"/>
-        <source>Call</source>
-        <translation>Bel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="52"/>
-        <source>Complete T</source>
-        <translation>Vervolledig D</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="53"/>
-        <source>Hangup</source>
-        <translation>Ophangen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
-        <source>Cancel T</source>
-        <translation>Annuleer D</translation>
-    </message>
-</context>
-<context>
-    <name>CurrentCallWidget</name>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulier</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>
-        <source>Current Call</source>
-        <translation>Huidige Oproep</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
-        <source>Answer</source>
-        <translation>Antwoorden</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
-        <source>Call</source>
-        <translation>Bel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="183"/>
-        <source>Blind Transfer</source>
-        <translation>Niet aangekondigde doorschakeling</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="186"/>
-        <source>Blind T</source>
-        <translation>Niet aangekondigd D</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="189"/>
-        <source>F4</source>
-        <translation>F4</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="222"/>
-        <source>Attended Transfer</source>
-        <translation>Aangekondigde doorschakeling</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="225"/>
-        <source>Attended T</source>
-        <translation>Aangekondigd D</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="228"/>
-        <source>F5</source>
-        <translation>F5</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="261"/>
-        <source>Hold</source>
-        <translation>Op wacht</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="264"/>
-        <source>F7</source>
-        <translation>F7</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="301"/>
-        <source>Hangup</source>
-        <translation>Ophangen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/current_call.ui" line="304"/>
-        <source>F8</source>
-        <translation>F8</translation>
-    </message>
-</context>
-<context>
-    <name>Switchboard</name>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="59"/>
-        <source>Switchboard</source>
-        <translation>Schakelbord</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="248"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="258"/>
-        <source>%n call(s)</source>
-        <translation><numerusform>%n oproep</numerusform><numerusform>%n oproepen</numerusform></translation>
-    </message>
-</context>
-<context>
-    <name>SwitchboardPanel</name>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
-        <source>Incoming Calls</source>
-        <translation>Inkomende Oproepen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
-        <location filename="../src/xlets/switchboard/switchboard.ui" line="132"/>
-        <source>0 call</source>
-        <translation>0 oproepen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/switchboard/switchboard.ui" line="105"/>
-        <source>Waiting Calls (F9)</source>
-        <translation>Oproepen in wacht (F9)</translation>
-    </message>
-</context>
-<context>
-    <name>IdentityAgent</name>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="113"/>
-        <source>Connected to %1</source>
-        <translation>Verbonden met %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="116"/>
-        <source>Disconnected from %1</source>
-        <translation>Verbinding met %1 verbroken</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="129"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="130"/>
-        <source>Paused</source>
-        <translation>Gepauzeerd</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="134"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="135"/>
-        <source>Unpaused</source>
-        <translation>Klaar</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="143"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="144"/>
-        <source>Partially paused</source>
-        <translation>gepauzeerd</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="148"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="149"/>
-        <source>Not relevant</source>
-        <translation>Niet relevant</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="165"/>
-        <source>Logout</source>
-        <translation>Uitloggen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="169"/>
-        <source>Login</source>
-        <translation>Inloggen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="178"/>
-        <source>Unpause</source>
-        <translation>Klaar</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="183"/>
-        <source>Pause</source>
-        <translation>Pauzeren</translation>
-    </message>
-</context>
-<context>
-    <name>IdentityDisplay</name>
-    <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="62"/>
-        <source>Identity</source>
-        <translation>Identiteit</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="63"/>
-        <source>Current User Panel</source>
-        <translation>Panel van huidige gebruikers</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="290"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="310"/>
-        <source>IPBXid: %1</source>
-        <translation>IPBXid: %1</translation>
-    </message>
-</context>
-<context>
-    <name>IdentityPhone</name>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="65"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="152"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="153"/>
-        <source>No option</source>
-        <translation>Geen optie</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="99"/>
-        <source>Phone %1</source>
-        <translation>Telefoon %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="101"/>
-        <source>Phone &lt;EMPTY&gt;</source>
-        <translation>Telefoon &lt;LEEG&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="123"/>
-        <source>Status:%1</source>
-        <translation>Status: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="126"/>
-        <source>No status
-(no phone number)</source>
-        <translation>Geen status
-(geen telefoonnummer)</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="138"/>
-        <source>DND</source>
-        <translation>NS</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="139"/>
-        <source>Do Not Disturb</source>
-        <translation>Niet storen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="141"/>
-        <source>UNC %1</source>
-        <translation>ONV %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="142"/>
-        <source>Unconditional Forward towards %1</source>
-        <translation>Onvoorwaardelijk doorschakelen naar %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="144"/>
-        <source>Busy %1</source>
-        <translation>Bezet %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="145"/>
-        <source>Busy Forward towards %1</source>
-        <translation>Indien bezet doorschakelen naar %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="147"/>
-        <source>FNA %1</source>
-        <translation>GAN %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="148"/>
-        <source>Non-Answer Forward towards %1</source>
-        <translation>Indien geen antwoord doorschakelen naar %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="150"/>
-        <source>Call Filter</source>
-        <translation>Oproepfilter</translation>
-    </message>
-</context>
-<context>
-    <name>IdentityVoiceMail</name>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="49"/>
-        <source>call your voicemail</source>
-        <translation>bel uw voicemail</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="90"/>
-        <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Voicemailberichten %1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
-        <source>VoiceMail activated on %1</source>
-        <translation>Voicemail geactiveerd op %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="93"/>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="128"/>
-        <source>VoiceMailBox %1</source>
-        <translation>Voicemailberichten %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="94"/>
-        <source>VoiceMail not activated on %1</source>
-        <translation>Voicemail niet geactiveerd op %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="137"/>
-        <source>%1 old</source>
-        <translation>%1 oud</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="138"/>
-        <source>%1 new</source>
-        <translation>%1 nieuw</translation>
     </message>
 </context>
 <context>
@@ -1449,12 +463,12 @@ Bezette lijnen: %3</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="526"/>
         <source>Longest wait time thresholds</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="553"/>
         <source>Waiting calls thresholds</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="580"/>
@@ -1858,7 +872,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="14"/>
         <source>Login Screen</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="72"/>
@@ -1873,7 +887,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="96"/>
         <source>Phone</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">Telefoon</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="103"/>
@@ -1911,7 +925,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/main_window/main_window.ui" line="53"/>
         <source>&amp;XiVO Client</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="69"/>
@@ -1921,7 +935,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/main_window/main_window.ui" line="74"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="97"/>
@@ -1976,7 +990,7 @@ Reden: %3.</translation>
     <message>
         <location filename="../src/main_window/main_window.ui" line="144"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="152"/>
@@ -2004,99 +1018,99 @@ Reden: %3.</translation>
         <translation>&amp;Credits</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="82"/>
-        <location filename="../src/main_window/main_window.cpp" line="196"/>
-        <location filename="../src/main_window/main_window.cpp" line="272"/>
+        <location filename="../src/main_window/main_window.cpp" line="84"/>
+        <location filename="../src/main_window/main_window.cpp" line="198"/>
+        <location filename="../src/main_window/main_window.cpp" line="274"/>
         <source>Client %1</source>
         <translation>Client %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="151"/>
+        <location filename="../src/main_window/main_window.cpp" line="153"/>
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI-fout</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="178"/>
+        <location filename="../src/main_window/main_window.cpp" line="180"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (%2 profiel)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="264"/>
+        <location filename="../src/main_window/main_window.cpp" line="266"/>
         <source>Fetch the last one</source>
         <translation>De laatste ophalen</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="271"/>
+        <location filename="../src/main_window/main_window.cpp" line="273"/>
         <source>About XiVO Client</source>
         <translation>Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="273"/>
+        <location filename="../src/main_window/main_window.cpp" line="275"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="278"/>
+        <location filename="../src/main_window/main_window.cpp" line="280"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Versie Informatie&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="279"/>
+        <location filename="../src/main_window/main_window.cpp" line="281"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Major: &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="280"/>
+        <location filename="../src/main_window/main_window.cpp" line="282"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Minor : git hash &lt;b&gt;%1&lt;/b&gt; van : %2</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="283"/>
+        <location filename="../src/main_window/main_window.cpp" line="285"/>
         <source>(Application Built on : %1)</source>
         <translation>(Applicatie Gecompileerd op : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="284"/>
+        <location filename="../src/main_window/main_window.cpp" line="286"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Applicatie gestart op: %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="285"/>
+        <location filename="../src/main_window/main_window.cpp" line="287"/>
         <source>(Config File Location : %1)</source>
         <translation>(Locatie Configuratie Bestand : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="288"/>
+        <location filename="../src/main_window/main_window.cpp" line="290"/>
         <source>E-mail : </source>
         <translation>E-mail: </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="289"/>
+        <location filename="../src/main_window/main_window.cpp" line="291"/>
         <source>Phone : </source>
         <translation>Tel. : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="290"/>
+        <location filename="../src/main_window/main_window.cpp" line="292"/>
         <source>Authors : </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="290"/>
+        <location filename="../src/main_window/main_window.cpp" line="292"/>
         <source>Avencall Development Team</source>
         <translation>Avencall Development Team</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="292"/>
+        <location filename="../src/main_window/main_window.cpp" line="294"/>
         <source>License : </source>
         <translation>Licentie: </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="294"/>
+        <location filename="../src/main_window/main_window.cpp" line="296"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>met een speciale uitzondering om het te koppelen met OpenSSL, onder bepaalde voorwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="300"/>
+        <location filename="../src/main_window/main_window.cpp" line="302"/>
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
@@ -2240,12 +1254,12 @@ Bent u zeker ?</translation>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="49"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="48"/>
         <source>Contacts</source>
         <translation>Contacten</translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="54"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="53"/>
         <source>N&amp;ame or number to search :</source>
         <translation>N&amp;aam of nummer om op te zoeken:</translation>
     </message>
@@ -2253,12 +1267,12 @@ Bent u zeker ?</translation>
 <context>
     <name>Statusbar</name>
     <message>
-        <location filename="../src/main_window/statusbar.cpp" line="83"/>
+        <location filename="../src/main_window/statusbar.cpp" line="84"/>
         <source>Connected</source>
         <translation>Verbonden</translation>
     </message>
     <message>
-        <location filename="../src/main_window/statusbar.cpp" line="90"/>
+        <location filename="../src/main_window/statusbar.cpp" line="91"/>
         <source>Disconnected</source>
         <translation>Verbinding verbroken</translation>
     </message>
@@ -2268,12 +1282,20 @@ Bent u zeker ?</translation>
     <message>
         <location filename="../src/main_window/loading_dialog.ui" line="17"/>
         <source>Loading Screen</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/loading_dialog.ui" line="34"/>
         <source>Loading...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>XletAgents</name>
+    <message>
+        <location filename="../src/xlets/agents/agents.cpp" line="49"/>
+        <source>Agents&apos; List (plain)</source>
+        <translation>Agentenlijst (standaard)</translation>
     </message>
 </context>
 <context>
@@ -2290,133 +1312,180 @@ Bent u zeker ?</translation>
     </message>
 </context>
 <context>
-    <name>QueueMembersHeader</name>
-    <message numerus="yes">
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
-        <source>%n agent(s)</source>
-        <translation><numerusform>%n agent(en)</numerusform><numerusform>%n agent(en)</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="110"/>
-        <source>%n phone(s)</source>
-        <translation><numerusform>%n telefoon(s)</numerusform><numerusform>%n telefoon(s)</numerusform></translation>
+    <name>ConfListModel</name>
+    <message>
+        <location filename="../src/xlets/conference/conflist.cpp" line="39"/>
+        <source>Room UID</source>
+        <translation>UID van de kamer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="111"/>
-        <source>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 and %5</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 en %5</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="123"/>
-        <source>No selected queue</source>
-        <translation>Geen queue geselecteerd</translation>
-    </message>
-</context>
-<context>
-    <name>QueueMembersModel</name>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="59"/>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="60"/>
-        <source>ID</source>
-        <translation>ID</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>
+        <location filename="../src/xlets/conference/conflist.cpp" line="40"/>
         <source>Number</source>
         <translation>Nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
-        <source>Phone number of the queue</source>
-        <translation>Telefoon nummer van de queue</translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="41"/>
+        <source>Name</source>
+        <translation>Naam</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
-        <source>Firstname</source>
-        <translation>Voornaam</translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="42"/>
+        <source>Pin code</source>
+        <translation>Pincode</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
-        <source>Queue member&apos;s firstname</source>
-        <translation>Queue lid&apos;s voornaam </translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="43"/>
+        <source>Member count</source>
+        <translation>Aantal deelnemers</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
-        <source>Lastname</source>
-        <translation>Familienaam</translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="44"/>
+        <source>Moderated</source>
+        <translation>Gemodereerd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="66"/>
-        <source>Queue member&apos;s lastname</source>
-        <translation>Queue lid&apos;s familienaam </translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="45"/>
+        <source>Started since</source>
+        <translation>Gestart sinds</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
-        <source>Logged</source>
-        <translation>Gelogged</translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="117"/>
+        <source>No</source>
+        <translation>Nee</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>
-        <source>Queue member&apos;s login status</source>
-        <translation>Queue lid&apos;s login status</translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="132"/>
+        <source>Not started</source>
+        <translation>Niet gestart</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
-        <source>Paused</source>
-        <translation>Gepauseerd</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>
-        <source>Queue member&apos;s pause status</source>
-        <translation>Queue lid&apos;s pauze status</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="71"/>
-        <source>Answered calls</source>
-        <translation>Beantwoorde oproepen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="72"/>
-        <source>Number of answered calls</source>
-        <translation>Aantal beantwoorde oproepen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="73"/>
-        <source>Last call</source>
-        <translation>Laatste oproep</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="74"/>
-        <source>Hangup date of the last answered call</source>
-        <translation>Datum waarop de laatst beantwoorde oproep opgehangen werd.</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="75"/>
-        <source>Penalty</source>
-        <translation>Penalty</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="76"/>
-        <source>Queue member&apos;s penalty</source>
-        <translation>Queue lid&apos;s penalty</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="196"/>
-        <source>Always</source>
-        <translation>Altijd</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="198"/>
-        <source>Never</source>
-        <translation>Nooit</translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="134"/>
+        <source>Unknown</source>
+        <translation>Onbekend</translation>
     </message>
 </context>
 <context>
-    <name>XletQueueMembers</name>
+    <name>ConfListView</name>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members.cpp" line="51"/>
-        <source>Queue Members</source>
-        <translation>Queue leden</translation>
+        <location filename="../src/xlets/conference/conflist.cpp" line="192"/>
+        <source>Get in room %1 (%2)</source>
+        <translation>Toegang tot kamer %1 (%2)</translation>
+    </message>
+</context>
+<context>
+    <name>ConfRoom</name>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="333"/>
+        <source> Conference room %1</source>
+        <translation> Conference room %1</translation>
+    </message>
+</context>
+<context>
+    <name>ConfRoomModel</name>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="53"/>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="54"/>
+        <source>Number</source>
+        <translation>Nummer</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="55"/>
+        <source>Name</source>
+        <translation>Naam</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="56"/>
+        <source>Since</source>
+        <translation>Sinds</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="57"/>
+        <source>Admin</source>
+        <translation>Admin</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="58"/>
+        <source>K</source>
+        <translation>K</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="59"/>
+        <source>R</source>
+        <translation>R</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="60"/>
+        <source>A</source>
+        <translation>A</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="61"/>
+        <source>T</source>
+        <translation>T</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="62"/>
+        <source>M</source>
+        <translation>M</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="174"/>
+        <source>Mute/UnMute</source>
+        <translation>Geluid uit/Geluid aan</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="188"/>
+        <location filename="../src/xlets/conference/confroom.cpp" line="190"/>
+        <source>No</source>
+        <translation>Nee</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="194"/>
+        <source>Yes</source>
+        <translation>Ja</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="197"/>
+        <source>Unknown</source>
+        <translation>Onbekend</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/confroom.cpp" line="199"/>
+        <source>Not started</source>
+        <translation>Niet gestart</translation>
+    </message>
+</context>
+<context>
+    <name>XletConference</name>
+    <message>
+        <location filename="../src/xlets/conference/conference.cpp" line="98"/>
+        <source>Conference</source>
+        <translation>Vergadering</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference.cpp" line="104"/>
+        <source>Conference room list</source>
+        <translation>Lijst van de vergaderkamers</translation>
+    </message>
+</context>
+<context>
+    <name>Directory</name>
+    <message>
+        <location filename="../src/xlets/directory/directory.cpp" line="48"/>
+        <source>Directory</source>
+        <translation>Telefoonlijst</translation>
+    </message>
+</context>
+<context>
+    <name>DirectoryWidget</name>
+    <message>
+        <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Van</translation>
     </message>
 </context>
 <context>
@@ -2469,36 +1538,33 @@ Bent u zeker ?</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>Out of queue</source>
-        <translation>Niet in de wachtrij</translation>
+        <source>OOQ incoming</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
+        <source>OOQ outgoing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Unlogged</source>
         <translation>Niet ingelogged</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>%1 since %2</source>
         <translation>%1 sedert %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="334"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="338"/>
         <source>Server: %1</source>
         <translation>Server: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="335"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="339"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
-    </message>
-</context>
-<context>
-    <name>XletDatetime</name>
-    <message>
-        <location filename="../src/xlets/datetime/datetime.cpp" line="54"/>
-        <source>Date and Time</source>
-        <translation>Datum en uur</translation>
     </message>
 </context>
 <context>
@@ -2717,19 +1783,724 @@ queues parameters for the Stats on slice:</source>
     </message>
 </context>
 <context>
-    <name>Directory</name>
+    <name>AgentsModel</name>
     <message>
-        <location filename="../src/xlets/directory/directory.cpp" line="48"/>
-        <source>Directory</source>
-        <translation>Telefoonlijst</translation>
+        <location filename="../src/xletlib/agents_model.cpp" line="43"/>
+        <source>Number</source>
+        <translation>Nummer</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="44"/>
+        <source>First name</source>
+        <translation>Voornaam</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="45"/>
+        <source>Last name</source>
+        <translation>Achternaam</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="46"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="200"/>
+        <source>Listen</source>
+        <translation>Luisteren</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="47"/>
+        <source>Status since</source>
+        <translation>Status sinds</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="48"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="377"/>
+        <source>Logged</source>
+        <translation>ingelogged</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="49"/>
+        <source>Joined
+queues</source>
+        <translation>Ingelogde
+wachtrijen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="50"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="398"/>
+        <source>Paused</source>
+        <translation>Gepauzeerd</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="51"/>
+        <source>Paused
+queues</source>
+        <translation>Gepauzeerde
+wachtrijen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="268"/>
+        <source>Agent ready to receive a call</source>
+        <translation>Agent is klaar om oproepen te ontvangen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="270"/>
+        <source>Agent processing a call or paused</source>
+        <translation>Agent gepauzeerd of in gesprek</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="272"/>
+        <source>Agent receiving a call out of queue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="274"/>
+        <source>Agent calling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="330"/>
+        <source>Not in use</source>
+        <translation>Niet in gebruik</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="332"/>
+        <source>In use</source>
+        <translation>In gebruik</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="334"/>
+        <source>OOQ incoming</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="336"/>
+        <source>OOQ outgoing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="379"/>
+        <source>Unlogged</source>
+        <translation>Uitgelogd</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="396"/>
+        <source>Unpaused</source>
+        <translation>Niet gepauzeerd</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="400"/>
+        <source>Partially Paused</source>
+        <translation>Gedeeltelijk gepauzeerd</translation>
     </message>
 </context>
 <context>
-    <name>DirectoryWidget</name>
+    <name>BasePeerWidget</name>
     <message>
-        <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="68"/>
+        <source>&amp;Open a chat window</source>
+        <translation>&amp;Open een gespreksvenster</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="69"/>
+        <source>Open a chat window with this user</source>
+        <translation>Open een gespreksvenster met deze gebruiker</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="75"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
+        <source>&amp;Intercept</source>
+        <translation>&amp;Onderscheppen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="76"/>
+        <source>Intercept call</source>
+        <translation>Oproep onderscheppen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="319"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="341"/>
+        <source>&amp;Call</source>
+        <translation>&amp;Bellen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="351"/>
+        <source>Call &amp;mobile</source>
+        <translation>Bel &amp;mobiel</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="369"/>
+        <source>&amp;Edit</source>
+        <translation>&amp;Bewerken</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="386"/>
+        <source>&amp;Hangup call</source>
+        <translation>&amp;Oproep beëindigen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
+        <source>Cancel transfer</source>
+        <translation>Doorschakeling annuleren</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="417"/>
+        <source>Invite in conference room</source>
+        <translation>Uitnodigen voor conference gesprek</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
+        <source>Blind &amp;Transfer</source>
+        <translation>&amp;Niet aangekondigde doorschakeling</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
+        <source>&amp;Attended Transfer</source>
+        <translation>&amp;Aangekondigde doorschakeling</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="521"/>
+        <source>Blind transfer &lt;%0&gt;</source>
+        <translation>Niet aangekondigde doorschakeling&lt;%0&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="538"/>
+        <source>Attended transfer &lt;%0&gt;</source>
+        <translation>Aangekondigde doorschakeling &lt;%0&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
+        <source>Transfer to &amp;voice mail</source>
+        <translation>Doorschakelen naar &amp;voicemail</translation>
+    </message>
+</context>
+<context>
+    <name>ChitChatWindow</name>
+    <message>
+        <location filename="../src/xletlib/chitchat.cpp" line="80"/>
+        <source>&amp;Clear history</source>
+        <translation>&amp;Historiek wissen/schrappen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/chitchat.cpp" line="81"/>
+        <source>&amp;Send</source>
+        <translation>&amp;Verzenden</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/chitchat.cpp" line="98"/>
+        <source>chitchat - %1 (%2)</source>
+        <translation>chitchat - %1 (%2)</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/chitchat.cpp" line="138"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="181"/>
+        <source>chat window opened with &quot;%1&quot; (%2)</source>
+        <translation>chat venster geopend met &quot;%1&quot; (%2</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/chitchat.cpp" line="155"/>
+        <source>you said: </source>
+        <translation>U hebt gezegd: </translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/chitchat.cpp" line="184"/>
+        <source>system: </source>
+        <translation>systeem: </translation>
+    </message>
+</context>
+<context>
+    <name>ExtendedTableWidget</name>
+    <message>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="66"/>
+        <source>&amp;Remove</source>
+        <translation>&amp;Verwijderen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="70"/>
+        <source>&amp;Dial</source>
+        <translation>&amp;Bellen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="73"/>
+        <source>Send an E-mail</source>
+        <translation>Een e-mail verzenden</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="167"/>
+        <source>Removing this contact</source>
+        <translation>Dit contact wordt verwijderd</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="168"/>
+        <source>Removing this contact.
+Are you sure ?</source>
+        <translation>Dit contact wordt verwijderd.
+Bent u zeker?</translation>
+    </message>
+</context>
+<context>
+    <name>ExternalPhoneDialog</name>
+    <message>
+        <location filename="../src/xletlib/externalphonedialog.cpp" line="46"/>
+        <source>External phone number</source>
+        <translation>Extern telefoonnummer</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/externalphonedialog.cpp" line="49"/>
+        <source>Label</source>
+        <translation>Label</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/externalphonedialog.cpp" line="51"/>
+        <source>Phone number</source>
+        <translation>Telefoonnummer</translation>
+    </message>
+</context>
+<context>
+    <name>ExternalPhonePeerWidget</name>
+    <message>
+        <location filename="../src/xletlib/externalphonepeerwidget.cpp" line="45"/>
+        <source>Label : %1
+Phone Number : %2</source>
+        <translation>Label: %1
+Telefoonnumber: %2</translation>
+    </message>
+</context>
+<context>
+    <name>PeerWidget</name>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
+        <source>Agent Number : %1
+In Queues : %2</source>
+        <translation>Agent Nummer: %1
+In Wachtrijen: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="248"/>
+        <source>Mobile number : %1</source>
+        <translation>Mobiel nummer: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="262"/>
+        <source>User Name: %1
+IPBXid: %2
+Status: %3</source>
+        <translation>Gebruikersnaam: %1
+IPBXid: %2
+Status: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="317"/>
+        <source>Status:%1</source>
+        <translation>Status: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="320"/>
+        <source>No status (no phone number)</source>
+        <translation>Geen status (geen telefoonnummer)</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="330"/>
+        <source>&lt;EMPTY&gt;</source>
+        <translation>&lt;LEEG&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="331"/>
+        <source>Phone Number: %1
+Status: %2
+Busy lines: %3</source>
+        <translation>Telefoonnummer: %1
+Status: %2
+Bezette lijnen: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/peerwidget.cpp" line="352"/>
+        <source>(No callerid yet)</source>
+        <translation>(Nog zonder callerid)</translation>
+    </message>
+</context>
+<context>
+    <name>QueueEntriesModel</name>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="54"/>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
+        <source>Position</source>
+        <translation>Positie</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
+        <source>Name</source>
+        <translation>Naam</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
+        <source>Number</source>
+        <translation>Nummer</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
+        <source>Time</source>
+        <translation>Tijd</translation>
+    </message>
+</context>
+<context>
+    <name>SearchDialog</name>
+    <message>
+        <location filename="../src/xletlib/searchdialog.cpp" line="39"/>
+        <source>Search :</source>
+        <translation>Opzoeking:</translation>
+    </message>
+</context>
+<context>
+    <name>XLetExperimental</name>
+    <message>
+        <location filename="../src/xletlib/xlet.cpp" line="63"/>
+        <source>experimental</source>
+        <translation>experimenteel</translation>
+    </message>
+</context>
+<context>
+    <name>IdentityAgent</name>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="113"/>
+        <source>Connected to %1</source>
+        <translation>Verbonden met %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="116"/>
+        <source>Disconnected from %1</source>
+        <translation>Verbinding met %1 verbroken</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="129"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="130"/>
+        <source>Paused</source>
+        <translation>Gepauzeerd</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="134"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="135"/>
+        <source>Unpaused</source>
+        <translation>Klaar</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="143"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="144"/>
+        <source>Partially paused</source>
+        <translation>gepauzeerd</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="148"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="149"/>
+        <source>Not relevant</source>
+        <translation>Niet relevant</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="165"/>
+        <source>Logout</source>
+        <translation>Uitloggen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="169"/>
+        <source>Login</source>
+        <translation>Inloggen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="178"/>
+        <source>Unpause</source>
+        <translation>Klaar</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="183"/>
+        <source>Pause</source>
+        <translation>Pauzeren</translation>
+    </message>
+</context>
+<context>
+    <name>IdentityDisplay</name>
+    <message>
+        <location filename="../src/xlets/identity/identity.cpp" line="62"/>
+        <source>Identity</source>
+        <translation>Identiteit</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.cpp" line="63"/>
+        <source>Current User Panel</source>
+        <translation>Panel van huidige gebruikers</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.cpp" line="290"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="310"/>
+        <source>IPBXid: %1</source>
+        <translation>IPBXid: %1</translation>
+    </message>
+</context>
+<context>
+    <name>IdentityPhone</name>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="65"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="152"/>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="153"/>
+        <source>No option</source>
+        <translation>Geen optie</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="99"/>
+        <source>Phone %1</source>
+        <translation>Telefoon %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="101"/>
+        <source>Phone &lt;EMPTY&gt;</source>
+        <translation>Telefoon &lt;LEEG&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="123"/>
+        <source>Status:%1</source>
+        <translation>Status: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="126"/>
+        <source>No status
+(no phone number)</source>
+        <translation>Geen status
+(geen telefoonnummer)</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="138"/>
+        <source>DND</source>
+        <translation>NS</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="139"/>
+        <source>Do Not Disturb</source>
+        <translation>Niet storen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="141"/>
+        <source>UNC %1</source>
+        <translation>ONV %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="142"/>
+        <source>Unconditional Forward towards %1</source>
+        <translation>Onvoorwaardelijk doorschakelen naar %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="144"/>
+        <source>Busy %1</source>
+        <translation>Bezet %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="145"/>
+        <source>Busy Forward towards %1</source>
+        <translation>Indien bezet doorschakelen naar %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="147"/>
+        <source>FNA %1</source>
+        <translation>GAN %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="148"/>
+        <source>Non-Answer Forward towards %1</source>
+        <translation>Indien geen antwoord doorschakelen naar %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityphone.cpp" line="150"/>
+        <source>Call Filter</source>
+        <translation>Oproepfilter</translation>
+    </message>
+</context>
+<context>
+    <name>IdentityVoiceMail</name>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="49"/>
+        <source>call your voicemail</source>
+        <translation>bel uw voicemail</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="90"/>
+        <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Voicemailberichten %1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
+        <source>VoiceMail activated on %1</source>
+        <translation>Voicemail geactiveerd op %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="93"/>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="128"/>
+        <source>VoiceMailBox %1</source>
+        <translation>Voicemailberichten %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="94"/>
+        <source>VoiceMail not activated on %1</source>
+        <translation>Voicemail niet geactiveerd op %1</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="137"/>
+        <source>%1 old</source>
+        <translation>%1 oud</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="138"/>
+        <source>%1 new</source>
+        <translation>%1 nieuw</translation>
+    </message>
+</context>
+<context>
+    <name>XletDatetime</name>
+    <message>
+        <location filename="../src/xlets/datetime/datetime.cpp" line="54"/>
+        <source>Date and Time</source>
+        <translation>Datum en uur</translation>
+    </message>
+</context>
+<context>
+    <name>CurrentCall</name>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="50"/>
+        <source>Attended T</source>
+        <translation>Aangekondigd D</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="51"/>
+        <source>Call</source>
+        <translation>Bel</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="52"/>
+        <source>Complete T</source>
+        <translation>Vervolledig D</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="53"/>
+        <source>Hangup</source>
+        <translation>Ophangen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
+        <source>Cancel T</source>
+        <translation>Annuleer D</translation>
+    </message>
+</context>
+<context>
+    <name>CurrentCallWidget</name>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
         <source>Form</source>
-        <translation>Van</translation>
+        <translation>Formulier</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>
+        <source>Current Call</source>
+        <translation>Huidige Oproep</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
+        <source>Enter</source>
+        <translation>Enter</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
+        <source>Answer</source>
+        <translation>Antwoorden</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
+        <source>Call</source>
+        <translation>Bel</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="183"/>
+        <source>Blind Transfer</source>
+        <translation>Niet aangekondigde doorschakeling</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="186"/>
+        <source>Blind T</source>
+        <translation>Niet aangekondigd D</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="189"/>
+        <source>F4</source>
+        <translation>F4</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="222"/>
+        <source>Attended Transfer</source>
+        <translation>Aangekondigde doorschakeling</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="225"/>
+        <source>Attended T</source>
+        <translation>Aangekondigd D</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="228"/>
+        <source>F5</source>
+        <translation>F5</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="261"/>
+        <source>Hold</source>
+        <translation>Op wacht</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="264"/>
+        <source>F7</source>
+        <translation>F7</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="301"/>
+        <source>Hangup</source>
+        <translation>Ophangen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/current_call.ui" line="304"/>
+        <source>F8</source>
+        <translation>F8</translation>
+    </message>
+</context>
+<context>
+    <name>Switchboard</name>
+    <message>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="59"/>
+        <source>Switchboard</source>
+        <translation>Schakelbord</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="248"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="258"/>
+        <source>%n call(s)</source>
+        <translation>
+            <numerusform>%n oproep</numerusform>
+            <numerusform>%n oproepen</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>SwitchboardPanel</name>
+    <message>
+        <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
+        <source>Incoming Calls</source>
+        <translation>Inkomende Oproepen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
+        <location filename="../src/xlets/switchboard/switchboard.ui" line="132"/>
+        <source>0 call</source>
+        <translation>0 oproepen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/switchboard/switchboard.ui" line="105"/>
+        <source>Waiting Calls (F9)</source>
+        <translation>Oproepen in wacht (F9)</translation>
     </message>
 </context>
 <context>
@@ -2740,7 +2511,7 @@ queues parameters for the Stats on slice:</source>
         <translation>Formulier</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="46"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="47"/>
         <source>66:66</source>
         <translation>66:66</translation>
     </message>
@@ -2751,6 +2522,266 @@ queues parameters for the Stats on slice:</source>
         <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="52"/>
         <source>Agent status dashboard</source>
         <translation>Overzicht scherm agenten status</translation>
+    </message>
+</context>
+<context>
+    <name>LogTableView</name>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="293"/>
+        <source>Call %1</source>
+        <translation>Oproep %1</translation>
+    </message>
+</context>
+<context>
+    <name>LogWidget</name>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="231"/>
+        <source>History</source>
+        <translation>Historiek</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="241"/>
+        <source>Sent calls</source>
+        <translation>Gemaakte oproepen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="242"/>
+        <source>Received calls</source>
+        <translation>Ontvangen oproepen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="243"/>
+        <source>Missed calls</source>
+        <translation>Gemiste oproepen</translation>
+    </message>
+</context>
+<context>
+    <name>LogWidgetModel</name>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="128"/>
+        <source>%1 hr %2 min %3 s</source>
+        <translation>%1 u %2 min %3 s</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="130"/>
+        <source>%1 min %2 s</source>
+        <translation>%1 min %2 s</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="132"/>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="197"/>
+        <source>Number</source>
+        <translation>Nummer</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="199"/>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="202"/>
+        <source>Duration</source>
+        <translation>Duur</translation>
+    </message>
+</context>
+<context>
+    <name>QueueMembersHeader</name>
+    <message numerus="yes">
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
+        <source>%n agent(s)</source>
+        <translation>
+            <numerusform>%n agent(en)</numerusform>
+            <numerusform>%n agent(en)</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="110"/>
+        <source>%n phone(s)</source>
+        <translation>
+            <numerusform>%n telefoon(s)</numerusform>
+            <numerusform>%n telefoon(s)</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="111"/>
+        <source>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 and %5</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 en %5</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="123"/>
+        <source>No selected queue</source>
+        <translation>Geen queue geselecteerd</translation>
+    </message>
+</context>
+<context>
+    <name>QueueMembersModel</name>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="59"/>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="60"/>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>
+        <source>Number</source>
+        <translation>Nummer</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
+        <source>Phone number of the queue</source>
+        <translation>Telefoon nummer van de queue</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
+        <source>Firstname</source>
+        <translation>Voornaam</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
+        <source>Queue member&apos;s firstname</source>
+        <translation>Queue lid&apos;s voornaam </translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
+        <source>Lastname</source>
+        <translation>Familienaam</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="66"/>
+        <source>Queue member&apos;s lastname</source>
+        <translation>Queue lid&apos;s familienaam </translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
+        <source>Logged</source>
+        <translation>Gelogged</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>
+        <source>Queue member&apos;s login status</source>
+        <translation>Queue lid&apos;s login status</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
+        <source>Paused</source>
+        <translation>Gepauseerd</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>
+        <source>Queue member&apos;s pause status</source>
+        <translation>Queue lid&apos;s pauze status</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="71"/>
+        <source>Answered calls</source>
+        <translation>Beantwoorde oproepen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="72"/>
+        <source>Number of answered calls</source>
+        <translation>Aantal beantwoorde oproepen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="73"/>
+        <source>Last call</source>
+        <translation>Laatste oproep</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="74"/>
+        <source>Hangup date of the last answered call</source>
+        <translation>Datum waarop de laatst beantwoorde oproep opgehangen werd.</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="75"/>
+        <source>Penalty</source>
+        <translation>Penalty</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="76"/>
+        <source>Queue member&apos;s penalty</source>
+        <translation>Queue lid&apos;s penalty</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="196"/>
+        <source>Always</source>
+        <translation>Altijd</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="198"/>
+        <source>Never</source>
+        <translation>Nooit</translation>
+    </message>
+</context>
+<context>
+    <name>XletQueueMembers</name>
+    <message>
+        <location filename="../src/xlets/queue_members/queue_members.cpp" line="51"/>
+        <source>Queue Members</source>
+        <translation>Queue leden</translation>
+    </message>
+</context>
+<context>
+    <name>ServicesPanel</name>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="60"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="72"/>
+        <source>Services</source>
+        <translation>Diensten</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="61"/>
+        <source>Voice &amp;Mail</source>
+        <translation>Voice&amp;mail</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="62"/>
+        <source>Call &amp;Filtering</source>
+        <translation>Oproep &amp;Filter</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="63"/>
+        <source>Do Not &amp;Disturb</source>
+        <translation>Niet &amp;Storen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="64"/>
+        <source>Forward on &amp;No Answer to</source>
+        <translation>Doorschakelen bij &amp;geen antwoord naar</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="65"/>
+        <source>Forward on &amp;Busy to</source>
+        <translation>Doorschakelen bij &amp;bezet naar</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="66"/>
+        <source>&amp;Unconditional Forward to</source>
+        <translation>&amp;Alle oproepen doorschakelen naar</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="87"/>
+        <source>Call Forwards</source>
+        <translation>Oproep Doorschakelingen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="97"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="139"/>
+        <source>Please enter a destination to activate the checkboxes</source>
+        <translation>Gelieve een bestemming op te geven om de checkbox te activeren</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="106"/>
+        <source>No call forward</source>
+        <translation>Geen doorschakeling</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="123"/>
+        <source>Simple call forwards</source>
+        <translation>Eénvoudige doorschakeling</translation>
     </message>
 </context>
 </TS>

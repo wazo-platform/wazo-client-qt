@@ -702,99 +702,99 @@ Reason given : %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="82"/>
-        <location filename="../src/main_window/main_window.cpp" line="196"/>
-        <location filename="../src/main_window/main_window.cpp" line="272"/>
+        <location filename="../src/main_window/main_window.cpp" line="84"/>
+        <location filename="../src/main_window/main_window.cpp" line="198"/>
+        <location filename="../src/main_window/main_window.cpp" line="274"/>
         <source>Client %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="151"/>
+        <location filename="../src/main_window/main_window.cpp" line="153"/>
         <source>XiVO CTI Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="178"/>
+        <location filename="../src/main_window/main_window.cpp" line="180"/>
         <source>Client %1 (%2 profile)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="264"/>
+        <location filename="../src/main_window/main_window.cpp" line="266"/>
         <source>Fetch the last one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="271"/>
+        <location filename="../src/main_window/main_window.cpp" line="273"/>
         <source>About XiVO Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="273"/>
+        <location filename="../src/main_window/main_window.cpp" line="275"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="278"/>
+        <location filename="../src/main_window/main_window.cpp" line="280"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="279"/>
+        <location filename="../src/main_window/main_window.cpp" line="281"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="280"/>
+        <location filename="../src/main_window/main_window.cpp" line="282"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="283"/>
+        <location filename="../src/main_window/main_window.cpp" line="285"/>
         <source>(Application Built on : %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="284"/>
+        <location filename="../src/main_window/main_window.cpp" line="286"/>
         <source>(Application Launched on : %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="285"/>
+        <location filename="../src/main_window/main_window.cpp" line="287"/>
         <source>(Config File Location : %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="288"/>
+        <location filename="../src/main_window/main_window.cpp" line="290"/>
         <source>E-mail : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="289"/>
+        <location filename="../src/main_window/main_window.cpp" line="291"/>
         <source>Phone : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="290"/>
+        <location filename="../src/main_window/main_window.cpp" line="292"/>
         <source>Authors : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="290"/>
+        <location filename="../src/main_window/main_window.cpp" line="292"/>
         <source>Avencall Development Team</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="292"/>
+        <location filename="../src/main_window/main_window.cpp" line="294"/>
         <source>License : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="294"/>
+        <location filename="../src/main_window/main_window.cpp" line="296"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="300"/>
+        <location filename="../src/main_window/main_window.cpp" line="302"/>
         <source>Credits</source>
         <translation type="unfinished"></translation>
     </message>
@@ -937,12 +937,12 @@ Are you sure ?</source>
 <context>
     <name>SearchPanel</name>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="49"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="48"/>
         <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="54"/>
+        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="53"/>
         <source>N&amp;ame or number to search :</source>
         <translation>名前・番号で検索:</translation>
     </message>
@@ -950,12 +950,12 @@ Are you sure ?</source>
 <context>
     <name>Statusbar</name>
     <message>
-        <location filename="../src/main_window/statusbar.cpp" line="83"/>
+        <location filename="../src/main_window/statusbar.cpp" line="84"/>
         <source>Connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/statusbar.cpp" line="90"/>
+        <location filename="../src/main_window/statusbar.cpp" line="91"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>

@@ -51,26 +51,31 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>Out of queue</source>
+        <source>OOQ incoming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
-        <source>Unlogged</source>
+        <source>OOQ outgoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
+        <source>Unlogged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>%1 since %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="334"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="338"/>
         <source>Server: %1</source>
         <translation>サーバ: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="335"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="339"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
     </message>

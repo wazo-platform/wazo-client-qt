@@ -51,26 +51,31 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>Out of queue</source>
-        <translation>Niet in de wachtrij</translation>
+        <source>OOQ incoming</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
+        <source>OOQ outgoing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Unlogged</source>
         <translation>Niet ingelogged</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>%1 since %2</source>
         <translation>%1 sedert %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="334"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="338"/>
         <source>Server: %1</source>
         <translation>Server: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="335"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="339"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
     </message>
