@@ -609,13 +609,13 @@ queues</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
-        <source>OOQ incoming</source>
-        <translation>OOQ incoming</translation>
+        <source>OOQ In</source>
+        <translation>OOQ In</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="336"/>
-        <source>OOQ outgoing</source>
-        <translation>OOQ outgoing</translation>
+        <source>OOQ Out</source>
+        <translation>OOQ Out</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="379"/>
@@ -2556,13 +2556,13 @@ Are you sure ?</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>OOQ incoming</source>
-        <translation>OOQ incoming</translation>
+        <source>OOQ In</source>
+        <translation>OOQ In</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
-        <source>OOQ outgoing</source>
-        <translation>OOQ outgoing</translation>
+        <source>OOQ Out</source>
+        <translation>OOQ Out</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>

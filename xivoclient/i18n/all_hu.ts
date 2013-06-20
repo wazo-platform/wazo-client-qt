@@ -556,12 +556,12 @@ queues</source>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
-        <source>OOQ incoming</source>
+        <source>OOQ In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="336"/>
-        <source>OOQ outgoing</source>
+        <source>OOQ Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -892,12 +892,12 @@ Busy lines: %3</source>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>OOQ incoming</source>
+        <source>OOQ In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
-        <source>OOQ outgoing</source>
+        <source>OOQ Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

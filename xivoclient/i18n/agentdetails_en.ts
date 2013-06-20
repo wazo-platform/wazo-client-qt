@@ -51,13 +51,13 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>OOQ incoming</source>
-        <translation>OOQ incoming</translation>
+        <source>OOQ In</source>
+        <translation>OOQ In</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
-        <source>OOQ outgoing</source>
-        <translation>OOQ outgoing</translation>
+        <source>OOQ Out</source>
+        <translation>OOQ Out</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
