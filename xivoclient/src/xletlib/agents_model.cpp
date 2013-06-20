@@ -331,9 +331,9 @@ QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailabili
     case AgentInfo::UNAVAILABLE:
         return tr("In use");
     case AgentInfo::ON_CALL_NONACD_INCOMING:
-        return tr("OOQ incoming");
+        return tr("OOQ In");
     case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        return tr("OOQ outgoing");
+        return tr("OOQ Out");
     default:
         return QString();
     }
