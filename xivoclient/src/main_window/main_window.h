@@ -74,6 +74,7 @@ class MainWindow : public QMainWindow
         void minimizeWindow();
         void about();
         void showCredits();
+        virtual void closeEvent(QCloseEvent *);
 
     signals:
         void initialized();

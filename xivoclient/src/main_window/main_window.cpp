@@ -112,6 +112,12 @@ void MainWindow::setTitle(const QString & app_title)
     emit this->titleUpdated(title);
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    event->ignore();
+    this->hideWindow();
+}
+
 void MainWindow::showWindow()
 {
     this->setVisible(true);
