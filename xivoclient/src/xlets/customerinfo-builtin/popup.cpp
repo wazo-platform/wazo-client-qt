@@ -61,18 +61,29 @@ QStringList g_formbuttonnames = (QStringList()
 
 Popup::Popup(const bool urlautoallow, QWidget *parent)
     : QWidget(parent),
-      m_xmlInputSource(0),
-      m_handler(0),
+      m_inputstream(NULL),
+      m_buffer(NULL),
+      m_xmlInputSource(NULL),
+      m_reader(NULL),
+      m_handler(NULL),
+      m_parsingStarted(false),
+      m_vlayout(NULL),
+      m_title(NULL),
+      m_closesheet(NULL),
+      m_hlayout(NULL),
+      m_qf(NULL),
       m_sheetpopup(false),
       m_systraypopup(true),
       m_focus(false),
       m_urlautoallow(urlautoallow),
       m_toupdate(false),
+      m_sheetui(false),
       m_firstline(3),
-      m_sheetui_widget(NULL)
+      m_sheetui_widget(NULL),
+      m_uiloader(NULL),
+      m_remarkarea(NULL),
+      m_nfeeds(0)
 {
-    m_remarkarea = 0;
-    m_nfeeds = 0;
 }
 
 Popup::~Popup()
