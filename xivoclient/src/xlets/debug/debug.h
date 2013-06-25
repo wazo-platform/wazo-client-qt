@@ -32,7 +32,7 @@
 #define __DEBUG_H__
 
 #include <QObject>
-#include "xlet.h"
+#include <xletlib/xlet.h>
 
 class QPushButton;
 class QTextEdit;

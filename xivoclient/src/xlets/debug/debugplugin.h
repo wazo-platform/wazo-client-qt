@@ -31,7 +31,7 @@
 #define __DEBUGPLUGIN_H__
 
 #include <QObject>
-#include "xletinterface.h"
+#include <xletlib/xletinterface.h>
 
 class DebugPlugin : public QObject, XLetInterface
 {
