@@ -89,11 +89,15 @@ void DirectoryPanel::itemClicked(QTableWidgetItem * item)
 
 void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 {
+    if (item == NULL) {
+        return;
+    }
+
     if( PhoneNumber::phone_re().exactMatch(item->text()) ) {
         b_engine->actionDial(item->text());
     }
 
-    if(item && item->text().contains("@")) {
+    if(item->text().contains("@")) {
         QString mailAddr = item->text();
         if(mailAddr.length() > 0) {
             QDesktopServices::openUrl(QUrl("mailto:" + mailAddr));
