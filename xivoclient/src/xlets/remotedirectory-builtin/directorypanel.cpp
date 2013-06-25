@@ -107,7 +107,6 @@ void DirectoryPanel::itemDoubleClicked(QTableWidgetItem * item)
 
 void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStringList & resp)
 {
-    int x, y;
     int ncolumns = headers.size();
     int nrows = resp.size();
 
@@ -117,9 +116,9 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
 
     if((ncolumns > 0) && (nrows > 0)) {
         m_table->setSortingEnabled(false);
-        for(y = 0; y < nrows; y++) {
+        for(int y = 0; y < nrows; y++) {
             QStringList items = resp[y].split(";");
-            for(x = 0; x < ncolumns; x++) {
+            for(int x = 0; x < ncolumns; x++) {
                 QString it = items[x];
                 QTableWidgetItem * item = new QTableWidgetItem(it);
                 item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
