@@ -219,9 +219,8 @@ void DirectoryEntryManager::removeEntryAt(int index)
 {
     const DirectoryEntry *entry = m_directory_entries.at(index);
     m_directory_entries.removeAt(index);
-    if (entry) {
-        delete entry;
-    }
+    delete entry;
+    entry = NULL;
 
     emit directoryEntryDeleted(index);
 }

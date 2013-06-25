@@ -197,17 +197,13 @@ int run_xivoclient(ExecObjects exec_obj)
 void clean_xivoclient(ExecObjects exec_obj)
 {
 #ifdef FUNCTESTS
-    if (exec_obj.rc) {
-        delete exec_obj.rc;
-    }
+    delete exec_obj.rc;
+    exec_obj.rc = NULL;
 #endif
-    if (assembler) {
-        delete assembler;
-        assembler = NULL;
-    }
-    if (exec_obj.app) {
-        delete exec_obj.app;
-    }
+    delete assembler;
+    assembler = NULL;
+    delete exec_obj.app;
+    exec_obj.app = NULL;
 }
 
 int main(int argc, char **argv)
