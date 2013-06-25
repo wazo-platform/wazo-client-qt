@@ -59,11 +59,6 @@ QStringList g_formbuttonnames = (QStringList()
                                  << "refuse" << "hangup" << "answer"
                                  << "close" << "save");
 
-/*!
- * This constructor inits all XML objects and connect signals
- * to slots.
- * \param parent                parent widget
- */
 Popup::Popup(const bool urlautoallow, QWidget *parent)
     : QWidget(parent),
       m_xmlInputSource(0),
@@ -76,14 +71,12 @@ Popup::Popup(const bool urlautoallow, QWidget *parent)
       m_firstline(3),
       m_sheetui_widget(NULL)
 {
-    // qDebug() << Q_FUNC_INFO;
     m_remarkarea = 0;
     m_nfeeds = 0;
 }
 
 Popup::~Popup()
 {
-    // qDebug() << Q_FUNC_INFO;
     delete m_xmlInputSource;
     delete m_handler;
     delete m_reader;
@@ -120,10 +113,6 @@ void Popup::feed(QIODevice * inputstream,
                  this, SLOT(streamNewData()) );
         connect( m_inputstream, SIGNAL(aboutToClose()),
                  this, SLOT(streamAboutToClose()) );
-        //         connect( inputstream, SIGNAL(disconnected()),
-        //                  this, SLOT(socketDisconnected()) );
-        //         connect( inputstream, SIGNAL(error(QAbstractSocket::SocketError)),
-        //                  this, SLOT(socketError(QAbstractSocket::SocketError)));
         m_vlayout = new QVBoxLayout(this);
         m_title = new QLabel(this);
         m_title->setAlignment(Qt::AlignHCenter);
@@ -177,7 +166,6 @@ void Popup::feed(QIODevice * inputstream,
 
 void Popup::dispurl(const QUrl &url)
 {
-    // qDebug() << Q_FUNC_INFO << url;
     // TODO : check if the string starts with "tel:"
     QString numbertodial = url.toString().mid(4);
     b_engine->actionDial(numbertodial);
@@ -186,7 +174,6 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
     QString buttonname = sender()->property("buttonname").toString();
-    // qDebug() << Q_FUNC_INFO << buttonname << m_ipbxid << m_channel;
     if(buttonname == "close")
         close();
     else if(buttonname == "save")
@@ -199,11 +186,8 @@ void Popup::actionFromForm()
     }
 }
 
-/*! \brief saves the filled-in forms and closes the sheet
- */
 void Popup::saveandclose()
 {
-    // qDebug() << Q_FUNC_INFO;
     QStringList qsl;
     QRegExp re_formentry("^XIVOFORM-");
 
@@ -228,7 +212,6 @@ void Popup::addAnyInfo(const QString & localName,
                        const QString & infoName,
                        const QString & infoValue)
 {
-    // qDebug() << Q_FUNC_INFO << this << m_vlayout->count();
     QStringList z  = (QStringList() << localName << infoOrder << infoType << infoName << infoValue);
     m_sheetlines.append(z);
     if( localName == "sheet_info" ) {
@@ -294,23 +277,18 @@ void Popup::addAnyInfo(const QString & localName,
     }
 }
 
-/*! \brief sets the sheet's title
- */
 void Popup::setTitle(const QString & title)
 {
-    // qDebug() << Q_FUNC_INFO << title;
     m_title->setText(title);
 }
 
 void Popup::addDefForm(const QString & name, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << this << name << value.size();
     m_remoteforms[name] = value;
 }
 
 void Popup::addInfoForm(int where, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << this << where << value << m_where << m_remoteforms.keys();
     QUiLoader loader;
     if(m_remoteforms.contains(value)) {
         m_buffer = new QBuffer(this);
@@ -374,7 +352,6 @@ void Popup::addInfoText(int where, const QString & name, const QString & value)
 
 void Popup::addInfoInternal(const QString & name, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << name << value;
     if(name == "channel") {
         m_channel = value;
         setProperty("channel", m_channel);
@@ -423,8 +400,6 @@ void Popup::setEnablesOnForms()
     }
 }
 
-/*! \brief adds phone-like data to the sheet
- */
 void Popup::addInfoPhone(int where, const QString & name, const QString & value)
 {
     QLabel * lblname = new QLabel(name, this);
@@ -448,7 +423,6 @@ QList<QStringList> & Popup::sheetlines()
 
 void Popup::update(QList<QStringList> & newsheetlines)
 {
-    // qDebug() << Q_FUNC_INFO << this << newsheetlines;
     m_toupdate = true;
     foreach(QStringList qsl, newsheetlines)
         addAnyInfo(qsl[0], qsl[1], qsl[2], qsl[3], qsl[4]);
@@ -456,7 +430,6 @@ void Popup::update(QList<QStringList> & newsheetlines)
 
 void Popup::addInfoLink(int where, const QString & name, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << value;
     QLabel * lblname = new QLabel(name, this);
     UrlLabel * lblvalue = new UrlLabel(value, this);
     QHBoxLayout * hlayout = new QHBoxLayout();
@@ -469,7 +442,6 @@ void Popup::addInfoLink(int where, const QString & name, const QString & value)
 
 void Popup::addInfoLinkX(int where, const QString & name, const QString & value)
 {
-    // qDebug() << Q_FUNC_INFO << name << value << dispvalue;
     QString linkvalue = value;
     QString dispvalue = value;
     QStringList qsl = value.split("@");
@@ -479,7 +451,6 @@ void Popup::addInfoLinkX(int where, const QString & name, const QString & value)
     }
     QLabel * lblname = new QLabel(name, this);
     QPushButton * lblvalue = new QPushButton(dispvalue, this);
-    // lblvalue->setObjectName("phonenumber");
     lblvalue->setProperty("urlx", linkvalue);
     connect( lblvalue, SIGNAL(clicked()),
              this, SLOT(httpGetNoreply()) );
@@ -508,30 +479,9 @@ void Popup::addInfoPicture(int where, const QString & name, const QString & valu
     m_vlayout->insertLayout(where, hlayout);
 }
 
-// void Popup::addInfoPictureHttp(int where, const QString & name, const QString & value)
-// {
-//     QUrl url(value);
-//     // qDebug() << Q_FUNC_INFO << value << url.scheme();
-//     //QUrl url = QUrl::fromEncoded(value);
-//     // TODO: faire un widget special qui bouffe des Images HTTP ?
-//     if((url.scheme() != QString("http")) &&
-//        (url.scheme() != QString("https"))) {
-//         QLabel *lbl = new QLabel( name, this );
-//         QPixmap *face = new QPixmap( value );
-//         // TODO: connect a signal to close() ?
-//         lbl->setPixmap( *face );
-//         m_vlayout->insertWidget(where, lbl, 0, Qt::AlignCenter);
-//     } else {
-//         RemotePicWidget * pic = new RemotePicWidget( name, value, this );
-//         m_vlayout->insertWidget(where, pic, 0, Qt::AlignCenter);
-//     }
-// }
-
-// === SLOTS ===
 void Popup::streamNewData()
 {
     bool b = false;
-    // qDebug() << Q_FUNC_INFO << this << m_sheetui << m_inputstream->bytesAvailable() << "bytes available";
     if(!m_sheetui)
         if(m_parsingStarted)
             b = m_reader->parseContinue();
@@ -542,7 +492,6 @@ void Popup::streamNewData()
     else
         finishAndShow();
 
-    // qDebug() << Q_FUNC_INFO << "parse returned" << b;
 }
 
 void Popup::dialThisNumber()
@@ -555,41 +504,23 @@ void Popup::httpGetNoreply()
 {
     QString urlx = sender()->property("urlx").toString();
     b_engine->urlAuto(urlx);
-    // qDebug() << Q_FUNC_INFO << urlx;
 }
 
 void Popup::streamAboutToClose()
 {
-    // qDebug() << Q_FUNC_INFO;
     finishAndShow();
 }
 
 void Popup::socketDisconnected()
 {
-    // qDebug() << Q_FUNC_INFO;
     /* finish the parsing */
     m_reader->parseContinue();
 }
 
-/*
-void Popup::socketError(QAbstractSocket::SocketError err)
-{
-  qDebug() << Q_FUNC_INFO << err;
-}
-*/
-
-/*!
- * Send signal to be shown !
- */
 void Popup::finishAndShow()
 {
-    // qDebug() << Q_FUNC_INFO << this;
     if(m_nfeeds == 1)
         addRemarkArea();
-    //dumpObjectInfo();
-    //dumpObjectTree();
-    // ...
-    //show();
     emit wantsToBeShown(this);
 }
 
