@@ -24,8 +24,10 @@
    <string notr="true">#AgentStatus {background: #0f0;}
 #AgentAvailable {background: #6aa84f;}
 #AgentInUse {background: #e69138;}
-#AgentOnCallNonACDIncoming {background: #a64d79;}
-#AgentOnCallNonACDOutgoing {background: #a64d79;}</string>
+#AgentOnCallNonACDIncomingInternal {background: #f198b7;}
+#AgentOnCallNonACDIncomingExternal {background: #a64d79;}
+#AgentOnCallNonACDOutgoingInternal {background: #f198b7;}
+#AgentOnCallNonACDOutgoingExternal {background: #a64d79;}</string>
   </property>
   <widget class="QLabel" name="agent_status_since_label">
    <property name="geometry">

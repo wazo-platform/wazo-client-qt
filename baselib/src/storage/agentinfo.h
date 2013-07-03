@@ -49,8 +49,10 @@ class BASELIB_EXPORT AgentInfo : public XInfo
             LOGGED_OUT,
             AVAILABLE,
             UNAVAILABLE,
-            ON_CALL_NONACD_INCOMING,
-            ON_CALL_NONACD_OUTGOING
+            ON_CALL_NONACD_INCOMING_INTERNAL,
+            ON_CALL_NONACD_INCOMING_EXTERNAL,
+            ON_CALL_NONACD_OUTGOING_INTERNAL,
+            ON_CALL_NONACD_OUTGOING_EXTERNAL
         };
 
         AgentInfo(const QString &, const QString &);

@@ -231,12 +231,20 @@ void XletAgentDetails::updateAvailability()
         availability_status = tr("In use");
         style = "QLabel { background-color : red; }";
         break;
-    case AgentInfo::ON_CALL_NONACD_INCOMING:
-        availability_status = tr("OOQ In");
+    case AgentInfo::ON_CALL_NONACD_INCOMING_INTERNAL:
+        availability_status = tr("Int. Incoming ");
         style = "QLabel { background-color : red; }";
         break;
-    case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        availability_status = tr("OOQ Out");
+    case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
+        availability_status = tr("Ext. Incoming");
+        style = "QLabel { background-color : red; }";
+        break;
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_INTERNAL:
+        availability_status = tr("Int. Outgoing");
+        style = "QLabel { background-color : red; }";
+        break;
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_EXTERNAL:
+        availability_status = tr("Ext. Outgoing");
         style = "QLabel { background-color : red; }";
         break;
     default:

@@ -119,10 +119,14 @@ enum AgentInfo::AgentAvailability AgentInfo::availability() const
         return AVAILABLE;
     } else if (m_availability == "unavailable") {
         return UNAVAILABLE;
-    } else if (m_availability == "on_call_nonacd_incoming") {
-        return ON_CALL_NONACD_INCOMING;
-    } else if (m_availability == "on_call_nonacd_outgoing") {
-        return ON_CALL_NONACD_OUTGOING;
+    } else if (m_availability == "on_call_nonacd_incoming_internal") {
+        return ON_CALL_NONACD_INCOMING_INTERNAL;
+    } else if (m_availability == "on_call_nonacd_incoming_external") {
+        return ON_CALL_NONACD_INCOMING_EXTERNAL;
+    } else if (m_availability == "on_call_nonacd_outgoing_internal") {
+        return ON_CALL_NONACD_OUTGOING_INTERNAL;
+    } else if (m_availability == "on_call_nonacd_outgoing_external") {
+        return ON_CALL_NONACD_OUTGOING_EXTERNAL;
     } else {
         return LOGGED_OUT;
     }

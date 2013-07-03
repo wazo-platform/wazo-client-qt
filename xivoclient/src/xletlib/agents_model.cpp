@@ -268,10 +268,14 @@ QString AgentsModel::dataTooltipAvailability(enum AgentInfo::AgentAvailability a
         return tr("Agent ready to receive a call");
     case AgentInfo::UNAVAILABLE:
         return tr("Agent processing a call or paused");
-    case AgentInfo::ON_CALL_NONACD_INCOMING:
-        return tr("Agent receiving a call out of queue");
-    case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        return tr("Agent calling");
+    case AgentInfo::ON_CALL_NONACD_INCOMING_INTERNAL:
+        return tr("Agent receiving an internal call out of queue");
+    case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
+        return tr("Agent receiving an external call out of queue");
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_INTERNAL:
+        return tr("Agent emiting an internal call");
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_EXTERNAL:
+        return tr("Agent emiting an external call");
     default:
         return QString();
     }
@@ -330,10 +334,14 @@ QString AgentsModel::convertAgentAvailabilityToString(AgentInfo::AgentAvailabili
         return tr("Not in use");
     case AgentInfo::UNAVAILABLE:
         return tr("In use");
-    case AgentInfo::ON_CALL_NONACD_INCOMING:
-        return tr("OOQ In");
-    case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        return tr("OOQ Out");
+    case AgentInfo::ON_CALL_NONACD_INCOMING_INTERNAL:
+        return tr("Int. Incoming");
+    case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
+        return tr("Ext. Incoming");
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_INTERNAL:
+        return tr("Int. Outgoing");
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_EXTERNAL:
+        return tr("Ext. Outgoing");
     default:
         return QString();
     }
@@ -346,10 +354,14 @@ QString AgentsModel::convertAgentAvailabilityToObjectName(AgentInfo::AgentAvaila
         return "AgentAvailable";
     case AgentInfo::UNAVAILABLE:
         return "AgentInUse";
-    case AgentInfo::ON_CALL_NONACD_INCOMING:
-        return "AgentOnCallNonACDIncoming";
-    case AgentInfo::ON_CALL_NONACD_OUTGOING:
-        return "AgentOnCallNonACDOutgoing";
+    case AgentInfo::ON_CALL_NONACD_INCOMING_INTERNAL:
+        return "AgentOnCallNonACDIncomingInternal";
+    case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
+        return "AgentOnCallNonACDIncomingExternal";
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_INTERNAL:
+        return "AgentOnCallNonACDOutgoingInternal";
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_EXTERNAL:
+        return "AgentOnCallNonACDOutgoingExternal";
     case AgentInfo::LOGGED_OUT:
     default:
         return "AgentStatus";
@@ -362,9 +374,10 @@ QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
     case AgentInfo::AVAILABLE:
         return Qt::green;
     case AgentInfo::UNAVAILABLE:
-    case AgentInfo::ON_CALL_NONACD_INCOMING:
-        return Qt::red;
-    case AgentInfo::ON_CALL_NONACD_OUTGOING:
+    case AgentInfo::ON_CALL_NONACD_INCOMING_INTERNAL:
+    case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_INTERNAL:
+    case AgentInfo::ON_CALL_NONACD_OUTGOING_EXTERNAL:
         return Qt::red;
     default:
         return QVariant();
