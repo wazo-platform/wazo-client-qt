@@ -62,7 +62,13 @@ void RemoteControl::set_search_for_directory(const QVariantList & args)
     QString search_string = args[0].toString();
 
     Directory *xlet = this->get_xlet<Directory>("directory");
+    if (xlet == NULL) {
+        qDebug() << "no xlet directory";
+    }
     QLineEdit *entry_filter = xlet->findChild<QLineEdit*>(QString("entry_filter"));
+    if (entry_filter == NULL) {
+        qDebug() << "line edit entry_filter";
+    }
 
     entry_filter->setText(search_string);
 }
