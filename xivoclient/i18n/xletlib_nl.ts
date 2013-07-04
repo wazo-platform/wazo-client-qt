@@ -68,12 +68,12 @@ wachtrijen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="272"/>
         <source>Agent receiving a call out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent ontvangt een oproep van buiten de wachtrij</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="274"/>
         <source>Agent calling</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent belt</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="330"/>
@@ -88,12 +88,12 @@ wachtrijen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
         <source>OOQ In</source>
-        <translation type="unfinished"></translation>
+        <translation>OOQ In</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="336"/>
         <source>OOQ Out</source>
-        <translation type="unfinished"></translation>
+        <translation>OOQ Uit</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="379"/>

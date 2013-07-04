@@ -52,12 +52,12 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>OOQ In</source>
-        <translation type="unfinished"></translation>
+        <translation>OOQ In</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>OOQ Out</source>
-        <translation type="unfinished"></translation>
+        <translation>OOQ Uit</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
