@@ -50,6 +50,7 @@ using namespace std;
 
 class QLocalServer;
 class QLocalSocket;
+class XLet;
 
 struct RemoteControlCommand {
     QString action;
@@ -163,7 +164,13 @@ class RemoteControl : public QObject
 template <class T>
 T* RemoteControl::get_xlet(const QString &xlet_name)
 {
-    return static_cast<T*>(this->m_xlet_dispatcher->m_xlets[xlet_name]);
+    QHash<QString, XLet*> xlet_list = this->m_xlet_dispatcher->m_xlets;
+    if (xlet_list.contains(xlet_name)) {
+        return static_cast<T*>(this->m_xlet_dispatcher->m_xlets[xlet_name]);
+    } else {
+        QString xlet_name_list = QStringList(xlet_list.keys()).join(",");
+        throw TestFailedException(QString("could not find xlet %1 in %2").arg(xlet_name, xlet_name_list));
+    }
 }
 
 #endif /* ifdef FUNCTESTS */

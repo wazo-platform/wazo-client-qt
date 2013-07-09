@@ -187,14 +187,15 @@ RemoteControlCommand RemoteControl::parseCommand(const QByteArray & raw_command)
 }
 
 void RemoteControl::sendResponse(RemoteControlResponse test_result,
-    QString command,
-    QString message,
-    QVariantMap return_value)
+                                 QString command,
+                                 QString message,
+                                 QVariantMap return_value)
 {
     QVariantMap response;
 
     switch (test_result) {
         case TEST_FAILED:
+            qDebug() << "test failed" << command << ":" << message;
             response["test_result"] = "failed";
             break;
         case TEST_UNKNOWN:
