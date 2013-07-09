@@ -196,7 +196,7 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
 void RemoteControl::i_log_in_the_xivo_client()
 {
     this->m_login_widget->ui.buttonBox->click();
-    pause(1000);
+    pause(5000);
 }
 
 void RemoteControl::i_log_out_of_the_xivo_client()
