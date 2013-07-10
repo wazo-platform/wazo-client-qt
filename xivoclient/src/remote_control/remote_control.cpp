@@ -195,13 +195,15 @@ void RemoteControl::sendResponse(RemoteControlResponse test_result,
 
     switch (test_result) {
         case TEST_FAILED:
-            qDebug() << "test failed" << command << ":" << message;
+            qDebug() << "command failed" << command << ":" << message;
             response["test_result"] = "failed";
             break;
         case TEST_UNKNOWN:
+            qDebug() << "command unknown" << command;
             response["test_result"] = "unknown";
             break;
         case TEST_PASSED:
+            qDebug() << "command succeded" << command;
             response["test_result"] = "passed";
             break;
     }
