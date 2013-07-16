@@ -30,7 +30,7 @@
 #include "cti_server.h"
 
 CTIServer::CTIServer(QSslSocket * socket)
-    : QObject(NULL), m_socket(socket)
+    : QObject(NULL), m_socket(socket), m_last_port(0)
 {
 }
 
