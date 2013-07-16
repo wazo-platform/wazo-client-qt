@@ -436,7 +436,7 @@ void AgentsModel::increaseAvailability()
     this->refreshColumn(STATUS_SINCE);
 }
 
-QStringList AgentsModel::dataDisplayQueueList(QString agent_id) const
+QStringList AgentsModel::dataDisplayQueueList(const QString &agent_id) const
 {
    return QueueMemberDAO::queueListFromAgentId(agent_id);
 }

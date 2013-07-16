@@ -46,7 +46,7 @@ class XInfo;
     public: void set##Type (const QString & x##type##id, Type##Info * type) { \
         this->m_##type##s[x##type##id] = type; \
     } \
-    const Type##Info * type (const QString & x##type##id) { \
+    const Type##Info * type (const QString & x##type##id) const { \
         return this->m_##type##s[x##type##id]; \
     } \
     private : QMap<QString, Type##Info *> m_##type##s;

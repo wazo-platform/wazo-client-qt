@@ -37,7 +37,7 @@ MockBaseEngine::MockBaseEngine()
 {
 }
 
-QHash<QString, XInfo *> MockBaseEngine::iterover(const QString &listname) const
+QHash<QString, XInfo *> MockBaseEngine::iterover(const QString &/*listname*/) const
 {
     QHash<QString, XInfo *> ret;
     return ret;
