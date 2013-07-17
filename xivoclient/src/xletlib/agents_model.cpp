@@ -273,9 +273,9 @@ QString AgentsModel::dataTooltipAvailability(enum AgentInfo::AgentAvailability a
     case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
         return tr("Agent receiving an external call out of queue");
     case AgentInfo::ON_CALL_NONACD_OUTGOING_INTERNAL:
-        return tr("Agent emiting an internal call");
+        return tr("Agent emitting an internal call");
     case AgentInfo::ON_CALL_NONACD_OUTGOING_EXTERNAL:
-        return tr("Agent emiting an external call");
+        return tr("Agent emitting an external call");
     default:
         return QString();
     }
