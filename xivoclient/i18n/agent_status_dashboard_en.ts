@@ -9,7 +9,7 @@
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="47"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="49"/>
         <source>66:66</source>
         <translation>66:66</translation>
     </message>

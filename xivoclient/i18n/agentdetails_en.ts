@@ -51,31 +51,41 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>OOQ In</source>
-        <translation>OOQ In</translation>
+        <source>Int. Incoming </source>
+        <translation>Int. Incoming </translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
-        <source>OOQ Out</source>
-        <translation>OOQ Out</translation>
+        <source>Ext. Incoming</source>
+        <translation>Ext. Incoming</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
+        <source>Int. Outgoing</source>
+        <translation>Int. Outgoing</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
+        <source>Ext. Outgoing</source>
+        <translation>Ext. Outgoing</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
         <source>Unlogged</source>
         <translation>Unlogged</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="255"/>
         <source>%1 since %2</source>
         <translation>%1 since %2</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="338"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="346"/>
         <source>Server: %1</source>
         <translation>Server: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="339"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="347"/>
         <source>Context: %1</source>
         <translation>Context: %1</translation>
     </message>

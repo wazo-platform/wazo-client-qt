@@ -31,7 +31,7 @@
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="377"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="390"/>
         <source>Logged</source>
         <translation>Logged</translation>
     </message>
@@ -44,7 +44,7 @@ queues</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="398"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="411"/>
         <source>Paused</source>
         <translation>Paused</translation>
     </message>
@@ -67,46 +67,66 @@ queues</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="272"/>
-        <source>Agent receiving a call out of queue</source>
-        <translation>Agent receiving a call out of queue</translation>
+        <source>Agent receiving an internal call out of queue</source>
+        <translation>Agent receiving an internal call out of queue</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="274"/>
-        <source>Agent calling</source>
-        <translation>Agent calling</translation>
+        <source>Agent receiving an external call out of queue</source>
+        <translation>Agent receiving an external call out of queue</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="330"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="276"/>
+        <source>Agent emitting an internal call</source>
+        <translation>Agent emitting an internal call</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="278"/>
+        <source>Agent emitting an external call</source>
+        <translation>Agent emitting an external call</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="334"/>
         <source>Not in use</source>
         <translation>Not in use</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="332"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="336"/>
         <source>In use</source>
         <translation>In use</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="334"/>
-        <source>OOQ In</source>
-        <translation>OOQ In</translation>
+        <location filename="../src/xletlib/agents_model.cpp" line="338"/>
+        <source>Int. Incoming</source>
+        <translation>Int. Incoming</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="336"/>
-        <source>OOQ Out</source>
-        <translation>OOQ Out</translation>
+        <location filename="../src/xletlib/agents_model.cpp" line="340"/>
+        <source>Ext. Incoming</source>
+        <translation>Ext. Incoming</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="379"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="342"/>
+        <source>Int. Outgoing</source>
+        <translation>Int. Outgoing</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="344"/>
+        <source>Ext. Outgoing</source>
+        <translation>Ext. Outgoing</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="392"/>
         <source>Unlogged</source>
         <translation>Unlogged</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="396"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="409"/>
         <source>Unpaused</source>
         <translation>Unpaused</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="400"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="413"/>
         <source>Partially Paused</source>
         <translation>Partially Paused</translation>
     </message>
@@ -339,6 +359,11 @@ Busy lines: %3</translation>
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="37"/>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
         <location filename="../src/xletlib/lookup_directory_entry.cpp" line="98"/>
         <source>Remote search result</source>
         <translation>Remote search result</translation>
@@ -352,11 +377,6 @@ Busy lines: %3</translation>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
         <translation>Current Search</translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="37"/>
-        <source>N/A</source>
-        <translation>N/A</translation>
     </message>
 </context>
 <context>

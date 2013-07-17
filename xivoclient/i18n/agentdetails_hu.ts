@@ -51,31 +51,41 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>OOQ In</source>
+        <source>Int. Incoming </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
-        <source>OOQ Out</source>
+        <source>Ext. Incoming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
-        <source>Unlogged</source>
+        <source>Int. Outgoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
+        <source>Ext. Outgoing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
+        <source>Unlogged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="255"/>
         <source>%1 since %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="338"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="346"/>
         <source>Server: %1</source>
         <translation>Szerver: %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="339"/>
+        <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="347"/>
         <source>Context: %1</source>
         <translation>Kontextus:  %1</translation>
     </message>
