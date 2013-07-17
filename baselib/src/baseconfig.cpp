@@ -38,17 +38,9 @@ BaseConfig::BaseConfig()
  * \param rm choose the set of values read
  * \return the value indexed by key
  */
-const QVariant BaseConfig::value(const QString &key, ReadMode rm) const
+const QVariant BaseConfig::value(const QString &key) const
 {
-    if (rm == Unmasked) {
-        return m_qvm[key];
-    } else {
-        if (m_qvm_mask.keys().contains(key)) {
-            return m_qvm_mask[key];
-        } else {
-            return m_qvm[key];
-        }
-    }
+    return m_qvm[key];
 }
 
 /*!
@@ -68,14 +60,6 @@ QVariant & BaseConfig::operator[](const QString &key)
 }
 
 /*!
- * \return the reference to the mask value indexed by key
- */
-QVariant & BaseConfig::mask(const QString &key)
-{
-    return m_qvm_mask[key];
-}
-
-/*!
  * \return a QVariantMap containing all the values hierarchically below the name parameter.
  * \param rm choose the set of value read
  *
@@ -92,25 +76,17 @@ QVariant & BaseConfig::mask(const QString &key)
  * ret["z"] = "b";
  * \endcode
  */
-QVariantMap BaseConfig::getSubSet (const QString &name, ReadMode rm) const
+QVariantMap BaseConfig::getSubSet (const QString &name) const
 {
     QVariantMap ret;
     foreach (QString key, m_qvm.keys()) {
         if (key.startsWith(name + '.')) {
             QString newKey = key;
             newKey.remove (0, name.length() + 1);
-            ret[newKey] = value(key, rm);
+            ret[newKey] = value(key);
         }
     }
     return ret;
-}
-
-/*!
- * \return true if the unmasked value indexed by the key parameter is masked by a mask value.
- */
-bool BaseConfig::isMasked(const QString &key) const
-{
-    return m_qvm_mask.keys().contains(key);
 }
 
 /*!
@@ -137,38 +113,24 @@ void BaseConfig::merge (const QVariantMap &extern_qvm, QString prefix)
 }
 
 /*!
- * See merge().
- * This modifies mask values.
- */
-void BaseConfig::mergeMask (const QVariantMap &extern_qvm, QString prefix)
-{
-    if (!prefix.isEmpty() && !prefix.endsWith(".")) {
-        prefix += ".";
-    }
-    foreach (QString key, extern_qvm.keys()) {
-        this->mask(prefix + key) = extern_qvm[key];
-    }
-}
-
-/*!
  * \return true if a value is indexed by key
  */
 bool BaseConfig::contains(const QString &key)
 {
-    return m_qvm.contains(key) || m_qvm_mask.contains(key);
+    return m_qvm.contains(key);
 }
 
 /*!
  * \return a string to display nicely the content
  * \param rm choose the set of values read
  */
-QString BaseConfig::toString(ReadMode rm)
+QString BaseConfig::toString()
 {
     QString ret("\n"), line("%1, %2\n");
     foreach (QString key, m_qvm.keys()) {
-        ret += line.arg(key, -50).arg(value(key, rm).canConvert(QVariant::String)
-                                      ? value(key, rm).toString()
-                                      : value(key, rm).typeName());
+        ret += line.arg(key, -50).arg(value(key).canConvert(QVariant::String)
+                                      ? value(key).toString()
+                                      : value(key).typeName());
     }
     return ret;
 }
@@ -178,7 +140,7 @@ QString BaseConfig::toString(ReadMode rm)
  */
 QStringList BaseConfig::keys()
 {
-    QStringList ret = m_qvm.keys() << m_qvm_mask.keys();
+    QStringList ret = m_qvm.keys();
     ret.removeDuplicates();
     return ret;
 }

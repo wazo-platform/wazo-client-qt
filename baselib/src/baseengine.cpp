@@ -337,7 +337,7 @@ void BaseEngine::saveSettings()
 
         m_settings->beginGroup("user-gui");
             m_settings->setValue("historysize", m_config["historysize"].toInt());
-            m_settings->setValue("guisettings", m_config.getSubSet("guioptions", BaseConfig::Unmasked));
+            m_settings->setValue("guisettings", m_config.getSubSet("guioptions"));
         m_settings->endGroup();
     m_settings->endGroup();
 

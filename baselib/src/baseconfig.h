@@ -50,33 +50,26 @@
 class BaseConfig: public QObject
 {
     Q_OBJECT
-    
+
     public:
-    
+
         typedef enum {Masked, Unmasked} ReadMode;
-        
+
         BaseConfig();
-        const QVariant value(const QString &, ReadMode = Masked) const;
+        const QVariant value(const QString &) const;
         const QVariant operator[](const QString &) const;
         QVariant & operator[](const QString &);
-        QVariantMap getSubSet (const QString &, ReadMode = Masked) const;
-        bool isMasked(const QString &) const;
+        QVariantMap getSubSet (const QString &) const;
         QVariantMap toQVariantMap() const;
         void merge(const QVariantMap &, QString = "");
         bool contains(const QString &);
-        QString toString(ReadMode = Masked);
+        QString toString();
         QStringList keys();
         ConnectionConfig getConnectionConfig();
 
     private:
-    
-        QVariant & mask(const QString &);
-        void mergeMask(const QVariantMap &, QString = "");
-        
+
         QVariantMap m_qvm;
-        QVariantMap m_qvm_mask;
-    
-    friend class BaseEngine;
 };
 
 #endif /* __BASECONFIG_H__ */
