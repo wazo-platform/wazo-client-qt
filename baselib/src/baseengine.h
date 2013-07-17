@@ -93,14 +93,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // public setters/getters for properties
         EngineState state();               //!< Engine state (Logged/Not Logged)
 
-        const QString& getAvailState() const;  //!< returns availability status
-
         bool checkedFunction(const QString &);             //!< get m_checked_function
 
         const QVariantList & getCapaXlets() const;
-
-        const QStringList & getCapasRegCommands() const;
-        const QStringList & getCapasIpbxCommands() const;
 
         const QVariantMap & getOptionsUserStatus() const;
         const QVariantMap & getOptionsPhoneStatus() const;
@@ -111,12 +106,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
-        const UserInfo * getUserForXChannelId(const QString & xcid) const;  //!< Returns a user for a given xchannelid
         UserInfo * getXivoClientUser();       //!< Return the user of the XiVO CTI Client
         UserInfo * getXivoClientMonitored();  //!< Return the monitored user
 
-        double timeServer() const;
-        const QDateTime & timeClient() const;
         double timeDeltaServerClient() const;
         QString timeElapsed(double) const;
 
@@ -403,8 +395,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QVariantList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
         QVariantMap m_options_userstatus;    //!< Display Options for User statuses (presence)
         QVariantMap m_options_phonestatus;   //!< Display Options for Phone statuses
-        QStringList m_capas_regcommands;  //!< Capabilities for regular commands
-        QStringList m_capas_ipbxcommands; //!< Capabilities for IPBX commands
 
         QString m_appliname;            //!< Application name to be displayed
         QString m_sessionid;            //!< Session id obtained after a successful login

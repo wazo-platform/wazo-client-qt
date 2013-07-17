@@ -581,16 +581,6 @@ const QVariantMap & BaseEngine::getOptionsPhoneStatus() const
     return m_options_phonestatus;
 }
 
-const QStringList & BaseEngine::getCapasRegCommands() const
-{
-    return m_capas_regcommands;
-}
-
-const QStringList & BaseEngine::getCapasIpbxCommands() const
-{
-    return m_capas_ipbxcommands;
-}
-
 const QString & BaseEngine::getCapaApplication() const
 {
     return m_appliname;
@@ -612,19 +602,6 @@ void BaseEngine::restoreAvailState()
     changeState();
     disconnect(m_ctiserversocket, SIGNAL(connected()),
                this, SLOT(restoreAvailState()));
-}
-
-/*!
- * Returns the availstate of the current user
- */
-const QString & BaseEngine::getAvailState() const
-{
-    if (const UserInfo * u = b_engine->user(getFullId())) {
-        return u->availstate();
-    }
-    // If it's too early to have an initialized UserInfo use m_availstate
-    qDebug() << Q_FUNC_INFO << "No user defined at this point using available";
-    return m_availstate;
 }
 
 /*! \brief send command to XiVO CTI server */
@@ -684,16 +661,6 @@ void BaseEngine::filetransferSocketConnected()
     command["formatted_size"] = m_filedata.size();
     command["file_size"] = m_faxsize;
     sendJsonCommand(command);
-}
-
-double BaseEngine::timeServer() const
-{
-    return m_timesrv;
-}
-
-const QDateTime & BaseEngine::timeClient() const
-{
-    return m_timeclt;
 }
 
 double BaseEngine::timeDeltaServerClient() const
@@ -958,8 +925,6 @@ void BaseEngine::parseCommand(const QString &line)
         QVariantMap capas = datamap.value("capas").toMap();
         m_options_userstatus = capas.value("userstatus").toMap();
         m_options_phonestatus = capas.value("phonestatus").toMap();
-        m_capas_regcommands = capas.value("regcommands").toStringList();
-        m_capas_ipbxcommands = capas.value("ipbxcommands").toStringList();
 
         // ("ipbxcommands", "regcommands", "services", "functions")
         m_config.merge(capas.value("preferences").toMap());
@@ -1895,34 +1860,6 @@ UserInfo * BaseEngine::getXivoClientMonitored()
 {
     if (m_anylist.value("users").contains(m_monitored_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_monitored_xuserid);
-    }
-    return NULL;
-}
-
-/*! \brief Retrieves a UserInfo for a given xchannel id
- *
- *  \param xcid The xivo channel id to look for
- *  \return The UserInfo of the channel's owner
- */
-const UserInfo * BaseEngine::getUserForXChannelId(const QString & xcid) const
-{
-    foreach (const QString xuid, b_engine->iterover("users").keys()) {
-        const UserInfo * user = b_engine->user(xuid);
-        if (user == NULL) {
-            qDebug() << Q_FUNC_INFO << "unknown user" << xuid;
-            continue;
-        }
-        foreach (const QString pid, user->phonelist()) {
-            const PhoneInfo * phone = b_engine->phone(pid);
-            if (phone == NULL) {
-                qDebug() << Q_FUNC_INFO << "unknown phone" << pid << "for user" << xuid;
-                continue;
-            }
-            foreach (const QString xchan, phone->xchannels()) {
-                if (xchan.endsWith(xcid))
-                    return user;
-            }
-        }
     }
     return NULL;
 }
