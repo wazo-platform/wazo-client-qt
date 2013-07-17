@@ -28,8 +28,10 @@
  */
 
 #include <baseengine.h>
-#include "agents_controller.h"
+#include <message_factory.h>
 #include <xletlib/agents_model.h>
+
+#include "agents_controller.h"
 
 AgentsController::AgentsController(QObject *parent, QAbstractItemModel *model)
     : QObject(parent), m_model(model)
@@ -96,19 +98,16 @@ void AgentsController::pauseAgent(const QString & agent_id)
     if (agent == NULL) {
         return;
     }
-    QVariantMap ipbxcommand;
+    QVariantMap message;
     enum AgentPauseStatus pause_status = agent->pausedStatus();
     switch (pause_status) {
     case UNPAUSED:
     case PARTIALLY_PAUSED:
-        ipbxcommand["command"] = "queuepause";
+        message = MessageFactory::pauseAgentInAllQueues(agent_id, agent->ipbxid());
         break;
     case PAUSED:
-        ipbxcommand["command"] = "queueunpause";
+        message = MessageFactory::unpauseAgentInAllQueues(agent_id, agent->ipbxid());
         break;
     }
-    ipbxcommand["member"] = QString("agent:%0").arg(agent_id);
-    ipbxcommand["queue"] = QString("queue:xivo/all");
-
-    b_engine->ipbxCommand(ipbxcommand);
+    b_engine->sendJsonCommand(message);
 }

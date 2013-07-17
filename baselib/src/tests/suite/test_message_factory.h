@@ -50,6 +50,10 @@ class TestMessageFactory: public QObject
         void testDirectorySearch();
         void testSwitchboardDirectorySearch();
         void testGetSwitchboardDirectoryHeaders();
+        void testPauseAgentInQueue();
+        void testUnpauseAgentInQueue();
+        void testPauseAgentInAllQueues();
+        void testUnpauseAgentInAllQueues();
 };
 
 #endif /* __TEST_MESSAGE_FACTORY_H__ */

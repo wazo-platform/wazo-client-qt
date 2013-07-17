@@ -122,6 +122,42 @@ QVariantMap MessageFactory::getSwitchboardDirectoryHeaders()
     return message;
 }
 
+QVariantMap MessageFactory::pauseAgentInQueue(const QString &agent_id, const QString &queue_id)
+{
+    QVariantMap message = MessageFactory::ipbxcommand("queuepause");
+    message["member"] = QString("agent:%0").arg(agent_id);
+    message["queue"] = QString("queue:%0").arg(queue_id);
+
+    return message;
+}
+
+QVariantMap MessageFactory::unpauseAgentInQueue(const QString &agent_id, const QString &queue_id)
+{
+    QVariantMap message = MessageFactory::ipbxcommand("queueunpause");
+    message["member"] = QString("agent:%0").arg(agent_id);
+    message["queue"] = QString("queue:%0").arg(queue_id);
+
+    return message;
+}
+
+QVariantMap MessageFactory::pauseAgentInAllQueues(const QString &agent_id, const QString &ipbxid)
+{
+    QVariantMap message = MessageFactory::ipbxcommand("queuepause");
+    message["member"] = QString("agent:%0").arg(agent_id);
+    message["queue"] = QString("queue:%0/all").arg(ipbxid);
+
+    return message;
+}
+
+QVariantMap MessageFactory::unpauseAgentInAllQueues(const QString &agent_id, const QString &ipbxid)
+{
+    QVariantMap message = MessageFactory::ipbxcommand("queueunpause");
+    message["member"] = QString("agent:%0").arg(agent_id);
+    message["queue"] = QString("queue:%0/all").arg(ipbxid);
+
+    return message;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

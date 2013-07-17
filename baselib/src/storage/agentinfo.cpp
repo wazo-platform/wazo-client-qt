@@ -167,27 +167,6 @@ bool AgentInfo::paused() const
     return false;
 }
 
-void AgentInfo::pauseQueue(const QString & queuexid, bool pause) const
-{
-    QVariantMap ipbxcommand;
-    ipbxcommand["command"] = pause ? "queuepause" : "queueunpause";
-    ipbxcommand["member"] = QString("agent:%0").arg(xid());
-    ipbxcommand["queue"] = QString("queue:%0").arg(queuexid);
-    b_engine->ipbxCommand(ipbxcommand);
-}
-
-void AgentInfo::pauseAllQueue(bool pause) const
-{
-    const AgentInfo * agentinfo = b_engine->agent(xid());
-    QString ipbxid = agentinfo->ipbxid();
-    QVariantMap ipbxcommand;
-
-    ipbxcommand["command"] = pause ? "queuepause" : "queueunpause";
-    ipbxcommand["member"] = QString("agent:%0").arg(xid());
-    ipbxcommand["queue"] = QString("queue:%1/all").arg(ipbxid);
-    b_engine->ipbxCommand(ipbxcommand);
-}
-
 int AgentInfo::joinedQueueCount() const
 {
     int joined_queues = 0;
