@@ -34,26 +34,16 @@ BaseConfig::BaseConfig()
 {
 }
 
-/*!
- * \param rm choose the set of values read
- * \return the value indexed by key
- */
 const QVariant BaseConfig::value(const QString &key) const
 {
     return m_qvm[key];
 }
 
-/*!
- * See value().
- */
 const QVariant BaseConfig::operator[](const QString &key) const
 {
     return value(key);
 }
 
-/*!
- * \return the reference to the unmasked value indexed by key
- */
 QVariant & BaseConfig::operator[](const QString &key)
 {
     return m_qvm[key];
@@ -61,7 +51,6 @@ QVariant & BaseConfig::operator[](const QString &key)
 
 /*!
  * \return a QVariantMap containing all the values hierarchically below the name parameter.
- * \param rm choose the set of value read
  *
  * Hierarchic separator is '.'.\n
  * Example :
@@ -89,16 +78,13 @@ QVariantMap BaseConfig::getSubSet (const QString &name) const
     return ret;
 }
 
-/*!
- * \return the QVariantMap containing every stored keys and unmasked values
- */
 QVariantMap BaseConfig::toQVariantMap() const
 {
     return m_qvm;
 }
 
 /*!
- * Merges extern_qvm into this BaseConfig. All existing unmasked values are replaced.
+ * Merges extern_qvm into this BaseConfig.
  *
  * \param prefix prefixes every key. A '.' will be appended to prefix if not present.
  */
@@ -112,18 +98,11 @@ void BaseConfig::merge (const QVariantMap &extern_qvm, QString prefix)
     }
 }
 
-/*!
- * \return true if a value is indexed by key
- */
 bool BaseConfig::contains(const QString &key)
 {
     return m_qvm.contains(key);
 }
 
-/*!
- * \return a string to display nicely the content
- * \param rm choose the set of values read
- */
 QString BaseConfig::toString()
 {
     QString ret("\n"), line("%1, %2\n");
@@ -135,9 +114,6 @@ QString BaseConfig::toString()
     return ret;
 }
 
-/*!
- * \return all keys
- */
 QStringList BaseConfig::keys()
 {
     QStringList ret = m_qvm.keys();
