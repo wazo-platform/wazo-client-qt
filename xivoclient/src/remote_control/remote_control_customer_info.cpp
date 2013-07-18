@@ -39,15 +39,19 @@ QVariantMap RemoteControl::get_sheet_infos()
 {
     QVariantMap args;
     CustomerInfoPanel *xlet = this->get_xlet<CustomerInfoPanel>("customerinfo");
-    if (xlet == NULL)
-        return args;
+    if (xlet == NULL) {
+        throw TestFailedException(QString("xlet customerinfo is NULL"));
+    }
 
     QTabWidget *sheet_tab = xlet->m_tabs;
-    QWidget *current_tab = sheet_tab->currentWidget();
+    if (sheet_tab == NULL) {
+        throw TestFailedException(QString("sheet_tab is NULL"));
+    }
 
-    args["xlet"] = xlet != NULL;
-    args["sheet_tab"] = sheet_tab != NULL;
-    args["current_tab"] = current_tab != NULL;
+    QWidget *current_tab = sheet_tab->currentWidget();
+    if (current_tab == NULL) {
+        throw TestFailedException(QString("current_tab is NULL"));
+    }
 
     QVariantMap results;
     bool iter_line_sheet = true;
