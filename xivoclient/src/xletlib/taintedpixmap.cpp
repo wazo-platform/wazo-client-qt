@@ -30,7 +30,7 @@
 #include "taintedpixmap.h"
 
 // Initialize static members
-QHash<QString, QPixmap*> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap*>();
+QHash<QString, QPixmap> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap>();
 
 /*! \brief Constructor create if needed a tainted pixmap
  */
@@ -41,8 +41,8 @@ TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
     if (!m_pixmap_cache.contains(m_pixmap_hash)) {
         QPixmap pix = QPixmap(pixmap_path);
         QPixmap pixa = pix.alphaChannel();
-        QPixmap *pixs = new QPixmap(pix);
-        QPainter *painter = new QPainter(pixs);
+        QPixmap pixs = QPixmap(pix);
+        QPainter *painter = new QPainter(&pixs);
 
         painter->setBackgroundMode(Qt::TransparentMode);
         painter->fillRect(painter->viewport(), bg_color);
@@ -50,7 +50,7 @@ TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
 
         delete painter;
 
-        pixs->setAlphaChannel(pixa);
+        pixs.setAlphaChannel(pixa);
 
         m_pixmap_cache.insert(m_pixmap_hash, pixs);
     }
@@ -60,5 +60,5 @@ TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
  */
 QPixmap TaintedPixmap::getPixmap()
 {
-    return * m_pixmap_cache.value(m_pixmap_hash);
+    return m_pixmap_cache.value(m_pixmap_hash);
 }
