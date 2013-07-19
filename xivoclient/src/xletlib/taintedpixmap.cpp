@@ -37,17 +37,16 @@ TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
 
     if (!m_pixmap_cache.contains(m_pixmap_hash)) {
         QPixmap pix = QPixmap(pixmap_path);
-        QPixmap pixa = pix.alphaChannel();
         QPixmap pixs = QPixmap(pix);
         QPainter painter;
 
         painter.begin(&pixs);
-        painter.setBackgroundMode(Qt::TransparentMode);
         painter.fillRect(painter.viewport(), bg_color);
-        painter.drawPixmap(0, 0, pix.width(), pix.height(), pix);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.drawPixmap(painter.viewport(), pix);
+        painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+        painter.drawPixmap(painter.viewport(), pix);
         painter.end();
-
-        pixs.setAlphaChannel(pixa);
 
         m_pixmap_cache.insert(m_pixmap_hash, pixs);
     }
