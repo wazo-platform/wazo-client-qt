@@ -31,24 +31,26 @@
 
 QHash<QString, QPixmap> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap>();
 
-TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
+TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &tint_color)
 {
-    m_pixmap_hash = pixmap_path + bg_color.name();
+    m_pixmap_hash = pixmap_path + tint_color.name();
 
     if (!m_pixmap_cache.contains(m_pixmap_hash)) {
-        QPixmap pix = QPixmap(pixmap_path);
-        QPixmap pixs = QPixmap(pix);
+        QPixmap shape(pixmap_path);
+        QPixmap result(shape);
         QPainter painter;
 
-        painter.begin(&pixs);
-        painter.fillRect(painter.viewport(), bg_color);
+        painter.begin(&result);
+        painter.fillRect(painter.viewport(), tint_color);
+        // Apply the shape on top of the tint
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-        painter.drawPixmap(painter.viewport(), pix);
+        painter.drawPixmap(painter.viewport(), shape);
+        // Remove unused background
         painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-        painter.drawPixmap(painter.viewport(), pix);
+        painter.drawPixmap(painter.viewport(), shape);
         painter.end();
 
-        m_pixmap_cache.insert(m_pixmap_hash, pixs);
+        m_pixmap_cache.insert(m_pixmap_hash, result);
     }
 }
 
