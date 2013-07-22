@@ -203,7 +203,7 @@ void RemoteControl::sendResponse(RemoteControlResponse test_result,
             response["test_result"] = "unknown";
             break;
         case TEST_PASSED:
-            qDebug() << "command succeded" << command;
+            qDebug() << "command succeeded" << command;
             response["test_result"] = "passed";
             break;
     }
