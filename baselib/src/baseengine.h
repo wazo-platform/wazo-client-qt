@@ -272,6 +272,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void logged();    //!< signal emitted when the state becomes ELogged
         void delogged();  //!< signal emitted when the state becomes ENotLogged
+        void doneConnecting();
 
         void initialized();
         void initializing();

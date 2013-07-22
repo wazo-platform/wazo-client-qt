@@ -33,6 +33,7 @@
 #include <config_widget/config_widget.h>
 #include <login_widget/login_widget.h>
 
+#include "event_waiter.h"
 #include "remote_control.h"
 
 
@@ -195,8 +196,14 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
 
 void RemoteControl::i_log_in_the_xivo_client()
 {
+    EventWaiter event_waiter;
+    connect(b_engine, SIGNAL(doneConnecting()), &event_waiter, SLOT(stopWaiting()));
     this->m_login_widget->ui.buttonBox->click();
-    pause(5000);
+    try {
+        event_waiter.waitWithTimeout(10000);
+    } catch (TimeoutException & e) {
+        throw TestFailedException("client froze while connecting");
+    }
 }
 
 void RemoteControl::i_log_out_of_the_xivo_client()

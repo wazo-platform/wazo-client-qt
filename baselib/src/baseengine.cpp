@@ -135,6 +135,11 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     connect(&m_init_watcher, SIGNAL(sawAll()),
             this, SIGNAL(initialized()));
 
+    connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
+            this, SIGNAL(doneConnecting()));
+    connect(this, SIGNAL(initialized()),
+            this, SIGNAL(doneConnecting()));
+
     // TCP connection for file transfer
     // (this could be moved to some other class)
     m_filetransfersocket = new QTcpSocket(this);
