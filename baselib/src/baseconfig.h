@@ -39,44 +39,30 @@
 /*! \brief Stores the config of BaseEngine
  *
  * BaseConfig is similar to QVariantMap, as it indexes QVariant (values) with QStrings (keys).\n
- * There are three sets of values with the same keys : unmasked, mask and masked.
- * Masked is the result of overwriting unmasked with mask.
- *
- * You can read unmasked and masked (with value() or getSubset()).\n
- * You can write unmasked with operator[]() and merge().\n
- * You can read masked with operator[]().\n
- * Friend classes can write mask with mask() and mergeMask().\n
  */
 class BaseConfig: public QObject
 {
     Q_OBJECT
-    
+
     public:
-    
+
         typedef enum {Masked, Unmasked} ReadMode;
-        
+
         BaseConfig();
-        const QVariant value(const QString &, ReadMode = Masked) const;
+        const QVariant value(const QString &) const;
         const QVariant operator[](const QString &) const;
         QVariant & operator[](const QString &);
-        QVariantMap getSubSet (const QString &, ReadMode = Masked) const;
-        bool isMasked(const QString &) const;
+        QVariantMap getSubSet (const QString &) const;
         QVariantMap toQVariantMap() const;
         void merge(const QVariantMap &, QString = "");
         bool contains(const QString &);
-        QString toString(ReadMode = Masked);
+        QString toString();
         QStringList keys();
         ConnectionConfig getConnectionConfig();
 
     private:
-    
-        QVariant & mask(const QString &);
-        void mergeMask(const QVariantMap &, QString = "");
-        
+
         QVariantMap m_qvm;
-        QVariantMap m_qvm_mask;
-    
-    friend class BaseEngine;
 };
 
 #endif /* __BASECONFIG_H__ */

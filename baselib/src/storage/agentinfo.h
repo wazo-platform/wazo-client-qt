@@ -77,8 +77,6 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         int pausedQueueCount() const;
 
         bool paused() const;
-        void pauseQueue(const QString &, bool) const;
-        void pauseAllQueue(bool) const;
         enum AgentPauseStatus pausedStatus() const;
         bool isCallingOrBusy() const;
         QStringList pausedQueueNames() const;

@@ -28,6 +28,7 @@
  */
 
 #include <baseengine.h>
+#include <message_factory.h>
 #include <storage/agentinfo.h>
 #include <storage/queueinfo.h>
 #include <storage/queuememberinfo.h>
@@ -209,16 +210,22 @@ void IdentityAgent::logout()
 
 void IdentityAgent::pause()
 {
-    if (const AgentInfo * a = b_engine->agent(m_xagentid)) {
-        a->pauseAllQueue(true);
+    const AgentInfo * agent = b_engine->agent(m_xagentid);
+    if (! agent) {
+        return;
     }
+    QVariantMap message = MessageFactory::pauseAgentInAllQueues(m_xagentid, agent->ipbxid());
+    b_engine->sendJsonCommand(message);
 }
 
 void IdentityAgent::unpause()
 {
-    if (const AgentInfo * a = b_engine->agent(m_xagentid)) {
-        a->pauseAllQueue(false);
+    const AgentInfo * agent = b_engine->agent(m_xagentid);
+    if (! agent) {
+        return;
     }
+    QVariantMap message = MessageFactory::unpauseAgentInAllQueues(m_xagentid, agent->ipbxid());
+    b_engine->sendJsonCommand(message);
 }
 
 void IdentityAgent::setAllowedActions(bool allow_logagent, bool allow_pauseagent)

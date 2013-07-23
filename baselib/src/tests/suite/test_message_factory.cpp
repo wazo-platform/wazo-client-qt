@@ -179,3 +179,65 @@ void TestMessageFactory::testGetSwitchboardDirectoryHeaders()
 
     QCOMPARE(result, expected);
 }
+
+void TestMessageFactory::testPauseAgentInQueue()
+{
+    QString agent_id = "xivo/12", queue_id = "xivo/13";
+
+    QVariantMap result = MessageFactory::pauseAgentInQueue(agent_id, queue_id);
+
+    QVariantMap expected;
+    expected["class"] = "ipbxcommand";
+    expected["command"] = "queuepause";
+    expected["member"] = "agent:" + agent_id;
+    expected["queue"] = "queue:" + queue_id;
+
+    QCOMPARE(result, expected);
+}
+
+void TestMessageFactory::testUnpauseAgentInQueue()
+{
+    QString agent_id = "xivo/12", queue_id = "xivo/13";
+
+    QVariantMap result = MessageFactory::unpauseAgentInQueue(agent_id, queue_id);
+
+    QVariantMap expected;
+    expected["class"] = "ipbxcommand";
+    expected["command"] = "queueunpause";
+    expected["member"] = "agent:" + agent_id;
+    expected["queue"] = "queue:" + queue_id;
+
+    QCOMPARE(result, expected);
+}
+
+void TestMessageFactory::testPauseAgentInAllQueues()
+{
+    QString agent_id = "xivo/12";
+    QString ipbxid = "xivo";
+
+    QVariantMap result = MessageFactory::pauseAgentInAllQueues(agent_id, ipbxid);
+
+    QVariantMap expected;
+    expected["class"] = "ipbxcommand";
+    expected["command"] = "queuepause";
+    expected["member"] = "agent:" + agent_id;
+    expected["queue"] = "queue:" + ipbxid + "/all";
+
+    QCOMPARE(result, expected);
+}
+
+void TestMessageFactory::testUnpauseAgentInAllQueues()
+{
+    QString agent_id = "xivo/12";
+    QString ipbxid = "xivo";
+
+    QVariantMap result = MessageFactory::unpauseAgentInAllQueues(agent_id, ipbxid);
+
+    QVariantMap expected;
+    expected["class"] = "ipbxcommand";
+    expected["command"] = "queueunpause";
+    expected["member"] = "agent:" + agent_id;
+    expected["queue"] = "queue:" + ipbxid + "/all";
+
+    QCOMPARE(result, expected);
+}
