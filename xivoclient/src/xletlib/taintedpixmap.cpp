@@ -29,36 +29,32 @@
 
 #include "taintedpixmap.h"
 
-// Initialize static members
-QHash<QString, QPixmap*> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap*>();
+QHash<QString, QPixmap> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap>();
 
-/*! \brief Constructor create if needed a tainted pixmap
- */
-TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
+TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &tint_color)
 {
-    m_pixmap_hash = pixmap_path + bg_color.name();
+    m_pixmap_hash = pixmap_path + tint_color.name();
 
     if (!m_pixmap_cache.contains(m_pixmap_hash)) {
-        QPixmap pix = QPixmap(pixmap_path);
-        QPixmap pixa = pix.alphaChannel();
-        QPixmap *pixs = new QPixmap(pix);
-        QPainter *painter = new QPainter(pixs);
+        QPixmap shape(pixmap_path);
+        QPixmap result(shape);
+        QPainter painter;
 
-        painter->setBackgroundMode(Qt::TransparentMode);
-        painter->fillRect(painter->viewport(), bg_color);
-        painter->drawPixmap(0, 0, pix.width(), pix.height(), pix);
+        painter.begin(&result);
+        painter.fillRect(painter.viewport(), tint_color);
+        // Apply the shape on top of the tint
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.drawPixmap(painter.viewport(), shape);
+        // Remove unused background
+        painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+        painter.drawPixmap(painter.viewport(), shape);
+        painter.end();
 
-        delete painter;
-
-        pixs->setAlphaChannel(pixa);
-
-        m_pixmap_cache.insert(m_pixmap_hash, pixs);
+        m_pixmap_cache.insert(m_pixmap_hash, result);
     }
 }
 
-/*! \brief return your tainted pixmap
- */
 QPixmap TaintedPixmap::getPixmap()
 {
-    return * m_pixmap_cache.value(m_pixmap_hash);
+    return m_pixmap_cache.value(m_pixmap_hash);
 }
