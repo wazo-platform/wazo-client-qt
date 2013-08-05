@@ -28,7 +28,7 @@
         <location filename="../src/config_widget/config_widget.ui" line="115"/>
         <location filename="../src/config_widget/config_widget.ui" line="187"/>
         <location filename="../src/config_widget/config_widget.ui" line="201"/>
-        <location filename="../src/config_widget/config_widget.ui" line="834"/>
+        <location filename="../src/config_widget/config_widget.ui" line="837"/>
         <source>You must restart the program for this setting to apply.</source>
         <translation>Vous devez redémarrer le programme pour appliquer ce paramètre.</translation>
     </message>
@@ -129,118 +129,118 @@
         <translation>Nombre maximum de contact affichés</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="484"/>
+        <location filename="../src/config_widget/config_widget.ui" line="487"/>
         <source>Queue list</source>
         <translation>Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="492"/>
+        <location filename="../src/config_widget/config_widget.ui" line="495"/>
         <source>Show longest wait time</source>
         <translation>Afficher la colonne &quot;plus longue attente&quot;</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="506"/>
+        <location filename="../src/config_widget/config_widget.ui" line="509"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="516"/>
+        <location filename="../src/config_widget/config_widget.ui" line="519"/>
         <source>Red</source>
         <translation>Rouge</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="526"/>
+        <location filename="../src/config_widget/config_widget.ui" line="529"/>
         <source>Longest wait time thresholds</source>
         <translation>Seuils d&apos;affichage des files pour la plus longue attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="553"/>
+        <location filename="../src/config_widget/config_widget.ui" line="556"/>
         <source>Waiting calls thresholds</source>
         <translation>Seuils d&apos;affichage des files pour les appels en attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="580"/>
+        <location filename="../src/config_widget/config_widget.ui" line="583"/>
         <source>calls</source>
         <translation>appels</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="587"/>
+        <location filename="../src/config_widget/config_widget.ui" line="590"/>
         <source>seconds</source>
         <translation>secondes</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="618"/>
+        <location filename="../src/config_widget/config_widget.ui" line="621"/>
         <source>Queue Members</source>
         <translation>Membres d&apos;une file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="624"/>
+        <location filename="../src/config_widget/config_widget.ui" line="627"/>
         <source>Hide unlogged agents</source>
         <translation>Masquer les agent délogués</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="640"/>
+        <location filename="../src/config_widget/config_widget.ui" line="643"/>
         <source>Switchboard</source>
         <translation>POPC</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="649"/>
+        <location filename="../src/config_widget/config_widget.ui" line="652"/>
         <source>Switchboard call on hold queue name</source>
         <translation>Nom de la file d&apos;attente des appels en attentes du POPC</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="659"/>
+        <location filename="../src/config_widget/config_widget.ui" line="662"/>
         <source>Switchboard queue name</source>
         <translation>Nom de la file d&apos;attente du POPC</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="681"/>
+        <location filename="../src/config_widget/config_widget.ui" line="684"/>
         <source>Administration</source>
         <translation>Administration</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="689"/>
+        <location filename="../src/config_widget/config_widget.ui" line="692"/>
         <source>Server</source>
         <translation>Serveur</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="696"/>
+        <location filename="../src/config_widget/config_widget.ui" line="699"/>
         <source>demo.xivo.fr</source>
         <translation>demo.xivo.fr</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="703"/>
-        <location filename="../src/config_widget/config_widget.ui" line="746"/>
+        <location filename="../src/config_widget/config_widget.ui" line="706"/>
+        <location filename="../src/config_widget/config_widget.ui" line="749"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="736"/>
+        <location filename="../src/config_widget/config_widget.ui" line="739"/>
         <source>Backup server</source>
         <translation>Serveur de secours</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="821"/>
+        <location filename="../src/config_widget/config_widget.ui" line="824"/>
         <source>Advanced</source>
         <translation>Avancé</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="827"/>
+        <location filename="../src/config_widget/config_widget.ui" line="830"/>
         <source>Display the configuration profile</source>
         <translation>Afficher le profil de configuration</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="837"/>
+        <location filename="../src/config_widget/config_widget.ui" line="840"/>
         <source>Allow multiple instances</source>
         <translation>Autoriser plusieurs instances simultanées du client</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="848"/>
+        <location filename="../src/config_widget/config_widget.ui" line="851"/>
         <source>Auto-reconnect interval</source>
         <translation>Délai de reconnexion</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="887"/>
+        <location filename="../src/config_widget/config_widget.ui" line="890"/>
         <source>Keepalive interval</source>
         <translation>Délai de maintien de la connexion</translation>
     </message>

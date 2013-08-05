@@ -4,62 +4,62 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="517"/>
+        <location filename="src/baseengine.cpp" line="522"/>
         <source>Connection lost with XiVO CTI server</source>
         <translation>De verbinding met de Xivo CTI server is verbroken</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="879"/>
+        <location filename="src/baseengine.cpp" line="851"/>
         <source>Could not modify the Services data.</source>
         <translation>De gegevens voor Services konden niet worden gewijzigd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="879"/>
+        <location filename="src/baseengine.cpp" line="851"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Misschien werkt Asterisk momenteel niet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1301"/>
+        <location filename="src/baseengine.cpp" line="1271"/>
         <source>Server has sent an Error.</source>
         <translation>De server heeft een foutmelding teruggestuurd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1305"/>
+        <location filename="src/baseengine.cpp" line="1275"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Uw registratienaam &lt;%1@%2&gt; wordt niet herkend door de XiVO CTI server op %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1309"/>
+        <location filename="src/baseengine.cpp" line="1279"/>
         <source>You entered a wrong login / password.</source>
         <translation>U hebt een verkeerd(e) login/paswoord ingevoerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1311"/>
+        <location filename="src/baseengine.cpp" line="1281"/>
         <source>You have no profile defined.</source>
         <translation>U hebt geen profiel toegekend.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1315"/>
+        <location filename="src/baseengine.cpp" line="1285"/>
         <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft de laatste keepalive niet beantwoord.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1320"/>
+        <location filename="src/baseengine.cpp" line="1290"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation>U hebt een IP-adres %1 gedefinieerd dat waarschijnlijk een onbekende hostnaam is.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1323"/>
+        <location filename="src/baseengine.cpp" line="1293"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation>Socket time-out (~ 60 s): u hebt waarschijnlijk via een gateway, een onbestaand IP-adres %1 proberen te bereiken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1327"/>
+        <location filename="src/baseengine.cpp" line="1297"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation>Er lijkt een machine te werken op dit IP-adres %1, maar ofwel is er geen CTI-server actief, ofwel is uw poort %2 verkeerd.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1331"/>
+        <location filename="src/baseengine.cpp" line="1301"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -70,123 +70,123 @@
 - er is een kabel losgeraakt op uw LAN op weg naar dit IP-adres (time-out ~ 30 s).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1337"/>
+        <location filename="src/baseengine.cpp" line="1307"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation>De server met IP adres %1 accepteert geen geëncrypteerde  verbindingen op poort %2. Gelieve de poort of de encryptie instellingen aan te passen.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1341"/>
+        <location filename="src/baseengine.cpp" line="1311"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbekende socketfout voorgedaan tijdens de poging om het IP-adres te bereiken:poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1345"/>
+        <location filename="src/baseengine.cpp" line="1315"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>Er heeft zich een onbeheerde socketfout (nummer %1) voorgedaan tijdens de poging om het IP-adres te bereiken: poort %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1350"/>
+        <location filename="src/baseengine.cpp" line="1320"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>De XiVO CTI-server op %1:%2 heeft net de verbinding verbroken.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1354"/>
+        <location filename="src/baseengine.cpp" line="1324"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net stopgezet.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1357"/>
+        <location filename="src/baseengine.cpp" line="1327"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>De XiVO CTI-server op %1:%2 werd net terug opgeladen.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1361"/>
+        <location filename="src/baseengine.cpp" line="1331"/>
         <source>You are already connected from %1:%2.</source>
         <translation>U bent al verbonden sinds %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1363"/>
+        <location filename="src/baseengine.cpp" line="1333"/>
         <source>No capability allowed.</source>
         <translation>Geen capaciteit toegestaan.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1366"/>
+        <location filename="src/baseengine.cpp" line="1336"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Max. aantal (%1) XiVO Clients bereikt.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1368"/>
+        <location filename="src/baseengine.cpp" line="1338"/>
         <source>Missing Argument(s)</source>
         <translation>Ontbrekend(e) argument(en)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1372"/>
+        <location filename="src/baseengine.cpp" line="1342"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve op z&apos;n minst naar versie %2 te upgraden. </translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1377"/>
+        <location filename="src/baseengine.cpp" line="1347"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation>Uw klantversie (%1) is te oud voor deze server.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1384"/>
+        <location filename="src/baseengine.cpp" line="1354"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>De hoofdversie  (%1) van uw klant
 is niet dezelfde als deze van de server (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1391"/>
+        <location filename="src/baseengine.cpp" line="1361"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve op z&apos;n minst naar versie %2 te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1396"/>
+        <location filename="src/baseengine.cpp" line="1366"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>Uw serverversie (%1) is te oud voor deze klant.
 Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1400"/>
+        <location filename="src/baseengine.cpp" line="1370"/>
         <source>You were disconnected by the server.</source>
         <translation>Uw verbinding werd verbroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1402"/>
+        <location filename="src/baseengine.cpp" line="1372"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>Uw verbinding werd gedwongen afgebroken door de server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1404"/>
+        <location filename="src/baseengine.cpp" line="1374"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
         <translation>Ongeldig extensie nummer</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1406"/>
+        <location filename="src/baseengine.cpp" line="1376"/>
         <source>Could not log agent: extension already in use.</source>
         <translation>Kon de agent niet aanmelden: extensie is al in gebruik</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1409"/>
+        <location filename="src/baseengine.cpp" line="1379"/>
         <source>Unreachable number: %1</source>
         <translation>Nummer onbereikbaar: %1</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1413"/>
+        <location filename="src/baseengine.cpp" line="1383"/>
         <source>ERROR</source>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1675"/>
+        <location filename="src/baseengine.cpp" line="1645"/>
         <source>Attempting to reconnect to server</source>
         <translation>Poging tot herverbinden met de server</translation>
     </message>
@@ -316,56 +316,56 @@ Gelieve uw versie te upgraden.</translation>
 <context>
     <name>IdentityAgent</name>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="113"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="114"/>
         <source>Connected to %1</source>
         <translation>Verbonden met %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="116"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="117"/>
         <source>Disconnected from %1</source>
         <translation>Verbinding met %1 verbroken</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="129"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="130"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="131"/>
         <source>Paused</source>
         <translation>Gepauzeerd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="134"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="135"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="136"/>
         <source>Unpaused</source>
         <translation>Klaar</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="143"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="144"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="145"/>
         <source>Partially paused</source>
         <translation>gepauzeerd</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="148"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="149"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="150"/>
         <source>Not relevant</source>
         <translation>Niet relevant</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="165"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="166"/>
         <source>Logout</source>
         <translation>Uitloggen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="169"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="170"/>
         <source>Login</source>
         <translation>Inloggen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="178"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="179"/>
         <source>Unpause</source>
         <translation>Klaar</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="183"/>
+        <location filename="../src/xlets/identity/identityagent.cpp" line="184"/>
         <source>Pause</source>
         <translation>Pauzeren</translation>
     </message>
@@ -934,7 +934,7 @@ Gelieve uw versie te upgraden.</translation>
         <location filename="../src/config_widget/config_widget.ui" line="115"/>
         <location filename="../src/config_widget/config_widget.ui" line="187"/>
         <location filename="../src/config_widget/config_widget.ui" line="201"/>
-        <location filename="../src/config_widget/config_widget.ui" line="834"/>
+        <location filename="../src/config_widget/config_widget.ui" line="837"/>
         <source>You must restart the program for this setting to apply.</source>
         <translation>U moet de toepassing herstarten op de instellingen toe te passen.</translation>
     </message>
@@ -1035,118 +1035,118 @@ Gelieve uw versie te upgraden.</translation>
         <translation>Maximum aantal getoonde contacten</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="484"/>
+        <location filename="../src/config_widget/config_widget.ui" line="487"/>
         <source>Queue list</source>
         <translation>Wachtrij lijst</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="492"/>
+        <location filename="../src/config_widget/config_widget.ui" line="495"/>
         <source>Show longest wait time</source>
         <translation>Toon langste wachttijd</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="506"/>
+        <location filename="../src/config_widget/config_widget.ui" line="509"/>
         <source>Orange</source>
         <translation>Oranje</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="516"/>
+        <location filename="../src/config_widget/config_widget.ui" line="519"/>
         <source>Red</source>
         <translation>Rood</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="526"/>
+        <location filename="../src/config_widget/config_widget.ui" line="529"/>
         <source>Longest wait time thresholds</source>
         <translation>Langste wachttijd limiet</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="553"/>
+        <location filename="../src/config_widget/config_widget.ui" line="556"/>
         <source>Waiting calls thresholds</source>
         <translation>Wachtende oproepen limiet</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="580"/>
+        <location filename="../src/config_widget/config_widget.ui" line="583"/>
         <source>calls</source>
         <translation>oproepen</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="587"/>
+        <location filename="../src/config_widget/config_widget.ui" line="590"/>
         <source>seconds</source>
         <translation>seconden</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="618"/>
+        <location filename="../src/config_widget/config_widget.ui" line="621"/>
         <source>Queue Members</source>
         <translation>Queue leden</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="624"/>
+        <location filename="../src/config_widget/config_widget.ui" line="627"/>
         <source>Hide unlogged agents</source>
         <translation>Verberg queue leden die niet ingelogs zijn</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="640"/>
+        <location filename="../src/config_widget/config_widget.ui" line="643"/>
         <source>Switchboard</source>
         <translation>Schakelbord</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="649"/>
+        <location filename="../src/config_widget/config_widget.ui" line="652"/>
         <source>Switchboard call on hold queue name</source>
         <translation>schakelbord wachtrij naam voor wachtende oproepen </translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="659"/>
+        <location filename="../src/config_widget/config_widget.ui" line="662"/>
         <source>Switchboard queue name</source>
         <translation>Schakelbord wachtrij naam</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="681"/>
+        <location filename="../src/config_widget/config_widget.ui" line="684"/>
         <source>Administration</source>
         <translation>Administratie</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="689"/>
+        <location filename="../src/config_widget/config_widget.ui" line="692"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="696"/>
+        <location filename="../src/config_widget/config_widget.ui" line="699"/>
         <source>demo.xivo.fr</source>
         <translation>demo.xivo.fr</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="703"/>
-        <location filename="../src/config_widget/config_widget.ui" line="746"/>
+        <location filename="../src/config_widget/config_widget.ui" line="706"/>
+        <location filename="../src/config_widget/config_widget.ui" line="749"/>
         <source>Port</source>
         <translation>Poort</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="736"/>
+        <location filename="../src/config_widget/config_widget.ui" line="739"/>
         <source>Backup server</source>
         <translation>Backup server</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="821"/>
+        <location filename="../src/config_widget/config_widget.ui" line="824"/>
         <source>Advanced</source>
         <translation>Geavanceerd</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="827"/>
+        <location filename="../src/config_widget/config_widget.ui" line="830"/>
         <source>Display the configuration profile</source>
         <translation>Toon het configuratie profiel</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="837"/>
+        <location filename="../src/config_widget/config_widget.ui" line="840"/>
         <source>Allow multiple instances</source>
         <translation>Laat meerdere instantie toe</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="848"/>
+        <location filename="../src/config_widget/config_widget.ui" line="851"/>
         <source>Auto-reconnect interval</source>
         <translation>Automatisch herverbinden interval</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="887"/>
+        <location filename="../src/config_widget/config_widget.ui" line="890"/>
         <source>Keepalive interval</source>
         <translation>Keepalive interval</translation>
     </message>
