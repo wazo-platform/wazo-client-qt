@@ -33,13 +33,15 @@
 #include "xletlib_export.h"
 #include <QtGui>
 
+/*! \brief TaintedPixmap, taint a pixmap and put it in an hashtable for fast re-use
+ */
 class XLETLIB_EXPORT TaintedPixmap : public QPixmap
 {
     public:
         TaintedPixmap(const QString &, const QColor &);
         QPixmap getPixmap();
     private:
-        static QHash<QString, QPixmap> m_pixmap_cache;
+        static QHash<QString, QPixmap*> m_pixmap_cache;
 
         QString m_pixmap_hash;
 };
