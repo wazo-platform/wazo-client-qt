@@ -1220,15 +1220,6 @@ void BaseEngine::meetmeAction(const QString &function, const QString &functionar
     ipbxCommand(command);
 }
 
-/*! \brief send callcampaign command to the CTI server */
-void BaseEngine::requestFileList(const QString & action)
-{
-    QVariantMap command;
-    command["class"] = "callcampaign";
-    command["command"] = action.split(" ");
-    sendJsonCommand(command);
-}
-
 /*! \brief Send fax to CTI Server */
 void BaseEngine::sendFaxCommand(const QString & filename,
                                 const QString & number,

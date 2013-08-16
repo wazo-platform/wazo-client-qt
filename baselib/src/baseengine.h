@@ -216,8 +216,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void meetmeAction(const QString &, const QString &);
 
-        void requestFileList(const QString &);
-
         void monitorPeerRequest(const QString &);
 
         void saveToFile(const QString &);
