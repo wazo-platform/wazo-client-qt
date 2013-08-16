@@ -755,9 +755,7 @@ void BaseEngine::parseCommand(const QString &line)
         // ack from the keepalive and availstate commands previously sent
         return;
     }
-    if (thisclass == "callcampaign") {
-        emit requestFileListResult(datamap.value("payload"));
-    } else if (thisclass == "sheet") {
+    if (thisclass == "sheet") {
         // TODO : use id better than just channel name
         QString channel = datamap.value("channel").toString();
         if (function == "getownership") {

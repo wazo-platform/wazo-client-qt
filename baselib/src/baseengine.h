@@ -277,8 +277,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void updatePresence();
 
-        void requestFileListResult(const QVariant &);  //!< needed by callcampaign
-
         void serverFileList(const QStringList &);  //!< needed by agentdetails
         void fileReceived();                       //!< needed by agentdetails
 
