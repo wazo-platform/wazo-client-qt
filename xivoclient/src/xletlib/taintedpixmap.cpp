@@ -39,25 +39,58 @@ TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
     m_pixmap_hash = pixmap_path + bg_color.name();
 
     if (!m_pixmap_cache.contains(m_pixmap_hash)) {
-        QPixmap pix = QPixmap(pixmap_path);
-        QPixmap pixa = pix.alphaChannel();
-        QPixmap *pixs = new QPixmap(pix);
-        QPainter *painter = new QPainter(pixs);
-
-        painter->setBackgroundMode(Qt::TransparentMode);
-        painter->fillRect(painter->viewport(), bg_color);
-        painter->drawPixmap(0, 0, pix.width(), pix.height(), pix);
-
-        delete painter;
-
-        pixs->setAlphaChannel(pixa);
-
-        m_pixmap_cache.insert(m_pixmap_hash, pixs);
+        QPixmap tainted_pixmap = this->createTaintedPixmap(pixmap_path, tint_color);
+        m_pixmap_cache.insert(m_pixmap_hash, tainted_pixmap);
     }
 }
 
-/*! \brief return your tainted pixmap
- */
+QPixmap TaintedPixmap::createTaintedPixmap(const QString &pixmap_path, const QColor &tint_color)
+{
+    #if defined(Q_WS_MAC)
+    return this->createTaintedPixmapMacOnly(pixmap_path, tint_color);
+    #else
+    return this->createTaintedPixmapNotMac(pixmap_path, tint_color);
+    #endif
+}
+
+QPixmap TaintedPixmap::createTaintedPixmapNotMac(const QString &pixmap_path, const QColor &tint_color)
+{
+    QPixmap shape(pixmap_path);
+    QPixmap result(shape);
+    QPainter painter;
+
+    painter.begin(&result);
+    painter.fillRect(painter.viewport(), tint_color);
+    // Apply the shape on top of the tint
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawPixmap(painter.viewport(), shape);
+    // Remove unused background
+    painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+    painter.drawPixmap(painter.viewport(), shape);
+    painter.end();
+
+    return result;
+}
+
+QPixmap TaintedPixmap::createTaintedPixmapMacOnly(const QString &pixmap_path, const QColor &tint_color)
+{
+    QPixmap shape(pixmap_path);
+    QPixmap result(shape);
+    QPainter painter;
+
+    painter.begin(&result);
+    painter.drawPixmap(painter.viewport(), shape);
+    // Create a color mask
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(painter.viewport(), tint_color);
+    // Apply the shape on top of the mask
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawPixmap(painter.viewport(), shape);
+    painter.end();
+
+    return result;
+}
+
 QPixmap TaintedPixmap::getPixmap()
 {
     return * m_pixmap_cache.value(m_pixmap_hash);

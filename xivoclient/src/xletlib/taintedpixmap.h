@@ -40,8 +40,13 @@ class XLETLIB_EXPORT TaintedPixmap : public QPixmap
     public:
         TaintedPixmap(const QString &, const QColor &);
         QPixmap getPixmap();
+
     private:
-        static QHash<QString, QPixmap*> m_pixmap_cache;
+        QPixmap createTaintedPixmap(const QString &pixmap_path, const QColor &tint_color);
+        QPixmap createTaintedPixmapNotMac(const QString &pixmap_path, const QColor &tint_color);
+        QPixmap createTaintedPixmapMacOnly(const QString &pixmap_path, const QColor &tint_color);
+
+        static QHash<QString, QPixmap> m_pixmap_cache;
 
         QString m_pixmap_hash;
 };
