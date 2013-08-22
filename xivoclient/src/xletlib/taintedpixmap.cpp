@@ -29,14 +29,11 @@
 
 #include "taintedpixmap.h"
 
-// Initialize static members
-QHash<QString, QPixmap*> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap*>();
+QHash<QString, QPixmap> TaintedPixmap::m_pixmap_cache = QHash <QString, QPixmap>();
 
-/*! \brief Constructor create if needed a tainted pixmap
- */
-TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &bg_color)
+TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &tint_color)
 {
-    m_pixmap_hash = pixmap_path + bg_color.name();
+    m_pixmap_hash = pixmap_path + tint_color.name();
 
     if (!m_pixmap_cache.contains(m_pixmap_hash)) {
         QPixmap tainted_pixmap = this->createTaintedPixmap(pixmap_path, tint_color);
@@ -93,5 +90,5 @@ QPixmap TaintedPixmap::createTaintedPixmapMacOnly(const QString &pixmap_path, co
 
 QPixmap TaintedPixmap::getPixmap()
 {
-    return * m_pixmap_cache.value(m_pixmap_hash);
+    return m_pixmap_cache.value(m_pixmap_hash);
 }

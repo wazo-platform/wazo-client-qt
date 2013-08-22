@@ -33,8 +33,6 @@
 #include "xletlib_export.h"
 #include <QtGui>
 
-/*! \brief TaintedPixmap, taint a pixmap and put it in an hashtable for fast re-use
- */
 class XLETLIB_EXPORT TaintedPixmap : public QPixmap
 {
     public:
