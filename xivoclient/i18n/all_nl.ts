@@ -506,22 +506,22 @@ Gelieve uw versie te upgraden.</translation>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>Int. Incoming </source>
-        <translation type="unfinished"></translation>
+        <translation>Int. inkomend</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. inkomend </translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. Uitgaand</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. Uitgaand</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
@@ -768,22 +768,22 @@ wachtrijen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="272"/>
         <source>Agent receiving an internal call out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent ontvangt een interne oproep buiten de wachtrij</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="274"/>
         <source>Agent receiving an external call out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent ontvangt een externe oproep buiten de wachtrij</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="276"/>
         <source>Agent emitting an internal call</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent maakt een interne oproep</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="278"/>
         <source>Agent emitting an external call</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent maakt een externe oproep</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
@@ -798,22 +798,22 @@ wachtrijen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="338"/>
         <source>Int. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. inkomend </translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="340"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. inkomend </translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="342"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. Uitgaand</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="344"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. Uitgaand</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
