@@ -11,12 +11,12 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
         <source>Queues</source>
-        <translation>Warteschlange</translation>
+        <translation>Warteschleife</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="57"/>
         <source>Joined</source>
-        <translation>Beitreten</translation>
+        <translation>Angekommen</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="58"/>
@@ -27,7 +27,7 @@
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="62"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="207"/>
         <source>Login</source>
-        <translation>Einloggen</translation>
+        <translation>Anmelden</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="197"/>

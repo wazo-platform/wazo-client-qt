@@ -561,7 +561,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="72"/>
         <source>Login</source>
-        <translation type="unfinished">Einloggen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="89"/>
