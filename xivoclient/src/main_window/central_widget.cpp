@@ -65,6 +65,7 @@ void CentralWidget::initializing()
 void CentralWidget::initialize()
 {
     this->m_login_widget = assembler->loginWidget();
+    this->m_login_widget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     this->m_main_widget = assembler->mainWidget();
     this->m_main_window->setCentralWidget(this);
     this->addWidget(this->m_login_widget);
