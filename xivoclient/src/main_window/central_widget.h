@@ -46,7 +46,6 @@ class CentralWidget : public QStackedWidget
     public:
         CentralWidget(MainWindow *parent);
         ~CentralWidget();
-        void setDefaultWidget();
 
     private slots:
         void initialize();
@@ -58,6 +57,8 @@ class CentralWidget : public QStackedWidget
     private:
         void showLoading();
         void hideLoading();
+        void showLoginWidget();
+        void showMainWidget();
 
         MainWindow *m_main_window;
         LoginWidget *m_login_widget;
