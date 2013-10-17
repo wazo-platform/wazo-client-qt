@@ -767,7 +767,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         if (datamap.contains("payload")) {
             QString payload;
-            QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toAscii());
+            QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toLatin1());
             if (datamap.value("compressed").toBool())
                 payload = QString::fromUtf8(qUncompress(qba));
             else
@@ -855,7 +855,7 @@ void BaseEngine::parseCommand(const QString &line)
             m_sessionid = datamap.value("sessionid").toString();
             QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_config["password"].toString());
             QCryptographicHash hidepass(QCryptographicHash::Sha1);
-            QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
+            QByteArray res = hidepass.hash(tohash.toLatin1(), QCryptographicHash::Sha1).toHex();
             QVariantMap command;
             command["class"] = "login_pass";
             command["hashedpassword"] = QString(res);
