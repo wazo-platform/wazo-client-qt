@@ -1935,8 +1935,9 @@ void BaseEngine::urlAuto(const QString & value)
         // one could for instance send the pairs into json or whatever ...
         if (reserialize == "/") {
             QPair<QString, QString> pair;
-            foreach(pair, url.queryItems())
-                tosend.append(QString("%1=%2").arg(pair.first).arg(pair.second));
+	    // FIXME: Find the behavior of queryItems and port to the new QUrlQuery
+            //foreach(pair, url.queryItems())
+	      // tosend.append(QString("%1=%2").arg(pair.first).arg(pair.second));
         }
 
         if (tosend.length() > 0) {
