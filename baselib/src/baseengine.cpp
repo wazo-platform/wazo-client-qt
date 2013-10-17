@@ -116,7 +116,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
-    m_ctiserversocket->setProtocol(QSsl::TlsV1);
+    m_ctiserversocket->setProtocol(QSsl::TlsV1_0);
     m_cti_server = new CTIServer(m_ctiserversocket);
 
     connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
