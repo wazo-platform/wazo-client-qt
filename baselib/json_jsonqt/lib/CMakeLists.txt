@@ -2,8 +2,6 @@ SET(
 	CLASSES
 	ParseException
 	JsonRpc
-	JsonRpcAdaptor
-	JsonRpcAdaptorPrivate
 	JsonToProperties
 	JsonToVariant
 	VariantToJson

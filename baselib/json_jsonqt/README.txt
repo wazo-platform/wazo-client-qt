@@ -18,10 +18,6 @@ These properties are readable via QObject::property(), or via member variables/a
 property was declared with Q_PROPERTY.
 
 
-
-JsonRpc is a basic parser for JSON-RPC 2.0 - this is abstracted slightly by JsonRpcAdaptor, which
-provides a simple interface for exposing a QObject's public slots via JSON-RPC 2.0.
-
 Using in your project
 ---------------------
 

@@ -163,7 +163,7 @@ namespace JsonQt
 		tryConsume(':');
 
 		// Lookahead to work out the type of value
-		switch(peekNext().toAscii())
+		switch(peekNext().toLatin1())
 		{
 			case '"':
 				return parseString();
@@ -261,7 +261,7 @@ namespace JsonQt
 		if(*m_sym == '\\')
 		{
 			QString digits;
-			switch(consume().toAscii())
+			switch(consume().toLatin1())
 			{
 				case '"':
 					return '"';
@@ -479,7 +479,7 @@ namespace JsonQt
 		 * 	false
 		 */
 
-		switch(peekNext().toAscii())
+		switch(peekNext().toLatin1())
 		{
 			case 't':
 				consume(QString("true"));
