@@ -68,9 +68,7 @@ void CentralWidget::initialize()
     this->m_main_widget = assembler->mainWidget();
     this->m_main_window->setCentralWidget(this);
     this->addWidget(this->m_login_widget);
-    this->addWidget(this->m_main_widget);
-
-    this->setDefaultWidget();
+    this->setCurrentWidget(this->m_login_widget);
 }
 
 void CentralWidget::initialized()
@@ -84,22 +82,31 @@ void CentralWidget::initialized()
     this->m_main_window->prepareState();
 }
 
-void CentralWidget::setDefaultWidget()
-{
-    this->setCurrentWidget(this->m_login_widget);
-}
-
 void CentralWidget::setStatusLogged()
 {
     this->m_login_widget->saveConfig();
-    this->setCurrentWidget(this->m_main_widget);
+    this->showMainWidget();
     this->hide();
 }
 
 void CentralWidget::setStatusNotLogged()
 {
-    this->setCurrentWidget(this->m_login_widget);
+    this->showLoginWidget();
     this->show();
+}
+
+void CentralWidget::showMainWidget()
+{
+    this->removeWidget(this->m_login_widget);
+    this->addWidget(this->m_main_widget);
+    this->setCurrentWidget(this->m_main_widget);
+}
+
+void CentralWidget::showLoginWidget()
+{
+    this->removeWidget(this->m_main_widget);
+    this->addWidget(this->m_login_widget);
+    this->setCurrentWidget(this->m_login_widget);
 }
 
 void CentralWidget::showLoading()
