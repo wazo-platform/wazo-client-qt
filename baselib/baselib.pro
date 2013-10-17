@@ -28,6 +28,7 @@ SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 DESTDIR     = $${BIN_DIR}
 
 QT += network
+QT += widgets
 
 TRANSLATIONS += $${ROOT_DIR}/baselib_en.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_es_ES.ts
