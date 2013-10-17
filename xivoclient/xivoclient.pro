@@ -6,7 +6,7 @@ TEMPLATE = app
 
 TARGET = xivoclient
 
-CONFIG += uitools
+QT += uitools
 
 unix:LIBS += -lxivoclientxlets
 win32 {
