@@ -216,8 +216,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void meetmeAction(const QString &, const QString &);
 
-        void requestFileList(const QString &);
-
         void monitorPeerRequest(const QString &);
 
         void saveToFile(const QString &);
@@ -278,8 +276,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void monitorPeerChanged();
 
         void updatePresence();
-
-        void requestFileListResult(const QVariant &);  //!< needed by callcampaign
 
         void serverFileList(const QStringList &);  //!< needed by agentdetails
         void fileReceived();                       //!< needed by agentdetails
