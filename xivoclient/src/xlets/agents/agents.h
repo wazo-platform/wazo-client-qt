@@ -54,5 +54,6 @@ class XLetAgentsPlugin : public QObject, XLetInterface
         XLet *newXLetInstance(QWidget *parent=0);
 };
 
+Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
 
 #endif /* __AGENTSPANEL_H__ */

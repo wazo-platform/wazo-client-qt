@@ -1,5 +1,7 @@
 include(../../../common-xlets.pri)
 
+QT += widgets
+
 HEADERS     = *.h
 SOURCES     = *.cpp
 TRANSLATIONS += $$ROOT_DIR/i18n/agents_en.ts

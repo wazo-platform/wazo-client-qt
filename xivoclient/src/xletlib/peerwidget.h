@@ -31,6 +31,7 @@
 #define __PEERWIDGET_H__
 
 #include <QtGui>
+#include <QPushButton>
 
 #include "xletlib_export.h"
 #include "basepeerwidget.h"
@@ -39,6 +40,8 @@
 
 class UserInfo;
 class ChitchatButton;
+class QHBoxLayout;
+class QLabel;
 
 /*! \brief Widget to display a Peer status
  *

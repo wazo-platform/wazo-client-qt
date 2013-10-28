@@ -30,6 +30,9 @@
 #include <storage/userinfo.h>
 
 #include "chitchat.h"
+#include <QScrollBar>
+#include <QVBoxLayout>
+#include <QPushButton>
 
 
 QHash<QString, ChitChatWindow*> ChitChatWindow::m_chat_window_opened = QHash <QString, ChitChatWindow*>();

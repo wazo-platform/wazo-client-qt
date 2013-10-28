@@ -247,7 +247,7 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     setModel(model);
     setShowGrid(0);
     verticalHeader()->hide();
-    horizontalHeader()->setMovable(true);
+    horizontalHeader()->setSectionsMovable(true);
     horizontalHeader()->setStretchLastSection(true);
 
     int ActionCol[] = { ACTION_MUTE,
@@ -258,11 +258,11 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
 
     for(int i = 0; i < nelem(ActionCol); i++) {
         setColumnWidth(ActionCol[i], 32);
-        horizontalHeader()->setResizeMode(ActionCol[i], QHeaderView::Fixed);
+        horizontalHeader()->setSectionResizeMode(ActionCol[i], QHeaderView::Fixed);
     }
 
     setColumnWidth(ADMIN, 60);
-    horizontalHeader()->setResizeMode(ADMIN, QHeaderView::Fixed);
+    horizontalHeader()->setSectionResizeMode(ADMIN, QHeaderView::Fixed);
     setStyleSheet("ConfListView {"
                       "border: none;"
                       "background:transparent;"

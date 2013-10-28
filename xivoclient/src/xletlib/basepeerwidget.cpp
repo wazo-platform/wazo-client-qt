@@ -28,13 +28,13 @@
  */
 
 #include <QDebug>
-#include <QApplication>
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QSettings>
 #include <QtAlgorithms>
+#include <QApplication>
 
 #include <baseengine.h>
 #include <xivoconsts.h>
@@ -267,11 +267,11 @@ void BasePeerWidget::mouseMoveEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(this);
     QMimeData * mimeData = new QMimeData;
     if (m_ui_remote) {
-        mimeData->setData(XUSERID_MIMETYPE, m_ui_remote->xid().toAscii());
-        mimeData->setData(XPHONEID_MIMETYPE, m_ui_remote->phonelist().join("").toAscii());
+        mimeData->setData(XUSERID_MIMETYPE, m_ui_remote->xid().toLatin1());
+        mimeData->setData(XPHONEID_MIMETYPE, m_ui_remote->phonelist().join("").toLatin1());
     } else {
         mimeData->setText(m_number);
-        mimeData->setData(NUMBER_MIMETYPE, m_number.toAscii());
+        mimeData->setData(NUMBER_MIMETYPE, m_number.toLatin1());
     }
     drag->setMimeData(mimeData);
 
@@ -621,8 +621,8 @@ void BasePeerWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void BasePeerWidget::dropEvent(QDropEvent *event)
 {
-    QString userid_from = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
-    QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
+    QString userid_from = QString::fromLatin1(event->mimeData()->data(XUSERID_MIMETYPE));
+    QString channel_from = QString::fromLatin1(event->mimeData()->data(CHANNEL_MIMETYPE));
     QString to;
     if (m_ui_remote) {
         to = "user:" + m_ui_remote->xid();

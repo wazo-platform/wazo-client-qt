@@ -91,4 +91,6 @@ class XLetConferencePlugin : public QObject, XLetInterface
         XLet *newXLetInstance(QWidget *parent=0);
 };
 
+Q_EXPORT_PLUGIN2(xletconferenceplugin, XLetConferencePlugin);
+
 #endif

@@ -372,13 +372,13 @@ QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
 {
     switch (agent->availability()) {
     case AgentInfo::AVAILABLE:
-        return Qt::green;
+        return QColor(Qt::green);
     case AgentInfo::UNAVAILABLE:
     case AgentInfo::ON_CALL_NONACD_INCOMING_INTERNAL:
     case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
     case AgentInfo::ON_CALL_NONACD_OUTGOING_INTERNAL:
     case AgentInfo::ON_CALL_NONACD_OUTGOING_EXTERNAL:
-        return Qt::red;
+        return QColor(Qt::red);
     default:
         return QVariant();
     }
@@ -396,9 +396,9 @@ QString AgentsModel::dataDisplayLogged(bool logged_status) const
 QVariant AgentsModel::dataBackgroundLogged(bool logged_status) const
 {
     if (logged_status) {
-        return Qt::green;
+        return QColor(Qt::green);
     } else {
-        return Qt::red;
+        return QColor(Qt::red);
     }
 }
 
@@ -420,11 +420,11 @@ QVariant AgentsModel::dataBackgroundPaused(enum AgentPauseStatus pause_status) c
 {
     switch (pause_status) {
     case UNPAUSED:
-        return Qt::green;
+        return QColor(Qt::green);
     case PAUSED:
-        return Qt::red;
+        return QColor(Qt::red);
     case PARTIALLY_PAUSED:
-        return Qt::yellow;
+        return QColor(Qt::yellow);
     default:
         return QVariant();
     }

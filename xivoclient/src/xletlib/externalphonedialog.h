@@ -33,6 +33,8 @@
 #include "xletlib_export.h"
 
 #include <QtGui>
+#include <QDialog>
+#include <QLineEdit>
 
 /*! \brief Dialog used to enter phone number and label
  */

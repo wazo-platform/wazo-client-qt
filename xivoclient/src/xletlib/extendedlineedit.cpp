@@ -31,6 +31,7 @@
 #include <QDebug>
 #include <QLineEdit>
 #include <QUrl>
+#include <QMimeData>
 
 #include "extendedlineedit.h"
 

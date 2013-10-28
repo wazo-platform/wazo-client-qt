@@ -6,8 +6,6 @@ TEMPLATE = app
 
 TARGET = xivoclient
 
-QT += uitools
-
 unix:LIBS += -lxivoclientxlets
 win32 {
     debug:LIBS += -lxivoclientxletsd

@@ -35,7 +35,6 @@
 #include <xletlib/agents_model.h>
 #include "agents_controller.h"
 
-Q_EXPORT_PLUGIN2(xletagentsplugin, XLetAgentsPlugin);
 
 XLet* XLetAgentsPlugin::newXLetInstance(QWidget *parent)
 {

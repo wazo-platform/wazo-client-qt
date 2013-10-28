@@ -24,7 +24,6 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __AGENTDETAILSPANEL_H__
@@ -37,6 +36,9 @@
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 
+class QGridLayout;
+class QLabel;
+class QPushButton;
 
 /*! \brief Display details about an agent
  */
@@ -105,5 +107,6 @@ class XLetAgentDetailsPlugin : public QObject, XLetInterface
         XLet *newXLetInstance(QWidget *parent=0);
 };
 
+Q_EXPORT_PLUGIN2(xletagentdetailsplugin, XLetAgentDetailsPlugin);
 
 #endif /* __AGENTDETAILSPANEL_H__ */

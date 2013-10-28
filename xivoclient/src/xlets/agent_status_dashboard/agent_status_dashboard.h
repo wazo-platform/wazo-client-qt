@@ -75,4 +75,6 @@ class XLetAgentStatusDashboardPlugin : public QObject, XLetInterface
         XLet *newXLetInstance(QWidget *parent=0);
 };
 
+Q_EXPORT_PLUGIN2(xletagentstatusdashboardplugin, XLetAgentStatusDashboardPlugin);
+
 #endif /* __AGENT_STATUS_DASHBOARD_H__ */

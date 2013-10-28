@@ -38,8 +38,6 @@
 #include "agent_status_widget_storage.h"
 #include "filtered_agent_list.h"
 
-Q_EXPORT_PLUGIN2(xletagentstatusdashboardplugin, XLetAgentStatusDashboardPlugin);
-
 XLet* XLetAgentStatusDashboardPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/agent_status_dashboard_%1");

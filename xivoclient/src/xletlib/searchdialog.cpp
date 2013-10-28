@@ -29,6 +29,7 @@
 
 #include <QFormLayout>
 #include <QDialogButtonBox>
+#include <QLineEdit>
 #include "searchdialog.h"
 
 SearchDialog::SearchDialog(QWidget * parent)

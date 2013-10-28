@@ -32,6 +32,8 @@
 
 #include "xletlib_export.h"
 #include <QtGui>
+#include <QDialog>
+#include <QLineEdit>
 
 class XLETLIB_EXPORT SearchDialog : public QDialog
 {
