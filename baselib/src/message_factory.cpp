@@ -42,6 +42,13 @@ QVariantMap MessageFactory::answer()
     return MessageFactory::baseMessage("answer");
 }
 
+QVariantMap MessageFactory::callFormResult(const QVariant& info)
+{
+  QVariantMap command = MessageFactory::baseMessage("call_form_result");
+  command["infos"] = info;
+  return command;
+}
+
 QVariantMap MessageFactory::dial(const QString &destination)
 {
     QVariantMap command = MessageFactory::ipbxcommand("dial");
