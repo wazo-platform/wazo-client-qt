@@ -230,8 +230,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void emitMessage(const QString &);
 
-        void actionFromFiche(const QVariant &);
-
         // void sslSocketReadyRead();
         void sslErrors(const QList<QSslError> &);
 

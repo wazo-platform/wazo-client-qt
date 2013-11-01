@@ -93,7 +93,6 @@ class Popup: public QWidget
 
     signals:
         void wantsToBeShown(Popup *);
-        void actionFromPopup(const QString &, const QVariant &);
         void newRemarkSubmitted(const QString &, const QString &);
 
     public slots:

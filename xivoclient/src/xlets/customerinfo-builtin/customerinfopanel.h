@@ -69,7 +69,6 @@ class CustomerInfoPanel : public XLet
         void showNewProfile(Popup *);
         void popupDestroyed(QObject *obj);
         void displayFiche(const QString &, bool, const QString &);
-        void actionFromPopup(const QString &, const QVariant &);
         void activateRemarkArea(const QString &id);
         void desactivateRemarkArea(const QString &id);
         void addNewRemark(const QString &id, const QVariantMap &entry);
