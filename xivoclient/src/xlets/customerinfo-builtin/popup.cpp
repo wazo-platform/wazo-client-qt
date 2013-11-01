@@ -188,14 +188,8 @@ void Popup::actionFromForm()
     QString buttonname = sender()->property("buttonname").toString();
     if(buttonname == "close")
         close();
-    else if(buttonname == "save")
+    else if (buttonname == "save")
         saveandclose();
-    else if((buttonname == "hangup") || (buttonname == "answer") || (buttonname == "refuse"))
-        emit actionFromPopup(buttonname, QVariant(m_timestamps));
-    else if(buttonname.startsWith("XIVO_CALL_STATUS-")) {
-        emit actionFromPopup(buttonname, QVariant(m_timestamps));
-        close();
-    }
 }
 
 void Popup::saveandclose()

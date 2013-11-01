@@ -126,35 +126,12 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
                 this, SLOT(popupDestroyed(QObject *)));
         connect(popup, SIGNAL(wantsToBeShown(Popup *)),
                 this, SLOT(showNewProfile(Popup *)));
-        connect(popup, SIGNAL(actionFromPopup(const QString &, const QVariant &)),
-                this, SLOT(actionFromPopup(const QString &, const QVariant &)));
         connect(popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
                 b_engine, SLOT(sendNewRemark(const QString &, const QString &)));
     }
 
     popup->feed(inputstream, qtui);
     delete inputstream;
-}
-
-void CustomerInfoPanel::actionFromPopup(const QString & buttonname, const QVariant & timestamps)
-{
-    QString ipbxid = sender()->property("ipbxid").toString();
-    QString channel = sender()->property("channel").toString();
-    Popup *thispopup = NULL;
-    foreach(Popup *mpopup, m_popups)
-        if ( (mpopup->callChannel() == channel) &&
-             (mpopup->callIpbxId() == ipbxid) ) {
-            thispopup = mpopup;
-            break;
-        }
-    if(thispopup) {
-        QVariantMap data;
-        data["buttonname"] = buttonname;
-        data["ipbxid"] = thispopup->callIpbxId();
-        data["channel"] = thispopup->callChannel();
-        data["timestamps"] = timestamps;
-        b_engine->actionFromFiche(QVariant(data));
-    }
 }
 
 void CustomerInfoPanel::activateRemarkArea(const QString & id)
