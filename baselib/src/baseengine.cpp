@@ -1450,7 +1450,7 @@ void BaseEngine::filetransferSocketReadyRead()
 void BaseEngine::actionFromFiche(const QVariant & infos)
 {
     QVariantMap command;
-    command["class"] = "actionfiche";
+    command["class"] = "call_form_result";
     command["infos"] = infos;
     sendJsonCommand(command);
 }
