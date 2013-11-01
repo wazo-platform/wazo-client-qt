@@ -47,6 +47,7 @@
 #include <baseengine.h>
 #include <storage/userinfo.h>
 
+#include "message_factory.h"
 #include "xmlhandler.h"
 #include "remotepicwidget.h"
 #include "urllabel.h"
@@ -212,7 +213,7 @@ void Popup::saveandclose()
         QVariantMap data;
         data["buttonname"] = "saveandclose";
         data["variables"] = qv;
-        b_engine->actionFromFiche(QVariant(data));
+	b_engine->sendJsonCommand(MessageFactory::callFormResult(QVariant(data)));
     }
     close();
 }

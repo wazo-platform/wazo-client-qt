@@ -1443,18 +1443,6 @@ void BaseEngine::filetransferSocketReadyRead()
     }
 }
 
-/*! \brief forward actions from fiche to XiVO CTI server
- *
- * Build and send JSON command
- */
-void BaseEngine::actionFromFiche(const QVariant & infos)
-{
-    QVariantMap command;
-    command["class"] = "call_form_result";
-    command["infos"] = infos;
-    sendJsonCommand(command);
-}
-
 /*! \brief send an originate command to the server
  */
 void BaseEngine::textEdited(const QString & text)
