@@ -186,7 +186,7 @@ Gelieve uw versie te upgraden.</translation>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1634"/>
+        <location filename="src/baseengine.cpp" line="1622"/>
         <source>Attempting to reconnect to server</source>
         <translation>Poging tot herverbinden met de server</translation>
     </message>

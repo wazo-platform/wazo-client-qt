@@ -186,7 +186,7 @@ Please upgrade it.</translation>
         <translation>ERROR</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1634"/>
+        <location filename="src/baseengine.cpp" line="1622"/>
         <source>Attempting to reconnect to server</source>
         <translation>Attempting to reconnect to server</translation>
     </message>

@@ -186,7 +186,7 @@ Merci de mettre à jour votre serveur.</translation>
         <translation>ERREUR</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1634"/>
+        <location filename="src/baseengine.cpp" line="1622"/>
         <source>Attempting to reconnect to server</source>
         <translation>Tentative de reconnexion au serveur</translation>
     </message>
