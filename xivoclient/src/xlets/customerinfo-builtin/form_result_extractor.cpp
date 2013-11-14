@@ -32,9 +32,11 @@
 #include <QComboBox>
 #include <QDateEdit>
 #include <QDateTime>
+#include <QLabel>
 #include <QLineEdit>
 #include <QList>
 #include <QRadioButton>
+#include <QPlainTextEdit>
 #include <QSpinBox>
 
 #include "form_result_extractor.h"
@@ -100,6 +102,18 @@ QVariantMap FormResultExtractor::extract_form_result(QWidget *form)
     foreach (QCalendarWidget *calendarwidget, calendarwidgets) {
         QString key = calendarwidget->objectName();
         QString value = calendarwidget->selectedDate().toString(Qt::ISODate);
+        form_result[key] = value;
+    }
+    QList<QLabel *> labels = form->findChildren<QLabel *>();
+    foreach (QLabel *label, labels) {
+        QString key = label->objectName();
+        QString value = label->text();
+        form_result[key] = value;
+    }
+    QList<QPlainTextEdit *> plaintextedits = form->findChildren<QPlainTextEdit *>();
+    foreach (QPlainTextEdit *plaintextedit, plaintextedits) {
+        QString key = plaintextedit->objectName();
+        QString value = plaintextedit->toPlainText();
         form_result[key] = value;
     }
 
