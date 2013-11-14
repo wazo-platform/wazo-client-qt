@@ -110,7 +110,7 @@ class Popup: public QWidget
 
     private:
         void addInfoForm(int, const QString &);
-        void saveandclose();
+        void sendFormResult();
         void setEnablesOnForms();
 
         QIODevice * m_inputstream;  //!< input stream where the XML is read from
