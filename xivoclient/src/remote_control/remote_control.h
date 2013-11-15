@@ -127,6 +127,7 @@ class RemoteControl : public QObject
         QVariantMap get_queue_members_infos();
         void set_queue_for_queue_members(const QVariantList &);
         QVariantMap get_sheet_infos();
+        QVariantMap get_infos_in_custom_sheet();
         QVariantMap get_conference_room_infos();
         QVariantMap get_switchboard_infos();
         void set_search_for_directory(const QVariantList &);
@@ -137,6 +138,7 @@ class RemoteControl : public QObject
         QVariantMap get_menu_availability_infos();
         QVariantMap get_main_window_infos();
         QVariantMap is_logged();
+        QWidget *_get_current_sheet();
 
         //Xlets
         template <class T>

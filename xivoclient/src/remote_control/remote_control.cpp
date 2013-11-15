@@ -140,6 +140,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_menu_availability_infos);
             RC_EXECUTE_ARG(set_queue_for_queue_members);
             RC_EXECUTE_WITH_RETURN(get_sheet_infos);
+            RC_EXECUTE_WITH_RETURN(get_infos_in_custom_sheet);
             RC_EXECUTE_WITH_RETURN(get_conference_room_infos);
             RC_EXECUTE_WITH_RETURN(get_switchboard_infos);
             RC_EXECUTE_ARG(set_search_for_directory);
