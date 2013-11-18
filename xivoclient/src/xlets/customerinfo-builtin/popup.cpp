@@ -28,9 +28,7 @@
  */
 
 #include <QBuffer>
-#include <QComboBox>
 #include <QCloseEvent>
-#include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QIcon>
@@ -54,6 +52,7 @@
 #include "remarkarea.h"
 #include "phonenumber.h"
 #include "popup.h"
+#include "form_result_extractor.h"
 
 
 QStringList g_formbuttonnames = (QStringList()
@@ -186,30 +185,24 @@ void Popup::dispurl(const QUrl &url)
 void Popup::actionFromForm()
 {
     QString buttonname = sender()->property("buttonname").toString();
-    if(buttonname == "close")
-        close();
-    else if (buttonname == "save")
-        saveandclose();
+    if (buttonname != "close" && buttonname != "save") {
+        return;
+    }
+    if (buttonname == "save") {
+        this->sendFormResult();
+    }
+    this->close();
 }
 
-void Popup::saveandclose()
+void Popup::sendFormResult()
 {
-    QStringList qsl;
-    QRegExp re_formentry("^XIVOFORM-");
-
-    QVariantMap qv;
-    QList<QLineEdit *> lineedits = m_sheetui_widget->findChildren<QLineEdit *>();
-    for(int i = 0; i < lineedits.count(); i++) {
-        qv[lineedits[i]->objectName()] = lineedits[i]->text();
-    }
-
-    if (qv.size() > 0) {
+    QVariantMap form_result = FormResultExtractor::extract_form_result(m_sheetui_widget);
+    if (! form_result.empty()) {
         QVariantMap data;
         data["buttonname"] = "saveandclose";
-        data["variables"] = qv;
-	b_engine->sendJsonCommand(MessageFactory::callFormResult(QVariant(data)));
+        data["variables"] = form_result;
+        b_engine->sendJsonCommand(MessageFactory::callFormResult(QVariant(data)));
     }
-    close();
 }
 
 void Popup::addAnyInfo(const QString & localName,
