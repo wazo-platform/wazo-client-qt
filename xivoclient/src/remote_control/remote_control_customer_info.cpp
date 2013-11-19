@@ -32,12 +32,12 @@
 #include <JsonToVariant.h>
 
 #include <xlets/customerinfo-builtin/customerinfopanel.h>
+#include <xlets/customerinfo-builtin/form_result_extractor.h>
 
 #include "remote_control.h"
 
-QVariantMap RemoteControl::get_sheet_infos()
+QWidget *RemoteControl::_get_current_sheet()
 {
-    QVariantMap args;
     CustomerInfoPanel *xlet = this->get_xlet<CustomerInfoPanel>("customerinfo");
     if (xlet == NULL) {
         throw TestFailedException(QString("xlet customerinfo is NULL"));
@@ -53,6 +53,14 @@ QVariantMap RemoteControl::get_sheet_infos()
         throw TestFailedException(QString("current_tab is NULL"));
     }
 
+    return current_tab;
+}
+
+QVariantMap RemoteControl::get_sheet_infos()
+{
+    QVariantMap args;
+
+    QWidget *current_tab = this->_get_current_sheet();
     QVariantMap results;
     bool iter_line_sheet = true;
     int layout_header_offset = 4;
@@ -75,6 +83,14 @@ QVariantMap RemoteControl::get_sheet_infos()
     args["content"] = results;
 
     return args;
+}
+
+QVariantMap RemoteControl::get_infos_in_custom_sheet()
+{
+
+    QWidget *sheet = this->_get_current_sheet();
+    QVariantMap result = FormResultExtractor::extract_form_result(sheet);
+    return result;
 }
 
 #endif
