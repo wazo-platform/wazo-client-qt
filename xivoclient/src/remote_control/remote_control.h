@@ -131,6 +131,7 @@ class RemoteControl : public QObject
         void set_queue_for_queue_members(const QVariantList &);
         QVariantMap get_sheet_infos();
         QVariantMap get_infos_in_custom_sheet();
+        void set_infos_in_custom_sheet(const QVariantList &);
         QVariantMap get_conference_room_infos();
         QVariantMap get_switchboard_infos();
         void set_search_for_directory(const QVariantList &);

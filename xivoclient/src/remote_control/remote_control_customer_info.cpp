@@ -33,6 +33,7 @@
 #include <xlets/customerinfo-builtin/form_result_extractor.h>
 
 #include "remote_control.h"
+#include "form_widget_setter.h"
 
 QWidget *RemoteControl::_get_current_sheet()
 {
@@ -89,6 +90,23 @@ QVariantMap RemoteControl::get_infos_in_custom_sheet()
     QWidget *sheet = this->_get_current_sheet();
     QVariantMap result = FormResultExtractor::extract_form_result(sheet);
     return result;
+}
+
+void RemoteControl::set_infos_in_custom_sheet(const QVariantList &args)
+{
+    QWidget *sheet = this->_get_current_sheet();
+    QVariantList variables = args[0].toList();
+    FormWidgetSetter form_widget_setter(sheet);
+    foreach(QVariant raw_variable, variables) {
+        QVariantMap variable = raw_variable.toMap();
+        QString widget_name = QString("XIVOFORM_%1").arg(variable["widget_name"].toString());
+        form_widget_setter.setWidgetValue(widget_name, variable["value"].toString());
+    }
+    QPushButton * save_button = sheet->findChild<QPushButton *>("save");
+    if (save_button == NULL) {
+        throw TestFailedException("Could not find form's save button");
+    }
+    save_button->click();
 }
 
 #endif
