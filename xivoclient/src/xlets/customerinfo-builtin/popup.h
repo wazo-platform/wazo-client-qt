@@ -49,7 +49,6 @@ class QHBoxLayout;
 class QUiLoader;
 
 class UserInfo;
-class RemarkArea;
 class BaseEngine;
 
 class Popup: public QWidget
@@ -84,16 +83,11 @@ class Popup: public QWidget
         void addDefForm(const QString &, const QString &);
         void update(QList<QStringList> &);
         QList<QStringList>& sheetlines();
-        void addRemarkArea();
-        void activateRemarkArea();
-        void desactivateRemarkArea();
-        void addRemark(const QVariantMap &entry);
         const QString& id() const { return m_id; };
         void setId(const QString &id) { m_id = id; };
 
     signals:
         void wantsToBeShown(Popup *);
-        void newRemarkSubmitted(const QString &, const QString &);
 
     public slots:
         void streamNewData();
@@ -103,7 +97,6 @@ class Popup: public QWidget
         void dispurl(const QUrl &);
         void httpGetNoreply();
         void actionFromForm();
-        void newRemark(const QString &);
 
     protected:
         void closeEvent(QCloseEvent *);
@@ -146,7 +139,6 @@ class Popup: public QWidget
         QHash<QString, QPushButton *> m_form_buttons;
         QHash<QString, QString> m_remoteforms;
         QVariantMap m_timestamps;
-        RemarkArea * m_remarkarea;  //!< user editable area
         int m_nfeeds;
         QString m_id;
 };

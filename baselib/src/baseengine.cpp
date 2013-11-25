@@ -758,13 +758,6 @@ void BaseEngine::parseCommand(const QString &line)
     if (thisclass == "sheet") {
         // TODO : use id better than just channel name
         QString channel = datamap.value("channel").toString();
-        if (function == "getownership") {
-            emit gotSheetOwnership(channel);
-        } else if (function == "loseownership") {
-            emit lostSheetOwnership(channel);
-        } else if (function == "entryadded") {
-            emit sheetEntryAdded(channel, datamap.value("entry").toMap());
-        }
 
         if (datamap.contains("payload")) {
             QString payload;
@@ -775,12 +768,6 @@ void BaseEngine::parseCommand(const QString &line)
                 payload = QString::fromUtf8(qba);
             // will eventually call the XML parser
             emit displayFiche(payload, false, channel);
-            if (datamap.contains("entries")) {
-                QVariantList entries = datamap.value("entries").toList();
-                foreach (QVariant entry, entries) {
-                    emit sheetEntryAdded(channel, entry.toMap());
-                }
-            }
         }
 
     } else if (thisclass == "getlist") {
@@ -1839,17 +1826,6 @@ UserInfo * BaseEngine::getXivoClientMonitored()
         return (UserInfo *) m_anylist.value("users").value(m_monitored_xuserid);
     }
     return NULL;
-}
-
-/*! \brief send new remark about a sheet */
-void BaseEngine::sendNewRemark(const QString & id, const QString & text)
-{
-    QVariantMap command;
-    command["class"] = "sheet";
-    command["function"] = "addentry";
-    command["channel"] = id;
-    command["text"] = text;
-    sendJsonCommand(command);
 }
 
 /*! \brief receive the message from other instance of this application

@@ -49,7 +49,6 @@
 #include "xmlhandler.h"
 #include "remotepicwidget.h"
 #include "urllabel.h"
-#include "remarkarea.h"
 #include "phonenumber.h"
 #include "popup.h"
 #include "form_result_extractor.h"
@@ -81,7 +80,6 @@ Popup::Popup(const bool urlautoallow, QWidget *parent)
       m_firstline(3),
       m_sheetui_widget(NULL),
       m_uiloader(NULL),
-      m_remarkarea(NULL),
       m_nfeeds(0)
 {
 }
@@ -518,8 +516,6 @@ void Popup::socketDisconnected()
 
 void Popup::finishAndShow()
 {
-    if(m_nfeeds == 1)
-        addRemarkArea();
     emit wantsToBeShown(this);
 }
 
@@ -584,57 +580,4 @@ bool Popup::sheetpopup()
 bool Popup::focus()
 {
     return m_focus;
-}
-
-void Popup::addRemarkArea()
-{
-    qDebug() << Q_FUNC_INFO;
-    m_remarkarea = new RemarkArea(this);
-    m_vlayout->addWidget( m_remarkarea );
-    m_vlayout->setStretchFactor( m_remarkarea, 1 ); // take available space
-    connect( m_remarkarea, SIGNAL(textSubmitted(const QString &)),
-             this, SLOT(newRemark(const QString &)) );
-}
-
-void Popup::activateRemarkArea()
-{
-    if(m_remarkarea)
-        m_remarkarea->displayInputForm();
-}
-
-void Popup::desactivateRemarkArea()
-{
-    if(m_remarkarea)
-        m_remarkarea->hideInputForm();
-}
-
-void Popup::newRemark(const QString & text)
-{
-    emit newRemarkSubmitted(id(), text);
-}
-
-void Popup::addRemark(const QVariantMap & entry)
-{
-    if(m_remarkarea) {
-        QString type = QString("text");
-        QString text = entry["text"].toString();
-        if(entry.contains("type") && entry.contains("data")) {
-            type = entry["type"].toString();
-            if(type == QString("text"))
-                text = entry["data"].toString();
-            // TODO handle other types of data
-            else
-                text = type + " : " + entry["data"].toString();
-        }
-        QDateTime datetime;
-        datetime.setTime_t( entry["time"].toUInt() );
-        QString user = entry["user"].toString();
-        if(b_engine) {
-            const UserInfo * ui = b_engine->user(user);
-            if(ui)
-                user = ui->fullname();
-        }
-        QString header = datetime.toString(Qt::DefaultLocaleShortDate) + " - " + user + " :";
-        m_remarkarea->addRemark(header, text);
-    }
 }

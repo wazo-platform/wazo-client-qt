@@ -39,12 +39,6 @@ CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
     setTitle(tr("Sheets"));
     connect(b_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
             this, SLOT(displayFiche(const QString &, bool, const QString &)));
-    connect(b_engine, SIGNAL(gotSheetOwnership(const QString &)),
-            this, SLOT(activateRemarkArea(const QString &)));
-    connect(b_engine, SIGNAL(lostSheetOwnership(const QString &)),
-            this, SLOT(desactivateRemarkArea(const QString &)));
-    connect(b_engine, SIGNAL(sheetEntryAdded(const QString &, const QVariantMap &)),
-            this, SLOT(addNewRemark(const QString &, const QVariantMap &)));
 
     // qDebug() << Q_FUNC_INFO;
     m_glayout = new QGridLayout(this);
@@ -126,37 +120,10 @@ void CustomerInfoPanel::displayFiche(const QString & fichecontent, bool qtui, co
                 this, SLOT(popupDestroyed(QObject *)));
         connect(popup, SIGNAL(wantsToBeShown(Popup *)),
                 this, SLOT(showNewProfile(Popup *)));
-        connect(popup, SIGNAL(newRemarkSubmitted(const QString &, const QString &)),
-                b_engine, SLOT(sendNewRemark(const QString &, const QString &)));
     }
 
     popup->feed(inputstream, qtui);
     delete inputstream;
-}
-
-void CustomerInfoPanel::activateRemarkArea(const QString & id)
-{
-    foreach(Popup *mpopup, m_popups) {
-        if(mpopup->id() == id)
-            mpopup->activateRemarkArea();
-    }
-}
-
-void CustomerInfoPanel::desactivateRemarkArea(const QString & id)
-{
-    foreach(Popup *mpopup, m_popups) {
-        if(mpopup->id() == id)
-            mpopup->desactivateRemarkArea();
-    }
-}
-
-void CustomerInfoPanel::addNewRemark(const QString & id, const QVariantMap & entry)
-{
-    qDebug() << Q_FUNC_INFO << id << entry;
-    foreach(Popup *mpopup, m_popups) {
-        if(mpopup->id() == id)
-            mpopup->addRemark(entry);
-    }
 }
 
 void CustomerInfoPanel::doGUIConnects(QWidget * mainwindow)

@@ -224,8 +224,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void logClient(const QString &, const QString &, const QString &);  //!< log tricky situations (server side)
 
-        void sendNewRemark(const QString &, const QString &);
-
         void ipbxCommand(const QVariantMap &);
 
         void emitMessage(const QString &);
@@ -320,10 +318,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changeWatchedQueueSignal(const QString &);
 
         void displayFiche(const QString &, bool, const QString &);
-
-        void gotSheetOwnership(const QString &id);                     //!< the user logged has now ownership of the sheet
-        void lostSheetOwnership(const QString &id);                    //!< the user logged just lost ownership of the sheet
-        void sheetEntryAdded(const QString &id, const QVariantMap &);  //!< sheet data added by a user.
 
         void broadcastNumberSelection(const QStringList &);  //!< numbers for a selected peer
         void queueEntryUpdate(const QString &, const QVariantList &);
