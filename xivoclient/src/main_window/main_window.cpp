@@ -267,9 +267,9 @@ void MainWindow::customerInfoPopup(const QString & msgtitle,
 void MainWindow::about()
 {
     QString applicationVersion(XC_VERSION);
-    QString fetchlastone = QString("<a href=http://mirror.xivo.fr/iso>"
-                                   "%1"
-                                   "</a>").arg(tr("Fetch the last one"));
+    QString fetchlastone = (QString("<a href=%1>%2</a>")
+                            .arg("http://mirror.xivo.fr/iso/xivo-current")
+                            .arg(tr("Fetch the last one")));
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     QString gitdate_qs(__git_date__);
     QString gitdate(QDateTime::fromTime_t(gitdate_qs.toUInt()).toString());
