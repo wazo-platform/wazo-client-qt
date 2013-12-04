@@ -932,14 +932,6 @@ Continuare?</translation>
     </message>
 </context>
 <context>
-    <name>RemarkArea</name>
-    <message>
-        <location filename="../src/xlets/customerinfo-builtin/remarkarea.cpp" line="63"/>
-        <source>&amp;Submit</source>
-        <translation>&amp;Invia</translation>
-    </message>
-</context>
-<context>
     <name>SearchPanel</name>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="48"/>
