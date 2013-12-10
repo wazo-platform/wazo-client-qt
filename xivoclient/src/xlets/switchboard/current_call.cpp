@@ -269,6 +269,7 @@ void CurrentCall::answeringMode()
     this->setHangupButton();
 
     m_current_call_widget->btn_answer->setEnabled(false);
+    this->m_current_call_widget->btn_call->setEnabled(false);
 }
 
 void CurrentCall::transferRingingMode()
