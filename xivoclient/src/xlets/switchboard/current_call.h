@@ -84,7 +84,7 @@ class CurrentCall: public QObject, public IPBXListener
         void answeringMode();
         void transferRingingMode();
         void transferAnsweredMode();
-        void disconnectButtons();
+        void resetButtons();
 
         void setButton(QPushButton*, const QString &, const QKeySequence &, const char *);
         void setButton(QPushButton*, const QKeySequence &, const char *);

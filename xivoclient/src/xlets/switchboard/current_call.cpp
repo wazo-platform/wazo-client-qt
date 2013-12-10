@@ -237,65 +237,44 @@ void CurrentCall::readyToAnswerMode(bool has_incoming_calls)
 
 void CurrentCall::noCallsMode()
 {
-    this->disconnectButtons();
+    this->resetButtons();
+
     this->setCallButton();
-    this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
-    m_current_call_widget->btn_attended_transfer->setText(m_attended_transfer_label);
-    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
-
-    this->m_current_call_widget->btn_hold->setEnabled(false);
-
-    this->m_current_call_widget->btn_hangup->setEnabled(false);
-    m_current_call_widget->btn_hangup->setText(m_hangup_label);
-
-    this->m_current_call_widget->btn_answer->setEnabled(false);
 }
 
 void CurrentCall::ringingMode()
 {
-    this->disconnectButtons();
-    this->setAnswerButton();
+    this->resetButtons();
 
-    this->m_current_call_widget->btn_call->setEnabled(false);
+    this->setAnswerButton();
 }
 
 void CurrentCall::answeringMode()
 {
-    this->disconnectButtons();
+    this->resetButtons();
+
     this->setAttendedTransferButton();
     this->setDirectTransferButton();
-
     this->setHoldButton();
-
     this->setHangupButton();
-
-    m_current_call_widget->btn_answer->setEnabled(false);
-    this->m_current_call_widget->btn_call->setEnabled(false);
 }
 
 void CurrentCall::transferRingingMode()
 {
-    this->disconnectButtons();
-
-    this->m_current_call_widget->btn_hold->setEnabled(false);
-    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
-    this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
+    this->resetButtons();
 
     this->setCancelTransferButton();
 }
 
 void CurrentCall::transferAnsweredMode()
 {
-    this->disconnectButtons();
+    this->resetButtons();
+
     this->setCompleteTransferButton();
-
-    this->m_current_call_widget->btn_hold->setEnabled(false);
-    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
-
     this->setCancelTransferButton();
 }
 
-void CurrentCall::disconnectButtons()
+void CurrentCall::resetButtons()
 {
     disconnect(m_current_call_widget->btn_answer, SIGNAL(clicked()),
                this, SLOT(answer()));
@@ -313,6 +292,16 @@ void CurrentCall::disconnectButtons()
                this, SLOT(cancelTransfer()));
     disconnect(m_current_call_widget->btn_call, SIGNAL(clicked()),
                this, SLOT(call()));
+
+    this->m_current_call_widget->btn_answer->setEnabled(false);
+    this->m_current_call_widget->btn_call->setEnabled(false);
+    this->m_current_call_widget->btn_direct_transfer->setEnabled(false);
+    this->m_current_call_widget->btn_attended_transfer->setEnabled(false);
+    this->m_current_call_widget->btn_hold->setEnabled(false);
+    this->m_current_call_widget->btn_hangup->setEnabled(false);
+
+    m_current_call_widget->btn_attended_transfer->setText(m_attended_transfer_label);
+    m_current_call_widget->btn_hangup->setText(m_hangup_label);
 }
 
 void CurrentCall::setButton(QPushButton *b, const char *slot)
