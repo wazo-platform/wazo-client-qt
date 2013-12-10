@@ -63,6 +63,8 @@ Switchboard::Switchboard(QWidget *parent)
 
     this->setupUi();
 
+    this->registerListener("current_calls");
+
     QShortcut * waiting_calls_focus_shortcut = new QShortcut(QKeySequence(Qt::Key_F9), this);
     waiting_calls_focus_shortcut->setContext(Qt::ApplicationShortcut);
     connect(waiting_calls_focus_shortcut, SIGNAL(activated()),
@@ -93,6 +95,21 @@ Switchboard::Switchboard(QWidget *parent)
 
 Switchboard::~Switchboard()
 {
+}
+
+void Switchboard::parseCommand(const QVariantMap &message)
+{
+    QString message_class = message["class"].toString();
+    if (message_class == "current_calls") {
+        this->parseCurrentCalls(message);
+    }
+}
+
+void Switchboard::parseCurrentCalls(const QVariantMap &message)
+{
+    const QVariantList &calls = message["current_calls"].toList();
+    bool has_incoming_calls = this->hasIncomingCalls();
+    this->m_current_call->updateCurrentCall(calls, has_incoming_calls);
 }
 
 void Switchboard::incomingCallsUpdated(const QModelIndex &, const QModelIndex &)
@@ -213,7 +230,11 @@ void Switchboard::keyPressEvent(QKeyEvent *event)
 void Switchboard::focusOnIncomingCalls()
 {
     this->ui.incomingCallsView->setFocus();
-    this->m_current_call->noticeIncoming(ui.incomingCallsView->model()->rowCount() != 0);
+    this->m_current_call->noticeIncoming(this->hasIncomingCalls());
+}
+
+bool Switchboard::hasIncomingCalls() {
+    return this->ui.incomingCallsView->model()->rowCount() > 0;
 }
 
 void Switchboard::focusOnWaitingCalls()

@@ -53,7 +53,6 @@ CurrentCall::CurrentCall(QObject *parent)
       m_hangup_label(tr("Hangup")),
       m_cancel_transfer_label(tr("Cancel T"))
 {
-    this->registerListener("current_calls");
     this->registerListener("current_call_attended_transfer_answered");
 
     QTimer * timer_display = new QTimer(this);
@@ -89,11 +88,7 @@ void CurrentCall::noticeIncoming(bool hasIncoming)
         return;
     }
 
-    if (hasIncoming) {
-        ringingMode();
-    } else {
-        noCallsMode();
-    }
+    this->readyToAnswerMode(hasIncoming);
 }
 
 void CurrentCall::updateCallerID(const QString &name,
@@ -115,26 +110,24 @@ void CurrentCall::updateCallInfo()
 void CurrentCall::parseCommand(const QVariantMap &message)
 {
     QString message_class = message["class"].toString();
-    if (message_class == "current_calls") {
-        this->parseCurrentCalls(message);
-    } else if (message_class == "current_call_attended_transfer_answered") {
+    if (message_class == "current_call_attended_transfer_answered") {
         this->parseAttendedTransferAnswered(message);
-    }
-}
-
-void CurrentCall::parseCurrentCalls(const QVariantMap &message)
-{
-    const QVariantList &calls = message["current_calls"].toList();
-    if (calls.isEmpty()) {
-        this->clear();
-    } else {
-        this->updateCall(calls);
     }
 }
 
 void CurrentCall::parseAttendedTransferAnswered(const QVariantMap & /*message*/)
 {
     this->transferAnsweredMode();
+}
+
+void CurrentCall::updateCurrentCall(const QVariantList &calls, bool has_incoming)
+{
+    if (calls.isEmpty()) {
+        this->clear();
+        this->readyToAnswerMode(has_incoming);
+    } else {
+        this->updateCall(calls);
+    }
 }
 
 void CurrentCall::updateCall(const QVariantList &calls)
@@ -157,7 +150,6 @@ void CurrentCall::clear()
     this->m_caller_id.clear();
     this->m_call_start = 0;
     this->updateCallInfo();
-    this->noCallsMode();
 }
 
 void CurrentCall::numberSelected(const QString &number)
@@ -232,6 +224,15 @@ void CurrentCall::cancelTransfer()
 {
     b_engine->sendJsonCommand(MessageFactory::cancelTransfer());
     this->answeringMode();
+}
+
+void CurrentCall::readyToAnswerMode(bool has_incoming_calls)
+{
+    if (has_incoming_calls) {
+        this->ringingMode();
+    } else {
+        this->noCallsMode();
+    }
 }
 
 void CurrentCall::noCallsMode()

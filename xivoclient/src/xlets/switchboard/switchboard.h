@@ -32,6 +32,7 @@
 
 #include <QObject>
 
+#include <ipbxlistener.h>
 #include <xletlib/xlet.h>
 #include "ui_switchboard.h"
 
@@ -41,7 +42,7 @@ class QueueEntriesSortFilterProxyModel;
 class UserInfo;
 class CurrentCall;
 
-class Switchboard : public XLet
+class Switchboard : public XLet, public IPBXListener
 {
     Q_OBJECT
 
@@ -63,7 +64,10 @@ class Switchboard : public XLet
         void retrieveCallOnHold(const QString & call_unique_id) const;
         void focusOnIncomingCalls();
         void handleEnterKeys();
+        bool hasIncomingCalls();
         void incomingCallsUpdated(const QModelIndex &, const QModelIndex &);
+        void parseCommand(const QVariantMap &message);
+        void parseCurrentCalls(const QVariantMap &message);
         void watch_switchboard_queue();
         void connectPhoneStatus() const;
         void setupUi();
