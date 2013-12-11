@@ -85,8 +85,14 @@ bool CurrentCall::hasCurrentCall() const
 
 void CurrentCall::noticeIncoming(bool hasIncoming)
 {
-    if (hasIncoming && !this->hasCurrentCall()) {
+    if (this->hasCurrentCall()) {
+        return;
+    }
+
+    if (hasIncoming) {
         ringingMode();
+    } else {
+        noCallsMode();
     }
 }
 
@@ -263,6 +269,7 @@ void CurrentCall::answeringMode()
     this->setHangupButton();
 
     m_current_call_widget->btn_answer->setEnabled(false);
+    this->m_current_call_widget->btn_call->setEnabled(false);
 }
 
 void CurrentCall::transferRingingMode()
