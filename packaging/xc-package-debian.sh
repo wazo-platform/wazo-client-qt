@@ -8,6 +8,11 @@ else
     exit 1
 fi
 
+function set_umask {
+    umask 0022
+}
+set_umask
+
 function get_infos {
     UNAME_ARCH="$(uname -m)" # Gets i?86 or x86_64
     case "$UNAME_ARCH" in
@@ -98,7 +103,9 @@ Description: CTI client for XiVO
  XiVO CTI (Computer Telephony Integration) client is the graphical
  front-end to the XiVO CTI services.
 EOF
-    find $PKGROOT/ -type f | xargs md5sum > pkg/control/md5sums
+    pushd $PKGROOT > /dev/null
+    find * -type f | xargs md5sum > ../control/md5sums
+    popd > /dev/null
 }
 package-control
 
