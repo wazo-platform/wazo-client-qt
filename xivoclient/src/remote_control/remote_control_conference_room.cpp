@@ -1,6 +1,6 @@
 
 /* XiVO Client
- * Copyright (C) 2007-2013, Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
