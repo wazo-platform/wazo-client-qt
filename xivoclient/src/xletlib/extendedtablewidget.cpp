@@ -46,6 +46,8 @@ ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
     setAcceptDrops(true);
     setAlternatingRowColors(true);
     horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+
+    connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(emitColumnSorted(int)));
 }
 
 ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent)
@@ -172,4 +174,10 @@ void ExtendedTableWidget::remove()
     if (ret == QMessageBox::Yes) {
         removeRow(_row);
     }
+}
+
+void ExtendedTableWidget::emitColumnSorted(int column)
+{
+    Qt::SortOrder order = horizontalHeader()->sortIndicatorOrder();
+    emit columnSorted(column, order);
 }
