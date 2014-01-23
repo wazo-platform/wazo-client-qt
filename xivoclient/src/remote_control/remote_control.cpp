@@ -237,5 +237,12 @@ void RemoteControl::pause(unsigned millisec)
     loop.exec();
 }
 
+void RemoteControl::assert(bool condition, const QString& message)
+{
+    if (!condition) {
+        throw TestFailedException(message);
+    }
+}
+
 
 #endif

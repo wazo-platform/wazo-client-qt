@@ -100,6 +100,7 @@ class RemoteControl : public QObject
               QString message = "",
               QVariantMap return_value = QVariantMap());
         bool commandMatches(RemoteControlCommand, std::string);
+        void assert(bool condition, const QString& message);
 
         void assertValueInConferenceXlet(QString roomName, int column, QString value);
         QAbstractItemModel* getConflistModel();
