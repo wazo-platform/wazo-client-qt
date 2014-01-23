@@ -56,6 +56,8 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
             this, SLOT(itemClicked(QTableWidgetItem *)));
     connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
             this, SLOT(itemDoubleClicked(QTableWidgetItem *)));
+    connect(m_table, SIGNAL(columnSorted(int, Qt::SortOrder)),
+            this, SLOT(saveColumnSorting(int, Qt::SortOrder)));
 
     vlayout->addWidget(m_table);
     setAcceptDrops(true);
@@ -132,7 +134,22 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
         }
         m_table->setSortingEnabled(true);
         m_table->resizeColumnsToContents();
+        restoreColumnSorting();
     }
+}
+
+void DirectoryPanel::restoreColumnSorting()
+{
+    int column = b_engine->getConfig("remote_directory_sort_column").toInt();
+    Qt::SortOrder order = (Qt::SortOrder)b_engine->getConfig("remote_directory_sort_order").toInt();
+
+    m_table->sortItems(column, order);
+}
+
+void DirectoryPanel::saveColumnSorting(int column, Qt::SortOrder order)
+{
+    b_engine->setConfig("remote_directory_sort_column", column);
+    b_engine->setConfig("remote_directory_sort_order", order);
 }
 
 void DirectoryPanel::startSearch()
