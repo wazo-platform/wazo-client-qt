@@ -85,7 +85,6 @@ class DirectoryPanel : public XLet
         QString m_mailAddr;
 
         void restoreColumnSorting();
-        int findColumnToSort();
 
     FUNCTESTED
 };
