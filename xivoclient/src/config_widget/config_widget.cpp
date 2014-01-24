@@ -78,6 +78,13 @@ void ConfigWidget::initialize()
     this->ui.tabWidget->setCurrentIndex(b_engine->getSettings()->value("display/configtab", 0).toInt());
 }
 
+void ConfigWidget::show()
+{
+    this->m_config = b_engine->getConfig();
+    this->load_values();
+    QDialog::show();
+}
+
 void ConfigWidget::load_values()
 {
     // User

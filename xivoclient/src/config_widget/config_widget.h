@@ -71,6 +71,7 @@ class ConfigWidget: public QDialog
     public:
         ConfigWidget(MainWindow *parent=NULL);
         ~ConfigWidget();
+        void show();
 
     private slots:
         void initialize();
