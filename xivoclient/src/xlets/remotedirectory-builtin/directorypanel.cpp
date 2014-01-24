@@ -52,6 +52,7 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
     hlayout->addWidget(m_searchButton);
     vlayout->addLayout(hlayout);
     m_table = new ExtendedTableWidget(this);
+    m_table->setSortingEnabled(true);
     connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
             this, SLOT(itemClicked(QTableWidgetItem *)));
     connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
@@ -117,7 +118,6 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
     m_table->setHorizontalHeaderLabels(headers);
 
     if((ncolumns > 0) && (nrows > 0)) {
-        m_table->setSortingEnabled(false);
         for(int y = 0; y < nrows; y++) {
             QStringList items = resp[y].split(";");
             for(int x = 0; x < ncolumns; x++) {
@@ -132,7 +132,6 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
                 m_table->setItem( y, x, item );
             }
         }
-        m_table->setSortingEnabled(true);
         m_table->resizeColumnsToContents();
         restoreColumnSorting();
     }
