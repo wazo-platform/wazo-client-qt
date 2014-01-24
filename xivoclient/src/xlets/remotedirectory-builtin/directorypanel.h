@@ -52,6 +52,9 @@
 
 #include <xletlib/functests.h>
 
+#define CONFIG_SORT_COLUMN "remote_directory_sort_column"
+#define CONFIG_SORT_ORDER "remote_directory_sort_order"
+
 class DirectoryPanel : public XLet
 {
     Q_OBJECT
@@ -82,6 +85,7 @@ class DirectoryPanel : public XLet
         QString m_mailAddr;
 
         void restoreColumnSorting();
+        int findColumnToSort();
 
     FUNCTESTED
 };

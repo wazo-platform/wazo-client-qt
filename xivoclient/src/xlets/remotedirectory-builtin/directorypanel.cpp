@@ -140,16 +140,29 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
 
 void DirectoryPanel::restoreColumnSorting()
 {
-    int column = b_engine->getConfig("remote_directory_sort_column").toInt();
-    Qt::SortOrder order = (Qt::SortOrder)b_engine->getConfig("remote_directory_sort_order").toInt();
+    int column = findColumnToSort();
+    Qt::SortOrder order = (Qt::SortOrder)b_engine->getConfig(CONFIG_SORT_ORDER).toInt();
 
     m_table->sortItems(column, order);
 }
 
+int DirectoryPanel::findColumnToSort()
+{
+    int total_columns = m_table->columnCount();
+    int column = b_engine->getConfig(CONFIG_SORT_COLUMN).toInt();
+
+    if (column >= total_columns) {
+        column = 0;
+        b_engine->setConfig(CONFIG_SORT_COLUMN, column);
+    }
+
+    return column;
+}
+
 void DirectoryPanel::saveColumnSorting(int column, Qt::SortOrder order)
 {
-    b_engine->setConfig("remote_directory_sort_column", column);
-    b_engine->setConfig("remote_directory_sort_order", order);
+    b_engine->setConfig(CONFIG_SORT_COLUMN, column);
+    b_engine->setConfig(CONFIG_SORT_ORDER, order);
 }
 
 void DirectoryPanel::startSearch()
