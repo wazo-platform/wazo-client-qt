@@ -59,7 +59,7 @@ class XLETLIB_EXPORT ExtendedTableWidget : public QTableWidget
         void dialNumber();
         void sendMail();
         void remove();
-        void emitColumnSorted(int column);
+        void emitColumnSorted(int column, Qt::SortOrder order);
 
     private:
 
