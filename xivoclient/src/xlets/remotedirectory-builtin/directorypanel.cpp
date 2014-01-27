@@ -52,7 +52,6 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
     hlayout->addWidget(m_searchButton);
     vlayout->addLayout(hlayout);
     m_table = new ExtendedTableWidget(this);
-    m_table->setSortingEnabled(true);
     connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)),
             this, SLOT(itemClicked(QTableWidgetItem *)));
     connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
@@ -113,11 +112,15 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
     int ncolumns = headers.size();
     int nrows = resp.size();
 
+    m_table->clear();
     m_table->setColumnCount(ncolumns);
     m_table->setRowCount(nrows);
     m_table->setHorizontalHeaderLabels(headers);
 
     if((ncolumns > 0) && (nrows > 0)) {
+
+        m_table->setSortingEnabled(false);
+
         for(int y = 0; y < nrows; y++) {
             QStringList items = resp[y].split(";");
             for(int x = 0; x < ncolumns; x++) {
@@ -132,9 +135,12 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
                 m_table->setItem( y, x, item );
             }
         }
+
         m_table->resizeColumnsToContents();
+        m_table->setSortingEnabled(true);
         restoreColumnSorting();
     }
+
 }
 
 void DirectoryPanel::restoreColumnSorting()
@@ -147,8 +153,10 @@ void DirectoryPanel::restoreColumnSorting()
 
 void DirectoryPanel::saveColumnSorting(int column, Qt::SortOrder order)
 {
-    b_engine->setConfig(CONFIG_SORT_COLUMN, column);
-    b_engine->setConfig(CONFIG_SORT_ORDER, order);
+    if (column < m_table->columnCount()) {
+        b_engine->setConfig(CONFIG_SORT_COLUMN, column);
+        b_engine->setConfig(CONFIG_SORT_ORDER, order);
+    }
 }
 
 void DirectoryPanel::startSearch()
