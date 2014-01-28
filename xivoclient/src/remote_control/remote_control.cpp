@@ -147,6 +147,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_remote_directory_infos);
             RC_EXECUTE_ARG(set_search_for_remote_directory);
             RC_EXECUTE_ARG(exec_double_click_on_number_for_name);
+            RC_EXECUTE_ARG(sort_list_for_remote_directory);
 
             RC_EXECUTE_WITH_RETURN(get_agent_list_infos);
             RC_EXECUTE_WITH_RETURN(get_main_window_infos);
@@ -235,6 +236,13 @@ void RemoteControl::pause(unsigned millisec)
 
     timer.start(millisec);
     loop.exec();
+}
+
+void RemoteControl::assert(bool condition, const QString& message)
+{
+    if (!condition) {
+        throw TestFailedException(message);
+    }
 }
 
 

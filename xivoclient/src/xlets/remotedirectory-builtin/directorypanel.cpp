@@ -56,6 +56,8 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
             this, SLOT(itemClicked(QTableWidgetItem *)));
     connect(m_table, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
             this, SLOT(itemDoubleClicked(QTableWidgetItem *)));
+    connect(m_table, SIGNAL(columnSorted(int, Qt::SortOrder)),
+            this, SLOT(saveColumnSorting(int, Qt::SortOrder)));
 
     vlayout->addWidget(m_table);
     setAcceptDrops(true);
@@ -110,12 +112,15 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
     int ncolumns = headers.size();
     int nrows = resp.size();
 
+    m_table->clear();
     m_table->setColumnCount(ncolumns);
     m_table->setRowCount(nrows);
     m_table->setHorizontalHeaderLabels(headers);
 
     if((ncolumns > 0) && (nrows > 0)) {
+
         m_table->setSortingEnabled(false);
+
         for(int y = 0; y < nrows; y++) {
             QStringList items = resp[y].split(";");
             for(int x = 0; x < ncolumns; x++) {
@@ -130,8 +135,27 @@ void DirectoryPanel::setSearchResponse(const QStringList & headers, const QStrin
                 m_table->setItem( y, x, item );
             }
         }
-        m_table->setSortingEnabled(true);
+
         m_table->resizeColumnsToContents();
+        m_table->setSortingEnabled(true);
+        restoreColumnSorting();
+    }
+
+}
+
+void DirectoryPanel::restoreColumnSorting()
+{
+    int column = b_engine->getConfig(CONFIG_SORT_COLUMN).toInt();
+    Qt::SortOrder order = (Qt::SortOrder)b_engine->getConfig(CONFIG_SORT_ORDER).toInt();
+
+    m_table->sortItems(column, order);
+}
+
+void DirectoryPanel::saveColumnSorting(int column, Qt::SortOrder order)
+{
+    if (column < m_table->columnCount()) {
+        b_engine->setConfig(CONFIG_SORT_COLUMN, column);
+        b_engine->setConfig(CONFIG_SORT_ORDER, order);
     }
 }
 

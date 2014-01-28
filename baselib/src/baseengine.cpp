@@ -242,6 +242,9 @@ void BaseEngine::loadSettings()
 
         m_config["agent_status_dashboard.main_window_state"] = m_settings->value("agent_status_dashboard.main_window_state");
 
+        m_config["remote_directory_sort_column"] = m_settings->value("remote_directory.sort_column", 0).toInt();
+        m_config["remote_directory_sort_order"] = m_settings->value("remote_directory.sort_order", Qt::AscendingOrder).toInt();
+
         m_settings->beginGroup("user-gui");
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
         m_settings->endGroup();
@@ -329,6 +332,9 @@ void BaseEngine::saveSettings()
         m_settings->setValue("switchboard.queue_hold", m_config["switchboard_hold_queue_name"].toString());
 
         m_settings->setValue("agent_status_dashboard.main_window_state", m_config["agent_status_dashboard.main_window_state"]);
+
+        m_settings->setValue("remote_directory.sort_column", m_config["remote_directory_sort_column"]);
+        m_settings->setValue("remote_directory.sort_order", m_config["remote_directory_sort_order"]);
 
         if (m_config["keeppass"].toBool())
             m_settings->setValue("password", m_config["password"].toString());

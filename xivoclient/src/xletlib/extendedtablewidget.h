@@ -45,6 +45,9 @@ class XLETLIB_EXPORT ExtendedTableWidget : public QTableWidget
         ExtendedTableWidget(int rows, int columns, QWidget *parent=0);
         void setEditable(bool editable) { m_editable = editable; };
 
+    signals:
+        void columnSorted(int column, Qt::SortOrder order);
+
     protected:
         void contextMenuEvent(QContextMenuEvent *);
         void dragEnterEvent(QDragEnterEvent *);
@@ -56,8 +59,10 @@ class XLETLIB_EXPORT ExtendedTableWidget : public QTableWidget
         void dialNumber();
         void sendMail();
         void remove();
+        void emitColumnSorted(int column, Qt::SortOrder order);
 
     private:
+
         bool m_editable;
 };
 

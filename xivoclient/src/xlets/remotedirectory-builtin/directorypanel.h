@@ -52,6 +52,9 @@
 
 #include <xletlib/functests.h>
 
+#define CONFIG_SORT_COLUMN "remote_directory_sort_column"
+#define CONFIG_SORT_ORDER "remote_directory_sort_order"
+
 class DirectoryPanel : public XLet
 {
     Q_OBJECT
@@ -66,6 +69,7 @@ class DirectoryPanel : public XLet
         void startSearch();
         void itemClicked(QTableWidgetItem *);
         void itemDoubleClicked(QTableWidgetItem *);
+        void saveColumnSorting(int column, Qt::SortOrder order);
 
     signals:
         void selectedText(const QString &);
@@ -79,6 +83,8 @@ class DirectoryPanel : public XLet
         ExtendedTableWidget *m_table;
         QPushButton *m_searchButton;
         QString m_mailAddr;
+
+        void restoreColumnSorting();
 
     FUNCTESTED
 };

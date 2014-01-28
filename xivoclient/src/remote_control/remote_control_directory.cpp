@@ -97,4 +97,25 @@ void RemoteControl::exec_double_click_on_number_for_name(const QVariantList &arg
     }
 }
 
+void RemoteControl::sort_list_for_remote_directory(const QVariantList &args)
+{
+    QString sort_column = args[0].toString();
+    Qt::SortOrder order = (Qt::SortOrder)args[1].toInt();
+
+    DirectoryPanel* xlet = this->get_xlet<DirectoryPanel>("remotedirectory");
+    this->assert(xlet != NULL, "remote directory xlet not found");
+
+    ExtendedTableWidget* table = xlet->m_table;
+    this->assert(table != NULL, "remote directory table not found");
+
+    int nb_columns = table->columnCount();
+    for (int column = 0; column < nb_columns; column++) {
+        QString column_name = table->horizontalHeaderItem(column)->text();
+        if (column_name == sort_column) {
+            table->sortItems(column, order);
+        }
+    }
+
+}
+
 #endif

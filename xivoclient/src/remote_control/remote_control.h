@@ -45,6 +45,7 @@
 #include <main_window/central_widget.h>
 #include <main_window/statusbar.h>
 #include <xlets/conference/conflist.h>
+#include <xletlib/extendedtablewidget.h>
 
 using namespace std;
 
@@ -100,6 +101,7 @@ class RemoteControl : public QObject
               QString message = "",
               QVariantMap return_value = QVariantMap());
         bool commandMatches(RemoteControlCommand, std::string);
+        void assert(bool condition, const QString& message);
 
         void assertValueInConferenceXlet(QString roomName, int column, QString value);
         QAbstractItemModel* getConflistModel();
@@ -134,6 +136,7 @@ class RemoteControl : public QObject
         QVariantMap get_remote_directory_infos();
         void set_search_for_remote_directory(const QVariantList &);
         void exec_double_click_on_number_for_name(const QVariantList &);
+        void sort_list_for_remote_directory(const QVariantList &);
         QVariantMap get_agent_list_infos();
         QVariantMap get_menu_availability_infos();
         QVariantMap get_main_window_infos();
