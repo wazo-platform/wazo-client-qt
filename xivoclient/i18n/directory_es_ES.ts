@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>Directory</name>
     <message>
         <location filename="../src/xlets/directory/directory.cpp" line="48"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Directorio</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>De</translation>
     </message>
 </context>
 </TS>

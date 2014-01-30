@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>IdentityAgent</name>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="114"/>
         <source>Connected to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectado a %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="117"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Desconectado de %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="130"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="131"/>
         <source>Paused</source>
-        <translation type="unfinished">En pausa</translation>
+        <translation>Pausado</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="135"/>
@@ -29,7 +29,7 @@
         <location filename="../src/xlets/identity/identityagent.cpp" line="144"/>
         <location filename="../src/xlets/identity/identityagent.cpp" line="145"/>
         <source>Partially paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Parcialmente pausado</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="149"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="123"/>
         <source>Status:%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Estado:%1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="126"/>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="139"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>No molestar</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="141"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="144"/>
         <source>Busy %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocupado %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="145"/>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/xlets/identity/identityphone.cpp" line="150"/>
         <source>Call Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtro de llamada</translation>
     </message>
 </context>
 <context>
@@ -158,38 +158,38 @@
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="49"/>
         <source>call your voicemail</source>
-        <translation type="unfinished"></translation>
+        <translation>llamar a su buzón de voz</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="90"/>
         <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Buzón de voz%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
         <source>VoiceMail activated on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Buzón de voz activado en %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="93"/>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="128"/>
         <source>VoiceMailBox %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Buzón de voz %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="94"/>
         <source>VoiceMail not activated on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Buzón de voz no activado en %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="137"/>
         <source>%1 old</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 antiguo</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityvoicemail.cpp" line="138"/>
         <source>%1 new</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Nuevo</translation>
     </message>
 </context>
 </TS>

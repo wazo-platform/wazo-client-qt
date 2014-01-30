@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl">
+<TS version="2.1" language="nl">
 <context>
     <name>AgentsModel</name>
     <message>
@@ -248,27 +248,27 @@ wachtrijen</translation>
 <context>
     <name>ExtendedTableWidget</name>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="66"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="70"/>
         <source>&amp;Remove</source>
         <translation>&amp;Verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="70"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="74"/>
         <source>&amp;Dial</source>
         <translation>&amp;Bellen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="73"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="77"/>
         <source>Send an E-mail</source>
         <translation>Een e-mail verzenden</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="167"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="171"/>
         <source>Removing this contact</source>
         <translation>Dit contact wordt verwijderd</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="168"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="172"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Dit contact wordt verwijderd.

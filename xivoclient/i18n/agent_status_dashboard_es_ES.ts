@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>AgentStatus</name>
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="21"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>De</translation>
     </message>
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="49"/>
         <source>66:66</source>
-        <translation type="unfinished"></translation>
+        <translation>66:66</translation>
     </message>
 </context>
 <context>

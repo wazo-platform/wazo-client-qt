@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>LogTableView</name>
     <message>
@@ -52,17 +52,17 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="197"/>
         <source>Number</source>
-        <translation type="unfinished">Número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="199"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="202"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Duración</translation>
     </message>
 </context>
 </TS>

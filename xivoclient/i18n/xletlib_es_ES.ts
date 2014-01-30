@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>AgentsModel</name>
     <message>
@@ -45,7 +45,7 @@ queues</source>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
         <location filename="../src/xletlib/agents_model.cpp" line="411"/>
         <source>Paused</source>
-        <translation type="unfinished">En pausa</translation>
+        <translation>Pausado</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="51"/>
@@ -246,27 +246,27 @@ queues</source>
 <context>
     <name>ExtendedTableWidget</name>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="66"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="70"/>
         <source>&amp;Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="70"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="74"/>
         <source>&amp;Dial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="73"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="77"/>
         <source>Send an E-mail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="167"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="171"/>
         <source>Removing this contact</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="168"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="172"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation type="unfinished"></translation>
@@ -322,7 +322,7 @@ Status: %3</source>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="317"/>
         <source>Status:%1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Estado:%1</translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="320"/>
@@ -375,27 +375,27 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="54"/>
         <source>ID</source>
-        <translation type="unfinished">Id</translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posición</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
         <source>Name</source>
-        <translation type="unfinished">Nombre</translation>
+        <translation>Nombre</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
         <source>Number</source>
-        <translation type="unfinished">Número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiempo</translation>
     </message>
 </context>
 <context>

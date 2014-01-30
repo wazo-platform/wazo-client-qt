@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<TS version="2.1" language="fr">
 <context>
     <name>ConfigWidget</name>
     <message>
@@ -245,66 +245,66 @@
         <translation>Délai de maintien de la connexion</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="84"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="91"/>
         <source>System Language</source>
         <translation>Langue du système</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="85"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
         <source>Dutch</source>
         <translation>Néerlandais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="86"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
         <source>English</source>
         <translation>Anglais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="87"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="94"/>
         <source>French</source>
         <translation>Français</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="88"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="95"/>
         <source>Italian</source>
         <translation>Italien</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="89"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="90"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="91"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <source>incomplete</source>
         <translation>incomplet</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="89"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
         <source>German</source>
         <translation>Allemand</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="90"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
         <source>Hungarian</source>
         <translation>Hongrois</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="91"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
         <source>Japanese</source>
         <translation>Japonais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
         <source>Portuguese</source>
         <translation>Portugais</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <source>Spanish</source>
         <translation>Espagnol</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="106"/>
         <source>Default style</source>
         <translation>Style par défaut</translation>
     </message>
@@ -414,12 +414,12 @@
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="127"/>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="132"/>
         <source>Double-click to send an E-mail to</source>
         <translation>Double-cliquer pour envoyer un e-mail à</translation>
     </message>
     <message>
-        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="129"/>
+        <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="134"/>
         <source>Double-click to call</source>
         <translation>Double-cliquer pour appeler</translation>
     </message>

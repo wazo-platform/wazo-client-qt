@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>QueuesModel</name>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="42"/>
         <source>Number</source>
-        <translation type="unfinished">Número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="43"/>
@@ -174,7 +174,7 @@ de espera</translation>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="124"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar</translation>
     </message>
 </context>
 <context>
@@ -182,7 +182,7 @@ de espera</translation>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="160"/>
         <source>Queues configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de Colas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="162"/>
@@ -193,7 +193,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="173"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cerrar</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="186"/>
@@ -213,7 +213,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="192"/>
         <source>Window (s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ventana (s)</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="193"/>
