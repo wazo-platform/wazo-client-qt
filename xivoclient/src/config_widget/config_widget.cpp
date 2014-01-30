@@ -88,6 +88,7 @@ void ConfigWidget::show()
 void ConfigWidget::load_values()
 {
     // User
+    this->ui.language->clear();
     this->ui.language->addItem(tr("System Language"), QString("default"));
     this->ui.language->addItem(tr("Dutch"), QString("nl_NL"));
     this->ui.language->addItem(tr("English"), QString("en_US"));
@@ -103,6 +104,7 @@ void ConfigWidget::load_values()
             this->ui.language->setCurrentIndex(i);
     }
 
+    this->ui.style->clear();
     this->ui.style->addItem(tr("Default style"), QString("none"));
     QDir qss_dir(":/") ;
     QStringList qss_files = qss_dir.entryList(QStringList("*.qss"));
