@@ -34,6 +34,7 @@
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QAbstractButton>
+#include <QDebug>
 
 #include <baseengine.h>
 

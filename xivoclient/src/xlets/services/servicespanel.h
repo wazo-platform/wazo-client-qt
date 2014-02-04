@@ -34,7 +34,6 @@
 
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
-#include <ipbxlistener.h>
 
 #include "waitingwidget.h"
 
@@ -52,7 +51,7 @@ struct CallForwardStruct {
     QString destination;
 };
 
-class ServicesPanel : public XLet, public IPBXListener
+class ServicesPanel : public XLet
 {
     Q_OBJECT
 
