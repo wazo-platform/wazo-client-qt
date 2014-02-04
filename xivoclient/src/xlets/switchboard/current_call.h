@@ -57,6 +57,7 @@ class CurrentCall: public QObject, public IPBXListener
         void setParentWidget(QWidget *parent);
         virtual void parseCommand(const QVariantMap &command);
         void noticeIncoming(bool);
+        void updateCurrentCall(const QVariantList &calls, bool has_incoming);
     public slots:
         void answer();
         void attendedTransfer();
@@ -74,16 +75,16 @@ class CurrentCall: public QObject, public IPBXListener
         void clear();
         void updateCallerID(const QString &name, const QString &number);
         void updateCall(const QVariantList &calls);
-        void parseCurrentCalls(const QVariantMap &message);
         void parseAttendedTransferAnswered(const QVariantMap &message);
         bool hasCurrentCall() const;
 
+        void readyToAnswerMode(bool has_incoming);
         void noCallsMode();
         void ringingMode();
         void answeringMode();
         void transferRingingMode();
         void transferAnsweredMode();
-        void disconnectButtons();
+        void resetButtons();
 
         void setButton(QPushButton*, const QString &, const QKeySequence &, const char *);
         void setButton(QPushButton*, const QKeySequence &, const char *);
