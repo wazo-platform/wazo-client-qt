@@ -325,11 +325,11 @@ void CurrentCall::setButton(QPushButton *b, const QKeySequence &k, const char *s
 
 void CurrentCall::setButton(QPushButton *b, const QString &l, const QKeySequence &k, const char *slot)
 {
-    this->setButton(b, k, slot);
     if (! b) {
         return;
     }
     b->setText(l);
+    this->setButton(b, k, slot);
 }
 
 void CurrentCall::setAnswerButton()
