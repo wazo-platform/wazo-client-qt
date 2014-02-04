@@ -108,13 +108,13 @@ void IdentityAgent::setStatusColors()
 {
     QPixmap square(10, 10);
     if (const AgentInfo * agentinfo = b_engine->agent(m_xagentid)) {
-        const QString phonenumber = b_engine->getConfig("agentphonenumber").toString();
+        const QString phonenumber = agentinfo->phonenumber();
         if(agentinfo->logged()) {
             square.fill("#00ff00");
             m_statustxt->setText(tr("Connected to %1").arg(phonenumber));
         } else {
             square.fill("#ff0000");
-            m_statustxt->setText(tr("Disconnected from %1").arg(phonenumber));
+            m_statustxt->setText(tr("Disconnected."));
         }
         m_status->setPixmap(square);
     }
