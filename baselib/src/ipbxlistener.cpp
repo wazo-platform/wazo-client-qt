@@ -36,10 +36,6 @@ IPBXListener::IPBXListener() {
 IPBXListener::~IPBXListener() {
 }
 
-void IPBXListener::parseCommand(const QVariantMap &){
-    qDebug() << "This should not appear !";
-}
-
 void IPBXListener::registerListener(const QString &event_to_listen){
     b_engine->registerListener(event_to_listen, this);
 }
