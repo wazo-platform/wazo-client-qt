@@ -114,7 +114,7 @@ void IdentityAgent::setStatusColors()
             m_statustxt->setText(tr("Connected to %1").arg(phonenumber));
         } else {
             square.fill("#ff0000");
-            m_statustxt->setText(tr("Disconnected."));
+            m_statustxt->setText(tr("Disconnected"));
         }
         m_status->setPixmap(square);
     }
