@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<TS version="2.0" language="fr">
 <context>
     <name>CurrentCall</name>
     <message>
@@ -115,8 +115,8 @@
         <translation>POPC</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="248"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="258"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="269"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="279"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n appel</numerusform>

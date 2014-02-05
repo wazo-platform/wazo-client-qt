@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de">
+<TS version="2.0" language="de">
 <context>
     <name>QueuesModel</name>
     <message>
@@ -165,7 +165,7 @@
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="59"/>
         <source>Queues</source>
-        <translation type="unfinished">Warteschlangen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="124"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="nl">
+<TS version="2.0" language="nl">
 <context>
     <name>IdentityAgent</name>
     <message>
@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="117"/>
-        <source>Disconnected from %1</source>
-        <translation>Verbinding met %1 verbroken</translation>
+        <source>Disconnected</source>
+        <translation>Verbinding verbroken</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="130"/>
