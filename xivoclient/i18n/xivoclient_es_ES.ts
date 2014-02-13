@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>ConfigWidget</name>
     <message>
@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="49"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Directorio </translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="60"/>
