@@ -43,8 +43,6 @@
 const QStringList chkcapas = (QStringList() << "enablevoicemail" << "incallfilter" << "enablednd");
 const QStringList fwdcapas = (QStringList() << "fwdunc" << "fwdrna" << "fwdbusy");
 
-Q_EXPORT_PLUGIN2(xletservicesplugin, XLetServicesPlugin);
-
 XLet* XLetServicesPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/services_%1");
