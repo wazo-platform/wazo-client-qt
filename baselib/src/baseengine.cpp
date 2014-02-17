@@ -961,8 +961,9 @@ void BaseEngine::parseCommand(const QString &line)
     } else if (thisclass == "meetme_update") {
         emit meetmeUpdate(datamap.value("config").toMap());
     } else if (thisclass == "meetme_user") {
+        emit meetmeMembershipUpdateStart();
         m_meetme_membership = datamap["list"].toList();
-        emit meetmeMembershipUpdated();
+        emit meetmeMembershipUpdateEnd();
     } else {
         if (replyid.isEmpty())
             qDebug() << "Unknown server command received:" << thisclass << datamap;

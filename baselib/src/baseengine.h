@@ -252,7 +252,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
                         const QString & server_port = "");
 
     signals:
-        void meetmeMembershipUpdated();
+        void meetmeMembershipUpdateStart();
+        void meetmeMembershipUpdateEnd();
 
         void settingsChanged();  //!< signal emitted when the setting are changed
 

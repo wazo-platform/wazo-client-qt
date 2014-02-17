@@ -67,8 +67,6 @@ class ConfListModel : public QAbstractTableModel
         QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
     public slots:
         void updateRoomConfigs(const QVariantMap &);
-    protected:
-        void timerEvent(QTimerEvent *event);
     private:
         void refreshRow2Number();
         QString startedSince(double time) const;

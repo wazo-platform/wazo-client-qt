@@ -34,8 +34,6 @@
 ConfListModel::ConfListModel(QWidget *parent)
     : QAbstractTableModel(parent)
 {
-    startTimer(500);
-
     COL_TITLE[ID] = tr("Room UID");
     COL_TITLE[NUMBER] = tr("Number");
     COL_TITLE[NAME] = tr("Name");
@@ -46,11 +44,6 @@ ConfListModel::ConfListModel(QWidget *parent)
 
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateRoomConfigs(const QVariantMap &)));
-}
-
-void ConfListModel::timerEvent(QTimerEvent *)
-{
-    reset();
 }
 
 void ConfListModel::updateRoomConfigs(const QVariantMap &configs)
@@ -159,8 +152,8 @@ ConfListView::ConfListView(QWidget *parent)
     setSortingEnabled(true);
     setShowGrid(0);
     verticalHeader()->hide();
-    horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-    horizontalHeader()->setMovable(true);
+    //horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    //horizontalHeader()->setMovable(true);
     setStyleSheet("ConfListView {"
                     "border: none;"
                     "background: transparent;"

@@ -43,12 +43,12 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &numbe
 {
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateMeetmeConfig(const QVariantMap &)));
-    connect(b_engine, SIGNAL(meetmeMembershipUpdated()),
-            this, SLOT(updateMembership()));
+    connect(b_engine, SIGNAL(meetmeMembershipUpdateStart()),
+            this, SLOT(beginResetModel()));
+    connect(b_engine, SIGNAL(meetmeMembershipUpdateEnd()),
+            this, SLOT(endResetModel()));
 
     extractRow2IdMap();
-    startTimer(1000);
-    timerEvent(NULL);
 
     COL_TITLE[ID] = tr("ID");
     COL_TITLE[NUMBER] = tr("Number");
@@ -68,11 +68,6 @@ void ConfRoomModel::setView(ConfRoomView *v)
     updateView();
 }
 
-void ConfRoomModel::timerEvent(QTimerEvent *)
-{
-    reset();
-}
-
 void ConfRoomModel::updateView()
 {
     static int actions[] = { ACTION_RECORD,
@@ -88,9 +83,10 @@ void ConfRoomModel::updateView()
 
 void ConfRoomModel::updateMeetmeConfig(const QVariantMap &config)
 {
+    beginResetModel();
     m_members = config[m_number].toMap()["members"].toMap();
     extractRow2IdMap();
-    reset();
+    endResetModel();
 }
 
 void ConfRoomModel::extractRow2IdMap()
@@ -116,6 +112,7 @@ void ConfRoomModel::sort(int column, Qt::SortOrder order)
     QList<QPair<QString, QString> > toSort;
 
     int count = rowCount(QModelIndex());
+    beginResetModel();
     for (int i = 0; i < count; i++) {
         toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
                                               index(i, column).data().toString()));
@@ -128,7 +125,7 @@ void ConfRoomModel::sort(int column, Qt::SortOrder order)
     for (int i = 0; i < count; i++) {
         m_row2number.insert(i, QString(toSort[i].first));
     }
-    reset();
+    endResetModel();
 }
 
 int ConfRoomModel::rowCount(const QModelIndex &) const
