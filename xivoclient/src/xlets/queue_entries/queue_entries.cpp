@@ -40,8 +40,6 @@
 
 #include "queue_entries.h"
 
-Q_EXPORT_PLUGIN2(queueentriesplugin, QueueEntriesPlugin);
-
 XLet* QueueEntriesPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/queue_entries_%1");
