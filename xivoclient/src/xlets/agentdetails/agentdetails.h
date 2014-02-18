@@ -102,11 +102,10 @@ class XLetAgentDetailsPlugin : public QObject, XLetInterface
 {
     Q_OBJECT
     Q_INTERFACES(XLetInterface)
+    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xletagentdetails.json")
 
     public:
         XLet *newXLetInstance(QWidget *parent=0);
 };
-
-Q_EXPORT_PLUGIN2(xletagentdetailsplugin, XLetAgentDetailsPlugin);
 
 #endif /* __AGENTDETAILSPANEL_H__ */
