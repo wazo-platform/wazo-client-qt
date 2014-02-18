@@ -464,7 +464,7 @@ void Popup::addInfoPicture(int where, const QString & name, const QString & valu
     QLabel * lblvalue = new QLabel(this);
     QHBoxLayout * hlayout = new QHBoxLayout();
 
-    QByteArray imagedata = QByteArray::fromBase64(value.toAscii());
+    QByteArray imagedata = QByteArray::fromBase64(value.toLatin1());
     QPixmap * picture = new QPixmap();
     lblname->setText(name);
     picture->loadFromData(imagedata);
