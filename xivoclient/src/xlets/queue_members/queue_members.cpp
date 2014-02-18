@@ -37,8 +37,6 @@
 #include "queue_members_model.h"
 #include "queue_members_sort_filter_proxy_model.h"
 
-Q_EXPORT_PLUGIN2(xletqueuememberplugin, XLetQueueMembersPlugin);
-
 XLet* XLetQueueMembersPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/queue_members_%1");
