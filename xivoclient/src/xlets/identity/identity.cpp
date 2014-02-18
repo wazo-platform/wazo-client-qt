@@ -48,8 +48,6 @@
 #include "identityphone.h"
 #include "identityvoicemail.h"
 
-Q_EXPORT_PLUGIN2(xletidentityplugin, XLetIdentityPlugin);
-
 XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/identity_%1");
