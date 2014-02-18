@@ -43,7 +43,7 @@ TaintedPixmap::TaintedPixmap(const QString &pixmap_path, const QColor &tint_colo
 
 QPixmap TaintedPixmap::createTaintedPixmap(const QString &pixmap_path, const QColor &tint_color)
 {
-    #if defined(Q_WS_MAC)
+    #if defined(Q_OS_MAC)
     return this->createTaintedPixmapMacOnly(pixmap_path, tint_color);
     #else
     return this->createTaintedPixmapNotMac(pixmap_path, tint_color);

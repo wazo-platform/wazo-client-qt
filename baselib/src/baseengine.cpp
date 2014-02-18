@@ -192,11 +192,11 @@ void BaseEngine::loadSettings()
     // this part had been commented for Win32, see svn 5882 or git 70eb1793
     // to allow a bit more flexibility, we leave it as a configurable setting,
     // whose default mode will be 'disabled'
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", false).toBool();
 #else
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
-#endif /* Q_WS_WIN */
+#endif /* Q_OS_WIN */
 
     m_config["logfilename"] = "XiVO_Client.log";
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
@@ -1966,7 +1966,7 @@ void BaseEngine::urlAuto(const QString & value)
 
     else {
         // rely on the system's url opening methods (see xdg-open on linux, for instance)
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         // in win32 case + iexplore.exe, this should ensure it opens a new tab
         QString key = QString("HKEY_CLASSES_ROOT\\%1\\shell\\open\\command").arg(url.scheme());
         QSettings settings(key, QSettings::NativeFormat);
