@@ -30,7 +30,7 @@
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QList>
 #include <QMainWindow>
 

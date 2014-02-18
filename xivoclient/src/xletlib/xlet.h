@@ -31,7 +31,7 @@
 #define __XLET_H__
 
 #include <QVariantMap>
-#include <QWidget>
+#include <QtWidgets>
 #include <QtPlugin>
 
 #include <storage/userinfo.h>
