@@ -3,12 +3,12 @@
 DEBUG="no"
 
 while getopts ":dh" opt; do
-  case \$opt in
+  case $opt in
       d)
           DEBUG="yes"
           ;;
       h)
-          echo "Usage : \$0 [-dh] [profile]"
+          echo "Usage : $0 [-dh] [profile]"
           echo
           echo "-d : Enable debug output"
           echo "-h : Help"
@@ -16,19 +16,19 @@ while getopts ":dh" opt; do
           echo
           exit 0
           ;;
-      \?)
-          echo "Invalid option: -\$OPTARG" >&2
+      ?)
+          echo "Invalid option: -$OPTARG" >&2
           ;;
   esac
 done
 
-shift \$(( OPTIND-1 ))
+shift $(( OPTIND-1 ))
 
 cd /opt/xivoclient
 
-if [ "\$DEBUG" = "yes" ]
+if [ "$DEBUG" = "yes" ]
 then
-    LD_LIBRARY_PATH=".:\$LD_LIBRARY_PATH" ./xivoclient \$@
+    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./xivoclient $@
 else
-    LD_LIBRARY_PATH=".:\$LD_LIBRARY_PATH" ./xivoclient \$@ >& /dev/null
+    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./xivoclient $@ >& /dev/null
 fi
