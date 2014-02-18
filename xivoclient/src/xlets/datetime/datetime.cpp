@@ -35,8 +35,6 @@
 
 #include "datetime.h"
 
-Q_EXPORT_PLUGIN2(xletdatetimeplugin, XLetDatetimePlugin);
-
 XLet* XLetDatetimePlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/datetime_%1");
