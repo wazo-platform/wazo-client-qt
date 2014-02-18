@@ -18,5 +18,8 @@ win32 {
     LIBS += -lole32 -loleaut32 -luuid
 }
 
+QT += widgets
+QT += uitools
+
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O1
