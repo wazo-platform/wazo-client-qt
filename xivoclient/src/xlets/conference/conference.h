@@ -86,11 +86,10 @@ class XLetConferencePlugin : public QObject, XLetInterface
 {
     Q_OBJECT
     Q_INTERFACES(XLetInterface)
+    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xletconference.json")
 
     public:
         XLet *newXLetInstance(QWidget *parent=0);
 };
-
-Q_EXPORT_PLUGIN2(xletconferenceplugin, XLetConferencePlugin);
 
 #endif
