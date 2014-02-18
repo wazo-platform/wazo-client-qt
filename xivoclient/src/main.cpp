@@ -41,7 +41,6 @@
 
 #include "assembler.h"
 #include "main_window/main_window.h"
-#include "powerawareapplication.h"
 #include "fileopeneventhandler.h"
 
 #ifdef FUNCTESTS
@@ -59,7 +58,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
-    PowerAwareApplication *app = new PowerAwareApplication(argc, argv);
+    QApplication *app = new QApplication(argc, argv);
 
     FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app, app);
     app->installEventFilter(fileOpenHandler);
@@ -90,7 +89,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         // send message if there is an argument.
         // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
         // to learn how to handle "tel:0123456" uri scheme
-        app->sendMessage(msg);
+        //app->sendMessage(msg);
         // warning : this sends the message only to the first instance, if ever there are >1 instances running
     }
 
@@ -119,13 +118,13 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         .arg(app->applicationPid());
 #endif
 
-    bool shallbeunique = settings->value("display/unique").toBool();
-    if (shallbeunique && app->isRunning()) {
-        qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
-        // do not create a new application, just activate the currently running one
-        ret.initOK = false;
-        return ret;
-    }
+    // bool shallbeunique = settings->value("display/unique").toBool();
+    // if (shallbeunique && app->isRunning()) {
+    //     qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
+    //     // do not create a new application, just activate the currently running one
+    //     ret.initOK = false;
+    //     return ret;
+    // }
 
     settings->setValue("profile/lastused", profile);
 
@@ -145,9 +144,9 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     MainWindow *main_window = assembler->mainWindow();
     main_window->initialize();
 
-    bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
-    app->setActivationWindow(main_window, activate_on_tel);
-    fileOpenHandler->setActivationWindow(activate_on_tel);
+    // bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
+    // app->setActivationWindow(main_window, activate_on_tel);
+    // fileOpenHandler->setActivationWindow(activate_on_tel);
 
     app->setQuitOnLastWindowClosed(false);
     app->setProperty("stopper", "lastwindow");

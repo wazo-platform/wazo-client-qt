@@ -33,15 +33,14 @@
 #include <QObject>
 #include <QString>
 #include <QEvent>
-
-#include "powerawareapplication.h"
+#include <QApplication>
 
 class FileOpenEventHandler: public QObject
 {
     Q_OBJECT
 
     public:
-        FileOpenEventHandler(PowerAwareApplication* app, QObject* parent = NULL);
+        FileOpenEventHandler(QApplication* app, QObject* parent = NULL);
         ~FileOpenEventHandler();
         void setActivationWindow(bool activate);
 
@@ -54,7 +53,7 @@ class FileOpenEventHandler: public QObject
     private:
         bool isXivoUrl(QString url);
         void handleUrl(QString url);
-        PowerAwareApplication* m_app;
+        QApplication* m_app;
         bool m_activate;
 
 };
