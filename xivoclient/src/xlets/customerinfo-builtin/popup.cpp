@@ -47,7 +47,6 @@
 
 #include "message_factory.h"
 #include "xmlhandler.h"
-#include "remotepicwidget.h"
 #include "urllabel.h"
 #include "phonenumber.h"
 #include "popup.h"
