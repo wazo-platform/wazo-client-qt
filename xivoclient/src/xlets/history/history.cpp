@@ -32,8 +32,6 @@
 
 #include "history.h"
 
-Q_EXPORT_PLUGIN2(xlethistoryplugin, XLetHistoryPlugin);
-
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/history_%1");
