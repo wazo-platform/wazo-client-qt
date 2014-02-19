@@ -44,42 +44,7 @@ function package-content {
     sed -i s/xivoicon/xivoclient/ $PKGROOT/usr/share/applications/xivoclient.desktop
 
     mkdir -p $PKGROOT/usr/bin
-    cat > $PKGROOT/usr/bin/xivoclient <<EOF
-#!/bin/bash
-
-DEBUG="no"
-
-while getopts ":dh" opt; do
-  case \$opt in
-      d)
-          DEBUG="yes"
-          ;;
-      h)
-          echo "Usage : \$0 [-dh] [profile]"
-          echo
-          echo "-d : Enable debug output"
-          echo "-h : Help"
-          echo "profile : Configuration profile"
-          echo
-          exit 0
-          ;;
-      \?)
-          echo "Invalid option: -\$OPTARG" >&2
-          ;;
-  esac
-done
-
-shift \$(( OPTIND-1 ))
-
-cd /opt/xivoclient
-
-if [ "\$DEBUG" = "yes" ]
-then
-    LD_LIBRARY_PATH=".:\$LD_LIBRARY_PATH" ./xivoclient \$@
-else
-    LD_LIBRARY_PATH=".:\$LD_LIBRARY_PATH" ./xivoclient \$@ >& /dev/null
-fi
-EOF
+    cp $RESOURCES_DIR/xivoclient.script $PKGROOT/usr/bin/xivoclient
     chmod 755 $PKGROOT/usr/bin/xivoclient
 }
 package-content
