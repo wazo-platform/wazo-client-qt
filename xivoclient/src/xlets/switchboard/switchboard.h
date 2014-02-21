@@ -33,7 +33,9 @@
 #include <QObject>
 
 #include <ipbxlistener.h>
+#include <xletlib/functests.h>
 #include <xletlib/xlet.h>
+
 #include "ui_switchboard.h"
 
 class QLabel;
@@ -45,6 +47,7 @@ class CurrentCall;
 class Switchboard : public XLet, public IPBXListener
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         Switchboard(QWidget *parent=0);

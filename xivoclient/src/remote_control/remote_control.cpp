@@ -148,7 +148,9 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(set_search_for_remote_directory);
             RC_EXECUTE_ARG(exec_double_click_on_number_for_name);
             RC_EXECUTE_ARG(sort_list_for_remote_directory);
-
+            RC_EXECUTE_ARG(switchboard_answer_incoming_call);
+            RC_EXECUTE_WITH_RETURN(get_switchboard_current_call_infos);
+            RC_EXECUTE_WITH_RETURN(get_switchboard_incoming_calls_infos);
             RC_EXECUTE_WITH_RETURN(get_agent_list_infos);
             RC_EXECUTE_WITH_RETURN(get_main_window_infos);
             RC_EXECUTE_WITH_RETURN(is_logged);

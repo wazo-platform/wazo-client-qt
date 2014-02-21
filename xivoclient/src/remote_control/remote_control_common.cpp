@@ -243,4 +243,28 @@ QString RemoteControl::prettyPrintMap(QVariantMap map)
     return prettyprint;
 }
 
+void RemoteControl::pressEnter(QObject *receiver)
+{
+    QKeyEvent *event = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Enter, Qt::NoModifier);
+    QCoreApplication::postEvent (receiver, event);
+}
+
+int RemoteControl::findRowWithItem(QAbstractItemModel* model, int column, QString search)
+{
+    int maxRows = model->rowCount(QModelIndex());
+    int rowSearch = -1;
+
+    for (int row = 0; row < maxRows && rowSearch < 0; ++row) {
+
+        QString result = getValueInModel(model, row, column);
+        if (result == search) {
+            rowSearch = row;
+        }
+
+    }
+
+    return rowSearch;
+}
+
+
 #endif
