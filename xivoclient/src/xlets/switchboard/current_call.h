@@ -61,8 +61,9 @@ class CurrentCall: public QObject, public IPBXListener
         virtual void parseCommand(const QVariantMap &command);
         void noticeIncoming(bool);
         void updateCurrentCall(const QVariantList &calls, bool has_incoming);
+    signals:
+        void requestedAnswer();
     public slots:
-        void answer();
         void attendedTransfer();
         void call();
         void directTransfer();

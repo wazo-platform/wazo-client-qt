@@ -178,11 +178,6 @@ void CurrentCall::noNumberSelected()
     this->answeringMode();
 }
 
-void CurrentCall::answer()
-{
-    b_engine->sendJsonCommand(MessageFactory::answer());
-}
-
 void CurrentCall::call()
 {
     m_requested_action = CALL;
@@ -277,7 +272,7 @@ void CurrentCall::transferAnsweredMode()
 void CurrentCall::resetButtons()
 {
     disconnect(m_current_call_widget->btn_answer, SIGNAL(clicked()),
-               this, SLOT(answer()));
+               this, SIGNAL(requestedAnswer()));
     disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
                this, SLOT(attendedTransfer()));
     disconnect(m_current_call_widget->btn_attended_transfer, SIGNAL(clicked()),
@@ -336,7 +331,7 @@ void CurrentCall::setAnswerButton()
 {
     this->setButton(
         this->m_current_call_widget->btn_answer,
-        SLOT(answer())
+        SIGNAL(requestedAnswer())
     );
 }
 

@@ -62,8 +62,10 @@ class Switchboard : public XLet, public IPBXListener
         void updatePhoneStatus(const QString &queue_id);
         void postInitializationSetup();
         void focusOnWaitingCalls();
-    private:
+    private slots:
         void answerIncomingCall() const;
+    private:
+        void answerIncomingCall(const QString &unique_id) const;
         void retrieveCallOnHold(const QString & call_unique_id) const;
         void focusOnIncomingCalls();
         void handleEnterKeys();

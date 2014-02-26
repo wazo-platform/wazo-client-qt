@@ -37,9 +37,11 @@ QVariantMap MessageFactory::subscribeCurrentCalls()
     return message;
 }
 
-QVariantMap MessageFactory::answer()
+QVariantMap MessageFactory::answer(const QString &unique_id)
 {
-    return MessageFactory::baseMessage("answer");
+    QVariantMap message = MessageFactory::baseMessage("answer");
+    message["unique_id"] = unique_id;
+    return message;
 }
 
 QVariantMap MessageFactory::callFormResult(const QVariant& info)
