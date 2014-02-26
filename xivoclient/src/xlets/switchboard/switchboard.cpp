@@ -69,6 +69,10 @@ Switchboard::Switchboard(QWidget *parent)
     waiting_calls_focus_shortcut->setContext(Qt::ApplicationShortcut);
     connect(waiting_calls_focus_shortcut, SIGNAL(activated()),
             this, SLOT(focusOnWaitingCalls()));
+    QShortcut * incoming_calls_focus_shortcut = new QShortcut(QKeySequence(Qt::Key_F6), this);
+    incoming_calls_focus_shortcut->setContext(Qt::ApplicationShortcut);
+    connect(incoming_calls_focus_shortcut, SIGNAL(activated()),
+            this, SLOT(focusOnIncomingCalls()));
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(updateIncomingHeader(const QString &, const QVariantList &)));

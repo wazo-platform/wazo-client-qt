@@ -61,13 +61,13 @@ class Switchboard : public XLet, public IPBXListener
         void queueEntryUpdate(const QString &queue_id, const QVariantList &entry);
         void updatePhoneStatus(const QString &queue_id);
         void postInitializationSetup();
+        void focusOnIncomingCalls();
         void focusOnWaitingCalls();
     private slots:
         void answerIncomingCall() const;
     private:
         void answerIncomingCall(const QString &unique_id) const;
         void retrieveCallOnHold(const QString & call_unique_id) const;
-        void focusOnIncomingCalls();
         void handleEnterKeys();
         bool hasIncomingCalls();
         void incomingCallsUpdated(const QModelIndex &, const QModelIndex &);
