@@ -70,9 +70,9 @@ QVariantMap MessageFactory::holdSwitchboard(const QString &queue_name)
     return command;
 }
 
-QVariantMap MessageFactory::unholdSwitchboard(const QString &unique_id)
+QVariantMap MessageFactory::resumeSwitchboard(const QString &unique_id)
 {
-    QVariantMap message = MessageFactory::baseMessage("unhold_switchboard");
+    QVariantMap message = MessageFactory::baseMessage("resume_switchboard");
     message["unique_id"] = unique_id;
 
     return message;

@@ -45,7 +45,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap dial(const QString &number);
         static QVariantMap hangup();
         static QVariantMap holdSwitchboard(const QString &queue_name);
-        static QVariantMap unholdSwitchboard(const QString &unique_id);
+        static QVariantMap resumeSwitchboard(const QString &unique_id);
         static QVariantMap attendedTransfer(const QString &number);
         static QVariantMap directTransfer(const QString &number);
         static QVariantMap completeTransfer();
