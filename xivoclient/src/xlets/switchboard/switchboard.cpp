@@ -257,7 +257,7 @@ void Switchboard::answerIncomingCall() const
 
 void Switchboard::retrieveCallOnHold(const QString & call_unique_id) const
 {
-    b_engine->sendJsonCommand(MessageFactory::unholdSwitchboard(call_unique_id));
+    b_engine->sendJsonCommand(MessageFactory::resumeSwitchboard(call_unique_id));
 }
 
 void Switchboard::updateIncomingHeader(const QString & queue_id, const QVariantList & entries)

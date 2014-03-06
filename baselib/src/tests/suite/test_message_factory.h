@@ -42,7 +42,7 @@ class TestMessageFactory: public QObject
         void testDial();
         void testHangup();
         void testHoldSwitchboard();
-        void testUnholdSwitchboard();
+        void testResumeSwitchboard();
         void testAttendedTransfer();
         void testDirectTransfer();
         void testCompleteTransfer();
