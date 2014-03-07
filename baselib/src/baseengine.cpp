@@ -41,6 +41,7 @@
 #include <QTcpSocket>
 #include <QTranslator>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QLibraryInfo>
 #include <QSslError>
 #include <QSslSocket>
@@ -1935,10 +1936,10 @@ void BaseEngine::urlAuto(const QString & value)
         // the reserialize is intended to enable some choice among serialization methods
         // one could for instance send the pairs into json or whatever ...
         if (reserialize == "/") {
+            QUrlQuery query(url);
             QPair<QString, QString> pair;
-	    // FIXME: Find the behavior of queryItems and port to the new QUrlQuery
-            //foreach(pair, url.queryItems())
-	      // tosend.append(QString("%1=%2").arg(pair.first).arg(pair.second));
+            foreach(pair, query.queryItems())
+                tosend.append(QString("%1=%2").arg(pair.first).arg(pair.second));
         }
 
         if (tosend.length() > 0) {
