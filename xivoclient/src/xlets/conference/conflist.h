@@ -66,11 +66,12 @@ class ConfListModel : public QAbstractTableModel
         ConfListModel(QWidget *parent = NULL);
         QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
     public slots:
+        void updateConfTime();
         void updateRoomConfigs(const QVariantMap &);
     private:
         void refreshRow2Number();
         QString startedSince(double time) const;
-        int rowCount(const QModelIndex&) const;
+        int rowCount(const QModelIndex& = QModelIndex()) const;
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int , Qt::Orientation, int) const;

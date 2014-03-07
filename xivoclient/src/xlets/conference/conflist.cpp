@@ -146,6 +146,13 @@ QVariant ConfListModel::headerData(int section,
     return QVariant();
 }
 
+void ConfListModel::updateConfTime()
+{
+    QModelIndex cellChanged1 = createIndex(0, STARTED_SINCE);
+    QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, STARTED_SINCE);
+    emit dataChanged(cellChanged1, cellChanged2);
+}
+
 ConfListView::ConfListView(QWidget *parent)
     : QTableView(parent)
 {
@@ -208,17 +215,22 @@ ConfList::ConfList(XletConference *parent)
 {
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
-    
+
     // this contains the data, unordered
     m_model = new ConfListModel(this);
     m_model->setObjectName("conflist_model");
-    
+
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            m_model, SLOT(updateConfTime()));
+    timer_display->start(1000);
+
     // this maps the indexes between the sorted view and the unordered model
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(m_model);
     proxyModel->setDynamicSortFilter(true); /* sorts right on insertion, instead
     of half a second after the window has appeared */
-    
+
     // this displays the sorted data
     ConfListView *view = new ConfListView(this);
     view->setModel(proxyModel);
