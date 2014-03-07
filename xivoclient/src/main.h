@@ -30,6 +30,7 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include <QtSingleApplication>
 #include <baseengine.h>
 
 #include "main_window/main_window.h"
@@ -39,7 +40,7 @@ class RemoteControl;
 #endif
 
 struct ExecObjects {
-    QApplication *app;
+    QtSingleApplication *app;
     MainWindow *win;
     BaseEngine *baseengine;
 #ifdef FUNCTESTS

@@ -1,4 +1,5 @@
 include(common-no-tests.pri)
+include($${ROOT_DIR}/qt-solutions/qtsingleapplication/src/qtsingleapplication.pri)
 
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
