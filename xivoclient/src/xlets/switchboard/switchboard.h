@@ -33,7 +33,9 @@
 #include <QObject>
 
 #include <ipbxlistener.h>
+#include <xletlib/functests.h>
 #include <xletlib/xlet.h>
+
 #include "ui_switchboard.h"
 
 class QLabel;
@@ -45,6 +47,7 @@ class CurrentCall;
 class Switchboard : public XLet, public IPBXListener
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         Switchboard(QWidget *parent=0);
@@ -58,11 +61,13 @@ class Switchboard : public XLet, public IPBXListener
         void queueEntryUpdate(const QString &queue_id, const QVariantList &entry);
         void updatePhoneStatus(const QString &queue_id);
         void postInitializationSetup();
-        void focusOnWaitingCalls();
-    private:
-        void answerIncomingCall() const;
-        void retrieveCallOnHold(const QString & call_unique_id) const;
         void focusOnIncomingCalls();
+        void focusOnWaitingCalls();
+    private slots:
+        void answerIncomingCall() const;
+    private:
+        void answerIncomingCall(const QString &unique_id) const;
+        void retrieveCallOnHold(const QString & call_unique_id) const;
         void handleEnterKeys();
         bool hasIncomingCalls();
         void incomingCallsUpdated(const QModelIndex &, const QModelIndex &);

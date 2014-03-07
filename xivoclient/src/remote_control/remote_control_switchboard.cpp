@@ -30,7 +30,10 @@
 #ifdef FUNCTESTS
 
 #include <xlets/directory/directory.h>
+#include <xlets/switchboard/switchboard.h>
+#include <xlets/switchboard/current_call.h>
 #include <xletlib/directory_entry.h>
+#include <xletlib/queue_entries/queue_entries_model.h>
 
 #include "remote_control.h"
 
@@ -68,6 +71,60 @@ void RemoteControl::set_search_for_directory(const QVariantList & args)
     }
 
     entry_filter->setText(search_string);
+}
+
+void RemoteControl::switchboard_answer_incoming_call(const QVariantList & args)
+{
+    QString cid_name = args[0].toString();
+    QString cid_num = args[1].toString();
+
+    Switchboard *xlet = this->get_xlet<Switchboard>("switchboard");
+    QueueEntriesView * incoming = xlet->ui.incomingCallsView;
+    this->assert(incoming != NULL, "widget for incoming calls is null");
+
+    int row_found = this->findRowWithItem(incoming->model(), QueueEntriesModel::NAME, cid_name);
+    this->assert(row_found > -1, "no row with cid_name " + cid_name);
+
+    incoming->selectRow(row_found);
+    this->pressEnter(incoming);
+}
+
+QVariantMap RemoteControl::get_switchboard_current_call_infos()
+{
+    QVariantMap result;
+
+    Switchboard *xlet = this->get_xlet<Switchboard>("switchboard");
+    this->assert(xlet != NULL, "xlet switchboard is null");
+    QString caller_id = xlet->m_current_call->m_caller_id;
+    result["caller_id"] = caller_id;
+
+    return result;
+}
+
+QVariantMap RemoteControl::get_switchboard_incoming_calls_infos()
+{
+    QVariantMap result;
+
+    Switchboard *xlet = this->get_xlet<Switchboard>("switchboard");
+    QueueEntriesView * incoming = xlet->ui.incomingCallsView;
+    this->assert(incoming != NULL, "widget for incoming calls is null");
+
+    QAbstractItemModel *model = incoming->model();
+
+    QVariantList list;
+
+    for (int row = 0; row < model->rowCount(); row++) {
+        QVariantMap incoming;
+        incoming["position"] = this->getValueInModel(model, row, QueueEntriesModel::POSITION);
+        incoming["cid_name"] = this->getValueInModel(model, row, QueueEntriesModel::NAME);
+        incoming["cid_num"] = this->getValueInModel(model, row, QueueEntriesModel::NUMBER);
+        incoming["time"] = this->getValueInModel(model, row, QueueEntriesModel::TIME);
+        incoming["unique_id"] = this->getValueInModel(model, row, QueueEntriesModel::UNIQUE_ID);
+        list.append(incoming);
+    }
+
+    result["incoming_calls"] = list;
+    return result;
 }
 
 #endif

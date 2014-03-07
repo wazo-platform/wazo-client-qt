@@ -30,8 +30,10 @@
 #ifndef __CURRENT_CALL_H__
 #define __CURRENT_CALL_H__
 
-#include <ipbxlistener.h>
 #include <QObject>
+
+#include <ipbxlistener.h>
+#include <xletlib/functests.h>
 
 class QWidget;
 class QPushButton;
@@ -50,6 +52,7 @@ enum RequestedAction {
 class CurrentCall: public QObject, public IPBXListener
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         CurrentCall(QObject *parent=NULL);
@@ -58,8 +61,9 @@ class CurrentCall: public QObject, public IPBXListener
         virtual void parseCommand(const QVariantMap &command);
         void noticeIncoming(bool);
         void updateCurrentCall(const QVariantList &calls, bool has_incoming);
+    signals:
+        void requestedAnswer();
     public slots:
-        void answer();
         void attendedTransfer();
         void call();
         void directTransfer();

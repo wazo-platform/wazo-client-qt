@@ -191,6 +191,16 @@ void RemoteControl::configureConfigDialog(const QVariantMap &args)
         this->m_exec_obj.win->m_config_widget->ui.allow_multiple_instances->setChecked(state);
     }
 
+    if (args.find("switchboard_incalls_queue") != args.end()) {
+        QString queue = args["switchboard_incalls_queue"].toString();
+        this->m_exec_obj.win->m_config_widget->ui.switchboard_queue_name->setText(queue);
+    }
+
+    if (args.find("switchboard_on_hold_queue") != args.end()) {
+        QString queue = args["switchboard_on_hold_queue"].toString();
+        this->m_exec_obj.win->m_config_widget->ui.switchboard_call_on_hold_queue_name->setText(queue);
+    }
+
     i_close_the_xivo_client_configuration();
 }
 
@@ -242,5 +252,29 @@ QString RemoteControl::prettyPrintMap(QVariantMap map)
     debug << map;
     return prettyprint;
 }
+
+void RemoteControl::pressEnter(QObject *receiver)
+{
+    QKeyEvent *event = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Enter, Qt::NoModifier);
+    QCoreApplication::postEvent (receiver, event);
+}
+
+int RemoteControl::findRowWithItem(QAbstractItemModel* model, int column, QString search)
+{
+    int maxRows = model->rowCount(QModelIndex());
+    int rowSearch = -1;
+
+    for (int row = 0; row < maxRows && rowSearch < 0; ++row) {
+
+        QString result = getValueInModel(model, row, column);
+        if (result == search) {
+            rowSearch = row;
+        }
+
+    }
+
+    return rowSearch;
+}
+
 
 #endif

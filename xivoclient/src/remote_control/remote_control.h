@@ -122,6 +122,7 @@ class RemoteControl : public QObject
         void i_log_in_the_xivo_client();
         void i_log_out_of_the_xivo_client();
         void pause(unsigned);
+        void pressEnter(QObject *receiver);
         QVariantMap get_configuration();
         QVariantMap get_login_screen_infos();
         QVariantMap get_status_bar_infos();
@@ -141,6 +142,9 @@ class RemoteControl : public QObject
         QVariantMap get_menu_availability_infos();
         QVariantMap get_main_window_infos();
         QVariantMap is_logged();
+        void switchboard_answer_incoming_call(const QVariantList &);
+        QVariantMap get_switchboard_current_call_infos();
+        QVariantMap get_switchboard_incoming_calls_infos();
         QWidget *_get_current_sheet();
 
         //Xlets

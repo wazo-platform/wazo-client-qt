@@ -32,7 +32,7 @@
          </font>
         </property>
         <property name="title">
-         <string>Incoming Calls</string>
+         <string>Incoming Calls (F6)</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>

@@ -40,8 +40,8 @@ class BASELIB_EXPORT MessageFactory
         MessageFactory();
         ~MessageFactory();
         static QVariantMap subscribeCurrentCalls();
-        static QVariantMap answer();
-	static QVariantMap callFormResult(const QVariant &info);
+        static QVariantMap answer(const QString &unique_id);
+        static QVariantMap callFormResult(const QVariant &info);
         static QVariantMap dial(const QString &number);
         static QVariantMap hangup();
         static QVariantMap holdSwitchboard(const QString &queue_name);

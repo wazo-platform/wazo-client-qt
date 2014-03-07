@@ -69,6 +69,10 @@ Switchboard::Switchboard(QWidget *parent)
     waiting_calls_focus_shortcut->setContext(Qt::ApplicationShortcut);
     connect(waiting_calls_focus_shortcut, SIGNAL(activated()),
             this, SLOT(focusOnWaitingCalls()));
+    QShortcut * incoming_calls_focus_shortcut = new QShortcut(QKeySequence(Qt::Key_F6), this);
+    incoming_calls_focus_shortcut->setContext(Qt::ApplicationShortcut);
+    connect(incoming_calls_focus_shortcut, SIGNAL(activated()),
+            this, SLOT(focusOnIncomingCalls()));
 
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),
             this, SLOT(updateIncomingHeader(const QString &, const QVariantList &)));
@@ -89,6 +93,9 @@ Switchboard::Switchboard(QWidget *parent)
            this, SLOT(waitingCallClicked(const QModelIndex &)));
     connect(ui.waitingCallsView, SIGNAL(activated(const QModelIndex &)),
             this, SLOT(waitingCallClicked(const QModelIndex &)));
+
+    connect(this->m_current_call, SIGNAL(requestedAnswer()),
+            this, SLOT(answerIncomingCall()));
 
     this->setFocus();
 }
@@ -185,17 +192,16 @@ void Switchboard::queueEntryUpdate(const QString &queue_id,
 
 void Switchboard::incomingCallClicked(const QModelIndex &index)
 {
-    int clicked_row = index.row();
+    QModelIndex id_index = index.child(index.row(), QueueEntriesModel::UNIQUE_ID);
+    const QString &unique_id = id_index.data(Qt::DisplayRole).toString();
 
-    if (clicked_row == 0) {
-        this->answerIncomingCall();
-    }
+    this->answerIncomingCall(unique_id);
 }
 
 void Switchboard::waitingCallClicked(const QModelIndex &index)
 {
     QModelIndex id_index = index.child(index.row(), QueueEntriesModel::UNIQUE_ID);
-    const QString &call_unique_id = m_waiting_call_proxy_model->data(id_index, Qt::DisplayRole).toString();
+    const QString &call_unique_id = id_index.data(Qt::DisplayRole).toString();
 
     this->retrieveCallOnHold(call_unique_id);
 }
@@ -252,7 +258,18 @@ void Switchboard::watch_switchboard_queue()
 
 void Switchboard::answerIncomingCall() const
 {
-    b_engine->sendJsonCommand(MessageFactory::answer());
+    if (m_incoming_call_proxy_model->rowCount() == 0) {
+        return;
+    }
+
+    QModelIndex index = m_incoming_call_proxy_model->index(0, QueueEntriesModel::UNIQUE_ID);
+    const QString &unique_id = index.data(Qt::DisplayRole).toString();
+    this->answerIncomingCall(unique_id);
+}
+
+void Switchboard::answerIncomingCall(const QString & unique_id) const
+{
+    b_engine->sendJsonCommand(MessageFactory::answer(unique_id));
 }
 
 void Switchboard::retrieveCallOnHold(const QString & call_unique_id) const
