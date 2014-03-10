@@ -60,6 +60,11 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &numbe
     COL_TITLE[ACTION_ALLOW_IN] = tr("A");
     COL_TITLE[ACTION_TALK_TO] = tr("T");
     COL_TITLE[ACTION_MUTE] = tr("M");
+
+    QTimer * join_time_timer = new QTimer(this);
+    connect(join_time_timer, SIGNAL(timeout()),
+            this, SLOT(updateJoinTime()));
+    join_time_timer->start(1000);
 }
 
 void ConfRoomModel::setView(ConfRoomView *v)
@@ -148,6 +153,14 @@ int ConfRoomModel::userNumberFromRow(int row) const
 {
     const QString &number = m_row2number[row];
     return number.toInt();
+}
+
+void ConfRoomModel::updateJoinTime()
+{
+    QModelIndex first = createIndex(0, SINCE);
+    QModelIndex last = createIndex(m_members.size() - 1, SINCE);
+
+    emit dataChanged(first, last);
 }
 
 QVariant ConfRoomModel::data(const QModelIndex & index, int role) const

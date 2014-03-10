@@ -65,6 +65,7 @@ class ConfRoomModel : public QAbstractTableModel
         void updateMeetmeConfig(const QVariantMap &);
     private slots:
         void extractRow2IdMap();
+        void updateJoinTime();
     private:
         void updateView();
         void sort(int, Qt::SortOrder);
