@@ -159,8 +159,8 @@ ConfListView::ConfListView(QWidget *parent)
     setSortingEnabled(true);
     setShowGrid(0);
     verticalHeader()->hide();
-    //horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-    //horizontalHeader()->setMovable(true);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    horizontalHeader()->setSectionsMovable(true);
     setStyleSheet("ConfListView {"
                     "border: none;"
                     "background: transparent;"
