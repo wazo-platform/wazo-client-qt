@@ -1,5 +1,5 @@
-WIN_MINGW_PATH=/cygdrive/c/QtSDK/mingw
-WIN_QT_PATH=/cygdrive/c/QtSDK/Desktop/Qt/4.8.1/mingw
+WIN_MINGW_PATH=/cygdrive/c/qt5/Tools/mingw48_32
+WIN_QT_PATH=/cygdrive/c/qt5/5.2.1/mingw48_32
 WIN_NSIS_PATH="/cygdrive/c/Program files (x86)/nsis"
 
 MAC_QT_PATH=/Library/Frameworks
