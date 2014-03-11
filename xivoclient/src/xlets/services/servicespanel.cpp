@@ -164,7 +164,7 @@ ServicesPanel::ServicesPanel(QWidget * parent)
         if (m_capas.contains(capa)) {
             connect(m_forward[capa]->widget(), SIGNAL(toggled(bool)),
                     this, SLOT(forwardToggled(bool)));
-            connect(m_forwarddest[capa]->widget(), SIGNAL(lostFocus()),
+            connect(m_forwarddest[capa]->widget(), SIGNAL(editingFinished()),
                     this, SLOT(forwardLostFocus()));
         }
     }
