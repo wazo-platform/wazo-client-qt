@@ -47,8 +47,7 @@
 #include <QSslSocket>
 #include <QUdpSocket>
 
-#include <JsonToVariant.h>
-#include <VariantToJson.h>
+#include <QJsonDocument>
 
 #include <storage/agentinfo.h>
 #include <storage/channelinfo.h>
@@ -251,19 +250,14 @@ void BaseEngine::loadSettings()
         m_settings->endGroup();
     m_settings->endGroup();
 
-    QString defaultguioptions;
+    QByteArray defaultguioptions;
     QFile defaultguioptions_file(":/guioptions.json");
     if (defaultguioptions_file.exists()) {
         defaultguioptions_file.open(QFile::ReadOnly);
         defaultguioptions = defaultguioptions_file.readAll();
         defaultguioptions_file.close();
     }
-    QVariant data;
-    try {
-        data = parseJson(defaultguioptions);
-    } catch(JsonQt::ParseException) {
-        qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
-    }
+    QVariant data = parseJson(defaultguioptions);
 
     // this is used to make a migration from 1.0 to 1.1
     if (settingsversion != "1.0")
@@ -288,14 +282,16 @@ void BaseEngine::loadSettings()
     m_settings->endGroup();
 }
 
-QVariant BaseEngine::parseJson(const QString &raw) const
+QVariant BaseEngine::parseJson(const QByteArray &raw) const
 {
-    return JsonQt::JsonToVariant::parse(raw);
+    QJsonDocument doc = QJsonDocument::fromJson(raw);
+    return doc.toVariant();
 }
 
-QString BaseEngine::toJson(const QVariantMap &map) const
+QByteArray BaseEngine::toJson(const QVariantMap &map) const
 {
-    return JsonQt::VariantToJson::parse(map);
+    QJsonDocument doc = QJsonDocument::fromVariant(map);
+    return doc.toJson(QJsonDocument::JsonFormat(1));
 }
 
 /*!
@@ -622,10 +618,10 @@ void BaseEngine::restoreAvailState()
 }
 
 /*! \brief send command to XiVO CTI server */
-void BaseEngine::sendCommand(const QString & command)
+void BaseEngine::sendCommand(const QByteArray &command)
 {
     if (m_ctiserversocket->state() == QAbstractSocket::ConnectedState)
-        m_ctiserversocket->write((command + "\n").toUtf8());
+        m_ctiserversocket->write(command + "\n");
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
@@ -635,7 +631,7 @@ QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
         return QString("");
     QVariantMap fullcommand = cticommand;
     fullcommand["commandid"] = qrand();
-    QString jsoncommand(toJson(fullcommand));
+    QByteArray jsoncommand(toJson(fullcommand));
     sendCommand(jsoncommand);
     return fullcommand["commandid"].toString();
 }
@@ -739,21 +735,18 @@ void BaseEngine::emitMessage(const QString & msg)
 }
 
 /*! \brief parse JSON and then process command */
-void BaseEngine::parseCommand(const QString &line)
+void BaseEngine::parseCommand(const QByteArray &raw)
 {
     m_pendingkeepalivemsg = 0;
     QVariant data;
-    try {
-        QTime jsondecodetime;
-        jsondecodetime.start();
-        data = parseJson(line.trimmed());
-    } catch(JsonQt::ParseException) {
-        qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
-        data = QVariant(QVariant::Invalid);
-    }
+    QTime jsondecodetime;
+    jsondecodetime.start();
+    data = parseJson(raw);
 
-    if (! data.isValid())
+    if (data.isNull()) {
+        qDebug() << "Invalid json aborting";
         return;
+    }
 
     QVariantMap datamap = data.toMap();
     QString direction = datamap.value("direction").toString();
@@ -1403,8 +1396,10 @@ void BaseEngine::ctiSocketReadyRead()
             // we get here when receiving a sheet as a Qt4 .ui form
             qDebug() << "Incoming sheet, size:" << line.size();
             emit displayFiche(line, true, QString());
-        } else
-            parseCommand(line);
+        } else {
+            data.chop(1);  // remove the \n the the end of the json
+            parseCommand(data);
+        }
     }
 }
 
@@ -1416,13 +1411,8 @@ void BaseEngine::filetransferSocketReadyRead()
 {
     while (m_filetransfersocket->canReadLine()) {
         QByteArray data = m_filetransfersocket->readLine();
-        QString line = QString::fromUtf8(data);
         QVariant jsondata;
-        try {
-            jsondata = parseJson(line.trimmed());
-        } catch(JsonQt::ParseException &) {
-            qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
-        }
+        jsondata = parseJson(data);
         QVariantMap jsondatamap = jsondata.toMap();
         if (jsondatamap.value("class").toString() == "fileref") {
             if (m_filedir == "download") {

@@ -156,8 +156,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     private:
 
-        QVariant parseJson(const QString &raw) const;
-        QString toJson(const QVariantMap &map) const;
+        QVariant parseJson(const QByteArray &) const;
+        QByteArray toJson(const QVariantMap &map) const;
 
 
         // private getters/setters
@@ -338,8 +338,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitDelogged();
 
         void startConnection();
-        void sendCommand(const QString &);
-        void parseCommand(const QString &);
+        void sendCommand(const QByteArray &);
+        void parseCommand(const QByteArray &);
         void configsLists(const QString &function, const QVariantMap &datamap);
         void handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &ids);
         void handleGetlistDelConfig(const QString &listname, const QString &ipbxid, const QStringList &ids);
