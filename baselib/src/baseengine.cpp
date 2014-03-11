@@ -290,8 +290,7 @@ QVariant BaseEngine::parseJson(const QByteArray &raw) const
 
 QByteArray BaseEngine::toJson(const QVariantMap &map) const
 {
-    QJsonDocument doc = QJsonDocument::fromVariant(map);
-    return doc.toJson(QJsonDocument::JsonFormat(1));
+    return QJsonDocument::fromVariant(map).toJson(QJsonDocument::Compact);
 }
 
 /*!
@@ -738,10 +737,7 @@ void BaseEngine::emitMessage(const QString & msg)
 void BaseEngine::parseCommand(const QByteArray &raw)
 {
     m_pendingkeepalivemsg = 0;
-    QVariant data;
-    QTime jsondecodetime;
-    jsondecodetime.start();
-    data = parseJson(raw);
+    QVariant data = parseJson(raw);
 
     if (data.isNull()) {
         qDebug() << "Invalid json aborting";
@@ -1411,9 +1407,7 @@ void BaseEngine::filetransferSocketReadyRead()
 {
     while (m_filetransfersocket->canReadLine()) {
         QByteArray data = m_filetransfersocket->readLine();
-        QVariant jsondata;
-        jsondata = parseJson(data);
-        QVariantMap jsondatamap = jsondata.toMap();
+        QVariantMap jsondatamap = this->parseJson(data).toMap();
         if (jsondatamap.value("class").toString() == "fileref") {
             if (m_filedir == "download") {
                 m_downloaded = QByteArray::fromBase64(jsondatamap.value("payload").toByteArray());
