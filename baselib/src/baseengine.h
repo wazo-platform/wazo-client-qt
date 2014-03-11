@@ -156,6 +156,9 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     private:
 
+        QVariant parseJson(const QString &raw) const;
+        QString toJson(const QVariantMap &map) const;
+
 
         // private getters/setters
 

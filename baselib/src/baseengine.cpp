@@ -260,7 +260,7 @@ void BaseEngine::loadSettings()
     }
     QVariant data;
     try {
-        data = JsonQt::JsonToVariant::parse(defaultguioptions);
+        data = parseJson(defaultguioptions);
     } catch(JsonQt::ParseException) {
         qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
     }
@@ -286,6 +286,16 @@ void BaseEngine::loadSettings()
                                       enable_function_bydefault[function]
                                      ).toBool();
     m_settings->endGroup();
+}
+
+QVariant BaseEngine::parseJson(const QString &raw) const
+{
+    return JsonQt::JsonToVariant::parse(raw);
+}
+
+QString BaseEngine::toJson(const QVariantMap &map) const
+{
+    return JsonQt::VariantToJson::parse(map);
 }
 
 /*!
@@ -625,7 +635,7 @@ QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
         return QString("");
     QVariantMap fullcommand = cticommand;
     fullcommand["commandid"] = qrand();
-    QString jsoncommand(JsonQt::VariantToJson::parse(fullcommand));
+    QString jsoncommand(toJson(fullcommand));
     sendCommand(jsoncommand);
     return fullcommand["commandid"].toString();
 }
@@ -736,7 +746,7 @@ void BaseEngine::parseCommand(const QString &line)
     try {
         QTime jsondecodetime;
         jsondecodetime.start();
-        data = JsonQt::JsonToVariant::parse(line.trimmed());
+        data = parseJson(line.trimmed());
     } catch(JsonQt::ParseException) {
         qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         data = QVariant(QVariant::Invalid);
@@ -1409,7 +1419,7 @@ void BaseEngine::filetransferSocketReadyRead()
         QString line = QString::fromUtf8(data);
         QVariant jsondata;
         try {
-            jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
+            jsondata = parseJson(line.trimmed());
         } catch(JsonQt::ParseException &) {
             qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
         }
