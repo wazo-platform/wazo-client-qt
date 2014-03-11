@@ -43,10 +43,6 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &numbe
 {
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateMeetmeConfig(const QVariantMap &)));
-    connect(b_engine, SIGNAL(meetmeMembershipUpdateStart()),
-            this, SLOT(beginResetModel()));
-    connect(b_engine, SIGNAL(meetmeMembershipUpdateEnd()),
-            this, SLOT(endResetModel()));
 
     extractRow2IdMap();
 
