@@ -6,24 +6,19 @@ CONFIG      += dll hide_symbols
 
 TARGET      = xivoclient
 
-JSON_JSONQT_DIR = $${ROOT_DIR}/json_jsonqt/lib
-
 # Library version
 VERSION      = $${XIVOVER}
 DEFINES     += BASELIB_LIBRARY
 
-INCLUDEPATH += $${JSON_JSONQT_DIR}
 INCLUDEPATH += $${ROOT_DIR}/src
 
 HEADERS     += $${ROOT_DIR}/src/*.h
 HEADERS     += $${ROOT_DIR}/src/storage/*.h
 HEADERS     += $${ROOT_DIR}/src/dao/*.h
-HEADERS     += $${JSON_JSONQT_DIR}/*.h
 
 SOURCES     += $${ROOT_DIR}/src/*.cpp
 SOURCES     += $${ROOT_DIR}/src/storage/*.cpp
 SOURCES     += $${ROOT_DIR}/src/dao/*.cpp
-SOURCES     += $${JSON_JSONQT_DIR}/*.cpp
 
 DESTDIR     = $${BIN_DIR}
 
