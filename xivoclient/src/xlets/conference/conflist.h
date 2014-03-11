@@ -88,12 +88,9 @@ class ConfListView : public QTableView
 
     public:
         ConfListView(QWidget *parent);
-    private slots:
+    public slots:
         void onViewClick(const QModelIndex &);
-    protected:
-        virtual void mousePressEvent(QMouseEvent *event);
-    private:
-        int lastPressed;
+	void contextMenuEvent(QContextMenuEvent * event);
 };
 
 

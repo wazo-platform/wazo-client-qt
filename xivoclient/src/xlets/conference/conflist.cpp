@@ -177,36 +177,39 @@ void ConfListView::onViewClick(const QModelIndex &model)
     QString roomName = model.sibling(model.row(), ConfListModel::NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), ConfListModel::NUMBER).data().toString();
 
+
     if (number != "") {
-        if (lastPressed & Qt::LeftButton) {
-            b_engine->pasteToDial(roomNumber);
-            QTimer *timer = new QTimer(this);
-            timer->setSingleShot(true);
-            timer->setProperty("number", number);
-            connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
-            timer->start(10);
-        } else {
-            QMenu *menu = new QMenu(this);
-
-            QAction *action = new QAction(
-                tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
-
-            action->setProperty("number", number);
-            connect(action, SIGNAL(triggered(bool)),
-                    parentWidget(), SLOT(openConfRoom()));
-            connect(action, SIGNAL(triggered(bool)),
-                    parentWidget(), SLOT(phoneConfRoom()));
-
-            menu->addAction(action);
-            menu->exec(QCursor::pos());
-        }
+        b_engine->pasteToDial(roomNumber);
+        QTimer *timer = new QTimer(this);
+        timer->setSingleShot(true);
+        timer->setProperty("number", number);
+        connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
+        timer->start(10);
     }
 }
 
-void ConfListView::mousePressEvent(QMouseEvent *event)
+
+void ConfListView::contextMenuEvent(QContextMenuEvent * event)
 {
-    lastPressed = event->button();
-    QTableView::mousePressEvent(event);
+    const QModelIndex &index = indexAt(event->pos());
+
+    QString number = index.sibling(index.row(), ConfListModel::ID).data().toString();
+    QString roomName = index.sibling(index.row(), ConfListModel::NAME).data().toString();
+    QString roomNumber = index.sibling(index.row(), ConfListModel::NUMBER).data().toString();
+
+    QMenu *menu = new QMenu(this);
+
+    QAction *action = new QAction(
+        tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
+
+    action->setProperty("number", number);
+    connect(action, SIGNAL(triggered(bool)),
+	    parentWidget(), SLOT(openConfRoom()));
+    connect(action, SIGNAL(triggered(bool)),
+	    parentWidget(), SLOT(phoneConfRoom()));
+
+    menu->addAction(action);
+    menu->exec(QCursor::pos());
 }
 
 
