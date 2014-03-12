@@ -1411,8 +1411,8 @@ parametri per le statistiche sulla torta:</translation>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="269"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="279"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="286"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="296"/>
         <source>%n call(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1424,7 +1424,7 @@ parametri per le statistiche sulla torta:</translation>
     <name>SwitchboardPanel</name>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
-        <source>Incoming Calls</source>
+        <source>Incoming Calls (F6)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

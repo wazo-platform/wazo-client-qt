@@ -1411,8 +1411,8 @@ queues parameters for the Stats on slice:</translation>
         <translation>Switchboard</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="269"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="279"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="286"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="296"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n call</numerusform>
@@ -1424,8 +1424,8 @@ queues parameters for the Stats on slice:</translation>
     <name>SwitchboardPanel</name>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
-        <source>Incoming Calls</source>
-        <translation>Incoming Calls</translation>
+        <source>Incoming Calls (F6)</source>
+        <translation>Incoming Calls (F6)</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
