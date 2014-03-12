@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="49"/>
         <source>Directory</source>
-        <translation type="unfinished">Directorio </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="60"/>

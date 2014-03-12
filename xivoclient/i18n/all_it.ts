@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>BaseEngine</name>
     <message>
@@ -36,7 +34,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1263"/>
         <source>You have no profile defined.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1267"/>
@@ -135,7 +133,7 @@ Per favore aggiornala.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1336"/>
-        <source>Your client&apos;s major version (%1)
+        <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>La versione principale del tuo client (%1)
 non è la stessa di quella del server (%2).</translation>
@@ -168,17 +166,17 @@ Per favore aggiornala.</translation>
         <location filename="src/baseengine.cpp" line="1356"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1358"/>
         <source>Could not log agent: extension already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1361"/>
         <source>Unreachable number: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1365"/>
@@ -211,8 +209,8 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="json_jsonqt/lib/ParseException.cpp" line="35"/>
         <source>A parsing error occurred:
-	Got: &apos;%1&apos;
-	Expected: &apos;%2&apos;
+	Got: '%1'
+	Expected: '%2'
 	At: &apos;%3&apos;</source>
         <translation>Si è verificato un errore di parsing:
 	Ricevuto: &apos;%1&apos;
@@ -232,12 +230,12 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="37"/>
         <source>N/A</source>
-        <translation type="unfinished">N / D</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/lookup_directory_entry.cpp" line="98"/>
         <source>Remote search result</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/mobile_directory_entry.cpp" line="84"/>
@@ -247,7 +245,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
         <source>Current Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -319,12 +317,12 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="21"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="49"/>
         <source>66:66</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -332,7 +330,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="52"/>
         <source>Agent status dashboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -376,42 +374,42 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="227"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>Int. Incoming </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
         <source>Unlogged</source>
-        <translation type="unfinished">Disconnesso</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="255"/>
         <source>%1 since %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="346"/>
@@ -556,7 +554,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="174"/>
         <source>Mute/UnMute</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="188"/>
@@ -614,7 +612,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -882,7 +880,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="110"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2): %3 call(s)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -890,28 +888,22 @@ Per favore aggiornala.</translation>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
         <source>%n agent(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="110"/>
         <source>%n phone(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="111"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 and %5</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="123"/>
         <source>No selected queue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -935,22 +927,22 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
         <source>Firstname</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
         <source>Queue member&apos;s firstname</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
         <source>Lastname</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="66"/>
         <source>Queue member&apos;s lastname</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
@@ -960,7 +952,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>
         <source>Queue member&apos;s login status</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
@@ -970,12 +962,12 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>
         <source>Queue member&apos;s pause status</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="71"/>
         <source>Answered calls</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="72"/>
@@ -985,12 +977,12 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="73"/>
         <source>Last call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="74"/>
         <source>Hangup date of the last answered call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="75"/>
@@ -1000,17 +992,17 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="76"/>
         <source>Queue member&apos;s penalty</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="196"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="198"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1018,7 +1010,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queue_members/queue_members.cpp" line="51"/>
         <source>Queue Members</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1056,12 +1048,12 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
         <source>EWT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Estimated Waiting Time</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
@@ -1081,27 +1073,27 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Number of logged agents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Number of agents ready to take a call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Talking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Number of agents talking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
@@ -1136,12 +1128,12 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Mean Waiting Time</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>Mean waiting time before getting an agent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
@@ -1184,7 +1176,7 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="59"/>
         <source>Queues</source>
-        <translation type="unfinished">Code</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="124"/>
@@ -1302,7 +1294,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="50"/>
         <source>Attended T</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="51"/>
@@ -1312,7 +1304,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="52"/>
         <source>Complete T</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="53"/>
@@ -1322,7 +1314,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
         <source>Cancel T</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1330,17 +1322,17 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>
         <source>Current Call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
@@ -1355,42 +1347,42 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="183"/>
         <source>Blind Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="186"/>
         <source>Blind T</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="189"/>
         <source>F4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="222"/>
         <source>Attended Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="225"/>
         <source>Attended T</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="228"/>
         <source>F5</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="261"/>
         <source>Hold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="264"/>
         <source>F7</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="301"/>
@@ -1400,7 +1392,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="304"/>
         <source>F8</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1408,16 +1400,13 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="59"/>
         <source>Switchboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="286"/>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="296"/>
         <source>%n call(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1425,18 +1414,18 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
         <source>Incoming Calls (F6)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="132"/>
         <source>0 call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="105"/>
         <source>Waiting Calls (F9)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1444,12 +1433,12 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="20"/>
         <source>XiVO Client Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="37"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="45"/>
@@ -1459,7 +1448,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="58"/>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="90"/>
@@ -1468,12 +1457,12 @@ parametri per le statistiche sulla torta:</translation>
         <location filename="../src/config_widget/config_widget.ui" line="201"/>
         <location filename="../src/config_widget/config_widget.ui" line="837"/>
         <source>You must restart the program for this setting to apply.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="148"/>
         <source>Auto-reconnect </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="155"/>
@@ -1483,22 +1472,22 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="162"/>
         <source>Start systrayed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="169"/>
         <source>Show agent options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="190"/>
         <source>Show window when calling from external application</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="204"/>
         <source>Enable clipboard (GNU/Linux only)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="242"/>
@@ -1508,7 +1497,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="278"/>
         <source>Features</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="302"/>
@@ -1523,27 +1512,27 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="327"/>
         <source>Screen popup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="336"/>
         <source>Max screen popups</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="356"/>
         <source>Screen Popup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="366"/>
         <source>Allow automatic URL opening</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="385"/>
         <source>Composer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="391"/>
@@ -1564,17 +1553,17 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="458"/>
         <source>Maximum of contacts displayed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="487"/>
         <source>Queue list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="495"/>
         <source>Show longest wait time</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="509"/>
@@ -1584,78 +1573,78 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="519"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="529"/>
         <source>Longest wait time thresholds</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="556"/>
         <source>Waiting calls thresholds</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="583"/>
         <source>calls</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="590"/>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="621"/>
         <source>Queue Members</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="627"/>
         <source>Hide unlogged agents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="643"/>
         <source>Switchboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="652"/>
         <source>Switchboard call on hold queue name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="662"/>
         <source>Switchboard queue name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="684"/>
         <source>Administration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="692"/>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="699"/>
         <source>demo.xivo.fr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="706"/>
         <location filename="../src/config_widget/config_widget.ui" line="749"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="739"/>
         <source>Backup server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="824"/>
@@ -1670,17 +1659,17 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="840"/>
         <source>Allow multiple instances</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="851"/>
         <source>Auto-reconnect interval</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="890"/>
         <source>Keepalive interval</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="92"/>
@@ -1690,7 +1679,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="93"/>
         <source>Dutch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="94"/>
@@ -1724,7 +1713,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="98"/>
         <source>Hungarian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="99"/>
@@ -1734,12 +1723,12 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <source>Portuguese</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="101"/>
         <source>Spanish</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="108"/>
@@ -1834,17 +1823,17 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="37"/>
         <source>Remote Directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="38"/>
         <source>Remote Directory Panel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="41"/>
         <source>Remote Di&amp;rectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="49"/>
@@ -1998,47 +1987,47 @@ Motivo: %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="14"/>
         <source>Login Screen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="72"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="89"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="96"/>
         <source>Phone</source>
-        <translation type="unfinished">Telefono</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="103"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="110"/>
         <source>Keep Password</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="118"/>
         <source>No Agent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="123"/>
         <source>Agent (unlogged)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="128"/>
         <source>Agent (logged)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2046,199 +2035,199 @@ Motivo: %3.</translation>
     <message>
         <location filename="../src/main_window/main_window.ui" line="17"/>
         <source>XiVO Client</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="53"/>
         <source>&amp;XiVO Client</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="69"/>
         <source>&amp;Availability</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="74"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="97"/>
         <source>Confi&amp;gure</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="100"/>
         <source>Configure account and connection options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="108"/>
         <source>To S&amp;ystray</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="111"/>
         <source>Enter the system tray</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="116"/>
         <source>&amp;Connect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="119"/>
         <source>Connect to the server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="127"/>
         <source>&amp;Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="130"/>
         <source>Disconnect from the server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="138"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="141"/>
         <source>Close the application</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="144"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="152"/>
         <source>&amp;Show window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="155"/>
         <source>Leave the system tray</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="163"/>
         <source>&amp;About XiVO Client</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="168"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="173"/>
         <source>&amp;Credits</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="84"/>
         <location filename="../src/main_window/main_window.cpp" line="204"/>
         <location filename="../src/main_window/main_window.cpp" line="280"/>
         <source>Client %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="159"/>
         <source>XiVO CTI Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="186"/>
         <source>Client %1 (%2 profile)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="272"/>
         <source>Fetch the last one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="279"/>
         <source>About XiVO Client</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="281"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="286"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="287"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="288"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="291"/>
         <source>(Application Built on : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="292"/>
         <source>(Application Launched on : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="293"/>
         <source>(Config File Location : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="296"/>
         <source>E-mail : </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="297"/>
         <source>Phone : </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="298"/>
         <source>Authors : </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="298"/>
         <source>Avencall Development Team</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="300"/>
         <source>License : </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="302"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="308"/>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2387,7 +2376,7 @@ Continuare?</translation>
     <message>
         <location filename="../src/main_window/statusbar.cpp" line="84"/>
         <source>Connected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/statusbar.cpp" line="91"/>
@@ -2400,12 +2389,12 @@ Continuare?</translation>
     <message>
         <location filename="../src/main_window/loading_dialog.ui" line="17"/>
         <source>Loading Screen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main_window/loading_dialog.ui" line="34"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2434,7 +2423,7 @@ Continuare?</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="47"/>
         <source>Status since</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
@@ -2465,67 +2454,67 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="268"/>
         <source>Agent ready to receive a call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="270"/>
         <source>Agent processing a call or paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="272"/>
         <source>Agent receiving an internal call out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="274"/>
         <source>Agent receiving an external call out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="276"/>
         <source>Agent emitting an internal call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="278"/>
         <source>Agent emitting an external call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="336"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="338"/>
         <source>Int. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="340"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="342"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="344"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
         <source>Unlogged</source>
-        <translation type="unfinished">Disconnesso</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="409"/>
@@ -2580,7 +2569,7 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="386"/>
         <source>&amp;Hangup call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
@@ -2595,22 +2584,22 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
         <source>Blind &amp;Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
         <source>&amp;Attended Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="521"/>
         <source>Blind transfer &lt;%0&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="538"/>
         <source>Attended transfer &lt;%0&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
@@ -2751,7 +2740,7 @@ Stato: %3</translation>
         <source>Phone Number: %1
 Status: %2
 Busy lines: %3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="352"/>
@@ -2769,7 +2758,7 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
@@ -2784,7 +2773,7 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="nl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.0">
 <context>
     <name>BaseEngine</name>
     <message>
@@ -135,7 +133,7 @@ Gelieve uw versie te upgraden.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1336"/>
-        <source>Your client&apos;s major version (%1)
+        <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation>De hoofdversie  (%1) van uw klant
 is niet dezelfde als deze van de server (%2).</translation>
@@ -211,8 +209,8 @@ Gelieve uw versie te upgraden.</translation>
     <message>
         <location filename="json_jsonqt/lib/ParseException.cpp" line="35"/>
         <source>A parsing error occurred:
-	Got: &apos;%1&apos;
-	Expected: &apos;%2&apos;
+	Got: '%1'
+	Expected: '%2'
 	At: &apos;%3&apos;</source>
         <translation>Er heeft zich een parsingfout voorgedaan:
 	Ontvangen: &apos;%1&apos;
@@ -890,18 +888,12 @@ Gelieve uw versie te upgraden.</translation>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
         <source>%n agent(s)</source>
-        <translation>
-            <numerusform>%n agent(en)</numerusform>
-            <numerusform>%n agent(en)</numerusform>
-        </translation>
+        <translation><numerusform>%n agent(en)</numerusform><numerusform>%n agent(en)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="110"/>
         <source>%n phone(s)</source>
-        <translation>
-            <numerusform>%n telefoon(s)</numerusform>
-            <numerusform>%n telefoon(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n telefoon(s)</numerusform><numerusform>%n telefoon(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="111"/>
@@ -1413,10 +1405,7 @@ queues parameters for the Stats on slice:</source>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="286"/>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="296"/>
         <source>%n call(s)</source>
-        <translation>
-            <numerusform>%n oproep</numerusform>
-            <numerusform>%n oproepen</numerusform>
-        </translation>
+        <translation><numerusform>%n oproep</numerusform><numerusform>%n oproepen</numerusform></translation>
     </message>
 </context>
 <context>

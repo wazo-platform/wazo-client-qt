@@ -129,7 +129,7 @@
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
         <source>Incoming Calls (F6)</source>
-        <translation>Appels entrant (F6)</translation>
+        <translation>Appels entrants (F6)</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
