@@ -8,6 +8,8 @@ else
     exit 1
 fi
 
+source build-deps
+
 function set_umask {
     umask 0022
 }
@@ -35,6 +37,7 @@ function package-content {
 
     mkdir -p $PKGROOT/opt/xivoclient
     cp -r bin/* $PKGROOT/opt/xivoclient
+    cp -P $DEBIAN_QT_PATH/lib/libQt5{Xml,Network,Widgets,Gui,Core}.so* $PKGROOT/opt/xivoclient
 
     mkdir -p $PKGROOT/usr/share/icons/hicolor/128x128/apps
     cp $RESOURCES_DIR/xivoclient.png $PKGROOT/usr/share/icons/hicolor/128x128/apps
