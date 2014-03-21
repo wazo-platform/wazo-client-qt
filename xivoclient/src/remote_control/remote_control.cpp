@@ -149,11 +149,13 @@ void RemoteControl::processCommands()
             RC_EXECUTE_ARG(exec_double_click_on_number_for_name);
             RC_EXECUTE_ARG(sort_list_for_remote_directory);
             RC_EXECUTE_ARG(switchboard_answer_incoming_call);
+            RC_EXECUTE(switchboard_hang_up);
             RC_EXECUTE_WITH_RETURN(get_switchboard_current_call_infos);
             RC_EXECUTE_WITH_RETURN(get_switchboard_incoming_calls_infos);
             RC_EXECUTE_WITH_RETURN(get_agent_list_infos);
             RC_EXECUTE_WITH_RETURN(get_main_window_infos);
             RC_EXECUTE_WITH_RETURN(is_logged);
+            RC_EXECUTE_ARG(dial);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED, command.action, "", return_value);
