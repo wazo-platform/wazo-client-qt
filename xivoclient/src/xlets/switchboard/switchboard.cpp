@@ -64,6 +64,7 @@ Switchboard::Switchboard(QWidget *parent)
     this->setupUi();
 
     this->registerListener("current_calls");
+    this->registerListener("dial_success");
 
     QShortcut * waiting_calls_focus_shortcut = new QShortcut(QKeySequence(Qt::Key_F9), this);
     waiting_calls_focus_shortcut->setContext(Qt::ApplicationShortcut);
@@ -96,6 +97,8 @@ Switchboard::Switchboard(QWidget *parent)
 
     connect(this->m_current_call, SIGNAL(requestedAnswer()),
             this, SLOT(answerIncomingCall()));
+    connect(this, SIGNAL(dialSuccess()),
+            this->m_current_call, SLOT(dialSuccess()));
 
     this->setFocus();
 }
@@ -109,6 +112,8 @@ void Switchboard::parseCommand(const QVariantMap &message)
     QString message_class = message["class"].toString();
     if (message_class == "current_calls") {
         this->parseCurrentCalls(message);
+    } else if (message_class == "dial_success") {
+        emit dialSuccess();
     }
 }
 

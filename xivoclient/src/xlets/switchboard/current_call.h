@@ -75,6 +75,7 @@ class CurrentCall: public QObject, public IPBXListener
         void updateCallInfo();
         void numberSelected(const QString &number);
         void noNumberSelected();
+        void dialSuccess();
     private:
         void clear();
         void updateCallerID(const QString &name, const QString &number);
@@ -86,6 +87,7 @@ class CurrentCall: public QObject, public IPBXListener
         void noCallsMode();
         void ringingMode();
         void answeringMode();
+        void ringbackToneMode();
         void transferRingingMode();
         void transferAnsweredMode();
         void resetButtons();
