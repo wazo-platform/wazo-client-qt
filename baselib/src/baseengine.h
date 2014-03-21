@@ -154,11 +154,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);
 
-    private:
-
         QVariant parseJson(const QByteArray &) const;
         QByteArray toJson(const QVariantMap &map) const;
 
+    private:
 
         // private getters/setters
 
