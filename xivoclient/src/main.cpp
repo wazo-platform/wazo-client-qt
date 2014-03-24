@@ -41,7 +41,6 @@
 
 #include "assembler.h"
 #include "main_window/main_window.h"
-#include "powerawareapplication.h"
 #include "fileopeneventhandler.h"
 
 #ifdef FUNCTESTS
@@ -59,7 +58,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
-    PowerAwareApplication *app = new PowerAwareApplication(argc, argv);
+    QtSingleApplication *app = new QtSingleApplication(argc, argv);
 
     FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app, app);
     app->installEventFilter(fileOpenHandler);
@@ -99,16 +98,16 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QString info_osname;
     QString info_endianness = QSysInfo::ByteOrder ? "LE" : "BE";
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX)
     info_osname = QString("X11-%1-%2")
         .arg(info_endianness)
         .arg(app->applicationPid());
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
     info_osname = QString("WIN-%1-0x%2-%3")
         .arg(info_endianness)
         .arg(QSysInfo::WindowsVersion, 2, 16, QChar('0'))
         .arg(app->applicationPid());
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
     info_osname = QString("MAC-%1-0x%2-%3")
         .arg(info_endianness)
         .arg(QSysInfo::MacintoshVersion, 2, 16, QChar('0'))

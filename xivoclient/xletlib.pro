@@ -1,7 +1,7 @@
 include(common-no-tests.pri)
 
 TEMPLATE = lib
-CONFIG   += dll hide_symbols
+CONFIG   += dll hide_symbols qt
 
 # Library version
 VERSION = $${XIVOVER}
@@ -20,7 +20,7 @@ SOURCES += $${ROOT_DIR}/src/xletlib/queue_entries/*.cpp
 
 DESTDIR = $${BIN_DIR}
 
-QT += gui
+QT += core gui widgets
 
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_en.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_es_ES.ts

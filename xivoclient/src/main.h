@@ -30,9 +30,9 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include <QtSingleApplication>
 #include <baseengine.h>
 
-#include "powerawareapplication.h"
 #include "main_window/main_window.h"
 
 #ifdef FUNCTESTS
@@ -40,7 +40,7 @@ class RemoteControl;
 #endif
 
 struct ExecObjects {
-    PowerAwareApplication *app;
+    QtSingleApplication *app;
     MainWindow *win;
     BaseEngine *baseengine;
 #ifdef FUNCTESTS

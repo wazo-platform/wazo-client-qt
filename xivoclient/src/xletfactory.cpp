@@ -94,7 +94,7 @@ static bool findPluginDir()
 {
     pluginDir = qApp->applicationDirPath();
     pluginDirFound = false;
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     if (pluginDir.cd("plugins")) {
         // if there is a plugins dir next to where the application remain
         pluginDirFound = true;
@@ -140,15 +140,12 @@ namespace XLetFactory {
         if (construct) {
             xlet = construct(parent);
         } else {
-            QString fileName =
-#ifdef Q_WS_WIN
-            id + "plugin.dll";
+	    QString fileName = "lib" + id + "plugin.so";
+#ifdef Q_OS_WIN
+            fileName = id + "plugin.dll";
 #endif
-#ifdef Q_WS_X11
-            "lib" + id + "plugin.so";
-#endif
-#ifdef Q_WS_MAC
-            "lib" + id + "plugin.dylib";
+#ifdef Q_OS_MAC
+            fileName = "lib" + id + "plugin.dylib";
 #endif
 
             QPluginLoader loader(pluginDir.absoluteFilePath(fileName));

@@ -1,12 +1,10 @@
 include(common-no-tests.pri)
-include($${ROOT_DIR}/qtaddons/qtsingleapplication/src/qtsingleapplication.pri)
+include($${ROOT_DIR}/qt-solutions/qtsingleapplication/src/qtsingleapplication.pri)
 
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
 
 TARGET = xivoclient
-
-CONFIG += uitools
 
 unix:LIBS += -lxivoclientxlets
 win32 {
@@ -44,7 +42,6 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_it.ts
 
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src
-INCLUDEPATH += $${BASELIB_DIR}/json_jsonqt/lib
 INCLUDEPATH += $${ROOT_DIR}/src
 
 HEADERS += $${ROOT_DIR}/src/*.h

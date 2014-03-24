@@ -18,3 +18,5 @@ SUBDIRS  = \
 xletdebug {
     SUBDIRS += src/xlets/debug
 }
+QT += widgets
+QT += uitools

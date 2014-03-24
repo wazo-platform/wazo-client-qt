@@ -101,7 +101,7 @@ void DialPanel::dragEnterEvent(QDragEnterEvent * event)
 
 void DialPanel::dropEvent(QDropEvent * event)
 {
-    QString originator = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
+    QString originator = QString::fromLatin1(event->mimeData()->data(XUSERID_MIMETYPE));
     qDebug() << Q_FUNC_INFO << event << originator << m_input->currentText();
     QString ext = m_input->currentText();
     if (ext.isEmpty())

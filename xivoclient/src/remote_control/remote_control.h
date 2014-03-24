@@ -95,7 +95,7 @@ class RemoteControl : public QObject
         void processCommands();
 
     private:
-        RemoteControlCommand parseCommand(const QByteArray & raw_command);
+        RemoteControlCommand parseCommand(QByteArray raw_command);
         void sendResponse(RemoteControlResponse response,
               QString command,
               QString message = "",

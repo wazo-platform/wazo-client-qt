@@ -37,7 +37,7 @@
 #include <phonenumber.h>
 #include "fileopeneventhandler.h"
 
-FileOpenEventHandler::FileOpenEventHandler(PowerAwareApplication* app, QObject* parent)
+FileOpenEventHandler::FileOpenEventHandler(QApplication* app, QObject* parent)
     : QObject(parent)
 {
     this->m_app = app;
@@ -80,7 +80,7 @@ void FileOpenEventHandler::handleUrl(const QString url)
 {
     if (this->m_activate) {
         qDebug() << "activating window";
-        this->m_app->activateWindow();
+        //this->m_app->activateWindow();
     }
 
     QString number = PhoneNumber::extract(url);

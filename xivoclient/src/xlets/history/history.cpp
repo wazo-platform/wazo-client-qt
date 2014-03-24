@@ -32,8 +32,6 @@
 
 #include "history.h"
 
-Q_EXPORT_PLUGIN2(xlethistoryplugin, XLetHistoryPlugin);
-
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/history_%1");
@@ -62,6 +60,7 @@ void LogWidgetModel::sort(int column, Qt::SortOrder order)
 
     QList<QVariant> tosort = m_history[m_mode].toList();
 
+    beginResetModel();
     if (order == Qt::AscendingOrder) {
         if (column == 0) {
             qSort(tosort.begin(), tosort.end(), ascendingOrderByNumber);
@@ -81,7 +80,7 @@ void LogWidgetModel::sort(int column, Qt::SortOrder order)
     }
 
     m_history[m_mode] = tosort;
-    reset();
+    endResetModel();
 }
 
 int LogWidgetModel::rowCount(const QModelIndex&) const
@@ -143,12 +142,13 @@ void LogWidgetModel::updateHistory(const QVariantMap &p)
 {
     int mode = p.value("mode").toInt();
     QVariantList h = p.value("history").toList();
+    beginResetModel();
     if (mode == m_mode)
         m_history[m_mode] = h;
     if (m_sorted) {
         sort(m_sorted_column, m_sort_order);
     }
-    reset();
+    endResetModel();
 }
 
 Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
@@ -180,8 +180,9 @@ void LogWidgetModel::changeMode(bool active)
     if (active) {
         m_mode = (HistoryMode)sender()->property("mode").toInt();
         requestHistory(m_mode);
+	beginResetModel();
         emit headerDataChanged(Qt::Horizontal, 0, 3);
-        reset();
+	endResetModel();
     }
 }
 
@@ -256,7 +257,7 @@ LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
     setSortingEnabled(true);
     setModel(model);
     verticalHeader()->hide();
-    horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));

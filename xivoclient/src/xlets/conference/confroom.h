@@ -63,11 +63,9 @@ class ConfRoomModel : public QAbstractTableModel
         int userNumberFromRow(int row) const;
     public slots:
         void updateMeetmeConfig(const QVariantMap &);
-        void updateMembership() { reset(); }
     private slots:
         void extractRow2IdMap();
-    protected:
-        void timerEvent(QTimerEvent *event);
+        void updateJoinTime();
     private:
         void updateView();
         void sort(int, Qt::SortOrder);

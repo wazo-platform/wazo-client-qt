@@ -154,8 +154,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void changeWatchedAgent(const QString &, bool);
         void changeWatchedQueue(const QString &);
 
-    private:
+        QVariant parseJson(const QByteArray &) const;
+        QByteArray toJson(const QVariantMap &map) const;
 
+    private:
 
         // private getters/setters
 
@@ -252,8 +254,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
                         const QString & server_port = "");
 
     signals:
-        void meetmeMembershipUpdated();
-
         void settingsChanged();  //!< signal emitted when the setting are changed
 
         void logged();    //!< signal emitted when the state becomes ELogged
@@ -337,8 +337,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitDelogged();
 
         void startConnection();
-        void sendCommand(const QString &);
-        void parseCommand(const QString &);
+        void sendCommand(const QByteArray &);
+        void parseCommand(const QByteArray &);
         void configsLists(const QString &function, const QVariantMap &datamap);
         void handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &ids);
         void handleGetlistDelConfig(const QString &listname, const QString &ipbxid, const QStringList &ids);

@@ -33,6 +33,8 @@
 #include <QtGui>
 #include <baseengine.h>
 #include <ipbxlistener.h>
+#include <QWidget>
+#include <QTextEdit>
 
 #include "xletlib_export.h"
 

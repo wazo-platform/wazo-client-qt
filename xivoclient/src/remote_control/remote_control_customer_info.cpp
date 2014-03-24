@@ -29,8 +29,6 @@
 
 #ifdef FUNCTESTS
 
-#include <JsonToVariant.h>
-
 #include <xlets/customerinfo-builtin/customerinfopanel.h>
 #include <xlets/customerinfo-builtin/form_result_extractor.h>
 

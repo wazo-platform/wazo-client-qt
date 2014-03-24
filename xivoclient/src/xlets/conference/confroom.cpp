@@ -43,12 +43,8 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &numbe
 {
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateMeetmeConfig(const QVariantMap &)));
-    connect(b_engine, SIGNAL(meetmeMembershipUpdated()),
-            this, SLOT(updateMembership()));
 
     extractRow2IdMap();
-    startTimer(1000);
-    timerEvent(NULL);
 
     COL_TITLE[ID] = tr("ID");
     COL_TITLE[NUMBER] = tr("Number");
@@ -60,17 +56,17 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &numbe
     COL_TITLE[ACTION_ALLOW_IN] = tr("A");
     COL_TITLE[ACTION_TALK_TO] = tr("T");
     COL_TITLE[ACTION_MUTE] = tr("M");
+
+    QTimer * join_time_timer = new QTimer(this);
+    connect(join_time_timer, SIGNAL(timeout()),
+            this, SLOT(updateJoinTime()));
+    join_time_timer->start(1000);
 }
 
 void ConfRoomModel::setView(ConfRoomView *v)
 {
     m_view = v;
     updateView();
-}
-
-void ConfRoomModel::timerEvent(QTimerEvent *)
-{
-    reset();
 }
 
 void ConfRoomModel::updateView()
@@ -88,9 +84,10 @@ void ConfRoomModel::updateView()
 
 void ConfRoomModel::updateMeetmeConfig(const QVariantMap &config)
 {
+    beginResetModel();
     m_members = config[m_number].toMap()["members"].toMap();
     extractRow2IdMap();
-    reset();
+    endResetModel();
 }
 
 void ConfRoomModel::extractRow2IdMap()
@@ -116,6 +113,7 @@ void ConfRoomModel::sort(int column, Qt::SortOrder order)
     QList<QPair<QString, QString> > toSort;
 
     int count = rowCount(QModelIndex());
+    beginResetModel();
     for (int i = 0; i < count; i++) {
         toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
                                               index(i, column).data().toString()));
@@ -128,7 +126,7 @@ void ConfRoomModel::sort(int column, Qt::SortOrder order)
     for (int i = 0; i < count; i++) {
         m_row2number.insert(i, QString(toSort[i].first));
     }
-    reset();
+    endResetModel();
 }
 
 int ConfRoomModel::rowCount(const QModelIndex &) const
@@ -151,6 +149,14 @@ int ConfRoomModel::userNumberFromRow(int row) const
 {
     const QString &number = m_row2number[row];
     return number.toInt();
+}
+
+void ConfRoomModel::updateJoinTime()
+{
+    QModelIndex first = createIndex(0, SINCE);
+    QModelIndex last = createIndex(m_members.size() - 1, SINCE);
+
+    emit dataChanged(first, last);
 }
 
 QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
@@ -247,7 +253,7 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     setModel(model);
     setShowGrid(0);
     verticalHeader()->hide();
-    horizontalHeader()->setMovable(true);
+    horizontalHeader()->setSectionsMovable(true);
     horizontalHeader()->setStretchLastSection(true);
 
     int ActionCol[] = { ACTION_MUTE,
@@ -258,11 +264,11 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
 
     for(int i = 0; i < nelem(ActionCol); i++) {
         setColumnWidth(ActionCol[i], 32);
-        horizontalHeader()->setResizeMode(ActionCol[i], QHeaderView::Fixed);
+        horizontalHeader()->setSectionResizeMode(ActionCol[i], QHeaderView::Fixed);
     }
 
     setColumnWidth(ADMIN, 60);
-    horizontalHeader()->setResizeMode(ADMIN, QHeaderView::Fixed);
+    horizontalHeader()->setSectionResizeMode(ADMIN, QHeaderView::Fixed);
     setStyleSheet("ConfListView {"
                       "border: none;"
                       "background:transparent;"

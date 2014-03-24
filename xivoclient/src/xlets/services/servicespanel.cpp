@@ -43,8 +43,6 @@
 const QStringList chkcapas = (QStringList() << "enablevoicemail" << "incallfilter" << "enablednd");
 const QStringList fwdcapas = (QStringList() << "fwdunc" << "fwdrna" << "fwdbusy");
 
-Q_EXPORT_PLUGIN2(xletservicesplugin, XLetServicesPlugin);
-
 XLet* XLetServicesPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/services_%1");
@@ -166,7 +164,7 @@ ServicesPanel::ServicesPanel(QWidget * parent)
         if (m_capas.contains(capa)) {
             connect(m_forward[capa]->widget(), SIGNAL(toggled(bool)),
                     this, SLOT(forwardToggled(bool)));
-            connect(m_forwarddest[capa]->widget(), SIGNAL(lostFocus()),
+            connect(m_forwarddest[capa]->widget(), SIGNAL(editingFinished()),
                     this, SLOT(forwardLostFocus()));
         }
     }

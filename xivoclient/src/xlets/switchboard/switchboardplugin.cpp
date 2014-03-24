@@ -34,8 +34,6 @@
 #include "switchboard.h"
 #include "switchboardplugin.h"
 
-Q_EXPORT_PLUGIN2(switchboardplugin, SwitchboardPlugin);
-
 XLet * SwitchboardPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/switchboard_%1");

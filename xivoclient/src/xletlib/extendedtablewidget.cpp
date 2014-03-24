@@ -29,6 +29,9 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QHeaderView>
+#include <QMenu>
+#include <QAction>
 
 #include <xivoconsts.h>
 #include <storage/channelinfo.h>
@@ -129,8 +132,8 @@ void ExtendedTableWidget::dropEvent(QDropEvent *event)
 {
     QTableWidgetItem *item = itemAt(event->pos());
     if ((item) && (PhoneNumber::phone_re().exactMatch(item->text()))) {
-        QString userid_from = QString::fromAscii(event->mimeData()->data(XUSERID_MIMETYPE));
-        QString channel_from = QString::fromAscii(event->mimeData()->data(CHANNEL_MIMETYPE));
+        QString userid_from = QString::fromLatin1(event->mimeData()->data(XUSERID_MIMETYPE));
+        QString channel_from = QString::fromLatin1(event->mimeData()->data(CHANNEL_MIMETYPE));
         if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
             event->acceptProposedAction();
             b_engine->actionCall("transfer",

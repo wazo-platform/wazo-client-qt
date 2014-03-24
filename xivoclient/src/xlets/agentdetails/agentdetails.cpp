@@ -28,6 +28,9 @@
  */
 
 #include <QSpacerItem>
+#include <QLabel>
+#include <QPushButton>
+#include <QGridLayout>
 
 #include <storage/agentinfo.h>
 #include <storage/queueinfo.h>
@@ -35,8 +38,6 @@
 #include <dao/queuememberdao.h>
 
 #include "agentdetails.h"
-
-Q_EXPORT_PLUGIN2(xletagentdetailsplugin, XLetAgentDetailsPlugin);
 
 XLet* XLetAgentDetailsPlugin::newXLetInstance(QWidget *parent)
 {

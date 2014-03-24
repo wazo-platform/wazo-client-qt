@@ -41,13 +41,13 @@
 #include <QTcpSocket>
 #include <QTranslator>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QLibraryInfo>
 #include <QSslError>
 #include <QSslSocket>
 #include <QUdpSocket>
 
-#include <JsonToVariant.h>
-#include <VariantToJson.h>
+#include <QJsonDocument>
 
 #include <storage/agentinfo.h>
 #include <storage/channelinfo.h>
@@ -116,7 +116,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
 
     // TCP connection with CTI Server
     m_ctiserversocket = new QSslSocket(this);
-    m_ctiserversocket->setProtocol(QSsl::TlsV1);
+    m_ctiserversocket->setProtocol(QSsl::TlsV1_0);
     m_cti_server = new CTIServer(m_ctiserversocket);
 
     connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
@@ -192,11 +192,11 @@ void BaseEngine::loadSettings()
     // this part had been commented for Win32, see svn 5882 or git 70eb1793
     // to allow a bit more flexibility, we leave it as a configurable setting,
     // whose default mode will be 'disabled'
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", false).toBool();
 #else
     m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
-#endif /* Q_WS_WIN */
+#endif /* Q_OS_WIN */
 
     m_config["logfilename"] = "XiVO_Client.log";
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
@@ -250,19 +250,14 @@ void BaseEngine::loadSettings()
         m_settings->endGroup();
     m_settings->endGroup();
 
-    QString defaultguioptions;
+    QByteArray defaultguioptions;
     QFile defaultguioptions_file(":/guioptions.json");
     if (defaultguioptions_file.exists()) {
         defaultguioptions_file.open(QFile::ReadOnly);
         defaultguioptions = defaultguioptions_file.readAll();
         defaultguioptions_file.close();
     }
-    QVariant data;
-    try {
-        data = JsonQt::JsonToVariant::parse(defaultguioptions);
-    } catch(JsonQt::ParseException) {
-        qDebug() << Q_FUNC_INFO << "exception catched for" << defaultguioptions;
-    }
+    QVariant data = parseJson(defaultguioptions);
 
     // this is used to make a migration from 1.0 to 1.1
     if (settingsversion != "1.0")
@@ -285,6 +280,17 @@ void BaseEngine::loadSettings()
                                       enable_function_bydefault[function]
                                      ).toBool();
     m_settings->endGroup();
+}
+
+QVariant BaseEngine::parseJson(const QByteArray &raw) const
+{
+    QJsonDocument doc = QJsonDocument::fromJson(raw);
+    return doc.toVariant();
+}
+
+QByteArray BaseEngine::toJson(const QVariantMap &map) const
+{
+    return QJsonDocument::fromVariant(map).toJson(QJsonDocument::Compact);
 }
 
 /*!
@@ -611,10 +617,10 @@ void BaseEngine::restoreAvailState()
 }
 
 /*! \brief send command to XiVO CTI server */
-void BaseEngine::sendCommand(const QString & command)
+void BaseEngine::sendCommand(const QByteArray &command)
 {
     if (m_ctiserversocket->state() == QAbstractSocket::ConnectedState)
-        m_ctiserversocket->write((command + "\n").toUtf8());
+        m_ctiserversocket->write(command + "\n");
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
@@ -624,7 +630,7 @@ QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
         return QString("");
     QVariantMap fullcommand = cticommand;
     fullcommand["commandid"] = qrand();
-    QString jsoncommand(JsonQt::VariantToJson::parse(fullcommand));
+    QByteArray jsoncommand(toJson(fullcommand));
     sendCommand(jsoncommand);
     return fullcommand["commandid"].toString();
 }
@@ -728,21 +734,15 @@ void BaseEngine::emitMessage(const QString & msg)
 }
 
 /*! \brief parse JSON and then process command */
-void BaseEngine::parseCommand(const QString &line)
+void BaseEngine::parseCommand(const QByteArray &raw)
 {
     m_pendingkeepalivemsg = 0;
-    QVariant data;
-    try {
-        QTime jsondecodetime;
-        jsondecodetime.start();
-        data = JsonQt::JsonToVariant::parse(line.trimmed());
-    } catch(JsonQt::ParseException) {
-        qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
-        data = QVariant(QVariant::Invalid);
-    }
+    QVariant data = parseJson(raw);
 
-    if (! data.isValid())
+    if (data.isNull()) {
+        qDebug() << "Invalid json aborting";
         return;
+    }
 
     QVariantMap datamap = data.toMap();
     QString direction = datamap.value("direction").toString();
@@ -767,7 +767,7 @@ void BaseEngine::parseCommand(const QString &line)
 
         if (datamap.contains("payload")) {
             QString payload;
-            QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toAscii());
+            QByteArray qba = QByteArray::fromBase64(datamap.value("payload").toString().toLatin1());
             if (datamap.value("compressed").toBool())
                 payload = QString::fromUtf8(qUncompress(qba));
             else
@@ -855,7 +855,7 @@ void BaseEngine::parseCommand(const QString &line)
             m_sessionid = datamap.value("sessionid").toString();
             QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_config["password"].toString());
             QCryptographicHash hidepass(QCryptographicHash::Sha1);
-            QByteArray res = hidepass.hash(tohash.toAscii(), QCryptographicHash::Sha1).toHex();
+            QByteArray res = hidepass.hash(tohash.toLatin1(), QCryptographicHash::Sha1).toHex();
             QVariantMap command;
             command["class"] = "login_pass";
             command["hashedpassword"] = QString(res);
@@ -962,7 +962,6 @@ void BaseEngine::parseCommand(const QString &line)
         emit meetmeUpdate(datamap.value("config").toMap());
     } else if (thisclass == "meetme_user") {
         m_meetme_membership = datamap["list"].toList();
-        emit meetmeMembershipUpdated();
     } else {
         if (replyid.isEmpty())
             qDebug() << "Unknown server command received:" << thisclass << datamap;
@@ -1393,8 +1392,10 @@ void BaseEngine::ctiSocketReadyRead()
             // we get here when receiving a sheet as a Qt4 .ui form
             qDebug() << "Incoming sheet, size:" << line.size();
             emit displayFiche(line, true, QString());
-        } else
-            parseCommand(line);
+        } else {
+            data.chop(1);  // remove the \n the the end of the json
+            parseCommand(data);
+        }
     }
 }
 
@@ -1406,14 +1407,7 @@ void BaseEngine::filetransferSocketReadyRead()
 {
     while (m_filetransfersocket->canReadLine()) {
         QByteArray data = m_filetransfersocket->readLine();
-        QString line = QString::fromUtf8(data);
-        QVariant jsondata;
-        try {
-            jsondata = JsonQt::JsonToVariant::parse(line.trimmed());
-        } catch(JsonQt::ParseException &) {
-            qDebug() << Q_FUNC_INFO << "exception catched for" << line.trimmed();
-        }
-        QVariantMap jsondatamap = jsondata.toMap();
+        QVariantMap jsondatamap = this->parseJson(data).toMap();
         if (jsondatamap.value("class").toString() == "fileref") {
             if (m_filedir == "download") {
                 m_downloaded = QByteArray::fromBase64(jsondatamap.value("payload").toByteArray());
@@ -1934,8 +1928,9 @@ void BaseEngine::urlAuto(const QString & value)
         // the reserialize is intended to enable some choice among serialization methods
         // one could for instance send the pairs into json or whatever ...
         if (reserialize == "/") {
+            QUrlQuery query(url);
             QPair<QString, QString> pair;
-            foreach(pair, url.queryItems())
+            foreach(pair, query.queryItems())
                 tosend.append(QString("%1=%2").arg(pair.first).arg(pair.second));
         }
 
@@ -1964,7 +1959,7 @@ void BaseEngine::urlAuto(const QString & value)
 
     else {
         // rely on the system's url opening methods (see xdg-open on linux, for instance)
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         // in win32 case + iexplore.exe, this should ensure it opens a new tab
         QString key = QString("HKEY_CLASSES_ROOT\\%1\\shell\\open\\command").arg(url.scheme());
         QSettings settings(key, QSettings::NativeFormat);

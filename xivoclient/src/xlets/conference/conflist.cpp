@@ -34,8 +34,6 @@
 ConfListModel::ConfListModel(QWidget *parent)
     : QAbstractTableModel(parent)
 {
-    startTimer(500);
-
     COL_TITLE[ID] = tr("Room UID");
     COL_TITLE[NUMBER] = tr("Number");
     COL_TITLE[NAME] = tr("Name");
@@ -46,11 +44,6 @@ ConfListModel::ConfListModel(QWidget *parent)
 
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateRoomConfigs(const QVariantMap &)));
-}
-
-void ConfListModel::timerEvent(QTimerEvent *)
-{
-    reset();
 }
 
 void ConfListModel::updateRoomConfigs(const QVariantMap &configs)
@@ -153,14 +146,21 @@ QVariant ConfListModel::headerData(int section,
     return QVariant();
 }
 
+void ConfListModel::updateConfTime()
+{
+    QModelIndex cellChanged1 = createIndex(0, STARTED_SINCE);
+    QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, STARTED_SINCE);
+    emit dataChanged(cellChanged1, cellChanged2);
+}
+
 ConfListView::ConfListView(QWidget *parent)
     : QTableView(parent)
 {
     setSortingEnabled(true);
     setShowGrid(0);
     verticalHeader()->hide();
-    horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-    horizontalHeader()->setMovable(true);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    horizontalHeader()->setSectionsMovable(true);
     setStyleSheet("ConfListView {"
                     "border: none;"
                     "background: transparent;"
@@ -177,36 +177,39 @@ void ConfListView::onViewClick(const QModelIndex &model)
     QString roomName = model.sibling(model.row(), ConfListModel::NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), ConfListModel::NUMBER).data().toString();
 
+
     if (number != "") {
-        if (lastPressed & Qt::LeftButton) {
-            b_engine->pasteToDial(roomNumber);
-            QTimer *timer = new QTimer(this);
-            timer->setSingleShot(true);
-            timer->setProperty("number", number);
-            connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
-            timer->start(10);
-        } else {
-            QMenu *menu = new QMenu(this);
-
-            QAction *action = new QAction(
-                tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
-
-            action->setProperty("number", number);
-            connect(action, SIGNAL(triggered(bool)),
-                    parentWidget(), SLOT(openConfRoom()));
-            connect(action, SIGNAL(triggered(bool)),
-                    parentWidget(), SLOT(phoneConfRoom()));
-
-            menu->addAction(action);
-            menu->exec(QCursor::pos());
-        }
+        b_engine->pasteToDial(roomNumber);
+        QTimer *timer = new QTimer(this);
+        timer->setSingleShot(true);
+        timer->setProperty("number", number);
+        connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
+        timer->start(10);
     }
 }
 
-void ConfListView::mousePressEvent(QMouseEvent *event)
+
+void ConfListView::contextMenuEvent(QContextMenuEvent * event)
 {
-    lastPressed = event->button();
-    QTableView::mousePressEvent(event);
+    const QModelIndex &index = indexAt(event->pos());
+
+    QString number = index.sibling(index.row(), ConfListModel::ID).data().toString();
+    QString roomName = index.sibling(index.row(), ConfListModel::NAME).data().toString();
+    QString roomNumber = index.sibling(index.row(), ConfListModel::NUMBER).data().toString();
+
+    QMenu *menu = new QMenu(this);
+
+    QAction *action = new QAction(
+        tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
+
+    action->setProperty("number", number);
+    connect(action, SIGNAL(triggered(bool)),
+	    parentWidget(), SLOT(openConfRoom()));
+    connect(action, SIGNAL(triggered(bool)),
+	    parentWidget(), SLOT(phoneConfRoom()));
+
+    menu->addAction(action);
+    menu->exec(QCursor::pos());
 }
 
 
@@ -215,17 +218,22 @@ ConfList::ConfList(XletConference *parent)
 {
     QVBoxLayout *vBox = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout();
-    
+
     // this contains the data, unordered
     m_model = new ConfListModel(this);
     m_model->setObjectName("conflist_model");
-    
+
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            m_model, SLOT(updateConfTime()));
+    timer_display->start(1000);
+
     // this maps the indexes between the sorted view and the unordered model
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(m_model);
     proxyModel->setDynamicSortFilter(true); /* sorts right on insertion, instead
     of half a second after the window has appeared */
-    
+
     // this displays the sorted data
     ConfListView *view = new ConfListView(this);
     view->setModel(proxyModel);

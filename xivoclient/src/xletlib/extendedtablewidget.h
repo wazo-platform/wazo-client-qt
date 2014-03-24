@@ -33,6 +33,7 @@
 #include "xletlib_export.h"
 
 #include <QtGui>
+#include <QTableWidget>
 #include <baseengine.h>
 
 
@@ -43,7 +44,7 @@ class XLETLIB_EXPORT ExtendedTableWidget : public QTableWidget
     public:
         ExtendedTableWidget(QWidget *parent=0);
         ExtendedTableWidget(int rows, int columns, QWidget *parent=0);
-        void setEditable(bool editable) { m_editable = editable; };
+        void setEditable(bool editable) { m_editable = editable; }
 
     signals:
         void columnSorted(int column, Qt::SortOrder order);

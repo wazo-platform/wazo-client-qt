@@ -44,8 +44,6 @@
 
 #include "queues.h"
 
-Q_EXPORT_PLUGIN2(xletqueuesplugin, XLetQueuesPlugin);
-
 XLet* XLetQueuesPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/queues_%1");

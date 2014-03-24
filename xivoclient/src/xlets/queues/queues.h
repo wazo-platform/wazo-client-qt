@@ -83,6 +83,7 @@ class XLetQueuesPlugin : public QObject, XLetInterface
 {
     Q_OBJECT
     Q_INTERFACES(XLetInterface)
+    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xletqueues.json")
 
     public:
         XLet *newXLetInstance(QWidget *parent=0);
