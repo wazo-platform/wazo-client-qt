@@ -51,7 +51,7 @@ CurrentCall::CurrentCall(QObject *parent)
       m_call_label(tr("Call")),
       m_complete_transfer_label(tr("Complete T")),
       m_hangup_label(tr("Hangup")),
-      m_cancel_transfer_label(tr("Cancel T"))
+      m_cancel_label(tr("Cancel"))
 {
     this->registerListener("current_call_attended_transfer_answered");
 
@@ -279,7 +279,7 @@ void CurrentCall::ringbackToneMode()
 {
     this->resetButtons();
 
-    this->setHangupButton();
+    this->setCancelButton();
 }
 
 void CurrentCall::resetButtons()
@@ -402,11 +402,21 @@ void CurrentCall::setHangupButton()
     );
 }
 
+void CurrentCall::setCancelButton()
+{
+    this->setButton(
+        this->m_current_call_widget->btn_hangup,
+        m_cancel_label,
+        hangup_key,
+        SLOT(hangup())
+    );
+}
+
 void CurrentCall::setCancelTransferButton()
 {
     this->setButton(
         this->m_current_call_widget->btn_hangup,
-        m_cancel_transfer_label,
+        m_cancel_label,
         hangup_key,
         SLOT(cancelTransfer())
     );
