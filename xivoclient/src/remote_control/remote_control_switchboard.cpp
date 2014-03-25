@@ -35,6 +35,7 @@
 #include <xletlib/directory_entry.h>
 #include <xletlib/queue_entries/queue_entries_model.h>
 
+#include "ui_current_call.h"
 #include "remote_control.h"
 
 QVariantMap RemoteControl::get_switchboard_infos()
@@ -87,6 +88,13 @@ void RemoteControl::switchboard_answer_incoming_call(const QVariantList & args)
 
     incoming->selectRow(row_found);
     this->pressEnter(incoming);
+}
+
+void RemoteControl::switchboard_hang_up()
+{
+    Switchboard *xlet = this->get_xlet<Switchboard>("switchboard");
+    this->assert(xlet != NULL, "xlet switchboard is null");
+    xlet->m_current_call->m_current_call_widget->btn_hangup->click();
 }
 
 QVariantMap RemoteControl::get_switchboard_current_call_infos()

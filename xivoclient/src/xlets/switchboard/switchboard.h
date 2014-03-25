@@ -63,6 +63,8 @@ class Switchboard : public XLet, public IPBXListener
         void postInitializationSetup();
         void focusOnIncomingCalls();
         void focusOnWaitingCalls();
+    signals:
+        void dialSuccess();
     private slots:
         void answerIncomingCall() const;
     private:

@@ -143,8 +143,10 @@ class RemoteControl : public QObject
         QVariantMap get_main_window_infos();
         QVariantMap is_logged();
         void switchboard_answer_incoming_call(const QVariantList &);
+        void switchboard_hang_up();
         QVariantMap get_switchboard_current_call_infos();
         QVariantMap get_switchboard_incoming_calls_infos();
+        void dial(const QVariantList &);
         QWidget *_get_current_sheet();
 
         //Xlets

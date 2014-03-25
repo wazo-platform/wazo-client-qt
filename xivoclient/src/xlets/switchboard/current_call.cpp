@@ -152,6 +152,11 @@ void CurrentCall::clear()
     this->updateCallInfo();
 }
 
+void CurrentCall::dialSuccess()
+{
+    this->ringbackToneMode();
+}
+
 void CurrentCall::numberSelected(const QString &number)
 {
     switch(m_requested_action) {
@@ -188,6 +193,7 @@ void CurrentCall::call()
 void CurrentCall::hangup()
 {
     b_engine->sendJsonCommand(MessageFactory::hangup());
+    this->noCallsMode();
 }
 
 void CurrentCall::hold()
@@ -267,6 +273,13 @@ void CurrentCall::transferAnsweredMode()
 
     this->setCompleteTransferButton();
     this->setCancelTransferButton();
+}
+
+void CurrentCall::ringbackToneMode()
+{
+    this->resetButtons();
+
+    this->setHangupButton();
 }
 
 void CurrentCall::resetButtons()

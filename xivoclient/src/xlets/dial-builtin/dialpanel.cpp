@@ -40,6 +40,7 @@ DialPanel::DialPanel(QWidget *parent)
     setAcceptDrops(true);
 
     m_input = new QComboBox(this);
+    m_input->setObjectName("extension_input");
     m_input->setToolTip(tr("Input here the phone number to dial"));
     m_input->setEditable(true);
     m_input->setDuplicatesEnabled(false);
@@ -55,6 +56,7 @@ DialPanel::DialPanel(QWidget *parent)
 
     QPixmap pmphone = QPixmap(":/images/sipphone.png");
     QPushButton * dialButton = new QPushButton(this);
+    dialButton->setObjectName("dial_button");
     dialButton->setIcon(pmphone);
     dialButton->setIconSize(pmphone.size());
 
