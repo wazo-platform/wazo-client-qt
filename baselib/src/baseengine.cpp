@@ -406,18 +406,6 @@ void BaseEngine::logAction(const QString & logstring)
     }
 }
 
-/*! \brief send power event to the server.
- *
- * \todo check if this is usefull. If not, remove it.
- */
-void BaseEngine::powerEvent(const QString & eventinfo)
-{
-    QVariantMap command;
-    command["class"] = "powerevent";
-    command["value"] = eventinfo;
-    sendJsonCommand(command);
-}
-
 /*! \brief Starts the connection to the server
  * This method starts the login process by connection
  * to the server.

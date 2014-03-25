@@ -58,7 +58,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
-    QtSingleApplication *app = new QtSingleApplication(argc, argv);
+    PowerAwareApplication  *app = new PowerAwareApplication(argc, argv);
 
     FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app, app);
     app->installEventFilter(fileOpenHandler);
@@ -155,8 +155,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                      b_engine, SLOT(stop()));
     QObject::connect(app, SIGNAL(resume()),
                      b_engine, SLOT(start()));
-    QObject::connect(app, SIGNAL(powerEvent(const QString &)),
-                     b_engine, SLOT(powerEvent(const QString &)));
     QObject::connect(app, SIGNAL(messageReceived(const QString &)),
                      b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
     QObject::connect(fileOpenHandler, SIGNAL(dialNumber(QString)),

@@ -27,43 +27,43 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __POWERAWAREAPPLICATION_H__
+#define __POWERAWAREAPPLICATION_H__
 
-#include <baseengine.h>
+#include <QAbstractNativeEventFilter>
+#include <QtSingleApplication>
 
-#include "main_window/main_window.h"
-#include "powerawareapplication.h"
+class PowerEventFilter : public QObject, public QAbstractNativeEventFilter
+{
+    Q_OBJECT
+    public:
+        bool nativeEventFilter(const QByteArray & eventType, void * message, long * result);
 
-#ifdef FUNCTESTS
-class RemoteControl;
-#endif
-
-struct ExecObjects {
-    PowerAwareApplication *app;
-    MainWindow *win;
-    BaseEngine *baseengine;
-#ifdef FUNCTESTS
-    RemoteControl *rc;
-#endif
-    bool initOK;
-
-    ExecObjects()
-    : app(NULL),
-      win(NULL),
-      baseengine(NULL),
-#ifdef FUNCTESTS
-      rc(NULL),
-#endif
-      initOK(false)
-    {
-    }
+    signals:
+        //! emitted when going to stand by mode
+        void standBy();
+        //! emitted when resuming from stand by mode
+        void resume();
 };
 
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
+/*! \brief Extends QApplication to support stand-by/resume events
+ *
+ * This only works under MS Windows.
+ */
+class PowerAwareApplication : public QtSingleApplication
+{
+    Q_OBJECT
+    public:
+        PowerAwareApplication( int & argc, char ** argv );
+        void commitData(QSessionManager &);
+    signals:
+        //! emitted when going to stand by mode
+        void standBy();
+        //! emitted when resuming from stand by mode
+        void resume();
 
-int main(int, char **);
+    public slots:
+        void setStopper();
+};
 
 #endif
