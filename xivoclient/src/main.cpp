@@ -42,6 +42,7 @@
 #include "assembler.h"
 #include "main_window/main_window.h"
 #include "fileopeneventhandler.h"
+#include "power_event_handler.h"
 
 #ifdef FUNCTESTS
 #include "remote_control/remote_control.h"
@@ -58,8 +59,10 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.fr");
     QCoreApplication::setApplicationName("XIVO_Client");
-    PowerAwareApplication  *app = new PowerAwareApplication(argc, argv);
+    QtSingleApplication  *app = new QtSingleApplication(argc, argv);
 
+    PowerEventHandler * power_event_handler = new PowerEventHandler();
+    app->installNativeEventFilter(power_event_handler);
     FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app, app);
     app->installEventFilter(fileOpenHandler);
 
@@ -151,9 +154,9 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     app->setQuitOnLastWindowClosed(false);
     app->setProperty("stopper", "lastwindow");
 
-    QObject::connect(app, SIGNAL(standBy()),
+    QObject::connect(power_event_handler, SIGNAL(standBy()),
                      b_engine, SLOT(stop()));
-    QObject::connect(app, SIGNAL(resume()),
+    QObject::connect(power_event_handler, SIGNAL(resume()),
                      b_engine, SLOT(start()));
     QObject::connect(app, SIGNAL(messageReceived(const QString &)),
                      b_engine, SLOT(handleOtherInstanceMessage(const QString &)));

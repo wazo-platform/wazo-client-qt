@@ -33,14 +33,14 @@
 #include <baseengine.h>
 
 #include "main_window/main_window.h"
-#include "powerawareapplication.h"
+#include "power_event_handler.h"
 
 #ifdef FUNCTESTS
 class RemoteControl;
 #endif
 
 struct ExecObjects {
-    PowerAwareApplication *app;
+    QtSingleApplication *app;
     MainWindow *win;
     BaseEngine *baseengine;
 #ifdef FUNCTESTS

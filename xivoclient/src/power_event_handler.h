@@ -33,37 +33,15 @@
 #include <QAbstractNativeEventFilter>
 #include <QtSingleApplication>
 
-class PowerEventFilter : public QObject, public QAbstractNativeEventFilter
+class PowerEventHandler : public QObject, public QAbstractNativeEventFilter
 {
     Q_OBJECT
     public:
         bool nativeEventFilter(const QByteArray & eventType, void * message, long * result);
 
     signals:
-        //! emitted when going to stand by mode
         void standBy();
-        //! emitted when resuming from stand by mode
         void resume();
-};
-
-/*! \brief Extends QApplication to support stand-by/resume events
- *
- * This only works under MS Windows.
- */
-class PowerAwareApplication : public QtSingleApplication
-{
-    Q_OBJECT
-    public:
-        PowerAwareApplication( int & argc, char ** argv );
-        void commitData(QSessionManager &);
-    signals:
-        //! emitted when going to stand by mode
-        void standBy();
-        //! emitted when resuming from stand by mode
-        void resume();
-
-    public slots:
-        void setStopper();
 };
 
 #endif

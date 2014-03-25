@@ -30,7 +30,6 @@
 #include <QCoreApplication>
 #include <QVariant>
 
-#include "powerawareapplication.h"
 #ifdef Q_OS_WIN
 #define NOGDI
 #include <windef.h>
@@ -39,10 +38,9 @@
 #include <pbt.h>
 #endif
 
-/*! \brief filter windows events
- *
- * Process PBT_APM* events */
-bool PowerEventFilter::nativeEventFilter(const QByteArray & eventType, void * msg, long * result)
+#include "power_event_handler.h"
+
+bool PowerEventHandler::nativeEventFilter(const QByteArray & eventType, void * msg, long * result)
 {
     if (eventType == "windows_generic_MSG") {
         #ifdef Q_OS_WIN
@@ -55,19 +53,18 @@ bool PowerEventFilter::nativeEventFilter(const QByteArray & eventType, void * ms
               PBT_APMQUERYSUSPENDFAILED Suspension request denied.
               PBT_APMPOWERSTATUSCHANGE Power status has changed. (switch battery/AC or battery under threshold)
             */
-            /*if(windows_message->wParam == PBT_APMQUERYSUSPEND) {
-                standBy();
-                *result = TRUE; // BROADCAST_QUERY_DENY would block & deny/abort the Suspend Operation
-                return true;
-            } */
             if(windows_message->wParam == PBT_APMSUSPEND) {
+                this->setProperty("stopper", "standby");
                 emit standBy();
                 *result = TRUE;
                 return true;
             }
             /*
-              PBT_APMRESUMEAUTOMATIC Operation is resuming automatically from a low-power state. This message is sent every time the system resumes.
-              PBT_APMRESUMESUSPEND   Operation is resuming from a low-power state. This message is sent after PBT_APMRESUMEAUTOMATIC if the resume is triggered by user input, such as pressing a key.
+              PBT_APMRESUMEAUTOMATIC Operation is resuming automatically from a low-power state.
+                                     This message is sent every time the system resumes.
+              PBT_APMRESUMESUSPEND   Operation is resuming from a low-power state.
+                                     This message is sent after PBT_APMRESUMEAUTOMATIC if the resume is triggered
+                                     by user input, such as pressing a key.
             */
             if(windows_message->wParam == PBT_APMRESUMESUSPEND) {
                 emit resume();
@@ -78,37 +75,4 @@ bool PowerEventFilter::nativeEventFilter(const QByteArray & eventType, void * ms
         #endif
     }
     return false;
-}
-
-/*! \brief constructor */
-PowerAwareApplication::PowerAwareApplication(int & argc, char ** argv)
-    : QtSingleApplication(argc, argv)
-{
-    PowerEventFilter * filter = new PowerEventFilter();
-    this->installNativeEventFilter(filter);
-    connect(filter, SIGNAL(standBy()), this, SLOT(setStopper()));
-    connect(filter, SIGNAL(standBy()), this, SIGNAL(standBy()));
-    connect(filter, SIGNAL(resume()), this, SIGNAL(resume()));
-}
-
-void PowerAwareApplication::setStopper()
-{
-    this->setProperty("stopper", "standby");
-}
-
-
-/*! This function is called when the window manager closes the user's
- * session when the XiVO Client is still running.
- * XLets wanting to save their data before exiting should connect to
- * the qApp->commitDataRequest signal (e.g. LocalDirectory).
- *
- * Be warned : this function is not called with the "console" option in Windows.
- */
-void PowerAwareApplication::commitData(QSessionManager &sm)
-{
-    /* The commitDataRequest signal does not seem to be thrown
-     * if commitData is reimplemented, as it is the case here.
-     * See Qt bug 23117
-     */
-    emit commitDataRequest(sm);
 }
