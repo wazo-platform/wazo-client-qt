@@ -132,6 +132,7 @@ Section "Uninstall"
   ; remove the program dir
   Delete $INSTDIR\uninstall.exe
   RMDir /r $INSTDIR\imageformats
+  RMDir /r $INSTDIR\platforms
   RMDir /r $INSTDIR\sqldrivers
   RMDir /r $INSTDIR\plugins
   Delete $INSTDIR\qt.conf
