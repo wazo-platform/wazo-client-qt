@@ -19,6 +19,7 @@ TRANSIFEX_URL=https://www.transifex.com
 TRANSIFEX_PROJECT_URL=https://www.transifex.com/projects/p/xivo/resource/xivo-client
 TRANSIFEX_I18N_DIR="$XIVO_CLIENT_ROOT/translations/xivo.xivo-client"
 XIVO_CLIENT_I18N_DIR="$XIVO_CLIENT_ROOT/xivoclient/i18n"
+: ${QT_PATH:=/opt/qt5/5.2.1/gcc_64/bin}
 
 
 function main {
@@ -29,6 +30,11 @@ function main {
     if qmake_is_not_run ; then
         echo "Please run qmake before updating translations."
         exit 2
+    fi
+    if ! qt_tools_in_path ; then
+        echo "Could not find Qt binaries in $QT_PATH."
+        echo "Please set QT_PATH to the Qt binaries path."
+        exit 3
     fi
     process_arguments $@
 }
@@ -51,6 +57,10 @@ function qmake_is_not_run {
     else
         return 0
     fi
+}
+
+function qt_tools_in_path {
+    [ -f "$QT_PATH/lconvert" -a -f "$QT_PATH/lupdate" ]
 }
 
 
@@ -123,18 +133,12 @@ function update_translations_from_source {
 
 
 function merge_translations {
-    if hash lconvert
-    then
-        for locale in ${LOCALES_LIST}
-        do
-            rm "$XIVO_CLIENT_I18N_DIR/all_$locale.ts" -f
-            find_all_ts_files "$locale" \
-            | xargs lconvert -o "$XIVO_CLIENT_I18N_DIR/all_$locale.ts"
-        done
-    else
-        echo "You need to install the Qt tool lconvert."
-        exit 1
-    fi
+    for locale in ${LOCALES_LIST}
+    do
+        rm "$XIVO_CLIENT_I18N_DIR/all_$locale.ts" -f
+        find_all_ts_files "$locale" \
+            | xargs "$QT_PATH/lconvert" -o "$XIVO_CLIENT_I18N_DIR/all_$locale.ts"
+    done
 }
 
 
@@ -150,10 +154,10 @@ function find_all_ts_files {
 
 
 function lupdate_all {
-    lupdate "baselib/baselib.pro" -no-obsolete
-    lupdate "xivoclient/xletlib.pro" -no-obsolete
-    lupdate "xivoclient/xivoclient.pro" -no-obsolete
-    lupdate "xivoclient/xlets.pro" -no-obsolete
+    "$QT_PATH/lupdate" "baselib/baselib.pro" -no-obsolete
+    "$QT_PATH/lupdate" "xivoclient/xletlib.pro" -no-obsolete
+    "$QT_PATH/lupdate" "xivoclient/xivoclient.pro" -no-obsolete
+    "$QT_PATH/lupdate" "xivoclient/xlets.pro" -no-obsolete
 }
 
 
