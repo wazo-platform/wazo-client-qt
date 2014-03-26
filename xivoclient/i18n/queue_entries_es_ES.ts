@@ -4,12 +4,12 @@
 <context>
     <name>QueueEntries</name>
     <message>
-        <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="54"/>
+        <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="52"/>
         <source>Calls of a Queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="110"/>
+        <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="108"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2): %3 call(s)</source>
         <translation type="unfinished"></translation>
     </message>

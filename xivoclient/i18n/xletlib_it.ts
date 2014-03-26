@@ -214,33 +214,33 @@ in pausa</translation>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="80"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="83"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Cancella storia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="81"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="84"/>
         <source>&amp;Send</source>
         <translation>&amp;Invia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="98"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="101"/>
         <source>chitchat - %1 (%2)</source>
         <translation>chitchat - %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="138"/>
-        <location filename="../src/xletlib/chitchat.cpp" line="181"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="141"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="184"/>
         <source>chat window opened with &quot;%1&quot; (%2)</source>
         <translation>finestra di chat aperta con &quot;%1&quot; (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="155"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="158"/>
         <source>you said: </source>
         <translation>hai detto:</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="184"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="187"/>
         <source>system: </source>
         <translation>sistema:</translation>
     </message>
@@ -248,27 +248,27 @@ in pausa</translation>
 <context>
     <name>ExtendedTableWidget</name>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="70"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="73"/>
         <source>&amp;Remove</source>
         <translation>&amp;Rimuovi</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="74"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="77"/>
         <source>&amp;Dial</source>
         <translation>&amp;Chiama</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="77"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="80"/>
         <source>Send an E-mail</source>
         <translation>Invia una E-mail</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="171"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="174"/>
         <source>Removing this contact</source>
         <translation>Rimuovi questo contatto</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/extendedtablewidget.cpp" line="172"/>
+        <location filename="../src/xletlib/extendedtablewidget.cpp" line="175"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Rimozione del contatto. Sei sicuro ?</translation>
@@ -406,7 +406,7 @@ Busy lines: %3</source>
 <context>
     <name>SearchDialog</name>
     <message>
-        <location filename="../src/xletlib/searchdialog.cpp" line="39"/>
+        <location filename="../src/xletlib/searchdialog.cpp" line="40"/>
         <source>Search :</source>
         <translation>Cerca :</translation>
     </message>

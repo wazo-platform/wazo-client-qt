@@ -17,7 +17,7 @@
 <context>
     <name>XletAgentStatusDashboard</name>
     <message>
-        <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="52"/>
+        <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="50"/>
         <source>Agent status dashboard</source>
         <translation>Overzicht scherm agenten status</translation>
     </message>

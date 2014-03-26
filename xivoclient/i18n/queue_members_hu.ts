@@ -138,7 +138,7 @@
 <context>
     <name>XletQueueMembers</name>
     <message>
-        <location filename="../src/xlets/queue_members/queue_members.cpp" line="51"/>
+        <location filename="../src/xlets/queue_members/queue_members.cpp" line="49"/>
         <source>Queue Members</source>
         <translation type="unfinished"></translation>
     </message>

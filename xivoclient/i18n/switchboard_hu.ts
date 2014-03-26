@@ -25,7 +25,7 @@
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
-        <source>Cancel T</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -115,8 +115,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="286"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="296"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="291"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="301"/>
         <source>%n call(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>

@@ -373,12 +373,12 @@
         <translation>Bel paneel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="44"/>
         <source>Input here the phone number to dial</source>
         <translation>Geef hier een nummer op om te bellen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
+        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="51"/>
         <source>Enter &amp;Number :</source>
         <translation>Geef een &amp;nummer op:</translation>
     </message>

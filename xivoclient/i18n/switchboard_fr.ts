@@ -25,8 +25,8 @@
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
-        <source>Cancel T</source>
-        <translation>Annuler T</translation>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -115,8 +115,8 @@
         <translation>POPC</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="286"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="296"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="291"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="301"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n appel</numerusform>

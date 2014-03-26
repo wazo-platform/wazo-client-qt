@@ -162,12 +162,12 @@
 <context>
     <name>XletQueues</name>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="59"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="57"/>
         <source>Queues</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="124"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="122"/>
         <source>Configure</source>
         <translation>Beállítás</translation>
     </message>
@@ -175,43 +175,43 @@
 <context>
     <name>XletQueuesConfigure</name>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="160"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="158"/>
         <source>Queues configuration</source>
         <translation>Hívósorok beállítása</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="162"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="160"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
         <translation>Válassza ki melyik hívósornak kell megjelennie, majd a hívósor paraméterei a statisztikákhoz:</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="173"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="171"/>
         <source>&amp;Close</source>
         <translation>&amp;Bezár</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="186"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="184"/>
         <source>Queue</source>
         <translation>Hívósor</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="187"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="185"/>
         <source>Qos - X (s)</source>
         <translation>QoS - X (mp)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="188"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="186"/>
         <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="192"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="190"/>
         <source>Window (s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queues.cpp" line="193"/>
+        <location filename="../src/xlets/queues/queues.cpp" line="191"/>
         <source>The window is the period of time used to compute the statistics</source>
         <translation type="unfinished"></translation>
     </message>
