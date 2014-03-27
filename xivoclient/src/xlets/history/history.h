@@ -120,9 +120,6 @@ class LogTableView : public QTableView
         void onViewClick(const QModelIndex &);
         void callOnClick(bool);
         void contextMenuEvent(QContextMenuEvent *);
-
-    private:
-        int m_lastPressed;
 };
 
 
