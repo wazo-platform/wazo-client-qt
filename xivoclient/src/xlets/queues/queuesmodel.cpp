@@ -120,10 +120,10 @@ void QueuesModel::increaseWaitTime()
             m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"] = QString("%1").arg(nsecs);
         }
         else {
-                m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"] = "0";
+            m_queues_data[xqueueid].stats["Xivo-LongestWaitTime"] = "0";
         }
     }
-    
+
     QModelIndex cellChanged1 = createIndex(0, CURRENT_MAX_WAIT);
     QModelIndex cellChanged2 = createIndex(m_row2id.size() - 1, CURRENT_MAX_WAIT);
     // sends signal to proxy/view that the data should be refreshed
@@ -192,9 +192,7 @@ QVariant QueuesModel::formatTime(const QVariant &data) const
         if (!data_is_int) {
             return data;
         } else {
-            QTime ret;
-            ret = ret.addSecs(nsecs);
-            return ret.toString("mm':'ss");
+            return QTime(0, 0, nsecs).toString("mm:ss");
         }
     }
 }
