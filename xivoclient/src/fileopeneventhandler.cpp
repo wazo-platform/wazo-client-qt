@@ -57,7 +57,8 @@ bool FileOpenEventHandler::eventFilter(QObject*, QEvent* event)
 
         if (!fileOpenEvent->url().isEmpty())
         {
-            QString url = fileOpenEvent->url().toString();
+            QString unfixed_url = fileOpenEvent->url().toString();
+            QString url = unfixed_url.replace(QRegExp("^file:"), "");  // See https://bugreports.qt-project.org/browse/QTBUG-34801
             if(isXivoUrl(url))
             {
                 qDebug() << "handling url event " << url;
