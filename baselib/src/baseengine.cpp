@@ -673,7 +673,7 @@ QString BaseEngine::timeElapsed(double timestamp) const
 {
     QDateTime now = QDateTime::currentDateTime().addSecs(-timeDeltaServerClient());
     int seconds_elapsed = QDateTime::fromTime_t(timestamp).secsTo(now);
-    QTime time_elapsed = QTime(0, 0, seconds_elapsed);
+    QTime time_elapsed = QTime(0, 0).addSecs(seconds_elapsed);
     if (time_elapsed.hour() == 0) {
         return time_elapsed.toString("mm:ss");
     } else {

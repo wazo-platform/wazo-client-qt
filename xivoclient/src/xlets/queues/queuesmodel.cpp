@@ -192,7 +192,7 @@ QVariant QueuesModel::formatTime(const QVariant &data) const
         if (!data_is_int) {
             return data;
         } else {
-            return QTime(0, 0, nsecs).toString("mm:ss");
+            return QTime(0, 0).addSecs(nsecs).toString("mm:ss");
         }
     }
 }
