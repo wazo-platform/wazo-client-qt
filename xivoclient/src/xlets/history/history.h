@@ -110,11 +110,6 @@ class LogWidgetModel : public QAbstractTableModel, public IPBXListener
         HistoryMode m_mode;
 };
 
-/* class reason:
- *   You can't know which mouse button caused the onViewClick to be called.
- *   QApplication::mouseButtons and filtering event from QTableView doesn't
- *   look to work
- */
 class LogTableView : public QTableView
 {
     Q_OBJECT
@@ -124,8 +119,7 @@ class LogTableView : public QTableView
     private slots:
         void onViewClick(const QModelIndex &);
         void callOnClick(bool);
-    protected:
-        virtual void mousePressEvent(QMouseEvent *event);
+        void contextMenuEvent(QContextMenuEvent *);
 
     private:
         int m_lastPressed;

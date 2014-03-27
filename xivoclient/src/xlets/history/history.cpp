@@ -263,16 +263,26 @@ LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
             this, SLOT(onViewClick(const QModelIndex &)));
 }
 
-/*
- *   You can't know which mouse button caused the onViewClick to be called
- *   through QApplication::mouseButtons or through event filtering the
- *   QTableView
- */
-void LogTableView::mousePressEvent(QMouseEvent *event)
+void LogTableView::contextMenuEvent(QContextMenuEvent * event)
 {
-    m_lastPressed = event->button();
-    QTableView::mousePressEvent(event);
+    const QModelIndex &index = indexAt(event->pos());
+    QString caller = index.sibling(index.row(), 0).data().toString();
+    if (caller.isEmpty()) {
+        return;
+    }
+
+    QMenu *menu = new QMenu(this);
+
+    QAction *action = new QAction(tr("Call %1").arg(caller), menu);
+    action->setProperty("num_to_call", caller);
+    connect(action, SIGNAL(triggered(bool)),
+            this, SLOT(callOnClick(bool)));
+
+    menu->addAction(action);
+    menu->exec(QCursor::pos());
+
 }
+
 
 void LogTableView::callOnClick(bool)
 {
@@ -281,23 +291,13 @@ void LogTableView::callOnClick(bool)
     b_engine->actionDial(num_to_call);
 }
 
-void LogTableView::onViewClick(const QModelIndex &model)
+void LogTableView::onViewClick(const QModelIndex &index)
 {
-    QString caller = model.sibling(model.row(), 0).data().toString();
+    QString caller = index.sibling(index.row(), 0).data().toString();
 
-    if (caller != "") {
-        if (m_lastPressed & Qt::LeftButton) {
-            b_engine->pasteToDial(caller);
-        } else {
-            QMenu *menu = new QMenu(this);
-
-            QAction *action = new QAction(tr("Call %1").arg(caller), menu);
-            action->setProperty("num_to_call", caller);
-            connect(action, SIGNAL(triggered(bool)),
-                    this, SLOT(callOnClick(bool)));
-
-            menu->addAction(action);
-            menu->exec(QCursor::pos());
-        }
+    if (caller.isEmpty()) {
+        return;
     }
+
+    b_engine->pasteToDial(caller);
 }
