@@ -66,7 +66,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QueueEntriesView" name="incomingCallsView">
+          <widget class="SwitchboardQueueEntriesView" name="incomingCallsView">
            <property name="font">
             <font>
              <weight>50</weight>
@@ -136,7 +136,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QueueEntriesView" name="waitingCallsView">
+          <widget class="SwitchboardQueueEntriesView" name="waitingCallsView">
            <property name="font">
             <font>
              <weight>50</weight>
@@ -170,9 +170,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QueueEntriesView</class>
+   <class>SwitchboardQueueEntriesView</class>
    <extends>QTableView</extends>
-   <header location="global">xletlib/queue_entries/queue_entries_view.h</header>
+   <header>switchboard_queue_entries_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -240,7 +240,8 @@ void Switchboard::keyPressEvent(QKeyEvent *event)
 
 void Switchboard::focusOnIncomingCalls()
 {
-    this->ui.incomingCallsView->setFocus();
+    this->ui.waitingCallsView->clearSelection();
+    this->ui.incomingCallsView->selectFirstRow();
     this->m_current_call->noticeIncoming(this->hasIncomingCalls());
 }
 
@@ -250,7 +251,8 @@ bool Switchboard::hasIncomingCalls() {
 
 void Switchboard::focusOnWaitingCalls()
 {
-    this->ui.waitingCallsView->setFocus();
+    this->ui.waitingCallsView->clearSelection();
+    this->ui.waitingCallsView->selectFirstRow();
 }
 
 void Switchboard::watch_switchboard_queue()
