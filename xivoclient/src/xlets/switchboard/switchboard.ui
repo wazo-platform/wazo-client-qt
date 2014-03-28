@@ -172,7 +172,7 @@
   <customwidget>
    <class>SwitchboardQueueEntriesView</class>
    <extends>QTableView</extends>
-   <header>switchboard_queue_entries_view.h</header>
+   <header location="global">xlets/switchboard/switchboard_queue_entries_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
