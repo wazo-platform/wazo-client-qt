@@ -33,14 +33,14 @@
 #include <QObject>
 #include <QString>
 #include <QEvent>
-#include <QApplication>
+#include <QtSingleApplication>
 
 class FileOpenEventHandler: public QObject
 {
     Q_OBJECT
 
     public:
-        FileOpenEventHandler(QApplication* app, QObject* parent = NULL);
+        FileOpenEventHandler(QtSingleApplication* app, QObject* parent = NULL);
         ~FileOpenEventHandler();
         void setActivationWindow(bool activate);
 
@@ -53,7 +53,7 @@ class FileOpenEventHandler: public QObject
     private:
         bool isXivoUrl(QString url);
         void handleUrl(QString url);
-        QApplication* m_app;
+        QtSingleApplication* m_app;
         bool m_activate;
 
 };

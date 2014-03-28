@@ -125,6 +125,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     if (shallbeunique && app->isRunning()) {
         qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
         // do not create a new application, just activate the currently running one
+        app->activateWindow();
         ret.initOK = false;
         return ret;
     }
