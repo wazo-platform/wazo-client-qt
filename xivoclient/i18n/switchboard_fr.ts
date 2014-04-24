@@ -115,8 +115,8 @@
         <translation>POPC</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="291"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="301"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="293"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="303"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n appel</numerusform>

@@ -593,7 +593,7 @@ Merci de mettre à jour votre serveur.</translation>
 <context>
     <name>LogTableView</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="294"/>
+        <location filename="../src/xlets/history/history.cpp" line="276"/>
         <source>Call %1</source>
         <translation>Appel %1</translation>
     </message>
@@ -1150,7 +1150,7 @@ attente</translation>
         <translation>Ratio (Appels répondus en moins de X sec) / (Nombre d&apos;appels reçus)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>N/D</translation>
     </message>
@@ -1387,8 +1387,8 @@ ainsi que les paramètres pour les statistiques:</translation>
         <translation>POPC</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="291"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="301"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="293"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="303"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n appel</numerusform>

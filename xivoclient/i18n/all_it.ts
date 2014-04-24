@@ -594,7 +594,7 @@ Per favore aggiornala.</translation>
 <context>
     <name>LogTableView</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="294"/>
+        <location filename="../src/xlets/history/history.cpp" line="276"/>
         <source>Call %1</source>
         <translation>Chiamata %1</translation>
     </message>
@@ -1148,7 +1148,7 @@ Per favore aggiornala.</translation>
         <translation>Rapporto (Chiamate risposte in meno di X sec / Numero di chiamate risposte)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>N / D</translation>
     </message>
@@ -1385,8 +1385,8 @@ parametri per le statistiche sulla torta:</translation>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="291"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="301"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="293"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="303"/>
         <source>%n call(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>

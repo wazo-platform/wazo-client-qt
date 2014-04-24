@@ -154,7 +154,7 @@
         <translation>Proporção (Ligações atendidas em menos que X segundos / Numero de ligações atendidas)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>

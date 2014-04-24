@@ -154,7 +154,7 @@
         <translation>Verhouding (Oproepen beantwoord in minder dan X seconden / Aantal beantwoorde oproepen)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>N.v.t.</translation>
     </message>

@@ -154,7 +154,7 @@
         <translation>Ratio (Calls answered in less than X sec / Number of calls answered)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>

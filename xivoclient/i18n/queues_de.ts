@@ -155,7 +155,7 @@
         <translation>Verhältniss (angenommene Anrufe kürzer als X sekunden / Anzahl Anrufe angenommen)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>

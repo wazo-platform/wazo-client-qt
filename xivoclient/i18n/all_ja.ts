@@ -585,7 +585,7 @@ Please upgrade it.</source>
 <context>
     <name>LogTableView</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="294"/>
+        <location filename="../src/xlets/history/history.cpp" line="276"/>
         <source>Call %1</source>
         <translation>呼び出し %1</translation>
     </message>
@@ -1137,7 +1137,7 @@ Please upgrade it.</source>
         <translation>比率 (X秒以下で電話を取ることが出来た数 / 着信通話数)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>無し</translation>
     </message>
@@ -1373,8 +1373,8 @@ queues parameters for the Stats on slice:</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="291"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="301"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="293"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="303"/>
         <source>%n call(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>

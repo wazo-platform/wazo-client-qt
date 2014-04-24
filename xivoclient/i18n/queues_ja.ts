@@ -154,7 +154,7 @@
         <translation>比率 (X秒以下で電話を取ることが出来た数 / 着信通話数)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/queues/queuesmodel.cpp" line="259"/>
+        <location filename="../src/xlets/queues/queuesmodel.cpp" line="257"/>
         <source>N/A</source>
         <translation>無し</translation>
     </message>
