@@ -6,7 +6,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="522"/>
         <source>Connection lost with XiVO CTI server</source>
-        <translation>Persa la connessione con il server CTI XiVO</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="830"/>
@@ -196,12 +196,12 @@ Per favore aggiornala.</translation>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="86"/>
         <source>Agent</source>
-        <translation>Agente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="86"/>
         <source>Phone</source>
-        <translation>Telefono</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -233,7 +233,7 @@ Per favore aggiornala.</translation>
         <location filename="src/storage/queue_agent_status.cpp" line="76"/>
         <source>Logged</source>
         <oldsource>Logged in</oldsource>
-        <translation>Loggato</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="75"/>
@@ -249,13 +249,13 @@ Per favore aggiornala.</translation>
         <location filename="src/storage/queue_agent_status.cpp" line="84"/>
         <source>Unlogged</source>
         <oldsource>Logged out</oldsource>
-        <translation>Disconnesso</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="92"/>
         <source>Unpaused</source>
         <oldsource>Not paused</oldsource>
-        <translation>Non in pausa</translation>
+        <translation type="unfinished">Riattivato</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="96"/>

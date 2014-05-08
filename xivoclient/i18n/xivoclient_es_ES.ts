@@ -4,6 +4,70 @@
 <context>
     <name>ConfigWidget</name>
     <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
+        <source>System Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
+        <source>Dutch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="94"/>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="95"/>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
+        <source>Italian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
+        <source>incomplete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <source>German</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <source>Hungarian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <source>Japanese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
+        <source>Portuguese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
+        <source>Spanish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="108"/>
+        <source>Default style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.ui" line="20"/>
         <source>XiVO Client Configuration</source>
         <translation type="unfinished"></translation>
@@ -11,30 +75,16 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="37"/>
         <source>User</source>
-        <translation>Usuario</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="45"/>
         <source>Language</source>
-        <translation>Idioma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="58"/>
         <source>Style</source>
-        <translation>Estilo</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="90"/>
-        <location filename="../src/config_widget/config_widget.ui" line="115"/>
-        <location filename="../src/config_widget/config_widget.ui" line="187"/>
-        <location filename="../src/config_widget/config_widget.ui" line="201"/>
-        <location filename="../src/config_widget/config_widget.ui" line="837"/>
-        <source>You must restart the program for this setting to apply.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="148"/>
-        <source>Auto-reconnect </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -121,7 +171,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="452"/>
         <source>Contacts</source>
-        <translation>Contactos</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="458"/>
@@ -131,7 +181,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="487"/>
         <source>Queue list</source>
-        <translation>Lista de colas</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="495"/>
@@ -141,12 +191,12 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="509"/>
         <source>Orange</source>
-        <translation>Naranjado</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="519"/>
         <source>Red</source>
-        <translation>Red</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="529"/>
@@ -201,7 +251,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="692"/>
         <source>Server</source>
-        <translation>IP</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="699"/>
@@ -212,7 +262,7 @@
         <location filename="../src/config_widget/config_widget.ui" line="706"/>
         <location filename="../src/config_widget/config_widget.ui" line="749"/>
         <source>Port</source>
-        <translation>Puerto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="739"/>
@@ -222,17 +272,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="824"/>
         <source>Advanced</source>
-        <translation>Avanzado</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="830"/>
-        <source>Display the configuration profile</source>
-        <translation>Mostrar el perfil de configuración</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="840"/>
-        <source>Allow multiple instances</source>
-        <translation>Permitir multiples instancias</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="851"/>
@@ -245,68 +285,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
-        <source>System Language</source>
-        <translation>idioma del sistema</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
-        <source>Dutch</source>
+        <location filename="../src/config_widget/config_widget.ui" line="840"/>
+        <source>Allow multiple instances</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="94"/>
-        <source>English</source>
-        <translation>English</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="95"/>
-        <source>French</source>
-        <translation>Francés</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
-        <source>Italian</source>
-        <translation>Italiano</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
-        <source>incomplete</source>
-        <translation>Incompleto</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
-        <source>German</source>
-        <translation>Alemán</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
-        <source>Hungarian</source>
+        <location filename="../src/config_widget/config_widget.ui" line="90"/>
+        <location filename="../src/config_widget/config_widget.ui" line="115"/>
+        <location filename="../src/config_widget/config_widget.ui" line="187"/>
+        <location filename="../src/config_widget/config_widget.ui" line="201"/>
+        <location filename="../src/config_widget/config_widget.ui" line="837"/>
+        <source>You must restart the program for this setting to apply.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
-        <source>Japanese</source>
-        <translation>Japones</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
-        <source>Portuguese</source>
+        <location filename="../src/config_widget/config_widget.ui" line="148"/>
+        <source>Auto-reconnect </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
-        <source>Spanish</source>
+        <location filename="../src/config_widget/config_widget.ui" line="830"/>
+        <source>Display the configuration profile</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="108"/>
-        <source>Default style</source>
-        <translation>Estilo por defecto</translation>
     </message>
 </context>
 <context>
@@ -314,17 +314,17 @@
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="37"/>
         <source>Contact</source>
-        <translation>Contacto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="40"/>
         <source>First Name</source>
-        <translation>Primer Nombre</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="42"/>
         <source>Last Name</source>
-        <translation>Segundo Nombre</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="44"/>
@@ -334,22 +334,22 @@
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="46"/>
         <source>Email Address</source>
-        <translation>Dirección de correo electrónico</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
         <source>Company</source>
-        <translation>Compañia</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
         <source>Fax Number</source>
-        <translation>Número de Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="52"/>
         <source>Mobile Number</source>
-        <translation>Número de Celular</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="37"/>
         <source>Dial</source>
-        <translation>llamar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="38"/>
@@ -380,7 +380,7 @@
     <message>
         <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="51"/>
         <source>Enter &amp;Number :</source>
-        <translation>Ingrese &amp;Número:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/xlets/fax-builtin/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation>Directorio </translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -411,17 +411,17 @@
     <message>
         <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="49"/>
         <source>Search</source>
-        <translation>Buscar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="132"/>
         <source>Double-click to send an E-mail to</source>
-        <translation>Doble click para enviar un E-mail a</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/remotedirectory-builtin/directorypanel.cpp" line="134"/>
         <source>Double-click to call</source>
-        <translation>Doble clic para llamar</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -429,7 +429,7 @@
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="38"/>
         <source>Fax</source>
-        <translation>Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="43"/>
@@ -439,12 +439,12 @@
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="47"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Número de Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="49"/>
         <source>Directory</source>
-        <translation type="unfinished">Directorio </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/fax-builtin/faxpanel.cpp" line="60"/>
@@ -566,12 +566,12 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="89"/>
         <source>Password</source>
-        <translation>Contraseña</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="96"/>
         <source>Phone</source>
-        <translation>Telefonó</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="103"/>
@@ -586,17 +586,17 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="118"/>
         <source>No Agent</source>
-        <translation>No Agente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="123"/>
         <source>Agent (unlogged)</source>
-        <translation>Agente (deslogueado)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="128"/>
         <source>Agent (logged)</source>
-        <translation>Agente (logueado)</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -604,27 +604,27 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/main_window/main_window.ui" line="17"/>
         <source>XiVO Client</source>
-        <translation>Cliente XiVO</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="53"/>
         <source>&amp;XiVO Client</source>
-        <translation>&amp;Cliente XiVO</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="69"/>
         <source>&amp;Availability</source>
-        <translation>%Disponible</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="74"/>
         <source>&amp;Help</source>
-        <translation>&amp;Ayuda</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="97"/>
         <source>Confi&amp;gure</source>
-        <translation>Confi&amp;gure</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="100"/>
@@ -644,37 +644,37 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/main_window/main_window.ui" line="116"/>
         <source>&amp;Connect</source>
-        <translation>&amp;Conectar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="119"/>
         <source>Connect to the server</source>
-        <translation>Conectarse a el servidor</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="127"/>
         <source>&amp;Disconnect</source>
-        <translation>&amp;Desconectar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="130"/>
         <source>Disconnect from the server</source>
-        <translation>Desconectarse del servidor</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="138"/>
         <source>&amp;Quit</source>
-        <translation>&amp;Salir</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="141"/>
         <source>Close the application</source>
-        <translation>Cerrar la aplicación</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="144"/>
         <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="152"/>
@@ -689,24 +689,24 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/main_window/main_window.ui" line="163"/>
         <source>&amp;About XiVO Client</source>
-        <translation>&amp;Acerca XiVO Client</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="168"/>
         <source>About &amp;Qt</source>
-        <translation>Acerca &amp;Qt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="173"/>
         <source>&amp;Credits</source>
-        <translation>&amp;Creditos</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="84"/>
         <location filename="../src/main_window/main_window.cpp" line="204"/>
         <location filename="../src/main_window/main_window.cpp" line="280"/>
         <source>Client %1</source>
-        <translation>Cliente %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="159"/>
@@ -726,7 +726,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="279"/>
         <source>About XiVO Client</source>
-        <translation>Acerca de XiVO Client</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="281"/>
@@ -766,17 +766,17 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="296"/>
         <source>E-mail : </source>
-        <translation>Correo Electronico :</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="297"/>
         <source>Phone : </source>
-        <translation>Telefono :</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="298"/>
         <source>Authors : </source>
-        <translation>Autores :</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="298"/>
@@ -786,7 +786,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="300"/>
         <source>License : </source>
-        <translation>Licencia :</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="302"/>
@@ -796,7 +796,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="308"/>
         <source>Credits</source>
-        <translation>Creditos</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -835,13 +835,13 @@ Reason given : %3.</source>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="98"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="262"/>
         <source>First Name</source>
-        <translation type="unfinished">Primer Nombre</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="99"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="266"/>
         <source>Last Name</source>
-        <translation type="unfinished">Segundo Nombre</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="100"/>
@@ -853,25 +853,25 @@ Reason given : %3.</source>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="101"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="278"/>
         <source>Email Address</source>
-        <translation type="unfinished">Dirección de correo electrónico</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="102"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="288"/>
         <source>Company</source>
-        <translation type="unfinished">Compañia</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="103"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="293"/>
         <source>Fax Number</source>
-        <translation type="unfinished">Número de Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="104"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="300"/>
         <source>Mobile Number</source>
-        <translation type="unfinished">Número de Celular</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="189"/>
@@ -907,7 +907,7 @@ Reason given : %3.</source>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="294"/>
         <source>Fax</source>
-        <translation type="unfinished">Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="301"/>
@@ -931,7 +931,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="48"/>
         <source>Contacts</source>
-        <translation type="unfinished">Contactos</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="53"/>
@@ -944,12 +944,12 @@ Are you sure ?</source>
     <message>
         <location filename="../src/main_window/statusbar.cpp" line="84"/>
         <source>Connected</source>
-        <translation>Conectado</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/statusbar.cpp" line="91"/>
         <source>Disconnected</source>
-        <translation>Desconectado</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -962,7 +962,7 @@ Are you sure ?</source>
     <message>
         <location filename="../src/main_window/loading_dialog.ui" line="34"/>
         <source>Loading...</source>
-        <translation>Cargando...</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

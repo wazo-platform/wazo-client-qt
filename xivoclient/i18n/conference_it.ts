@@ -51,7 +51,7 @@
     <message>
         <location filename="../src/xlets/conference/conflist.cpp" line="127"/>
         <source>Unknown</source>
-        <translation>Sconosciuto</translation>
+        <translation type="unfinished">Sconosciuto</translation>
     </message>
 </context>
 <context>
@@ -67,7 +67,7 @@
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="339"/>
         <source> Conference room %1</source>
-        <translation>Sala conferenza %1</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -141,12 +141,12 @@
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="203"/>
         <source>Unknown</source>
-        <translation>Sconosciuto</translation>
+        <translation type="unfinished">Sconosciuto</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom.cpp" line="205"/>
         <source>Not started</source>
-        <translation>Non avviata</translation>
+        <translation type="unfinished">Non avviata</translation>
     </message>
 </context>
 <context>

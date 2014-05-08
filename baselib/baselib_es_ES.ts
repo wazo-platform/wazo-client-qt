@@ -193,7 +193,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="86"/>
         <source>Phone</source>
-        <translation type="unfinished">Telefonó</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -251,7 +251,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="96"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">En pausa</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="100"/>

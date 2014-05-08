@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="117"/>
         <source>Disconnected</source>
-        <translation>Desconectado</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identityagent.cpp" line="130"/>

@@ -4,6 +4,70 @@
 <context>
     <name>ConfigWidget</name>
     <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
+        <source>System Language</source>
+        <translation>システム言語</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
+        <source>Dutch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="94"/>
+        <source>English</source>
+        <translation>英語</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="95"/>
+        <source>French</source>
+        <translation>フランス語</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
+        <source>Italian</source>
+        <translation>イタリア語</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
+        <source>incomplete</source>
+        <translation>不完全</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <source>German</source>
+        <translation>ドイツ語</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <source>Hungarian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <source>Japanese</source>
+        <translation>日本語</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
+        <source>Portuguese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
+        <source>Spanish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="108"/>
+        <source>Default style</source>
+        <translation>デフォルトスタイル</translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.ui" line="20"/>
         <source>XiVO Client Configuration</source>
         <translation type="unfinished"></translation>
@@ -21,20 +85,6 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="58"/>
         <source>Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="90"/>
-        <location filename="../src/config_widget/config_widget.ui" line="115"/>
-        <location filename="../src/config_widget/config_widget.ui" line="187"/>
-        <location filename="../src/config_widget/config_widget.ui" line="201"/>
-        <location filename="../src/config_widget/config_widget.ui" line="837"/>
-        <source>You must restart the program for this setting to apply.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="148"/>
-        <source>Auto-reconnect </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -225,16 +275,6 @@
         <translation>詳細</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="830"/>
-        <source>Display the configuration profile</source>
-        <translation>設定プロファイルを表示</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="840"/>
-        <source>Allow multiple instances</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/config_widget/config_widget.ui" line="851"/>
         <source>Auto-reconnect interval</source>
         <translation type="unfinished"></translation>
@@ -245,68 +285,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
-        <source>System Language</source>
-        <translation>システム言語</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
-        <source>Dutch</source>
+        <location filename="../src/config_widget/config_widget.ui" line="840"/>
+        <source>Allow multiple instances</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="94"/>
-        <source>English</source>
-        <translation>英語</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="95"/>
-        <source>French</source>
-        <translation>フランス語</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
-        <source>Italian</source>
-        <translation>イタリア語</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
-        <source>incomplete</source>
-        <translation>不完全</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
-        <source>German</source>
-        <translation>ドイツ語</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
-        <source>Hungarian</source>
+        <location filename="../src/config_widget/config_widget.ui" line="90"/>
+        <location filename="../src/config_widget/config_widget.ui" line="115"/>
+        <location filename="../src/config_widget/config_widget.ui" line="187"/>
+        <location filename="../src/config_widget/config_widget.ui" line="201"/>
+        <location filename="../src/config_widget/config_widget.ui" line="837"/>
+        <source>You must restart the program for this setting to apply.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
-        <source>Japanese</source>
-        <translation>日本語</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
-        <source>Portuguese</source>
+        <location filename="../src/config_widget/config_widget.ui" line="148"/>
+        <source>Auto-reconnect </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
-        <source>Spanish</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="108"/>
-        <source>Default style</source>
-        <translation>デフォルトスタイル</translation>
+        <location filename="../src/config_widget/config_widget.ui" line="830"/>
+        <source>Display the configuration profile</source>
+        <translation>設定プロファイルを表示</translation>
     </message>
 </context>
 <context>

@@ -68,22 +68,22 @@ en retrait</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="272"/>
         <source>Agent receiving an internal call out of queue</source>
-        <translation>L&apos;agent reçoit un appel interne hors file d&apos;attente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="274"/>
         <source>Agent receiving an external call out of queue</source>
-        <translation>L&apos;agent reçoit un appel externe hors file d&apos;attente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="276"/>
         <source>Agent emitting an internal call</source>
-        <translation>L&apos;agent émet un appel interne hors file d&apos;attente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="278"/>
         <source>Agent emitting an external call</source>
-        <translation>L&apos;agent émet un appel externe hors file d&apos;attente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
@@ -98,22 +98,22 @@ en retrait</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="338"/>
         <source>Int. Incoming</source>
-        <translation>Interne reçu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="340"/>
         <source>Ext. Incoming</source>
-        <translation>Externe reçu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="342"/>
         <source>Int. Outgoing</source>
-        <translation>Interne émis</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="344"/>
         <source>Ext. Outgoing</source>
-        <translation>Externe émis</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
@@ -346,9 +346,7 @@ Statut : %3</translation>
         <source>Phone Number: %1
 Status: %2
 Busy lines: %3</source>
-        <translation>Extension : %1
-Statut : %2
-Lignes occupées : %3</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="352"/>

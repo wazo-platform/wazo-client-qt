@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/directory/directory.cpp" line="48"/>
         <source>Directory</source>
-        <translation>Elenco</translation>
+        <translation type="unfinished">Elenco</translation>
     </message>
 </context>
 <context>

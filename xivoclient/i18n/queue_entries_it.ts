@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="52"/>
         <source>Calls of a Queue</source>
-        <translation>Chiamate di una Coda</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_entries/queue_entries.cpp" line="108"/>

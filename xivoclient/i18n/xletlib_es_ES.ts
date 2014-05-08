@@ -45,7 +45,7 @@ queues</source>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
         <location filename="../src/xletlib/agents_model.cpp" line="411"/>
         <source>Paused</source>
-        <translation>Pausado</translation>
+        <translation type="unfinished">En pausa</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="51"/>
@@ -322,7 +322,7 @@ Status: %3</source>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="317"/>
         <source>Status:%1</source>
-        <translation type="unfinished">Estado:%1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="320"/>
@@ -375,27 +375,27 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="54"/>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="unfinished">Id</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
         <source>Position</source>
-        <translation>Posición</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation type="unfinished">Nombre</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
         <source>Number</source>
-        <translation>Número</translation>
+        <translation type="unfinished">Número</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
         <source>Time</source>
-        <translation>Tiempo</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

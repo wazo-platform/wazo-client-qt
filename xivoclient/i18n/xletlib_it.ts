@@ -6,23 +6,23 @@
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="43"/>
         <source>Number</source>
-        <translation>Numero</translation>
+        <translation type="unfinished">Numero</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="44"/>
         <source>First name</source>
-        <translation>Nome</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="45"/>
         <source>Last name</source>
-        <translation>Cognome</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="46"/>
         <location filename="../src/xletlib/agents_model.cpp" line="200"/>
         <source>Listen</source>
-        <translation>Ascolta</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="47"/>
@@ -33,27 +33,25 @@
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
         <location filename="../src/xletlib/agents_model.cpp" line="390"/>
         <source>Logged</source>
-        <translation>Collegato</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="49"/>
         <source>Joined
 queues</source>
-        <translation>Code
-collegate</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
         <location filename="../src/xletlib/agents_model.cpp" line="411"/>
         <source>Paused</source>
-        <translation>In pausa</translation>
+        <translation type="unfinished">In pausa</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="51"/>
         <source>Paused
 queues</source>
-        <translation>Code
-in pausa</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="268"/>
@@ -118,17 +116,17 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
         <source>Unlogged</source>
-        <translation type="unfinished">Disconnesso</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="409"/>
         <source>Unpaused</source>
-        <translation>Riattivato</translation>
+        <translation type="unfinished">Riattivato</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="413"/>
         <source>Partially Paused</source>
-        <translation>Parzialmente in pausa</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -367,7 +365,7 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/mobile_directory_entry.cpp" line="84"/>
         <source>Mobile phone</source>
-        <translation>Cellulare</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/current_filter_directory_entry.cpp" line="65"/>
@@ -380,7 +378,7 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="54"/>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="unfinished">ID</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
@@ -390,12 +388,12 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
         <source>Name</source>
-        <translation>Nome</translation>
+        <translation type="unfinished">Nome</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
         <source>Number</source>
-        <translation>Numero</translation>
+        <translation type="unfinished">Numero</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
