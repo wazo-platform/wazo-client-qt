@@ -1,0 +1,14 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../obj/people_fr.qm</file>
+        <file>../../../obj/people_en.qm</file>
+        <file>../../../obj/people_es_ES.qm</file>
+        <file>../../../obj/people_pt_BR.qm</file>
+        <file>../../../obj/people_hu.qm</file>
+        <file>../../../obj/people_de.qm</file>
+        <file>../../../obj/people_ja.qm</file>
+        <file>../../../obj/people_it.qm</file>
+        <file>../../../obj/people_nl.qm</file>
+    </qresource>
+</RCC>
