@@ -9,6 +9,7 @@ SUBDIRS  = \
     src/xlets/datetime \
     src/xlets/history \
     src/xlets/identity \
+    src/xlets/people \
     src/xlets/queues \
     src/xlets/queue_members \
     src/xlets/queue_entries \
