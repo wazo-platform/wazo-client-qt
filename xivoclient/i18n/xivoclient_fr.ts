@@ -88,6 +88,20 @@
         <translation>Apparence</translation>
     </message>
     <message>
+        <location filename="../src/config_widget/config_widget.ui" line="90"/>
+        <location filename="../src/config_widget/config_widget.ui" line="115"/>
+        <location filename="../src/config_widget/config_widget.ui" line="187"/>
+        <location filename="../src/config_widget/config_widget.ui" line="201"/>
+        <location filename="../src/config_widget/config_widget.ui" line="837"/>
+        <source>You must restart the program for this setting to apply.</source>
+        <translation>Vous devez redémarrer le programme pour appliquer ce paramètre.</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.ui" line="148"/>
+        <source>Auto-reconnect </source>
+        <translation>Re-connexion automatique</translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.ui" line="155"/>
         <source>Connect at startup</source>
         <translation>Connexion au démarrage</translation>
@@ -275,6 +289,16 @@
         <translation>Avancé</translation>
     </message>
     <message>
+        <location filename="../src/config_widget/config_widget.ui" line="830"/>
+        <source>Display the configuration profile</source>
+        <translation>Afficher le profil de configuration</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.ui" line="840"/>
+        <source>Allow multiple instances</source>
+        <translation>Autoriser plusieurs instances simultanées du client</translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.ui" line="851"/>
         <source>Auto-reconnect interval</source>
         <translation>Délai de reconnexion</translation>
@@ -283,30 +307,6 @@
         <location filename="../src/config_widget/config_widget.ui" line="890"/>
         <source>Keepalive interval</source>
         <translation>Délai de maintien de la connexion</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="840"/>
-        <source>Allow multiple instances</source>
-        <translation>Autoriser plusieurs instances simultanées du client</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="90"/>
-        <location filename="../src/config_widget/config_widget.ui" line="115"/>
-        <location filename="../src/config_widget/config_widget.ui" line="187"/>
-        <location filename="../src/config_widget/config_widget.ui" line="201"/>
-        <location filename="../src/config_widget/config_widget.ui" line="837"/>
-        <source>You must restart the program for this setting to apply.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="148"/>
-        <source>Auto-reconnect </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="830"/>
-        <source>Display the configuration profile</source>
-        <translation>Afficher le profil de configuration</translation>
     </message>
 </context>
 <context>
@@ -565,7 +565,7 @@ Raison donnée : %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="72"/>
         <source>Login</source>
-        <translation>Identifiant</translation>
+        <translation>Login</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="89"/>
@@ -585,7 +585,7 @@ Raison donnée : %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="110"/>
         <source>Keep Password</source>
-        <translation>Garder</translation>
+        <translation>Conserver le mot de passe</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="118"/>

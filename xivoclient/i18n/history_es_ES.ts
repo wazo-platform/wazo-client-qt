@@ -52,17 +52,17 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="198"/>
         <source>Number</source>
-        <translation type="unfinished">Número</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="200"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="203"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Duración</translation>
     </message>
 </context>
 </TS>

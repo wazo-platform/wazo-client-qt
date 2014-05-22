@@ -88,9 +88,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/config_widget/config_widget.ui" line="90"/>
+        <location filename="../src/config_widget/config_widget.ui" line="115"/>
+        <location filename="../src/config_widget/config_widget.ui" line="187"/>
+        <location filename="../src/config_widget/config_widget.ui" line="201"/>
+        <location filename="../src/config_widget/config_widget.ui" line="837"/>
+        <source>You must restart the program for this setting to apply.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.ui" line="148"/>
+        <source>Auto-reconnect </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.ui" line="155"/>
         <source>Connect at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Connessione automatica all&apos;avvio</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="162"/>
@@ -115,7 +129,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="242"/>
         <source>Reset dock positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripristina posizione ancoraggi</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="278"/>
@@ -125,7 +139,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="302"/>
         <source>Presence</source>
-        <translation type="unfinished"></translation>
+        <translation>Presenza</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="308"/>
@@ -275,6 +289,16 @@
         <translation>Avanzate</translation>
     </message>
     <message>
+        <location filename="../src/config_widget/config_widget.ui" line="830"/>
+        <source>Display the configuration profile</source>
+        <translation>Visualizza profilo di configurazione</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.ui" line="840"/>
+        <source>Allow multiple instances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.ui" line="851"/>
         <source>Auto-reconnect interval</source>
         <translation type="unfinished"></translation>
@@ -283,30 +307,6 @@
         <location filename="../src/config_widget/config_widget.ui" line="890"/>
         <source>Keepalive interval</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="840"/>
-        <source>Allow multiple instances</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="90"/>
-        <location filename="../src/config_widget/config_widget.ui" line="115"/>
-        <location filename="../src/config_widget/config_widget.ui" line="187"/>
-        <location filename="../src/config_widget/config_widget.ui" line="201"/>
-        <location filename="../src/config_widget/config_widget.ui" line="837"/>
-        <source>You must restart the program for this setting to apply.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="148"/>
-        <source>Auto-reconnect </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="830"/>
-        <source>Display the configuration profile</source>
-        <translation>Visualizza profilo di configurazione</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@ Motivo: %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="96"/>
         <source>Phone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Telefono</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="103"/>
@@ -954,7 +954,7 @@ Continuare?</translation>
     <message>
         <location filename="../src/main_window/statusbar.cpp" line="91"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Disconnesso</translation>
     </message>
 </context>
 <context>

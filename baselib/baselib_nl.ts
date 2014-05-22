@@ -36,7 +36,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1250"/>
         <source>You have no profile defined.</source>
-        <translation type="unfinished"></translation>
+        <translation>U hebt geen profiel toegekend.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1254"/>
@@ -178,7 +178,7 @@ Gelieve uw versie te upgraden.</translation>
     <message>
         <location filename="src/baseengine.cpp" line="1348"/>
         <source>Unreachable number: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nummer onbereikbaar: %1</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1352"/>

@@ -44,17 +44,17 @@
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="59"/>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="60"/>
         <source>ID</source>
-        <translation type="unfinished">ID</translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>
         <source>Number</source>
-        <translation type="unfinished">Numero</translation>
+        <translation>Numero</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
         <source>Phone number of the queue</source>
-        <translation type="unfinished">Numero telefonico della coda</translation>
+        <translation>Numero telefonico della coda</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
         <source>Logged</source>
-        <translation type="unfinished"></translation>
+        <translation>Collegato</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>
@@ -89,7 +89,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
         <source>Paused</source>
-        <translation type="unfinished">In pausa</translation>
+        <translation>In pausa</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>
@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="72"/>
         <source>Number of answered calls</source>
-        <translation type="unfinished">Numero di chiamate risposte</translation>
+        <translation>Numero di chiamate risposte</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="73"/>
@@ -119,7 +119,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="75"/>
         <source>Penalty</source>
-        <translation type="unfinished"></translation>
+        <translation>Penalità</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="76"/>

@@ -2,19 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nl">
 <context>
-    <name>Directory</name>
+    <name>People</name>
     <message>
-        <location filename="../src/xlets/directory/directory.cpp" line="48"/>
-        <source>Directory</source>
-        <translation>Telefoonlijst</translation>
+        <location filename="../src/xlets/people/people.cpp" line="48"/>
+        <source>People</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DirectoryWidget</name>
+    <name>PeopleWidget</name>
     <message>
-        <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
+        <location filename="../src/xlets/people/people_widget.ui" line="14"/>
         <source>Form</source>
-        <translation>Van</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

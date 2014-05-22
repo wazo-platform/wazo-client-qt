@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="51"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiama</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="52"/>
@@ -21,7 +21,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="53"/>
         <source>Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>Riattacca</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
@@ -49,12 +49,12 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation>Rispondi</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiama</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="183"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="301"/>
         <source>Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>Riattacca</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="304"/>
