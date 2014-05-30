@@ -49,7 +49,7 @@ PeopleEntryModel::PeopleEntryModel(const DirectoryEntryManager & people_entry_ma
     connect(&m_people_entry_manager, SIGNAL(directoryEntryDeleted(int)),
             this, SLOT(deletePeopleEntry(int)));
 
-    this->registerListener("directory_headers");
+    this->registerListener("people_headers");
 }
 
 void PeopleEntryModel::addField(const QString &name, const QString &type)

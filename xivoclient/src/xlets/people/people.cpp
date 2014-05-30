@@ -72,7 +72,7 @@ People::People(QWidget *parent)
             this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
-    b_engine->sendJsonCommand(MessageFactory::getSwitchboardDirectoryHeaders());
+    b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
 }
 
 People::~People()
@@ -113,7 +113,7 @@ void People::searchPeople()
 {
     if (! this->alreadySearched(this->m_searched_pattern)) {
         m_search_history.append(m_searched_pattern);
-        b_engine->sendJsonCommand(MessageFactory::switchboardDirectorySearch(m_searched_pattern));
+        b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
         qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
     }
 }

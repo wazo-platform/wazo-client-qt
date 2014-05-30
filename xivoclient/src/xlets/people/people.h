@@ -37,7 +37,7 @@
 #include <dao/userdaoimpl.h>
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
-#include <xletlib/directory_entry_manager.h>
+#include <xletlib/people_entry_manager.h>
 #include <ui_people_widget.h>
 
 #include "people_entry_sort_filter_proxy_model.h"
@@ -69,7 +69,7 @@ class People: public XLet
         PeopleEntryModel *m_model;
         PhoneDAOImpl m_phone_dao;
         UserDAOImpl m_user_dao;
-        DirectoryEntryManager m_people_entry_manager;
+        PeopleEntryManager m_people_entry_manager;
         QTimer m_remote_lookup_timer;
         QString m_searched_pattern;
         QStringList m_search_history;

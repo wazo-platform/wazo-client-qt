@@ -124,9 +124,24 @@ QVariantMap MessageFactory::switchboardDirectorySearch(const QString &pattern)
     return message;
 }
 
+QVariantMap MessageFactory::peopleSearch(const QString &pattern)
+{
+    QVariantMap message = MessageFactory::baseMessage("people_search");
+    message["pattern"] = pattern;
+
+    return message;
+}
+
 QVariantMap MessageFactory::getSwitchboardDirectoryHeaders()
 {
     QVariantMap message = MessageFactory::baseMessage("get_switchboard_directory_headers");
+
+    return message;
+}
+
+QVariantMap MessageFactory::getPeopleHeaders()
+{
+    QVariantMap message = MessageFactory::baseMessage("people_headers");
 
     return message;
 }

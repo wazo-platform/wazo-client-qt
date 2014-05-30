@@ -52,7 +52,9 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap cancelTransfer();
         static QVariantMap directorySearch(const QString &pattern);
         static QVariantMap switchboardDirectorySearch(const QString &pattern);
+        static QVariantMap peopleSearch(const QString &pattern);
         static QVariantMap getSwitchboardDirectoryHeaders();
+        static QVariantMap getPeopleHeaders();
         static QVariantMap pauseAgentInQueue(const QString &agent_id, const QString &queue_id);
         static QVariantMap unpauseAgentInQueue(const QString &agent_id, const QString &queue_id);
         static QVariantMap pauseAgentInAllQueues(const QString &agent_id, const QString &ipbxid);
