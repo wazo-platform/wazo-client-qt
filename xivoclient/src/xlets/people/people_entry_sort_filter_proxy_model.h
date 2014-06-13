@@ -44,14 +44,9 @@ class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
         PeopleEntrySortFilterProxyModel(QObject *parent);
     public slots:
         void setFilter(const QString & filter);
-        QString getNumber(const QModelIndex &index);
     protected:
-        bool filterAcceptsRow(int , const QModelIndex &) const;
         virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
     private:
-        bool filterMatchesEntry(int sourceRow,
-                                const QModelIndex & sourceParent) const;
-
         QString m_filter;
 };
 

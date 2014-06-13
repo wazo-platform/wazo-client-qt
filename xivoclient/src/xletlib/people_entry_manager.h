@@ -30,20 +30,31 @@
 #ifndef _PEOPLE_ENTRY_MANAGER_H_
 #define _PEOPLE_ENTRY_MANAGER_H_
 
-#include <xletlib/directory_entry_manager.h>
+#include <ipbxlistener.h>
+
 #include <xletlib/xletlib_export.h>
 
-class PhoneDAO;
-class UserDAO;
+#include <xletlib/people_entry.h>
 
-class XLETLIB_EXPORT PeopleEntryManager: public DirectoryEntryManager
+class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
 {
     Q_OBJECT
 
     public:
-        PeopleEntryManager(const PhoneDAO &phone_dao,
-                           const UserDAO &user_dao,
-                           QObject *parent=NULL);
+        PeopleEntryManager(QObject *parent=NULL);
+        void addEntry(PeopleEntry);
+        int entryCount() const;
+        const PeopleEntry &getEntry(int entry_index) const;
+
+    public slots:
+        void parseCommand(const QVariantMap &command);
+
+    signals:
+        void entryAdded(int entry_index);
+        void aboutToClearEntries();
+
+    private:
+        QList<PeopleEntry> m_entries;
 };
 
 #endif /* _PEOPLE_ENTRY_MANAGER_H_ */

@@ -43,7 +43,7 @@
 People::People(QWidget *parent)
     : XLet(parent),
       m_proxy_model(NULL),
-      m_people_entry_manager(m_phone_dao, m_user_dao, this)
+      m_people_entry_manager(this)
 {
     setTitle(tr("People"));
 
@@ -64,8 +64,6 @@ People::People(QWidget *parent)
             this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
-    connect(this->ui.entry_table, SIGNAL(activated(const QModelIndex &)),
-            this, SLOT(entrySelectedIndex(const QModelIndex &)));
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
     connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
@@ -93,12 +91,6 @@ void People::focusEntryTable()
     } else {
         signal_relayer->relayNoNumberSelected();
     }
-}
-
-void People::entrySelectedIndex(const QModelIndex &index)
-{
-    const QString &number = m_proxy_model->getNumber(index);
-    signal_relayer->relayNumberSelected(number);
 }
 
 void People::schedulePeopleLookup(const QString &lookup_pattern)

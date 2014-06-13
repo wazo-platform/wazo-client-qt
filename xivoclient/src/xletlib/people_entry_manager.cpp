@@ -29,24 +29,41 @@
 
 #include <baseengine.h>
 
+#include "people_entry.h"
 #include "people_entry_manager.h"
 
-PeopleEntryManager::PeopleEntryManager(const PhoneDAO &phone_dao,
-                                       const UserDAO &user_dao,
-                                       QObject *parent)
-    : DirectoryEntryManager(phone_dao, user_dao, parent)
+PeopleEntryManager::PeopleEntryManager(QObject *parent)
+    : QObject(parent)
 {
     this->registerListener("people_search_result");
+}
 
-    disconnect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
-            this, SLOT(updatePhone(const QString &)));
-    disconnect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
-            this, SLOT(updatePhone(const QString &)));
-    disconnect(b_engine, SIGNAL(removePhoneConfig(const QString &)),
-            this, SLOT(removePhone(const QString &)));
+void PeopleEntryManager::parseCommand(const QVariantMap &result)
+{
+    emit aboutToClearEntries();
+    m_entries.clear();
+    const QList<QVariant> &entries = result["results"].toList();
+    foreach (const QVariant &entry, entries) {
+        QVariantMap entry_map = entry.toMap();
+        const QVariantList &values = entry_map["column_values"].toList();
+        this->addEntry(PeopleEntry(values));
+    }
+}
 
-    disconnect(b_engine, SIGNAL(updateUserConfig(const QString &)),
-            this, SLOT(updateUser(const QString &)));
-    disconnect(b_engine, SIGNAL(removeUserConfig(const QString &)),
-            this, SLOT(removeUser(const QString &)));
+void PeopleEntryManager::addEntry(PeopleEntry entry)
+{
+    m_entries.append(entry);
+
+    emit entryAdded(m_entries.size() - 1);
+}
+
+int PeopleEntryManager::entryCount() const
+{
+    return m_entries.size();
+}
+
+const PeopleEntry & PeopleEntryManager::getEntry(int entry_index) const
+{
+    const PeopleEntry &entry = m_entries.at(entry_index);
+    return entry;
 }

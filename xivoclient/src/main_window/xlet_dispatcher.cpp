@@ -140,6 +140,7 @@ void XletDispatcher::cleanXletsGrid()
 
 void XletDispatcher::prepareXletsTab()
 {
+    this->m_xlets_tab.append(XletAndOption("people", ""));
     if (this->m_xlets_tab.size() == 0) {
         return;
     }

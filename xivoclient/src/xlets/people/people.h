@@ -57,7 +57,6 @@ class People: public XLet
     public slots:
         void numberSelectionRequested();
         void focusEntryTable();
-        void entrySelectedIndex(const QModelIndex &index);
         void schedulePeopleLookup(const QString &lookup_pattern);
         void searchPeople();
         void dataChanged(const QModelIndex &, const QModelIndex &);
@@ -67,8 +66,6 @@ class People: public XLet
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;
-        PhoneDAOImpl m_phone_dao;
-        UserDAOImpl m_user_dao;
         PeopleEntryManager m_people_entry_manager;
         QTimer m_remote_lookup_timer;
         QString m_searched_pattern;
