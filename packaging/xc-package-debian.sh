@@ -68,7 +68,7 @@ Installed-Size: ${PKGSIZE}
 Depends: libc6 (>= 2.7-1), libgcc1 (>= 1:4.1.1-21), libstdc++6 (>= 4.1.1-21), libqtcore4 (>= 4.6.0), libqtgui4 (>= 4.6.0), libqt4-network (>= 4.6.0), libqt4-xml (>= 4.6.0)
 Section: graphics
 Priority: optional
-Homepage: http://www.xivo.fr/
+Homepage: http://www.xivo.io/
 Description: CTI client for XiVO
  XiVO CTI (Computer Telephony Integration) client is the graphical
  front-end to the XiVO CTI services.

@@ -13,7 +13,7 @@ Building the client
 3. run ```make```
 
 You can find more complete documentation on building the XiVO Client on the 
-[XiVO documentation web site](http://documentation.xivo.fr/production/developers/xivo_client/build.html).
+[XiVO documentation web site](http://documentation.xivo.io/production/developers/xivo_client/build.html).
 
 Running the client
 ------------------

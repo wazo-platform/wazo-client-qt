@@ -269,8 +269,8 @@
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="699"/>
-        <source>demo.xivo.fr</source>
-        <translation>demo.xivo.fr</translation>
+        <source>demo.xivo.io</source>
+        <translation>demo.xivo.io</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="706"/>

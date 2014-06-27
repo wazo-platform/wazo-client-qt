@@ -214,7 +214,7 @@ void BaseEngine::loadSettings()
         m_profilename_read = "engine-" + m_config["profilename"].toString();
 
     m_settings->beginGroup(m_profilename_read);
-        m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.fr").toString();
+        m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.io").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
         m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();

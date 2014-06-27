@@ -696,7 +696,7 @@
          <item row="0" column="1">
           <widget class="QLineEdit" name="server">
            <property name="text">
-            <string>demo.xivo.fr</string>
+            <string>demo.xivo.io</string>
            </property>
           </widget>
          </item>

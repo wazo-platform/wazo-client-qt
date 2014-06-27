@@ -57,7 +57,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 {
     ExecObjects ret;
     QCoreApplication::setOrganizationName("XIVO");
-    QCoreApplication::setOrganizationDomain("xivo.fr");
+    QCoreApplication::setOrganizationDomain("xivo.io");
     QCoreApplication::setApplicationName("XIVO_Client");
     QtSingleApplication  *app = new QtSingleApplication(argc, argv);
 

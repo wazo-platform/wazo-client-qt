@@ -269,7 +269,7 @@
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="699"/>
-        <source>demo.xivo.fr</source>
+        <source>demo.xivo.io</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
