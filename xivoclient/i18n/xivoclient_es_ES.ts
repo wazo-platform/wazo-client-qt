@@ -92,7 +92,7 @@
         <location filename="../src/config_widget/config_widget.ui" line="115"/>
         <location filename="../src/config_widget/config_widget.ui" line="187"/>
         <location filename="../src/config_widget/config_widget.ui" line="201"/>
-        <location filename="../src/config_widget/config_widget.ui" line="837"/>
+        <location filename="../src/config_widget/config_widget.ui" line="841"/>
         <source>You must restart the program for this setting to apply.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -268,13 +268,8 @@
         <translation>IP</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="699"/>
-        <source>demo.xivo.io</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/config_widget/config_widget.ui" line="706"/>
-        <location filename="../src/config_widget/config_widget.ui" line="749"/>
+        <location filename="../src/config_widget/config_widget.ui" line="753"/>
         <source>Port</source>
         <translation>Puerto</translation>
     </message>
@@ -284,27 +279,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="824"/>
+        <location filename="../src/config_widget/config_widget.ui" line="828"/>
         <source>Advanced</source>
         <translation>Avanzado</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="830"/>
+        <location filename="../src/config_widget/config_widget.ui" line="834"/>
         <source>Display the configuration profile</source>
         <translation>Mostrar el perfil de configuración</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="840"/>
+        <location filename="../src/config_widget/config_widget.ui" line="844"/>
         <source>Allow multiple instances</source>
         <translation>Permitir multiples instancias</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="851"/>
+        <location filename="../src/config_widget/config_widget.ui" line="855"/>
         <source>Auto-reconnect interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="890"/>
+        <location filename="../src/config_widget/config_widget.ui" line="894"/>
         <source>Keepalive interval</source>
         <translation type="unfinished"></translation>
     </message>
