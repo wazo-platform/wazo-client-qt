@@ -47,7 +47,7 @@
 class PhoneDAO;
 class UserDAO;
 
-class XLETLIB_EXPORT DirectoryEntryManager: public QObject, IPBXListener
+class XLETLIB_EXPORT DirectoryEntryManager: public QObject, public IPBXListener
 {
     Q_OBJECT
 
@@ -74,7 +74,7 @@ class XLETLIB_EXPORT DirectoryEntryManager: public QObject, IPBXListener
         void directoryEntryUpdated(int entry_index);
         void directoryEntryDeleted(int entry_index);
 
-    private:
+    protected:
         template<class T>
         int findEntryBy(const T) const;
 

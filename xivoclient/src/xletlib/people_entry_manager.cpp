@@ -27,27 +27,43 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
-#define __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
+#include <baseengine.h>
 
-#include <QStringList>
+#include "people_entry.h"
+#include "people_entry_manager.h"
 
-#include <xletlib/abstract_sort_filter_proxy_model.h>
-
-#include "people_entry_model.h"
-
-class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
+PeopleEntryManager::PeopleEntryManager(QObject *parent)
+    : QObject(parent)
 {
-    Q_OBJECT
+    this->registerListener("people_search_result");
+}
 
-    public:
-        PeopleEntrySortFilterProxyModel(QObject *parent);
-    public slots:
-        void setFilter(const QString & filter);
-    protected:
-        virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-    private:
-        QString m_filter;
-};
+void PeopleEntryManager::parseCommand(const QVariantMap &result)
+{
+    emit aboutToClearEntries();
+    m_entries.clear();
+    const QList<QVariant> &entries = result["results"].toList();
+    foreach (const QVariant &entry, entries) {
+        QVariantMap entry_map = entry.toMap();
+        const QVariantList &values = entry_map["column_values"].toList();
+        this->addEntry(PeopleEntry(values));
+    }
+}
 
-#endif
+void PeopleEntryManager::addEntry(PeopleEntry entry)
+{
+    m_entries.append(entry);
+
+    emit entryAdded(m_entries.size() - 1);
+}
+
+int PeopleEntryManager::entryCount() const
+{
+    return m_entries.size();
+}
+
+const PeopleEntry & PeopleEntryManager::getEntry(int entry_index) const
+{
+    const PeopleEntry &entry = m_entries.at(entry_index);
+    return entry;
+}

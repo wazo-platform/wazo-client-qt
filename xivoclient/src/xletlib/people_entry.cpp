@@ -27,27 +27,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
-#define __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
+#include <QObject>
+#include <QDebug>
 
-#include <QStringList>
+#include "people_entry.h"
 
-#include <xletlib/abstract_sort_filter_proxy_model.h>
-
-#include "people_entry_model.h"
-
-class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
+PeopleEntry::PeopleEntry(const QVariantList &data)
+    : m_data(data)
 {
-    Q_OBJECT
+    qDebug() << Q_FUNC_INFO;
+}
 
-    public:
-        PeopleEntrySortFilterProxyModel(QObject *parent);
-    public slots:
-        void setFilter(const QString & filter);
-    protected:
-        virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-    private:
-        QString m_filter;
-};
+PeopleEntry::PeopleEntry(const PeopleEntry &other)
+    : m_data(other.m_data)
+{
+    qDebug() << Q_FUNC_INFO;
+}
 
-#endif
+PeopleEntry::~PeopleEntry()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
+const QVariant PeopleEntry::data(int column) const
+{
+    return this->m_data[column];
+}
+
+PeopleEntry & PeopleEntry::operator=(const PeopleEntry &other)
+{
+    this->m_data = other.m_data;
+    return *this;
+}

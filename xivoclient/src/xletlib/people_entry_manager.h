@@ -27,27 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
-#define __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
+#ifndef _PEOPLE_ENTRY_MANAGER_H_
+#define _PEOPLE_ENTRY_MANAGER_H_
 
-#include <QStringList>
+#include <ipbxlistener.h>
 
-#include <xletlib/abstract_sort_filter_proxy_model.h>
+#include <xletlib/xletlib_export.h>
 
-#include "people_entry_model.h"
+#include <xletlib/people_entry.h>
 
-class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
+class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
 {
     Q_OBJECT
 
     public:
-        PeopleEntrySortFilterProxyModel(QObject *parent);
+        PeopleEntryManager(QObject *parent=NULL);
+        void addEntry(PeopleEntry);
+        int entryCount() const;
+        const PeopleEntry &getEntry(int entry_index) const;
+
     public slots:
-        void setFilter(const QString & filter);
-    protected:
-        virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+        void parseCommand(const QVariantMap &command);
+
+    signals:
+        void entryAdded(int entry_index);
+        void aboutToClearEntries();
+
     private:
-        QString m_filter;
+        QList<PeopleEntry> m_entries;
 };
 
-#endif
+#endif /* _PEOPLE_ENTRY_MANAGER_H_ */

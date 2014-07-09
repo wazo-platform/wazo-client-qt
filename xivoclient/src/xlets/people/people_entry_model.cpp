@@ -29,27 +29,27 @@
 
 #include <QString>
 #include <QPixmap>
+#include <cassert>
 
 #include <baseengine.h>
-#include <xletlib/directory_entry_manager.h>
+#include <xletlib/people_entry_manager.h>
+#include <xletlib/people_entry.h>
 
 #include "people_entry_model.h"
 
-PeopleEntryModel::PeopleEntryModel(const DirectoryEntryManager & people_entry_manager,
+PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manager,
                                          QObject *parent)
     : QAbstractTableModel(parent),
       m_people_entry_manager(people_entry_manager)
 {
     connect(b_engine, SIGNAL(clearingCache()),
             this, SLOT(clearCache()));
-    connect(&m_people_entry_manager, SIGNAL(directoryEntryAdded(int)),
+    connect(&m_people_entry_manager, SIGNAL(entryAdded(int)),
             this, SLOT(addPeopleEntry(int)));
-    connect(&m_people_entry_manager, SIGNAL(directoryEntryUpdated(int)),
-            this, SLOT(updatePeopleEntry(int)));
-    connect(&m_people_entry_manager, SIGNAL(directoryEntryDeleted(int)),
-            this, SLOT(deletePeopleEntry(int)));
+    connect(&m_people_entry_manager, SIGNAL(aboutToClearEntries()),
+            this, SLOT(clearCache()));
 
-    this->registerListener("directory_headers");
+    this->registerListener("people_headers_result");
 }
 
 void PeopleEntryModel::addField(const QString &name, const QString &type)
@@ -65,6 +65,9 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
         t = OTHER;
     }
     m_fields.append(QPair<QString, enum ColumnType>(name, t));
+    int inserted_column = m_fields.size() - 1;
+    this->beginInsertColumns(QModelIndex(), inserted_column, inserted_column);
+    this->endInsertColumns();
 }
 
 void PeopleEntryModel::addPeopleEntry(int entry_index) {
@@ -114,19 +117,13 @@ int PeopleEntryModel::columnCount(const QModelIndex&) const
 QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
-    const DirectoryEntry & entry = m_people_entry_manager.getEntry(row);
+    const PeopleEntry & entry = m_people_entry_manager.getEntry(row);
 
     switch(role) {
-    case Qt::DecorationRole:
-        return this->dataDecoration(entry, column);
     case Qt::TextAlignmentRole:
         return Qt::AlignCenter;
     case  Qt::DisplayRole:
         return this->dataDisplay(entry, column);
-    case Qt::ToolTipRole:
-        return this->dataTooltip(entry, column);
-    case Qt::UserRole:
-        return this->dataSearch(entry);
     default:
         return QVariant();
     }
@@ -159,34 +156,9 @@ enum ColumnType PeopleEntryModel::headerType(int column) const
 }
 
 
-QVariant PeopleEntryModel::dataDisplay(const DirectoryEntry & entry, int column) const
+QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) const
 {
-    const QString &name = this->headerText(column);
-    enum ColumnType type = this->headerType(column);
-    return entry.getField(name, type);
-}
-
-QVariant PeopleEntryModel::dataDecoration(const DirectoryEntry & entry, int column) const
-{
-    enum ColumnType type = this->headerType(column);
-    if (type != STATUS_ICON) {
-        return QVariant();
-    }
-    return entry.statusIcon();
-}
-
-QVariant PeopleEntryModel::dataTooltip(const DirectoryEntry & entry, int column) const
-{
-    enum ColumnType type = this->headerType(column);
-    if (type != STATUS_ICON) {
-        return QVariant();
-    }
-    return entry.statusText();
-}
-
-QVariant PeopleEntryModel::dataSearch(const DirectoryEntry & entry) const
-{
-    return entry.searchList();
+    return entry.data(column);
 }
 
 bool PeopleEntryModel::removeRows(int row, int count, const QModelIndex & index)
@@ -200,11 +172,13 @@ bool PeopleEntryModel::removeRows(int row, int count, const QModelIndex & index)
 
 void PeopleEntryModel::parseCommand(const QVariantMap &command)
 {
-    const QVariantList &headers = command["headers"].toList();
-    foreach (const QVariant &field, headers) {
-        const QVariantList &field_info = field.toList();
-        const QString &name = field_info[0].toString();
-        const QString &type = field_info[1].toString();
+    const QVariantList &headers = command["column_headers"].toList();
+    const QVariantList &types = command["column_types"].toList();
+    assert(headers.length() == types.length());
+
+    for (int i = 0; i < headers.length() ; i++) {
+        const QString &name = headers[i].toString();
+        const QString &type = types[i].toString();
 
         this->addField(name, type);
     }

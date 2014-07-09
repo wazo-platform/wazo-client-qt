@@ -36,31 +36,6 @@ PeopleEntrySortFilterProxyModel::PeopleEntrySortFilterProxyModel(QObject *parent
 {
 }
 
-bool PeopleEntrySortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
-{
-    if (m_filter.isEmpty() || sourceRow < 0) {
-        return false;
-    }
-
-    if (this->sourceModel()->columnCount() <= 0) {
-        return false;
-    }
-
-    int number_column = static_cast<PeopleEntryModel *>(this->sourceModel())->getNumberColumnIndex();
-
-    if (number_column != -1) {
-        QModelIndex people_entry_number_index = sourceModel()->index(sourceRow,
-                                                                        number_column,
-                                                                        sourceParent);
-        QString people_entry_number = sourceModel()->data(people_entry_number_index).toString();
-        if (people_entry_number.isEmpty()) {
-            return false;
-        }
-    }
-
-    return this->filterMatchesEntry(sourceRow, sourceParent);
-}
-
 bool PeopleEntrySortFilterProxyModel::lessThan(const QModelIndex &left,
                                                   const QModelIndex &right) const
 {
@@ -88,30 +63,4 @@ void PeopleEntrySortFilterProxyModel::setFilter(const QString & filter)
 {
     this->m_filter = filter;
     this->invalidateFilter();
-}
-
-bool PeopleEntrySortFilterProxyModel::filterMatchesEntry(int sourceRow, const QModelIndex & sourceParent) const
-{
-
-    QModelIndex people_entry_index = sourceModel()->index(sourceRow,
-                                                             0,
-                                                             sourceParent);
-
-    QStringList search_list = sourceModel()->data(people_entry_index,
-                                                  Qt::UserRole).toStringList();
-
-    bool empty = (search_list.filter(this->m_filter, Qt::CaseInsensitive).isEmpty());
-    return !empty;
-}
-
-QString PeopleEntrySortFilterProxyModel::getNumber(const QModelIndex &index)
-{
-    int number_column = static_cast<PeopleEntryModel *>(this->sourceModel())->getNumberColumnIndex();
-
-    if (number_column < 0) {
-        return QString("");
-    }
-
-    QModelIndex number_index = this->index(index.row(), number_column);
-    return this->data(number_index, Qt::DisplayRole).toString();
 }

@@ -35,15 +35,15 @@
 #include <ipbxlistener.h>
 #include <xletlib/directory_entry.h>
 
-class DirectoryEntryManager;
-class DirectoryEntry;
+class PeopleEntryManager;
+class PeopleEntry;
 
 class PeopleEntryModel : public QAbstractTableModel, IPBXListener
 {
     Q_OBJECT
 
     public:
-        PeopleEntryModel(const DirectoryEntryManager & people_entry_manager,
+        PeopleEntryModel(const PeopleEntryManager & people_entry_manager,
                             QObject *parent = NULL);
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -67,16 +67,13 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
 
     private:
         void refreshEntry(int entry_index);
-        QVariant dataDisplay(const DirectoryEntry & entry, int column) const;
-        QVariant dataDecoration(const DirectoryEntry & entry, int column) const;
-        QVariant dataTooltip(const DirectoryEntry & entry, int column) const;
-        QVariant dataSearch(const DirectoryEntry & entry) const;
+        QVariant dataDisplay(const PeopleEntry & entry, int column) const;
         void addField(const QString &name, const QString &type);
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
 
         QList< QPair<QString, enum ColumnType> >  m_fields;
-        const DirectoryEntryManager & m_people_entry_manager;
+        const PeopleEntryManager & m_people_entry_manager;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,27 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
-#define __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
+#ifndef _PEOPLE_ENTRY_H_
+#define _PEOPLE_ENTRY_H_
 
-#include <QStringList>
+#include <QVariant>
 
-#include <xletlib/abstract_sort_filter_proxy_model.h>
+#include <xletlib/xletlib_export.h>
 
-#include "people_entry_model.h"
-
-class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
+class XLETLIB_EXPORT PeopleEntry
 {
-    Q_OBJECT
-
     public:
-        PeopleEntrySortFilterProxyModel(QObject *parent);
-    public slots:
-        void setFilter(const QString & filter);
-    protected:
-        virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+        PeopleEntry(const QVariantList &data);
+        PeopleEntry(const PeopleEntry &other);
+        ~PeopleEntry();
+        const QVariant data(int column) const;
+        PeopleEntry &operator=(const PeopleEntry &other);
+
     private:
-        QString m_filter;
+        QVariantList m_data;
 };
 
-#endif
+#endif /* _PEOPLE_ENTRY_H_ */

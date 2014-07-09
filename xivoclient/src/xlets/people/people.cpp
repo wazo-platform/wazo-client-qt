@@ -43,7 +43,7 @@
 People::People(QWidget *parent)
     : XLet(parent),
       m_proxy_model(NULL),
-      m_people_entry_manager(m_phone_dao, m_user_dao, this)
+      m_people_entry_manager(this)
 {
     setTitle(tr("People"));
 
@@ -64,15 +64,13 @@ People::People(QWidget *parent)
             this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
-    connect(this->ui.entry_table, SIGNAL(activated(const QModelIndex &)),
-            this, SLOT(entrySelectedIndex(const QModelIndex &)));
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
     connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
             this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
-    b_engine->sendJsonCommand(MessageFactory::getSwitchboardDirectoryHeaders());
+    b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
 }
 
 People::~People()
@@ -95,12 +93,6 @@ void People::focusEntryTable()
     }
 }
 
-void People::entrySelectedIndex(const QModelIndex &index)
-{
-    const QString &number = m_proxy_model->getNumber(index);
-    signal_relayer->relayNumberSelected(number);
-}
-
 void People::schedulePeopleLookup(const QString &lookup_pattern)
 {
     if (lookup_pattern.length() >= min_lookup_length) {
@@ -113,7 +105,7 @@ void People::searchPeople()
 {
     if (! this->alreadySearched(this->m_searched_pattern)) {
         m_search_history.append(m_searched_pattern);
-        b_engine->sendJsonCommand(MessageFactory::switchboardDirectorySearch(m_searched_pattern));
+        b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
         qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
     }
 }
