@@ -38,7 +38,7 @@
  * Infos come mainly from BaseEngine.
  *
  * m_row2id maps row numbers to queue ids. It is an ordered QStringList.
- * 
+ *
  * Exceptions are (see QueueDataStruct):
  * - max waiting times, one for each queue, computed on each updateStatus
  * - waiting calls, cached from BaseEngine (used in the computation of the max
@@ -79,9 +79,23 @@ class QueuesModel : public QAbstractTableModel
     // Attributes
     public:
         enum Columns {
-            ID, NUMBER, NAME, WAITING_CALLS, EWT, CURRENT_MAX_WAIT,
-            TALKING_AGENTS, LOGGEDAGENTS, AVAILABLE_AGENTS,
-            RECEIVED, ANSWERED, ABANDONED, MEAN_WAIT, TOTAL_MAX_WAIT, EFFICIENCY, QOS, NB_COL
+            ID,
+            NUMBER,
+            NAME,
+            WAITING_CALLS,
+            EWT,
+            CURRENT_MAX_WAIT,
+            TALKING_AGENTS,
+            LOGGEDAGENTS,
+            AVAILABLE_AGENTS,
+            RECEIVED,
+            ANSWERED,
+            ABANDONED,
+            MEAN_WAIT,
+            TOTAL_MAX_WAIT,
+            EFFICIENCY,
+            QOS,
+            NB_COL
         };
 
     signals:

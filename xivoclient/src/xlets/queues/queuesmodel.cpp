@@ -309,18 +309,6 @@ QVariant QueuesModel::headerData(int section,
             return m_headers[section].label;
         case Qt::ToolTipRole :
             return m_headers[section].tooltip;
-        case Qt::BackgroundRole :
-            if (section >= RECEIVED) {
-                return QBrush(Qt::darkGray);
-            } else {
-                return QVariant();
-            }
-        case Qt::ForegroundRole :
-            if (section >= RECEIVED) {
-                return QBrush(Qt::white);
-            } else {
-                return QVariant();
-            }
         default :
             return QVariant();
     }
@@ -350,4 +338,3 @@ void QueuesModel::refreshQueueDisplay(const QString &queue_xid)
     emit dataChanged(cellChanged1, cellChanged2);
 
 }
-
