@@ -29,7 +29,7 @@
 
 #include "agents_sort_filter_proxy_model.h"
 
-AgentsSortFilterProxyModel::AgentsSortFilterProxyModel(QObject *parent = NULL)
+AgentsSortFilterProxyModel::AgentsSortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
 }
