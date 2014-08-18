@@ -37,7 +37,7 @@ class AgentsSortFilterProxyModel : public AbstractSortFilterProxyModel
     Q_OBJECT
 
     public:
-        AgentsSortFilterProxyModel(QObject *parent);
+        AgentsSortFilterProxyModel(QObject *parent = NULL);
 };
 
 #endif
