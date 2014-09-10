@@ -47,10 +47,12 @@ void TestMessageFactory::testSubscribeCurrentCalls()
 
 void TestMessageFactory::testAnswer()
 {
-    QVariantMap result = MessageFactory::answer();
+    QString uniqueid = "abc";
+    QVariantMap result = MessageFactory::answer(uniqueid);
 
     QVariantMap expected;
     expected["class"] = "answer";
+    expected["unique_id"] = uniqueid;
 
     QCOMPARE(result, expected);
 }
