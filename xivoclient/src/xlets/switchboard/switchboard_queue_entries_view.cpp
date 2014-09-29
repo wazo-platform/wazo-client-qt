@@ -29,12 +29,21 @@
 
 #include "switchboard_queue_entries_view.h"
 
+#include <QApplication>
+
 SwitchboardQueueEntriesView::SwitchboardQueueEntriesView(QWidget *parent)
-    : QueueEntriesView(parent)
+  : QueueEntriesView(parent)
 {
     this->setSortingEnabled(false);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    connect(this, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(trigger(const QModelIndex &)));
+    connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(trigger(const QModelIndex &)));
+    connect(this, SIGNAL(activated(const QModelIndex &)),
+            this, SLOT(trigger(const QModelIndex &)));
 }
 
 void SwitchboardQueueEntriesView::selectFirstRow()
@@ -45,4 +54,20 @@ void SwitchboardQueueEntriesView::selectFirstRow()
 
 SwitchboardQueueEntriesView::~SwitchboardQueueEntriesView()
 {
+}
+
+void SwitchboardQueueEntriesView::trigger(const QModelIndex &index)
+{
+    int longerThanADoubleClick = QApplication::doubleClickInterval() * 1.1;
+    QDateTime now = QDateTime::currentDateTime();
+
+    if (m_last_click.isValid()) {
+        QDateTime clickReactivationTime  = m_last_click.addMSecs(longerThanADoubleClick);
+        if (now < clickReactivationTime) {
+            return;
+        }
+    }
+
+    m_last_click = now;
+    emit selected(index);
 }

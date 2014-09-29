@@ -32,6 +32,8 @@
 
 #include <xletlib/queue_entries/queue_entries_view.h>
 
+#include <QDateTime>
+
 class SwitchboardQueueEntriesView : public QueueEntriesView
 {
     Q_OBJECT
@@ -40,6 +42,15 @@ class SwitchboardQueueEntriesView : public QueueEntriesView
         SwitchboardQueueEntriesView(QWidget *parent = NULL);
         ~SwitchboardQueueEntriesView();
         void selectFirstRow();
+
+    signals:
+        void selected(const QModelIndex &index);
+
+    private slots:
+        void trigger(const QModelIndex &index);
+
+    private:
+        QDateTime m_last_click;
 };
 
 #endif

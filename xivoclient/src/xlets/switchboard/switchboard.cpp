@@ -85,15 +85,11 @@ Switchboard::Switchboard(QWidget *parent)
     connect(b_engine, SIGNAL(initialized()),
             this, SLOT(postInitializationSetup()));
 
-    connect(ui.incomingCallsView, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(incomingCallClicked(const QModelIndex &)));
-    connect(ui.incomingCallsView, SIGNAL(activated(const QModelIndex &)),
+    connect(ui.incomingCallsView, SIGNAL(selected(const QModelIndex &)),
             this, SLOT(incomingCallClicked(const QModelIndex &)));
 
-    connect(ui.waitingCallsView, SIGNAL(clicked(const QModelIndex &)),
+    connect(ui.waitingCallsView, SIGNAL(selected(const QModelIndex &)),
            this, SLOT(waitingCallClicked(const QModelIndex &)));
-    connect(ui.waitingCallsView, SIGNAL(activated(const QModelIndex &)),
-            this, SLOT(waitingCallClicked(const QModelIndex &)));
 
     connect(this->m_current_call, SIGNAL(requestedAnswer()),
             this, SLOT(answerIncomingCall()));
