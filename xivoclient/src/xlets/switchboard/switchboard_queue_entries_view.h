@@ -50,7 +50,8 @@ class SwitchboardQueueEntriesView : public QueueEntriesView
         void trigger(const QModelIndex &index);
 
     private:
-        QDateTime m_last_click;
+        bool isADoubleClickHappening(const QDateTime &time) const;
+        QDateTime m_end_of_double_click;
         int m_longer_that_a_double_click;
 };
 

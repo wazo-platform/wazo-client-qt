@@ -33,6 +33,7 @@
 
 SwitchboardQueueEntriesView::SwitchboardQueueEntriesView(QWidget *parent)
     : QueueEntriesView(parent),
+      m_end_of_double_click(QDateTime::currentDateTime()),
       m_longer_that_a_double_click(QApplication::doubleClickInterval() * 1.1)
 {
     this->setSortingEnabled(false);
@@ -57,17 +58,20 @@ SwitchboardQueueEntriesView::~SwitchboardQueueEntriesView()
 {
 }
 
+bool SwitchboardQueueEntriesView::isADoubleClickHappening(const QDateTime &time) const
+{
+    return time < m_end_of_double_click;
+}
+
+
 void SwitchboardQueueEntriesView::trigger(const QModelIndex &index)
 {
-    QDateTime now = QDateTime::currentDateTime();
+    const QDateTime &now = QDateTime::currentDateTime();
 
-    if (m_last_click.isValid()) {
-        QDateTime clickReactivationTime  = m_last_click.addMSecs(m_longer_that_a_double_click);
-        if (now < clickReactivationTime) {
-            return;
-        }
+    if (isADoubleClickHappening(now)) {
+        return;
     }
 
-    m_last_click = now;
+    m_end_of_double_click = now.addMSecs(m_longer_that_a_double_click);
     emit selected(index);
 }
