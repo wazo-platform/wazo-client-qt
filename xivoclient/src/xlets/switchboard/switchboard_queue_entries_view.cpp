@@ -32,7 +32,8 @@
 #include <QApplication>
 
 SwitchboardQueueEntriesView::SwitchboardQueueEntriesView(QWidget *parent)
-  : QueueEntriesView(parent)
+    : QueueEntriesView(parent),
+      m_longer_that_a_double_click(QApplication::doubleClickInterval() * 1.1)
 {
     this->setSortingEnabled(false);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -58,11 +59,10 @@ SwitchboardQueueEntriesView::~SwitchboardQueueEntriesView()
 
 void SwitchboardQueueEntriesView::trigger(const QModelIndex &index)
 {
-    int longerThanADoubleClick = QApplication::doubleClickInterval() * 1.1;
     QDateTime now = QDateTime::currentDateTime();
 
     if (m_last_click.isValid()) {
-        QDateTime clickReactivationTime  = m_last_click.addMSecs(longerThanADoubleClick);
+        QDateTime clickReactivationTime  = m_last_click.addMSecs(m_longer_that_a_double_click);
         if (now < clickReactivationTime) {
             return;
         }

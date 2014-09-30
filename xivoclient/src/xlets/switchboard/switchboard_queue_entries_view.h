@@ -51,6 +51,7 @@ class SwitchboardQueueEntriesView : public QueueEntriesView
 
     private:
         QDateTime m_last_click;
+        int m_longer_that_a_double_click;
 };
 
 #endif
