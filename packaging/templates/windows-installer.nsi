@@ -93,6 +93,7 @@ Section "XiVO client executable" XivoclientExe ; components page
 
   WriteRegStr HKLM "Software\XiVO\xivoclient" "Install_Dir" "$INSTDIR"
   WriteRegStr HKLM "${REG_UNINST}" "DisplayName" "XiVO Client"
+  WriteRegStr HKLM "${REG_UNINST}" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegStr HKLM "${REG_UNINST}" "Publisher" "Avencall"
   WriteRegStr HKLM "${REG_UNINST}" "DisplayVersion" "${XC_VERSION}"
   WriteRegDWORD HKLM "${REG_UNINST}" "EstimatedSize" "102400"
