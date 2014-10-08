@@ -115,8 +115,8 @@
         <translation>Switchboard</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="293"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="303"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="289"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="299"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n call</numerusform>
