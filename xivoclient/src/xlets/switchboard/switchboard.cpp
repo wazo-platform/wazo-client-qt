@@ -120,11 +120,6 @@ void Switchboard::parseCurrentCalls(const QVariantMap &message)
     this->m_current_call->updateCurrentCall(calls, has_incoming_calls);
 }
 
-void Switchboard::incomingCallsUpdated(const QModelIndex &, const QModelIndex &)
-{
-    this->focusOnIncomingCalls();
-}
-
 void Switchboard::setupUi()
 {
     ui.setupUi(this);

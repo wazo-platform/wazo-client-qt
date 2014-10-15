@@ -72,7 +72,6 @@ class Switchboard : public XLet, public IPBXListener
         void retrieveCallOnHold(const QString & call_unique_id) const;
         void handleEnterKeys();
         bool hasIncomingCalls();
-        void incomingCallsUpdated(const QModelIndex &, const QModelIndex &);
         void parseCommand(const QVariantMap &message);
         void parseCurrentCalls(const QVariantMap &message);
         void watch_switchboard_queue();
