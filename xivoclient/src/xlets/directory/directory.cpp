@@ -97,6 +97,10 @@ void Directory::focusEntryTable()
 
 void Directory::entrySelectedIndex(const QModelIndex &index)
 {
+    if (index.column() == -1) {
+        return;
+    }
+
     const QString &number = m_proxy_model->getNumber(index);
     signal_relayer->relayNumberSelected(number);
 }
