@@ -66,6 +66,7 @@ class DirectoryEntryModel : public QAbstractTableModel, IPBXListener
         void parseCommand(const QVariantMap &command);
 
     private:
+        bool isColumnValid(int col) const;
         void refreshEntry(int entry_index);
         QVariant dataDisplay(const DirectoryEntry & entry, int column) const;
         QVariant dataDecoration(const DirectoryEntry & entry, int column) const;

@@ -114,6 +114,11 @@ int DirectoryEntryModel::columnCount(const QModelIndex&) const
 QVariant DirectoryEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
+
+    if (!this->isColumnValid(column)) {
+        return QVariant();
+    }
+
     const DirectoryEntry & entry = m_directory_entry_manager.getEntry(row);
 
     switch(role) {
@@ -136,6 +141,10 @@ QVariant DirectoryEntryModel::headerData(int column,
                                          Qt::Orientation orientation,
                                          int role) const
 {
+    if (!this->isColumnValid(column)) {
+        return QVariant();
+    }
+
     if (orientation != Qt::Horizontal) {
         return QVariant();
     }
@@ -230,4 +239,9 @@ int DirectoryEntryModel::getNameColumnIndex() const
         }
     }
     return -1;
+}
+
+bool DirectoryEntryModel::isColumnValid(int col) const
+{
+    return col >= 0 && col < m_fields.size();
 }
