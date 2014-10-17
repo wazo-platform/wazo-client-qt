@@ -267,6 +267,7 @@ bool Switchboard::hasIncomingCalls() {
 
 void Switchboard::focusOnWaitingCalls()
 {
+    this->ui.incomingCallsView->clearSelection();
     this->ui.waitingCallsView->clearSelection();
     this->ui.waitingCallsView->selectFirstRow();
 }
