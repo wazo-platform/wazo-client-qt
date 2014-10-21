@@ -55,7 +55,8 @@ Switchboard::Switchboard(QWidget *parent)
       m_waiting_call_model(new QueueEntriesModel(this)),
       m_waiting_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
       m_phone_id(),
-      m_phone_hintstatus(PhoneHint::available)
+      m_phone_hintstatus(PhoneHint::available),
+      m_first_queue_entry_update(true)
 {
     this->setTitle(tr("Switchboard"));
 
@@ -206,8 +207,9 @@ void Switchboard::queueEntryUpdate(const QString &queue_id,
         return;
     }
 
-    if (this->ui.incomingCallsView->hasFocus()) {
+    if (this->ui.incomingCallsView->hasFocus() || m_first_queue_entry_update) {
         this->focusOnIncomingCalls();
+        m_first_queue_entry_update = false;
     }
 }
 
