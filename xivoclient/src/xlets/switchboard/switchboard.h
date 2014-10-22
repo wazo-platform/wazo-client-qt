@@ -95,7 +95,6 @@ class Switchboard : public XLet, public IPBXListener
 
         QString m_phone_id;
         QString m_phone_hintstatus;
-        bool m_first_queue_entry_update;
 };
 
 #endif
