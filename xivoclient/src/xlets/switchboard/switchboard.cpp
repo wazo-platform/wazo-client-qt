@@ -54,7 +54,8 @@ Switchboard::Switchboard(QWidget *parent)
       m_incoming_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
       m_waiting_call_model(new QueueEntriesModel(this)),
       m_waiting_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
-      m_switchboard_user(b_engine->getXivoClientUser())
+      m_phone_id(),
+      m_phone_hintstatus(PhoneHint::available)
 {
     this->setTitle(tr("Switchboard"));
 
@@ -116,13 +117,7 @@ void Switchboard::parseCommand(const QVariantMap &message)
 void Switchboard::parseCurrentCalls(const QVariantMap &message)
 {
     const QVariantList &calls = message["current_calls"].toList();
-    bool has_incoming_calls = this->hasIncomingCalls();
-    this->m_current_call->updateCurrentCall(calls, has_incoming_calls);
-}
-
-void Switchboard::incomingCallsUpdated(const QModelIndex &, const QModelIndex &)
-{
-    this->focusOnIncomingCalls();
+    this->m_current_call->updateCurrentCall(calls);
 }
 
 void Switchboard::setupUi()
@@ -146,9 +141,33 @@ void Switchboard::setupUi()
 
 void Switchboard::postInitializationSetup()
 {
+    this->updatePhoneId();
+    this->updatePhoneHintStatus();
+    this->onPhoneStatusChange();
     this->subscribeCurrentCalls();
     this->connectPhoneStatus();
     this->watch_switchboard_queue();
+}
+
+void Switchboard::updatePhoneId()
+{
+    UserInfo *user = b_engine->getXivoClientUser();
+
+    if (user && !user->phonelist().isEmpty()) {
+        this->m_phone_id = user->phonelist().first();
+    }
+}
+
+QString Switchboard::updatePhoneHintStatus()
+{
+    const PhoneInfo *phone = b_engine->phone(this->m_phone_id);
+    QString prev_phone_hintstatus = this->m_phone_hintstatus;
+
+    if (phone) {
+        this->m_phone_hintstatus = phone->hintstatus();
+    }
+
+    return prev_phone_hintstatus;
 }
 
 void Switchboard::connectPhoneStatus() const
@@ -164,22 +183,35 @@ void Switchboard::subscribeCurrentCalls() const
 
 void Switchboard::updatePhoneStatus(const QString &phone_id)
 {
-    if (! isSwitchboardPhone(phone_id)) {
+    if (phone_id != this->m_phone_id) {
         return;
     }
 
-    const PhoneInfo *phone = b_engine->phone(phone_id);
-    if (phone && phone->hintstatus() == PhoneHint::available) {
-        this->setFocus();
+    QString prev_phone_hintstatus = updatePhoneHintStatus();
+    if (prev_phone_hintstatus == this->m_phone_hintstatus) {
+        return;
     }
+
+    this->onPhoneStatusChange();
 }
 
-bool Switchboard::isSwitchboardPhone(const QString &phone_id)
+void Switchboard::onPhoneStatusChange()
 {
-    if (! m_switchboard_user) {
-        m_switchboard_user = b_engine->getXivoClientUser();
+    if (this->m_phone_hintstatus == PhoneHint::in_use) {
+        this->ui.incomingCallsView->clearSelection();
+        this->ui.waitingCallsView->clearSelection();
+        this->m_current_call->onPhoneInUse();
+        this->setFocus();
+    } else if (this->m_phone_hintstatus == PhoneHint::ringing) {
+        if (this->hasIncomingCalls()) {
+            this->m_current_call->onPhoneRinging(true);
+            this->focusOnIncomingCalls();
+        } else {
+            this->m_current_call->onPhoneRinging(false);
+        }
+    } else if (this->m_phone_hintstatus == PhoneHint::available) {
+        this->m_current_call->onPhoneAvailable();
     }
-    return m_switchboard_user && m_switchboard_user->hasPhoneId(phone_id);
 }
 
 void Switchboard::queueEntryUpdate(const QString &queue_id,
@@ -188,7 +220,11 @@ void Switchboard::queueEntryUpdate(const QString &queue_id,
     if (this->isSwitchboardQueue(queue_id) == false) {
         return;
     }
-    this->focusOnIncomingCalls();
+
+    if (this->hasIncomingCalls() && this->m_phone_hintstatus == PhoneHint::ringing) {
+        this->m_current_call->onPhoneRinging(true);
+        this->focusOnIncomingCalls();
+    }
 }
 
 void Switchboard::incomingCallClicked(const QModelIndex &index)
@@ -238,7 +274,6 @@ void Switchboard::focusOnIncomingCalls()
 {
     this->ui.waitingCallsView->clearSelection();
     this->ui.incomingCallsView->selectFirstRow();
-    this->m_current_call->noticeIncoming(this->hasIncomingCalls());
 }
 
 bool Switchboard::hasIncomingCalls() {
@@ -247,6 +282,7 @@ bool Switchboard::hasIncomingCalls() {
 
 void Switchboard::focusOnWaitingCalls()
 {
+    this->ui.incomingCallsView->clearSelection();
     this->ui.waitingCallsView->clearSelection();
     this->ui.waitingCallsView->selectFirstRow();
 }

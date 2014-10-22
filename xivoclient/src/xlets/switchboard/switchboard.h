@@ -72,16 +72,17 @@ class Switchboard : public XLet, public IPBXListener
         void retrieveCallOnHold(const QString & call_unique_id) const;
         void handleEnterKeys();
         bool hasIncomingCalls();
-        void incomingCallsUpdated(const QModelIndex &, const QModelIndex &);
         void parseCommand(const QVariantMap &message);
         void parseCurrentCalls(const QVariantMap &message);
         void watch_switchboard_queue();
         void connectPhoneStatus() const;
         void setupUi();
         void subscribeCurrentCalls() const;
+        void updatePhoneId();
+        QString updatePhoneHintStatus();
+        void onPhoneStatusChange();
         bool isSwitchboardQueue(const QString &queue_id) const;
         bool isSwitchboardHoldQueue(const QString &queue_id) const;
-        bool isSwitchboardPhone(const QString &phone_id);
 
         Ui::SwitchboardPanel ui;
         CurrentCall *m_current_call;
@@ -92,7 +93,8 @@ class Switchboard : public XLet, public IPBXListener
         QueueEntriesModel *m_waiting_call_model;
         QueueEntriesSortFilterProxyModel *m_waiting_call_proxy_model;
 
-        const UserInfo *m_switchboard_user;
+        QString m_phone_id;
+        QString m_phone_hintstatus;
 };
 
 #endif
