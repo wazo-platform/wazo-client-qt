@@ -198,19 +198,19 @@ void Switchboard::updatePhoneStatus(const QString &phone_id)
 void Switchboard::onPhoneStatusChange()
 {
     if (this->m_phone_hintstatus == PhoneHint::in_use) {
-        ui.incomingCallsView->clearSelection();
-        ui.waitingCallsView->clearSelection();
-        m_current_call->onPhoneInUse();
-        setFocus();
+        this->ui.incomingCallsView->clearSelection();
+        this->ui.waitingCallsView->clearSelection();
+        this->m_current_call->onPhoneInUse();
+        this->setFocus();
     } else if (this->m_phone_hintstatus == PhoneHint::ringing) {
-        if (hasIncomingCalls()) {
-            m_current_call->onPhoneRinging(true);
-            focusOnIncomingCalls();
+        if (this->hasIncomingCalls()) {
+            this->m_current_call->onPhoneRinging(true);
+            this->focusOnIncomingCalls();
         } else {
-            m_current_call->onPhoneRinging(false);
+            this->m_current_call->onPhoneRinging(false);
         }
     } else if (this->m_phone_hintstatus == PhoneHint::available) {
-        m_current_call->onPhoneAvailable();
+        this->m_current_call->onPhoneAvailable();
     }
 }
 
