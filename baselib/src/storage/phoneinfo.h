@@ -91,6 +91,7 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
 namespace PhoneHint {
     static QString available = "0";
     static QString in_use = "1";
+    static QString ringing = "8";
 };
 
 #endif

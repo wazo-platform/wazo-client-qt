@@ -80,6 +80,7 @@ class Switchboard : public XLet, public IPBXListener
         void subscribeCurrentCalls() const;
         void updatePhoneId();
         QString updatePhoneHintStatus();
+        void onPhoneStatusChange();
         bool isSwitchboardQueue(const QString &queue_id) const;
         bool isSwitchboardHoldQueue(const QString &queue_id) const;
 

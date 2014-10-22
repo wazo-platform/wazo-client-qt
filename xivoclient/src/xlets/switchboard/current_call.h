@@ -59,8 +59,10 @@ class CurrentCall: public QObject, public IPBXListener
         ~CurrentCall();
         void setParentWidget(QWidget *parent);
         virtual void parseCommand(const QVariantMap &command);
-        void noticeIncoming(bool);
-        void updateCurrentCall(const QVariantList &calls, bool has_incoming);
+        void updateCurrentCall(const QVariantList &calls);
+        void onPhoneAvailable();
+        void onPhoneRinging(bool has_incoming);
+        void onPhoneInUse();
     signals:
         void requestedAnswer();
     public slots:
@@ -83,7 +85,6 @@ class CurrentCall: public QObject, public IPBXListener
         void parseAttendedTransferAnswered(const QVariantMap &message);
         bool hasCurrentCall() const;
 
-        void readyToAnswerMode(bool has_incoming);
         void noCallsMode();
         void ringingMode();
         void answeringMode();

@@ -82,15 +82,6 @@ bool CurrentCall::hasCurrentCall() const
     return this->m_call_start != 0;
 }
 
-void CurrentCall::noticeIncoming(bool hasIncoming)
-{
-    if (this->hasCurrentCall()) {
-        return;
-    }
-
-    this->readyToAnswerMode(hasIncoming);
-}
-
 void CurrentCall::updateCallerID(const QString &name,
                                  const QString &number)
 {
@@ -120,13 +111,37 @@ void CurrentCall::parseAttendedTransferAnswered(const QVariantMap & /*message*/)
     this->transferAnsweredMode();
 }
 
-void CurrentCall::updateCurrentCall(const QVariantList &calls, bool has_incoming)
+void CurrentCall::updateCurrentCall(const QVariantList &calls)
 {
     if (calls.isEmpty()) {
-        this->clear();
-        this->readyToAnswerMode(has_incoming);
+        return;
+    }
+
+    this->updateCall(calls);
+    this->answeringMode();
+}
+
+void CurrentCall::onPhoneAvailable()
+{
+    this->clear();
+    this->noCallsMode();
+}
+
+void CurrentCall::onPhoneRinging(bool has_incoming)
+{
+    if (has_incoming) {
+        this->ringingMode();
     } else {
-        this->updateCall(calls);
+        this->resetButtons();
+    }
+}
+
+void CurrentCall::onPhoneInUse()
+{
+    if (this->hasCurrentCall()) {
+        this->answeringMode();
+    } else {
+        this->ringbackToneMode();
     }
 }
 
@@ -141,7 +156,6 @@ void CurrentCall::updateCall(const QVariantList &calls)
                              call_map["cid_number"].toString());
         this->m_call_start = call_map["call_start"].toDouble();
         this->updateCallInfo();
-        this->answeringMode();
     }
 }
 
@@ -225,15 +239,6 @@ void CurrentCall::cancelTransfer()
 {
     b_engine->sendJsonCommand(MessageFactory::cancelTransfer());
     this->answeringMode();
-}
-
-void CurrentCall::readyToAnswerMode(bool has_incoming_calls)
-{
-    if (has_incoming_calls) {
-        this->ringingMode();
-    } else {
-        this->noCallsMode();
-    }
 }
 
 void CurrentCall::noCallsMode()

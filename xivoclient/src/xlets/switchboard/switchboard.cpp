@@ -118,8 +118,7 @@ void Switchboard::parseCommand(const QVariantMap &message)
 void Switchboard::parseCurrentCalls(const QVariantMap &message)
 {
     const QVariantList &calls = message["current_calls"].toList();
-    bool has_incoming_calls = this->hasIncomingCalls();
-    this->m_current_call->updateCurrentCall(calls, has_incoming_calls);
+    this->m_current_call->updateCurrentCall(calls);
 }
 
 void Switchboard::setupUi()
@@ -145,6 +144,7 @@ void Switchboard::postInitializationSetup()
 {
     this->updatePhoneId();
     this->updatePhoneHintStatus();
+    this->onPhoneStatusChange();
     this->subscribeCurrentCalls();
     this->connectPhoneStatus();
     this->watch_switchboard_queue();
@@ -189,14 +189,29 @@ void Switchboard::updatePhoneStatus(const QString &phone_id)
     }
 
     QString prev_phone_hintstatus = updatePhoneHintStatus();
-    if (prev_phone_hintstatus != PhoneHint::in_use && this->m_phone_hintstatus == PhoneHint::in_use) {
+    if (prev_phone_hintstatus == this->m_phone_hintstatus) {
+        return;
+    }
+
+    this->onPhoneStatusChange();
+}
+
+void Switchboard::onPhoneStatusChange()
+{
+    if (this->m_phone_hintstatus == PhoneHint::in_use) {
         ui.incomingCallsView->clearSelection();
         ui.waitingCallsView->clearSelection();
+        m_current_call->onPhoneInUse();
         setFocus();
-    } else if (prev_phone_hintstatus == PhoneHint::available && this->m_phone_hintstatus != PhoneHint::available) {
+    } else if (this->m_phone_hintstatus == PhoneHint::ringing) {
         if (hasIncomingCalls()) {
             focusOnIncomingCalls();
+            m_current_call->onPhoneRinging(true);
+        } else {
+            m_current_call->onPhoneRinging(false);
         }
+    } else if (this->m_phone_hintstatus == PhoneHint::available) {
+        m_current_call->onPhoneAvailable();
     }
 }
 
@@ -205,6 +220,10 @@ void Switchboard::queueEntryUpdate(const QString &queue_id,
 {
     if (this->isSwitchboardQueue(queue_id) == false) {
         return;
+    }
+
+    if (this->m_phone_hintstatus == PhoneHint::ringing) {
+        this->m_current_call->onPhoneRinging(this->hasIncomingCalls());
     }
 
     if (this->ui.incomingCallsView->hasFocus() || m_first_queue_entry_update) {
@@ -260,7 +279,6 @@ void Switchboard::focusOnIncomingCalls()
 {
     this->ui.waitingCallsView->clearSelection();
     this->ui.incomingCallsView->selectFirstRow();
-    this->m_current_call->noticeIncoming(this->hasIncomingCalls());
 }
 
 bool Switchboard::hasIncomingCalls() {
