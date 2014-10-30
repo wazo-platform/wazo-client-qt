@@ -27,11 +27,11 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __POWERAWAREAPPLICATION_H__
-#define __POWERAWAREAPPLICATION_H__
+#ifndef __POWEREVENTHANDLER_H__
+#define __POWEREVENTHANDLER_H__
 
+#include <QObject>
 #include <QAbstractNativeEventFilter>
-#include <QtSingleApplication>
 
 class PowerEventHandler : public QObject, public QAbstractNativeEventFilter
 {
