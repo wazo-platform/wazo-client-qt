@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2013-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,44 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __EVENT_AWARE_APPLICATION_H__
+#define __EVENT_AWARE_APPLICATION_H__
 
-#include <baseengine.h>
+#include <QtSingleApplication>
 
-#include "main_window/main_window.h"
-#include "power_event_handler.h"
-#include "event_aware_application.h"
+class EventAwareApplication : public QtSingleApplication
+{
+    Q_OBJECT
 
-#ifdef FUNCTESTS
-class RemoteControl;
-#endif
-
-struct ExecObjects {
-    EventAwareApplication *app;
-    MainWindow *win;
-    BaseEngine *baseengine;
-#ifdef FUNCTESTS
-    RemoteControl *rc;
-#endif
-    bool initOK;
-
-    ExecObjects()
-    : app(NULL),
-      win(NULL),
-      baseengine(NULL),
-#ifdef FUNCTESTS
-      rc(NULL),
-#endif
-      initOK(false)
-    {
-    }
+    public:
+        EventAwareApplication(int &argc, char **argv);
+        ~EventAwareApplication();
 };
-
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
-
-int main(int, char **);
 
 #endif

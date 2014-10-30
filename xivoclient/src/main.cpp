@@ -59,7 +59,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.io");
     QCoreApplication::setApplicationName("XIVO_Client");
-    QtSingleApplication  *app = new QtSingleApplication(argc, argv);
+    EventAwareApplication  *app = new EventAwareApplication(argc, argv);
 
     PowerEventHandler * power_event_handler = new PowerEventHandler();
     app->installNativeEventFilter(power_event_handler);
