@@ -157,7 +157,7 @@ LangString SuccessInstall ${LANG_FRENCH}  "L'installation a réussi, voulez-vous 
 
 Function .onInstSuccess
   MessageBox MB_YESNO  $(SuccessInstall) /SD IDNO IDNO NoReadme
-  ExecShell "open" $INSTDIR/xivoclient.exe
+  Exec '"$WINDIR\explorer.exe" "$INSTDIR\xivoclient.exe"'
   NoReadme:
 FunctionEnd
 
