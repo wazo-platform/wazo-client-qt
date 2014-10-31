@@ -37,7 +37,7 @@ EventAwareApplication::EventAwareApplication(int &argc, char **argv)
     FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(this, this);
     this->installEventFilter(fileOpenHandler);
 
-    QObject::connect(fileOpenHandler, SIGNAL(dialNumber(const QString &)),
+    QObject::connect(fileOpenHandler, SIGNAL(dialNumberReceived(const QString &)),
                      this, SIGNAL(numberToDialReceived(const QString &)));
 
     QObject::connect(this, SIGNAL(messageReceived(const QString &)),

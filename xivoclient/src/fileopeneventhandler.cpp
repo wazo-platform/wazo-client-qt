@@ -79,6 +79,6 @@ bool FileOpenEventHandler::isXivoUrl(const QString url)
 void FileOpenEventHandler::handleUrl(const QString url)
 {
     QString number = PhoneNumber::extract(url);
-    qDebug() << "emitting signal dialNumber " << number;
-    emit dialNumber(number);
+    qDebug() << "emitting signal dialNumberReceived " << number;
+    emit dialNumberReceived(number);
 }

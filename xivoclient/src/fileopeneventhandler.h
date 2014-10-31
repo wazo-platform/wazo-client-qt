@@ -44,7 +44,7 @@ class FileOpenEventHandler: public QObject
         ~FileOpenEventHandler();
 
     signals:
-        QString dialNumber(const QString &number);
+        QString dialNumberReceived(const QString &number);
 
     protected:
         virtual bool eventFilter(QObject *obj, QEvent *event);
