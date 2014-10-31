@@ -29,10 +29,17 @@
 
 #include "event_aware_application.h"
 #include <QStringList>
+#include "fileopeneventhandler.h"
 
 EventAwareApplication::EventAwareApplication(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {
+    FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(this, this);
+    this->installEventFilter(fileOpenHandler);
+
+    QObject::connect(fileOpenHandler, SIGNAL(dialNumber(const QString &)),
+                     this, SIGNAL(numberToDialReceived(const QString &)));
+
     QObject::connect(this, SIGNAL(messageReceived(const QString &)),
                      this, SLOT(handleOtherInstanceMessage(const QString &)));
 }

@@ -41,7 +41,6 @@
 
 #include "assembler.h"
 #include "main_window/main_window.h"
-#include "fileopeneventhandler.h"
 #include "power_event_handler.h"
 
 #ifdef FUNCTESTS
@@ -63,8 +62,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     PowerEventHandler * power_event_handler = new PowerEventHandler();
     app->installNativeEventFilter(power_event_handler);
-    FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app, app);
-    app->installEventFilter(fileOpenHandler);
 
     QSettings * settings = new QSettings(QSettings::IniFormat,
                                          QSettings::UserScope,
@@ -147,7 +144,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
     app->setActivationWindow(main_window, false);
-    fileOpenHandler->setActivationWindow(activate_on_tel);
 
     if (activate_on_tel) {
         QObject::connect(app, SIGNAL(numberToDialReceived(const QString &)),
@@ -165,8 +161,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                      b_engine, SLOT(actionDial(const QString &)));
     QObject::connect(app, SIGNAL(focusRequestReceived()),
                      app, SLOT(activateWindow()));
-    QObject::connect(fileOpenHandler, SIGNAL(dialNumber(QString)),
-                     b_engine, SLOT(actionDial(const QString &)));
 
     ret.app = app;
     ret.win = main_window;
