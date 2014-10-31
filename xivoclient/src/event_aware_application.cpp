@@ -28,13 +28,42 @@
  */
 
 #include "event_aware_application.h"
-
+#include <QStringList>
 
 EventAwareApplication::EventAwareApplication(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {
+    QObject::connect(this, SIGNAL(messageReceived(const QString &)),
+                     this, SLOT(handleOtherInstanceMessage(const QString &)));
 }
 
 EventAwareApplication::~EventAwareApplication()
 {
+}
+
+bool EventAwareApplication::sendNumberToDial(const QString &number)
+{
+    QString msg = "dial:" + number;
+    return this->sendMessage(msg);
+}
+
+bool EventAwareApplication::sendFocusRequest()
+{
+    QString msg = "focus";
+    return this->sendMessage(msg);
+}
+
+void EventAwareApplication::handleOtherInstanceMessage(const QString & msg)
+{
+    if(msg.startsWith("focus"))
+    {
+        emit focusRequestReceived();
+    }
+
+    if(msg.startsWith("dial"))
+    {
+        QStringList list = msg.split(":");
+        QString number = list.last();
+        emit numberToDialReceived(number);
+    }
 }

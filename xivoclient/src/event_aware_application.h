@@ -39,6 +39,17 @@ class EventAwareApplication : public QtSingleApplication
     public:
         EventAwareApplication(int &argc, char **argv);
         ~EventAwareApplication();
+
+        bool sendNumberToDial(const QString &number);
+        bool sendFocusRequest();
+
+    private slots:
+        void handleOtherInstanceMessage(const QString &);
+
+    signals:
+        void numberToDialReceived(const QString &number);
+        void focusRequestReceived();
+
 };
 
 #endif

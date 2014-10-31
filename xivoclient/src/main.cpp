@@ -124,8 +124,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     bool shallbeunique = settings->value("display/unique").toBool();
     if (shallbeunique && app->isRunning()) {
         qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
-        // do not create a new application, just activate the currently running one
-        app->activateWindow();
+        app->sendFocusRequest();
         ret.initOK = false;
         return ret;
     }
@@ -149,8 +148,13 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     main_window->initialize();
 
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
-    app->setActivationWindow(main_window, activate_on_tel);
+    app->setActivationWindow(main_window, false);
     fileOpenHandler->setActivationWindow(activate_on_tel);
+
+    if (activate_on_tel) {
+        QObject::connect(app, SIGNAL(numberToDialReceived(const QString &)),
+                        app, SLOT(activateWindow()));
+    }
 
     app->setQuitOnLastWindowClosed(false);
     app->setProperty("stopper", "lastwindow");
@@ -159,10 +163,12 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                      b_engine, SLOT(stop()));
     QObject::connect(power_event_handler, SIGNAL(resume()),
                      b_engine, SLOT(start()));
-    QObject::connect(app, SIGNAL(messageReceived(const QString &)),
-                     b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
+    QObject::connect(app, SIGNAL(numberToDialReceived(const QString &)),
+                     b_engine, SLOT(actionDial(const QString &)));
+    QObject::connect(app, SIGNAL(focusRequestReceived()),
+                     app, SLOT(activateWindow()));
     QObject::connect(fileOpenHandler, SIGNAL(dialNumber(QString)),
-                     b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
+                     b_engine, SLOT(actionDial(const QString &)));
 
     ret.app = app;
     ret.win = main_window;

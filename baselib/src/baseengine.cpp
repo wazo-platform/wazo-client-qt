@@ -1816,24 +1816,6 @@ UserInfo * BaseEngine::getXivoClientMonitored()
     return NULL;
 }
 
-/*! \brief receive the message from other instance of this application
- *
- * Dial the number if the message is tel:<i>number</i>.
- * \see QtSingleApplication
- */
-void BaseEngine::handleOtherInstanceMessage(const QString & msg)
-{
-    qDebug() << Q_FUNC_INFO << m_osname << "got" << msg;
-    // tel:number is in RFC 3966
-    // callto:number is unofficial (read 7.3. in RFC 3966)
-    // callto://number is unofficial and used by Skype
-    // we support tel:number and callto:number
-    // todo : handle also other commands
-    QString phonenum = msg;
-    qDebug() << Q_FUNC_INFO << "trying to dial" << phonenum;
-    actionDial(phonenum);
-}
-
 int BaseEngine::forwardToListeners(QString event_dest, const QVariantMap & map)
 {
     if (m_listeners.contains(event_dest)) {
