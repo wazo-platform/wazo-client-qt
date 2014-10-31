@@ -30,7 +30,6 @@
 #include "event_aware_application.h"
 #include <QStringList>
 #include "fileopeneventhandler.h"
-#include <QDebug>
 
 EventAwareApplication::EventAwareApplication(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
@@ -52,14 +51,12 @@ EventAwareApplication::~EventAwareApplication()
 bool EventAwareApplication::sendNumberToDial(const QString &number)
 {
     QString msg = "dial:" + number;
-    qDebug() << "sending message : " << msg;
     return this->sendMessage(msg);
 }
 
 bool EventAwareApplication::sendFocusRequest()
 {
     QString msg = "focus";
-    qDebug() << "sending message : " << msg;
     return this->sendMessage(msg);
 }
 
@@ -67,7 +64,6 @@ void EventAwareApplication::handleOtherInstanceMessage(const QString & msg)
 {
     if(msg.startsWith("focus"))
     {
-        qDebug() << "emitting signal focusRequestReceived ";
         emit focusRequestReceived();
     }
 
@@ -75,7 +71,6 @@ void EventAwareApplication::handleOtherInstanceMessage(const QString & msg)
     {
         QStringList list = msg.split(":");
         QString number = list.last();
-        qDebug() << "emitting signal numberToDialReceived " << number;
         emit numberToDialReceived(number);
     }
 }
