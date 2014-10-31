@@ -73,27 +73,25 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     qDebug() << "Reading configuration file" << settings->fileName();
 
     QString profile = "default-user";
-    QString msg = "";
+    QString number = "";
     for (int i = 1; i < argc; i ++) {
         QString arg_str(argv[i]);
-        if (arg_str.length() == 0 || arg_str.contains(str_socket_arg_prefix)) {
+
+        if (arg_str.isEmpty() || arg_str.contains(str_socket_arg_prefix)) {
             continue;
         }
-        if(! PhoneNumber::isURI(arg_str)) {
-            profile = arg_str;
+
+        if(PhoneNumber::isURI(arg_str)) {
+            number = PhoneNumber::extract(arg_str);
         } else {
-            msg = PhoneNumber::extract(arg_str);
+            profile = arg_str;
         }
     }
 
     qDebug() << "Selected profile: " << profile;
 
-    if (! msg.isEmpty()) {
-        // send message if there is an argument.
-        // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
-        // to learn how to handle "tel:0123456" uri scheme
-        app->sendMessage(msg);
-        // warning : this sends the message only to the first instance, if ever there are >1 instances running
+    if (! number.isEmpty()) {
+        app->sendNumberToDial(number);
     }
 
     app->setWindowIcon(QIcon(":/images/xivo-login.png"));
