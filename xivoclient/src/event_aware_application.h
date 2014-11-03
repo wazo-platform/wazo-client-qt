@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2013-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,21 +27,29 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __POWEREVENTHANDLER_H__
-#define __POWEREVENTHANDLER_H__
+#ifndef __EVENT_AWARE_APPLICATION_H__
+#define __EVENT_AWARE_APPLICATION_H__
 
-#include <QObject>
-#include <QAbstractNativeEventFilter>
+#include <QtSingleApplication>
 
-class PowerEventHandler : public QObject, public QAbstractNativeEventFilter
+class EventAwareApplication : public QtSingleApplication
 {
     Q_OBJECT
+
     public:
-        bool nativeEventFilter(const QByteArray & eventType, void * message, long * result);
+        EventAwareApplication(int &argc, char **argv);
+        ~EventAwareApplication();
+
+        bool sendNumberToDial(const QString &number);
+        bool sendFocusRequest();
+
+    private slots:
+        void handleOtherInstanceMessage(const QString &);
 
     signals:
-        void standBy();
-        void resume();
+        void numberToDialReceived(const QString &number);
+        void focusRequestReceived();
+
 };
 
 #endif

@@ -34,13 +34,14 @@
 
 #include "main_window/main_window.h"
 #include "power_event_handler.h"
+#include "event_aware_application.h"
 
 #ifdef FUNCTESTS
 class RemoteControl;
 #endif
 
 struct ExecObjects {
-    QtSingleApplication *app;
+    EventAwareApplication *app;
     MainWindow *win;
     BaseEngine *baseengine;
 #ifdef FUNCTESTS

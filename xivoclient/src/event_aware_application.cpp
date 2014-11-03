@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2013-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,21 +27,50 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __POWEREVENTHANDLER_H__
-#define __POWEREVENTHANDLER_H__
+#include "event_aware_application.h"
+#include <QStringList>
+#include "fileopeneventhandler.h"
 
-#include <QObject>
-#include <QAbstractNativeEventFilter>
-
-class PowerEventHandler : public QObject, public QAbstractNativeEventFilter
+EventAwareApplication::EventAwareApplication(int &argc, char **argv)
+    : QtSingleApplication(argc, argv)
 {
-    Q_OBJECT
-    public:
-        bool nativeEventFilter(const QByteArray & eventType, void * message, long * result);
+    FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(this, this);
+    this->installEventFilter(fileOpenHandler);
 
-    signals:
-        void standBy();
-        void resume();
-};
+    QObject::connect(fileOpenHandler, SIGNAL(dialNumberReceived(const QString &)),
+                     this, SIGNAL(numberToDialReceived(const QString &)));
 
-#endif
+    QObject::connect(this, SIGNAL(messageReceived(const QString &)),
+                     this, SLOT(handleOtherInstanceMessage(const QString &)));
+}
+
+EventAwareApplication::~EventAwareApplication()
+{
+}
+
+bool EventAwareApplication::sendNumberToDial(const QString &number)
+{
+    QString msg = "dial:" + number;
+    return this->sendMessage(msg);
+}
+
+bool EventAwareApplication::sendFocusRequest()
+{
+    QString msg = "focus";
+    return this->sendMessage(msg);
+}
+
+void EventAwareApplication::handleOtherInstanceMessage(const QString & msg)
+{
+    if(msg.startsWith("focus"))
+    {
+        emit focusRequestReceived();
+    }
+
+    if(msg.startsWith("dial"))
+    {
+        QStringList list = msg.split(":");
+        QString number = list.last();
+        emit numberToDialReceived(number);
+    }
+}

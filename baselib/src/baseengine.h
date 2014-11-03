@@ -195,8 +195,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void start(); //!< start the connection process.
         void stop();  //!< stop the engine
 
-        void handleOtherInstanceMessage(const QString &);
-
         void actionCall(const QString &, const QString &src="", const QString &dst="");
         void actionDial(const QString &);
 

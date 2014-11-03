@@ -43,7 +43,7 @@
 bool PowerEventHandler::nativeEventFilter(const QByteArray & eventType, void * msg, long * result)
 {
     if (eventType == "windows_generic_MSG") {
-        #ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
         MSG * windows_message = (MSG *) msg;
         if(windows_message->message == WM_POWERBROADCAST) {
             /*
@@ -72,7 +72,10 @@ bool PowerEventHandler::nativeEventFilter(const QByteArray & eventType, void * m
                 return true;
             }
         }
-        #endif
+#else
+        Q_UNUSED(msg);
+        Q_UNUSED(result);
+#endif
     }
     return false;
 }

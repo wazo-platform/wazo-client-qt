@@ -41,7 +41,6 @@
 
 #include "assembler.h"
 #include "main_window/main_window.h"
-#include "fileopeneventhandler.h"
 #include "power_event_handler.h"
 
 #ifdef FUNCTESTS
@@ -59,12 +58,10 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     QCoreApplication::setOrganizationName("XIVO");
     QCoreApplication::setOrganizationDomain("xivo.io");
     QCoreApplication::setApplicationName("XIVO_Client");
-    QtSingleApplication  *app = new QtSingleApplication(argc, argv);
+    EventAwareApplication  *app = new EventAwareApplication(argc, argv);
 
     PowerEventHandler * power_event_handler = new PowerEventHandler();
     app->installNativeEventFilter(power_event_handler);
-    FileOpenEventHandler* fileOpenHandler = new FileOpenEventHandler(app, app);
-    app->installEventFilter(fileOpenHandler);
 
     QSettings * settings = new QSettings(QSettings::IniFormat,
                                          QSettings::UserScope,
@@ -73,27 +70,25 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     qDebug() << "Reading configuration file" << settings->fileName();
 
     QString profile = "default-user";
-    QString msg = "";
+    QString number = "";
     for (int i = 1; i < argc; i ++) {
         QString arg_str(argv[i]);
-        if (arg_str.length() == 0 || arg_str.contains(str_socket_arg_prefix)) {
+
+        if (arg_str.isEmpty() || arg_str.contains(str_socket_arg_prefix)) {
             continue;
         }
-        if(! PhoneNumber::isURI(arg_str)) {
-            profile = arg_str;
+
+        if(PhoneNumber::isURI(arg_str)) {
+            number = PhoneNumber::extract(arg_str);
         } else {
-            msg = PhoneNumber::extract(arg_str);
+            profile = arg_str;
         }
     }
 
     qDebug() << "Selected profile: " << profile;
 
-    if (! msg.isEmpty()) {
-        // send message if there is an argument.
-        // see http://people.w3.org/~dom/archives/2005/09/integrating-a-new-uris-scheme-handler-to-gnome-and-firefox/
-        // to learn how to handle "tel:0123456" uri scheme
-        app->sendMessage(msg);
-        // warning : this sends the message only to the first instance, if ever there are >1 instances running
+    if (! number.isEmpty()) {
+        app->sendNumberToDial(number);
     }
 
     app->setWindowIcon(QIcon(":/images/xivo-login.png"));
@@ -124,8 +119,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     bool shallbeunique = settings->value("display/unique").toBool();
     if (shallbeunique && app->isRunning()) {
         qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
-        // do not create a new application, just activate the currently running one
-        app->activateWindow();
+        app->sendFocusRequest();
         ret.initOK = false;
         return ret;
     }
@@ -149,8 +143,12 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     main_window->initialize();
 
     bool activate_on_tel = b_engine->getConfig("activate_on_tel").toBool();
-    app->setActivationWindow(main_window, activate_on_tel);
-    fileOpenHandler->setActivationWindow(activate_on_tel);
+    app->setActivationWindow(main_window, false);
+
+    if (activate_on_tel) {
+        QObject::connect(app, SIGNAL(numberToDialReceived(const QString &)),
+                        app, SLOT(activateWindow()));
+    }
 
     app->setQuitOnLastWindowClosed(false);
     app->setProperty("stopper", "lastwindow");
@@ -159,10 +157,10 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                      b_engine, SLOT(stop()));
     QObject::connect(power_event_handler, SIGNAL(resume()),
                      b_engine, SLOT(start()));
-    QObject::connect(app, SIGNAL(messageReceived(const QString &)),
-                     b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
-    QObject::connect(fileOpenHandler, SIGNAL(dialNumber(QString)),
-                     b_engine, SLOT(handleOtherInstanceMessage(const QString &)));
+    QObject::connect(app, SIGNAL(numberToDialReceived(const QString &)),
+                     b_engine, SLOT(actionDial(const QString &)));
+    QObject::connect(app, SIGNAL(focusRequestReceived()),
+                     app, SLOT(activateWindow()));
 
     ret.app = app;
     ret.win = main_window;

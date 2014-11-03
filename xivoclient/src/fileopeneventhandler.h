@@ -42,10 +42,9 @@ class FileOpenEventHandler: public QObject
     public:
         FileOpenEventHandler(QtSingleApplication* app, QObject* parent = NULL);
         ~FileOpenEventHandler();
-        void setActivationWindow(bool activate);
 
     signals:
-        QString dialNumber(QString number);
+        QString dialNumberReceived(const QString &number);
 
     protected:
         virtual bool eventFilter(QObject *obj, QEvent *event);
@@ -54,7 +53,6 @@ class FileOpenEventHandler: public QObject
         bool isXivoUrl(QString url);
         void handleUrl(QString url);
         QtSingleApplication* m_app;
-        bool m_activate;
 
 };
 
