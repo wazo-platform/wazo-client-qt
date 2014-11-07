@@ -87,8 +87,18 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     qDebug() << "Selected profile: " << profile;
 
-    if (! number.isEmpty()) {
-        app->sendNumberToDial(number);
+    bool shallbeunique = settings->value("display/unique").toBool();
+    if (shallbeunique && app->isRunning()) {
+        qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
+
+        if (! number.isEmpty()) {
+            app->sendNumberToDial(number);
+        } else {
+            app->sendFocusRequest();
+        }
+
+        ret.initOK = false;
+        return ret;
     }
 
     app->setWindowIcon(QIcon(":/images/xivo-login.png"));
@@ -115,14 +125,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         .arg(info_endianness)
         .arg(app->applicationPid());
 #endif
-
-    bool shallbeunique = settings->value("display/unique").toBool();
-    if (shallbeunique && app->isRunning()) {
-        qDebug() << Q_FUNC_INFO << "unique mode : application is already running : exiting";
-        app->sendFocusRequest();
-        ret.initOK = false;
-        return ret;
-    }
 
     settings->setValue("profile/lastused", profile);
 
