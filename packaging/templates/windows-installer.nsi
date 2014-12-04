@@ -12,7 +12,6 @@ SetCompressor /FINAL /SOLID lzma
 
 Name "XiVO Client ${XC_VERSION}"
 OutFile "xivoclient-${XC_VERSION}-x86.exe"
-!addplugindir ../../Plugins/
 
 InstallDir $PROGRAMFILES\XiVO\
 
@@ -212,7 +211,7 @@ LangString REMOVE_XIVOCLIENT ${LANG_ENGLISH} "Uninstall XiVO Client.lnk"
 LangString REMOVE_XIVOCLIENT ${LANG_FRENCH}  "Désinstaller XiVO Client.lnk"
 
 LangString ProtocolAssociation ${LANG_ENGLISH}  "Protocol Association"
-LangString ProtocolAssociation ${LANG_FRENCH}  "Association de protocols"
+LangString ProtocolAssociation ${LANG_FRENCH}  "Association de protocoles"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
