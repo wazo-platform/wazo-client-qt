@@ -75,6 +75,13 @@ Function .onInit
 
 FunctionEnd
 
+!macro RegisterProtocolSection EXT
+  Section ${EXT}
+    SectionIn 1 3
+    AppAssocReg::SetAppAsDefault "XiVO Client" "${EXT}" "protocol"
+  SectionEnd
+!macroend
+
 !define REG_UNINST Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient
 
 ; The stuff to install
@@ -119,7 +126,21 @@ Section "XiVO client executable" XivoclientExe ; components page
      CreateShortCut  "$SMPROGRAMS\XiVO\\$(START_XIVOCLIENT)"  "$INSTDIR\xivoclient.exe"
      CreateShortCut  "$SMPROGRAMS\XiVO\\$(REMOVE_XIVOCLIENT)" "$INSTDIR\uninstall.exe"
   ${EndIf}
+
+    WriteRegStr HKCR "XiVO Client" "" "XiVO Click2Call Protocol"
+    WriteRegStr HKCR "XiVO Client\DefaultIcon" "" "$INSTDIR\xivoclient.exe,0"
+    WriteRegStr HKCR "XiVO Client\shell\open\command" "" "$INSTDIR\xivoclient.exe %1"
+    WriteRegStr HKLM "Software\RegisteredApplications" "XiVO Client" "Software\Clients\Internet Call\XiVO Client\Capabilities"
+    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities" "ApplicationName" "XiVO Client"
+    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities" "ApplicationDescription" "Client for the XiVO ipbx (http://xivo.io)"
+    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities\UrlAssociations" "tel" "XiVO Client"
+    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities\UrlAssociations" "callto" "XiVO Client"
 SectionEnd ; end the section
+
+SectionGroup $(ProtocolAssociation)
+    !insertmacro RegisterProtocolSection "tel"
+    !insertmacro RegisterProtocolSection "callto"
+SectionGroupEnd
 
 Section "Uninstall"
   SetShellVarContext all
@@ -130,8 +151,10 @@ Section "Uninstall"
   ; remove the uri association
   DeleteRegKey HKLM ${REG_UNINST}
   DeleteRegKey HKLM "Software\XiVO\xivoclient"
-  DeleteRegKey HKCR "tel"
-  DeleteRegKey HKCR "callto"
+  DeleteRegKey HKCR "XiVO Client"
+  DeleteRegValue HKLM "Software\RegisteredApplications" "XiVO Client"
+  DeleteRegKey HKLM "Software\Clients\Internet Call\XiVO Client"
+
   ; remove the program dir
   Delete $INSTDIR\uninstall.exe
   RMDir /r $INSTDIR\imageformats
@@ -186,6 +209,9 @@ LangString START_XIVOCLIENT ${LANG_FRENCH}  "XiVO Client.lnk"
 
 LangString REMOVE_XIVOCLIENT ${LANG_ENGLISH} "Uninstall XiVO Client.lnk"
 LangString REMOVE_XIVOCLIENT ${LANG_FRENCH}  "Désinstaller XiVO Client.lnk"
+
+LangString ProtocolAssociation ${LANG_ENGLISH}  "Protocol Association"
+LangString ProtocolAssociation ${LANG_FRENCH}  "Association de protocoles"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
