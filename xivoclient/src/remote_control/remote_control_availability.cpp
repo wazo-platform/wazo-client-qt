@@ -30,6 +30,8 @@
 
 #ifdef FUNCTESTS
 
+#include <QAction>
+
 #include "remote_control.h"
 
 QVariantMap RemoteControl::get_menu_availability_infos()
@@ -46,5 +48,17 @@ QVariantMap RemoteControl::get_menu_availability_infos()
 
     return args;
 }
+
+
+void RemoteControl::set_menu_availability(const QVariantList &args)
+{
+  const QString &state = args[0].toString();
+  QAction action(this);
+  action.setProperty("availstate", state);
+  connect(&action, SIGNAL(triggered()),
+          this->m_menu_availability, SLOT(setAvailability()));
+  action.trigger();
+}
+
 
 #endif

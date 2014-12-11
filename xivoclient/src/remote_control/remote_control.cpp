@@ -136,6 +136,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_identity_infos);
             RC_EXECUTE_WITH_RETURN(get_queue_members_infos);
             RC_EXECUTE_WITH_RETURN(get_menu_availability_infos);
+            RC_EXECUTE_ARG(set_menu_availability);
             RC_EXECUTE_ARG(set_queue_for_queue_members);
             RC_EXECUTE_WITH_RETURN(get_sheet_infos);
             RC_EXECUTE_WITH_RETURN(get_infos_in_custom_sheet);
