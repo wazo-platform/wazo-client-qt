@@ -141,6 +141,7 @@ class RemoteControl : public QObject
         void sort_list_for_remote_directory(const QVariantList &);
         QVariantMap get_agent_list_infos();
         QVariantMap get_menu_availability_infos();
+        void set_menu_availability(const QVariantList &);
         QVariantMap get_main_window_infos();
         QVariantMap is_logged();
         void switchboard_answer_incoming_call(const QVariantList &);
