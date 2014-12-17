@@ -32,14 +32,14 @@
 
 #include "people_entry.h"
 
-PeopleEntry::PeopleEntry(const QVariantList &data)
-    : m_data(data)
+PeopleEntry::PeopleEntry(const QVariantList &data, const QVariantMap &relations)
+  : m_data(data), m_relations(relations)
 {
     qDebug() << Q_FUNC_INFO;
 }
 
 PeopleEntry::PeopleEntry(const PeopleEntry &other)
-    : m_data(other.m_data)
+  : m_data(other.m_data), m_relations(other.m_relations)
 {
     qDebug() << Q_FUNC_INFO;
 }
@@ -58,4 +58,9 @@ PeopleEntry & PeopleEntry::operator=(const PeopleEntry &other)
 {
     this->m_data = other.m_data;
     return *this;
+}
+
+const QVariantMap &PeopleEntry::relations() const
+{
+  return this->m_relations;
 }

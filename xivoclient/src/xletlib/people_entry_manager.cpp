@@ -46,7 +46,8 @@ void PeopleEntryManager::parseCommand(const QVariantMap &result)
     foreach (const QVariant &entry, entries) {
         QVariantMap entry_map = entry.toMap();
         const QVariantList &values = entry_map["column_values"].toList();
-        this->addEntry(PeopleEntry(values));
+        const QVariantMap &relations = entry_map["relations"].toMap();
+        this->addEntry(PeopleEntry(values, relations));
     }
 }
 
