@@ -124,6 +124,8 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return Qt::AlignCenter;
     case  Qt::DisplayRole:
         return this->dataDisplay(entry, column);
+    case Qt::BackgroundRole:
+      return this->dataBackground(entry, column);
     default:
         return QVariant();
     }
@@ -160,6 +162,24 @@ QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) co
 {
     return entry.data(column);
 }
+
+
+QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int) const
+{
+  const QString xivo_uuid = entry.relations()["endpoint"].toMap()["xivo_id"].toString();
+  int endpoint_id = entry.relations()["endpoint"].toMap()["id"].toInt();
+  QPair<QString, int> key(xivo_uuid, endpoint_id);
+  if (!m_people_entry_manager.hasEndpointStatus(key)) {
+    qDebug() << "Not there" << key;
+    return QVariant();
+  }
+  int endpoint_status = m_people_entry_manager.getEndpointStatus(key);
+  const QVariantMap &status_map = b_engine->getOptionsPhoneStatus()[QString("%1").arg(endpoint_status)].toMap();
+  const QString &color = status_map["color"].toString();
+  qDebug() << Q_FUNC_INFO << key << endpoint_status << color;
+  return QColor(color);
+}
+
 
 bool PeopleEntryModel::removeRows(int row, int count, const QModelIndex & index)
 {

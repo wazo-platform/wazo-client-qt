@@ -45,6 +45,8 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void addEntry(PeopleEntry);
         int entryCount() const;
         const PeopleEntry &getEntry(int entry_index) const;
+        int getEndpointStatus(QPair<QString, int> id) const;
+	bool hasEndpointStatus(QPair<QString, int> id) const;
 
     public slots:
         void parseCommand(const QVariantMap &command);
@@ -54,7 +56,9 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void aboutToClearEntries();
 
     private:
+	int getIndexFromEndpointId(const QPair<QString, int> &id) const;
         QList<PeopleEntry> m_entries;
+        QMap<QPair<QString, int>, int> m_endpoint_status;
 };
 
 #endif /* _PEOPLE_ENTRY_MANAGER_H_ */
