@@ -60,6 +60,10 @@ mkdir $DEST_DIR/qtlibs/Qt
 cp -r $QT_DIR/translations $DEST_DIR/qtlibs/Qt
 cp ${RES_DIR}/qt.conf $DEST_DIR/qtlibs
 
+# OpenSSL libraries
+cp ${RES_DIR}/libeay32.dll $DEST_DIR/qtlibs
+cp ${RES_DIR}/ssleay32.dll $DEST_DIR/qtlibs
+
 # XiVO Client binaries
 rm -rf $DEST_DIR/xivoclient
 mkdir $DEST_DIR/xivoclient

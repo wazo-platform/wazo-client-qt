@@ -38,6 +38,8 @@ tests {
     win32 {
         pack.target = pack
         pack.input = packaging/resources/gpl.txt \
+                     packaging/resources/libeay32.dll \
+                     packaging/resources/ssleay32.dll \
                      packaging/resources/qt.conf \
                      packaging/resources/xivo.bmp \
                      packaging/resources/xivoclient.png \

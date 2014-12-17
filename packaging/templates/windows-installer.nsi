@@ -162,6 +162,8 @@ Section "Uninstall"
   RMDir /r $INSTDIR\sqldrivers
   RMDir /r $INSTDIR\plugins
   Delete $INSTDIR\qt.conf
+  Delete $INSTDIR\libeay32.dll
+  Delete $INSTDIR\ssleay32.dll
   RMDir /r $INSTDIR\Qt
   Delete $INSTDIR\*.dll
   Delete $INSTDIR\xivoclient.exe
