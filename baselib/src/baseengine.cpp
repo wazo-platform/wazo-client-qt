@@ -1784,19 +1784,6 @@ QString BaseEngine::getInitialPresence() const
     return __presence_off__;
 }
 
-/*! \brief send message to the CTI Server */
-void BaseEngine::logClient(const QString & level,
-                           const QString & classmethod,
-                           const QString & message)
-{
-    QVariantMap command;
-    command["class"] = "logfromclient";
-    command["level"] = level;
-    command["classmethod"] = classmethod;
-    command["message"] = message;
-    sendJsonCommand(command);
-}
-
 /*! \brief get pointer to the currently logged user
  *
  * Return NULL if not available */

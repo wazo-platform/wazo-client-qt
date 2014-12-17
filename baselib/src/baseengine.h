@@ -220,8 +220,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void logAction(const QString &);  //!< client side logging
 
-        void logClient(const QString &, const QString &, const QString &);  //!< log tricky situations (server side)
-
         void ipbxCommand(const QVariantMap &);
 
         void emitMessage(const QString &);
