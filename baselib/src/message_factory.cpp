@@ -132,6 +132,15 @@ QVariantMap MessageFactory::peopleSearch(const QString &pattern)
     return message;
 }
 
+QVariantMap MessageFactory::registerEndpointStatus(const QVariantList &ids)
+{
+  QVariantMap message = MessageFactory::baseMessage("register_endpoint_status_update");
+
+  message["endpoint_ids"] = ids;
+
+  return message;
+}
+
 QVariantMap MessageFactory::getSwitchboardDirectoryHeaders()
 {
     QVariantMap message = MessageFactory::baseMessage("get_switchboard_directory_headers");
