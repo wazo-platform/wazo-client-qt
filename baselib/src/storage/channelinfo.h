@@ -43,7 +43,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         const QString & talkingto_id() const;
         const QString & commstatus() const;
         double timestamp() const;
-        int linenumber() const;
         bool isholded() const;
         bool canBeTransferred() const;
         bool isTalking() const;
@@ -56,7 +55,6 @@ class BASELIB_EXPORT ChannelInfo : public XInfo
         QString m_state;
         double m_timestamp;
 
-        int m_linenumber;
         bool m_isholded;
 };
 

@@ -34,7 +34,6 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
                          const QString & id)
     : XInfo(ipbxid, id),
       m_timestamp(0.0),
-      m_linenumber(0),
       m_isholded(false)
 {
 }
@@ -70,11 +69,6 @@ const QString & ChannelInfo::commstatus() const
 double ChannelInfo::timestamp() const
 {
     return m_timestamp;
-}
-
-int ChannelInfo::linenumber() const
-{
-    return m_linenumber;
 }
 
 bool ChannelInfo::isholded() const
