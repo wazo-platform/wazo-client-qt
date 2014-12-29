@@ -298,8 +298,6 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
                     m_identityphones[xphoneid], SLOT(updatePhoneConfig(const QString &)));
             connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
                     m_identityphones[xphoneid], SLOT(updatePhoneStatus(const QString &)));
-            connect(b_engine, SIGNAL(updateChannelStatus(const QString &)),
-                    m_identityphones[xphoneid], SLOT(updateChannelStatus(const QString &)));
             m_glayout->addWidget(m_identityphones[xphoneid], 0, m_col_phone ++, 3, 1);
         }
         m_identityphones[xphoneid]->setPhoneId(xphoneid);

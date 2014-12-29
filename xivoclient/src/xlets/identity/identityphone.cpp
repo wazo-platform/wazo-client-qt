@@ -79,13 +79,6 @@ void IdentityPhone::setPhoneId(const QString & xphoneid)
     m_xphoneid = xphoneid;
 }
 
-void IdentityPhone::updateChannelStatus(const QString & xchannelid)
-{
-    const ChannelInfo * channelinfo = b_engine->channels().value(xchannelid);
-    if (channelinfo == NULL)
-        return;
-}
-
 void IdentityPhone::updatePhoneConfig(const QString & xphoneid)
 {
     if (xphoneid != m_xphoneid)
