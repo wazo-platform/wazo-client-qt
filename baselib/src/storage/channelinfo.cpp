@@ -42,7 +42,6 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
 bool ChannelInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "direction", & m_direction);
     haschanged |= setIfChangeString(prop, "talkingto_kind", & m_talkingto_kind);
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
@@ -61,11 +60,6 @@ const QString & ChannelInfo::talkingto_kind() const
 const QString & ChannelInfo::talkingto_id() const
 {
     return m_talkingto_id;
-}
-
-const QString & ChannelInfo::direction() const
-{
-    return m_direction;
 }
 
 const QString & ChannelInfo::commstatus() const
