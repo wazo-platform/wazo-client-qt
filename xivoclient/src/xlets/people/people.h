@@ -60,9 +60,8 @@ class People: public XLet
         void schedulePeopleLookup(const QString &lookup_pattern);
         void searchPeople();
         void dataChanged(const QModelIndex &, const QModelIndex &);
-    private:
-        bool alreadySearched(const QString &search_pattern) const;
 
+    private:
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;

@@ -57,8 +57,6 @@ People::People(QWidget *parent)
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             m_proxy_model, SLOT(setFilter(const QString &)));
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
-            &m_people_entry_manager, SLOT(updateSearch(const QString &)));
-    connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),
             this, SLOT(numberSelectionRequested()));
@@ -95,29 +93,19 @@ void People::focusEntryTable()
 
 void People::schedulePeopleLookup(const QString &lookup_pattern)
 {
-    if (lookup_pattern.length() >= min_lookup_length) {
-        m_searched_pattern = lookup_pattern;
-        m_remote_lookup_timer.start();
-    }
+    m_searched_pattern = lookup_pattern;
+    m_remote_lookup_timer.start();
 }
 
 void People::searchPeople()
 {
-    if (! this->alreadySearched(this->m_searched_pattern)) {
+    if (m_searched_pattern.length() < min_lookup_length) {
+        qDebug() << Q_FUNC_INFO << "ignoring pattern too short" << this->m_searched_pattern;
+    } else {
         m_search_history.append(m_searched_pattern);
         b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
         qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
     }
-}
-
-bool People::alreadySearched(const QString &search_pattern) const
-{
-    foreach (const QString &old_search, m_search_history) {
-        if (search_pattern.contains(old_search)) {
-            return true;
-        }
-    }
-    return false;
 }
 
 void People::dataChanged(const QModelIndex &, const QModelIndex &)
