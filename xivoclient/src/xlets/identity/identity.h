@@ -39,6 +39,7 @@ class UserInfo;
 class IdentityAgent;
 class IdentityPhone;
 class IdentityVoiceMail;
+class SearchBox;
 
 /*! \brief Identity Display
  */
@@ -81,6 +82,7 @@ class IdentityDisplay : public XLet
         IdentityAgent * m_agent;
         QHash<QString, IdentityPhone *> m_identityphones;
         IdentityVoiceMail * m_voicemail;
+        SearchBox * m_suggest;
         int m_col_user;
         int m_col_agent;
         int m_col_phone;

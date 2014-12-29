@@ -16,11 +16,13 @@ HEADERS += $${ROOT_DIR}/src/xletlib/*.h
 SOURCES += $${ROOT_DIR}/src/xletlib/*.cpp
 HEADERS += $${ROOT_DIR}/src/xletlib/queue_entries/*.h
 SOURCES += $${ROOT_DIR}/src/xletlib/queue_entries/*.cpp
+HEADERS += $${ROOT_DIR}/src/xletlib/googlesuggest/*.h
+SOURCES += $${ROOT_DIR}/src/xletlib/googlesuggest/*.cpp
 
 
 DESTDIR = $${BIN_DIR}
 
-QT += core gui widgets
+QT += core gui widgets network
 
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_en.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_es_ES.ts

@@ -42,6 +42,7 @@
 #include <storage/agentinfo.h>
 #include <storage/channelinfo.h>
 #include <storage/queueinfo.h>
+#include <xletlib/googlesuggest/searchbox.h>
 
 #include "identity.h"
 #include "identityagent.h"
@@ -103,6 +104,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_voicemail = new IdentityVoiceMail(this);
     m_voicemail->hide();
 
+    m_suggest = new SearchBox(this);
+
     m_glayout->setSpacing(0);
     m_glayout->setMargin(0);
 
@@ -117,6 +120,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     setupIcons();
     m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
+    m_glayout->addWidget(m_suggest, 0, 5, 3, 1);
 
     setGuiOptions();
 
