@@ -54,19 +54,41 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_has_tabber(false),
       m_tabber_style()
       m_fold_button(new QPushButton("Fold", main_window)),
+      m_has_tabber(false),
+      m_folded(false)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
-    this->connect(this->m_fold_button, SIGNAL(clicked()), SLOT(fold()));
+    this->connect(this->m_fold_button, SIGNAL(clicked()), SLOT(toggleFolding()));
     this->m_fold_button->hide();
+}
+
+void XletDispatcher::toggleFolding()
+{
+    m_xlets["dial"]->setVisible(!m_xlets["dial"]->isVisible());
+    m_tab_container->setVisible(!m_tab_container->isVisible());
+    m_folded ? unfold() : fold();
+    m_folded = !m_folded;
 }
 
 void XletDispatcher::fold()
 {
-    qDebug() << Q_FUNC_INFO;
+    m_normal_geometry = m_main_window->saveGeometry();
+    if (m_main_window->isMaximized()) {
+        m_main_window->showNormal();
+    }
+    XLet *identity = m_xlets["identity"];
 
-    m_xlets["dial"]->setVisible(!m_xlets["dial"]->isVisible());
-    m_tab_container->setVisible(!m_tab_container->isVisible());
+    m_main_widget->setFixedHeight(identity->height() + 20);
+    m_main_window->setFixedHeight(identity->height() + 20 + m_main_window->statusBar()->height());
+}
+
+void XletDispatcher::unfold()
+{
+    m_main_widget->setFixedHeight(QWIDGETSIZE_MAX);
+    m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
+
+    m_main_window->restoreGeometry(m_normal_geometry);
 }
 
 XletDispatcher::~XletDispatcher()

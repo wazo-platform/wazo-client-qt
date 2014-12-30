@@ -62,7 +62,9 @@ class XletDispatcher : public QObject
         void setStatusNotLogged();
         void setStatusLogged();
         void showWidgetOnTop(QWidget *);
+        void toggleFolding();
         void fold();
+        void unfold();
 
     private:
         typedef QPair<QString, QString> XletAndOption;
@@ -98,6 +100,9 @@ class XletDispatcher : public QObject
 
         bool m_has_tabber;
         TabberStyle m_tabber_style;
+        bool m_folded;
+
+        QByteArray m_normal_geometry;
 };
 
 #endif
