@@ -44,6 +44,7 @@ class MainWindow;
 class MainWidget;
 class QVBoxLayout;
 class QTabWidget;
+class QPushButton;
 
 class XletDispatcher : public QObject
 {
@@ -61,6 +62,7 @@ class XletDispatcher : public QObject
         void setStatusNotLogged();
         void setStatusLogged();
         void showWidgetOnTop(QWidget *);
+        void fold();
 
     private:
         typedef QPair<QString, QString> XletAndOption;
@@ -92,6 +94,7 @@ class XletDispatcher : public QObject
         QTabWidget *m_tab_container;
         QMap<QString, XLet *> m_xlets_tab_widget;
         QList<XletAndOption> m_xlets_tab;
+        QPushButton *m_fold_button;
 
         bool m_has_tabber;
         TabberStyle m_tabber_style;

@@ -32,6 +32,7 @@
 
 #include <baseengine.h>
 #include <xletfactory.h>
+#include <QPushButton>
 
 #include "xlet_dispatcher.h"
 #include "main_window.h"
@@ -52,9 +53,20 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_xlets_tab(),
       m_has_tabber(false),
       m_tabber_style()
+      m_fold_button(new QPushButton("Fold", main_window)),
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
+    this->connect(this->m_fold_button, SIGNAL(clicked()), SLOT(fold()));
+    this->m_fold_button->hide();
+}
+
+void XletDispatcher::fold()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    m_xlets["dial"]->setVisible(!m_xlets["dial"]->isVisible());
+    m_tab_container->setVisible(!m_tab_container->isVisible());
 }
 
 XletDispatcher::~XletDispatcher()
@@ -66,6 +78,7 @@ void XletDispatcher::setStatusLogged()
     this->prepareAppearance();
     this->prepareXletsGrid();
     this->prepareXletsDock();
+    this->m_fold_button->show();
 }
 
 void XletDispatcher::setStatusNotLogged()
@@ -75,6 +88,7 @@ void XletDispatcher::setStatusNotLogged()
     this->cleanXletsGrid();
     this->cleanXletsDock();
     this->clearAppearance();
+    this->m_fold_button->hide();
 }
 
 bool XletDispatcher::hasWidget()
