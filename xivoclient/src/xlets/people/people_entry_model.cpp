@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -164,20 +164,55 @@ QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) co
 }
 
 
-QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int) const
+QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column) const
 {
   const QString xivo_uuid = entry.relations()["endpoint"].toMap()["xivo_id"].toString();
+  int agent_id = entry.relations()["agent"].toMap()["id"].toInt();
   int endpoint_id = entry.relations()["endpoint"].toMap()["id"].toInt();
-  QPair<QString, int> key(xivo_uuid, endpoint_id);
-  if (!m_people_entry_manager.hasEndpointStatus(key)) {
-    qDebug() << "Not there" << key;
-    return QVariant();
+  int user_id = entry.relations()["user"].toMap()["id"].toInt();
+  QPair<QString, int> agent_key(xivo_uuid, agent_id);
+  QPair<QString, int> endpoint_key(xivo_uuid, endpoint_id);
+  QPair<QString, int> user_key(xivo_uuid, user_id);
+
+  switch (column) {
+  case 0: // user
+  {
+      if (!m_people_entry_manager.hasUserStatus(user_key)) {
+          return QVariant();
+      }
+      QString user_status = m_people_entry_manager.getUserStatus(user_key);
+      const QVariantMap &status_map = b_engine->getOptionsUserStatus()[QString("%1").arg(user_status)].toMap();
+      qDebug() << "Status Map" << status_map << user_status;
+      const QString &color = status_map["color"].toString();
+      return QColor(color);
   }
-  int endpoint_status = m_people_entry_manager.getEndpointStatus(key);
-  const QVariantMap &status_map = b_engine->getOptionsPhoneStatus()[QString("%1").arg(endpoint_status)].toMap();
-  const QString &color = status_map["color"].toString();
-  qDebug() << Q_FUNC_INFO << key << endpoint_status << color;
-  return QColor(color);
+  break;
+  case 1: // endpoint
+  {
+      if (!m_people_entry_manager.hasEndpointStatus(endpoint_key)) {
+          return QVariant();
+      }
+      int endpoint_status = m_people_entry_manager.getEndpointStatus(endpoint_key);
+      const QVariantMap &status_map = b_engine->getOptionsPhoneStatus()[QString("%1").arg(endpoint_status)].toMap();
+      const QString &color = status_map["color"].toString();
+      return QColor(color);
+  }
+  break;
+  case 2: // agent
+      if (!m_people_entry_manager.hasAgentStatus(agent_key)) {
+          return QVariant();
+      }
+      if (m_people_entry_manager.getAgentStatus(agent_key) == "logged_in") {
+          return QColor("green");
+      } else {
+          return QVariant();
+      }
+      break;
+  default:
+      return QVariant();
+      break;
+  }
+  return QVariant();
 }
 
 

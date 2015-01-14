@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2014 Avencall
+ * Copyright (C) 2014-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -40,13 +40,13 @@ class XLETLIB_EXPORT PeopleEntry
         PeopleEntry(const QVariantList &data, const QVariantMap &relations);
         PeopleEntry(const PeopleEntry &other);
         ~PeopleEntry();
-	const QVariantMap &relations() const;
+        const QVariantMap &relations() const;
         const QVariant data(int column) const;
         PeopleEntry &operator=(const PeopleEntry &other);
 
     private:
         QVariantList m_data;
-	QVariantMap m_relations;
+        QVariantMap m_relations;
 };
 
 #endif /* _PEOPLE_ENTRY_H_ */
