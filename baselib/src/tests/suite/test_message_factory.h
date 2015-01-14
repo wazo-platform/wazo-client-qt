@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -54,6 +54,9 @@ class TestMessageFactory: public QObject
         void testUnpauseAgentInQueue();
         void testPauseAgentInAllQueues();
         void testUnpauseAgentInAllQueues();
+        void testRegisterAgentStatus();
+        void testRegisterEndpointStatus();
+        void testRegisterUserStatus();
 };
 
 #endif /* __TEST_MESSAGE_FACTORY_H__ */

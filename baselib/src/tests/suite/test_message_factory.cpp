@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -240,6 +240,49 @@ void TestMessageFactory::testUnpauseAgentInAllQueues()
     expected["command"] = "queueunpause";
     expected["member"] = "agent:" + agent_id;
     expected["queue"] = "queue:" + ipbxid + "/all";
+
+    QCOMPARE(result, expected);
+}
+
+
+void TestMessageFactory::testRegisterAgentStatus()
+{
+    QVariantList ids;
+    ids << 1 << 2 << 42;
+
+    QVariantMap result = MessageFactory::registerAgentStatus(ids);
+
+    QVariantMap expected;
+    expected["class"] = "register_agent_status_update";
+    expected["agent_ids"] = ids;
+
+    QCOMPARE(result, expected);
+}
+
+void TestMessageFactory::testRegisterEndpointStatus()
+{
+    QVariantList ids;
+    ids << 1 << 2 << 42;
+
+    QVariantMap result = MessageFactory::registerEndpointStatus(ids);
+
+    QVariantMap expected;
+    expected["class"] = "register_endpoint_status_update";
+    expected["endpoint_ids"] = ids;
+
+    QCOMPARE(result, expected);
+}
+
+void TestMessageFactory::testRegisterUserStatus()
+{
+    QVariantList ids;
+    ids << 1 << 2 << 42;
+
+    QVariantMap result = MessageFactory::registerUserStatus(ids);
+
+    QVariantMap expected;
+    expected["class"] = "register_user_status_update";
+    expected["user_ids"] = ids;
 
     QCOMPARE(result, expected);
 }

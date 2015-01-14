@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -53,7 +53,9 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap directorySearch(const QString &pattern);
         static QVariantMap switchboardDirectorySearch(const QString &pattern);
         static QVariantMap peopleSearch(const QString &pattern);
+        static QVariantMap registerAgentStatus(const QVariantList &ids);
         static QVariantMap registerEndpointStatus(const QVariantList &ids);
+        static QVariantMap registerUserStatus(const QVariantList &ids);
         static QVariantMap getSwitchboardDirectoryHeaders();
         static QVariantMap getPeopleHeaders();
         static QVariantMap pauseAgentInQueue(const QString &agent_id, const QString &queue_id);
