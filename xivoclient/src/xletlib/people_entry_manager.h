@@ -56,6 +56,12 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
     public slots:
         void parseCommand(const QVariantMap &command);
 
+    private slots:
+        void parseAgentStatusUpdate(const QVariantMap &command);
+        void parseEndpointStatusUpdate(const QVariantMap &command);
+        void parseUserStatusUpdate(const QVariantMap &command);
+        void parsePeopleSearchResult(const QVariantMap &command);
+
     signals:
         void entryAdded(int entry_index);
         void aboutToClearEntries();

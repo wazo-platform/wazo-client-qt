@@ -90,39 +90,54 @@ int PeopleEntryManager::getIndexFromUserId(const QPair<QString, int> &id) const
     return -1;
 }
 
+void PeopleEntryManager::parseAgentStatusUpdate(const QVariantMap &result)
+{
+    qDebug() << Q_FUNC_INFO << "Agent status update" << result;
+    QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
+                           result["data"].toMap()["agent_id"].toInt());
+    QString new_status = result["data"].toMap()["status"].toString();
+    m_agent_status[id] = new_status;
+    int index = this->getIndexFromAgentId(id);
+    emit entryAdded(index);
+}
+
+void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
+{
+    QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
+                           result["data"].toMap()["endpoint_id"].toInt());
+    int new_status = result["data"].toMap()["status"].toInt();
+    m_endpoint_status[id] = new_status;
+    int index = this->getIndexFromEndpointId(id);
+    emit entryAdded(index);
+}
+
+void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
+{
+    QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
+                           result["data"].toMap()["user_id"].toInt());
+    const QString &new_status = result["data"].toMap()["status"].toString();
+    m_user_status[id] = new_status;
+    int index = this->getIndexFromUserId(id);
+    emit entryAdded(index);
+}
 
 void PeopleEntryManager::parseCommand(const QVariantMap &result)
 {
-    if (result["class"] == "agent_status_update") {
-        qDebug() << Q_FUNC_INFO << "Agent status update" << result;
-        QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
-                               result["data"].toMap()["agent_id"].toInt());
-        QString new_status = result["data"].toMap()["status"].toString();
-        m_agent_status[id] = new_status;
-        int index = this->getIndexFromAgentId(id);
-        emit entryAdded(index);
-        return;
-    }
-    if (result["class"] == "endpoint_status_update") {
-        QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
-                               result["data"].toMap()["endpoint_id"].toInt());
-        int new_status = result["data"].toMap()["status"].toInt();
-        m_endpoint_status[id] = new_status;
-        int index = this->getIndexFromEndpointId(id);
-        emit entryAdded(index);
-        return;
-    }
-    if (result["class"] == "user_status_update") {
-        qDebug() << result;
-        QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
-                               result["data"].toMap()["user_id"].toInt());
-        const QString &new_status = result["data"].toMap()["status"].toString();
-        m_user_status[id] = new_status;
-        int index = this->getIndexFromUserId(id);
-        emit entryAdded(index);
-        return;
-    }
+    const QString &event = result["class"].toString();
 
+    if (event == "agent_status_update") {
+        this->parseAgentStatusUpdate(result);
+    } else if (event == "endpoint_status_update") {
+        this->parseEndpointStatusUpdate(result);
+    } else if (event == "user_status_update") {
+        this->parseUserStatusUpdate(result);
+    } else if (event == "people_search_result") {
+        this->parsePeopleSearchResult(result);
+    }
+}
+
+void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
+{
     emit aboutToClearEntries();
     m_entries.clear();
     const QList<QVariant> &entries = result["results"].toList();
