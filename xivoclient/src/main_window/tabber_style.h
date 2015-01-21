@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2013-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,58 +27,17 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <baseengine.h>
+#include <QProxyStyle>
 
-#include "xlet.h"
-
-XLet::XLet(QWidget *parent)
-    : QWidget(parent), m_ui(NULL), m_monitored_ui(NULL)
+class TabberStyle : public QProxyStyle
 {
-    connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
-            b_engine, SLOT(ipbxCommand(const QVariantMap &)));
-    connect(b_engine, SIGNAL(localUserInfoDefined()),
-            this, SLOT(localUserInfoDefined()));
-    connect(b_engine, SIGNAL(monitoredUserInfoDefined()),
-            this, SLOT(monitoredUserInfoDefined()));
-    m_xuserid = b_engine->getFullId();
-}
-
-void XLet::localUserInfoDefined()
-{
-    m_ui = b_engine->getXivoClientUser();
-}
-
-void XLet::monitoredUserInfoDefined()
-{
-    m_monitored_ui = b_engine->getXivoClientMonitored();
-}
-
-const QString & XLet::title() const
-{
-    return m_title;
-}
-
-void XLet::setTitle(const QString &title)
-{
-    m_title = title;
-}
-
-const QString & XLet::iconPath() const
-{
-    return m_icon_path;
-}
-
-void XLet::setIconPath(const QString &icon_path)
-{
-    m_icon_path = icon_path;
-}
-
-XLetExperimental::XLetExperimental(QWidget *parent)
-    : XLet(parent)
-{
-}
-
-void XLetExperimental::setTitle(const QString &title)
-{
-    XLet::setTitle(title + QString(" (%1)").arg(tr("experimental")) );
-}
+    public:
+    QSize sizeFromContents(ContentsType type,
+                           const QStyleOption *option,
+                           const QSize &size,
+                           const QWidget *widget) const;
+    void drawControl(ControlElement element,
+                     const QStyleOption *option,
+                     QPainter *painter,
+                     const QWidget *widget) const;
+};

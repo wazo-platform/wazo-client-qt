@@ -35,6 +35,7 @@ DirectoryPanel::DirectoryPanel(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Remote Directory"));
+    setIconPath(":/images/tab-people.svg");
     setAccessibleName(tr("Remote Directory Panel"));
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);

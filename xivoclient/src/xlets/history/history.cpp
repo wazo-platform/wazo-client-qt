@@ -230,6 +230,7 @@ LogWidget::LogWidget(QWidget *parent)
     : XLet(parent), m_view(0), m_history_model(0)
 {
     setTitle(tr("History"));
+    setIconPath(":/images/tab-history.svg");
 
     QGroupBox *groupBox = new QGroupBox(this);
 

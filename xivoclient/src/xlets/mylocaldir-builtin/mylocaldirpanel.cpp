@@ -54,6 +54,7 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
     : XLet(parent)
 {
     setTitle( tr("Personal Directory") );
+    setIconPath(":/images/tab-people.svg");
 
     m_headers << "firstname"
               << "lastname"
