@@ -35,7 +35,8 @@ FaxPanel::FaxPanel(QWidget *parent)
     : XLet(parent), m_mainwindow(parent)
 {
     // qDebug() << Q_FUNC_INFO << parent;
-    setTitle( tr("Fax") );
+    setTitle(tr("Fax"));
+    setIconPath(":/images/tab-fax.svg");
 
     QVBoxLayout * vlayout = new QVBoxLayout(this);
 

@@ -57,6 +57,7 @@ ServicesPanel::ServicesPanel(QWidget * parent)
       m_fwdmode(NULL)
 {
     setTitle(tr("Services"));
+    setIconPath(":/images/tab-services.svg");
     m_capalegend["enablevoicemail"] = tr("Voice &Mail");
     m_capalegend["incallfilter"]    = tr("Call &Filtering");
     m_capalegend["enablednd"]       = tr("Do Not &Disturb");

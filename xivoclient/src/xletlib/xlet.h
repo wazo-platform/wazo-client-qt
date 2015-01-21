@@ -56,7 +56,8 @@ class XLETLIB_EXPORT XLet : public QWidget
 
     public:
         XLet(QWidget *parent=0);  //! Constructor
-        const QString & title() const { return m_title; };  //! title accessor
+        const QString & title() const;
+        const QString & iconPath() const;
 
         /*! \brief connects signals/slots to the main GUI window
          *
@@ -72,12 +73,14 @@ class XLETLIB_EXPORT XLet : public QWidget
         void localUserInfoDefined();
         void monitoredUserInfoDefined();
     protected:
-        void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
+        void setTitle(const QString &title);
+        void setIconPath(const QString &icon_path);
         QString m_xuserid;
         const UserInfo * m_ui;
         const UserInfo * m_monitored_ui;
     private:
         QString m_title;    //!< title of the XLet
+        QString m_icon_path;    //!< title of the XLet
 };
 
 class XLETLIB_EXPORT XLetExperimental : public XLet
@@ -89,6 +92,7 @@ class XLETLIB_EXPORT XLetExperimental : public XLet
 
     protected:
         void setTitle(const QString &title);
+        void setIcon(const QString &icon_path);
 };
 
 #endif

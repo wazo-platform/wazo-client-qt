@@ -94,6 +94,7 @@ XletConference::XletConference(QWidget *parent)
     : XLet(parent)
 {
     setTitle(tr("Conference"));
+    setIconPath(":/images/tab-conference.svg");
 
     QVBoxLayout *vLayout = new QVBoxLayout();
     setLayout(vLayout);

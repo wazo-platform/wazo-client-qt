@@ -46,6 +46,7 @@ SearchPanel::SearchPanel(QWidget *parent) :
     m_live_reload_enabled(false)
 {
     setTitle(tr("Contacts"));
+    setIconPath(":/images/tab-people.svg");
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
