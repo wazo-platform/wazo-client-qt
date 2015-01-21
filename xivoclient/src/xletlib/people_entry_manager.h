@@ -40,17 +40,19 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
 {
     Q_OBJECT
 
+    typedef QPair<QString, int> RelationID;
+
     public:
         PeopleEntryManager(QObject *parent=NULL);
         void addEntry(PeopleEntry);
         int entryCount() const;
         const PeopleEntry &getEntry(int entry_index) const;
-        QString getAgentStatus(QPair<QString, int> id) const;
-        int getEndpointStatus(QPair<QString, int> id) const;
-        QString getUserStatus(QPair<QString, int> id) const;
-        bool hasAgentStatus(QPair<QString, int> id) const;
-        bool hasEndpointStatus(QPair<QString, int> id) const;
-        bool hasUserStatus(QPair<QString, int> id) const;
+        QString getAgentStatus(RelationID id) const;
+        int getEndpointStatus(RelationID id) const;
+        QString getUserStatus(RelationID id) const;
+        bool hasAgentStatus(RelationID id) const;
+        bool hasEndpointStatus(RelationID id) const;
+        bool hasUserStatus(RelationID id) const;
 
 
     public slots:
@@ -67,13 +69,13 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void aboutToClearEntries();
 
     private:
-        int getIndexFromAgentId(const QPair<QString, int> &id) const;
-        int getIndexFromEndpointId(const QPair<QString, int> &id) const;
-        int getIndexFromUserId(const QPair<QString, int> &id) const;
+        int getIndexFromAgentId(const RelationID &id) const;
+        int getIndexFromEndpointId(const RelationID &id) const;
+        int getIndexFromUserId(const RelationID &id) const;
         QList<PeopleEntry> m_entries;
-        QMap<QPair<QString, int>, QString> m_agent_status;
-        QMap<QPair<QString, int>, int> m_endpoint_status;
-        QMap<QPair<QString, int>, QString> m_user_status;
+        QMap<RelationID, QString> m_agent_status;
+        QMap<RelationID, int> m_endpoint_status;
+        QMap<RelationID, QString> m_user_status;
 };
 
 #endif /* _PEOPLE_ENTRY_MANAGER_H_ */

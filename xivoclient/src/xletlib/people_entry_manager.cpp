@@ -42,7 +42,7 @@ PeopleEntryManager::PeopleEntryManager(QObject *parent)
     this->registerListener("user_status_update");
 }
 
-int PeopleEntryManager::getIndexFromAgentId(const QPair<QString, int> &id) const
+int PeopleEntryManager::getIndexFromAgentId(const RelationID &id) const
 {
     const QString &xivo_uuid = id.first;
     int agent_id = id.second;
@@ -58,7 +58,7 @@ int PeopleEntryManager::getIndexFromAgentId(const QPair<QString, int> &id) const
     return -1;
 }
 
-int PeopleEntryManager::getIndexFromEndpointId(const QPair<QString, int> &id) const
+int PeopleEntryManager::getIndexFromEndpointId(const RelationID &id) const
 {
     const QString &xivo_uuid = id.first;
     int endpoint_id = id.second;
@@ -74,7 +74,7 @@ int PeopleEntryManager::getIndexFromEndpointId(const QPair<QString, int> &id) co
     return -1;
 }
 
-int PeopleEntryManager::getIndexFromUserId(const QPair<QString, int> &id) const
+int PeopleEntryManager::getIndexFromUserId(const RelationID &id) const
 {
     const QString &xivo_uuid = id.first;
     int user_id = id.second;
@@ -93,8 +93,8 @@ int PeopleEntryManager::getIndexFromUserId(const QPair<QString, int> &id) const
 void PeopleEntryManager::parseAgentStatusUpdate(const QVariantMap &result)
 {
     qDebug() << Q_FUNC_INFO << "Agent status update" << result;
-    QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
-                           result["data"].toMap()["agent_id"].toInt());
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["agent_id"].toInt());
     QString new_status = result["data"].toMap()["status"].toString();
     m_agent_status[id] = new_status;
     int index = this->getIndexFromAgentId(id);
@@ -103,8 +103,8 @@ void PeopleEntryManager::parseAgentStatusUpdate(const QVariantMap &result)
 
 void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
 {
-    QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
-                           result["data"].toMap()["endpoint_id"].toInt());
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["endpoint_id"].toInt());
     int new_status = result["data"].toMap()["status"].toInt();
     m_endpoint_status[id] = new_status;
     int index = this->getIndexFromEndpointId(id);
@@ -113,8 +113,8 @@ void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
 
 void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
 {
-    QPair<QString, int> id(result["data"].toMap()["xivo_uuid"].toString(),
-                           result["data"].toMap()["user_id"].toInt());
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["user_id"].toInt());
     const QString &new_status = result["data"].toMap()["status"].toString();
     m_user_status[id] = new_status;
     int index = this->getIndexFromUserId(id);
@@ -172,32 +172,32 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
 }
 
-bool PeopleEntryManager::hasAgentStatus(QPair<QString, int> id) const
+bool PeopleEntryManager::hasAgentStatus(RelationID id) const
 {
     return m_agent_status.contains(id);
 }
 
-bool PeopleEntryManager::hasEndpointStatus(QPair<QString, int> id) const
+bool PeopleEntryManager::hasEndpointStatus(RelationID id) const
 {
     return m_endpoint_status.contains(id);
 }
 
-bool PeopleEntryManager::hasUserStatus(QPair<QString, int> id) const
+bool PeopleEntryManager::hasUserStatus(RelationID id) const
 {
     return m_user_status.contains(id);
 }
 
-QString PeopleEntryManager::getAgentStatus(QPair<QString, int> id) const
+QString PeopleEntryManager::getAgentStatus(RelationID id) const
 {
     return m_agent_status[id];
 }
 
-int PeopleEntryManager::getEndpointStatus(QPair<QString, int> id) const
+int PeopleEntryManager::getEndpointStatus(RelationID id) const
 {
     return m_endpoint_status[id];
 }
 
-QString PeopleEntryManager::getUserStatus(QPair<QString, int> id) const
+QString PeopleEntryManager::getUserStatus(RelationID id) const
 {
     return m_user_status[id];
 }
