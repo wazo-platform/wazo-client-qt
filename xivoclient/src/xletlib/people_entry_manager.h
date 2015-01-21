@@ -47,12 +47,12 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void addEntry(PeopleEntry);
         int entryCount() const;
         const PeopleEntry &getEntry(int entry_index) const;
-        QString getAgentStatus(RelationID id) const;
-        int getEndpointStatus(RelationID id) const;
-        QString getUserStatus(RelationID id) const;
-        bool hasAgentStatus(RelationID id) const;
-        bool hasEndpointStatus(RelationID id) const;
-        bool hasUserStatus(RelationID id) const;
+        QString getAgentStatus(const RelationID &id) const;
+        int getEndpointStatus(const RelationID &id) const;
+        QString getUserStatus(const RelationID &id) const;
+        bool hasAgentStatus(const RelationID &id) const;
+        bool hasEndpointStatus(const RelationID &id) const;
+        bool hasUserStatus(const RelationID &id) const;
 
 
     public slots:

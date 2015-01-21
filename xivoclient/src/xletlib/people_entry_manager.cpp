@@ -172,32 +172,32 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
 }
 
-bool PeopleEntryManager::hasAgentStatus(RelationID id) const
+bool PeopleEntryManager::hasAgentStatus(const RelationID &id) const
 {
     return m_agent_status.contains(id);
 }
 
-bool PeopleEntryManager::hasEndpointStatus(RelationID id) const
+bool PeopleEntryManager::hasEndpointStatus(const RelationID &id) const
 {
     return m_endpoint_status.contains(id);
 }
 
-bool PeopleEntryManager::hasUserStatus(RelationID id) const
+bool PeopleEntryManager::hasUserStatus(const RelationID &id) const
 {
     return m_user_status.contains(id);
 }
 
-QString PeopleEntryManager::getAgentStatus(RelationID id) const
+QString PeopleEntryManager::getAgentStatus(const RelationID &id) const
 {
     return m_agent_status[id];
 }
 
-int PeopleEntryManager::getEndpointStatus(RelationID id) const
+int PeopleEntryManager::getEndpointStatus(const RelationID &id) const
 {
     return m_endpoint_status[id];
 }
 
-QString PeopleEntryManager::getUserStatus(RelationID id) const
+QString PeopleEntryManager::getUserStatus(const RelationID &id) const
 {
     return m_user_status[id];
 }
