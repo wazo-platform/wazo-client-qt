@@ -50,8 +50,8 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
     public:
         static ChitChatWindow *chitchat_instance;
 
-        ChitChatWindow();
-        ChitChatWindow(const QString &);
+        ChitChatWindow(QWidget *parent);
+        ChitChatWindow(QWidget *parent, const QString &);
 
         void parseCommand(const QVariantMap & map);
 
