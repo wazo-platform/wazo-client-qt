@@ -66,6 +66,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
 
     signals:
         void entryAdded(int entry_index);
+        void entryUpdated(int entry_index);
         void aboutToClearEntries();
 
     private:

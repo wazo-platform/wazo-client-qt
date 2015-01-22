@@ -46,6 +46,8 @@ PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manag
             this, SLOT(clearCache()));
     connect(&m_people_entry_manager, SIGNAL(entryAdded(int)),
             this, SLOT(addPeopleEntry(int)));
+    connect(&m_people_entry_manager, SIGNAL(entryUpdated(int)),
+            this, SLOT(updatePeopleEntry(int)));
     connect(&m_people_entry_manager, SIGNAL(aboutToClearEntries()),
             this, SLOT(clearCache()));
 

@@ -98,7 +98,7 @@ void PeopleEntryManager::parseAgentStatusUpdate(const QVariantMap &result)
     QString new_status = result["data"].toMap()["status"].toString();
     m_agent_status[id] = new_status;
     int index = this->getIndexFromAgentId(id);
-    emit entryAdded(index);
+    emit entryUpdated(index);
 }
 
 void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
@@ -108,7 +108,7 @@ void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
     int new_status = result["data"].toMap()["status"].toInt();
     m_endpoint_status[id] = new_status;
     int index = this->getIndexFromEndpointId(id);
-    emit entryAdded(index);
+    emit entryUpdated(index);
 }
 
 void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
@@ -118,7 +118,7 @@ void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
     const QString &new_status = result["data"].toMap()["status"].toString();
     m_user_status[id] = new_status;
     int index = this->getIndexFromUserId(id);
-    emit entryAdded(index);
+    emit entryUpdated(index);
 }
 
 void PeopleEntryManager::parseCommand(const QVariantMap &result)
