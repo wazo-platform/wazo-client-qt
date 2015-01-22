@@ -36,7 +36,6 @@
 #include "xlet_dispatcher.h"
 #include "main_window.h"
 #include "main_widget.h"
-#include "tabber_style.h"
 
 XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent)
     : QObject(parent),
@@ -51,7 +50,8 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_tab_container(NULL),
       m_xlets_tab_widget(),
       m_xlets_tab(),
-      m_has_tabber(false)
+      m_has_tabber(false),
+      m_tabber_style()
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
@@ -149,7 +149,7 @@ void XletDispatcher::prepareXletsTab()
     this->m_tab_container = new QTabWidget(this->m_main_widget);
     this->m_tab_container->setTabPosition(QTabWidget::West);
 
-    this->m_tab_container->tabBar()->setStyle(new TabberStyle);
+    this->m_tab_container->tabBar()->setStyle(&m_tabber_style);
     this->m_tab_container->tabBar()->setIconSize(QSize(25,25));
     this->m_has_tabber = true;
 
