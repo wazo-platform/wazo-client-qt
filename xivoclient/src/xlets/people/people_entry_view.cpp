@@ -38,8 +38,7 @@ PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
     this->setSortingEnabled(false);
-    this->setSelectionBehavior(QAbstractItemView::SelectRows);
-    this->setSelectionMode(QAbstractItemView::SingleSelection);
+    this->setSelectionMode(QAbstractItemView::NoSelection);
 }
 
 void PeopleEntryView::selectFirstRow()
