@@ -184,7 +184,6 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
       }
       QString user_status = m_people_entry_manager.getUserStatus(user_key);
       const QVariantMap &status_map = b_engine->getOptionsUserStatus()[QString("%1").arg(user_status)].toMap();
-      qDebug() << "Status Map" << status_map << user_status;
       const QString &color = status_map["color"].toString();
       return QColor(color);
   }
