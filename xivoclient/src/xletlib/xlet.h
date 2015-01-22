@@ -79,8 +79,8 @@ class XLETLIB_EXPORT XLet : public QWidget
         const UserInfo * m_ui;
         const UserInfo * m_monitored_ui;
     private:
-        QString m_title;    //!< title of the XLet
-        QString m_icon_path;    //!< title of the XLet
+        QString m_title;
+        QString m_icon_path;
 };
 
 class XLETLIB_EXPORT XLetExperimental : public XLet
