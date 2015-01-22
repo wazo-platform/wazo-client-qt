@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -42,14 +42,9 @@ XLet* XLetDatetimePlugin::newXLetInstance(QWidget *parent)
 }
 
 
-/*! \brief Constructor
- *
- * Creates layout, subwidgets and starts the timer.
- */
 XletDatetime::XletDatetime(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent, tr("Date and Time"))
 {
-    setTitle(tr("Date and Time"));
     m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
     QGridLayout *layout = new QGridLayout(this);
 

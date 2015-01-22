@@ -32,12 +32,9 @@
 #include "phonenumber.h"
 
 FaxPanel::FaxPanel(QWidget *parent)
-    : XLet(parent), m_mainwindow(parent)
+    : XLet(parent, tr("Fax"), ":/images/tab-fax.svg"),
+      m_mainwindow(parent)
 {
-    // qDebug() << Q_FUNC_INFO << parent;
-    setTitle(tr("Fax"));
-    setIconPath(":/images/tab-fax.svg");
-
     QVBoxLayout * vlayout = new QVBoxLayout(this);
 
     //

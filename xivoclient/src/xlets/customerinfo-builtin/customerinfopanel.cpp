@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,12 +31,9 @@
 
 #include "customerinfopanel.h"
 
-/*! \brief Constructor
- */
 CustomerInfoPanel::CustomerInfoPanel(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent, tr("Sheets"))
 {
-    setTitle(tr("Sheets"));
     connect(b_engine, SIGNAL(displayFiche(const QString &, bool, const QString &)),
             this, SLOT(displayFiche(const QString &, bool, const QString &)));
 

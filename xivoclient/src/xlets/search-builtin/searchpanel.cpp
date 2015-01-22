@@ -42,11 +42,9 @@
 #include "searchpanel.h"
 
 SearchPanel::SearchPanel(QWidget *parent) :
-    XLet(parent),
+    XLet(parent, tr("Contacts"), ":/images/tab-people.svg"),
     m_live_reload_enabled(false)
 {
-    setTitle(tr("Contacts"));
-    setIconPath(":/images/tab-people.svg");
     ChitChatWindow::chitchat_instance = new ChitChatWindow();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
