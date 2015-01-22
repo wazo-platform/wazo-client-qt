@@ -83,16 +83,4 @@ class XLETLIB_EXPORT XLet : public QWidget
         QString m_icon_path;
 };
 
-class XLETLIB_EXPORT XLetExperimental : public XLet
-{
-    Q_OBJECT
-
-    public:
-        XLetExperimental(QWidget *parent=0);
-
-    protected:
-        void setTitle(const QString &title);
-        void setIcon(const QString &icon_path);
-};
-
 #endif

@@ -72,13 +72,3 @@ void XLet::setIconPath(const QString &icon_path)
 {
     m_icon_path = icon_path;
 }
-
-XLetExperimental::XLetExperimental(QWidget *parent)
-    : XLet(parent)
-{
-}
-
-void XLetExperimental::setTitle(const QString &title)
-{
-    XLet::setTitle(title + QString(" (%1)").arg(tr("experimental")) );
-}
