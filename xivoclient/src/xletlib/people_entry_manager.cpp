@@ -50,8 +50,8 @@ int PeopleEntryManager::getIndexFromAgentId(const RelationID &id) const
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
         const QVariantMap &agent = entry.relations()["agent"].toMap();
-        if (agent["xivo_uuid"].toString() == xivo_uuid
-            && agent["agent_id"].toInt() == agent_id) {
+        if (agent["xivo_id"].toString() == xivo_uuid
+            && agent["id"].toInt() == agent_id) {
             return i;
         }
     }
@@ -66,8 +66,8 @@ int PeopleEntryManager::getIndexFromEndpointId(const RelationID &id) const
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
         const QVariantMap &endpoint = entry.relations()["endpoint"].toMap();
-        if (endpoint["xivo_uuid"].toString() == xivo_uuid
-            && endpoint["endpoint_id"].toInt() == endpoint_id) {
+        if (endpoint["xivo_id"].toString() == xivo_uuid
+            && endpoint["id"].toInt() == endpoint_id) {
             return i;
         }
     }
@@ -82,8 +82,8 @@ int PeopleEntryManager::getIndexFromUserId(const RelationID &id) const
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
         const QVariantMap &user = entry.relations()["user"].toMap();
-        if (user["xivo_uuid"].toString() == xivo_uuid
-            && user["user_id"].toInt() == user_id) {
+        if (user["xivo_id"].toString() == xivo_uuid
+            && user["id"].toInt() == user_id) {
             return i;
         }
     }
@@ -98,7 +98,9 @@ void PeopleEntryManager::parseAgentStatusUpdate(const QVariantMap &result)
     QString new_status = result["data"].toMap()["status"].toString();
     m_agent_status[id] = new_status;
     int index = this->getIndexFromAgentId(id);
-    emit entryUpdated(index);
+    if (index > -1) {
+        emit entryUpdated(index);
+    }
 }
 
 void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
@@ -108,7 +110,9 @@ void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
     int new_status = result["data"].toMap()["status"].toInt();
     m_endpoint_status[id] = new_status;
     int index = this->getIndexFromEndpointId(id);
-    emit entryUpdated(index);
+    if (index > -1) {
+        emit entryUpdated(index);
+    }
 }
 
 void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
@@ -118,7 +122,9 @@ void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
     const QString &new_status = result["data"].toMap()["status"].toString();
     m_user_status[id] = new_status;
     int index = this->getIndexFromUserId(id);
-    emit entryUpdated(index);
+    if (index > -1 ) {
+        emit entryUpdated(index);
+    }
 }
 
 void PeopleEntryManager::parseCommand(const QVariantMap &result)
