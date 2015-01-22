@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,37 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <baseengine.h>
+#ifndef __TABBER_STYLE_H__
+#define __TABBER_STYLE_H__
 
-#include "datetime.h"
+#include <QProxyStyle>
 
-XLet* XLetDatetimePlugin::newXLetInstance(QWidget *parent)
+class TabberStyle : public QProxyStyle
 {
-    b_engine->registerTranslation(":/obj/datetime_%1");
-    return new XletDatetime(parent);
-}
+    public:
+    QSize sizeFromContents(ContentsType type,
+                           const QStyleOption *option,
+                           const QSize &size,
+                           const QWidget *widget) const;
+    void drawControl(ControlElement element,
+                     const QStyleOption *option,
+                     QPainter *painter,
+                     const QWidget *widget) const;
+};
 
-
-XletDatetime::XletDatetime(QWidget *parent)
-    : XLet(parent, tr("Date and Time")),
-      m_datetime(QDateTime::currentDateTime().toString(Qt::LocaleDate))
-{
-    QGridLayout *layout = new QGridLayout(this);
-
-    layout->addWidget(&m_datetime, 1, 1, Qt::AlignCenter);
-    layout->setColumnStretch(0, 1);
-    layout->setColumnStretch(2, 1);
-    layout->setRowStretch(0, 1);
-    layout->setRowStretch(2, 1);
-
-    startTimer(1000);
-}
-
-/*! \brief method called periodically
- *
- * Just update the date/time displayed.
- */
-void XletDatetime::timerEvent(QTimerEvent *)
-{
-    m_datetime.setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
-}
+#endif

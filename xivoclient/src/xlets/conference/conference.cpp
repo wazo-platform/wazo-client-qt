@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -91,10 +91,8 @@ XLet* XLetConferencePlugin::newXLetInstance(QWidget *parent)
 }
 
 XletConference::XletConference(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent, tr("Conference"), ":/images/tab-conference.svg")
 {
-    setTitle(tr("Conference"));
-
     QVBoxLayout *vLayout = new QVBoxLayout();
     setLayout(vLayout);
 

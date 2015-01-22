@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,8 +31,12 @@
 
 #include "xlet.h"
 
-XLet::XLet(QWidget *parent)
-    : QWidget(parent), m_ui(NULL), m_monitored_ui(NULL)
+XLet::XLet(QWidget *parent, const QString &title, const QString &icon_path)
+    : QWidget(parent),
+      m_ui(NULL),
+      m_monitored_ui(NULL),
+      m_title(title),
+      m_icon_path(icon_path)
 {
     connect(this, SIGNAL(ipbxCommand(const QVariantMap &)),
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));
@@ -53,12 +57,12 @@ void XLet::monitoredUserInfoDefined()
     m_monitored_ui = b_engine->getXivoClientMonitored();
 }
 
-XLetExperimental::XLetExperimental(QWidget *parent)
-    : XLet(parent)
+const QString & XLet::title() const
 {
+    return m_title;
 }
 
-void XLetExperimental::setTitle(const QString &title)
+const QString & XLet::iconPath() const
 {
-    XLet::setTitle(title + QString(" (%1)").arg(tr("experimental")) );
+    return m_icon_path;
 }

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -28,6 +28,7 @@
  */
 
 #include <QDebug>
+#include <QMap>
 
 #include <baseengine.h>
 #include <xletfactory.h>
@@ -49,7 +50,8 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_tab_container(NULL),
       m_xlets_tab_widget(),
       m_xlets_tab(),
-      m_has_tabber(false)
+      m_has_tabber(false),
+      m_tabber_style()
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
@@ -145,14 +147,18 @@ void XletDispatcher::prepareXletsTab()
     }
 
     this->m_tab_container = new QTabWidget(this->m_main_widget);
+    this->m_tab_container->setTabPosition(QTabWidget::West);
+
+    this->m_tab_container->tabBar()->setStyle(&m_tabber_style);
+    this->m_tab_container->tabBar()->setIconSize(QSize(25,25));
     this->m_has_tabber = true;
 
     foreach (const XletAndOption &xlet_and_option, this->m_xlets_tab) {
         const QString &name = xlet_and_option.first;
         XLet *xlet = this->xletFactory(name);
         if (xlet) {
-            QString tabTitle = "  " + xlet->title() + "  ";
-            this->m_tab_container->addTab(xlet, tabTitle);
+            int tabIndex = this->m_tab_container->addTab(xlet, QIcon(xlet->iconPath()), xlet->title());
+            this->m_tab_container->setTabToolTip(tabIndex, xlet->title());
             this->m_xlets_tab_widget.insert(name, xlet);
         }
     }

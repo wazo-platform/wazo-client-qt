@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -41,12 +41,10 @@
 #include "ui_people_widget.h"
 
 People::People(QWidget *parent)
-    : XLet(parent),
+    : XLet(parent, tr("People"), ":/images/tab-people.svg"),
       m_proxy_model(NULL),
       m_people_entry_manager(this)
 {
-    setTitle(tr("People"));
-
     this->ui.setupUi(this);
 
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
