@@ -46,7 +46,7 @@ XLet* XLetQueueMembersPlugin::newXLetInstance(QWidget *parent)
 XletQueueMembers::XletQueueMembers(QWidget *parent)
     : XLet(parent, tr("Queue Members"))
 {
-    QVBoxLayout *xletLayout = new QVBoxLayout();
+    QVBoxLayout *xletLayout = new QVBoxLayout(this);
     setLayout(xletLayout);
     xletLayout->setSpacing(0);
 
