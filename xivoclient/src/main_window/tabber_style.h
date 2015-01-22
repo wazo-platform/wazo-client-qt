@@ -27,6 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __TABBER_STYLE_H__
+#define __TABBER_STYLE_H__
+
 #include <QProxyStyle>
 
 class TabberStyle : public QProxyStyle
@@ -41,3 +44,5 @@ class TabberStyle : public QProxyStyle
                      QPainter *painter,
                      const QWidget *widget) const;
 };
+
+#endif
