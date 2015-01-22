@@ -38,8 +38,6 @@
 
 #include "xletlib_export.h"
 
-class XLet;
-
 /*! \brief base class for all XLets
  *
  * To implement a new XLet, you need to inherit from
@@ -55,7 +53,7 @@ class XLETLIB_EXPORT XLet : public QWidget
     Q_OBJECT
 
     public:
-        XLet(QWidget *parent=0);  //! Constructor
+        XLet(QWidget *parent=0, const QString &title=QString(""), const QString &icon_path=QString(""));
         const QString & title() const;
         const QString & iconPath() const;
 
@@ -73,8 +71,6 @@ class XLETLIB_EXPORT XLet : public QWidget
         void localUserInfoDefined();
         void monitoredUserInfoDefined();
     protected:
-        void setTitle(const QString &title);
-        void setIconPath(const QString &icon_path);
         QString m_xuserid;
         const UserInfo * m_ui;
         const UserInfo * m_monitored_ui;

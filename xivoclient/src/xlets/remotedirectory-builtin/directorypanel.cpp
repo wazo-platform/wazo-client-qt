@@ -32,10 +32,8 @@
 #include <message_factory.h>
 
 DirectoryPanel::DirectoryPanel(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent, tr("Remote Directory"), ":/images/tab-people.svg")
 {
-    setTitle(tr("Remote Directory"));
-    setIconPath(":/images/tab-people.svg");
     setAccessibleName(tr("Remote Directory Panel"));
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);

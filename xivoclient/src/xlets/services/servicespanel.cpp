@@ -50,14 +50,12 @@ XLet* XLetServicesPlugin::newXLetInstance(QWidget *parent)
 }
 
 ServicesPanel::ServicesPanel(QWidget * parent)
-    : XLet(parent),
+    : XLet(parent, tr("Services"), ":/images/tab-services.svg"),
       m_nofwd(NULL),
       m_uncfwd(NULL),
       m_otherfwd(NULL),
       m_fwdmode(NULL)
 {
-    setTitle(tr("Services"));
-    setIconPath(":/images/tab-services.svg");
     m_capalegend["enablevoicemail"] = tr("Voice &Mail");
     m_capalegend["incallfilter"]    = tr("Call &Filtering");
     m_capalegend["enablednd"]       = tr("Do Not &Disturb");
