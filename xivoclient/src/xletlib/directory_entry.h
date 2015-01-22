@@ -45,6 +45,7 @@ enum ColumnType {
   STATUS_ICON,
   NAME,
   NUMBER,
+  AGENT,
   OTHER
 };
 

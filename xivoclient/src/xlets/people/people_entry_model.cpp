@@ -63,6 +63,8 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
         t = NUMBER;
     } else if (type == "status") {
         t = STATUS_ICON;
+    } else if (type == "agent") {
+        t = AGENT;
     } else {
         t = OTHER;
     }
@@ -176,8 +178,9 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
   QPair<QString, int> endpoint_key(xivo_uuid, endpoint_id);
   QPair<QString, int> user_key(xivo_uuid, user_id);
 
-  switch (column) {
-  case 0: // user
+  ColumnType column_type = m_fields[column].second;
+  switch (column_type) {
+  case NAME: // user
   {
       if (!m_people_entry_manager.hasUserStatus(user_key)) {
           return QVariant();
@@ -188,7 +191,7 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
       return QColor(color);
   }
   break;
-  case 1: // endpoint
+  case NUMBER: // endpoint
   {
       if (!m_people_entry_manager.hasEndpointStatus(endpoint_key)) {
           return QVariant();
@@ -199,7 +202,7 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
       return QColor(color);
   }
   break;
-  case 2: // agent
+  case AGENT: // agent
       if (!m_people_entry_manager.hasAgentStatus(agent_key)) {
           return QVariant();
       }
