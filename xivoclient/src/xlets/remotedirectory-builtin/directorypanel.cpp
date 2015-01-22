@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,8 +32,9 @@
 #include <message_factory.h>
 
 DirectoryPanel::DirectoryPanel(QWidget *parent)
-    : XLet(parent, tr("Remote Directory"), ":/images/tab-people.svg")
+    : XLet(parent)
 {
+    setTitle(tr("Remote Directory"));
     setAccessibleName(tr("Remote Directory Panel"));
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);

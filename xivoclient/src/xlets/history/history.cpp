@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -227,10 +227,10 @@ QRadioButton* buildRadioButton(QString text,
 }
 
 LogWidget::LogWidget(QWidget *parent)
-    : XLet(parent, tr("History"), ":/images/tab-history.svg"),
-      m_view(0),
-      m_history_model(0)
+    : XLet(parent), m_view(0), m_history_model(0)
 {
+    setTitle(tr("History"));
+
     QGroupBox *groupBox = new QGroupBox(this);
 
     QVBoxLayout *layout = new QVBoxLayout(this);

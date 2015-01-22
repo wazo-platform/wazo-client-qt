@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -44,9 +44,11 @@ XLet* XLetQueueMembersPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletQueueMembers::XletQueueMembers(QWidget *parent)
-    : XLet(parent, tr("Queue Members"))
+    : XLet(parent)
 {
-    QVBoxLayout *xletLayout = new QVBoxLayout(this);
+    setTitle(tr("Queue Members"));
+
+    QVBoxLayout *xletLayout = new QVBoxLayout();
     setLayout(xletLayout);
     xletLayout->setSpacing(0);
 

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -50,12 +50,13 @@ XLet* XLetServicesPlugin::newXLetInstance(QWidget *parent)
 }
 
 ServicesPanel::ServicesPanel(QWidget * parent)
-    : XLet(parent, tr("Services"), ":/images/tab-services.svg"),
+    : XLet(parent),
       m_nofwd(NULL),
       m_uncfwd(NULL),
       m_otherfwd(NULL),
       m_fwdmode(NULL)
 {
+    setTitle(tr("Services"));
     m_capalegend["enablevoicemail"] = tr("Voice &Mail");
     m_capalegend["incallfilter"]    = tr("Call &Filtering");
     m_capalegend["enablednd"]       = tr("Do Not &Disturb");

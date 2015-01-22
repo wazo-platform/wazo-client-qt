@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -55,8 +55,9 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 }
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
-    : XLet(parent, tr("Identity"))
+    : XLet(parent)
 {
+    setTitle( tr("Identity") );
     setAccessibleName( tr("Current User Panel") );
     setObjectName("identityXlet");
 

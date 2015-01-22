@@ -59,8 +59,7 @@ void ChitChatWindow::addMessage(
 }
 
 
-ChitChatWindow::ChitChatWindow(QWidget *parent, const QString &xuserid_with) :
-    QWidget(parent)
+ChitChatWindow::ChitChatWindow(const QString & xuserid_with) : QWidget(NULL)
 {
     qDebug() << Q_FUNC_INFO << xuserid_with;
 
@@ -107,8 +106,7 @@ ChitChatWindow::ChitChatWindow(QWidget *parent, const QString &xuserid_with) :
 }
 
 
-ChitChatWindow::ChitChatWindow(QWidget *parent)
-    : QWidget(parent)
+ChitChatWindow::ChitChatWindow()
 {
     // qDebug() << Q_FUNC_INFO << "registered";
     registerListener("chitchat");
@@ -131,7 +129,7 @@ void ChitChatWindow::receiveMessage(const QVariantMap & p)
     if (m_chat_window_opened.contains(chat_key)) {
         m_chat_window_opened[chat_key]->show();
     } else {
-        m_chat_window_opened[chat_key]= new ChitChatWindow(this, from);
+        m_chat_window_opened[chat_key]= new ChitChatWindow(from);
         opened = 1;
     }
 
@@ -178,7 +176,7 @@ void ChitChatWindow::writeMessageTo()
     if (m_chat_window_opened.contains(chat_key)) {
         m_chat_window_opened[chat_key]->show();
     } else {
-        m_chat_window_opened[chat_key] = new ChitChatWindow(this, xuserid);
+        m_chat_window_opened[chat_key] = new ChitChatWindow(xuserid);
         opened = 1;
     }
 

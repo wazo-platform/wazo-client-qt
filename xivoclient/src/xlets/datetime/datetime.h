@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -48,7 +48,7 @@ class XletDatetime : public XLet
         void timerEvent(QTimerEvent *);  //!< receive timer events
 
     private:
-        QLabel m_datetime;
+        QLabel *m_datetime;
 };
 
 class XLetDatetimePlugin : public QObject, XLetInterface

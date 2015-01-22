@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -42,10 +42,11 @@
 #include "searchpanel.h"
 
 SearchPanel::SearchPanel(QWidget *parent) :
-    XLet(parent, tr("Contacts"), ":/images/tab-people.svg"),
+    XLet(parent),
     m_live_reload_enabled(false)
 {
-    ChitChatWindow::chitchat_instance = new ChitChatWindow(this);
+    setTitle(tr("Contacts"));
+    ChitChatWindow::chitchat_instance = new ChitChatWindow();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);

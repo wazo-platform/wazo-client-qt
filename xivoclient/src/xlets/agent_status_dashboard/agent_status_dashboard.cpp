@@ -1,4 +1,4 @@
-/* Copyright (C) 2007-2015 Avencall
+/* Copyright (C) 2007-2014 Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,8 +45,10 @@ XLet* XLetAgentStatusDashboardPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletAgentStatusDashboard::XletAgentStatusDashboard(QWidget *parent)
-    : XLet(parent, tr("Agent status dashboard"))
+    : XLet(parent)
 {
+    setTitle(tr("Agent status dashboard"));
+
     this->m_model = new AgentsModel(this);
 
     this->m_widget_builder = new AgentStatusWidgetBuilder;

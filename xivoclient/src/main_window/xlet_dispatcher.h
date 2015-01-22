@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2015 Avencall
+ * Copyright (C) 2013-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -36,7 +36,6 @@
 #include <QDockWidget>
 #include <QHash>
 
-#include "tabber_style.h"
 #include <xletlib/functests.h>
 
 class XLet;
@@ -94,7 +93,6 @@ class XletDispatcher : public QObject
         QList<XletAndOption> m_xlets_tab;
 
         bool m_has_tabber;
-        TabberStyle m_tabber_style;
 };
 
 #endif

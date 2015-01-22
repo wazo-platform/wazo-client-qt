@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2012-2015 Avencall
+ * Copyright (C) 2012-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -48,7 +48,7 @@
 #include "current_call.h"
 
 Switchboard::Switchboard(QWidget *parent)
-    : XLet(parent, tr("Switchboard")),
+    : XLet(parent),
       m_current_call(new CurrentCall(this)),
       m_incoming_call_model(new QueueEntriesModel(this)),
       m_incoming_call_proxy_model(new QueueEntriesSortFilterProxyModel(this)),
@@ -57,6 +57,8 @@ Switchboard::Switchboard(QWidget *parent)
       m_phone_id(),
       m_phone_hintstatus(PhoneHint::available)
 {
+    this->setTitle(tr("Switchboard"));
+
     this->m_incoming_call_proxy_model->setSourceModel(this->m_incoming_call_model);
     this->m_waiting_call_proxy_model->setSourceModel(this->m_waiting_call_model);
 

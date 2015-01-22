@@ -1,4 +1,4 @@
-/* Copyright (C) 2007-2015 Avencall
+/* Copyright (C) 2007-2014 Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,10 @@ XLet* XLetAgentsPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletAgents::XletAgents(QWidget *parent)
-    : XLet(parent, tr("Agents' List (plain)"))
+    : XLet(parent)
 {
+    setTitle(tr("Agents' List (plain)"));
+
     QVBoxLayout *xletLayout = new QVBoxLayout();
     setLayout(xletLayout);
     xletLayout->setSpacing(0);

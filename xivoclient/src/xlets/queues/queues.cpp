@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -51,9 +51,11 @@ XLet* XLetQueuesPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletQueues::XletQueues(QWidget *parent)
-    : XLet(parent, tr("Queues")),
+    : XLet(parent),
       m_configureWindow(NULL)
 {
+    setTitle(tr("Queues"));
+
     QStringList xletlist;
     uint nsecs = 30;
     if (b_engine->getConfig().contains("xlet.queues.statsfetchperiod")) {

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,6 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* $Format:Commit hash: %h$
+ * $Format:Commit date: %cd$
+ */
+
 #include <baseengine.h>
 
 #include "datetime.h"
@@ -38,13 +42,18 @@ XLet* XLetDatetimePlugin::newXLetInstance(QWidget *parent)
 }
 
 
+/*! \brief Constructor
+ *
+ * Creates layout, subwidgets and starts the timer.
+ */
 XletDatetime::XletDatetime(QWidget *parent)
-    : XLet(parent, tr("Date and Time")),
-      m_datetime(QDateTime::currentDateTime().toString(Qt::LocaleDate))
+    : XLet(parent)
 {
+    setTitle(tr("Date and Time"));
+    m_datetime = new QLabel(QDateTime::currentDateTime().toString(Qt::LocaleDate));
     QGridLayout *layout = new QGridLayout(this);
 
-    layout->addWidget(&m_datetime, 1, 1, Qt::AlignCenter);
+    layout->addWidget(m_datetime, 1, 1, Qt::AlignCenter);
     layout->setColumnStretch(0, 1);
     layout->setColumnStretch(2, 1);
     layout->setRowStretch(0, 1);
@@ -59,5 +68,5 @@ XletDatetime::XletDatetime(QWidget *parent)
  */
 void XletDatetime::timerEvent(QTimerEvent *)
 {
-    m_datetime.setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
+    m_datetime->setText(QDateTime::currentDateTime().toString(Qt::LocaleDate));
 }

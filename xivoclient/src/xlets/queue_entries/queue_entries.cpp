@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -47,8 +47,9 @@ XLet* QueueEntriesPlugin::newXLetInstance(QWidget *parent)
 }
 
 QueueEntries::QueueEntries(QWidget *parent)
-    : XLet(parent, tr("Calls of a Queue"))
+    : XLet(parent)
 {
+    setTitle(tr("Calls of a Queue"));
     connect(b_engine, SIGNAL(changeWatchedQueueSignal(const QString &)),
             this, SLOT(changeWatchedQueue(const QString &)));
     connect(b_engine, SIGNAL(queueEntryUpdate(const QString &, const QVariantList &)),

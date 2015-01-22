@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,8 +32,9 @@
 #include "phonenumber.h"
 
 DialPanel::DialPanel(QWidget *parent)
-    : XLet(parent, tr("Dial"))
+    : XLet(parent)
 {
+    setTitle(tr("Dial"));
     setAccessibleName(tr("Dial Panel"));
 
     setAcceptDrops(true);
