@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,35 +27,23 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-#include <QItemSelectionModel>
-#include <QKeyEvent>
+#ifndef __PEOPLE_ENTRY_DELEGATE_H__
+#define __PEOPLE_ENTRY_DELEGATE_H__
 
-#include "people_entry_view.h"
-#include "people_entry_delegate.h"
-#include "people_entry_model.h"
+#include <QStyledItemDelegate>
 
-
-PeopleEntryView::PeopleEntryView(QWidget *parent)
-    : AbstractTableView(parent)
+class PeopleEntryDelegate : public QStyledItemDelegate
 {
-    this->setSortingEnabled(false);
-    this->setSelectionMode(QAbstractItemView::NoSelection);
-    this->setItemDelegate(new PeopleEntryDelegate(this));
-}
+    public:
+        PeopleEntryDelegate(QWidget *parent = NULL);
+        QSize sizeHint(const QStyleOptionViewItem &option,
+                       const QModelIndex &index) const;
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
+    private:
+        static QSize icon_size;
+        static int icon_text_spacing;
+};
 
-void PeopleEntryView::selectFirstRow()
-{
-    this->selectRow(0);
-    this->setFocus();
-}
-
-void PeopleEntryView::keyPressEvent(QKeyEvent * event)
-{
-    if (event && (event->key() == Qt::Key_F5
-                  || event->key() == Qt::Key_F4)) {
-        emit activated(this->currentIndex());
-    } else {
-        AbstractTableView::keyPressEvent(event);
-    }
-}
+#endif
