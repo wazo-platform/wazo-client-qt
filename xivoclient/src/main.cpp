@@ -165,6 +165,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
                      app, SLOT(activateWindow()));
 
     ret.app = app;
+    ret.event_handler = power_event_handler;
     ret.win = main_window;
     ret.baseengine = b_engine;
     ret.initOK = true;
@@ -205,6 +206,8 @@ void clean_xivoclient(ExecObjects exec_obj)
     assembler = NULL;
     delete exec_obj.app;
     exec_obj.app = NULL;
+    delete exec_obj.event_handler;
+    exec_obj.event_handler = NULL;
 }
 
 int main(int argc, char **argv)

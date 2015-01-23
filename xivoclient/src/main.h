@@ -42,6 +42,7 @@ class RemoteControl;
 
 struct ExecObjects {
     EventAwareApplication *app;
+    PowerEventHandler *event_handler;
     MainWindow *win;
     BaseEngine *baseengine;
 #ifdef FUNCTESTS
