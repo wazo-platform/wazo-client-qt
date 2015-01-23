@@ -32,7 +32,7 @@
 #include "people_entry_delegate.h"
 
 QSize PeopleEntryDelegate::icon_size = QSize(8, 8);
-int PeopleEntryDelegate::icon_text_spacing = 15;
+int PeopleEntryDelegate::icon_text_spacing = 7;
 
 
 PeopleEntryDelegate::PeopleEntryDelegate(QWidget *parent)
@@ -41,7 +41,7 @@ PeopleEntryDelegate::PeopleEntryDelegate(QWidget *parent)
 }
 
 QSize PeopleEntryDelegate::sizeHint(const QStyleOptionViewItem &option,
-                            const QModelIndex &index) const
+                                    const QModelIndex &index) const
 {
     if (! index.data(Qt::BackgroundRole).isNull()) {
         const QSize &original_size = QStyledItemDelegate::sizeHint(option, index);
@@ -53,22 +53,29 @@ QSize PeopleEntryDelegate::sizeHint(const QStyleOptionViewItem &option,
 }
 
 void PeopleEntryDelegate::paint(QPainter *painter,
-                        const QStyleOptionViewItem &option,
-                        const QModelIndex &index) const
+                                const QStyleOptionViewItem &option,
+                                const QModelIndex &index) const
 {
     if (! index.data(Qt::BackgroundRole).isNull()) {
         QString text = index.data().toString();
         QIcon dot = QIcon(":/images/dot.svg");
-        QPixmap new_image = dot.pixmap(QSize(8, 8));
+        QPixmap tinted_image = dot.pixmap(QSize(8, 8));
 
-        QPainter tint_painter(&new_image);
+        QPainter tint_painter(&tinted_image);
         tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-        tint_painter.fillRect(new_image.rect(), QColor(index.data(Qt::BackgroundRole).value<QColor>()));
+        tint_painter.fillRect(tinted_image.rect(), QColor(index.data(Qt::BackgroundRole).value<QColor>()));
         tint_painter.end();
 
         painter->save();
-        painter->drawPixmap(option.rect.x(), option.rect.center().y() - new_image.height() / 2, new_image);
-        QRect text_rect = QRect(option.rect.x() + 15, option.rect.y(), option.rect.width(), option.rect.height());
+        int text_width = option.fontMetrics.size(0, text).width();
+        QPoint cell_center = option.rect.center();
+        int content_width = text_width + icon_size.width() + icon_text_spacing;
+        int icon_left = cell_center.x() - content_width / 2;
+        int icon_top = cell_center.y() - tinted_image.height() / 2;
+        painter->drawPixmap(icon_left, icon_top, tinted_image);
+
+        int text_left = icon_left + icon_size.width() + icon_text_spacing;
+        QRect text_rect = QRect(text_left, option.rect.y(), text_width, option.rect.height());
         painter->drawText(text_rect.left(),
                           text_rect.top(),
                           text_rect.width(),

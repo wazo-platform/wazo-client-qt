@@ -113,5 +113,4 @@ void People::dataChanged(const QModelIndex &, const QModelIndex &)
     this->m_proxy_model->invalidate();
     int name_column_index = this->m_model->getNameColumnIndex();
     this->m_proxy_model->sort(name_column_index, Qt::AscendingOrder);
-    ui.entry_table->resizeColumnsToContents();
 }

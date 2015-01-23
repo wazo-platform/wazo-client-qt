@@ -28,6 +28,7 @@
  */
 
 #include <QDebug>
+#include <QHeaderView>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
 
@@ -42,6 +43,7 @@ PeopleEntryView::PeopleEntryView(QWidget *parent)
     this->setSortingEnabled(false);
     this->setSelectionMode(QAbstractItemView::NoSelection);
     this->setItemDelegate(new PeopleEntryDelegate(this));
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void PeopleEntryView::selectFirstRow()
