@@ -1130,8 +1130,6 @@ void BaseEngine::handleGetlistUpdateStatus(
     }
     else if (listname == "voicemails")
         emit updateVoiceMailStatus(xid);
-    else if (listname == "channels")
-        emit updateChannelStatus(xid);
 }
 
 void BaseEngine::requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid)

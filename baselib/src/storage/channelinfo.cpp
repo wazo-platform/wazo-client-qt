@@ -34,7 +34,6 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
                          const QString & id)
     : XInfo(ipbxid, id),
       m_timestamp(0.0),
-      m_linenumber(0),
       m_isholded(false)
 {
 }
@@ -42,7 +41,6 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
 bool ChannelInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "direction", & m_direction);
     haschanged |= setIfChangeString(prop, "talkingto_kind", & m_talkingto_kind);
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
@@ -63,11 +61,6 @@ const QString & ChannelInfo::talkingto_id() const
     return m_talkingto_id;
 }
 
-const QString & ChannelInfo::direction() const
-{
-    return m_direction;
-}
-
 const QString & ChannelInfo::commstatus() const
 {
     return m_commstatus;
@@ -76,11 +69,6 @@ const QString & ChannelInfo::commstatus() const
 double ChannelInfo::timestamp() const
 {
     return m_timestamp;
-}
-
-int ChannelInfo::linenumber() const
-{
-    return m_linenumber;
 }
 
 bool ChannelInfo::isholded() const

@@ -51,7 +51,6 @@ class IdentityPhone : public QWidget
     public slots:
         void updatePhoneConfig(const QString &);
         void updatePhoneStatus(const QString &);
-        void updateChannelStatus(const QString &);
     private:
         void setPhoneLines();
         QString m_xphoneid;
