@@ -82,6 +82,8 @@ FaxPanel::FaxPanel(QWidget *parent)
     hbox3->addWidget(m_maskornot);
     hbox3->addStretch(1);
 
+    groupBox3->hide();
+
     //
     QGroupBox * groupBox4 = new QGroupBox( tr("Send your File") );
     groupBox4->setAlignment( Qt::AlignLeft );
@@ -97,7 +99,7 @@ FaxPanel::FaxPanel(QWidget *parent)
 
     vlayout->addWidget(groupBox1);
     vlayout->addWidget(groupBox2);
-    //vlayout->addWidget(groupBox3);
+    vlayout->addWidget(groupBox3);
     vlayout->addWidget(groupBox4);
     vlayout->addStretch(1);
 
