@@ -115,7 +115,7 @@ ServicesPanel::ServicesPanel(QWidget * parent)
                  * QRadioButton and some QCheckBoxes.
                  */
                 m_forward[capa] = new WaitingWidget<QAbstractButton>(m_uncfwd, false);
-                gridlayout2->addWidget(m_uncfwd, line, 0, 1, 2);
+                gridlayout2->addWidget(m_forward[capa], line, 0, 1, 2);
             } else {
                 // If the "simple forwarding calls" is not there yet
                 if (m_otherfwd == NULL) {
