@@ -81,6 +81,8 @@ RemoteControl::RemoteControl(ExecObjects exec_obj, QString &socket)
 RemoteControl::~RemoteControl()
 {
     this->m_server->close();
+    delete this->m_server;
+    this->m_server = NULL;
 }
 
 void RemoteControl::newConnection()
