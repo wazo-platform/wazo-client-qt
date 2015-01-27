@@ -1,5 +1,7 @@
 include(../../../common-xlets.pri)
 
+QT += svg
+
 HEADERS     = *.h
 SOURCES     = *.cpp
 FORMS       = people_widget.ui
