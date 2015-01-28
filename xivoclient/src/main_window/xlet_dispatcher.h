@@ -45,7 +45,6 @@ class MainWindow;
 class MainWidget;
 class QVBoxLayout;
 class QTabWidget;
-class QPushButton;
 
 class XletDispatcher : public QObject
 {

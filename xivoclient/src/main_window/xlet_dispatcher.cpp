@@ -68,7 +68,6 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
 
 void XletDispatcher::showOneXlet(const QString &xlet_name)
 {
-    qDebug() << Q_FUNC_INFO;
     m_xlets["dial"]->setVisible(false);
     m_tab_container->setVisible(false);
     m_normal_geometry = m_main_window->saveGeometry();
@@ -77,13 +76,15 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
     }
     XLet *identity = m_xlets["identity"];
 
-    // m_main_widget->setFixedHeight(identity->height());
-    m_main_window->setFixedHeight(identity->height() + m_main_window->statusBar()->height() + m_main_window->menuBar()->height());
+    m_main_window->setFixedHeight(identity->height() \
+                                  + m_main_window->statusBar()->height() \
+                                  + m_main_window->menuBar()->height() \
+                                  + 20  // Arbitrary, but identity is squashed a little without it
+                                  );
 }
 
 void XletDispatcher::showOtherXlets(const QString &xlet_name)
 {
-    qDebug() << Q_FUNC_INFO;
     m_xlets["dial"]->setVisible(true);
     m_tab_container->setVisible(true);
     m_main_widget->setFixedHeight(QWIDGETSIZE_MAX);

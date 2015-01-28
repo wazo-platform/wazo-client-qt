@@ -56,7 +56,7 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
     : XLet(parent),
-      m_folded(false)
+      m_fold_button(new QPushButton(this))
 {
     setAccessibleName( tr("Current User Panel") );
     setObjectName("identityXlet");
@@ -88,10 +88,15 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
             this, SLOT(idxChanged(int)));
 
+    int last_column = 0;
+    m_fold_button->setFlat(true);
+    m_fold_button->setIcon(QIcon(":/images/hide.svg"));
+    m_fold_button->setCheckable(true);
+    connect(m_fold_button, SIGNAL(toggled(bool)),
+            this, SLOT(foldToggle(bool)));
+
     m_icon_user = new QLabel(this);
-
     m_icon_user->setPixmap(QPixmap(":/images/identity/identity-user.png"));
-
     m_icon_user->setContentsMargins(0, 0, 5, 0);
 
     m_agent = new IdentityAgent(this);
@@ -103,25 +108,35 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_voicemail = new IdentityVoiceMail(this);
     m_voicemail->hide();
 
-    m_glayout->setSpacing(0);
-    m_glayout->setMargin(0);
-
-    m_col_user = 0;
-    m_col_vm = m_col_user + 2;
-    m_col_agent = m_col_vm + 1;
-    m_col_phone = m_col_agent + 1;
-
+    m_glayout->addWidget(m_fold_button, 0, last_column, 3, 1);
+    last_column ++;
     m_iconAlign = Qt::AlignHCenter | Qt::AlignTop;
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
 
-    setupIcons();
-    m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
-    m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
+    m_glayout->addWidget(m_icon_user, 0, last_column, 3, 1, m_iconAlign);
+    last_column ++;
 
-    QPushButton *button = new QPushButton(this);
-    m_glayout->addWidget(button, 0, m_col_vm +4, 3, 1);
-    connect(button, SIGNAL(clicked()),
-            this, SLOT(foldToggle()));
+    int idline = 0;
+    m_glayout->addWidget(m_user, idline, last_column, m_textAlignVCenter);
+    idline ++;
+    m_glayout->addWidget(m_phonenum, idline, last_column, m_textAlignVCenter);
+    idline ++;
+    m_glayout->addWidget(m_presencevalue, idline, last_column, m_textAlignVCenter);
+    last_column ++;
+
+    m_glayout->addWidget(m_agent, 0, last_column, 3, 1);
+    last_column ++;
+
+    m_glayout->addWidget(m_voicemail, 0, last_column, 3, 1);
+    last_column ++;
+
+    m_col_phone = last_column;
+
+    m_glayout->setColumnStretch(0, 0);
+    m_glayout->setColumnStretch(1, 0);
+    m_glayout->setColumnStretch(10, 1);
+    m_glayout->setSpacing(0);
+    m_glayout->setMargin(0);
 
     setGuiOptions();
 
@@ -146,30 +161,15 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(updatePresence()));
 }
 
-void IdentityDisplay::foldToggle()
+void IdentityDisplay::foldToggle(bool fold)
 {
-    if (m_folded) {
-        emit showOthersRequested();
-        m_folded = false;
-    } else {
+    if (fold) {
         emit showOnlyMeRequested();
-        m_folded = true;
+        m_fold_button->setIcon(QIcon(":/images/show.svg"));
+    } else {
+        emit showOthersRequested();
+        m_fold_button->setIcon(QIcon(":/images/hide.svg"));
     }
-}
-
-void IdentityDisplay::setupIcons()
-{
-    m_glayout->addWidget(m_icon_user, 0, m_col_user, 3, 1, m_iconAlign);
-    int idline = 0;
-    m_glayout->addWidget(m_user, idline, m_col_user + 1, m_textAlignVCenter);
-    idline ++;
-    m_glayout->addWidget(m_phonenum, idline, m_col_user + 1, m_textAlignVCenter);
-    idline ++;
-    m_glayout->addWidget(m_presencevalue, idline, m_col_user + 1, m_textAlignVCenter);
-
-    m_glayout->setColumnStretch(0, 0);
-    m_glayout->setColumnStretch(1, 0);
-    m_glayout->setColumnStretch(10, 1);
 }
 
 void IdentityDisplay::setGuiOptions()
