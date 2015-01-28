@@ -48,5 +48,6 @@
         <file>images/tab-history.svg</file>
         <file>images/tab-services.svg</file>
         <file>images/tab-conference.svg</file>
+        <file>images/tab-bang.svg</file>
     </qresource>
 </RCC>

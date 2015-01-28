@@ -53,7 +53,9 @@ class XLETLIB_EXPORT XLet : public QWidget
     Q_OBJECT
 
     public:
-        XLet(QWidget *parent=0, const QString &title=QString(""), const QString &icon_path=QString(""));
+        XLet(QWidget *parent=0,
+             const QString &title="",
+             const QString &icon_path=":/images/tab-bang.svg");
         const QString & title() const;
         const QString & iconPath() const;
 

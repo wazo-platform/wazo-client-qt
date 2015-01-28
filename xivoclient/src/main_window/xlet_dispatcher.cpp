@@ -157,7 +157,7 @@ void XletDispatcher::prepareXletsTab()
         const QString &name = xlet_and_option.first;
         XLet *xlet = this->xletFactory(name);
         if (xlet) {
-            int tabIndex = this->m_tab_container->addTab(xlet, QIcon(xlet->iconPath()), xlet->title());
+            int tabIndex = this->m_tab_container->addTab(xlet, QIcon(xlet->iconPath()), "");
             this->m_tab_container->setTabToolTip(tabIndex, xlet->title());
             this->m_xlets_tab_widget.insert(name, xlet);
         }

@@ -39,7 +39,7 @@ XLet* XLetDatetimePlugin::newXLetInstance(QWidget *parent)
 
 
 XletDatetime::XletDatetime(QWidget *parent)
-    : XLet(parent, tr("Date and Time")),
+    : XLet(parent, tr("Date and Time"), ":/images/tab-history.svg"),
       m_datetime(QDateTime::currentDateTime().toString(Qt::LocaleDate))
 {
     QGridLayout *layout = new QGridLayout(this);
