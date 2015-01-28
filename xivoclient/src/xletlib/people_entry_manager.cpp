@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,23 +31,162 @@
 
 #include "people_entry.h"
 #include "people_entry_manager.h"
+#include <message_factory.h>
 
 PeopleEntryManager::PeopleEntryManager(QObject *parent)
     : QObject(parent)
 {
     this->registerListener("people_search_result");
+    this->registerListener("agent_status_update");
+    this->registerListener("endpoint_status_update");
+    this->registerListener("user_status_update");
+}
+
+int PeopleEntryManager::getIndexFromAgentId(const RelationID &id) const
+{
+    for (int i = 0; i < m_entries.size(); ++i) {
+        const PeopleEntry &entry = m_entries[i];
+        if (entry.uniqueAgentId() == id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int PeopleEntryManager::getIndexFromEndpointId(const RelationID &id) const
+{
+    for (int i = 0; i < m_entries.size(); ++i) {
+        const PeopleEntry &entry = m_entries[i];
+        if (entry.uniqueEndpointId() == id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int PeopleEntryManager::getIndexFromUserId(const RelationID &id) const
+{
+    for (int i = 0; i < m_entries.size(); ++i) {
+        const PeopleEntry &entry = m_entries[i];
+        if (entry.uniqueUserId() == id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void PeopleEntryManager::parseAgentStatusUpdate(const QVariantMap &result)
+{
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["agent_id"].toInt());
+    QString new_status = result["data"].toMap()["status"].toString();
+    m_agent_status[id] = new_status;
+    int index = this->getIndexFromAgentId(id);
+    if (index > -1) {
+        emit entryUpdated(index);
+    }
+}
+
+void PeopleEntryManager::parseEndpointStatusUpdate(const QVariantMap &result)
+{
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["endpoint_id"].toInt());
+    int new_status = result["data"].toMap()["status"].toInt();
+    m_endpoint_status[id] = new_status;
+    int index = this->getIndexFromEndpointId(id);
+    if (index > -1) {
+        emit entryUpdated(index);
+    }
+}
+
+void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
+{
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["user_id"].toInt());
+    const QString &new_status = result["data"].toMap()["status"].toString();
+    m_user_status[id] = new_status;
+    int index = this->getIndexFromUserId(id);
+    if (index > -1 ) {
+        emit entryUpdated(index);
+    }
 }
 
 void PeopleEntryManager::parseCommand(const QVariantMap &result)
 {
+    const QString &event = result["class"].toString();
+
+    if (event == "agent_status_update") {
+        this->parseAgentStatusUpdate(result);
+    } else if (event == "endpoint_status_update") {
+        this->parseEndpointStatusUpdate(result);
+    } else if (event == "user_status_update") {
+        this->parseUserStatusUpdate(result);
+    } else if (event == "people_search_result") {
+        this->parsePeopleSearchResult(result);
+    }
+}
+
+void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
+{
     emit aboutToClearEntries();
     m_entries.clear();
     const QList<QVariant> &entries = result["results"].toList();
-    foreach (const QVariant &entry, entries) {
-        QVariantMap entry_map = entry.toMap();
+    QVariantList endpoint_ids;
+    QVariantList agent_ids;
+    QVariantList user_ids;
+    foreach (const QVariant &result, entries) {
+        QVariantMap entry_map = result.toMap();
         const QVariantList &values = entry_map["column_values"].toList();
-        this->addEntry(PeopleEntry(values));
+        const QVariantMap &relations = entry_map["relations"].toMap();
+        PeopleEntry entry(values, relations);
+        const QString &xivo_id = entry.xivoUuid();
+        QVariantList agent;
+        agent.append(xivo_id);
+        agent.append(entry.agentId());
+        agent_ids.push_back(agent);
+        QVariantList endpoint;
+        endpoint.append(xivo_id);
+        endpoint.append(entry.endpointId());
+        endpoint_ids.push_back(endpoint);
+        QVariantList user;
+        user.append(xivo_id);
+        user.append(entry.userId());
+        user_ids.push_back(user);
+        this->addEntry(entry);
     }
+    b_engine->sendJsonCommand(MessageFactory::registerAgentStatus(agent_ids));
+    b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoint_ids));
+    b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
+}
+
+bool PeopleEntryManager::hasAgentStatus(const RelationID &id) const
+{
+    return m_agent_status.contains(id);
+}
+
+bool PeopleEntryManager::hasEndpointStatus(const RelationID &id) const
+{
+    return m_endpoint_status.contains(id);
+}
+
+bool PeopleEntryManager::hasUserStatus(const RelationID &id) const
+{
+    return m_user_status.contains(id);
+}
+
+QString PeopleEntryManager::getAgentStatus(const RelationID &id) const
+{
+    return m_agent_status[id];
+}
+
+int PeopleEntryManager::getEndpointStatus(const RelationID &id) const
+{
+    return m_endpoint_status[id];
+}
+
+QString PeopleEntryManager::getUserStatus(const RelationID &id) const
+{
+    return m_user_status[id];
 }
 
 void PeopleEntryManager::addEntry(PeopleEntry entry)

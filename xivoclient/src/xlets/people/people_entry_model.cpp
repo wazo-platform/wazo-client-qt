@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -46,6 +46,8 @@ PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manag
             this, SLOT(clearCache()));
     connect(&m_people_entry_manager, SIGNAL(entryAdded(int)),
             this, SLOT(addPeopleEntry(int)));
+    connect(&m_people_entry_manager, SIGNAL(entryUpdated(int)),
+            this, SLOT(updatePeopleEntry(int)));
     connect(&m_people_entry_manager, SIGNAL(aboutToClearEntries()),
             this, SLOT(clearCache()));
 
@@ -61,6 +63,8 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
         t = NUMBER;
     } else if (type == "status") {
         t = STATUS_ICON;
+    } else if (type == "agent") {
+        t = AGENT;
     } else {
         t = OTHER;
     }
@@ -124,6 +128,8 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return Qt::AlignCenter;
     case  Qt::DisplayRole:
         return this->dataDisplay(entry, column);
+    case Qt::BackgroundRole:
+      return this->dataBackground(entry, column);
     default:
         return QVariant();
     }
@@ -160,6 +166,60 @@ QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) co
 {
     return entry.data(column);
 }
+
+
+QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column) const
+{
+    ColumnType column_type = m_fields[column].second;
+
+    switch (column_type) {
+    case NAME: // user
+    {
+        QPair<QString, int> user_key = entry.uniqueUserId();
+
+        if (!m_people_entry_manager.hasUserStatus(user_key)) {
+            return QVariant();
+        }
+        QString user_status = m_people_entry_manager.getUserStatus(user_key);
+        const QVariantMap &status_map = b_engine->getOptionsUserStatus()[QString("%1").arg(user_status)].toMap();
+        const QString &color = status_map["color"].toString();
+        return QColor(color);
+    }
+    break;
+    case NUMBER: // endpoint
+    {
+        QPair<QString, int> endpoint_key = entry.uniqueEndpointId();
+
+        if (!m_people_entry_manager.hasEndpointStatus(endpoint_key)) {
+            return QVariant();
+        }
+        int endpoint_status = m_people_entry_manager.getEndpointStatus(endpoint_key);
+        const QVariantMap &status_map = b_engine->getOptionsPhoneStatus()[QString("%1").arg(endpoint_status)].toMap();
+        const QString &color = status_map["color"].toString();
+        return QColor(color);
+    }
+    break;
+    case AGENT: // agent
+    {
+        QPair<QString, int> agent_key = entry.uniqueAgentId();
+
+        if (!m_people_entry_manager.hasAgentStatus(agent_key)) {
+            return QVariant();
+        }
+        if (m_people_entry_manager.getAgentStatus(agent_key) == "logged_in") {
+            return QColor("green");
+        } else {
+            return QVariant();
+        }
+        break;
+    }
+    default:
+        return QVariant();
+        break;
+    }
+    return QVariant();
+}
+
 
 bool PeopleEntryModel::removeRows(int row, int count, const QModelIndex & index)
 {

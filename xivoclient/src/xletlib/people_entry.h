@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2014 Avencall
+ * Copyright (C) 2014-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -37,14 +37,25 @@
 class XLETLIB_EXPORT PeopleEntry
 {
     public:
-        PeopleEntry(const QVariantList &data);
+        PeopleEntry(const QVariantList &data, const QVariantMap &relations);
         PeopleEntry(const PeopleEntry &other);
         ~PeopleEntry();
         const QVariant data(int column) const;
         PeopleEntry &operator=(const PeopleEntry &other);
+        const QString &xivoUuid() const;
+        int agentId() const;
+        int endpointId() const;
+        int userId() const;
+        QPair<QString, int> uniqueAgentId() const;
+        QPair<QString, int> uniqueEndpointId() const;
+        QPair<QString, int> uniqueUserId() const;
 
     private:
         QVariantList m_data;
+        QString m_xivo_uuid;
+        int m_agent_id;
+        int m_user_id;
+        int m_endpoint_id;
 };
 
 #endif /* _PEOPLE_ENTRY_H_ */

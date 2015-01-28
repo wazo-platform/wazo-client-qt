@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -28,18 +28,22 @@
  */
 
 #include <QDebug>
+#include <QHeaderView>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
 
 #include "people_entry_view.h"
+#include "people_entry_delegate.h"
 #include "people_entry_model.h"
+
 
 PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
     this->setSortingEnabled(false);
-    this->setSelectionBehavior(QAbstractItemView::SelectRows);
-    this->setSelectionMode(QAbstractItemView::SingleSelection);
+    this->setSelectionMode(QAbstractItemView::NoSelection);
+    this->setItemDelegate(new PeopleEntryDelegate(this));
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void PeopleEntryView::selectFirstRow()

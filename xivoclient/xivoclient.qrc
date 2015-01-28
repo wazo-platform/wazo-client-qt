@@ -42,5 +42,6 @@
         <file>images/padlock.png</file>
         <file>images/phonebook.png</file>
         <file>images/magnifying_glass.png</file>
+        <file>images/dot.svg</file>
     </qresource>
 </RCC>

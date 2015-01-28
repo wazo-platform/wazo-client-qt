@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -130,6 +130,33 @@ QVariantMap MessageFactory::peopleSearch(const QString &pattern)
     message["pattern"] = pattern;
 
     return message;
+}
+
+QVariantMap MessageFactory::registerAgentStatus(const QVariantList &ids)
+{
+  QVariantMap message = MessageFactory::baseMessage("register_agent_status_update");
+
+  message["agent_ids"] = ids;
+
+  return message;
+}
+
+QVariantMap MessageFactory::registerEndpointStatus(const QVariantList &ids)
+{
+  QVariantMap message = MessageFactory::baseMessage("register_endpoint_status_update");
+
+  message["endpoint_ids"] = ids;
+
+  return message;
+}
+
+QVariantMap MessageFactory::registerUserStatus(const QVariantList &ids)
+{
+  QVariantMap message = MessageFactory::baseMessage("register_user_status_update");
+
+  message["user_ids"] = ids;
+
+  return message;
 }
 
 QVariantMap MessageFactory::getSwitchboardDirectoryHeaders()

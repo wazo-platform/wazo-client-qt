@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -40,21 +40,43 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
 {
     Q_OBJECT
 
+    typedef QPair<QString, int> RelationID;
+
     public:
         PeopleEntryManager(QObject *parent=NULL);
         void addEntry(PeopleEntry);
         int entryCount() const;
         const PeopleEntry &getEntry(int entry_index) const;
+        QString getAgentStatus(const RelationID &id) const;
+        int getEndpointStatus(const RelationID &id) const;
+        QString getUserStatus(const RelationID &id) const;
+        bool hasAgentStatus(const RelationID &id) const;
+        bool hasEndpointStatus(const RelationID &id) const;
+        bool hasUserStatus(const RelationID &id) const;
+
 
     public slots:
         void parseCommand(const QVariantMap &command);
 
+    private slots:
+        void parseAgentStatusUpdate(const QVariantMap &command);
+        void parseEndpointStatusUpdate(const QVariantMap &command);
+        void parseUserStatusUpdate(const QVariantMap &command);
+        void parsePeopleSearchResult(const QVariantMap &command);
+
     signals:
         void entryAdded(int entry_index);
+        void entryUpdated(int entry_index);
         void aboutToClearEntries();
 
     private:
+        int getIndexFromAgentId(const RelationID &id) const;
+        int getIndexFromEndpointId(const RelationID &id) const;
+        int getIndexFromUserId(const RelationID &id) const;
         QList<PeopleEntry> m_entries;
+        QMap<RelationID, QString> m_agent_status;
+        QMap<RelationID, int> m_endpoint_status;
+        QMap<RelationID, QString> m_user_status;
 };
 
 #endif /* _PEOPLE_ENTRY_MANAGER_H_ */

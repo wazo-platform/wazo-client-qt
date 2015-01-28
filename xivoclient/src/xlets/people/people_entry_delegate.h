@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,36 +27,23 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TEST_MESSAGE_FACTORY_H__
-#define __TEST_MESSAGE_FACTORY_H__
+#ifndef __PEOPLE_ENTRY_DELEGATE_H__
+#define __PEOPLE_ENTRY_DELEGATE_H__
 
-#include <QObject>
+#include <QStyledItemDelegate>
 
-class TestMessageFactory: public QObject
+class PeopleEntryDelegate : public QStyledItemDelegate
 {
-    Q_OBJECT
-
-    private slots:
-        void testSubscribeCurrentCalls();
-        void testAnswer();
-        void testDial();
-        void testHangup();
-        void testHoldSwitchboard();
-        void testResumeSwitchboard();
-        void testAttendedTransfer();
-        void testDirectTransfer();
-        void testCompleteTransfer();
-        void testCancelTransfer();
-        void testDirectorySearch();
-        void testSwitchboardDirectorySearch();
-        void testGetSwitchboardDirectoryHeaders();
-        void testPauseAgentInQueue();
-        void testUnpauseAgentInQueue();
-        void testPauseAgentInAllQueues();
-        void testUnpauseAgentInAllQueues();
-        void testRegisterAgentStatus();
-        void testRegisterEndpointStatus();
-        void testRegisterUserStatus();
+    public:
+        PeopleEntryDelegate(QWidget *parent = NULL);
+        QSize sizeHint(const QStyleOptionViewItem &option,
+                       const QModelIndex &index) const;
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
+    private:
+        static QSize icon_size;
+        static int icon_text_spacing;
 };
 
-#endif /* __TEST_MESSAGE_FACTORY_H__ */
+#endif

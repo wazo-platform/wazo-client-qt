@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -28,25 +28,29 @@
  */
 
 #include <QObject>
-#include <QDebug>
 
 #include "people_entry.h"
 
-PeopleEntry::PeopleEntry(const QVariantList &data)
-    : m_data(data)
+PeopleEntry::PeopleEntry(const QVariantList &data, const QVariantMap &relations)
+  : m_data(data),
+    m_xivo_uuid(relations["xivo_id"].toString()),
+    m_agent_id(relations["agent_id"].toInt()),
+    m_user_id(relations["user_id"].toInt()),
+    m_endpoint_id(relations["endpoint_id"].toInt())
 {
-    qDebug() << Q_FUNC_INFO;
 }
 
 PeopleEntry::PeopleEntry(const PeopleEntry &other)
-    : m_data(other.m_data)
+    : m_data(other.m_data),
+      m_xivo_uuid(other.m_xivo_uuid),
+      m_agent_id(other.m_agent_id),
+      m_user_id(other.m_user_id),
+      m_endpoint_id(other.m_endpoint_id)
 {
-    qDebug() << Q_FUNC_INFO;
 }
 
 PeopleEntry::~PeopleEntry()
 {
-    qDebug() << Q_FUNC_INFO;
 }
 
 const QVariant PeopleEntry::data(int column) const
@@ -57,5 +61,45 @@ const QVariant PeopleEntry::data(int column) const
 PeopleEntry & PeopleEntry::operator=(const PeopleEntry &other)
 {
     this->m_data = other.m_data;
+    this->m_xivo_uuid = other.m_xivo_uuid;
+    this->m_agent_id = other.m_agent_id;
+    this->m_endpoint_id = other.m_endpoint_id;
+    this->m_user_id = other.m_user_id;
+
     return *this;
+}
+
+const QString &PeopleEntry::xivoUuid() const
+{
+    return this->m_xivo_uuid;
+}
+
+int PeopleEntry::agentId() const
+{
+    return m_agent_id;
+}
+
+int PeopleEntry::endpointId() const
+{
+    return m_endpoint_id;
+}
+
+int PeopleEntry::userId() const
+{
+    return m_user_id;
+}
+
+QPair<QString, int> PeopleEntry::uniqueAgentId() const
+{
+    return QPair<QString, int>(m_xivo_uuid, m_agent_id);
+}
+
+QPair<QString, int> PeopleEntry::uniqueEndpointId() const
+{
+    return QPair<QString, int>(m_xivo_uuid, m_endpoint_id);
+}
+
+QPair<QString, int> PeopleEntry::uniqueUserId() const
+{
+    return QPair<QString, int>(m_xivo_uuid, m_user_id);
 }
