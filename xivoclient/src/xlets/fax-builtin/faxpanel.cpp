@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,11 +32,9 @@
 #include "phonenumber.h"
 
 FaxPanel::FaxPanel(QWidget *parent)
-    : XLet(parent), m_mainwindow(parent)
+    : XLet(parent, tr("Fax"), ":/images/tab-fax.svg"),
+      m_mainwindow(parent)
 {
-    // qDebug() << Q_FUNC_INFO << parent;
-    setTitle( tr("Fax") );
-
     QVBoxLayout * vlayout = new QVBoxLayout(this);
 
     //

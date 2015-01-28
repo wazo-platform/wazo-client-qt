@@ -43,5 +43,11 @@
         <file>images/phonebook.png</file>
         <file>images/magnifying_glass.png</file>
         <file>images/dot.svg</file>
+        <file>images/tab-people.svg</file>
+        <file>images/tab-fax.svg</file>
+        <file>images/tab-history.svg</file>
+        <file>images/tab-services.svg</file>
+        <file>images/tab-conference.svg</file>
+        <file>images/tab-bang.svg</file>
     </qresource>
 </RCC>

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -41,12 +41,10 @@
 #include "ui_directory_widget.h"
 
 Directory::Directory(QWidget *parent)
-    : XLet(parent),
+    : XLet(parent, tr("Directory")),
       m_proxy_model(NULL),
       m_directory_entry_manager(m_phone_dao, m_user_dao, this)
 {
-    setTitle(tr("Directory"));
-
     this->ui.setupUi(this);
 
     m_proxy_model = new DirectoryEntrySortFilterProxyModel(this);

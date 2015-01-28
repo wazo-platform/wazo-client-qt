@@ -41,6 +41,7 @@ Qt5Gui.dll,\
 Qt5Multimedia.dll,\
 Qt5Network.dll,\
 Qt5Sql.dll,\
+Qt5Svg.dll,\
 Qt5Widgets.dll,\
 Qt5Xml.dll,\
 Qt5XmlPatterns.dll,\

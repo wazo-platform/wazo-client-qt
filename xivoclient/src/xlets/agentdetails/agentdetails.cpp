@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -46,9 +46,8 @@ XLet* XLetAgentDetailsPlugin::newXLetInstance(QWidget *parent)
 }
 
 XletAgentDetails::XletAgentDetails(QWidget *parent)
-    : XLet(parent)
+    : XLet(parent, tr("Agent Details"))
 {
-    setTitle(tr("Agent Details"));
     m_linenum = 0;
     m_gridlayout = new QGridLayout(this);
 

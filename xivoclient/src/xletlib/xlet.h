@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -38,8 +38,6 @@
 
 #include "xletlib_export.h"
 
-class XLet;
-
 /*! \brief base class for all XLets
  *
  * To implement a new XLet, you need to inherit from
@@ -55,8 +53,11 @@ class XLETLIB_EXPORT XLet : public QWidget
     Q_OBJECT
 
     public:
-        XLet(QWidget *parent=0);  //! Constructor
-        const QString & title() const { return m_title; };  //! title accessor
+        XLet(QWidget *parent=0,
+             const QString &title="",
+             const QString &icon_path=":/images/tab-bang.svg");
+        const QString & title() const;
+        const QString & iconPath() const;
 
         /*! \brief connects signals/slots to the main GUI window
          *
@@ -72,23 +73,12 @@ class XLETLIB_EXPORT XLet : public QWidget
         void localUserInfoDefined();
         void monitoredUserInfoDefined();
     protected:
-        void setTitle(const QString &title) { m_title = title; }; //! set title of the XLet
         QString m_xuserid;
         const UserInfo * m_ui;
         const UserInfo * m_monitored_ui;
     private:
-        QString m_title;    //!< title of the XLet
-};
-
-class XLETLIB_EXPORT XLetExperimental : public XLet
-{
-    Q_OBJECT
-
-    public:
-        XLetExperimental(QWidget *parent=0);
-
-    protected:
-        void setTitle(const QString &title);
+        QString m_title;
+        QString m_icon_path;
 };
 
 #endif

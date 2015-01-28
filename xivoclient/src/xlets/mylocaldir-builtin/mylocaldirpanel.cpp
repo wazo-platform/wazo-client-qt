@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -51,10 +51,8 @@
 /*! \brief Constructor
  */
 MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
-    : XLet(parent)
+    : XLet(parent, tr("Personal Directory"), ":/images/tab-people.svg")
 {
-    setTitle( tr("Personal Directory") );
-
     m_headers << "firstname"
               << "lastname"
               << "phonenumber"

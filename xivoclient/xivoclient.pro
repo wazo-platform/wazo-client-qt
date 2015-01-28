@@ -15,7 +15,7 @@ mac {
     QMAKE_INFO_PLIST = ../packaging/resources/macos-info.plist
 }
 
-QT += xml
+QT += svg xml
 
 RESOURCES += xivoclient.qrc
 mac {
