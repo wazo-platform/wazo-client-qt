@@ -4,7 +4,7 @@
 <context>
     <name>People</name>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="48"/>
+        <location filename="../src/xlets/people/people.cpp" line="44"/>
         <source>People</source>
         <translation>People</translation>
     </message>

@@ -12,7 +12,7 @@
 <context>
     <name>LogWidget</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="232"/>
+        <location filename="../src/xlets/history/history.cpp" line="230"/>
         <source>History</source>
         <translation>Historique</translation>
     </message>

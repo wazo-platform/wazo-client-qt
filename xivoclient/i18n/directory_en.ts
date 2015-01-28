@@ -4,7 +4,7 @@
 <context>
     <name>Directory</name>
     <message>
-        <location filename="../src/xlets/directory/directory.cpp" line="48"/>
+        <location filename="../src/xlets/directory/directory.cpp" line="44"/>
         <source>Directory</source>
         <translation>Directory</translation>
     </message>

@@ -152,12 +152,12 @@
 <context>
     <name>XletConference</name>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="96"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="94"/>
         <source>Conference</source>
         <translation>Konferenz</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="102"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="100"/>
         <source>Conference room list</source>
         <translation>Konferenzraum</translation>
     </message>

@@ -214,33 +214,33 @@ in pausa</translation>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="83"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="84"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Cancella storia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="84"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="85"/>
         <source>&amp;Send</source>
         <translation>&amp;Invia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="101"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="102"/>
         <source>chitchat - %1 (%2)</source>
         <translation>chitchat - %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="141"/>
-        <location filename="../src/xletlib/chitchat.cpp" line="184"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="143"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="186"/>
         <source>chat window opened with &quot;%1&quot; (%2)</source>
         <translation>finestra di chat aperta con &quot;%1&quot; (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="158"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="160"/>
         <source>you said: </source>
         <translation>hai detto:</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="187"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="189"/>
         <source>system: </source>
         <translation>sistema:</translation>
     </message>
@@ -409,14 +409,6 @@ Busy lines: %3</source>
         <location filename="../src/xletlib/searchdialog.cpp" line="40"/>
         <source>Search :</source>
         <translation>Cerca :</translation>
-    </message>
-</context>
-<context>
-    <name>XLetExperimental</name>
-    <message>
-        <location filename="../src/xletlib/xlet.cpp" line="63"/>
-        <source>experimental</source>
-        <translation>sperimentale</translation>
     </message>
 </context>
 </TS>

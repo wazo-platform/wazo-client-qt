@@ -110,13 +110,13 @@
 <context>
     <name>Switchboard</name>
     <message>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="60"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="51"/>
         <source>Switchboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="325"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="335"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="323"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="333"/>
         <source>%n call(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>

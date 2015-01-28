@@ -4,7 +4,7 @@
 <context>
     <name>XletAgents</name>
     <message>
-        <location filename="../src/xlets/agents/agents.cpp" line="48"/>
+        <location filename="../src/xlets/agents/agents.cpp" line="46"/>
         <source>Agents&apos; List (plain)</source>
         <translation>Lista Agenti (semplice)</translation>
     </message>
