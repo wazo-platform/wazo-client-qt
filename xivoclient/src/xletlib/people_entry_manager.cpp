@@ -44,13 +44,9 @@ PeopleEntryManager::PeopleEntryManager(QObject *parent)
 
 int PeopleEntryManager::getIndexFromAgentId(const RelationID &id) const
 {
-    const QString &xivo_uuid = id.first;
-    int agent_id = id.second;
-
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
-        if (entry.relations()["xivo_id"].toString() == xivo_uuid
-            && entry.relations()["agent_id"].toInt() == agent_id) {
+        if (entry.uniqueAgentId() == id) {
             return i;
         }
     }
@@ -59,13 +55,9 @@ int PeopleEntryManager::getIndexFromAgentId(const RelationID &id) const
 
 int PeopleEntryManager::getIndexFromEndpointId(const RelationID &id) const
 {
-    const QString &xivo_uuid = id.first;
-    int endpoint_id = id.second;
-
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
-        if (entry.relations()["xivo_id"].toString() == xivo_uuid
-            && entry.relations()["endpoint_id"].toInt() == endpoint_id) {
+        if (entry.uniqueEndpointId() == id) {
             return i;
         }
     }
@@ -74,13 +66,9 @@ int PeopleEntryManager::getIndexFromEndpointId(const RelationID &id) const
 
 int PeopleEntryManager::getIndexFromUserId(const RelationID &id) const
 {
-    const QString &xivo_uuid = id.first;
-    int user_id = id.second;
-
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
-        if (entry.relations()["xivo_id"].toString() == xivo_uuid
-            && entry.relations()["user_id"].toInt() == user_id) {
+        if (entry.uniqueUserId() == id) {
             return i;
         }
     }
@@ -146,27 +134,25 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     QVariantList endpoint_ids;
     QVariantList agent_ids;
     QVariantList user_ids;
-    foreach (const QVariant &entry, entries) {
-        QVariantMap entry_map = entry.toMap();
+    foreach (const QVariant &result, entries) {
+        QVariantMap entry_map = result.toMap();
         const QVariantList &values = entry_map["column_values"].toList();
         const QVariantMap &relations = entry_map["relations"].toMap();
-        int endpoint_id = relations["endpoint_id"].toInt();
-        int agent_id = relations["agent_id"].toInt();
-        int user_id = relations["user_id"].toInt();
-        const QString &xivo_id = relations["xivo_id"].toString();
+        PeopleEntry entry(values, relations);
+        const QString &xivo_id = entry.xivoUuid();
         QVariantList agent;
         agent.append(xivo_id);
-        agent.append(agent_id);
+        agent.append(entry.agentId());
         agent_ids.push_back(agent);
         QVariantList endpoint;
         endpoint.append(xivo_id);
-        endpoint.append(endpoint_id);
+        endpoint.append(entry.endpointId());
         endpoint_ids.push_back(endpoint);
         QVariantList user;
         user.append(xivo_id);
-        user.append(user_id);
+        user.append(entry.userId());
         user_ids.push_back(user);
-        this->addEntry(PeopleEntry(values, relations));
+        this->addEntry(entry);
     }
     b_engine->sendJsonCommand(MessageFactory::registerAgentStatus(agent_ids));
     b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoint_ids));

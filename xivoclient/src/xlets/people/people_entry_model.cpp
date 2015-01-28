@@ -170,18 +170,13 @@ QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) co
 
 QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column) const
 {
-    const QString xivo_uuid = entry.relations()["xivo_id"].toString();
-    int agent_id = entry.relations()["agent_id"].toInt();
-    int endpoint_id = entry.relations()["endpoint_id"].toInt();
-    int user_id = entry.relations()["user_id"].toInt();
-    QPair<QString, int> agent_key(xivo_uuid, agent_id);
-    QPair<QString, int> endpoint_key(xivo_uuid, endpoint_id);
-    QPair<QString, int> user_key(xivo_uuid, user_id);
-
     ColumnType column_type = m_fields[column].second;
+
     switch (column_type) {
     case NAME: // user
     {
+        QPair<QString, int> user_key = entry.uniqueUserId();
+
         if (!m_people_entry_manager.hasUserStatus(user_key)) {
             return QVariant();
         }
@@ -193,6 +188,8 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
     break;
     case NUMBER: // endpoint
     {
+        QPair<QString, int> endpoint_key = entry.uniqueEndpointId();
+
         if (!m_people_entry_manager.hasEndpointStatus(endpoint_key)) {
             return QVariant();
         }
@@ -203,6 +200,9 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
     }
     break;
     case AGENT: // agent
+    {
+        QPair<QString, int> agent_key = entry.uniqueAgentId();
+
         if (!m_people_entry_manager.hasAgentStatus(agent_key)) {
             return QVariant();
         }
@@ -212,6 +212,7 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
             return QVariant();
         }
         break;
+    }
     default:
         return QVariant();
         break;

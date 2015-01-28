@@ -40,13 +40,22 @@ class XLETLIB_EXPORT PeopleEntry
         PeopleEntry(const QVariantList &data, const QVariantMap &relations);
         PeopleEntry(const PeopleEntry &other);
         ~PeopleEntry();
-        const QVariantMap &relations() const;
         const QVariant data(int column) const;
         PeopleEntry &operator=(const PeopleEntry &other);
+        const QString &xivoUuid() const;
+        int agentId() const;
+        int endpointId() const;
+        int userId() const;
+        QPair<QString, int> uniqueAgentId() const;
+        QPair<QString, int> uniqueEndpointId() const;
+        QPair<QString, int> uniqueUserId() const;
 
     private:
         QVariantList m_data;
-        QVariantMap m_relations;
+        QString m_xivo_uuid;
+        int m_agent_id;
+        int m_user_id;
+        int m_endpoint_id;
 };
 
 #endif /* _PEOPLE_ENTRY_H_ */
