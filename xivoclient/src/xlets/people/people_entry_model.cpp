@@ -170,10 +170,10 @@ QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) co
 
 QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column) const
 {
-  const QString xivo_uuid = entry.relations()["endpoint"].toMap()["xivo_id"].toString();
-  int agent_id = entry.relations()["agent"].toMap()["id"].toInt();
-  int endpoint_id = entry.relations()["endpoint"].toMap()["id"].toInt();
-  int user_id = entry.relations()["user"].toMap()["id"].toInt();
+  const QString xivo_uuid = entry.relations()["xivo_id"].toString();
+  int agent_id = entry.relations()["agent_id"].toInt();
+  int endpoint_id = entry.relations()["endpoint_id"].toInt();
+  int user_id = entry.relations()["user_id"].toInt();
   QPair<QString, int> agent_key(xivo_uuid, agent_id);
   QPair<QString, int> endpoint_key(xivo_uuid, endpoint_id);
   QPair<QString, int> user_key(xivo_uuid, user_id);
