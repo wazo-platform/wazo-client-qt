@@ -58,6 +58,7 @@ class IdentityDisplay : public XLet
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
         void updatePhoneConfig(const QString &);
+        void foldToggle();
 
     private slots:
         void idxChanged(int);
@@ -92,6 +93,7 @@ class IdentityDisplay : public XLet
         quint32 m_gui_buttonsize;
         quint32 m_loginkind;
         QVariantMap m_svcstatus;
+        bool m_folded;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface

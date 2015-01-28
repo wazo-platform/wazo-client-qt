@@ -55,7 +55,8 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 }
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
-    : XLet(parent, tr("Identity"))
+    : XLet(parent),
+      m_folded(false)
 {
     setAccessibleName( tr("Current User Panel") );
     setObjectName("identityXlet");
@@ -117,6 +118,11 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->addWidget(m_agent, 0, m_col_agent, 3, 1);
     m_glayout->addWidget(m_voicemail, 0, m_col_vm, 3, 1);
 
+    QPushButton *button = new QPushButton(this);
+    m_glayout->addWidget(button, 0, m_col_vm +4, 3, 1);
+    connect(button, SIGNAL(clicked()),
+            this, SLOT(foldToggle()));
+
     setGuiOptions();
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
@@ -138,6 +144,17 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     // Enable/disable presence combobox if presence function has changed in config
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updatePresence()));
+}
+
+void IdentityDisplay::foldToggle()
+{
+    if (m_folded) {
+        emit showOthersRequested();
+        m_folded = false;
+    } else {
+        emit showOnlyMeRequested();
+        m_folded = true;
+    }
 }
 
 void IdentityDisplay::setupIcons()
