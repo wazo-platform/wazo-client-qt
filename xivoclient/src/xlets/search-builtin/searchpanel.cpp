@@ -45,7 +45,7 @@ SearchPanel::SearchPanel(QWidget *parent) :
     XLet(parent, tr("Contacts"), ":/images/tab-people.svg"),
     m_live_reload_enabled(false)
 {
-    ChitChatWindow::chitchat_instance = new ChitChatWindow(this);
+    ChitChatWindow::chitchat_instance = new ChitChatWindow();
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
