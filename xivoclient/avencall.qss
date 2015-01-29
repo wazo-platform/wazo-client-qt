@@ -14,17 +14,8 @@ QFrame#identitybck QLabel#phone_number {color : transparent}
 QFrame#identitybck QLabel#phone_call {color : transparent}
 QFrame#identitybck QLabel#phone_calltxt {color : transparent}
 
-QTabWidget::tab-bar {left : 50px}
-QTabBar::tab {background: #808080;
-                /*font: bold;*/ /* Qt Bug : text is truncated. See QTBUG-5052 and QTBUG-8209 */
-                color: white ; padding: 3px; margin-left : 4px;
-                border: 0px solid white}
-QTabBar::tab:selected, QTabBar::tab:hover {background: white; color : #F37021}
-
 /*QTabWidget QWidget {background: white}*/
 QTabWidget > * {border: 0px solid #808080 ; border-radius: 10px}
-
-QTabWidget::pane {border-top : 5px solid white}
 
 QDockWidget { color : #093C7B; background : white}
 
