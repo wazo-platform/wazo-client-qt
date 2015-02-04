@@ -42,7 +42,7 @@ class MenuAvailability : public QMenu
     FUNCTESTED
 
     public:
-        MenuAvailability(MainWindow *parent);
+        MenuAvailability(QMenu *parent);
         ~MenuAvailability();
 
     private slots:

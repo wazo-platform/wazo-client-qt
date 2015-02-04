@@ -35,9 +35,9 @@
 #include <storage/userinfo.h>
 
 
-MenuAvailability::MenuAvailability(MainWindow *parent)
+MenuAvailability::MenuAvailability(QMenu *parent)
     : QMenu(parent),
-      m_menu_availability(parent->ui->menu_availability),
+      m_menu_availability(parent),
       m_availability_action_group(new QActionGroup(parent))
 {
     this->m_availability_action_group->setExclusive(true);
