@@ -31,7 +31,6 @@
 #include "main_window/main_window.h"
 #include "main_window/central_widget.h"
 #include "main_window/main_widget.h"
-#include "main_window/menu_availability.h"
 #include "main_window/statusbar.h"
 #include "main_window/system_tray_icon.h"
 #include "login_widget/login_widget.h"
@@ -45,7 +44,6 @@ Assembler::Assembler()
     this->m_central_widget = new CentralWidget(this->m_main_window);
     this->m_login_widget = new LoginWidget(this->m_main_window, this->m_central_widget);
     this->m_main_widget = new MainWidget(this->m_central_widget);
-    this->m_menu_availabilty = new MenuAvailability(this->m_main_window);
     this->m_statusbar = new Statusbar(this->m_main_window);
     this->m_system_tray_icon = new SystemTrayIcon(this->m_main_window);
     this->m_xlet_dispatcher = new XletDispatcher(this->m_main_window, this->m_main_widget, qApp);
@@ -55,7 +53,6 @@ Assembler::Assembler()
         || this->m_central_widget == NULL
         || this->m_login_widget == NULL
         || this->m_main_widget == NULL
-        || this->m_menu_availabilty == NULL
         || this->m_statusbar == NULL
         || this->m_system_tray_icon == NULL
         || this->m_xlet_dispatcher == NULL
@@ -86,11 +83,6 @@ CentralWidget *Assembler::centralWidget()
 MainWidget *Assembler::mainWidget()
 {
     return m_main_widget;
-}
-
-MenuAvailability *Assembler::menuAvailability()
-{
-    return m_menu_availabilty;
 }
 
 Statusbar *Assembler::statusbar()

@@ -57,7 +57,6 @@ RemoteControl::RemoteControl(ExecObjects exec_obj, QString &socket)
       m_server(new QLocalServer),
       m_client_cnx(NULL),
       m_main_window(assembler->mainWindow()),
-      m_menu_availability(assembler->menuAvailability()),
       m_login_widget(assembler->loginWidget()),
       m_central_widget(assembler->centralWidget()),
       m_main_widget(assembler->mainWidget()),
@@ -66,6 +65,7 @@ RemoteControl::RemoteControl(ExecObjects exec_obj, QString &socket)
       m_system_tray_icon(assembler->systemTrayIcon())
 {
     this->connect(this->m_server, SIGNAL(newConnection()), SLOT(newConnection()));
+    this->m_menu_availability = this->m_system_tray_icon->m_menu_availability;
 
     QFile::remove(m_socket_name);
     this->m_server->listen(m_socket_name);

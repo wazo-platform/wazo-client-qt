@@ -33,7 +33,6 @@
 #include <assembler.h>
 
 #include "main_window.h"
-#include "menu_availability.h"
 #include "central_widget.h"
 
 
