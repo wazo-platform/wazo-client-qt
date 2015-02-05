@@ -61,14 +61,6 @@
     <addaction name="separator"/>
     <addaction name="action_quit"/>
    </widget>
-   <widget class="QMenu" name="menu_availability">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>&amp;Availability</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
      <string>&amp;Help</string>
@@ -78,7 +70,6 @@
     <addaction name="action_credits"/>
    </widget>
    <addaction name="menu_client"/>
-   <addaction name="menu_availability"/>
    <addaction name="menu_help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">

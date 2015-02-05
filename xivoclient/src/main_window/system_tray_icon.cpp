@@ -36,6 +36,10 @@
 SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
     : QSystemTrayIcon(parent)
 {
+    this->m_availability = new QMenu(parent);
+    this->m_availability->setTitle("&Availability");
+    this->m_menu_availability = new MenuAvailability(this->m_availability);
+
     this->connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
     this->connect(this, SIGNAL(messageClicked()), SLOT(systrayMsgClicked()));
     this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
@@ -64,9 +68,10 @@ void SystemTrayIcon::setUi(Ui::MainWindow *ui)
     if (! menu) {
         return;
     }
+
     menu->addAction(ui->action_configure);
     menu->addSeparator();
-    menu->addMenu(ui->menu_availability);
+    menu->addMenu(this->m_availability);
     menu->addSeparator();
     menu->addAction(ui->action_connect);
     menu->addAction(ui->action_disconnect);

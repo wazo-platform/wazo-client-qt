@@ -33,7 +33,6 @@
 #include "main_window/main_window.h"
 #include "main_window/central_widget.h"
 #include "main_window/main_widget.h"
-#include "main_window/menu_availability.h"
 #include "main_window/statusbar.h"
 #include "main_window/system_tray_icon.h"
 #include "main_window/xlet_dispatcher.h"
@@ -44,7 +43,6 @@ class MainWindow;
 class CentralWidget;
 class MainWidget;
 class ConfigWidget;
-class MenuAvailability;
 class Statusbar;
 class SystemTrayIcon;
 class LoginWidget;
@@ -61,7 +59,6 @@ class Assembler
         CentralWidget *centralWidget();
         LoginWidget *loginWidget();
         MainWidget *mainWidget();
-        MenuAvailability *menuAvailability();
         Statusbar *statusbar();
         SystemTrayIcon *systemTrayIcon();
         XletDispatcher *xletDispatcher();
@@ -72,7 +69,6 @@ class Assembler
         CentralWidget *m_central_widget;
         LoginWidget *m_login_widget;
         MainWidget *m_main_widget;
-        MenuAvailability *m_menu_availabilty;
         Statusbar *m_statusbar;
         SystemTrayIcon *m_system_tray_icon;
         XletDispatcher *m_xlet_dispatcher;

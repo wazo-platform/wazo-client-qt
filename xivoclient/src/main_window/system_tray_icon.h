@@ -31,6 +31,9 @@
 #define __SYSTEM_TRAY_ICON_H__
 
 #include <QSystemTrayIcon>
+#include <xletlib/functests.h>
+
+#include "menu_availability.h"
 
 class MainWindow;
 namespace Ui {
@@ -40,6 +43,7 @@ namespace Ui {
 class SystemTrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         SystemTrayIcon(MainWindow *parent);
@@ -55,6 +59,8 @@ class SystemTrayIcon : public QSystemTrayIcon
     private:
         MainWindow *mainWindow() const;
         void setUi(Ui::MainWindow *ui);
+        QMenu *m_availability;
+        MenuAvailability *m_menu_availability;
 };
 
 #endif
