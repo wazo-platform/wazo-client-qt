@@ -214,33 +214,33 @@ in pausa</translation>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="84"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="83"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Cancella storia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="85"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="84"/>
         <source>&amp;Send</source>
         <translation>&amp;Invia</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="102"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="101"/>
         <source>chitchat - %1 (%2)</source>
         <translation>chitchat - %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="143"/>
-        <location filename="../src/xletlib/chitchat.cpp" line="186"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="141"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="184"/>
         <source>chat window opened with &quot;%1&quot; (%2)</source>
         <translation>finestra di chat aperta con &quot;%1&quot; (%2)</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="160"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="158"/>
         <source>you said: </source>
         <translation>hai detto:</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="189"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="187"/>
         <source>system: </source>
         <translation>sistema:</translation>
     </message>

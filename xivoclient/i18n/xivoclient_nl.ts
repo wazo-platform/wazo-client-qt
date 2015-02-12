@@ -611,189 +611,184 @@ Reden: %3.</translation>
         <translation>&amp;XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="69"/>
-        <source>&amp;Availability</source>
-        <translation>&amp;Beschikbaarheid</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.ui" line="74"/>
+        <location filename="../src/main_window/main_window.ui" line="66"/>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="97"/>
+        <location filename="../src/main_window/main_window.ui" line="88"/>
         <source>Confi&amp;gure</source>
         <translation>Confi&amp;gureren</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="100"/>
+        <location filename="../src/main_window/main_window.ui" line="91"/>
         <source>Configure account and connection options</source>
         <translation>Account en verbindingsopties configureren</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="108"/>
+        <location filename="../src/main_window/main_window.ui" line="99"/>
         <source>To S&amp;ystray</source>
         <translation>Naar S&amp;ystray</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="111"/>
+        <location filename="../src/main_window/main_window.ui" line="102"/>
         <source>Enter the system tray</source>
         <translation> De toepassing minimaliseren in de systeemnotificatiezone</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="116"/>
+        <location filename="../src/main_window/main_window.ui" line="107"/>
         <source>&amp;Connect</source>
         <translation>&amp;Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="119"/>
+        <location filename="../src/main_window/main_window.ui" line="110"/>
         <source>Connect to the server</source>
         <translation>Verbinden met de server</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="127"/>
+        <location filename="../src/main_window/main_window.ui" line="118"/>
         <source>&amp;Disconnect</source>
         <translation>&amp;Verbinding verbreken</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="130"/>
+        <location filename="../src/main_window/main_window.ui" line="121"/>
         <source>Disconnect from the server</source>
         <translation>Verbinding met de server verbreken</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="138"/>
+        <location filename="../src/main_window/main_window.ui" line="129"/>
         <source>&amp;Quit</source>
         <translation>&amp;Verlaten</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="141"/>
+        <location filename="../src/main_window/main_window.ui" line="132"/>
         <source>Close the application</source>
         <translation>De toepassing sluiten</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="144"/>
+        <location filename="../src/main_window/main_window.ui" line="135"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="152"/>
+        <location filename="../src/main_window/main_window.ui" line="143"/>
         <source>&amp;Show window</source>
         <translation>&amp;Venster weergeven</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="155"/>
+        <location filename="../src/main_window/main_window.ui" line="146"/>
         <source>Leave the system tray</source>
         <translation> De toepassing uit de systeemnotificatiezone halen</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="163"/>
+        <location filename="../src/main_window/main_window.ui" line="154"/>
         <source>&amp;About XiVO Client</source>
         <translation>&amp;Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="168"/>
+        <location filename="../src/main_window/main_window.ui" line="159"/>
         <source>About &amp;Qt</source>
         <translation>Over &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.ui" line="173"/>
+        <location filename="../src/main_window/main_window.ui" line="164"/>
         <source>&amp;Credits</source>
         <translation>&amp;Credits</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="84"/>
-        <location filename="../src/main_window/main_window.cpp" line="204"/>
-        <location filename="../src/main_window/main_window.cpp" line="280"/>
+        <location filename="../src/main_window/main_window.cpp" line="83"/>
+        <location filename="../src/main_window/main_window.cpp" line="203"/>
+        <location filename="../src/main_window/main_window.cpp" line="279"/>
         <source>Client %1</source>
         <translation>Client %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="159"/>
+        <location filename="../src/main_window/main_window.cpp" line="158"/>
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI-fout</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="186"/>
+        <location filename="../src/main_window/main_window.cpp" line="185"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (%2 profiel)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="272"/>
+        <location filename="../src/main_window/main_window.cpp" line="271"/>
         <source>Fetch the last one</source>
         <translation>De laatste ophalen</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="279"/>
+        <location filename="../src/main_window/main_window.cpp" line="278"/>
         <source>About XiVO Client</source>
         <translation>Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="281"/>
+        <location filename="../src/main_window/main_window.cpp" line="280"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="286"/>
+        <location filename="../src/main_window/main_window.cpp" line="285"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Versie Informatie&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="287"/>
+        <location filename="../src/main_window/main_window.cpp" line="286"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Major: &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="288"/>
+        <location filename="../src/main_window/main_window.cpp" line="287"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Minor : git hash &lt;b&gt;%1&lt;/b&gt; van : %2</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="291"/>
+        <location filename="../src/main_window/main_window.cpp" line="290"/>
         <source>(Application Built on : %1)</source>
         <translation>(Applicatie Gecompileerd op : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="292"/>
+        <location filename="../src/main_window/main_window.cpp" line="291"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Applicatie gestart op: %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="293"/>
+        <location filename="../src/main_window/main_window.cpp" line="292"/>
         <source>(Config File Location : %1)</source>
         <translation>(Locatie Configuratie Bestand : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="296"/>
+        <location filename="../src/main_window/main_window.cpp" line="295"/>
         <source>E-mail : </source>
         <translation>E-mail: </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="297"/>
+        <location filename="../src/main_window/main_window.cpp" line="296"/>
         <source>Phone : </source>
         <translation>Tel. : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="298"/>
+        <location filename="../src/main_window/main_window.cpp" line="297"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="298"/>
+        <location filename="../src/main_window/main_window.cpp" line="297"/>
         <source>Avencall Development Team</source>
         <translation>Avencall Development Team</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="300"/>
+        <location filename="../src/main_window/main_window.cpp" line="299"/>
         <source>License : </source>
         <translation>Licentie: </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="302"/>
+        <location filename="../src/main_window/main_window.cpp" line="301"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>met een speciale uitzondering om het te koppelen met OpenSSL, onder bepaalde voorwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="308"/>
+        <location filename="../src/main_window/main_window.cpp" line="307"/>
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
