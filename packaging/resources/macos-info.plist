@@ -30,6 +30,8 @@
 			<string>callto</string>
 			<string>tel</string>
 		</array>
+		<key>LSIsAppleDefaultForScheme</key>
+		<true/>
 		</dict>
 	</array>
 	<key>NSPrincipalClass</key>
