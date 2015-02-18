@@ -40,7 +40,7 @@
 PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    this->setSortingEnabled(false);
+    this->setSortingEnabled(true);
     this->setSelectionMode(QAbstractItemView::NoSelection);
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }

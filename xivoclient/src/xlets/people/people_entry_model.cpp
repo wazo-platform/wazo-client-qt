@@ -168,7 +168,18 @@ enum ColumnType PeopleEntryModel::headerType(int column) const
 
 QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) const
 {
-    return entry.data(column);
+    ColumnType column_type = m_fields[column].second;
+
+    switch (column_type) {
+    case AGENT:
+    {
+        QPair<QString, int> agent_key = entry.uniqueAgentId();
+        return m_people_entry_manager.getAgentStatus(agent_key);
+    }
+    default:
+        return entry.data(column);
+        break;
+    }
 }
 
 
