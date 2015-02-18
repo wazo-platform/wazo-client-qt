@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -42,6 +42,9 @@ class PeopleEntryView : public AbstractTableView
         PeopleEntryView(QWidget *parent = NULL);
         void selectFirstRow();
         void keyPressEvent(QKeyEvent * event);
+
+    public slots:
+        void updateColumnsDelegates(const QModelIndex &parent, int first, int last);
 };
 
 #endif /* __PEOPLE_ENTRY_VIEW_H__ */

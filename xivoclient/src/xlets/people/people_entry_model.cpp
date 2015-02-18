@@ -130,6 +130,8 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return this->dataDisplay(entry, column);
     case Qt::BackgroundRole:
       return this->dataBackground(entry, column);
+    case Qt::UserRole:
+        return this->dataUser(entry, column);
     default:
         return QVariant();
     }
@@ -144,8 +146,10 @@ QVariant PeopleEntryModel::headerData(int column,
     }
 
     switch(role) {
-    case  Qt::DisplayRole:
+    case Qt::DisplayRole:
         return this->headerText(column);
+    case Qt::UserRole:
+        return this->headerType(column);
     default:
         return QVariant();
     }
@@ -213,6 +217,22 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
         }
         break;
     }
+    default:
+        return QVariant();
+        break;
+    }
+    return QVariant();
+}
+
+QVariant PeopleEntryModel::dataUser(const PeopleEntry & entry, int column) const
+{
+    ColumnType column_type = m_fields[column].second;
+    QPair<QString, int> agent_key = entry.uniqueAgentId();
+
+    switch (column_type) {
+    case AGENT:
+        return m_people_entry_manager.getAgentStatus(agent_key);
+        break;
     default:
         return QVariant();
         break;
