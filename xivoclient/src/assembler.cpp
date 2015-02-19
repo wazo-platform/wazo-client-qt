@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -36,7 +36,7 @@
 #include "login_widget/login_widget.h"
 #include <stdlib.h>
 
-Assembler *assembler;
+Assembler *assembler = NULL;
 
 Assembler::Assembler()
 {
