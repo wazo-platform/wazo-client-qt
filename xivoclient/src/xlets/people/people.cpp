@@ -66,6 +66,8 @@ People::People(QWidget *parent)
             this, SLOT(searchPeople()));
     connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
             this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
+    connect(this->ui.entry_table, SIGNAL(extensionClicked(const QString &)),
+            this, SLOT(dial(const QString &)));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
@@ -113,4 +115,9 @@ void People::dataChanged(const QModelIndex &, const QModelIndex &)
     this->m_proxy_model->invalidate();
     int name_column_index = this->m_model->getNameColumnIndex();
     this->m_proxy_model->sort(name_column_index, Qt::AscendingOrder);
+}
+
+void People::dial(const QString &extension)
+{
+    b_engine->sendJsonCommand(MessageFactory::dial(extension));
 }

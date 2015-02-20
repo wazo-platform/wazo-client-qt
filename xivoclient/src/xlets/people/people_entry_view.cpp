@@ -43,6 +43,7 @@ PeopleEntryView::PeopleEntryView(QWidget *parent)
     this->setSortingEnabled(false);
     this->setSelectionMode(QAbstractItemView::NoSelection);
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->viewport()->setAttribute(Qt::WA_Hover);
 }
 
 void PeopleEntryView::selectFirstRow()
@@ -71,8 +72,17 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
             break;
         case NAME:
         case NUMBER:
-            this->setItemDelegateForColumn(column_index, new PeopleEntryDotDelegate(this));
+            PeopleEntryDotDelegate *delegate = new PeopleEntryDotDelegate(this);
+            this->setItemDelegateForColumn(column_index, delegate);
+            connect(delegate, SIGNAL(clicked(QAbstractItemModel *, const QModelIndex &)),
+                    this, SLOT(extensionClick(QAbstractItemModel *, const QModelIndex &)));
             break;
         }
     }
+}
+
+void PeopleEntryView::extensionClick(QAbstractItemModel *model, const QModelIndex &index)
+{
+    QString extension = model->data(index).toString();
+    emit extensionClicked(extension);
 }

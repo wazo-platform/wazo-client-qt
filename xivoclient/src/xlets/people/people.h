@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -54,12 +54,14 @@ class People: public XLet
     public:
         People(QWidget *parent=0);
         ~People();
+
     public slots:
         void numberSelectionRequested();
         void focusEntryTable();
         void schedulePeopleLookup(const QString &lookup_pattern);
         void searchPeople();
         void dataChanged(const QModelIndex &, const QModelIndex &);
+        void dial(const QString &extension);
 
     private:
         Ui::PeopleWidget ui;
