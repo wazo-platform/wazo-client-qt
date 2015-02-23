@@ -1,6 +1,7 @@
 <RCC>
   <qresource>
-    <file>fonts/dundeemedium.ttf</file>
+    <file>fonts/DynoRegular.ttf</file>
+    <file>fonts/DynoBold.ttf</file>
     <file>xivo.qss</file>
     <file>avencall.qss</file>
     <file>obj/xivoclient_fr.qm</file>
