@@ -52,9 +52,7 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_xlets_tab_widget(),
       m_xlets_tab(),
       m_has_tabber(false),
-      m_tabber_style()
-      m_fold_button(new QPushButton("Fold", main_window)),
-      m_has_tabber(false),
+      m_tabber_style(),
       m_fold_signal_mapper(new QSignalMapper(this)),
       m_unfold_signal_mapper(new QSignalMapper(this))
 {
