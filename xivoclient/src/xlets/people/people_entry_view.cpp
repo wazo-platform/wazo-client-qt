@@ -40,9 +40,8 @@
 PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    this->setSortingEnabled(false);
+    this->setSortingEnabled(true);
     this->setSelectionMode(QAbstractItemView::NoSelection);
-    this->setItemDelegate(new PeopleEntryDelegate(this));
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
@@ -59,5 +58,21 @@ void PeopleEntryView::keyPressEvent(QKeyEvent * event)
         emit activated(this->currentIndex());
     } else {
         AbstractTableView::keyPressEvent(event);
+    }
+}
+
+void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int last)
+{
+    for (int column_index = first ; column_index <= last ; column_index ++) {
+        int column_type = this->model()->headerData(column_index, Qt::Horizontal, Qt::UserRole).toInt();
+        switch (column_type) {
+        case AGENT:
+            this->setItemDelegateForColumn(column_index, new PeopleEntryAgentDelegate(this));
+            break;
+        case NAME:
+        case NUMBER:
+            this->setItemDelegateForColumn(column_index, new PeopleEntryDotDelegate(this));
+            break;
+        }
     }
 }

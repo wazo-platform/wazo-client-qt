@@ -51,9 +51,9 @@ People::People(QWidget *parent)
     m_model = new PeopleEntryModel(m_people_entry_manager, this);
     m_proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(m_proxy_model);
+    connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+            ui.entry_table, SLOT(updateColumnsDelegates(const QModelIndex &, int, int)));
 
-    connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
-            m_proxy_model, SLOT(setFilter(const QString &)));
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),

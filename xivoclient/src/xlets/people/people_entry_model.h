@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -69,6 +69,7 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
         void refreshEntry(int entry_index);
         QVariant dataDisplay(const PeopleEntry & entry, int column) const;
         QVariant dataBackground(const PeopleEntry & entry, int column) const;
+        QVariant dataUser(const PeopleEntry & entry, int column) const;
         void addField(const QString &name, const QString &type);
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;

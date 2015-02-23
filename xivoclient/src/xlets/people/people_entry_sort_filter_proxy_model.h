@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -42,8 +42,6 @@ class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
 
     public:
         PeopleEntrySortFilterProxyModel(QObject *parent);
-    public slots:
-        void setFilter(const QString & filter);
     protected:
         virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
     private:

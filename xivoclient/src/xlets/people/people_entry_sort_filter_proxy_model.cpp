@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -57,10 +57,4 @@ bool PeopleEntrySortFilterProxyModel::lessThan(const QModelIndex &left,
     } else {
         return AbstractSortFilterProxyModel::lessThan(left, right);
     }
-}
-
-void PeopleEntrySortFilterProxyModel::setFilter(const QString & filter)
-{
-    this->m_filter = filter;
-    this->invalidateFilter();
 }

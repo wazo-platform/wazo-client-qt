@@ -32,10 +32,10 @@
 
 #include <QStyledItemDelegate>
 
-class PeopleEntryDelegate : public QStyledItemDelegate
+class PeopleEntryDotDelegate : public QStyledItemDelegate
 {
     public:
-        PeopleEntryDelegate(QWidget *parent = NULL);
+        PeopleEntryDotDelegate(QWidget *parent = NULL);
         QSize sizeHint(const QStyleOptionViewItem &option,
                        const QModelIndex &index) const;
         void paint(QPainter *painter,
@@ -44,6 +44,19 @@ class PeopleEntryDelegate : public QStyledItemDelegate
     private:
         static QSize icon_size;
         static int icon_text_spacing;
+};
+
+class PeopleEntryAgentDelegate : public QStyledItemDelegate
+{
+    public:
+        PeopleEntryAgentDelegate(QWidget *parent = NULL);
+        QSize sizeHint(const QStyleOptionViewItem &option,
+                       const QModelIndex &index) const;
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
+    private:
+        static QSize icon_size;
 };
 
 #endif
