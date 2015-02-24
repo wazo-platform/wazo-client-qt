@@ -43,8 +43,12 @@ class PeopleEntryView : public AbstractTableView
         void selectFirstRow();
         void keyPressEvent(QKeyEvent * event);
 
+    signals:
+        void extensionClicked(const QString &extension);
+
     public slots:
         void updateColumnsDelegates(const QModelIndex &parent, int first, int last);
+        void extensionClick(QAbstractItemModel *model, const QModelIndex &index);
 };
 
 #endif /* __PEOPLE_ENTRY_VIEW_H__ */

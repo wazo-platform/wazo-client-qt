@@ -34,6 +34,8 @@
 
 class PeopleEntryDotDelegate : public QStyledItemDelegate
 {
+    Q_OBJECT
+
     public:
         PeopleEntryDotDelegate(QWidget *parent = NULL);
         QSize sizeHint(const QStyleOptionViewItem &option,
@@ -41,9 +43,19 @@ class PeopleEntryDotDelegate : public QStyledItemDelegate
         void paint(QPainter *painter,
                    const QStyleOptionViewItem &option,
                    const QModelIndex &index) const;
+        bool editorEvent(QEvent *event,
+                         QAbstractItemModel *model,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index);
+    signals:
+        void clicked(QAbstractItemModel *, const QModelIndex &);
+
     private:
+        bool pressed;
         static QSize icon_size;
         static int icon_text_spacing;
+        static QMargins button_margins;
+        static int button_height;
 };
 
 class PeopleEntryAgentDelegate : public QStyledItemDelegate
