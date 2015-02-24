@@ -32,6 +32,7 @@
 
 #include "people_entry_delegate.h"
 
+QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
 QMargins PeopleEntryDotDelegate::button_margins = QMargins(10, 0, 10, 0);
@@ -132,17 +133,11 @@ bool PeopleEntryDotDelegate::editorEvent(QEvent *event,
     return true;
 }
 
-
-
-
-
-QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
-
-
 PeopleEntryAgentDelegate::PeopleEntryAgentDelegate(QWidget *parent)
     : QStyledItemDelegate(parent)
 {
 }
+
 QSize PeopleEntryAgentDelegate::sizeHint(const QStyleOptionViewItem &option,
                                          const QModelIndex &index) const
 {
