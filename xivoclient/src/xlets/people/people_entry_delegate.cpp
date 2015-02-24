@@ -119,7 +119,7 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
 
 bool PeopleEntryDotDelegate::editorEvent(QEvent *event,
                                          QAbstractItemModel *model,
-                                         const QStyleOptionViewItem &option,
+                                         const QStyleOptionViewItem &,
                                          const QModelIndex &index)
 {
     if(event->type() == QEvent::MouseButtonPress) {
