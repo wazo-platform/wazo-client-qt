@@ -103,6 +103,7 @@ class XletDispatcher : public QObject
         QSignalMapper *m_unfold_signal_mapper;
 
         QByteArray m_normal_geometry;
+        QByteArray m_one_xlet_geometry;
 };
 
 #endif

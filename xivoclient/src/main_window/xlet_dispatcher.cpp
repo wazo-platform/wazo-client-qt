@@ -27,7 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include <QMap>
 
 #include <baseengine.h>
@@ -66,29 +65,65 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
 
 void XletDispatcher::showOneXlet(const QString &xlet_name)
 {
-    m_xlets["dial"]->setVisible(false);
-    m_tab_container->setVisible(false);
+    XLet *identity = m_xlets[xlet_name];
+    QList<XLet *> tabbed_widgets = this->m_xlets_tab_widget.values();
+
+
+    if(m_has_tabber) {
+        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
+        m_tab_container->setVisible(false);
+    }
+
+    foreach(XLet *obj, m_main_window->findChildren<XLet *>()) {
+        if(obj != identity) {
+            if(!tabbed_widgets.contains(obj)){
+                obj->setVisible(false);
+            }
+        }
+    }
+
+    this->hideXletsDock();
+
+
+
     m_normal_geometry = m_main_window->saveGeometry();
+    m_one_xlet_geometry = identity->saveGeometry();
     if (m_main_window->isMaximized()) {
         m_main_window->showNormal();
     }
-    XLet *identity = m_xlets["identity"];
 
     m_main_window->setFixedHeight(identity->height() \
                                   + m_main_window->statusBar()->height() \
                                   + m_main_window->menuBar()->height() \
-                                  + 20  // Arbitrary, but identity is squashed a little without it
                                   );
 }
 
 void XletDispatcher::showOtherXlets(const QString &xlet_name)
 {
-    m_xlets["dial"]->setVisible(true);
-    m_tab_container->setVisible(true);
+    QList<XLet *> tabbed_widgets = this->m_xlets_tab_widget.values();
+    XLet *identity = m_xlets[xlet_name];
+    foreach(XLet *obj, m_main_window->findChildren<XLet*>()) {
+        if(obj != identity) {
+            if(!tabbed_widgets.contains(obj)){
+                obj->setVisible(true);
+            }
+        }
+    }
+
+    if(m_has_tabber) {
+        m_tab_container->setVisible(true);
+        this->m_tab_container->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
+    }
+
+
+    this->showXletsDock();
+
+
     m_main_widget->setFixedHeight(QWIDGETSIZE_MAX);
     m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
 
     m_main_window->restoreGeometry(m_normal_geometry);
+    identity->restoreGeometry(m_one_xlet_geometry);
 }
 
 XletDispatcher::~XletDispatcher()
@@ -135,6 +170,7 @@ void XletDispatcher::prepareXletsGrid()
     }
 
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
+    this->m_grid_container->setContentsMargins(0,0,0,0);
     if (! m_grid_container) {
         qDebug() << Q_FUNC_INFO << "Failed to instanciate the grid container";
         return;
