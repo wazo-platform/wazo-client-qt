@@ -304,6 +304,7 @@ void XletDispatcher::cleanXletsDock()
 
 void XletDispatcher::hideXletsDock()
 {
+    this->m_main_window->saveState();
     foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
         widget->hide();
     }
@@ -311,6 +312,9 @@ void XletDispatcher::hideXletsDock()
 
 void XletDispatcher::showXletsDock()
 {
+    foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
+        widget->show();
+    }
     this->m_main_window->restoreState();
 }
 
