@@ -39,8 +39,7 @@ QMargins PeopleEntryDotDelegate::button_margins = QMargins(10, 0, 10, 0);
 
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
-    : QStyledItemDelegate(parent),
-      pressed(false)
+    : QStyledItemDelegate(parent)
 {
 }
 
@@ -57,34 +56,9 @@ QSize PeopleEntryDotDelegate::sizeHint(const QStyleOptionViewItem &option,
 }
 
 void PeopleEntryDotDelegate::paint(QPainter *painter,
-                                const QStyleOptionViewItem &option,
-                                const QModelIndex &index) const
+                                   const QStyleOptionViewItem &option,
+                                   const QModelIndex &index) const
 {
-    if (index.data().isNull()) {
-        QStyledItemDelegate::paint(painter, option, index);
-        return;
-    }
-
-    if(option.state & QStyle::State_MouseOver) {
-        painter->save();
-        QPainterPath path;
-        QRect button_rect = QRect(option.rect).marginsRemoved(button_margins);
-        path.addRoundedRect(button_rect, 8, 8);
-        if (this->pressed) {
-            painter->fillPath(path, Qt::black);
-        } else {
-            painter->fillPath(path, QColor("#58524F"));
-        }
-
-        QString text = tr("APPELER");
-        QRect text_rect(button_rect);
-        text_rect.translate(16, 0);
-        painter->setPen(QColor("white"));
-        painter->drawText(text_rect, Qt::AlignVCenter, text);
-        painter->restore();
-        return;
-    }
-
     if (index.data(Qt::BackgroundRole).isNull()) {
         QStyledItemDelegate::paint(painter, option, index);
         return;
@@ -118,11 +92,53 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
     painter->restore();
 }
 
-bool PeopleEntryDotDelegate::editorEvent(QEvent *event,
-                                         QAbstractItemModel *model,
-                                         const QStyleOptionViewItem &,
-                                         const QModelIndex &index)
+PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)
+    : PeopleEntryDotDelegate(parent),
+      pressed(false)
 {
+}
+
+void PeopleEntryNumberDelegate::paint(QPainter *painter,
+                                      const QStyleOptionViewItem &option,
+                                      const QModelIndex &index) const
+{
+    if (index.data().isNull()) {
+        QStyledItemDelegate::paint(painter, option, index);
+        return;
+    }
+
+    if(option.state & QStyle::State_MouseOver) {
+        painter->save();
+        QPainterPath path;
+        QRect button_rect = QRect(option.rect).marginsRemoved(button_margins);
+        path.addRoundedRect(button_rect, 8, 8);
+        if (this->pressed) {
+            painter->fillPath(path, Qt::black);
+        } else {
+            painter->fillPath(path, QColor("#58524F"));
+        }
+
+        QString text = tr("APPELER");
+        QRect text_rect(button_rect);
+        text_rect.translate(16, 0);
+        painter->setPen(QColor("white"));
+        painter->drawText(text_rect, Qt::AlignVCenter, text);
+        painter->restore();
+        return;
+    }
+
+    PeopleEntryDotDelegate::paint(painter, option, index);
+}
+
+bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
+                                            QAbstractItemModel *model,
+                                            const QStyleOptionViewItem &option,
+                                            const QModelIndex &index)
+{
+    if (index.data().isNull()) {
+        return QStyledItemDelegate::editorEvent(event, model, option, index);
+    }
+
     if(event->type() == QEvent::MouseButtonPress) {
         this->pressed = true;
     }
