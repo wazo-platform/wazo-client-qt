@@ -66,28 +66,21 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
 void XletDispatcher::showOneXlet(const QString &xlet_name)
 {
     XLet *identity = m_xlets[xlet_name];
-    QList<XLet *> tabbed_widgets = this->m_xlets_tab_widget.values();
-
-
-    if(m_has_tabber) {
-        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
-        m_tab_container->setVisible(false);
-    }
-
-    foreach(XLet *obj, m_main_window->findChildren<XLet *>()) {
-        if(obj != identity) {
-            if(!tabbed_widgets.contains(obj)){
-                obj->setVisible(false);
-            }
-        }
-    }
+    QMap<QString, XLet *> xlets_to_hide = this->m_xlets_grid_widget;
+    xlets_to_hide.remove(xlet_name);
 
     this->hideXletsDock();
 
+    if(m_has_tabber) {
+        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
+        m_tab_container->hide();
+    }
 
+    foreach (QWidget *widget, xlets_to_hide.values()) {
+        widget->hide();
+    }
 
     m_normal_geometry = m_main_window->saveGeometry();
-    m_one_xlet_geometry = identity->saveGeometry();
     if (m_main_window->isMaximized()) {
         m_main_window->showNormal();
     }
@@ -100,21 +93,16 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
 
 void XletDispatcher::showOtherXlets(const QString &xlet_name)
 {
-    QList<XLet *> tabbed_widgets = this->m_xlets_tab_widget.values();
     XLet *identity = m_xlets[xlet_name];
-    foreach(XLet *obj, m_main_window->findChildren<XLet*>()) {
-        if(obj != identity) {
-            if(!tabbed_widgets.contains(obj)){
-                obj->setVisible(true);
-            }
-        }
+
+    foreach (QWidget *widget, this->m_xlets_grid_widget.values()) {
+        widget->show();
     }
 
     if(m_has_tabber) {
         m_tab_container->setVisible(true);
         this->m_tab_container->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
     }
-
 
     this->showXletsDock();
 
@@ -123,7 +111,6 @@ void XletDispatcher::showOtherXlets(const QString &xlet_name)
     m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
 
     m_main_window->restoreGeometry(m_normal_geometry);
-    identity->restoreGeometry(m_one_xlet_geometry);
 }
 
 XletDispatcher::~XletDispatcher()
@@ -324,9 +311,7 @@ void XletDispatcher::hideXletsDock()
 
 void XletDispatcher::showXletsDock()
 {
-    foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
-        widget->show();
-    }
+    this->m_main_window->restoreState();
 }
 
 /*! \brief show this XLet on top of others
