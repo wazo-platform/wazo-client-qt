@@ -71,12 +71,19 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
             this->setItemDelegateForColumn(column_index, new PeopleEntryAgentDelegate(this));
             break;
         case NAME:
+            {
+                PeopleEntryDotDelegate *delegate = new PeopleEntryDotDelegate(this);
+                this->setItemDelegateForColumn(column_index, delegate);
+                break;
+            }
         case NUMBER:
-            PeopleEntryDotDelegate *delegate = new PeopleEntryDotDelegate(this);
-            this->setItemDelegateForColumn(column_index, delegate);
-            connect(delegate, SIGNAL(clicked(QAbstractItemModel *, const QModelIndex &)),
-                    this, SLOT(extensionClick(QAbstractItemModel *, const QModelIndex &)));
-            break;
+            {
+                PeopleEntryNumberDelegate *delegate = new PeopleEntryNumberDelegate(this);
+                this->setItemDelegateForColumn(column_index, delegate);
+                connect(delegate, SIGNAL(clicked(QAbstractItemModel *, const QModelIndex &)),
+                        this, SLOT(extensionClick(QAbstractItemModel *, const QModelIndex &)));
+                break;
+            }
         }
     }
 }
