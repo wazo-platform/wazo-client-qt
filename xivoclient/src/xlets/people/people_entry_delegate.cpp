@@ -118,7 +118,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
             painter->fillPath(path, QColor("#58524F"));
         }
 
-        QString text = tr("APPELER");
+        QString text = tr("CALL");
         QRect text_rect(button_rect);
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
