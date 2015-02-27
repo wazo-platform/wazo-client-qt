@@ -241,6 +241,7 @@ void XletDispatcher::cleanXletsTab()
     }
     this->m_tab_container->deleteLater();
     this->m_xlets_tab_widget.clear();
+    this->m_has_tabber = false;
 }
 
 void XletDispatcher::prepareXletsDock()
