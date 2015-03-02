@@ -80,7 +80,8 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
         widget->hide();
     }
 
-    m_normal_geometry = m_main_window->saveGeometry();
+    m_normal_geometry = m_main_window->geometry();
+
     if (m_main_window->isMaximized()) {
         m_main_window->showNormal();
     }
@@ -106,11 +107,15 @@ void XletDispatcher::showOtherXlets(const QString &xlet_name)
 
     this->showXletsDock();
 
-
     m_main_widget->setFixedHeight(QWIDGETSIZE_MAX);
     m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
 
-    m_main_window->restoreGeometry(m_normal_geometry);
+    QRect transformed_rect = this->m_normal_geometry;
+    transformed_rect.setX(m_main_window->geometry().x());
+    transformed_rect.setY(m_main_window->geometry().y());
+    transformed_rect.setWidth(m_main_window->geometry().width());
+
+    m_main_window->setGeometry(transformed_rect);
 }
 
 XletDispatcher::~XletDispatcher()
