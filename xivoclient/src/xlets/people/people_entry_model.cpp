@@ -237,6 +237,10 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
 
 QVariant PeopleEntryModel::dataUser(const PeopleEntry & entry, int column) const
 {
+    if (column < 0 || column >= m_fields.size()) {
+        return QVariant();
+    }
+
     ColumnType column_type = m_fields[column].second;
     QPair<QString, int> agent_key = entry.uniqueAgentId();
 

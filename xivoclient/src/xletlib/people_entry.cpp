@@ -55,7 +55,7 @@ PeopleEntry::~PeopleEntry()
 
 const QVariant PeopleEntry::data(int column) const
 {
-    return this->m_data[column];
+    return this->m_data.value(column);
 }
 
 PeopleEntry & PeopleEntry::operator=(const PeopleEntry &other)
