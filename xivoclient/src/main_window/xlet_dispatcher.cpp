@@ -60,7 +60,7 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
     this->connect(this->m_fold_signal_mapper, SIGNAL(mapped(const QString &)),
                   this, SLOT(showOneXlet(const QString &)));
     this->connect(this->m_unfold_signal_mapper, SIGNAL(mapped(const QString &)),
-                  this, SLOT(showOtherXlets(const QString &)));
+                  this, SLOT(showAllXlets()));
 }
 
 void XletDispatcher::showOneXlet(const QString &xlet_name)
@@ -92,10 +92,8 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
                                   );
 }
 
-void XletDispatcher::showOtherXlets(const QString &xlet_name)
+void XletDispatcher::showAllXlets()
 {
-    XLet *identity = m_xlets[xlet_name];
-
     foreach (QWidget *widget, this->m_xlets_grid_widget.values()) {
         widget->show();
     }

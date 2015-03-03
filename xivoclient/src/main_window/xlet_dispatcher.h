@@ -63,7 +63,7 @@ class XletDispatcher : public QObject
         void setStatusLogged();
         void showWidgetOnTop(QWidget *);
         void showOneXlet(const QString &xlet_name);
-        void showOtherXlets(const QString &xlet_name);
+        void showAllXlets();
 
     private:
         typedef QPair<QString, QString> XletAndOption;
