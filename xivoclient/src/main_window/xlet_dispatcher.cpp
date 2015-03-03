@@ -105,7 +105,6 @@ void XletDispatcher::showAllXlets()
 
     this->showXletsDock();
 
-    m_main_widget->setFixedHeight(QWIDGETSIZE_MAX);
     m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
 
     QRect transformed_rect = this->m_normal_geometry;
