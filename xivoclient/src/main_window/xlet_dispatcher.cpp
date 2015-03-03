@@ -129,6 +129,7 @@ void XletDispatcher::setStatusLogged()
 
 void XletDispatcher::setStatusNotLogged()
 {
+    this->showAllXlets();
     this->m_main_window->saveState();
 
     this->cleanXletsGrid();
