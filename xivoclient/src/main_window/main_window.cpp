@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -305,19 +305,10 @@ void MainWindow::showCredits()
 {
     QMessageBox::about(this,
                        tr("Credits"),
-                       "<h3>JsonQt</h3>"
-                       "<p>Copyright (c) 2008, Frederick Emmott <mail@fredemmott.co.uk></p>"
-                       "<p></p>"
-                       "<p>Permission to use, copy, modify, and/or distribute this software for any "
-                       "purpose with or without fee is hereby granted, provided that the above "
-                       "copyright notice and this permission notice appear in all copies.</p>"
-                       "<p></p>"
-                       "<p>THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES "
-                       "WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF "
-                       "MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR "
-                       "ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES "
-                       "WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN "
-                       "ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF "
-                       "OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>"
+                       "<h3>Dyno Sans Font</h3>"
+                       "<span xmlns:dct=\"http://purl.org/dc/terms/\" href=\"http://purl.org/dc/dcmitype/StillImage\" property=\"dct:title\" rel=\"dct:type\">Dyno Sans Font</span>"
+                       " by <a xmlns:cc=\"http://creativecommons.org/ns#\" href=\"http://grandchaos9000.deviantart.com\" property=\"cc:attributionName\" rel=\"cc:attributionURL\">Grandos Plex</a>"
+                       " is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/4.0/\">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br />"
+                       "Based on a work at <a xmlns:dct=\"http://purl.org/dc/terms/\" href=\"http://www.dafont.com/dyno-sans.font\" rel=\"dct:source\">http://www.dafont.com/dyno-sans.font</a>."
                        );
 }
