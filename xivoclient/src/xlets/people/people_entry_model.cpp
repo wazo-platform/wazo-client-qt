@@ -74,6 +74,18 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
     this->endInsertColumns();
 }
 
+void PeopleEntryModel::clearFields()
+{
+    if (m_fields.isEmpty()) {
+        return;
+    }
+
+    int last_column = m_fields.size() - 1;
+    m_fields.clear();
+    this->beginRemoveColumns(QModelIndex(), 0, last_column);
+    this->endRemoveColumns();
+}
+
 void PeopleEntryModel::addPeopleEntry(int entry_index) {
     int inserted_row = entry_index;
     beginInsertRows(QModelIndex(), inserted_row, inserted_row);
@@ -270,6 +282,8 @@ void PeopleEntryModel::parseCommand(const QVariantMap &command)
     const QVariantList &headers = command["column_headers"].toList();
     const QVariantList &types = command["column_types"].toList();
     assert(headers.length() == types.length());
+
+    this->clearFields();
 
     for (int i = 0; i < headers.length() ; i++) {
         const QString &name = headers[i].toString();
