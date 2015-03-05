@@ -28,6 +28,7 @@
  */
 
 #include <QDebug>
+#include <QHeaderView>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
 
@@ -40,6 +41,16 @@ DirectoryEntryView::DirectoryEntryView(QWidget *parent)
     this->setSortingEnabled(false);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
+}
+
+void DirectoryEntryView::columnsInserted(const QModelIndex & /*parent*/, int first, int last)
+{
+    for (int i = first; i <= last; ++i) {
+        ColumnType type = static_cast<ColumnType>(model()->headerData(i, Qt::Horizontal, Qt::UserRole).toInt());
+        if (type == STATUS_ICON) {
+            this->horizontalHeader()->setSectionResizeMode(type, QHeaderView::ResizeToContents);
+        }
+    }
 }
 
 void DirectoryEntryView::selectFirstRow()

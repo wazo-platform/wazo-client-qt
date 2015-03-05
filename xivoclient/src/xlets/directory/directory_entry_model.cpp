@@ -64,7 +64,10 @@ void DirectoryEntryModel::addField(const QString &name, const QString &type)
     } else {
         t = OTHER;
     }
+    unsigned int column_index = m_fields.size();
+    beginInsertColumns(QModelIndex(), column_index, column_index);
     m_fields.append(QPair<QString, enum ColumnType>(name, t));
+    endInsertColumns();
 }
 
 void DirectoryEntryModel::addDirectoryEntry(int entry_index) {
@@ -152,6 +155,8 @@ QVariant DirectoryEntryModel::headerData(int column,
     switch(role) {
     case  Qt::DisplayRole:
         return this->headerText(column);
+    case Qt::UserRole:
+        return this->headerType(column);
     default:
         return QVariant();
     }

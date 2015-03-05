@@ -42,6 +42,9 @@ class DirectoryEntryView : public AbstractTableView
         DirectoryEntryView(QWidget *parent = NULL);
         void selectFirstRow();
         void keyPressEvent(QKeyEvent * event);
+
+    protected slots:
+        void columnsInserted(const QModelIndex & parent, int first, int last);
 };
 
 #endif /* __DIRECTORY_ENTRY_VIEW_H__ */
