@@ -55,8 +55,8 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 }
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
-    : XLet(parent),
-      m_fold_button(new QPushButton(this))
+  : XLet(parent, tr("Identity")),
+    m_fold_button(new QPushButton(this))
 {
     setAccessibleName( tr("Current User Panel") );
     setObjectName("identityXlet");
