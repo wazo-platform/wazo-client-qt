@@ -51,6 +51,8 @@ class MainWindow : public QMainWindow
         ~MainWindow();
         void initialize();
         virtual QByteArray saveState();
+        void saveDefaultState();
+        virtual void restoreState();
 
         Ui::MainWindow *ui;
 
@@ -83,8 +85,6 @@ class MainWindow : public QMainWindow
 
     private:
         void setTitle(const QString &);
-        void saveDefaultState();
-        virtual void restoreState();
 
         ConfigWidget *m_config_widget;
         QClipboard * m_clipboard;

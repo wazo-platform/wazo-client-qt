@@ -35,6 +35,7 @@
 #include <QMap>
 #include <QDockWidget>
 #include <QHash>
+#include <QSignalMapper>
 
 #include "tabber_style.h"
 #include <xletlib/functests.h>
@@ -61,6 +62,8 @@ class XletDispatcher : public QObject
         void setStatusNotLogged();
         void setStatusLogged();
         void showWidgetOnTop(QWidget *);
+        void showOneXlet(const QString &xlet_name);
+        void showAllXlets();
 
     private:
         typedef QPair<QString, QString> XletAndOption;
@@ -95,6 +98,11 @@ class XletDispatcher : public QObject
 
         bool m_has_tabber;
         TabberStyle m_tabber_style;
+
+        QSignalMapper *m_fold_signal_mapper;
+        QSignalMapper *m_unfold_signal_mapper;
+
+        QRect m_normal_geometry;
 };
 
 #endif

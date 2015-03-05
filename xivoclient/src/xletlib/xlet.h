@@ -69,6 +69,8 @@ class XLETLIB_EXPORT XLet : public QWidget
         virtual void doGUIConnects(QWidget *) {};
     signals:
         void ipbxCommand(const QVariantMap &);
+        void showOnlyMeRequested();
+        void showOthersRequested();
     public slots:
         void localUserInfoDefined();
         void monitoredUserInfoDefined();

@@ -27,11 +27,11 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include <QMap>
 
 #include <baseengine.h>
 #include <xletfactory.h>
+#include <QPushButton>
 
 #include "xlet_dispatcher.h"
 #include "main_window.h"
@@ -51,10 +51,68 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_xlets_tab_widget(),
       m_xlets_tab(),
       m_has_tabber(false),
-      m_tabber_style()
+      m_tabber_style(),
+      m_fold_signal_mapper(new QSignalMapper(this)),
+      m_unfold_signal_mapper(new QSignalMapper(this))
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
+    this->connect(this->m_fold_signal_mapper, SIGNAL(mapped(const QString &)),
+                  this, SLOT(showOneXlet(const QString &)));
+    this->connect(this->m_unfold_signal_mapper, SIGNAL(mapped(const QString &)),
+                  this, SLOT(showAllXlets()));
+}
+
+void XletDispatcher::showOneXlet(const QString &xlet_name)
+{
+    XLet *identity = m_xlets[xlet_name];
+    QMap<QString, XLet *> xlets_to_hide = this->m_xlets_grid_widget;
+    xlets_to_hide.remove(xlet_name);
+
+    this->hideXletsDock();
+
+    if(m_has_tabber) {
+        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
+        m_tab_container->hide();
+    }
+
+    foreach (QWidget *widget, xlets_to_hide.values()) {
+        widget->hide();
+    }
+
+    m_normal_geometry = m_main_window->geometry();
+
+    if (m_main_window->isMaximized()) {
+        m_main_window->showNormal();
+    }
+
+    m_main_window->setFixedHeight(identity->height() \
+                                  + m_main_window->statusBar()->height() \
+                                  + m_main_window->menuBar()->height() \
+                                  );
+}
+
+void XletDispatcher::showAllXlets()
+{
+    foreach (QWidget *widget, this->m_xlets_grid_widget.values()) {
+        widget->show();
+    }
+
+    if(m_has_tabber) {
+        m_tab_container->setVisible(true);
+        this->m_tab_container->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
+    }
+
+    this->showXletsDock();
+
+    m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
+
+    QRect transformed_rect = this->m_normal_geometry;
+    transformed_rect.setX(m_main_window->geometry().x());
+    transformed_rect.setY(m_main_window->geometry().y());
+    transformed_rect.setWidth(m_main_window->geometry().width());
+
+    m_main_window->setGeometry(transformed_rect);
 }
 
 XletDispatcher::~XletDispatcher()
@@ -70,6 +128,7 @@ void XletDispatcher::setStatusLogged()
 
 void XletDispatcher::setStatusNotLogged()
 {
+    this->showAllXlets();
     this->m_main_window->saveState();
 
     this->cleanXletsGrid();
@@ -101,6 +160,7 @@ void XletDispatcher::prepareXletsGrid()
     }
 
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
+    this->m_grid_container->setContentsMargins(0,0,0,0);
     if (! m_grid_container) {
         qDebug() << Q_FUNC_INFO << "Failed to instanciate the grid container";
         return;
@@ -115,6 +175,12 @@ void XletDispatcher::prepareXletsGrid()
         } else {
             XLet *xlet = this->xletFactory(name);
             if (xlet) {
+                connect(xlet, SIGNAL(showOnlyMeRequested()),
+                        m_fold_signal_mapper, SLOT(map()));
+                m_fold_signal_mapper->setMapping(xlet, name);
+                connect(xlet, SIGNAL(showOthersRequested()),
+                        m_unfold_signal_mapper, SLOT(map()));
+                m_unfold_signal_mapper->setMapping(xlet, name);
                 this->m_grid_container->insertWidget(options.toInt(), xlet);
                 this->m_xlets_grid_widget.insert(name, xlet);
             }
@@ -178,6 +244,7 @@ void XletDispatcher::cleanXletsTab()
     }
     this->m_tab_container->deleteLater();
     this->m_xlets_tab_widget.clear();
+    this->m_has_tabber = false;
 }
 
 void XletDispatcher::prepareXletsDock()
@@ -241,6 +308,7 @@ void XletDispatcher::cleanXletsDock()
 
 void XletDispatcher::hideXletsDock()
 {
+    this->m_main_window->saveState();
     foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
         widget->hide();
     }
@@ -251,6 +319,7 @@ void XletDispatcher::showXletsDock()
     foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
         widget->show();
     }
+    this->m_main_window->restoreState();
 }
 
 /*! \brief show this XLet on top of others

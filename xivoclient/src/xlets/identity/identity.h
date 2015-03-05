@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,6 +31,7 @@
 #define __IDENTITYDISPLAY_H__
 
 #include <QtGui>
+#include <QPushButton>
 
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
@@ -40,8 +41,6 @@ class IdentityAgent;
 class IdentityPhone;
 class IdentityVoiceMail;
 
-/*! \brief Identity Display
- */
 class IdentityDisplay : public XLet
 {
     Q_OBJECT
@@ -58,6 +57,7 @@ class IdentityDisplay : public XLet
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
         void updatePhoneConfig(const QString &);
+        void foldToggle(bool fold);
 
     private slots:
         void idxChanged(int);
@@ -69,7 +69,6 @@ class IdentityDisplay : public XLet
 
     private:
         void svcSummary();
-        void setupIcons();
 
         QGridLayout * m_glayout;
         QLabel *m_icon_user;
@@ -81,17 +80,17 @@ class IdentityDisplay : public XLet
         IdentityAgent * m_agent;
         QHash<QString, IdentityPhone *> m_identityphones;
         IdentityVoiceMail * m_voicemail;
-        int m_col_user;
-        int m_col_agent;
         int m_col_phone;
-        int m_col_vm;
-        int m_col_last;
         Qt::Alignment m_iconAlign;
         Qt::Alignment m_textAlignVCenter;
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
         quint32 m_loginkind;
         QVariantMap m_svcstatus;
+        QPushButton m_fold_button;
+
+        static QIcon m_hide_icon;
+        static QIcon m_show_icon;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface
