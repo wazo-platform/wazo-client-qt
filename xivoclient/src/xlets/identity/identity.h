@@ -31,6 +31,7 @@
 #define __IDENTITYDISPLAY_H__
 
 #include <QtGui>
+#include <QPushButton>
 
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
@@ -40,8 +41,6 @@ class IdentityAgent;
 class IdentityPhone;
 class IdentityVoiceMail;
 
-/*! \brief Identity Display
- */
 class IdentityDisplay : public XLet
 {
     Q_OBJECT
@@ -88,7 +87,7 @@ class IdentityDisplay : public XLet
         quint32 m_gui_buttonsize;
         quint32 m_loginkind;
         QVariantMap m_svcstatus;
-        QPushButton * m_fold_button;
+        QPushButton m_fold_button;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface

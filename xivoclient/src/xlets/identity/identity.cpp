@@ -55,8 +55,7 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 }
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
-  : XLet(parent, tr("Identity")),
-    m_fold_button(new QPushButton(this))
+  : XLet(parent, tr("Identity"))
 {
     setAccessibleName( tr("Current User Panel") );
     setObjectName("identityXlet");
@@ -89,10 +88,10 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(idxChanged(int)));
 
     int last_column = 0;
-    m_fold_button->setFlat(true);
-    m_fold_button->setIcon(QIcon(":/images/hide.svg"));
-    m_fold_button->setCheckable(true);
-    connect(m_fold_button, SIGNAL(toggled(bool)),
+    m_fold_button.setFlat(true);
+    m_fold_button.setIcon(QIcon(":/images/hide.svg"));
+    m_fold_button.setCheckable(true);
+    connect(&m_fold_button, SIGNAL(toggled(bool)),
             this, SLOT(foldToggle(bool)));
 
     m_icon_user = new QLabel(this);
@@ -108,7 +107,7 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_voicemail = new IdentityVoiceMail(this);
     m_voicemail->hide();
 
-    m_glayout->addWidget(m_fold_button, 0, last_column, 3, 1);
+    m_glayout->addWidget(&m_fold_button, 0, last_column, 3, 1);
     last_column ++;
     m_iconAlign = Qt::AlignHCenter | Qt::AlignTop;
     m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
@@ -165,10 +164,10 @@ void IdentityDisplay::foldToggle(bool fold)
 {
     if (fold) {
         emit showOnlyMeRequested();
-        m_fold_button->setIcon(QIcon(":/images/show.svg"));
+        m_fold_button.setIcon(QIcon(":/images/show.svg"));
     } else {
         emit showOthersRequested();
-        m_fold_button->setIcon(QIcon(":/images/hide.svg"));
+        m_fold_button.setIcon(QIcon(":/images/hide.svg"));
     }
 }
 
