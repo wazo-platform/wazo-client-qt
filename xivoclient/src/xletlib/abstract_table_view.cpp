@@ -39,7 +39,7 @@ AbstractTableView::AbstractTableView(QWidget * parent)
     this->setShowGrid(0);
 
     this->horizontalHeader()->setSectionsMovable(true);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     this->verticalHeader()->hide();
 
