@@ -88,6 +88,9 @@ class IdentityDisplay : public XLet
         quint32 m_loginkind;
         QVariantMap m_svcstatus;
         QPushButton m_fold_button;
+
+        static QIcon m_hide_icon;
+        static QIcon m_show_icon;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface

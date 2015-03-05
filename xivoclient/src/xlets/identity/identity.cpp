@@ -48,6 +48,9 @@
 #include "identityphone.h"
 #include "identityvoicemail.h"
 
+QIcon IdentityDisplay::m_show_icon(":/images/show.svg");
+QIcon IdentityDisplay::m_hide_icon(":/images/hide.svg");
+
 XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/identity_%1");
@@ -164,10 +167,10 @@ void IdentityDisplay::foldToggle(bool fold)
 {
     if (fold) {
         emit showOnlyMeRequested();
-        m_fold_button.setIcon(QIcon(":/images/show.svg"));
+        m_fold_button.setIcon(m_show_icon);
     } else {
         emit showOthersRequested();
-        m_fold_button.setIcon(QIcon(":/images/hide.svg"));
+        m_fold_button.setIcon(m_hide_icon);
     }
 }
 
