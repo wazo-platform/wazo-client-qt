@@ -61,7 +61,7 @@ XletQueueMembers::XletQueueMembers(QWidget *parent)
     m_view->sortByColumn(QueueMembersModel::NUMBER, Qt::AscendingOrder);
 
     this->addHeader(xletLayout);
-    this->addCenteredBody(xletLayout);
+    xletLayout->addWidget(m_view);
 }
 
 void XletQueueMembers::addHeader(QVBoxLayout * layout)
@@ -71,13 +71,3 @@ void XletQueueMembers::addHeader(QVBoxLayout * layout)
     layout->addWidget(header);
 }
 
-void XletQueueMembers::addCenteredBody(QVBoxLayout * layout)
-{
-    QHBoxLayout * centering_layout = new QHBoxLayout();
-
-    centering_layout->insertStretch(0);
-    centering_layout->addWidget(m_view);
-    centering_layout->insertStretch(2);
-
-    layout->addLayout(centering_layout);
-}
