@@ -254,7 +254,7 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     setShowGrid(0);
     verticalHeader()->hide();
     horizontalHeader()->setSectionsMovable(true);
-    horizontalHeader()->setStretchLastSection(true);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     int ActionCol[] = { ACTION_MUTE,
                         ACTION_TALK_TO,
