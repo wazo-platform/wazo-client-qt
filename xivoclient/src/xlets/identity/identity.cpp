@@ -172,7 +172,9 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updatePresenceVisibility()));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
-            this, SLOT(updateUserStatus(const QString &)));
+            this, SLOT(setOpt()));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updatePresenceList()));
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
@@ -344,12 +346,6 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
-}
-
-void IdentityDisplay::updateUserStatus(const QString & /*xuserid*/)
-{
-    updatePresenceList();
-    setOpt();
 }
 
 void IdentityDisplay::updateAgentStatus(const QString & agent_id)

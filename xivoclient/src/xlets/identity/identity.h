@@ -59,7 +59,6 @@ class IdentityDisplay : public XLet
         void setOpt();
         void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
-        void updateUserStatus(const QString &);
         void updateAgentStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void foldToggle(bool fold);
