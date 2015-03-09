@@ -58,12 +58,20 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 }
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
-  : XLet(parent, tr("Identity"))
+    : XLet(parent, tr("Identity")),
+      m_presence_mapper(new QSignalMapper(this)),
+      m_presence_menu(new QMenu(this))
 {
     setAccessibleName( tr("Current User Panel") );
     setObjectName("identityXlet");
 
-    m_gui_buttonsize = 16;
+    this->ui.setupUi(this);
+
+    this->ui.presence_button->setMenu(m_presence_menu);
+    connect(this->ui.fold_button, SIGNAL(toggled(bool)),
+            this, SLOT(foldToggle(bool)));
+
+    /*m_gui_buttonsize = 16;
 
     QVBoxLayout* vboxLayout = new QVBoxLayout(this);
     QFrame* m_identitybck = new QFrame(this);
@@ -79,16 +87,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     m_phonenum = new QLabel(this);
     m_phonenum->setObjectName("phonenum");
-    m_presencevalue = new QComboBox(this);
-    m_presencevalue->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    m_presencevalue->setProperty("function", "presence");
-    m_presencevalue->setContentsMargins(0, 0, 10, 0);
-
-    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
-    m_presencevalue->setVisible(presenceEnabled);
-
-    connect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(idxChanged(int)));
 
     int last_column = 0;
     m_fold_button.setFlat(true);
@@ -123,8 +121,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     idline ++;
     m_glayout->addWidget(m_phonenum, idline, last_column, m_textAlignVCenter);
     idline ++;
-    m_glayout->addWidget(m_presencevalue, idline, last_column, m_textAlignVCenter);
-    last_column ++;
 
     m_glayout->addWidget(m_agent, 0, last_column, 3, 1);
     last_column ++;
@@ -144,8 +140,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
-            this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
@@ -155,22 +149,25 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
             m_voicemail, SLOT(updateVoiceMailConfig(const QString &)));
     connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
-            m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));
-    connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresence()));
+            m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));*/
 
-    // Enable/disable presence combobox if presence function has changed in config
     connect(b_engine, SIGNAL(settingsChanged()),
-            this, SLOT(updatePresence()));
+            this, SLOT(updatePresenceVisibility()));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
+    connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(setPresence(const QString &)));
 }
 
 void IdentityDisplay::foldToggle(bool fold)
 {
     if (fold) {
         emit showOnlyMeRequested();
-        m_fold_button.setIcon(m_show_icon);
+        this->ui.fold_button->setIcon(m_show_icon);
     } else {
         emit showOthersRequested();
-        m_fold_button.setIcon(m_hide_icon);
+        this->ui.fold_button->setIcon(m_hide_icon);
     }
 }
 
@@ -191,55 +188,42 @@ void IdentityDisplay::setGuiOptions()
     m_loginkind = b_engine->getConfig("loginkind").toUInt();
 }
 
-/*!
- * Get the new possible presence states list from CTI server
- */
-void IdentityDisplay::updatePresence()
+void IdentityDisplay::updatePresenceList()
 {
-    if (! m_ui) return;
-    QString presence = m_ui->availstate();
+    this->ui.presence_button->menu()->clear();
 
+    if (! m_ui) {
+        return;
+    }
+    QString presence = m_ui->availstate();
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
 
-    m_presencevalue->hide();
-
-    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
-    if (! presenceEnabled)
+    if (! presencemap.contains(presence)) {
         return;
-
-    disconnect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
-               this, SLOT(idxChanged(int)));
-
-    m_presencevalue->clear();
-
-    if (presencemap.contains(presence)) {
-        QVariantMap details = presencemap.value(presence).toMap();
-        QStringList allowedlist = details.value("allowed").toStringList();
-        allowedlist.removeAll(""); /* in case there's no allowed state, we get
-        a non empty list with one empty string ("") */
-        /* A state should not have to be authorised to change to itself, so we
-         * add it by default */
-        if (! allowedlist.contains(presence))
-            allowedlist << presence;
-        int idx = 0;
-        foreach (QString presencestate, allowedlist) {
-            QVariantMap pdetails = presencemap.value(presencestate).toMap();
-            QString longname = pdetails.value("longname").toString();
-            m_presencevalue->addItem(longname, presencestate);
-            if (presence == presencestate)
-                m_presencevalue->setCurrentIndex(idx);
-            idx ++;
-        }
     }
 
-    connect(m_presencevalue, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(idxChanged(int)));
-    m_presencevalue->show();
+    QStringList allowed_presences = presencemap.value(presence).toMap().value("allowed").toStringList();
+    // in case there's no allowed state, we get a non empty list with one empty string ("")
+    allowed_presences.removeAll("");
+    // A state should not have to be authorised to change to itself, so we add it by default
+    if (! allowed_presences.contains(presence)) {
+        allowed_presences << presence;
+    }
+    foreach (QString presence_name, allowed_presences) {
+        QString presence_display_name = presencemap.value(presence_name).toMap().value("longname").toString();
+
+        QAction *action = this->ui.presence_button->menu()->addAction(presence_display_name);
+        m_presence_mapper->setMapping(action, presence_name);
+        connect(action, SIGNAL(triggered()),
+                m_presence_mapper, SLOT(map()));
+    }
 }
 
-// XXX disable agent update on identityagent when loginkind = 0 ? what if logged in nevertheless ?
-// XXX show() agent
-
+void IdentityDisplay::updatePresenceVisibility()
+{
+    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
+    this->ui.presence_button->setVisible(presenceEnabled);
+}
 
 /*! \brief updates the boolean services
  */
@@ -340,26 +324,22 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     m_agent->setAgentId(m_ui->xagentid());
 }
 
-/*!
- * Update the availability dropdown list when our status is updated
- * \param xuserid The updated user's XiVO id
- */
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
-    if (m_ui && m_ui->xid() == xuserid) {
-        updatePresence();
-        setOpt();
+    if (! m_ui) {
+        return;
     }
+    if (m_ui->xid() != xuserid) {
+        return;
+    }
+
+    updatePresenceList();
+    setOpt();
 }
 
-void IdentityDisplay::idxChanged(int newidx)
+void IdentityDisplay::setPresence(const QString &new_presence)
 {
-    QString function = sender()->property("function").toString();
-    qDebug() << Q_FUNC_INFO << m_presencevalue->itemData(newidx) << sender() << function;
-    if (function == "presence") {
-        QString newavstate = m_presencevalue->itemData(newidx).toString();
-        b_engine->setAvailState(newavstate, false);
-    }
+    b_engine->setAvailState(new_presence, false);
 }
 
 void IdentityDisplay::doGUIConnects(QWidget * mainwindow)

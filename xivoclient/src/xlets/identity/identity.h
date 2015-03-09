@@ -36,6 +36,8 @@
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 
+#include <ui_identity.h>
+
 class UserInfo;
 class IdentityAgent;
 class IdentityPhone;
@@ -51,7 +53,8 @@ class IdentityDisplay : public XLet
 
     public slots:
         void setGuiOptions();
-        void updatePresence();
+        void updatePresenceList();
+        void updatePresenceVisibility();
         void setOpt();
         void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
@@ -60,7 +63,7 @@ class IdentityDisplay : public XLet
         void foldToggle(bool fold);
 
     private slots:
-        void idxChanged(int);
+        void setPresence(const QString &new_presence);
 
     signals:
         void setAvailState(const QString &, bool);
@@ -91,6 +94,10 @@ class IdentityDisplay : public XLet
 
         static QIcon m_hide_icon;
         static QIcon m_show_icon;
+
+        Ui::IdentityWidget ui;
+        QSignalMapper *m_presence_mapper;
+        QMenu *m_presence_menu;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface
