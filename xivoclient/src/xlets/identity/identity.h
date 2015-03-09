@@ -77,6 +77,7 @@ class IdentityDisplay : public XLet
 
     private:
         void svcSummary();
+        void updateNameTooltip();
 
         QGridLayout * m_glayout;
         QLabel *m_icon_user;

@@ -160,13 +160,15 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
-    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
-            this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
             m_voicemail, SLOT(updateVoiceMailConfig(const QString &)));
     connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
             m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));*/
 
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateUserConfig(const QString &)));
+    connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
+            this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(settingsChanged()),
@@ -303,49 +305,35 @@ void IdentityDisplay::updatePhoneConfig(const QString & xphoneid)
     QString iduserfeatures = phoneinfo->iduserfeatures();
     if (iduserfeatures != m_ui->id())
         return;
-    m_phonenum->setText(b_engine->phonenumbers(m_ui).join(", "));
+    this->updateNameTooltip();
 }
 
-/*! \brief update user config
- */
 void IdentityDisplay::updateUserConfig(const QString & xuserid)
 {
     if (xuserid != m_xuserid)
         return;
     if (m_ui == NULL)
         return;
-    m_user->setText(QString("%1").arg(m_ui->fullname()));
-    m_user->setToolTip(tr("IPBXid: %1").arg(m_ui->ipbxid()));
-    // to add some day in the tooltip : entity name
+    this->ui.name->setText(m_ui->fullname());
+    this->updateNameTooltip();
 
-    foreach (QString xphoneid, m_ui->phonelist()) {
-        const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
-        if (phoneinfo == NULL)
-            continue;
-        if (! m_identityphones.contains(xphoneid)) {
-            m_identityphones[xphoneid] = new IdentityPhone(this);
-            connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
-                    m_identityphones[xphoneid], SLOT(updatePhoneConfig(const QString &)));
-            connect(b_engine, SIGNAL(updatePhoneStatus(const QString &)),
-                    m_identityphones[xphoneid], SLOT(updatePhoneStatus(const QString &)));
-            m_glayout->addWidget(m_identityphones[xphoneid], 0, m_col_phone ++, 3, 1);
-        }
-        m_identityphones[xphoneid]->setPhoneId(xphoneid);
-    }
-    m_phonenum->setText(b_engine->phonenumbers(m_ui).join(", "));
-    m_phonenum->setToolTip(tr("IPBXid: %1")
-                           .arg(m_ui->ipbxid()));
-
-    if (m_ui->voicemailid().isEmpty())
+    /*if (m_ui->voicemailid().isEmpty())
         m_voicemail->hide();
     else {
         m_voicemail->show();
         m_voicemail->svcSummary(m_svcstatus, m_ui);
         m_voicemail->setVoiceMailId(m_ui->xvoicemailid());
-    }
+        }*/
 
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
+}
+
+void IdentityDisplay::updateNameTooltip()
+{
+    QString phone_numbers = b_engine->phonenumbers(m_ui).join(", ");
+    QString tooltip = QString("%1\n%2").arg(m_ui->fullname()).arg(phone_numbers);
+    this->ui.name->setToolTip(tooltip);
 }
 
 void IdentityDisplay::updateAgentStatus(const QString & agent_id)
