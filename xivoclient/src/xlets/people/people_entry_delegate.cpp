@@ -166,30 +166,20 @@ void PeopleEntryAgentDelegate::paint(QPainter *painter,
                                      const QModelIndex &index) const
 {
     QString image_path;
-    QColor color;
 
     QString agent_status = index.data(Qt::UserRole).toString();
     if (agent_status == "logged_in") {
         image_path = ":/images/agent-on.svg";
-        color = QColor("#9BC920");
     } else if (agent_status == "logged_out") {
         image_path = ":/images/agent-off.svg";
-        color = QColor("#D13224");
     } else {
         return;
     }
 
-    QIcon image = QIcon(image_path);
-    QPixmap tinted_image = image.pixmap(icon_size);
-
-    QPainter tint_painter(&tinted_image);
-    tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-    tint_painter.fillRect(tinted_image.rect(), color);
-    tint_painter.end();
-
+    QPixmap image = QIcon(image_path).pixmap(icon_size);
     painter->save();
-    painter->drawPixmap(option.rect.center().x() - tinted_image.width() / 2,
-                        option.rect.center().y() - tinted_image.height() / 2,
-                        tinted_image);
+    painter->drawPixmap(option.rect.center().x() - image.width() / 2,
+                        option.rect.center().y() - image.height() / 2,
+                        image);
     painter->restore();
 }

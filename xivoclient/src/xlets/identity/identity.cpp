@@ -37,6 +37,7 @@
 #include <QSizePolicy>
 
 #include <baseengine.h>
+#include <message_factory.h>
 #include <storage/userinfo.h>
 #include <storage/phoneinfo.h>
 #include <storage/agentinfo.h>
@@ -44,12 +45,16 @@
 #include <storage/queueinfo.h>
 
 #include "identity.h"
-#include "identityagent.h"
 #include "identityphone.h"
 #include "identityvoicemail.h"
 
 QIcon IdentityDisplay::m_show_icon(":/images/show.svg");
 QIcon IdentityDisplay::m_hide_icon(":/images/hide.svg");
+
+const QString icon_user_unlogged = "xivo-black";
+const QString icon_user_logged = "xivo-transp";
+const QString icon_agent_logged = "xivo-green";
+const QString icon_agent_paused = "xivo-red";
 
 XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 {
@@ -59,6 +64,7 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
     : XLet(parent, tr("Identity")),
+      m_agent_menu(new QMenu(this)),
       m_presence_mapper(new QSignalMapper(this)),
       m_presence_menu(new QMenu(this))
 {
@@ -70,6 +76,28 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     this->ui.presence_button->setMenu(m_presence_menu);
     connect(this->ui.fold_button, SIGNAL(toggled(bool)),
             this, SLOT(foldToggle(bool)));
+
+    bool may_log_agent = b_engine->getConfig("xlet.identity.logagent").toBool();
+    bool may_pause_agent = b_engine->getConfig("xlet.identity.pauseagent").toBool();
+
+    this->ui.agent_button->setMenu(m_agent_menu);
+    QAction *action = NULL;
+    if (may_log_agent) {
+        action = this->m_agent_menu->addAction(tr("Login"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(login()));
+        action = this->m_agent_menu->addAction(tr("Logout"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(logout()));
+    }
+    if (may_pause_agent) {
+        action = this->m_agent_menu->addAction(tr("Pause"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(pause()));
+        action = this->m_agent_menu->addAction(tr("Unpause"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(unpause()));
+    }
 
     /*m_gui_buttonsize = 16;
 
@@ -99,12 +127,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_icon_user->setPixmap(QPixmap(":/images/identity/identity-user.png"));
     m_icon_user->setContentsMargins(0, 0, 5, 0);
 
-    m_agent = new IdentityAgent(this);
-    connect(m_agent, SIGNAL(setAppIcon(const QString &)),
-            this, SIGNAL(setAppIcon(const QString &)));
-    m_agent->setContentsMargins(5, 0, 5, 0);
-    m_agent->hide();
-
     m_voicemail = new IdentityVoiceMail(this);
     m_voicemail->hide();
 
@@ -122,8 +144,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_glayout->addWidget(m_phonenum, idline, last_column, m_textAlignVCenter);
     idline ++;
 
-    m_glayout->addWidget(m_agent, 0, last_column, 3, 1);
-    last_column ++;
 
     m_glayout->addWidget(m_voicemail, 0, last_column, 3, 1);
     last_column ++;
@@ -142,15 +162,13 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateAgentConfig(const QString &)),
-            m_agent, SLOT(updateAgentConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
-            m_agent, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
             m_voicemail, SLOT(updateVoiceMailConfig(const QString &)));
     connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
             m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));*/
 
+    connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
+            this, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updatePresenceVisibility()));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
@@ -158,6 +176,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
+    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
+            this, SLOT(updateAgentVisibility()));
 }
 
 void IdentityDisplay::foldToggle(bool fold)
@@ -180,12 +200,7 @@ void IdentityDisplay::setGuiOptions()
     if (b_engine->getConfig().contains("xlet.identity.iconsize"))
         m_gui_buttonsize = b_engine->getConfig("xlet.identity.iconsize").toInt();
 
-    m_agent->setAllowedActions(b_engine->getConfig("xlet.identity.logagent").toBool(),
-                               b_engine->getConfig("xlet.identity.pauseagent").toBool());
-
     setFont(m_gui_font);
-
-    m_loginkind = b_engine->getConfig("loginkind").toUInt();
 }
 
 void IdentityDisplay::updatePresenceList()
@@ -223,6 +238,17 @@ void IdentityDisplay::updatePresenceVisibility()
 {
     bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
     this->ui.presence_button->setVisible(presenceEnabled);
+}
+
+void IdentityDisplay::updateAgentVisibility()
+{
+    bool client_logged_with_agent = (b_engine->getConfig("guioptions.loginkind").toUInt() != 0);
+    bool user_has_agent = (! m_ui->agentid().isEmpty());
+    if (client_logged_with_agent and user_has_agent) {
+        this->ui.agent_button->show();
+    } else {
+        this->ui.agent_button->hide();
+    }
 }
 
 /*! \brief updates the boolean services
@@ -318,23 +344,41 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
-
-    if (! m_ui->xagentid().isEmpty() && b_engine->getConfig("guioptions.loginkind").toUInt() != 0)
-        m_agent->show();
-    m_agent->setAgentId(m_ui->xagentid());
 }
 
-void IdentityDisplay::updateUserStatus(const QString & xuserid)
+void IdentityDisplay::updateUserStatus(const QString & /*xuserid*/)
+{
+    updatePresenceList();
+    setOpt();
+}
+
+void IdentityDisplay::updateAgentStatus(const QString & agent_id)
 {
     if (! m_ui) {
         return;
     }
-    if (m_ui->xid() != xuserid) {
+    if(agent_id != m_ui->xagentid()) {
         return;
     }
+    const AgentInfo * agentinfo = b_engine->agent(agent_id);
+    if (agentinfo == NULL)
+        return;
 
-    updatePresenceList();
-    setOpt();
+    if (agentinfo->logged()) {
+            emit setAppIcon(icon_agent_logged);
+    } else {
+            emit setAppIcon(icon_user_logged);
+    }
+
+    QString image_path;
+
+    if (agentinfo->logged()) {
+        image_path = ":/images/agent-on.svg";
+    } else {
+        image_path = ":/images/agent-off.svg";
+    }
+
+    this->ui.agent_button->setIcon(QIcon(image_path));
 }
 
 void IdentityDisplay::setPresence(const QString &new_presence)
@@ -346,4 +390,47 @@ void IdentityDisplay::doGUIConnects(QWidget * mainwindow)
 {
     connect( this, SIGNAL(setAppIcon(const QString &)),
              mainwindow, SLOT(setAppIcon(const QString &)) );
+}
+
+void IdentityDisplay::login()
+{
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "agentlogin";
+    ipbxcommand["agentphonenumber"] = b_engine->getConfig("agentphonenumber");
+    b_engine->ipbxCommand(ipbxcommand);
+}
+
+void IdentityDisplay::logout()
+{
+    QVariantMap ipbxcommand;
+    ipbxcommand["command"] = "agentlogout";
+    b_engine->ipbxCommand(ipbxcommand);
+}
+
+void IdentityDisplay::pause()
+{
+    if (! m_ui) {
+        return;
+    }
+    const QString &agent_id = m_ui->xagentid();
+    const AgentInfo *agent = b_engine->agent(agent_id);
+    if (! agent) {
+        return;
+    }
+    QVariantMap message = MessageFactory::pauseAgentInAllQueues(agent_id, agent->ipbxid());
+    b_engine->sendJsonCommand(message);
+}
+
+void IdentityDisplay::unpause()
+{
+    if (! m_ui) {
+        return;
+    }
+    const QString &agent_id = m_ui->xagentid();
+    const AgentInfo *agent = b_engine->agent(m_ui->xagentid());
+    if (! agent) {
+        return;
+    }
+    QVariantMap message = MessageFactory::unpauseAgentInAllQueues(agent_id, agent->ipbxid());
+    b_engine->sendJsonCommand(message);
 }

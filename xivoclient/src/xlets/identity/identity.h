@@ -55,15 +55,21 @@ class IdentityDisplay : public XLet
         void setGuiOptions();
         void updatePresenceList();
         void updatePresenceVisibility();
+        void updateAgentVisibility();
         void setOpt();
         void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
         void updateUserStatus(const QString &);
+        void updateAgentStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void foldToggle(bool fold);
 
     private slots:
         void setPresence(const QString &new_presence);
+        void login();
+        void logout();
+        void pause();
+        void unpause();
 
     signals:
         void setAvailState(const QString &, bool);
@@ -80,7 +86,6 @@ class IdentityDisplay : public XLet
         QLabel *m_user;
         QLabel *m_phonenum;
         QComboBox * m_presencevalue;
-        IdentityAgent * m_agent;
         QHash<QString, IdentityPhone *> m_identityphones;
         IdentityVoiceMail * m_voicemail;
         int m_col_phone;
@@ -88,7 +93,6 @@ class IdentityDisplay : public XLet
         Qt::Alignment m_textAlignVCenter;
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
-        quint32 m_loginkind;
         QVariantMap m_svcstatus;
         QPushButton m_fold_button;
 
@@ -96,8 +100,11 @@ class IdentityDisplay : public XLet
         static QIcon m_show_icon;
 
         Ui::IdentityWidget ui;
+        QMenu *m_agent_menu;
         QSignalMapper *m_presence_mapper;
         QMenu *m_presence_menu;
+
+        bool m_logged_with_agent;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface
