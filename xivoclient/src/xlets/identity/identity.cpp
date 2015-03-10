@@ -113,9 +113,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     m_user->setObjectName("fullname");
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-    m_phonenum = new QLabel(this);
-    m_phonenum->setObjectName("phonenum");
-
     int last_column = 0;
     m_fold_button.setFlat(true);
     m_fold_button.setIcon(QIcon(":/images/hide.svg"));
@@ -141,14 +138,10 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     int idline = 0;
     m_glayout->addWidget(m_user, idline, last_column, m_textAlignVCenter);
     idline ++;
-    m_glayout->addWidget(m_phonenum, idline, last_column, m_textAlignVCenter);
-    idline ++;
 
 
     m_glayout->addWidget(m_voicemail, 0, last_column, 3, 1);
     last_column ++;
-
-    m_col_phone = last_column;
 
     m_glayout->setColumnStretch(0, 0);
     m_glayout->setColumnStretch(1, 0);
@@ -171,12 +164,10 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
             this, SLOT(updatePhoneConfig(const QString &)));
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updateUserStatus(const QString &)));
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updatePresenceVisibility()));
-    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
-            this, SLOT(setOpt()));
-    connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
-            this, SLOT(updatePresenceList()));
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
@@ -255,9 +246,7 @@ void IdentityDisplay::updateAgentVisibility()
     }
 }
 
-/*! \brief updates the boolean services
- */
-void IdentityDisplay::setOpt()
+void IdentityDisplay::updateOptions()
 {
     if (! m_ui) {
         return;
@@ -279,26 +268,6 @@ void IdentityDisplay::setOpt()
     } else {
         this->ui.options->setText("");
         this->ui.options->setToolTip("");
-    }
-}
-
-/*! \brief updates the boolean+value services
- */
-void IdentityDisplay::setForward(const QString & capa, const QVariant & value)
-{
-    if ((capa == "unc") || (capa == "busy") || (capa == "rna")) {
-        m_svcstatus[capa + "-enabled"] = value.toMap().value("enabled");
-        m_svcstatus[capa + "-number"] = value.toMap().value("number");
-    }
-    svcSummary();
-}
-
-/*! \brief updates the display of Services data
- */
-void IdentityDisplay::svcSummary()
-{
-    foreach (const QString & key, m_identityphones.keys()) {
-        m_identityphones[key]->svcSummary(m_svcstatus);
     }
 }
 
@@ -336,6 +305,15 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
 
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
+}
+
+void IdentityDisplay::updateUserStatus(const QString & xuserid)
+{
+    if (xuserid != m_xuserid) {
+        return;
+    }
+    this->updateOptions();
+    this->updatePresenceList();
 }
 
 void IdentityDisplay::updateNameTooltip()

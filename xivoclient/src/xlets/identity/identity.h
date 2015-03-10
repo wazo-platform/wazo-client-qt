@@ -56,9 +56,8 @@ class IdentityDisplay : public XLet
         void updatePresenceList();
         void updatePresenceVisibility();
         void updateAgentVisibility();
-        void setOpt();
-        void setForward(const QString &, const QVariant &);
         void updateUserConfig(const QString &);
+        void updateUserStatus(const QString &);
         void updateAgentStatus(const QString &);
         void updatePhoneConfig(const QString &);
         void foldToggle(bool fold);
@@ -76,8 +75,8 @@ class IdentityDisplay : public XLet
         void setAppIcon(const QString &);
 
     private:
-        void svcSummary();
         void updateNameTooltip();
+        void updateOptions();
 
         QGridLayout * m_glayout;
         QLabel *m_icon_user;
@@ -93,7 +92,6 @@ class IdentityDisplay : public XLet
         Qt::Alignment m_textAlignVCenter;
         QFont m_gui_font;
         quint32 m_gui_buttonsize;
-        QVariantMap m_svcstatus;
         QPushButton m_fold_button;
 
         static QIcon m_hide_icon;
