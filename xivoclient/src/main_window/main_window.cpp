@@ -306,9 +306,10 @@ void MainWindow::showCredits()
     QMessageBox::about(this,
                        tr("Credits"),
                        "<h3>Dyno Sans Font</h3>"
-                       "<span xmlns:dct=\"http://purl.org/dc/terms/\" href=\"http://purl.org/dc/dcmitype/StillImage\" property=\"dct:title\" rel=\"dct:type\">Dyno Sans Font</span>"
-                       " by <a xmlns:cc=\"http://creativecommons.org/ns#\" href=\"http://grandchaos9000.deviantart.com\" property=\"cc:attributionName\" rel=\"cc:attributionURL\">Grandos Plex</a>"
-                       " is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/4.0/\">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br />"
-                       "Based on a work at <a xmlns:dct=\"http://purl.org/dc/terms/\" href=\"http://www.dafont.com/dyno-sans.font\" rel=\"dct:source\">http://www.dafont.com/dyno-sans.font</a>."
+                       " by <a href=\"http://grandchaos9000.deviantart.com\">Grandos Plex</a>"
+                       " is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\">Creative Commons Attribution-ShareAlike 4.0 International License</a>."
+                       "<h3>Liberation Sans</h3>"
+                       " by Ascender Corp."
+                       " is licensed under a <a href=\"http://scripts.sil.org/OFL_web\">SIL Open Font License</a>."
                        );
 }
