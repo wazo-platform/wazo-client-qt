@@ -43,9 +43,9 @@
 #include <storage/agentinfo.h>
 #include <storage/channelinfo.h>
 #include <storage/queueinfo.h>
+#include <storage/voicemailinfo.h>
 
 #include "identity.h"
-#include "identityvoicemail.h"
 
 QIcon IdentityDisplay::m_show_icon(":/images/show.svg");
 QIcon IdentityDisplay::m_hide_icon(":/images/hide.svg");
@@ -79,73 +79,22 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     this->ui.agent_button->setMenu(m_agent_menu);
     this->fillAgentMenu(m_agent_menu);
 
-    /*m_gui_buttonsize = 16;
-
-    QVBoxLayout* vboxLayout = new QVBoxLayout(this);
-    QFrame* m_identitybck = new QFrame(this);
-    m_identitybck->setObjectName("identitybck");
-    vboxLayout->addWidget(m_identitybck);
-
-    m_glayout = new QGridLayout(m_identitybck);
-    m_glayout->setObjectName("identitylayout");
-
-    m_user = new QLabel(this);
-    m_user->setObjectName("fullname");
-    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-    int last_column = 0;
-    m_fold_button.setFlat(true);
-    m_fold_button.setIcon(QIcon(":/images/hide.svg"));
-    m_fold_button.setCheckable(true);
-    connect(&m_fold_button, SIGNAL(toggled(bool)),
-            this, SLOT(foldToggle(bool)));
-
-    m_icon_user = new QLabel(this);
-    m_icon_user->setPixmap(QPixmap(":/images/identity/identity-user.png"));
-    m_icon_user->setContentsMargins(0, 0, 5, 0);
-
-    m_voicemail = new IdentityVoiceMail(this);
-    m_voicemail->hide();
-
-    m_glayout->addWidget(&m_fold_button, 0, last_column, 3, 1);
-    last_column ++;
-    m_iconAlign = Qt::AlignHCenter | Qt::AlignTop;
-    m_textAlignVCenter = Qt::AlignLeft | Qt::AlignVCenter;
-
-    m_glayout->addWidget(m_icon_user, 0, last_column, 3, 1, m_iconAlign);
-    last_column ++;
-
-    int idline = 0;
-    m_glayout->addWidget(m_user, idline, last_column, m_textAlignVCenter);
-    idline ++;
-
-
-    m_glayout->addWidget(m_voicemail, 0, last_column, 3, 1);
-    last_column ++;
-
-    m_glayout->setColumnStretch(0, 0);
-    m_glayout->setColumnStretch(1, 0);
-    m_glayout->setColumnStretch(10, 1);
-    m_glayout->setSpacing(0);
-    m_glayout->setMargin(0);
-
-    setGuiOptions();
-
-    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
-            this, SLOT(updateUserConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
-            m_voicemail, SLOT(updateVoiceMailConfig(const QString &)));
-    connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
-            m_voicemail, SLOT(updateVoiceMailStatus(const QString &)));*/
+    /*setGuiOptions();*/
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
             this, SLOT(updatePhoneConfig(const QString &)));
+    connect(b_engine, SIGNAL(updateVoiceMailConfig(const QString &)),
+            this, SLOT(updateVoiceMailConfig(const QString &)));
+
     connect(b_engine, SIGNAL(updateAgentStatus(const QString &)),
             this, SLOT(updateAgentStatus(const QString &)));
     connect(b_engine, SIGNAL(updateUserStatus(const QString &)),
             this, SLOT(updateUserStatus(const QString &)));
+    connect(b_engine, SIGNAL(updateVoiceMailStatus(const QString &)),
+            this, SLOT(updateVoiceMailStatus(const QString &)));
+
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updatePresenceVisibility()));
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
@@ -231,12 +180,6 @@ void IdentityDisplay::updatePresenceList()
     }
 }
 
-void IdentityDisplay::updatePresenceVisibility()
-{
-    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
-    this->ui.presence_button->setVisible(presenceEnabled);
-}
-
 void IdentityDisplay::updateAgentVisibility()
 {
     bool client_logged_with_agent = (b_engine->getConfig("guioptions.loginkind").toUInt() != 0);
@@ -248,6 +191,23 @@ void IdentityDisplay::updateAgentVisibility()
     }
 }
 
+void IdentityDisplay::updatePresenceVisibility()
+{
+    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
+    this->ui.presence_button->setVisible(presenceEnabled);
+}
+
+void IdentityDisplay::updateVoiceMailVisibility()
+{
+    if (! m_ui) {
+        return;
+    }
+    bool has_voicemail = (! m_ui->voicemailid().isEmpty());
+    this->ui.voicemail_button->setVisible(has_voicemail);
+    this->ui.voicemail_label->setVisible(has_voicemail);
+    this->ui.voicemail_number->setVisible(has_voicemail);
+    this->ui.voicemail_messages->setVisible(has_voicemail);
+}
 void IdentityDisplay::updateOptions()
 {
     if (! m_ui) {
@@ -297,18 +257,29 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     this->ui.name->setText(m_ui->fullname());
     this->updateNameTooltip();
     this->updateAgentVisibility();
-
-    /*if (m_ui->voicemailid().isEmpty())
-        m_voicemail->hide();
-    else {
-        m_voicemail->show();
-        m_voicemail->svcSummary(m_svcstatus, m_ui);
-        m_voicemail->setVoiceMailId(m_ui->xvoicemailid());
-        }*/
+    this->updateVoiceMailVisibility();
 
     // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
 }
+
+
+void IdentityDisplay::updateVoiceMailConfig(const QString & xvoicemailid)
+{
+    if (! m_ui) {
+        return;
+    }
+    if (xvoicemailid != m_ui->xvoicemailid()) {
+        return;
+    }
+    const VoiceMailInfo * voicemailinfo = b_engine->voicemail(xvoicemailid);
+    if (voicemailinfo == NULL) {
+        return;
+    }
+    this->requestVoicemailMessageCount(voicemailinfo);
+    this->ui.voicemail_number->setText(voicemailinfo->mailbox());
+}
+
 
 void IdentityDisplay::updateUserStatus(const QString & xuserid)
 {
@@ -350,6 +321,21 @@ void IdentityDisplay::updateAgentStatus(const QString & agent_id)
         this->ui.agent_button->setIcon(QIcon(":/images/agent-off.svg"));
     }
 
+}
+
+void IdentityDisplay::updateVoiceMailStatus(const QString & xvoicemailid)
+{
+    if (! m_ui) {
+        return;
+    }
+    if (xvoicemailid != m_ui->xvoicemailid()) {
+        return;
+    }
+    const VoiceMailInfo * voicemail = b_engine->voicemail(xvoicemailid);
+    if (voicemail == NULL) {
+        return;
+    }
+    this->ui.voicemail_messages->setText(tr("%n message(s)", "unread voicemail messages", voicemail->newMessages()));
 }
 
 void IdentityDisplay::setPresence(const QString &new_presence)
@@ -404,4 +390,26 @@ void IdentityDisplay::unpause()
     }
     QVariantMap message = MessageFactory::unpauseAgentInAllQueues(agent_id, agent->ipbxid());
     b_engine->sendJsonCommand(message);
+}
+
+void IdentityDisplay::on_voicemail_button_clicked()
+{
+    if (! m_ui) {
+        return;
+    }
+
+    QString voicemail_id = m_ui->xvoicemailid();
+    b_engine->actionDial(QString("vm_consult:%1").arg(voicemail_id));
+}
+
+void IdentityDisplay::requestVoicemailMessageCount(const VoiceMailInfo *voicemail)
+{
+    if (voicemail == NULL) {
+        return;
+    }
+    QVariantMap command;
+    command["command"] = "mailboxcount";
+    command["mailbox"] = voicemail->mailbox();
+    command["context"] = voicemail->context();
+    b_engine->ipbxCommand(command);
 }

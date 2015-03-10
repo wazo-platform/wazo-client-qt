@@ -39,6 +39,7 @@
 #include <ui_identity.h>
 
 class UserInfo;
+class VoiceMailInfo;
 class IdentityAgent;
 class IdentityPhone;
 class IdentityVoiceMail;
@@ -54,13 +55,17 @@ class IdentityDisplay : public XLet
     public slots:
         void setGuiOptions();
         void updatePresenceList();
-        void updatePresenceVisibility();
         void updateAgentVisibility();
-        void updateUserConfig(const QString &);
-        void updateUserStatus(const QString &);
-        void updateAgentStatus(const QString &);
+        void updatePresenceVisibility();
+        void updateVoiceMailVisibility();
         void updatePhoneConfig(const QString &);
+        void updateUserConfig(const QString &);
+        void updateVoiceMailConfig(const QString &);
+        void updateAgentStatus(const QString &);
+        void updateUserStatus(const QString &);
+        void updateVoiceMailStatus(const QString &);
         void foldToggle(bool fold);
+        void on_voicemail_button_clicked();
 
     private slots:
         void setPresence(const QString &new_presence);
@@ -78,6 +83,7 @@ class IdentityDisplay : public XLet
         void fillAgentMenu(QMenu *menu);
         void updateNameTooltip();
         void updateOptions();
+        void requestVoicemailMessageCount(const VoiceMailInfo *voicemail);
 
         QGridLayout * m_glayout;
         QLabel *m_icon_user;

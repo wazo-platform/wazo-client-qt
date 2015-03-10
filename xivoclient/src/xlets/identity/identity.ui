@@ -97,7 +97,7 @@
     <string notr="true"/>
    </property>
    <property name="text">
-    <string>Walter White</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="options">
@@ -121,7 +121,7 @@
     <string notr="true"/>
    </property>
    <property name="text">
-    <string>EN RENVOI</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="voicemail_label">
@@ -140,7 +140,7 @@
     </font>
    </property>
    <property name="text">
-    <string>BOÎTE VOCALE</string>
+    <string>VOICEMAIL</string>
    </property>
   </widget>
   <widget class="QLabel" name="voicemail_number">
@@ -159,7 +159,7 @@
     </font>
    </property>
    <property name="text">
-    <string>42305</string>
+    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="voicemail_button">
@@ -170,6 +170,9 @@
      <width>50</width>
      <height>60</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Call you voicemail</string>
    </property>
    <property name="text">
     <string/>
@@ -233,7 +236,7 @@
     <string/>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../../../xivoclient.qrc">
      <normaloff>:/images/agent-on.svg</normaloff>:/images/agent-on.svg</iconset>
    </property>
    <property name="iconSize">
@@ -247,6 +250,25 @@
    </property>
    <property name="autoRaise">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="voicemail_messages">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>60</y>
+     <width>91</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Liberation Sans</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string extracomment="default for unread voicemail messages">0 message(s)</string>
    </property>
   </widget>
  </widget>
