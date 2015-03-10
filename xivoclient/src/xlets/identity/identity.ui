@@ -271,6 +271,25 @@
     <string extracomment="default for unread voicemail messages">0 message(s)</string>
    </property>
   </widget>
+  <widget class="QLineEdit" name="call_input">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>30</y>
+     <width>170</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #e8e4e2;
+border-radius: 14px;
+padding: 7px;
+color: #2c2927;</string>
+   </property>
+   <property name="placeholderText">
+    <string>Call</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="identity.qrc"/>

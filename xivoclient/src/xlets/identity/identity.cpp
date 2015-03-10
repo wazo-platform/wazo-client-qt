@@ -384,3 +384,12 @@ void IdentityDisplay::requestVoicemailMessageCount(const VoiceMailInfo *voicemai
     command["context"] = voicemail->context();
     b_engine->ipbxCommand(command);
 }
+
+void IdentityDisplay::on_call_input_returnPressed()
+{
+    QString extension = this->ui.call_input->text();
+    if (extension.isEmpty())
+        return;
+    b_engine->actionDial(extension);
+    this->ui.call_input->clear();
+}
