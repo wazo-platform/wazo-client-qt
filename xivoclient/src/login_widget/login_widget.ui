@@ -214,7 +214,7 @@ QComboBox {
 
 QComboBox::drop-down {
 	border-rightradius: 10px;
-	border-left: 1px solid #58524f;
+	border-left: 0px solid #58524f;
 	width: 45px;
 }
 
