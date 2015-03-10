@@ -61,18 +61,18 @@
 <context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="58"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="61"/>
         <source>Identity</source>
         <translation>Identidade</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="60"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="63"/>
         <source>Current User Panel</source>
         <translation>Painel do usuário</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="287"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="305"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="306"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="324"/>
         <source>IPBXid: %1</source>
         <translation>IPBXid: %1</translation>
     </message>
