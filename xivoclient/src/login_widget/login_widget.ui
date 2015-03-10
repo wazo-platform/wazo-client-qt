@@ -273,8 +273,11 @@ QComboBox QAbstractItemView::item {
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="styleSheet">
+            <string notr="true">color: #2c2927;</string>
+           </property>
            <property name="text">
-            <string>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec.</string>
+            <string>XiVO is an IP-PBX, a system that connects telephones from inside an organization with public telephone networks as well as mobile networks. An IP-PBX is a PBX that provides audio, video, and instant messaging services through the TCP/IP protocol.</string>
            </property>
            <property name="textFormat">
             <enum>Qt::AutoText</enum>
