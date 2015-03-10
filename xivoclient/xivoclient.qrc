@@ -1,10 +1,13 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource>
-        <file>fonts/DynoRegular.ttf</file>
-        <file>fonts/DynoBold.ttf</file>
+        <file>fonts/Dyno-Regular.ttf</file>
+        <file>fonts/Dyno-Bold.ttf</file>
+        <file>fonts/LiberationSans-Regular.ttf</file>
+
         <file>xivo.qss</file>
         <file>avencall.qss</file>
+
         <file>obj/xivoclient_fr.qm</file>
         <file>obj/xivoclient_en.qm</file>
         <file>obj/xivoclient_es_ES.qm</file>
@@ -14,6 +17,7 @@
         <file>obj/xivoclient_ja.qm</file>
         <file>obj/xivoclient_it.qm</file>
         <file>obj/xivoclient_nl.qm</file>
+
         <file>images/xivoicon.png</file>
         <file>images/xivoicon-red.png</file>
         <file>images/xivoicon-green.png</file>
