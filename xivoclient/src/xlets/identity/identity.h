@@ -75,6 +75,7 @@ class IdentityDisplay : public XLet
         void setAppIcon(const QString &);
 
     private:
+        void fillAgentMenu(QMenu *menu);
         void updateNameTooltip();
         void updateOptions();
 

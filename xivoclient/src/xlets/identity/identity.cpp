@@ -76,27 +76,8 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(this->ui.fold_button, SIGNAL(toggled(bool)),
             this, SLOT(foldToggle(bool)));
 
-    bool may_log_agent = b_engine->getConfig("xlet.identity.logagent").toBool();
-    bool may_pause_agent = b_engine->getConfig("xlet.identity.pauseagent").toBool();
-
     this->ui.agent_button->setMenu(m_agent_menu);
-    QAction *action = NULL;
-    if (may_log_agent) {
-        action = this->m_agent_menu->addAction(tr("Login"));
-        connect(action, SIGNAL(triggered()),
-                this, SLOT(login()));
-        action = this->m_agent_menu->addAction(tr("Logout"));
-        connect(action, SIGNAL(triggered()),
-                this, SLOT(logout()));
-    }
-    if (may_pause_agent) {
-        action = this->m_agent_menu->addAction(tr("Pause"));
-        connect(action, SIGNAL(triggered()),
-                this, SLOT(pause()));
-        action = this->m_agent_menu->addAction(tr("Unpause"));
-        connect(action, SIGNAL(triggered()),
-                this, SLOT(unpause()));
-    }
+    this->fillAgentMenu(m_agent_menu);
 
     /*m_gui_buttonsize = 16;
 
@@ -170,6 +151,30 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
+}
+
+void IdentityDisplay::fillAgentMenu(QMenu *menu)
+{
+    bool may_log_agent = b_engine->getConfig("xlet.identity.logagent").toBool();
+    bool may_pause_agent = b_engine->getConfig("xlet.identity.pauseagent").toBool();
+
+    QAction *action = NULL;
+    if (may_log_agent) {
+        action = menu->addAction(tr("Login"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(login()));
+        action = menu->addAction(tr("Logout"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(logout()));
+    }
+    if (may_pause_agent) {
+        action = menu->addAction(tr("Pause"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(pause()));
+        action = menu->addAction(tr("Unpause"));
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(unpause()));
+    }
 }
 
 void IdentityDisplay::foldToggle(bool fold)
