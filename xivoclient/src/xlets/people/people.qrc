@@ -10,7 +10,5 @@
         <file>../../../obj/people_ja.qm</file>
         <file>../../../obj/people_it.qm</file>
         <file>../../../obj/people_nl.qm</file>
-        <file>images/agent-on.svg</file>
-        <file>images/agent-off.svg</file>
     </qresource>
 </RCC>
