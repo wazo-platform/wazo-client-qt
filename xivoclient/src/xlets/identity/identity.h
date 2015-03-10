@@ -30,19 +30,12 @@
 #ifndef __IDENTITYDISPLAY_H__
 #define __IDENTITYDISPLAY_H__
 
-#include <QtGui>
-#include <QPushButton>
-
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 
 #include <ui_identity.h>
 
-class UserInfo;
 class VoiceMailInfo;
-class IdentityAgent;
-class IdentityPhone;
-class IdentityVoiceMail;
 
 class IdentityDisplay : public XLet
 {

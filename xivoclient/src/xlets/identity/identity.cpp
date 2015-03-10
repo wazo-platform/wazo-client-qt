@@ -27,22 +27,11 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
-#include <QComboBox>
-#include <QDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QSizePolicy>
-
 #include <baseengine.h>
 #include <message_factory.h>
-#include <storage/userinfo.h>
-#include <storage/phoneinfo.h>
+
 #include <storage/agentinfo.h>
-#include <storage/channelinfo.h>
-#include <storage/queueinfo.h>
+#include <storage/phoneinfo.h>
 #include <storage/voicemailinfo.h>
 
 #include "identity.h"
