@@ -50,66 +50,47 @@ class IdentityDisplay : public XLet
 
     public:
         IdentityDisplay(QWidget *parent=0);
-        void doGUIConnects(QWidget *);
+        void doGUIConnects(QWidget *main_window);
 
     public slots:
-        void setGuiOptions();
+        void updatePhoneConfig(const QString &phone_id);
+        void updateUserConfig(const QString &user_id);
+        void updateVoiceMailConfig(const QString &voicemail_id);
+
+        void updateAgentStatus(const QString &agent_id);
+        void updateUserStatus(const QString &user_id);
+        void updateVoiceMailStatus(const QString &voicemail_id);
+
         void updatePresenceList();
-        void updateAgentVisibility();
         void updatePresenceVisibility();
-        void updateVoiceMailVisibility();
-        void updatePhoneConfig(const QString &);
-        void updateUserConfig(const QString &);
-        void updateVoiceMailConfig(const QString &);
-        void updateAgentStatus(const QString &);
-        void updateUserStatus(const QString &);
-        void updateVoiceMailStatus(const QString &);
-        void foldToggle(bool fold);
+        void setPresence(const QString &new_presence);
+
+        void on_fold_button_toggled(bool fold);
         void on_voicemail_button_clicked();
 
-    private slots:
-        void setPresence(const QString &new_presence);
         void login();
         void logout();
         void pause();
         void unpause();
 
     signals:
-        void setAvailState(const QString &, bool);
-        void changeWatchedAgent(const QString &, bool);
         void setAppIcon(const QString &);
 
     private:
         void fillAgentMenu(QMenu *menu);
+        void requestVoicemailMessageCount(const VoiceMailInfo *voicemail);
+        void updateAgentVisibility();
         void updateNameTooltip();
         void updateOptions();
-        void requestVoicemailMessageCount(const VoiceMailInfo *voicemail);
-
-        QGridLayout * m_glayout;
-        QLabel *m_icon_user;
-        QFrame *m_qvline1;
-        QFrame *m_qvline2;
-        QLabel *m_user;
-        QLabel *m_phonenum;
-        QComboBox * m_presencevalue;
-        QHash<QString, IdentityPhone *> m_identityphones;
-        IdentityVoiceMail * m_voicemail;
-        int m_col_phone;
-        Qt::Alignment m_iconAlign;
-        Qt::Alignment m_textAlignVCenter;
-        QFont m_gui_font;
-        quint32 m_gui_buttonsize;
-        QPushButton m_fold_button;
+        void updateVoiceMailVisibility();
 
         static QIcon m_hide_icon;
         static QIcon m_show_icon;
 
         Ui::IdentityWidget ui;
-        QMenu *m_agent_menu;
         QSignalMapper *m_presence_mapper;
+        QMenu *m_agent_menu;
         QMenu *m_presence_menu;
-
-        bool m_logged_with_agent;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface

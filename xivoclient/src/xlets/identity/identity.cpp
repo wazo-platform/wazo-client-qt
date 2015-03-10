@@ -63,23 +63,21 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
     : XLet(parent, tr("Identity")),
-      m_agent_menu(new QMenu(this)),
       m_presence_mapper(new QSignalMapper(this)),
+      m_agent_menu(new QMenu(this)),
       m_presence_menu(new QMenu(this))
 {
-    setAccessibleName( tr("Current User Panel") );
+    setAccessibleName(tr("Current User Panel"));
     setObjectName("identityXlet");
 
     this->ui.setupUi(this);
 
     this->ui.presence_button->setMenu(m_presence_menu);
-    connect(this->ui.fold_button, SIGNAL(toggled(bool)),
-            this, SLOT(foldToggle(bool)));
+    connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(setPresence(const QString &)));
 
     this->ui.agent_button->setMenu(m_agent_menu);
     this->fillAgentMenu(m_agent_menu);
-
-    /*setGuiOptions();*/
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
@@ -97,9 +95,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
 
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updatePresenceVisibility()));
-    connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
-    connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
-            this, SLOT(setPresence(const QString &)));
 }
 
 void IdentityDisplay::fillAgentMenu(QMenu *menu)
@@ -126,7 +121,7 @@ void IdentityDisplay::fillAgentMenu(QMenu *menu)
     }
 }
 
-void IdentityDisplay::foldToggle(bool fold)
+void IdentityDisplay::on_fold_button_toggled(bool fold)
 {
     if (fold) {
         emit showOnlyMeRequested();
@@ -135,18 +130,6 @@ void IdentityDisplay::foldToggle(bool fold)
         emit showOthersRequested();
         this->ui.fold_button->setIcon(m_hide_icon);
     }
-}
-
-void IdentityDisplay::setGuiOptions()
-{
-    // These options can be set in the web-i in cti server > profile > preference
-    if (b_engine->getConfig().contains("xlet.identity.fontname") && b_engine->getConfig().contains("xlet.identity.fontsize"))
-        m_gui_font = QFont(b_engine->getConfig("xlet.identity.fontname").toString(),
-                           b_engine->getConfig("xlet.identity.fontsize").toInt());
-    if (b_engine->getConfig().contains("xlet.identity.iconsize"))
-        m_gui_buttonsize = b_engine->getConfig("xlet.identity.iconsize").toInt();
-
-    setFont(m_gui_font);
 }
 
 void IdentityDisplay::updatePresenceList()
@@ -259,7 +242,6 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
     this->updateAgentVisibility();
     this->updateVoiceMailVisibility();
 
-    // changes the "watched agent" only if no one else has done it before
     b_engine->changeWatchedAgent(m_ui->xagentid(), false);
 }
 
@@ -345,8 +327,8 @@ void IdentityDisplay::setPresence(const QString &new_presence)
 
 void IdentityDisplay::doGUIConnects(QWidget * mainwindow)
 {
-    connect( this, SIGNAL(setAppIcon(const QString &)),
-             mainwindow, SLOT(setAppIcon(const QString &)) );
+    connect(this, SIGNAL(setAppIcon(const QString &)),
+            mainwindow, SLOT(setAppIcon(const QString &)));
 }
 
 void IdentityDisplay::login()
