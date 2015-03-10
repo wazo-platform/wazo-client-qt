@@ -45,7 +45,6 @@
 #include <storage/queueinfo.h>
 
 #include "identity.h"
-#include "identityphone.h"
 #include "identityvoicemail.h"
 
 QIcon IdentityDisplay::m_show_icon(":/images/show.svg");
