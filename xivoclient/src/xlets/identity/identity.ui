@@ -282,6 +282,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: #e8e4e2;
+border: 1px solid #2c2927;
 border-radius: 14px;
 padding: 7px;
 color: #2c2927;</string>
