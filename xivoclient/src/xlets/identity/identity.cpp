@@ -171,8 +171,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(b_engine, SIGNAL(localUserInfoDefined()), this, SLOT(updatePresenceList()));
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
-    connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
-            this, SLOT(updateAgentVisibility()));
 }
 
 void IdentityDisplay::foldToggle(bool fold)
@@ -294,6 +292,7 @@ void IdentityDisplay::updateUserConfig(const QString & xuserid)
         return;
     this->ui.name->setText(m_ui->fullname());
     this->updateNameTooltip();
+    this->updateAgentVisibility();
 
     /*if (m_ui->voicemailid().isEmpty())
         m_voicemail->hide();
