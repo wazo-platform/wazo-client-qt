@@ -259,17 +259,26 @@ void IdentityDisplay::updateAgentVisibility()
  */
 void IdentityDisplay::setOpt()
 {
-    if (m_ui) {
-        m_svcstatus["enablednd"] = m_ui->enablednd();
-        m_svcstatus["incallfilter"] = m_ui->incallfilter();
-        m_svcstatus["enablevoicemail"] = m_ui->enablevoicemail();
-        m_svcstatus["unc-enabled"] = m_ui->enableunc();
-        m_svcstatus["unc-number"] = m_ui->destunc();
-        m_svcstatus["rna-enabled"] = m_ui->enablerna();
-        m_svcstatus["rna-number"] = m_ui->destrna();
-        m_svcstatus["busy-enabled"] = m_ui->enablebusy();
-        m_svcstatus["busy-number"] = m_ui->destbusy();
-    svcSummary();
+    if (! m_ui) {
+        return;
+    }
+    if (m_ui->enablednd()) {
+        this->ui.options->setText(tr("DND"));
+        this->ui.options->setToolTip(tr("Do Not Disturb"));
+    } else if (m_ui->enableunc()) {
+        this->ui.options->setText(tr("UNC %1").arg(m_ui->destunc()));
+        this->ui.options->setToolTip(tr("Unconditional Forward towards %1").arg(m_ui->destunc()));
+    } else if (m_ui->enablebusy()) {
+        this->ui.options->setText(tr("Busy %1").arg(m_ui->destbusy()));
+        this->ui.options->setToolTip(tr("Busy Forward towards %1").arg(m_ui->destbusy()));
+    } else if (m_ui->enablerna()) {
+        this->ui.options->setText(tr("FNA %1").arg(m_ui->destrna()));
+        this->ui.options->setToolTip(tr("Non-Answer Forward towards %1").arg(m_ui->destrna()));
+    } else if (m_ui->incallfilter()) {
+        this->ui.options->setText(tr("Call Filter"));
+    } else {
+        this->ui.options->setText("");
+        this->ui.options->setToolTip("");
     }
 }
 
