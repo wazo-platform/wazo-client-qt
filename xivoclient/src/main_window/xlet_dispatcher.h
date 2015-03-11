@@ -77,7 +77,6 @@ class XletDispatcher : public QObject
         void prepareXletsDock();
         QDockWidget::DockWidgetFeatures getXletsDockFeatures(const QString &options);
         void cleanXletsDock();
-        void restoreMainWindow();
         XLet *xletFactory(const QString &xlet_id);
 
         MainWindow *m_main_window;
