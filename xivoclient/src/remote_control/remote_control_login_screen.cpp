@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -38,17 +38,16 @@ QVariantMap RemoteControl::get_login_screen_infos()
 {
     QVariantMap args;
 
-    args["login"] = this->m_login_widget->ui.userlogin->text();
-    args["password"] = this->m_login_widget->ui.password->text();
+    args["login"] = this->m_login_widget->ui.user_login->text();
+    args["password"] = this->m_login_widget->ui.user_password->text();
 
     args["show_agent_option"] = true;
-    if (this->m_login_widget->ui.agentphonenumber_label->isHidden() \
-        && this->m_login_widget->ui.agentphonenumber->isHidden() \
+    if (this->m_login_widget->ui.agent_phone_number->isHidden() \
         && this->m_login_widget->ui.agent_options->isHidden()) {
         args["show_agent_option"] = false;
     }
 
-    args["agentphonenumber"] = this->m_login_widget->ui.agentphonenumber->text();
+    args["agentphonenumber"] = this->m_login_widget->ui.agent_phone_number->text();
     int current_index = this->m_login_widget->ui.agent_options->currentIndex();
     QString current_agent_option;
     if(current_index == 0) {

@@ -553,49 +553,59 @@ Raison donnée : %3.</translation>
 <context>
     <name>LoginWidget</name>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="14"/>
+        <location filename="../src/login_widget/login_widget.ui" line="20"/>
         <source>Login Screen</source>
         <translation>Écran d&apos;identification</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="72"/>
-        <source>Login</source>
-        <translation>Login</translation>
+        <location filename="../src/login_widget/login_widget.ui" line="144"/>
+        <source>LOGIN</source>
+        <translation>CONNEXION</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="89"/>
-        <source>Password</source>
-        <translation>Mot de passe</translation>
+        <location filename="../src/login_widget/login_widget.ui" line="290"/>
+        <source>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</source>
+        <translation>XiVO est un système de communication unifiée qui relie les téléphones à l&apos;intérieur d&apos;une organisation avec les réseaux téléphoniques publics ainsi que les réseaux mobiles.</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="96"/>
-        <source>Phone</source>
-        <translation>Téléphone</translation>
+        <location filename="../src/login_widget/login_widget.ui" line="337"/>
+        <source>login</source>
+        <translation>utilisateur</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="103"/>
-        <source>OK</source>
-        <translation>OK</translation>
+        <location filename="../src/login_widget/login_widget.ui" line="375"/>
+        <source>password</source>
+        <translation>mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="110"/>
-        <source>Keep Password</source>
-        <translation>Conserver le mot de passe</translation>
+        <location filename="../src/login_widget/login_widget.ui" line="406"/>
+        <source>Remember me</source>
+        <translation>Se souvenir de moi</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="118"/>
+        <location filename="../src/login_widget/login_widget.ui" line="446"/>
         <source>No Agent</source>
         <translation>Sans agent</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="123"/>
+        <location filename="../src/login_widget/login_widget.ui" line="451"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (non loggé)</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="128"/>
+        <location filename="../src/login_widget/login_widget.ui" line="456"/>
         <source>Agent (logged)</source>
         <translation>Agent (loggé)</translation>
+    </message>
+    <message>
+        <location filename="../src/login_widget/login_widget.ui" line="482"/>
+        <source>phone</source>
+        <translation>Téléphone</translation>
+    </message>
+    <message>
+        <location filename="../src/login_widget/login_widget.ui" line="527"/>
+        <source>CONNECT</source>
+        <translation>ME CONNECTER</translation>
     </message>
 </context>
 <context>

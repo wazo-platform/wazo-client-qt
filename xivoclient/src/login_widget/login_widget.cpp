@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -39,10 +39,10 @@ LoginWidget::LoginWidget(MainWindow *main_window, QWidget *parent)
     QWidget * login_widget = new QWidget(this);
     login_layout->addWidget(login_widget);
     this->ui.setupUi(login_widget);
-    this->connect(this->ui.userlogin, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
-    this->connect(this->ui.password, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
-    this->connect(this->ui.agentphonenumber, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
-    this->connect(this->ui.buttonBox, SIGNAL(pressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.user_login, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.user_password, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.agent_phone_number, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
+    this->connect(this->ui.connect_button, SIGNAL(pressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.agent_options, SIGNAL(currentIndexChanged(int)), SLOT(syncAgentLoginWidgets()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
     this->connect(main_window, SIGNAL(initialized()), SLOT(initialize()));
@@ -56,7 +56,7 @@ void LoginWidget::initialize()
 {
     this->setConfig();
     this->setAgentLoginWidgetsVisible();
-    this->ui.userlogin->setFocus();
+    this->ui.user_login->setFocus();
 }
 
 void LoginWidget::setAgentLoginWidgetsVisible()
@@ -66,8 +66,7 @@ void LoginWidget::setAgentLoginWidgetsVisible()
         this->ui.agent_options->show();
         this->syncAgentLoginWidgets();
     } else {
-        this->ui.agentphonenumber_label->hide();
-        this->ui.agentphonenumber->hide();
+        this->ui.agent_phone_number->hide();
         this->ui.agent_options->hide();
     }
 }
@@ -76,11 +75,9 @@ void LoginWidget::syncAgentLoginWidgets()
 {
     int index = this->ui.agent_options->currentIndex();
     if (index == 0) {
-        this->ui.agentphonenumber_label->hide();
-        this->ui.agentphonenumber->hide();
+        this->ui.agent_phone_number->hide();
     } else if (index > 0) {
-        this->ui.agentphonenumber_label->show();
-        this->ui.agentphonenumber->show();
+        this->ui.agent_phone_number->show();
     }
     this->ui.agent_options->show();
 }
@@ -104,9 +101,9 @@ QVariantMap LoginWidget::getConfig()
 void LoginWidget::setConfig()
 {
     QVariantMap config = this->getConfig();
-    this->ui.userlogin->setText(config["userlogin"].toString());
-    this->ui.password->setText(config["password"].toString());
-    this->ui.agentphonenumber->setText(config["agentphonenumber"].toString());
+    this->ui.user_login->setText(config["userlogin"].toString());
+    this->ui.user_password->setText(config["password"].toString());
+    this->ui.agent_phone_number->setText(config["agentphonenumber"].toString());
     this->ui.keep_password->setChecked(config["keeppass"].toBool());
     this->ui.agent_options->setCurrentIndex(config["guioptions.loginkind"].toInt());
 }
@@ -114,9 +111,9 @@ void LoginWidget::setConfig()
 void LoginWidget::saveConfig()
 {
     QVariantMap config;
-    config["userlogin"] = this->ui.userlogin->text();
-    config["password"] = this->ui.password->text();
-    config["agentphonenumber"] = this->ui.agentphonenumber->text();
+    config["userlogin"] = this->ui.user_login->text();
+    config["password"] = this->ui.user_password->text();
+    config["agentphonenumber"] = this->ui.agent_phone_number->text();
     config["keeppass"] = this->ui.keep_password->isChecked();
     config["guioptions.loginkind"] = this->ui.agent_options->currentIndex();
     b_engine->setConfig(config);
