@@ -107,12 +107,7 @@ void XletDispatcher::showAllXlets()
 
     m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
 
-    QRect transformed_rect = this->m_normal_geometry;
-    transformed_rect.setX(m_main_window->geometry().x());
-    transformed_rect.setY(m_main_window->geometry().y());
-    transformed_rect.setWidth(m_main_window->geometry().width());
-
-    m_main_window->setGeometry(transformed_rect);
+    this->restoreMainWindow();
 }
 
 XletDispatcher::~XletDispatcher()
@@ -128,7 +123,7 @@ void XletDispatcher::setStatusLogged()
 
 void XletDispatcher::setStatusNotLogged()
 {
-    this->showAllXlets();
+    this->restoreMainWindow();
     this->m_main_window->saveState();
 
     this->cleanXletsGrid();
@@ -368,4 +363,14 @@ void XletDispatcher::clearAppearance()
     m_xlets_dock.clear();
     m_xlets_grid.clear();
     m_xlets_tab.clear();
+}
+
+void XletDispatcher::restoreMainWindow()
+{
+    QRect transformed_rect = this->m_normal_geometry;
+    transformed_rect.setX(m_main_window->geometry().x());
+    transformed_rect.setY(m_main_window->geometry().y());
+    transformed_rect.setWidth(m_main_window->geometry().width());
+
+    m_main_window->setGeometry(transformed_rect);
 }
