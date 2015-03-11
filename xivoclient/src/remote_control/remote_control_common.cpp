@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -82,12 +82,12 @@ void RemoteControl::configureLoginWidget(const QVariantMap &args)
 {
     if (args.find("login") != args.end()) {
         QString login = args["login"].toString();
-        this->m_login_widget->ui.userlogin->setText(login);
+        this->m_login_widget->ui.user_login->setText(login);
     }
 
     if (args.find("password") != args.end()) {
         QString password = args["password"].toString();
-        this->m_login_widget->ui.password->setText(password);
+        this->m_login_widget->ui.user_password->setText(password);
     }
 
     if (args.find("keep_password") != args.end()) {
@@ -208,7 +208,7 @@ void RemoteControl::i_log_in_the_xivo_client()
 {
     EventWaiter event_waiter;
     connect(b_engine, SIGNAL(doneConnecting()), &event_waiter, SLOT(stopWaiting()));
-    this->m_login_widget->ui.buttonBox->click();
+    this->m_login_widget->ui.connect_button->click();
     try {
         event_waiter.waitWithTimeout(10000);
     } catch (TimeoutException & e) {
