@@ -562,47 +562,47 @@ Pelo seguinte motivo : %3.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="282"/>
-        <source>XiVO is an IP-PBX, a system that connects telephones from inside an organization with public telephone networks as well as mobile networks. An IP-PBX is a PBX that provides audio, video, and instant messaging services through the TCP/IP protocol.</source>
+        <location filename="../src/login_widget/login_widget.ui" line="290"/>
+        <source>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="321"/>
+        <location filename="../src/login_widget/login_widget.ui" line="337"/>
         <source>login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="354"/>
+        <location filename="../src/login_widget/login_widget.ui" line="375"/>
         <source>password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="380"/>
+        <location filename="../src/login_widget/login_widget.ui" line="406"/>
         <source>Remember me</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="415"/>
+        <location filename="../src/login_widget/login_widget.ui" line="446"/>
         <source>No Agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="420"/>
+        <location filename="../src/login_widget/login_widget.ui" line="451"/>
         <source>Agent (unlogged)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="425"/>
+        <location filename="../src/login_widget/login_widget.ui" line="456"/>
         <source>Agent (logged)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="446"/>
+        <location filename="../src/login_widget/login_widget.ui" line="482"/>
         <source>phone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="491"/>
+        <location filename="../src/login_widget/login_widget.ui" line="527"/>
         <source>CONNECT</source>
         <translation type="unfinished"></translation>
     </message>

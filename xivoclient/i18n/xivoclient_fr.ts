@@ -563,47 +563,47 @@ Raison donnée : %3.</translation>
         <translation>CONNEXION</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="282"/>
-        <source>XiVO is an IP-PBX, a system that connects telephones from inside an organization with public telephone networks as well as mobile networks. An IP-PBX is a PBX that provides audio, video, and instant messaging services through the TCP/IP protocol.</source>
-        <translation>XiVO est un IP-PBX qui permet de connecter des téléphones dans une entreprise avec les réseaux téléphonique publique et mobile.</translation>
+        <location filename="../src/login_widget/login_widget.ui" line="290"/>
+        <source>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</source>
+        <translation>XiVO est un système de communication unifiée qui relie les téléphones à l&apos;intérieur d&apos;une organisation avec les réseaux téléphoniques publics ainsi que les réseaux mobiles.</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="321"/>
+        <location filename="../src/login_widget/login_widget.ui" line="337"/>
         <source>login</source>
         <translation>utilisateur</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="354"/>
+        <location filename="../src/login_widget/login_widget.ui" line="375"/>
         <source>password</source>
         <translation>mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="380"/>
+        <location filename="../src/login_widget/login_widget.ui" line="406"/>
         <source>Remember me</source>
         <translation>Se souvenir de moi</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="415"/>
+        <location filename="../src/login_widget/login_widget.ui" line="446"/>
         <source>No Agent</source>
         <translation>Sans agent</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="420"/>
+        <location filename="../src/login_widget/login_widget.ui" line="451"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (non loggé)</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="425"/>
+        <location filename="../src/login_widget/login_widget.ui" line="456"/>
         <source>Agent (logged)</source>
         <translation>Agent (loggé)</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="446"/>
+        <location filename="../src/login_widget/login_widget.ui" line="482"/>
         <source>phone</source>
         <translation>Téléphone</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="491"/>
+        <location filename="../src/login_widget/login_widget.ui" line="527"/>
         <source>CONNECT</source>
         <translation>ME CONNECTER</translation>
     </message>

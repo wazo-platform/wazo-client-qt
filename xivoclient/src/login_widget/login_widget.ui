@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>360</width>
-    <height>580</height>
+    <height>629</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -275,14 +275,25 @@ QComboBox QAbstractItemView::item {
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="font">
+            <font>
+             <family>Liberation Sans</family>
+             <pointsize>9</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">color: #2c2927;</string>
            </property>
            <property name="text">
-            <string>XiVO is an IP-PBX, a system that connects telephones from inside an organization with public telephone networks as well as mobile networks. An IP-PBX is a PBX that provides audio, video, and instant messaging services through the TCP/IP protocol.</string>
+            <string>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</string>
            </property>
            <property name="textFormat">
             <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignJustify|Qt::AlignVCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -310,6 +321,11 @@ QComboBox QAbstractItemView::item {
          </item>
          <item>
           <widget class="QLineEdit" name="user_login">
+           <property name="font">
+            <font>
+             <family>Liberation Sans</family>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
 </string>
@@ -340,6 +356,11 @@ QComboBox QAbstractItemView::item {
          </item>
          <item>
           <widget class="QLineEdit" name="user_password">
+           <property name="font">
+            <font>
+             <family>Liberation Sans</family>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
 </string>
@@ -373,6 +394,11 @@ QComboBox QAbstractItemView::item {
          </item>
          <item>
           <widget class="QCheckBox" name="keep_password">
+           <property name="font">
+            <font>
+             <family>Liberation Sans</family>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">color: #2C2927;</string>
            </property>
@@ -404,6 +430,11 @@ QComboBox QAbstractItemView::item {
            </property>
            <item>
             <widget class="QComboBox" name="agent_options">
+             <property name="font">
+              <font>
+               <family>Liberation Sans</family>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; selection-background-color: rgb(231,123, 57);
 color: #2c2927;
@@ -434,6 +465,11 @@ color: #2c2927;
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Liberation Sans</family>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
