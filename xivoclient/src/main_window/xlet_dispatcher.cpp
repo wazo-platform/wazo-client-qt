@@ -94,6 +94,7 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
 
 void XletDispatcher::showAllXlets()
 {
+
     foreach (QWidget *widget, this->m_xlets_grid_widget.values()) {
         widget->show();
     }
@@ -105,7 +106,6 @@ void XletDispatcher::showAllXlets()
 
     this->showXletsDock();
 
-    m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
 
     this->restoreMainWindow();
 }
@@ -367,10 +367,12 @@ void XletDispatcher::clearAppearance()
 
 void XletDispatcher::restoreMainWindow()
 {
+    m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
     QRect transformed_rect = this->m_normal_geometry;
     transformed_rect.setX(m_main_window->geometry().x());
     transformed_rect.setY(m_main_window->geometry().y());
     transformed_rect.setWidth(m_main_window->geometry().width());
 
     m_main_window->setGeometry(transformed_rect);
+    m_main_window->updateGeometry();
 }
