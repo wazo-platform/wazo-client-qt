@@ -110,15 +110,125 @@ void IdentityDisplay::fillAgentMenu(QMenu *menu)
     }
 }
 
-void IdentityDisplay::on_fold_button_toggled(bool fold)
+void IdentityDisplay::doGUIConnects(QWidget * mainwindow)
 {
-    if (fold) {
-        emit showOnlyMeRequested();
-        this->ui.fold_button->setIcon(m_show_icon);
+    connect(this, SIGNAL(setAppIcon(const QString &)),
+            mainwindow, SLOT(setAppIcon(const QString &)));
+}
+
+void IdentityDisplay::updatePhoneConfig(const QString & xphoneid)
+{
+    if (m_ui == NULL)
+        return;
+    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
+    if (phoneinfo == NULL)
+        return;
+    QString iduserfeatures = phoneinfo->iduserfeatures();
+    if (iduserfeatures != m_ui->id())
+        return;
+    this->updateNameTooltip();
+}
+
+void IdentityDisplay::updateUserConfig(const QString & xuserid)
+{
+    if (xuserid != m_xuserid)
+        return;
+    if (m_ui == NULL)
+        return;
+    this->ui.name->setText(m_ui->fullname());
+    this->updateNameTooltip();
+    this->updateAgentVisibility();
+    this->updateVoiceMailVisibility();
+
+    b_engine->changeWatchedAgent(m_ui->xagentid(), false);
+}
+
+void IdentityDisplay::updateAgentVisibility()
+{
+    bool client_logged_with_agent = (b_engine->getConfig("guioptions.loginkind").toUInt() != 0);
+    bool user_has_agent = (! m_ui->agentid().isEmpty());
+    if (client_logged_with_agent and user_has_agent) {
+        this->ui.agent_button->show();
     } else {
-        emit showOthersRequested();
-        this->ui.fold_button->setIcon(m_hide_icon);
+        this->ui.agent_button->hide();
     }
+}
+
+void IdentityDisplay::updateVoiceMailVisibility()
+{
+    if (! m_ui) {
+        return;
+    }
+    bool has_voicemail = (! m_ui->voicemailid().isEmpty());
+    this->ui.voicemail_button->setVisible(has_voicemail);
+    this->ui.voicemail_label->setVisible(has_voicemail);
+    this->ui.voicemail_number->setVisible(has_voicemail);
+    this->ui.voicemail_messages->setVisible(has_voicemail);
+}
+
+void IdentityDisplay::updateVoiceMailConfig(const QString & xvoicemailid)
+{
+    if (! m_ui) {
+        return;
+    }
+    if (xvoicemailid != m_ui->xvoicemailid()) {
+        return;
+    }
+    const VoiceMailInfo * voicemailinfo = b_engine->voicemail(xvoicemailid);
+    if (voicemailinfo == NULL) {
+        return;
+    }
+    this->requestVoicemailMessageCount(voicemailinfo);
+    this->ui.voicemail_number->setText(voicemailinfo->mailbox());
+}
+
+void IdentityDisplay::updateAgentStatus(const QString & agent_id)
+{
+    if (! m_ui) {
+        return;
+    }
+    if(agent_id != m_ui->xagentid()) {
+        return;
+    }
+    const AgentInfo * agentinfo = b_engine->agent(agent_id);
+    if (agentinfo == NULL)
+        return;
+
+    if (agentinfo->logged()) {
+        emit setAppIcon(icon_agent_logged);
+    } else {
+        emit setAppIcon(icon_user_logged);
+    }
+
+    if (agentinfo->logged()) {
+        this->ui.agent_button->setIcon(QIcon(":/images/agent-on.svg"));
+    } else {
+        this->ui.agent_button->setIcon(QIcon(":/images/agent-off.svg"));
+    }
+}
+
+void IdentityDisplay::updateUserStatus(const QString & xuserid)
+{
+    if (xuserid != m_xuserid) {
+        return;
+    }
+    this->updateOptions();
+    this->updatePresenceList();
+}
+
+void IdentityDisplay::updateVoiceMailStatus(const QString & xvoicemailid)
+{
+    if (! m_ui) {
+        return;
+    }
+    if (xvoicemailid != m_ui->xvoicemailid()) {
+        return;
+    }
+    const VoiceMailInfo * voicemail = b_engine->voicemail(xvoicemailid);
+    if (voicemail == NULL) {
+        return;
+    }
+    this->ui.voicemail_messages->setText(tr("%n message(s)", "unread voicemail messages", voicemail->newMessages()));
 }
 
 void IdentityDisplay::updatePresenceList()
@@ -152,34 +262,6 @@ void IdentityDisplay::updatePresenceList()
     }
 }
 
-void IdentityDisplay::updateAgentVisibility()
-{
-    bool client_logged_with_agent = (b_engine->getConfig("guioptions.loginkind").toUInt() != 0);
-    bool user_has_agent = (! m_ui->agentid().isEmpty());
-    if (client_logged_with_agent and user_has_agent) {
-        this->ui.agent_button->show();
-    } else {
-        this->ui.agent_button->hide();
-    }
-}
-
-void IdentityDisplay::updatePresenceVisibility()
-{
-    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
-    this->ui.presence_button->setVisible(presenceEnabled);
-}
-
-void IdentityDisplay::updateVoiceMailVisibility()
-{
-    if (! m_ui) {
-        return;
-    }
-    bool has_voicemail = (! m_ui->voicemailid().isEmpty());
-    this->ui.voicemail_button->setVisible(has_voicemail);
-    this->ui.voicemail_label->setVisible(has_voicemail);
-    this->ui.voicemail_number->setVisible(has_voicemail);
-    this->ui.voicemail_messages->setVisible(has_voicemail);
-}
 void IdentityDisplay::updateOptions()
 {
     if (! m_ui) {
@@ -205,60 +287,10 @@ void IdentityDisplay::updateOptions()
     }
 }
 
-/*! \brief update phone config
- */
-void IdentityDisplay::updatePhoneConfig(const QString & xphoneid)
+void IdentityDisplay::updatePresenceVisibility()
 {
-    if (m_ui == NULL)
-        return;
-    const PhoneInfo * phoneinfo = b_engine->phone(xphoneid);
-    if (phoneinfo == NULL)
-        return;
-    QString iduserfeatures = phoneinfo->iduserfeatures();
-    if (iduserfeatures != m_ui->id())
-        return;
-    this->updateNameTooltip();
-}
-
-void IdentityDisplay::updateUserConfig(const QString & xuserid)
-{
-    if (xuserid != m_xuserid)
-        return;
-    if (m_ui == NULL)
-        return;
-    this->ui.name->setText(m_ui->fullname());
-    this->updateNameTooltip();
-    this->updateAgentVisibility();
-    this->updateVoiceMailVisibility();
-
-    b_engine->changeWatchedAgent(m_ui->xagentid(), false);
-}
-
-
-void IdentityDisplay::updateVoiceMailConfig(const QString & xvoicemailid)
-{
-    if (! m_ui) {
-        return;
-    }
-    if (xvoicemailid != m_ui->xvoicemailid()) {
-        return;
-    }
-    const VoiceMailInfo * voicemailinfo = b_engine->voicemail(xvoicemailid);
-    if (voicemailinfo == NULL) {
-        return;
-    }
-    this->requestVoicemailMessageCount(voicemailinfo);
-    this->ui.voicemail_number->setText(voicemailinfo->mailbox());
-}
-
-
-void IdentityDisplay::updateUserStatus(const QString & xuserid)
-{
-    if (xuserid != m_xuserid) {
-        return;
-    }
-    this->updateOptions();
-    this->updatePresenceList();
+    bool presenceEnabled = b_engine->getConfig("checked_function.presence").toBool();
+    this->ui.presence_button->setVisible(presenceEnabled);
 }
 
 void IdentityDisplay::updateNameTooltip()
@@ -268,56 +300,9 @@ void IdentityDisplay::updateNameTooltip()
     this->ui.name->setToolTip(tooltip);
 }
 
-void IdentityDisplay::updateAgentStatus(const QString & agent_id)
-{
-    if (! m_ui) {
-        return;
-    }
-    if(agent_id != m_ui->xagentid()) {
-        return;
-    }
-    const AgentInfo * agentinfo = b_engine->agent(agent_id);
-    if (agentinfo == NULL)
-        return;
-
-    if (agentinfo->logged()) {
-        emit setAppIcon(icon_agent_logged);
-    } else {
-        emit setAppIcon(icon_user_logged);
-    }
-
-    if (agentinfo->logged()) {
-        this->ui.agent_button->setIcon(QIcon(":/images/agent-on.svg"));
-    } else {
-        this->ui.agent_button->setIcon(QIcon(":/images/agent-off.svg"));
-    }
-
-}
-
-void IdentityDisplay::updateVoiceMailStatus(const QString & xvoicemailid)
-{
-    if (! m_ui) {
-        return;
-    }
-    if (xvoicemailid != m_ui->xvoicemailid()) {
-        return;
-    }
-    const VoiceMailInfo * voicemail = b_engine->voicemail(xvoicemailid);
-    if (voicemail == NULL) {
-        return;
-    }
-    this->ui.voicemail_messages->setText(tr("%n message(s)", "unread voicemail messages", voicemail->newMessages()));
-}
-
 void IdentityDisplay::setPresence(const QString &new_presence)
 {
     b_engine->setAvailState(new_presence, false);
-}
-
-void IdentityDisplay::doGUIConnects(QWidget * mainwindow)
-{
-    connect(this, SIGNAL(setAppIcon(const QString &)),
-            mainwindow, SLOT(setAppIcon(const QString &)));
 }
 
 void IdentityDisplay::login()
@@ -363,6 +348,17 @@ void IdentityDisplay::unpause()
     b_engine->sendJsonCommand(message);
 }
 
+void IdentityDisplay::on_fold_button_toggled(bool fold)
+{
+    if (fold) {
+        emit showOnlyMeRequested();
+        this->ui.fold_button->setIcon(m_show_icon);
+    } else {
+        emit showOthersRequested();
+        this->ui.fold_button->setIcon(m_hide_icon);
+    }
+}
+
 void IdentityDisplay::on_voicemail_button_clicked()
 {
     if (! m_ui) {
@@ -372,6 +368,16 @@ void IdentityDisplay::on_voicemail_button_clicked()
     QString voicemail_id = m_ui->xvoicemailid();
     b_engine->actionDial(QString("vm_consult:%1").arg(voicemail_id));
 }
+
+void IdentityDisplay::on_call_input_returnPressed()
+{
+    QString extension = this->ui.call_input->text();
+    if (extension.isEmpty())
+        return;
+    b_engine->actionDial(extension);
+    this->ui.call_input->clear();
+}
+
 
 void IdentityDisplay::requestVoicemailMessageCount(const VoiceMailInfo *voicemail)
 {
@@ -383,13 +389,4 @@ void IdentityDisplay::requestVoicemailMessageCount(const VoiceMailInfo *voicemai
     command["mailbox"] = voicemail->mailbox();
     command["context"] = voicemail->context();
     b_engine->ipbxCommand(command);
-}
-
-void IdentityDisplay::on_call_input_returnPressed()
-{
-    QString extension = this->ui.call_input->text();
-    if (extension.isEmpty())
-        return;
-    b_engine->actionDial(extension);
-    this->ui.call_input->clear();
 }
