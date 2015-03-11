@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -40,22 +40,15 @@ QVariantMap RemoteControl::get_identity_infos()
     if (xlet == NULL)
         return args;
 
-    QLabel *fullname = xlet->findChild<QLabel*>(QString("fullname"));
-    QLabel *phonenum = xlet->findChild<QLabel*>(QString("phonenum"));
-    QLabel *vm_num = xlet->findChild<QLabel*>(QString("voicemail_num"));
+    QLabel *fullname = xlet->findChild<QLabel*>(QString("name"));
+    QLabel *vm_num = xlet->findChild<QLabel*>(QString("voicemail_number"));
     QPushButton * vm_button = xlet->findChild<QPushButton*>(QString("voicemail_button"));
-    QLabel *agent_number_label = xlet->findChild<QLabel*>(QString("agent_number"));
+    QToolButton * agent_button = xlet->findChild<QToolButton*>("agent_button");
 
     args["fullname"] = fullname->text();
-    args["phonenum"] = phonenum->text();
     args["voicemail_num"] = vm_num->text();
-    if (vm_button != NULL) {
-        QIcon vm_icon = vm_button->icon();
-        args["voicemail_button"] = !vm_icon.isNull();
-    } else {
-        args["voicemail_button"] = false;
-    }
-    args["agent_number"] = agent_number_label->text();
+    args["voicemail_button"] = vm_button->isVisible();
+    args["agent_button"] = agent_button->isVisible();
 
     return args;
 }
