@@ -2,195 +2,114 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
-    <name>IdentityAgent</name>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="114"/>
-        <source>Connected to %1</source>
-        <translation>Connected to %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="117"/>
-        <source>Disconnected</source>
-        <translation>Disconnected</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="130"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="131"/>
-        <source>Paused</source>
-        <translation>Paused</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="135"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="136"/>
-        <source>Unpaused</source>
-        <translation>Unpaused</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="144"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="145"/>
-        <source>Partially paused</source>
-        <translation>Partially paused</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="149"/>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="150"/>
-        <source>Not relevant</source>
-        <translation>Not relevant</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="166"/>
-        <source>Logout</source>
-        <translation>Logout</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="170"/>
-        <source>Login</source>
-        <translation>Login</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="179"/>
-        <source>Unpause</source>
-        <translation>Unpause</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityagent.cpp" line="184"/>
-        <source>Pause</source>
-        <translation>Pause</translation>
-    </message>
-</context>
-<context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="61"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="54"/>
         <source>Identity</source>
         <translation>Identity</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="63"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="59"/>
         <source>Current User Panel</source>
         <translation>Current User Panel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="306"/>
-        <location filename="../src/xlets/identity/identity.cpp" line="324"/>
-        <source>IPBXid: %1</source>
-        <translation>IPBXid: %1</translation>
-    </message>
-</context>
-<context>
-    <name>IdentityPhone</name>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="65"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="145"/>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="146"/>
-        <source>No option</source>
-        <translation>No option</translation>
+        <location filename="../src/xlets/identity/identity.cpp" line="96"/>
+        <source>Login</source>
+        <translation type="unfinished">Login</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="92"/>
-        <source>Phone %1</source>
-        <translation>Phone %1</translation>
+        <location filename="../src/xlets/identity/identity.cpp" line="99"/>
+        <source>Logout</source>
+        <translation type="unfinished">Logout</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="94"/>
-        <source>Phone &lt;EMPTY&gt;</source>
-        <translation>Phone &lt;EMPTY&gt;</translation>
+        <location filename="../src/xlets/identity/identity.cpp" line="104"/>
+        <source>Pause</source>
+        <translation type="unfinished">Pause</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="116"/>
-        <source>Status:%1</source>
-        <translation>Status:%1</translation>
+        <location filename="../src/xlets/identity/identity.cpp" line="107"/>
+        <source>Unpause</source>
+        <translation type="unfinished">Unpause</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/xlets/identity/identity.cpp" line="232"/>
+        <source>%n message(s)</source>
+        <comment>unread voicemail messages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="119"/>
-        <source>No status
-(no phone number)</source>
-        <translation>No status
-(no phone number)</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="131"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="292"/>
         <source>DND</source>
-        <translation>DND</translation>
+        <translation type="unfinished">DND</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="132"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="293"/>
         <source>Do Not Disturb</source>
-        <translation>Do Not Disturb</translation>
+        <translation type="unfinished">Do Not Disturb</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="134"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="295"/>
         <source>UNC %1</source>
-        <translation>UNC %1</translation>
+        <translation type="unfinished">UNC %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="135"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="296"/>
         <source>Unconditional Forward towards %1</source>
-        <translation>Unconditional Forward towards %1</translation>
+        <translation type="unfinished">Unconditional Forward towards %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="137"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="298"/>
         <source>Busy %1</source>
-        <translation>Busy %1</translation>
+        <translation type="unfinished">Busy %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="138"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="299"/>
         <source>Busy Forward towards %1</source>
-        <translation>Busy Forward towards %1</translation>
+        <translation type="unfinished">Busy Forward towards %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="140"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="301"/>
         <source>FNA %1</source>
-        <translation>FNA %1</translation>
+        <translation type="unfinished">FNA %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="141"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="302"/>
         <source>Non-Answer Forward towards %1</source>
-        <translation>Non-Answer Forward towards %1</translation>
+        <translation type="unfinished">Non-Answer Forward towards %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityphone.cpp" line="143"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="304"/>
         <source>Call Filter</source>
-        <translation>Call Filter</translation>
+        <translation type="unfinished">Call Filter</translation>
     </message>
 </context>
 <context>
-    <name>IdentityVoiceMail</name>
+    <name>IdentityWidget</name>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="49"/>
-        <source>call your voicemail</source>
-        <translation>call your voicemail</translation>
+        <location filename="../src/xlets/identity/identity.ui" line="143"/>
+        <source>VOICEMAIL</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="90"/>
-        <source>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</source>
-        <translation>&lt;b&gt;VoiceMailBox %1&lt;/b&gt;</translation>
+        <location filename="../src/xlets/identity/identity.ui" line="175"/>
+        <source>Call your voicemail</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="91"/>
-        <source>VoiceMail activated on %1</source>
-        <translation>VoiceMail activated on %1</translation>
+        <location filename="../src/xlets/identity/identity.ui" line="275"/>
+        <source>0 message(s)</source>
+        <extracomment>default for unread voicemail messages</extracomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="93"/>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="128"/>
-        <source>VoiceMailBox %1</source>
-        <translation>VoiceMailBox %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="94"/>
-        <source>VoiceMail not activated on %1</source>
-        <translation>VoiceMail not activated on %1</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="137"/>
-        <source>%1 old</source>
-        <translation>%1 old</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identityvoicemail.cpp" line="138"/>
-        <source>%1 new</source>
-        <translation>%1 new</translation>
+        <location filename="../src/xlets/identity/identity.ui" line="295"/>
+        <source>Call</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
