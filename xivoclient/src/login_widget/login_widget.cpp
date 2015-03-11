@@ -85,9 +85,9 @@ void LoginWidget::syncAgentLoginWidgets()
 QVariantMap LoginWidget::getConfig()
 {
     QStringList required = QStringList()
-        << "user_login"
-        << "user_password"
-        << "agent_phone_number"
+        << "userlogin"
+        << "password"
+        << "agentphonenumber"
         << "keeppass"
         << "guioptions.loginkind";
     QVariantMap config;
