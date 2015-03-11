@@ -74,6 +74,7 @@ class IdentityDisplay : public XLet
         void fillAgentMenu(QMenu *menu);
         void requestVoicemailMessageCount(const VoiceMailInfo *voicemail);
         void updateAgentVisibility();
+        void updateCurrentPresence();
         void updateNameTooltip();
         void updateOptions();
         void updateVoiceMailVisibility();

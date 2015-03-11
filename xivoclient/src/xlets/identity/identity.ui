@@ -200,6 +200,10 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #a9a28a;
+border-radius:10px;</string>
+   </property>
    <property name="text">
     <string/>
    </property>

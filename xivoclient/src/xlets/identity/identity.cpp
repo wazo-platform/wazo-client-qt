@@ -213,6 +213,7 @@ void IdentityDisplay::updateUserStatus(const QString & xuserid)
         return;
     }
     this->updateOptions();
+    this->updateCurrentPresence();
     this->updatePresenceList();
 }
 
@@ -229,6 +230,26 @@ void IdentityDisplay::updateVoiceMailStatus(const QString & xvoicemailid)
         return;
     }
     this->ui.voicemail_messages->setText(tr("%n message(s)", "unread voicemail messages", voicemail->newMessages()));
+}
+
+void IdentityDisplay::updateCurrentPresence() {
+    if (! m_ui) {
+        return;
+    }
+    QString presence = m_ui->availstate();
+    QVariantMap presencemap = b_engine->getOptionsUserStatus();
+    QString presence_color_string = presencemap.value(presence).toMap().value("color").toString();
+    QColor presence_color = QColor(presence_color_string);
+
+    QIcon image = QIcon(":/images/show.svg");
+    QPixmap tinted_image = image.pixmap(this->ui.presence_button->iconSize());
+
+    QPainter tint_painter(&tinted_image);
+    tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
+    tint_painter.fillRect(tinted_image.rect(), presence_color);
+    tint_painter.end();
+
+    this->ui.presence_button->setIcon(tinted_image);
 }
 
 void IdentityDisplay::updatePresenceList()
