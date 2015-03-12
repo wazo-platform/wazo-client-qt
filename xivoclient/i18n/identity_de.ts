@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="96"/>
         <source>Login</source>
-        <translation type="unfinished">Einloggen</translation>
+        <translation type="unfinished">Anmelden</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="99"/>
@@ -26,12 +26,12 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="104"/>
         <source>Pause</source>
-        <translation type="unfinished">Pause</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="107"/>
         <source>Unpause</source>
-        <translation type="unfinished">Pause aufheben</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/identity/identity.cpp" line="232"/>
@@ -45,47 +45,47 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="292"/>
         <source>DND</source>
-        <translation type="unfinished">nicht stören</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="293"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished">nicht stören</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="295"/>
         <source>UNC %1</source>
-        <translation type="unfinished">UNC %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="296"/>
         <source>Unconditional Forward towards %1</source>
-        <translation type="unfinished">Bedingungslose Weiterleitung zu %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="298"/>
         <source>Busy %1</source>
-        <translation type="unfinished">On line %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="299"/>
         <source>Busy Forward towards %1</source>
-        <translation type="unfinished">Weiterleitung bei besetzt zu %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="301"/>
         <source>FNA %1</source>
-        <translation type="unfinished">FNA %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="302"/>
         <source>Non-Answer Forward towards %1</source>
-        <translation type="unfinished">Keine-Antwort Weiterleitung zu %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="304"/>
         <source>Call Filter</source>
-        <translation type="unfinished">Anruf Filter</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

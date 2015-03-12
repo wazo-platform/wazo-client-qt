@@ -246,17 +246,17 @@ Please upgrade it.</source>
         <location filename="src/storage/queue_agent_status.cpp" line="92"/>
         <source>Unpaused</source>
         <oldsource>Not paused</oldsource>
-        <translation type="unfinished">Tirar da espera</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="96"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pausado</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="100"/>
         <source>Not relevant</source>
-        <translation type="unfinished">Irrelevante</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

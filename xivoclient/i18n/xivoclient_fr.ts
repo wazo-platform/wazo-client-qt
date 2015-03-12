@@ -600,7 +600,7 @@ Raison donnée : %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="482"/>
         <source>phone</source>
-        <translation>Téléphone</translation>
+        <translation>Se souvenir de moi</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="527"/>

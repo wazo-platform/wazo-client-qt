@@ -193,7 +193,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="86"/>
         <source>Phone</source>
-        <translation type="unfinished">Telefonó</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

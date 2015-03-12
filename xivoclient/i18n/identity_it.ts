@@ -16,22 +16,22 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="96"/>
         <source>Login</source>
-        <translation type="unfinished">Connetti</translation>
+        <translation type="unfinished">Login</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="99"/>
         <source>Logout</source>
-        <translation type="unfinished">Disconnesso</translation>
+        <translation type="unfinished">Logout</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="104"/>
         <source>Pause</source>
-        <translation type="unfinished">Pausa</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="107"/>
         <source>Unpause</source>
-        <translation type="unfinished">Riattiva</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/identity/identity.cpp" line="232"/>
@@ -45,47 +45,47 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="292"/>
         <source>DND</source>
-        <translation type="unfinished">DND</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="293"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished">Non disturbare</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="295"/>
         <source>UNC %1</source>
-        <translation type="unfinished">UNV %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="296"/>
         <source>Unconditional Forward towards %1</source>
-        <translation type="unfinished">Trasferimento incondizionato verso %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="298"/>
         <source>Busy %1</source>
-        <translation type="unfinished">Occupato %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="299"/>
         <source>Busy Forward towards %1</source>
-        <translation type="unfinished">Trasferimento se occupato verso %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="301"/>
         <source>FNA %1</source>
-        <translation type="unfinished">FNA %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="302"/>
         <source>Non-Answer Forward towards %1</source>
-        <translation type="unfinished">Trasferimento non risposte verso %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="304"/>
         <source>Call Filter</source>
-        <translation type="unfinished">Filtro Chiamata</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="295"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chiama</translation>
     </message>
 </context>
 </TS>

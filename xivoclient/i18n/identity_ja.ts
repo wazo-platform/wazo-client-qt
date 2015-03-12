@@ -26,12 +26,12 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="104"/>
         <source>Pause</source>
-        <translation type="unfinished">保留</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="107"/>
         <source>Unpause</source>
-        <translation type="unfinished">保留解除</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/identity/identity.cpp" line="232"/>
@@ -49,7 +49,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="293"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished">割り込み禁止</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="295"/>
@@ -64,7 +64,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="298"/>
         <source>Busy %1</source>
-        <translation type="unfinished">通話中 %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="299"/>
@@ -84,7 +84,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="304"/>
         <source>Call Filter</source>
-        <translation type="unfinished">呼び出しフィルタ</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

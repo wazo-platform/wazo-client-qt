@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="293"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished">No molestar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="295"/>
@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="298"/>
         <source>Busy %1</source>
-        <translation type="unfinished">Ocupado %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="299"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="304"/>
         <source>Call Filter</source>
-        <translation type="unfinished">Filtro de llamada</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="295"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">llamar</translation>
     </message>
 </context>
 </TS>

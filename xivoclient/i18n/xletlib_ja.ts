@@ -45,7 +45,7 @@ queues</source>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
         <location filename="../src/xletlib/agents_model.cpp" line="411"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">一時停止中</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="51"/>
@@ -121,7 +121,7 @@ queues</source>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="409"/>
         <source>Unpaused</source>
-        <translation type="unfinished">保留解除</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="413"/>
@@ -322,7 +322,7 @@ Status: %3</source>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="317"/>
         <source>Status:%1</source>
-        <translation type="unfinished">ステータス:%1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="320"/>

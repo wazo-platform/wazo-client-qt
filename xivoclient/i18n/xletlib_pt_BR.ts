@@ -45,7 +45,7 @@ queues</source>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
         <location filename="../src/xletlib/agents_model.cpp" line="411"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pausado</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="51"/>
@@ -121,7 +121,7 @@ queues</source>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="409"/>
         <source>Unpaused</source>
-        <translation type="unfinished">Tirar da espera</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="413"/>

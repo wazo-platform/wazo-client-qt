@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="304"/>
         <source>Call Filter</source>
-        <translation>Filtre Appel</translation>
+        <translation>Filtrage d&apos;appel</translation>
     </message>
 </context>
 <context>

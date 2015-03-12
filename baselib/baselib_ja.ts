@@ -246,12 +246,12 @@ Please upgrade it.</source>
         <location filename="src/storage/queue_agent_status.cpp" line="92"/>
         <source>Unpaused</source>
         <oldsource>Not paused</oldsource>
-        <translation type="unfinished">保留解除</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="96"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">一時停止中</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="100"/>

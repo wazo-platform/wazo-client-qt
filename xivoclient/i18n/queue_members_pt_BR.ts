@@ -89,7 +89,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pausado</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>

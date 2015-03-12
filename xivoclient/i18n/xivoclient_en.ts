@@ -560,27 +560,27 @@ Reason given : %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="144"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGIN</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="290"/>
         <source>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</source>
-        <translation type="unfinished"></translation>
+        <translation>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="337"/>
         <source>login</source>
-        <translation type="unfinished"></translation>
+        <translation>login</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="375"/>
         <source>password</source>
-        <translation type="unfinished"></translation>
+        <translation>password</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="406"/>
         <source>Remember me</source>
-        <translation type="unfinished"></translation>
+        <translation>Remember me</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="446"/>
@@ -600,12 +600,12 @@ Reason given : %3.</translation>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="482"/>
         <source>phone</source>
-        <translation type="unfinished"></translation>
+        <translation>phone</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="527"/>
         <source>CONNECT</source>
-        <translation type="unfinished"></translation>
+        <translation>CONNECT</translation>
     </message>
 </context>
 <context>

@@ -322,7 +322,7 @@ Status: %3</source>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="317"/>
         <source>Status:%1</source>
-        <translation type="unfinished">Estado:%1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="320"/>
