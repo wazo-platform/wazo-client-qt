@@ -80,7 +80,7 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
         widget->hide();
     }
 
-    m_normal_geometry = m_main_window->geometry();
+    m_unfolded_height = m_main_window->height();
 
     if (m_main_window->isMaximized()) {
         m_main_window->showNormal();
@@ -119,6 +119,7 @@ void XletDispatcher::setStatusLogged()
     this->prepareAppearance();
     this->prepareXletsGrid();
     this->prepareXletsDock();
+    m_unfolded_height = m_main_window->height();
 }
 
 void XletDispatcher::setStatusNotLogged()
@@ -367,11 +368,9 @@ void XletDispatcher::clearAppearance()
 
 void XletDispatcher::restoreMainWindow()
 {
-    m_main_window->setFixedHeight(QWIDGETSIZE_MAX);
-    QRect transformed_rect = this->m_normal_geometry;
-    transformed_rect.setX(m_main_window->geometry().x());
-    transformed_rect.setY(m_main_window->geometry().y());
-    transformed_rect.setWidth(m_main_window->geometry().width());
+    m_main_window->setMaximumHeight(QWIDGETSIZE_MAX);
+    QRect transformed_rect = m_main_window->geometry();
+    transformed_rect.setHeight(m_unfolded_height);
 
     m_main_window->setGeometry(transformed_rect);
     m_main_window->updateGeometry();
