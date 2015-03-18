@@ -25,8 +25,13 @@
   <property name="windowTitle">
    <string notr="true"/>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">#IdentityWidget {
+    background: #2c2927;
+}</string>
   </property>
   <widget class="QPushButton" name="fold_button">
    <property name="geometry">
@@ -41,8 +46,8 @@
     <string/>
    </property>
    <property name="icon">
-    <iconset resource="../../../xivoclient.qrc">
-     <normaloff>:/images/hide.svg</normaloff>:/images/hide.svg</iconset>
+    <iconset resource="identity.qrc">
+     <normaloff>:/identity/images/show.svg</normaloff>:/identity/images/show.svg</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -94,7 +99,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: white;</string>
    </property>
    <property name="text">
     <string/>
@@ -118,7 +123,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: #A09790</string>
    </property>
    <property name="text">
     <string/>
@@ -139,6 +144,9 @@
      <pointsize>9</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: white;</string>
+   </property>
    <property name="text">
     <string>VOICEMAIL</string>
    </property>
@@ -157,6 +165,9 @@
      <family>Liberation Sans</family>
      <pointsize>8</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #a09790;</string>
    </property>
    <property name="text">
     <string/>
@@ -271,6 +282,9 @@ border-radius:10px;</string>
      <pointsize>9</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: #A09790;</string>
+   </property>
    <property name="text">
     <string extracomment="default for unread voicemail messages">0 message(s)</string>
    </property>
@@ -286,9 +300,9 @@ border-radius:10px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: #e8e4e2;
-border: 1px solid #2c2927;
+/*border: 1px solid #2c2927;*/
 border-radius: 14px;
-padding: 7px;
+padding-left: 7px;
 color: #2c2927;</string>
    </property>
    <property name="placeholderText">

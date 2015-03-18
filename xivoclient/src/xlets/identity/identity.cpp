@@ -57,7 +57,6 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
       m_presence_menu(new QMenu(this))
 {
     setAccessibleName(tr("Current User Panel"));
-    setObjectName("identityXlet");
 
     this->ui.setupUi(this);
 
