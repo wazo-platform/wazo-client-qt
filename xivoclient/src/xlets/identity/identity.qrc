@@ -14,5 +14,7 @@
     <qresource prefix="/identity">
         <file>images/john-doe.svg</file>
         <file>images/voicemail.svg</file>
+        <file>images/hide.svg</file>
+        <file>images/show.svg</file>
     </qresource>
 </RCC>
