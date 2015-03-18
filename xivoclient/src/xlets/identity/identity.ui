@@ -321,6 +321,12 @@ border-radius:10px;</string>
      <height>28</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Liberation Sans</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color: #e8e4e2;
 border-radius: 14px;
