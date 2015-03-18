@@ -293,15 +293,16 @@ void IdentityDisplay::updateOptions()
         this->ui.options->setText(tr("UNC %1").arg(m_ui->destunc()));
         this->ui.options->setToolTip(tr("Unconditional Forward towards %1").arg(m_ui->destunc()));
     } else if (m_ui->enablebusy()) {
-        this->ui.options->setText(tr("Busy %1").arg(m_ui->destbusy()));
+        this->ui.options->setText(tr("BUSY %1").arg(m_ui->destbusy()));
         this->ui.options->setToolTip(tr("Busy Forward towards %1").arg(m_ui->destbusy()));
     } else if (m_ui->enablerna()) {
         this->ui.options->setText(tr("FNA %1").arg(m_ui->destrna()));
         this->ui.options->setToolTip(tr("Non-Answer Forward towards %1").arg(m_ui->destrna()));
     } else if (m_ui->incallfilter()) {
-        this->ui.options->setText(tr("Call Filter"));
+        this->ui.options->setText(tr("CALL FILTER"));
+        this->ui.options->setToolTip("");
     } else {
-        this->ui.options->setText("");
+        this->ui.options->setText("AVAILABLE");
         this->ui.options->setToolTip("");
     }
 }
