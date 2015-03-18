@@ -196,6 +196,9 @@
      <height>60</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="toolTip">
     <string>Call your voicemail</string>
    </property>
@@ -260,6 +263,12 @@ border-radius:10px;</string>
      <width>22</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: #2C2927;</string>
    </property>
    <property name="text">
     <string/>
