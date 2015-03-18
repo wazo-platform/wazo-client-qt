@@ -300,13 +300,12 @@ border-radius:10px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: #e8e4e2;
-/*border: 1px solid #2c2927;*/
 border-radius: 14px;
-padding-left: 7px;
+padding-left: 12px;
 color: #2c2927;</string>
    </property>
    <property name="placeholderText">
-    <string>Call</string>
+    <string>call</string>
    </property>
   </widget>
  </widget>
