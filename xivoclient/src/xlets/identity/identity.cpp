@@ -36,9 +36,6 @@
 
 #include "identity.h"
 
-QIcon IdentityDisplay::m_show_icon(":/images/show.svg");
-QIcon IdentityDisplay::m_hide_icon(":/images/hide.svg");
-
 const QString icon_user_unlogged = "xivo-black";
 const QString icon_user_logged = "xivo-transp";
 const QString icon_agent_logged = "xivo-green";
@@ -52,6 +49,8 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
     : XLet(parent, tr("Identity")),
+      m_hide_icon(":/identity/images/hide.svg"),
+      m_show_icon(":/identity/images/show.svg"),
       m_presence_mapper(new QSignalMapper(this)),
       m_agent_menu(new QMenu(this)),
       m_presence_menu(new QMenu(this))

@@ -79,8 +79,8 @@ class IdentityDisplay : public XLet
         void updateOptions();
         void updateVoiceMailVisibility();
 
-        static QIcon m_hide_icon;
-        static QIcon m_show_icon;
+        QIcon m_hide_icon;
+        QIcon m_show_icon;
 
         Ui::IdentityWidget ui;
         QSignalMapper *m_presence_mapper;

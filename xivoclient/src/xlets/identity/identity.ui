@@ -47,7 +47,7 @@
    </property>
    <property name="icon">
     <iconset resource="identity.qrc">
-     <normaloff>:/identity/images/show.svg</normaloff>:/identity/images/show.svg</iconset>
+     <normaloff>:/identity/images/hide.svg</normaloff>:/identity/images/hide.svg</iconset>
    </property>
    <property name="iconSize">
     <size>
