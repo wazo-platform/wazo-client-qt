@@ -60,11 +60,13 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     this->ui.setupUi(this);
 
     this->ui.presence_button->setMenu(m_presence_menu);
+    this->m_presence_menu->setAttribute(Qt::WA_TranslucentBackground);
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
 
     this->ui.agent_button->setMenu(m_agent_menu);
     this->fillAgentMenu(m_agent_menu);
+    this->m_agent_menu->setAttribute(Qt::WA_TranslucentBackground);
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
@@ -94,14 +96,19 @@ void IdentityDisplay::fillAgentMenu(QMenu *menu)
         action = menu->addAction(tr("Login"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(login()));
+        menu->addSeparator();
         action = menu->addAction(tr("Logout"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(logout()));
+    }
+    if (may_log_agent && may_pause_agent) {
+        menu->addSeparator();
     }
     if (may_pause_agent) {
         action = menu->addAction(tr("Pause"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(pause()));
+        menu->addSeparator();
         action = menu->addAction(tr("Unpause"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(unpause()));
@@ -271,14 +278,29 @@ void IdentityDisplay::updatePresenceList()
     if (! allowed_presences.contains(presence)) {
         allowed_presences << presence;
     }
-    foreach (QString presence_name, allowed_presences) {
-        QString presence_display_name = presencemap.value(presence_name).toMap().value("longname").toString();
-
-        QAction *action = this->ui.presence_button->menu()->addAction(presence_display_name);
-        m_presence_mapper->setMapping(action, presence_name);
-        connect(action, SIGNAL(triggered()),
-                m_presence_mapper, SLOT(map()));
+    if (allowed_presences.isEmpty()) {
+        return;
     }
+
+    QString first_presence_name = allowed_presences.takeFirst();
+    this->addPresence(first_presence_name);
+
+    foreach (QString presence_name, allowed_presences) {
+        this->ui.presence_button->menu()->addSeparator();
+        this->addPresence(presence_name);
+
+    }
+}
+
+void IdentityDisplay::addPresence(const QString &presence_name)
+{
+    QVariantMap presencemap = b_engine->getOptionsUserStatus();
+    QString presence_display_name = presencemap.value(presence_name).toMap().value("longname").toString();
+
+    QAction *action = this->ui.presence_button->menu()->addAction(presence_display_name);
+    m_presence_mapper->setMapping(action, presence_name);
+    connect(action, SIGNAL(triggered()),
+            m_presence_mapper, SLOT(map()));
 }
 
 void IdentityDisplay::updateOptions()

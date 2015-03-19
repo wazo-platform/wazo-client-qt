@@ -71,6 +71,7 @@ class IdentityDisplay : public XLet
         void setAppIcon(const QString &);
 
     private:
+        void addPresence(const QString &);
         void fillAgentMenu(QMenu *menu);
         void requestVoicemailMessageCount(const VoiceMailInfo *voicemail);
         void updateAgentVisibility();
