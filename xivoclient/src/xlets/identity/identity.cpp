@@ -235,30 +235,40 @@ void IdentityDisplay::updateVoiceMailStatus(const QString & xvoicemailid)
         return;
     }
 
-    QColor background_color = QColor("#2c2927");
-    QColor foreground_color = QColor("#e77d39");
+    QPixmap new_messages_image = newMessagesIcon(voicemail->newMessages());
 
-    QPixmap voicemail_image = QPixmap(this->ui.voicemail_messages->size());
-    voicemail_image.fill(Qt::transparent);
+    this->ui.voicemail_messages->setPixmap(new_messages_image);
+}
 
-    QPainter voicemail_painter(&voicemail_image);
-    voicemail_painter.setRenderHint(QPainter::Antialiasing);
-    // background circle
-    QRect background_circle_rect = voicemail_image.rect().adjusted(1, 1, -1, -1);
-    voicemail_painter.setBrush(background_color);
-    voicemail_painter.setPen(background_color);
-    voicemail_painter.drawEllipse(background_circle_rect);
-    // colored circle
-    QRect colored_circle_rect = background_circle_rect.adjusted(3, 3, -3, -3);
-    voicemail_painter.setBrush(foreground_color);
-    voicemail_painter.setPen(foreground_color);
-    voicemail_painter.drawEllipse(colored_circle_rect);
-    voicemail_painter.setPen(QColor("black"));
-    voicemail_painter.setFont(this->ui.voicemail_messages->font());
-    voicemail_painter.drawText(background_circle_rect, Qt::AlignCenter, QString("%1").arg(voicemail->newMessages()));
-    voicemail_painter.end();
+QPixmap IdentityDisplay::newMessagesIcon(int message_count)
+{
+    QColor background_color, text_color;
+    background_color = text_color = QColor("#2c2927");
+    QColor circle_color = QColor("#e77d39");
 
-    this->ui.voicemail_messages->setPixmap(voicemail_image);
+    QPixmap new_messages_image = QPixmap(this->ui.voicemail_messages->size());
+    new_messages_image.fill(Qt::transparent);
+
+    if (message_count > 0) {
+        QPainter voicemail_painter(&new_messages_image);
+        voicemail_painter.setRenderHint(QPainter::Antialiasing);
+        // background circle
+        QRect background_circle_rect = new_messages_image.rect().adjusted(1, 1, -1, -1);
+        voicemail_painter.setBrush(background_color);
+        voicemail_painter.setPen(background_color);
+        voicemail_painter.drawEllipse(background_circle_rect);
+        // colored circle
+        QRect colored_circle_rect = background_circle_rect.adjusted(3, 3, -3, -3);
+        voicemail_painter.setBrush(circle_color);
+        voicemail_painter.setPen(circle_color);
+        voicemail_painter.drawEllipse(colored_circle_rect);
+        voicemail_painter.setPen(text_color);
+        voicemail_painter.setFont(this->ui.voicemail_messages->font());
+        voicemail_painter.drawText(background_circle_rect, Qt::AlignCenter, QString::number(message_count));
+        voicemail_painter.end();
+    }
+
+    return new_messages_image;
 }
 
 void IdentityDisplay::updateCurrentPresence() {
