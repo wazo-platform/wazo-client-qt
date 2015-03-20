@@ -253,11 +253,12 @@ void IdentityDisplay::updateCurrentPresence() {
 }
 
 QPixmap IdentityDisplay::presenceIcon(const QColor & presence_color) {
+    QColor background_color = QColor("#2c2927");
     QPixmap presence_arrow = QIcon(":/identity/images/down-arrow.svg").pixmap(QSize(8, 4));
     QPainter tint_painter(&presence_arrow);
     tint_painter.setRenderHint(QPainter::Antialiasing);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-    tint_painter.fillRect(presence_arrow.rect(), "#2c2927");
+    tint_painter.fillRect(presence_arrow.rect(), background_color);
     tint_painter.end();
 
     QPixmap presence_image = QPixmap(this->ui.presence_button->size());
@@ -267,10 +268,18 @@ QPixmap IdentityDisplay::presenceIcon(const QColor & presence_color) {
     arrow_rect.moveCenter(presence_image.rect().center());
 
     QPainter presence_painter(&presence_image);
+    presence_painter.setRenderHint(QPainter::Antialiasing);
+    // background circle
+    QRect background_circle_rect = presence_image.rect().adjusted(1,1,-1,-1);
+    presence_painter.setBrush(background_color);
+    presence_painter.setPen(background_color);
+    presence_painter.drawEllipse(background_circle_rect);
+    // colored circle
+    QRect colored_circle_rect = background_circle_rect.adjusted(3, 3, -3, -3);
     presence_painter.setBrush(presence_color);
     presence_painter.setPen(presence_color);
-    presence_painter.setRenderHint(QPainter::Antialiasing);
-    presence_painter.drawEllipse(presence_image.rect().adjusted(1,1,-1,-1).adjusted(3, 3, -3, -3));
+    presence_painter.drawEllipse(colored_circle_rect);
+    // down arrow
     presence_painter.drawPixmap(arrow_rect, presence_arrow);
     presence_painter.end();
 
