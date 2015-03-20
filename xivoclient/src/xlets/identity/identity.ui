@@ -334,23 +334,25 @@ QToolButton::menu-indicator {
   <widget class="QLabel" name="voicemail_messages">
    <property name="geometry">
     <rect>
-     <x>370</x>
-     <y>60</y>
-     <width>91</width>
-     <height>18</height>
+     <x>319</x>
+     <y>51</y>
+     <width>24</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Liberation Sans</family>
+     <family>Dyno</family>
      <pointsize>9</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">color: #A09790;</string>
    </property>
    <property name="text">
-    <string extracomment="default for unread voicemail messages">0 message(s)</string>
+    <string extracomment="default for unread voicemail messages"/>
    </property>
   </widget>
   <widget class="QLineEdit" name="call_input">

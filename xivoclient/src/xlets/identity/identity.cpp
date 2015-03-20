@@ -234,7 +234,31 @@ void IdentityDisplay::updateVoiceMailStatus(const QString & xvoicemailid)
     if (voicemail == NULL) {
         return;
     }
-    this->ui.voicemail_messages->setText(tr("%n message(s)", "unread voicemail messages", voicemail->newMessages()));
+
+    QColor background_color = QColor("#2c2927");
+    QColor foreground_color = QColor("#e77d39");
+
+    QPixmap voicemail_image = QPixmap(this->ui.voicemail_messages->size());
+    voicemail_image.fill(Qt::transparent);
+
+    QPainter voicemail_painter(&voicemail_image);
+    voicemail_painter.setRenderHint(QPainter::Antialiasing);
+    // background circle
+    QRect background_circle_rect = voicemail_image.rect().adjusted(1, 1, -1, -1);
+    voicemail_painter.setBrush(background_color);
+    voicemail_painter.setPen(background_color);
+    voicemail_painter.drawEllipse(background_circle_rect);
+    // colored circle
+    QRect colored_circle_rect = background_circle_rect.adjusted(3, 3, -3, -3);
+    voicemail_painter.setBrush(foreground_color);
+    voicemail_painter.setPen(foreground_color);
+    voicemail_painter.drawEllipse(colored_circle_rect);
+    voicemail_painter.setPen(QColor("black"));
+    voicemail_painter.setFont(this->ui.voicemail_messages->font());
+    voicemail_painter.drawText(background_circle_rect, Qt::AlignCenter, QString("%1").arg(voicemail->newMessages()));
+    voicemail_painter.end();
+
+    this->ui.voicemail_messages->setPixmap(voicemail_image);
 }
 
 void IdentityDisplay::updateCurrentPresence() {
