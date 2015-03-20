@@ -253,7 +253,7 @@ void IdentityDisplay::updateCurrentPresence() {
 }
 
 QPixmap IdentityDisplay::presenceIcon(const QColor & presence_color) {
-    QPixmap presence_arrow = QIcon(":/identity/images/down-arrow.svg").pixmap(QSize(10, 5));
+    QPixmap presence_arrow = QIcon(":/identity/images/down-arrow.svg").pixmap(QSize(8, 4));
     QPainter tint_painter(&presence_arrow);
     tint_painter.setRenderHint(QPainter::Antialiasing);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
@@ -270,7 +270,7 @@ QPixmap IdentityDisplay::presenceIcon(const QColor & presence_color) {
     presence_painter.setBrush(presence_color);
     presence_painter.setPen(presence_color);
     presence_painter.setRenderHint(QPainter::Antialiasing);
-    presence_painter.drawEllipse(presence_image.rect().adjusted(1, 1, -2, -2).adjusted(3, 3, -3, -3));
+    presence_painter.drawEllipse(presence_image.rect().adjusted(1,1,-1,-1).adjusted(3, 3, -3, -3));
     presence_painter.drawPixmap(arrow_rect, presence_arrow);
     presence_painter.end();
 

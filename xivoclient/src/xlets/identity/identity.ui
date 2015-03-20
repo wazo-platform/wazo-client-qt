@@ -251,7 +251,7 @@ QToolButton::menu-indicator {
   <widget class="QToolButton" name="presence_button">
    <property name="geometry">
     <rect>
-     <x>88</x>
+     <x>87</x>
      <y>54</y>
      <width>24</width>
      <height>24</height>
