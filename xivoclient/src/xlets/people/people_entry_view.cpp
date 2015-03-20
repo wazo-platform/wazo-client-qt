@@ -41,6 +41,7 @@ PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
     this->setSortingEnabled(true);
+    this->horizontalHeader()->setSortIndicatorShown(true);
     this->setSelectionMode(QAbstractItemView::NoSelection);
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     this->viewport()->setAttribute(Qt::WA_Hover);

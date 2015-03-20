@@ -53,6 +53,8 @@ People::People(QWidget *parent)
     ui.entry_table->setModel(m_proxy_model);
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             ui.entry_table, SLOT(updateColumnsDelegates(const QModelIndex &, int, int)));
+    connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+            this, SLOT(defaultColumnSort(const QModelIndex &, int, int)));
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
@@ -62,8 +64,6 @@ People::People(QWidget *parent)
             this, SLOT(focusEntryTable()));
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
-    connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-            this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
     connect(this->ui.entry_table, SIGNAL(extensionClicked(const QString &)),
             this, SLOT(dial(const QString &)));
     this->m_remote_lookup_timer.setSingleShot(true);
@@ -108,11 +108,12 @@ void People::searchPeople()
     }
 }
 
-void People::dataChanged(const QModelIndex &, const QModelIndex &)
+void People::defaultColumnSort(const QModelIndex &, int, int)
 {
     this->m_proxy_model->invalidate();
     int name_column_index = this->m_model->getNameColumnIndex();
     this->m_proxy_model->sort(name_column_index, Qt::AscendingOrder);
+    this->ui.entry_table->horizontalHeader()->setSortIndicator(name_column_index, Qt::AscendingOrder);
 }
 
 void People::dial(const QString &extension)
