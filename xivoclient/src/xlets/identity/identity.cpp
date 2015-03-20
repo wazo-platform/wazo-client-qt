@@ -241,20 +241,40 @@ void IdentityDisplay::updateCurrentPresence() {
     if (! m_ui) {
         return;
     }
+
     QString presence = m_ui->availstate();
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
     QString presence_color_string = presencemap.value(presence).toMap().value("color").toString();
     QColor presence_color = QColor(presence_color_string);
 
-    QIcon image = QIcon(":/images/show.svg");
-    QPixmap tinted_image = image.pixmap(this->ui.presence_button->iconSize());
+    QPixmap presence_image = this->presenceIcon(presence_color);
 
-    QPainter tint_painter(&tinted_image);
+    this->ui.presence_button->setIcon(presence_image);
+}
+
+QPixmap IdentityDisplay::presenceIcon(const QColor & presence_color) {
+    QPixmap presence_arrow = QIcon(":/identity/images/down-arrow.svg").pixmap(QSize(10, 5));
+    QPainter tint_painter(&presence_arrow);
+    tint_painter.setRenderHint(QPainter::Antialiasing);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-    tint_painter.fillRect(tinted_image.rect(), presence_color);
+    tint_painter.fillRect(presence_arrow.rect(), "#2c2927");
     tint_painter.end();
 
-    this->ui.presence_button->setIcon(tinted_image);
+    QPixmap presence_image = QPixmap(this->ui.presence_button->size());
+    presence_image.fill(Qt::transparent);
+
+    QRect arrow_rect = presence_arrow.rect();
+    arrow_rect.moveCenter(presence_image.rect().center());
+
+    QPainter presence_painter(&presence_image);
+    presence_painter.setBrush(presence_color);
+    presence_painter.setPen(presence_color);
+    presence_painter.setRenderHint(QPainter::Antialiasing);
+    presence_painter.drawEllipse(presence_image.rect().adjusted(1, 1, -2, -2).adjusted(3, 3, -3, -3));
+    presence_painter.drawPixmap(arrow_rect, presence_arrow);
+    presence_painter.end();
+
+    return presence_image;
 }
 
 void IdentityDisplay::updatePresenceList()

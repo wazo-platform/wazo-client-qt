@@ -16,5 +16,6 @@
         <file>images/voicemail.svg</file>
         <file>images/hide.svg</file>
         <file>images/show.svg</file>
+        <file>images/down-arrow.svg</file>
     </qresource>
 </RCC>

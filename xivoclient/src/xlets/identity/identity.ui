@@ -57,7 +57,10 @@ QMenu::item:selected {
     background: #e8e4e2;
     color: black;
 }
-</string>
+
+QToolButton::menu-indicator {
+    image: none;
+}</string>
   </property>
   <widget class="QPushButton" name="fold_button">
    <property name="geometry">
@@ -248,28 +251,25 @@ QMenu::item:selected {
   <widget class="QToolButton" name="presence_button">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>55</y>
-     <width>20</width>
-     <height>20</height>
+     <x>88</x>
+     <y>54</y>
+     <width>24</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: #a9a28a;
-border-radius:10px;</string>
+    <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
+    top: 0px;
+    left: 0px;
+    background-color: transparent;
+	border: 0px;
+    padding: 0px;
+    selection-color: transparent;
+    color: transparent;
+}</string>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="../../../xivoclient.qrc">
-     <normaloff>:/images/show.svg</normaloff>:/images/show.svg</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>20</width>
-     <height>20</height>
-    </size>
    </property>
    <property name="popupMode">
     <enum>QToolButton::InstantPopup</enum>
