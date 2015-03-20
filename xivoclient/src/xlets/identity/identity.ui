@@ -286,15 +286,23 @@ QToolButton::menu-indicator {
     <rect>
      <x>160</x>
      <y>55</y>
-     <width>22</width>
-     <height>22</height>
+     <width>20</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: #2C2927;</string>
+    <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
+    top: 0px;
+    left: 0px;
+    background-color: transparent;
+	border: 0px;
+    padding: 0px;
+    selection-color: transparent;
+    color: transparent;
+}</string>
    </property>
    <property name="text">
     <string/>
