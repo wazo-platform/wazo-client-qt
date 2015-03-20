@@ -308,7 +308,7 @@ QPixmap IdentityDisplay::presenceIcon(const QColor & presence_color) {
     QPainter presence_painter(&presence_image);
     presence_painter.setRenderHint(QPainter::Antialiasing);
     // background circle
-    QRect background_circle_rect = presence_image.rect().adjusted(1,1,-1,-1);
+    QRect background_circle_rect = presence_image.rect().adjusted(1, 1, -1, -1);
     presence_painter.setBrush(background_color);
     presence_painter.setPen(background_color);
     presence_painter.drawEllipse(background_circle_rect);
