@@ -61,6 +61,7 @@ class IdentityDisplay : public XLet
         void on_fold_button_toggled(bool fold);
         void on_voicemail_button_clicked();
         void on_call_input_returnPressed();
+        void on_call_search_button_clicked();
 
         void login();
         void logout();
@@ -72,6 +73,7 @@ class IdentityDisplay : public XLet
 
     private:
         void addPresence(const QString &);
+        void dial();
         void fillAgentMenu(QMenu *menu);
         QPixmap newMessagesIcon(int message_count);
         QPixmap presenceIcon(const QColor &color);

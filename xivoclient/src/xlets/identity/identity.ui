@@ -373,11 +373,39 @@ QToolButton::menu-indicator {
    <property name="styleSheet">
     <string notr="true">background-color: #e8e4e2;
 border-radius: 14px;
-padding-left: 12px;
+padding-left: 14px;
+padding-right: 28px;
 color: #2c2927;</string>
    </property>
    <property name="placeholderText">
     <string>call</string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="call_search_button">
+   <property name="geometry">
+    <rect>
+     <x>643</x>
+     <y>35</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
+    top: 0px;
+    left: 0px;
+	border: 0px;
+    padding: 0px;
+    background-color: transparent;
+    color: transparent;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="identity.qrc">
+     <normaloff>:/identity/images/search-bold.svg</normaloff>:/identity/images/search-bold.svg</iconset>
    </property>
   </widget>
  </widget>

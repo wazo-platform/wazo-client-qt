@@ -17,5 +17,6 @@
         <file>images/hide.svg</file>
         <file>images/show.svg</file>
         <file>images/down-arrow.svg</file>
+        <file>images/search-bold.svg</file>
     </qresource>
 </RCC>

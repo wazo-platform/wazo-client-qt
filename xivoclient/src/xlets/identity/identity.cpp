@@ -474,11 +474,22 @@ void IdentityDisplay::on_voicemail_button_clicked()
     b_engine->actionDial(QString("vm_consult:%1").arg(voicemail_id));
 }
 
+void IdentityDisplay::on_call_search_button_clicked()
+{
+    this->dial();
+}
+
 void IdentityDisplay::on_call_input_returnPressed()
 {
+    this->dial();
+}
+
+void IdentityDisplay::dial()
+{
     QString extension = this->ui.call_input->text();
-    if (extension.isEmpty())
+    if (extension.isEmpty()) {
         return;
+    }
     b_engine->actionDial(extension);
     this->ui.call_input->clear();
 }
