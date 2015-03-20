@@ -60,6 +60,7 @@
         <file>images/hide.svg</file>
         <file>images/show.svg</file>
         <file>images/agent-on.svg</file>
+        <file>images/agent-pause.svg</file>
         <file>images/agent-off.svg</file>
     </qresource>
 </RCC>
