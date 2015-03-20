@@ -254,7 +254,7 @@ ConfRoomView::ConfRoomView(QWidget *parent, ConfRoomModel *model)
     setShowGrid(0);
     verticalHeader()->hide();
     horizontalHeader()->setSectionsMovable(true);
-    horizontalHeader()->setStretchLastSection(true);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     int ActionCol[] = { ACTION_MUTE,
                         ACTION_TALK_TO,
@@ -357,9 +357,7 @@ ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &number, const Q
 
     view->verticalHeader()->hide();
 
-    hBox->addStretch(1);
-    hBox->addWidget(view, 8);
-    hBox->addStretch(1);
+    hBox->addWidget(view);
 
     vBox->addLayout(hBox);
 }

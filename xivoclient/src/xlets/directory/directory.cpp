@@ -68,6 +68,8 @@ Directory::Directory(QWidget *parent)
             this, SLOT(searchDirectory()));
     connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
             this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
+    connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+            ui.entry_table, SLOT(columnsInserted(const QModelIndex &, int, int)));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
     b_engine->sendJsonCommand(MessageFactory::getSwitchboardDirectoryHeaders());
@@ -135,5 +137,4 @@ void Directory::dataChanged(const QModelIndex &, const QModelIndex &)
     this->m_proxy_model->invalidate();
     int name_column_index = this->m_model->getNameColumnIndex();
     this->m_proxy_model->sort(name_column_index, Qt::AscendingOrder);
-    ui.entry_table->resizeColumnsToContents();
 }

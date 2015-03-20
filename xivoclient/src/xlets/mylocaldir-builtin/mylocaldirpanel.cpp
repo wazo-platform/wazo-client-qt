@@ -103,6 +103,7 @@ MyLocalDirPanel::MyLocalDirPanel(QWidget * parent)
     m_table->setColumnCount(m_headers.size());
     m_table->setHorizontalHeaderLabels(columnNames);
     m_table->setSortingEnabled(true);
+    m_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     vlayout->addWidget(m_table);
 
     connect(qApp, SIGNAL(commitDataRequest(QSessionManager &)),

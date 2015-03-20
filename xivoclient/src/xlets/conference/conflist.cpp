@@ -241,9 +241,7 @@ ConfList::ConfList(XletConference *parent)
     view->hideColumn(ConfListModel::MODERATED);
     view->sortByColumn(ConfListModel::NAME, Qt::AscendingOrder);
 
-    hBox->addStretch(1);
-    hBox->addWidget(view, 8);
-    hBox->addStretch(1);
+    hBox->addWidget(view);
 
     vBox->addLayout(hBox);
     setLayout(vBox);

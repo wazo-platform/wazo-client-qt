@@ -48,7 +48,6 @@ class XletQueueMembers : public XLet
 
     private:
         void addHeader(QVBoxLayout * layout);
-        void addCenteredBody(QVBoxLayout * layout);
 
         QueueMembersModel *m_model;
         QueueMembersSortFilterProxyModel *m_proxy_model;
