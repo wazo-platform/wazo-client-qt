@@ -78,11 +78,9 @@ QToolButton::menu-indicator {
     <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
     top: 0px;
     left: 0px;
-    background-color: #2C2927;
 	border: 0px;
     padding: 0px;
-    selection-color: transparent;
-    color: transparent;
+    background-color: transparent;
 }</string>
    </property>
    <property name="text">
