@@ -229,6 +229,15 @@ QToolButton::menu-indicator {
    <property name="toolTip">
     <string>Call your voicemail</string>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
+    top: 0px;
+    left: 0px;
+	border: 0px;
+    padding: 0px;
+    background-color: transparent;
+}</string>
+   </property>
    <property name="text">
     <string/>
    </property>
