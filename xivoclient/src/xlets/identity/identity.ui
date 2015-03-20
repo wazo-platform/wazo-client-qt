@@ -355,7 +355,7 @@ QToolButton::menu-indicator {
     <string extracomment="default for unread voicemail messages"/>
    </property>
   </widget>
-  <widget class="QLineEdit" name="call_input">
+  <widget class="QLineEdit" name="dial_input">
    <property name="geometry">
     <rect>
      <x>500</x>
@@ -381,7 +381,7 @@ color: #2c2927;</string>
     <string>call</string>
    </property>
   </widget>
-  <widget class="QToolButton" name="call_search_button">
+  <widget class="QToolButton" name="dial_search_button">
    <property name="geometry">
     <rect>
      <x>643</x>

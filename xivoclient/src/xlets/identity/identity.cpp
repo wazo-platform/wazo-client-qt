@@ -474,24 +474,24 @@ void IdentityDisplay::on_voicemail_button_clicked()
     b_engine->actionDial(QString("vm_consult:%1").arg(voicemail_id));
 }
 
-void IdentityDisplay::on_call_search_button_clicked()
+void IdentityDisplay::on_dial_search_button_clicked()
 {
     this->dial();
 }
 
-void IdentityDisplay::on_call_input_returnPressed()
+void IdentityDisplay::on_dial_input_returnPressed()
 {
     this->dial();
 }
 
 void IdentityDisplay::dial()
 {
-    QString extension = this->ui.call_input->text();
+    QString extension = this->ui.dial_input->text();
     if (extension.isEmpty()) {
         return;
     }
     b_engine->actionDial(extension);
-    this->ui.call_input->clear();
+    this->ui.dial_input->clear();
 }
 
 
