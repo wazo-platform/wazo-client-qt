@@ -87,7 +87,7 @@
      <item>
       <widget class="QGroupBox" name="step1_button_line_edit_group">
        <property name="qss_tags" stdset="0">
-        <stringlist>
+        <stringlist notr="true">
          <string>line_edit_button</string>
         </stringlist>
        </property>
@@ -108,7 +108,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="step1_line_edit">
+         <widget class="FileNameLineEdit" name="step1_line_edit">
           <property name="placeholderText">
            <string>file</string>
           </property>
@@ -116,9 +116,6 @@
         </item>
         <item>
          <widget class="QPushButton" name="step1_browse_button">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
           <property name="text">
            <string>BROWSE...</string>
           </property>
@@ -286,6 +283,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FileNameLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">xletlib/extendedlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>send_button</tabstop>
  </tabstops>

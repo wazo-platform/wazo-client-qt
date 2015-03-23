@@ -31,20 +31,11 @@
 #define __FAXPANEL_H__
 
 #include <QDebug>
-#include <QHBoxLayout>
-#include <QGroupBox>
-#include <QCheckBox>
-#include <QFileDialog>
-#include <QLabel>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QSettings>
-#include <QVBoxLayout>
-#include <QLineEdit>
 
 #include <baseengine.h>
 #include <xletlib/xlet.h>
 #include <xletlib/extendedlineedit.h>
+#include <ui_fax_widget.h>
 
 #include "dirdialog.h"
 
@@ -56,7 +47,6 @@ class FaxPanel : public XLet
 
     public:
         FaxPanel(QWidget *parent=0);
-        ~FaxPanel();
 
     signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);
@@ -70,11 +60,8 @@ class FaxPanel : public XLet
         void fileNameChanged(const QString &);
 
     private:
+        Ui::FaxWidget ui;
         QWidget *m_mainwindow;  //!< MainWidget where some parameters are commited to
-        FileNameLineEdit *m_openFileNameLabel;
-        QLineEdit *m_destination;
-        QCheckBox *m_maskornot;
-        QPushButton *m_sendButton;
 
         QString m_dest_string;
         QString m_file_string;
