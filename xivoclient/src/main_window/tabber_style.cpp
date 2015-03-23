@@ -50,24 +50,10 @@ void TabberStyle::drawControl(ControlElement element,
 {
     if (element == CE_TabBarTabLabel) {
         if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option)) {
-
             QStyleOptionTab opt(*tab);
             opt.shape = QTabBar::RoundedNorth;
             QProxyStyle::drawControl(element, &opt, painter, widget);
             return;
-
-            // QStyleOptionTab opt(*tab);
-            // QSize iconSize = opt.iconSize;
-            // QRect tabRect = opt.rect;
-            // QRect iconRect;
-            // iconRect.setX(tabRect.center().x() - iconSize.width() / 2);
-            // iconRect.setY(tabRect.center().y() - iconSize.height() / 2);
-
-            // if (!opt.icon.isNull()) {
-            //     QPixmap tabIcon = opt.icon.pixmap(opt.iconSize);
-            //     painter->drawPixmap(iconRect.x(), iconRect.y(), tabIcon);
-            // }
-            // return;
         }
     }
     QProxyStyle::drawControl(element, option, painter, widget);
