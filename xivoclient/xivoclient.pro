@@ -28,6 +28,7 @@ FORMS += $${ROOT_DIR}/src/config_widget/config_widget.ui
 FORMS += $${ROOT_DIR}/src/login_widget/login_widget.ui
 FORMS += $${ROOT_DIR}/src/main_window/loading_dialog.ui
 FORMS += $${ROOT_DIR}/src/main_window/main_window.ui
+FORMS += $${ROOT_DIR}/src/xlets/fax-builtin/fax_widget.ui
 
 # this should just tell lrelease to compile these files
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
