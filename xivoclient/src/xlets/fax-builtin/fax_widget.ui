@@ -85,7 +85,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="step1_button_line_edit_group">
+      <widget class="QFrame" name="step1_button_line_edit_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>line_edit_button</string>
@@ -164,10 +164,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="step2_button_line_edit_group">
-       <property name="title">
-        <string/>
-       </property>
+      <widget class="QFrame" name="step2_button_line_edit_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>line_edit_button</string>

@@ -24,7 +24,7 @@ color: #FFFFFF;
 padding-left: 22px;
 padding-right: 22px;
 }
-QGroupBox[qss_tags~="line_edit_button"]{
+QFrame[qss_tags~="line_edit_button"]{
 margin-top: 15px;
 margin-bottom: 15px;
 border-radius: 15px; 
