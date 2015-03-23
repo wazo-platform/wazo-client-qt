@@ -10,3 +10,4 @@ Building and Running
 
 Complete documentation on building the XiVO Client can be found on the
 [XiVO documentation web site](http://documentation.xivo.io/en/stable/contributors/xivo_client/build.html).
+
