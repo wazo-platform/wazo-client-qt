@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FaxWidget</class>
+ <widget class="QWidget" name="FaxWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>692</width>
+    <height>726</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <property name="qss_tags" stdset="0">
+   <stringlist notr="true">
+    <string>xlet_frame</string>
+   </stringlist>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>30</number>
+   </property>
+   <property name="topMargin">
+    <number>30</number>
+   </property>
+   <property name="rightMargin">
+    <number>30</number>
+   </property>
+   <property name="bottomMargin">
+    <number>30</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="fax_label">
+     <property name="text">
+      <string>Send fax</string>
+     </property>
+     <property name="qss_tags" stdset="0">
+      <stringlist notr="true">
+       <string>xlet_title</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="step1_layout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>15</number>
+     </property>
+     <property name="bottomMargin">
+      <number>30</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="step1_number">
+       <property name="text">
+        <string>1.</string>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>step_number</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="step1_message">
+       <property name="text">
+        <string>Choose file to send</string>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>xlet_subtitle</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="step1_button_line_edit_group">
+       <property name="qss_tags" stdset="0">
+        <stringlist>
+         <string>line_edit_button</string>
+        </stringlist>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="step1_line_edit">
+          <property name="placeholderText">
+           <string>file</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="step1_browse_button">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>BROWSE...</string>
+          </property>
+          <property name="qss_tags" stdset="0">
+           <stringlist notr="true">
+            <string>black</string>
+           </stringlist>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="step2_layout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>15</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="step2_number">
+       <property name="text">
+        <string>2.</string>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>step_number</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="step2_message">
+       <property name="text">
+        <string>Choose destination number</string>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>xlet_subtitle</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="step2_button_line_edit_group">
+       <property name="title">
+        <string/>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>line_edit_button</string>
+        </stringlist>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="step2_line_edit">
+          <property name="placeholderText">
+           <string>fax number</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="step2_search_button">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../xivoclient.qrc">
+            <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>13</width>
+            <height>13</height>
+           </size>
+          </property>
+          <property name="qss_tags" stdset="0">
+           <stringlist notr="true">
+            <string>black</string>
+            <string>search</string>
+           </stringlist>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="send_layout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="send_button">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>SEND FAX</string>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>orange</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::MinimumExpanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>send_button</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../../xivoclient.qrc"/>
+ </resources>
+ <connections/>
+</ui>
