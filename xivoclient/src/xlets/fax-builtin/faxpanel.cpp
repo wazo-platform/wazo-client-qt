@@ -55,11 +55,6 @@ FaxPanel::FaxPanel(QWidget *parent)
 
     connect( this->ui.send_button, SIGNAL(clicked()),
              this, SLOT(sendFax()) );
-
-    // connect signals / slots
-    connect( b_engine, SIGNAL(ackFax(const QString &, const QString &)),
-             this, SLOT(popupMsg(const QString &, const QString &)) );
-
 }
 
 void FaxPanel::destNumberChanged(const QString &/* ext*/)
@@ -127,54 +122,4 @@ void FaxPanel::dirLookup()
     int ret = dirdialog.exec();
     if (ret == QDialog::Rejected)
         this->ui.step2_line_edit->setText(old_destination);
-}
-
-void FaxPanel::popupMsg(const QString & status, const QString & reason)
-{
-    static QMessageBox msgbox;
-    QMessageBox::Icon icon;
-    QString text;
-
-    // qDebug() << Q_FUNC_INFO << status << reason;
-
-    if(status == "ok") {
-        icon = QMessageBox::Information;
-        text = tr("Your Fax (file %1)\n"
-                  "was successfully sent to %2.").arg(m_file_string, m_dest_string);
-    } else if (status == "queued") {
-        icon = QMessageBox::Information;
-        text = tr("Your Fax (file %1)\n"
-                  "is being processed and will be sent soon.").arg(m_file_string);
-    } else {
-        QString faxreason;
-        if(reason == "filenotfound")
-            faxreason = tr("File not found");
-        else if(reason == "fileempty")
-            faxreason = tr("Empty file");
-        else if(reason == "orig")
-            faxreason = tr("Problem when dialing the number");
-        else if(reason == "convert-pdftif")
-            faxreason = tr("Unable to convert your PDF to TIFF");
-        else if(reason == "filetype")
-            faxreason = tr("Document not a PDF");
-        else if(reason == "AMI")
-            faxreason = tr("Dialog between CTI server and IPBX");
-        else if(reason == "exists-pathspool")
-            faxreason = tr("(Server) missing directory");
-        else if(reason == "unknown")
-            faxreason = tr("Unknown");
-        else
-            faxreason = tr("Not given");
-        icon = QMessageBox::Critical;
-        text = tr("Your Fax (file %1)\n"
-                  "was NOT sent to %2.\n"
-                  "Reason given : %3.").arg(m_file_string, m_dest_string, faxreason);
-        this->ui.step2_line_edit->setText(m_dest_string);
-        this->ui.step1_line_edit->setText(m_file_string);
-    }
-
-    msgbox.setWindowTitle("XiVO CTI (Fax)");
-    msgbox.setIcon(icon);
-    msgbox.setText(text);
-    msgbox.show();
 }
