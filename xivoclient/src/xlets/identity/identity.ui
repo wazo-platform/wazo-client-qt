@@ -278,6 +278,12 @@ QToolButton::menu-indicator {
    <property name="text">
     <string/>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
    <property name="popupMode">
     <enum>QToolButton::InstantPopup</enum>
    </property>
