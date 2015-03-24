@@ -43,14 +43,14 @@ FaxPanel::FaxPanel(QWidget *parent)
         this->setStyleSheet(qssFile.readAll());
     }
 
-    connect( this->ui.step1_line_edit, SIGNAL(textChanged(const QString &)),
+    connect( this->ui.step1_input, SIGNAL(textChanged(const QString &)),
              this, SLOT(fileNameChanged(const QString &)) );
     connect( this->ui.step1_browse_button, SIGNAL(clicked()),
              this, SLOT(setOpenFileName()) );
 
     connect( this->ui.step2_search_button, SIGNAL(clicked()),
              this, SLOT(dirLookup()) );
-    connect( this->ui.step2_line_edit, SIGNAL(textChanged(const QString &)),
+    connect( this->ui.step2_input, SIGNAL(textChanged(const QString &)),
              this, SLOT(destNumberChanged(const QString &)) );
 
     connect( this->ui.send_button, SIGNAL(clicked()),
@@ -60,7 +60,7 @@ FaxPanel::FaxPanel(QWidget *parent)
 void FaxPanel::destNumberChanged(const QString &/* ext*/)
 {
     // qDebug() << Q_FUNC_INFO << ext;
-    if ((! this->ui.step1_line_edit->text().isEmpty()) && (! this->ui.step2_line_edit->text().isEmpty())) {
+    if ((! this->ui.step1_input->text().isEmpty()) && (! this->ui.step2_input->text().isEmpty())) {
         this->ui.send_button->setEnabled(true);
     } else {
         this->ui.send_button->setEnabled(false);
@@ -70,7 +70,7 @@ void FaxPanel::destNumberChanged(const QString &/* ext*/)
 void FaxPanel::fileNameChanged(const QString &)
 {
     // qDebug() << Q_FUNC_INFO << ext;
-    if ((! this->ui.step1_line_edit->text().isEmpty()) && (! this->ui.step2_line_edit->text().isEmpty())) {
+    if ((! this->ui.step1_input->text().isEmpty()) && (! this->ui.step2_input->text().isEmpty())) {
         this->ui.send_button->setEnabled(true);
     } else {
         this->ui.send_button->setEnabled(false);
@@ -83,7 +83,7 @@ void FaxPanel::setOpenFileName()
     // previously, probably because of a too quick copy/paste from an example.
     // While on Linux platforms, it makes no difference, on MacOS it is worth
     // not setting it, in order for special places like "Volumes" to be seen.
-    QString open_path = this->ui.step1_line_edit->text();
+    QString open_path = this->ui.step1_input->text();
     if (open_path.isEmpty()) {
         open_path = QDir::toNativeSeparators(QDir::homePath());
     }
@@ -92,21 +92,21 @@ void FaxPanel::setOpenFileName()
                                                     open_path,
                                                     tr("PDF Files (*.pdf);;All Files (*)"));
     if (!fileName.isEmpty())
-        this->ui.step1_line_edit->setText(fileName);
+        this->ui.step1_input->setText(fileName);
 }
 
 
 void FaxPanel::sendFax()
 {
-    if ((! this->ui.step1_line_edit->text().isEmpty()) && (! this->ui.step2_line_edit->text().isEmpty())) {
+    if ((! this->ui.step1_input->text().isEmpty()) && (! this->ui.step2_input->text().isEmpty())) {
         // qDebug() << Q_FUNC_INFO
-        // << this->ui.step1_line_edit->text()
-        // << this->ui.step2_line_edit->text()
+        // << this->ui.step1_input->text()
+        // << this->ui.step2_input->text()
         // this->ui.send_button->setEnabled(false);
-        m_dest_string = this->ui.step2_line_edit->text();
-        m_file_string = this->ui.step1_line_edit->text();
-        this->ui.step2_line_edit->clear();
-        this->ui.step1_line_edit->clear();
+        m_dest_string = this->ui.step2_input->text();
+        m_file_string = this->ui.step1_input->text();
+        this->ui.step2_input->clear();
+        this->ui.step1_input->clear();
         b_engine->sendFaxCommand(m_file_string,
                                  m_dest_string);
     }
@@ -117,9 +117,9 @@ void FaxPanel::dirLookup()
     // qDebug() << Q_FUNC_INFO;
     DirDialog dirdialog(m_mainwindow);
     connect(dirdialog.dirpanel(), SIGNAL(selectedText(const QString &)),
-            this->ui.step2_line_edit, SLOT(setText(const QString &)));
-    QString old_destination = this->ui.step2_line_edit->text();
+            this->ui.step2_input, SLOT(setText(const QString &)));
+    QString old_destination = this->ui.step2_input->text();
     int ret = dirdialog.exec();
     if (ret == QDialog::Rejected)
-        this->ui.step2_line_edit->setText(old_destination);
+        this->ui.step2_input->setText(old_destination);
 }

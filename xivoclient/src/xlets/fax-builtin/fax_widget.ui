@@ -44,7 +44,7 @@
      </property>
      <property name="qss_tags" stdset="0">
       <stringlist notr="true">
-       <string>xlet_title</string>
+       <string>xlet_h1</string>
       </stringlist>
      </property>
     </widget>
@@ -79,16 +79,16 @@
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
-         <string>xlet_subtitle</string>
+         <string>xlet_h4</string>
         </stringlist>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="step1_button_line_edit_group">
+      <widget class="QFrame" name="step1_button_input_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
-         <string>line_edit_button</string>
+         <string>input_button</string>
         </stringlist>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -108,7 +108,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="FileNameLineEdit" name="step1_line_edit">
+         <widget class="FileNameLineEdit" name="step1_input">
           <property name="placeholderText">
            <string>file</string>
           </property>
@@ -158,16 +158,16 @@
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
-         <string>xlet_subtitle</string>
+         <string>xlet_h4</string>
         </stringlist>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="step2_button_line_edit_group">
+      <widget class="QFrame" name="step2_button_input_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
-         <string>line_edit_button</string>
+         <string>input_button</string>
         </stringlist>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -187,7 +187,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="step2_line_edit">
+         <widget class="QLineEdit" name="step2_input">
           <property name="placeholderText">
            <string>fax number</string>
           </property>
