@@ -33,9 +33,10 @@
 #include <xletfactory.h>
 #include <QPushButton>
 
-#include "xlet_dispatcher.h"
 #include "main_window.h"
 #include "main_widget.h"
+#include "tab_background.h"
+#include "xlet_dispatcher.h"
 
 XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent)
     : QObject(parent),
@@ -167,7 +168,8 @@ void XletDispatcher::prepareXletsGrid()
         const QString &options = xlet_and_option.second;
         if (name == "tabber") {
             this->prepareXletsTab();
-            this->m_grid_container->insertWidget(options.toInt(), this->m_tab_container);
+            QWidget *tab_background = new TabBackground(m_tab_container, this->m_main_widget);
+            this->m_grid_container->insertWidget(options.toInt(), tab_background);
         } else {
             XLet *xlet = this->xletFactory(name);
             if (xlet) {
@@ -210,9 +212,12 @@ void XletDispatcher::prepareXletsTab()
 
     this->m_tab_container = new QTabWidget(this->m_main_widget);
     this->m_tab_container->setTabPosition(QTabWidget::West);
+    // A little more space before the first tab
+    this->m_tab_container->setStyleSheet("QTabWidget::tab-bar {top: 17px;}");
 
+    this->m_tab_container->tabBar()->setAttribute(Qt::WA_Hover);
     this->m_tab_container->tabBar()->setStyle(&m_tabber_style);
-    this->m_tab_container->tabBar()->setIconSize(QSize(25,25));
+    this->m_tab_container->tabBar()->setIconSize(QSize(30, 30));
     this->m_has_tabber = true;
 
     foreach (const XletAndOption &xlet_and_option, this->m_xlets_tab) {

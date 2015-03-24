@@ -61,5 +61,6 @@
         <file>images/show.svg</file>
         <file>images/agent-on.svg</file>
         <file>images/agent-off.svg</file>
+        <file>images/selected-tab.png</file>
     </qresource>
 </RCC>
