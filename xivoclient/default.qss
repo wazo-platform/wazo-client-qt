@@ -24,18 +24,18 @@ color: #FFFFFF;
 padding-left: 22px;
 padding-right: 22px;
 }
-QFrame[qss_tags~="line_edit_button"]{
+QFrame[qss_tags~="input_button"]{
 margin-top: 15px;
 margin-bottom: 15px;
 border-radius: 15px; 
 background-color: #D7D2D0;
 }
-QLabel[qss_tags~="xlet_title"] {
+QLabel[qss_tags~="xlet_h1"] {
 padding-bottom: 30px;
 font: bold 26pt "Dyno";
 color: #E77D39;
 }
-QLabel[qss_tags~="xlet_subtitle"] {
+QLabel[qss_tags~="xlet_h4"] {
 font: 13pt "Dyno";
 }
 QWidget[qss_tags~="xlet_frame"] {
