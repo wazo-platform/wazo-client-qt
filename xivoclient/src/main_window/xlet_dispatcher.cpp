@@ -218,6 +218,7 @@ void XletDispatcher::prepareXletsTab()
     this->m_tab_container->tabBar()->setAttribute(Qt::WA_Hover);
     this->m_tab_container->tabBar()->setStyle(&m_tabber_style);
     this->m_tab_container->tabBar()->setIconSize(QSize(30, 30));
+    this->m_tab_container->tabBar()->setDrawBase(true);
     this->m_has_tabber = true;
 
     foreach (const XletAndOption &xlet_and_option, this->m_xlets_tab) {
