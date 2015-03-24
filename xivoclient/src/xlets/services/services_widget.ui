@@ -109,36 +109,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="unconditional_fwd_radiobutton">
-       <property name="text">
-        <string>&amp;Unconditional forward to</string>
-       </property>
-       <property name="qss_tags" stdset="0">
-        <stringlist notr="true">
-         <string>xlet_list</string>
-        </stringlist>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QRadioButton" name="no_fwd_radiobutton">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>No call forward</string>
-       </property>
-       <property name="qss_tags" stdset="0">
-        <stringlist notr="true">
-         <string>xlet_list</string>
-        </stringlist>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
@@ -156,7 +126,7 @@
       </spacer>
      </item>
      <item row="3" column="0">
-      <widget class="QRadioButton" name="simple_call_fwd_radiobutton">
+      <widget class="QRadioButton" name="fwdsimple_radiobutton">
        <property name="text">
         <string>Simple call forwards</string>
        </property>
@@ -168,13 +138,13 @@
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QFrame" name="no_fwd_line_edit_button_group">
+      <widget class="QFrame" name="fwdunc_input_button_group">
        <property name="styleSheet">
         <string notr="true">border: </string>
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
-         <string>line_edit_button</string>
+         <string>input_button</string>
         </stringlist>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -194,15 +164,15 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="no_fwd_line_edit"/>
+         <widget class="QLineEdit" name="fwdunc_input"/>
         </item>
         <item>
-         <widget class="QPushButton" name="no_fwd_button">
+         <widget class="QPushButton" name="fwdunc_button">
           <property name="text">
            <string notr="true"/>
           </property>
           <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
+           <iconset>
             <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
           </property>
           <property name="qss_tags" stdset="0">
@@ -215,15 +185,48 @@
        </layout>
       </widget>
      </item>
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="fwdunc_radiobutton">
+       <property name="text">
+        <string>&amp;Unconditional forward to</string>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>xlet_list</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="nofwd_radiobutton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>No call forward</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>xlet_list</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="6" column="3">
-      <widget class="QFrame" name="no_ans_line_edit_button_group">
+      <widget class="QFrame" name="fwdna_input_button_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
-         <string>line_edit_button</string>
+         <string>input_button</string>
         </stringlist>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -243,15 +246,15 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="no_ans_line_edit"/>
+         <widget class="QLineEdit" name="fwdna_input"/>
         </item>
         <item>
-         <widget class="QPushButton" name="no_ans_button">
+         <widget class="QPushButton" name="fwdna_button">
           <property name="text">
            <string notr="true"/>
           </property>
           <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
+           <iconset>
             <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
           </property>
           <property name="qss_tags" stdset="0">
@@ -297,10 +300,10 @@
       </spacer>
      </item>
      <item row="7" column="3">
-      <widget class="QFrame" name="busy_line_edit_button_group">
+      <widget class="QFrame" name="fwdbusy_input_button_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
-         <string>line_edit_button</string>
+         <string>input_button</string>
         </stringlist>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -320,15 +323,15 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="busy_line_edit"/>
+         <widget class="QLineEdit" name="fwdbusy_input"/>
         </item>
         <item>
-         <widget class="QPushButton" name="busy_button">
+         <widget class="QPushButton" name="fwdbusy_button">
           <property name="text">
            <string notr="true"/>
           </property>
           <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
+           <iconset>
             <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
           </property>
           <property name="qss_tags" stdset="0">
@@ -342,7 +345,7 @@
       </widget>
      </item>
      <item row="7" column="1">
-      <widget class="QCheckBox" name="busy_checkbox">
+      <widget class="QCheckBox" name="fwdbusy_checkbox">
        <property name="text">
         <string>Forward on busy to</string>
        </property>
