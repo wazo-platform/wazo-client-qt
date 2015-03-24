@@ -49,7 +49,10 @@ void TabBackground::paintEvent(QPaintEvent */*event*/)
     QRect tab_bar_rect = tab_widget->tabBar()->rect();
     this->gradient.setStart(tab_bar_rect.topLeft());
     this->gradient.setFinalStop(tab_bar_rect.topRight());
+
     QPainter painter(this);
-    painter.fillRect(this->rect(), QBrush(this->gradient));
+    QRect paint_rect = this->rect();
+    paint_rect.setRight(tab_widget->tabBar()->rect().right());
+    painter.fillRect(paint_rect, QBrush(this->gradient));
     painter.end();
 }
