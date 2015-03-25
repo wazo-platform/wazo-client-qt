@@ -2,10 +2,12 @@ QLineEdit {
 height: 30px;
 border-radius: 15px; 
 padding-left: 15px;
+padding-right: 15px;
 background-color: #D7D2D0;
 font: 10pt "Liberation Sans";
 color: #2C2927;
 }
+
 QPushButton{
 height: 30px;
 border-radius: 8px; 
@@ -24,13 +26,6 @@ color: #FFFFFF;
 padding-left: 22px;
 padding-right: 22px;
 }
-/*TODO DELETE (xlet fax before)*/
-QFrame[qss_tags~="line_edit_button"]{
-margin-top: 15px;
-margin-bottom: 15px;
-border-radius: 15px; 
-background-color: #D7D2D0;
-}
 
 QFrame[qss_tags~="input_button"]{
 margin-top: 15px;
@@ -38,20 +33,12 @@ margin-bottom: 15px;
 border-radius: 15px; 
 background-color: #D7D2D0;
 }
-/*TODO DELETE*/
-QLabel[qss_tags~="xlet_title"] {
-padding-bottom: 30px;
-font: bold 26pt "Dyno";
-color: #E77D39;
-}
-/*TODO DELETE*/
-QLabel[qss_tags~="xlet_subtitle"] {
-font: 13pt "Dyno";
-}
+
 .QWidget[qss_tags~="xlet_frame"] {
 /*margin: 30px; /*unused*/
 background-color: #FFFFFF;
 }
+
 QRadioButton{
 margin-top: 15px;
 margin-bottom: 15px;

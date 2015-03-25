@@ -208,9 +208,6 @@
        <property name="text">
         <string>No call forward</string>
        </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>xlet_list</string>
@@ -373,7 +370,7 @@
       </spacer>
      </item>
      <item row="6" column="1">
-      <widget class="QCheckBox" name="no_answer_checkbox">
+      <widget class="QCheckBox" name="fwdna_checkbox">
        <property name="text">
         <string>Forward on &amp;no answer to</string>
        </property>
@@ -417,6 +414,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>call_filtering_checkbox</tabstop>
+  <tabstop>dnd_checkbox</tabstop>
+  <tabstop>nofwd_radiobutton</tabstop>
+  <tabstop>fwdunc_radiobutton</tabstop>
+  <tabstop>fwdunc_input</tabstop>
+  <tabstop>fwdunc_button</tabstop>
+  <tabstop>fwdsimple_radiobutton</tabstop>
+  <tabstop>fwdna_checkbox</tabstop>
+  <tabstop>fwdna_input</tabstop>
+  <tabstop>fwdna_button</tabstop>
+  <tabstop>fwdbusy_checkbox</tabstop>
+  <tabstop>fwdbusy_input</tabstop>
+  <tabstop>fwdbusy_button</tabstop>
+ </tabstops>
  <resources>
   <include location="../../../xivoclient.qrc"/>
  </resources>
