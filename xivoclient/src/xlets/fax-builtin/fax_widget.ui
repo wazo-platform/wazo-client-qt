@@ -38,7 +38,7 @@
     <number>30</number>
    </property>
    <item>
-    <widget class="QLabel" name="fax_label">
+    <widget class="QLabel" name="send_fax_label">
      <property name="text">
       <string>Send fax</string>
      </property>
@@ -61,7 +61,7 @@
       <number>30</number>
      </property>
      <item>
-      <widget class="QLabel" name="step1_number">
+      <widget class="QLabel" name="step1_label">
        <property name="text">
         <string>1.</string>
        </property>
@@ -73,7 +73,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="step1_message">
+      <widget class="QLabel" name="choose_file_label">
        <property name="text">
         <string>Choose file to send</string>
        </property>
@@ -85,7 +85,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="step1_button_input_group">
+      <widget class="QFrame" name="file_picker_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>input_button</string>
@@ -108,14 +108,14 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="FileNameLineEdit" name="step1_input">
+         <widget class="FileNameLineEdit" name="file_name_input">
           <property name="placeholderText">
            <string>file</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="step1_browse_button">
+         <widget class="QPushButton" name="file_browse_button">
           <property name="text">
            <string>BROWSE...</string>
           </property>
@@ -140,7 +140,7 @@
       <number>15</number>
      </property>
      <item>
-      <widget class="QLabel" name="step2_number">
+      <widget class="QLabel" name="step2_label">
        <property name="text">
         <string>2.</string>
        </property>
@@ -152,7 +152,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="step2_message">
+      <widget class="QLabel" name="choose_number_label">
        <property name="text">
         <string>Choose destination number</string>
        </property>
@@ -164,7 +164,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="step2_button_input_group">
+      <widget class="QFrame" name="fax_number_group">
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>input_button</string>
@@ -187,14 +187,14 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="step2_input">
+         <widget class="QLineEdit" name="fax_number_input">
           <property name="placeholderText">
            <string>fax number</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="step2_search_button">
+         <widget class="QPushButton" name="fax_number_search_button">
           <property name="text">
            <string/>
           </property>
@@ -243,7 +243,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="send_button">
+      <widget class="QPushButton" name="send_fax_button">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -288,7 +288,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>send_button</tabstop>
+  <tabstop>send_fax_button</tabstop>
  </tabstops>
  <resources>
   <include location="../../../xivoclient.qrc"/>
