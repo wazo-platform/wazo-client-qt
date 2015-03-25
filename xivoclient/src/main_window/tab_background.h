@@ -1,7 +1,4 @@
-/* XiVO Client
- * Copyright (C) 2015 Avencall
- *
- * This file is part of XiVO Client.
+/* Copyright (C) 2015, Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,29 +24,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TABBER_STYLE_H__
-#define __TABBER_STYLE_H__
+#ifndef __TAB_BACKGROUND_H__
+#define __TAB_BACKGROUND_H__
 
-#include <QProxyStyle>
+#include <QWidget>
 
-class TabberStyle : public QProxyStyle
+class QTabWidget;
+
+class TabBackground : public QWidget
 {
     public:
-        TabberStyle(QStyle *style = NULL);
-        QSize sizeFromContents(ContentsType type,
-                               const QStyleOption *option,
-                               const QSize &size,
-                               const QWidget *widget) const;
-        void drawControl(ControlElement element,
-                         const QStyleOption *option,
-                         QPainter *painter,
-                         const QWidget *widget) const;
-        void drawPrimitive(PrimitiveElement element,
-                           const QStyleOption * option,
-                           QPainter * painter,
-                           const QWidget * widget = NULL) const;
+        TabBackground(QTabWidget *tab_widget, QWidget *parent = NULL);
+        void paintEvent(QPaintEvent *event);
+
     private:
-        QPixmap selected_tab_indicator;
+        QTabWidget *tab_widget;
+        QLinearGradient gradient;
 };
 
 #endif

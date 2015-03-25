@@ -60,5 +60,6 @@
         <file>images/agent-on.svg</file>
         <file>images/agent-pause.svg</file>
         <file>images/agent-off.svg</file>
+        <file>images/selected-tab.png</file>
     </qresource>
 </RCC>

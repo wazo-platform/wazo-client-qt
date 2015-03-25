@@ -1,7 +1,4 @@
-/* XiVO Client
- * Copyright (C) 2015 Avencall
- *
- * This file is part of XiVO Client.
+/* Copyright (C) 2015, Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,29 +24,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TABBER_STYLE_H__
-#define __TABBER_STYLE_H__
+#include "tab_background.h"
 
-#include <QProxyStyle>
+#include <QDebug>
+#include <QPainter>
+#include <QTabBar>
+#include <QTabWidget>
+#include <QVBoxLayout>
 
-class TabberStyle : public QProxyStyle
+TabBackground::TabBackground(QTabWidget *tab_widget, QWidget *parent)
+    : QWidget(parent)
 {
-    public:
-        TabberStyle(QStyle *style = NULL);
-        QSize sizeFromContents(ContentsType type,
-                               const QStyleOption *option,
-                               const QSize &size,
-                               const QWidget *widget) const;
-        void drawControl(ControlElement element,
-                         const QStyleOption *option,
-                         QPainter *painter,
-                         const QWidget *widget) const;
-        void drawPrimitive(PrimitiveElement element,
-                           const QStyleOption * option,
-                           QPainter * painter,
-                           const QWidget * widget = NULL) const;
-    private:
-        QPixmap selected_tab_indicator;
-};
+    this->tab_widget = tab_widget;
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(tab_widget);
 
-#endif
+    this->gradient.setColorAt(0, QColor("#9E9995"));
+    this->gradient.setColorAt(1, QColor("#8C8783"));
+}
+
+void TabBackground::paintEvent(QPaintEvent */*event*/)
+{
+    QRect tab_bar_rect = tab_widget->tabBar()->rect();
+    this->gradient.setStart(tab_bar_rect.topLeft());
+    this->gradient.setFinalStop(tab_bar_rect.topRight());
+
+    QPainter painter(this);
+    QRect paint_rect = this->rect();
+    paint_rect.setRight(tab_widget->tabBar()->rect().right());
+    painter.fillRect(paint_rect, QBrush(this->gradient));
+    painter.end();
+}
