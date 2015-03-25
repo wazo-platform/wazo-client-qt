@@ -59,6 +59,10 @@ class XLETLIB_EXPORT XLet : public QWidget
         const QString & title() const;
         const QString & iconPath() const;
 
+        /* To be able to use stylesheets on Xlet objects, we need to reimplement
+           this */
+        void paintEvent(QPaintEvent *event);
+
         /*! \brief connects signals/slots to the main GUI window
          *
          * Reimplement this method for connecting signals/slots to the
