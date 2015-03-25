@@ -158,6 +158,7 @@ void XletDispatcher::prepareXletsGrid()
 
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
     this->m_grid_container->setContentsMargins(0,0,0,0);
+    this->m_grid_container->setSpacing(0);
     if (! m_grid_container) {
         qDebug() << Q_FUNC_INFO << "Failed to instanciate the grid container";
         return;
