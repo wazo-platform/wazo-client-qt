@@ -44,6 +44,10 @@ class TabberStyle : public QProxyStyle
                          const QStyleOption *option,
                          QPainter *painter,
                          const QWidget *widget) const;
+        void drawPrimitive(PrimitiveElement element,
+                           const QStyleOption * option,
+                           QPainter * painter,
+                           const QWidget * widget = NULL) const;
     private:
         QPixmap selected_tab_indicator;
 };

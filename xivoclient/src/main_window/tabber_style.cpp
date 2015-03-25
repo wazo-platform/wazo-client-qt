@@ -96,3 +96,16 @@ void TabberStyle::drawControl(ControlElement element,
     }
     QProxyStyle::drawControl(element, option, painter, widget);
 }
+
+void TabberStyle::drawPrimitive(PrimitiveElement element,
+                                const QStyleOption * option,
+                                QPainter * painter,
+                                const QWidget * widget) const
+{
+    if (element == QStyle::PE_IndicatorTabTear) {
+        // This is useful when some tabs are hidden because the window is not high enough.
+        // Draw nothing
+        return;
+    }
+    QProxyStyle::drawPrimitive(element, option, painter, widget);
+}
