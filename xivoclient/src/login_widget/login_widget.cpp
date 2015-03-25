@@ -36,6 +36,7 @@ LoginWidget::LoginWidget(MainWindow *main_window, QWidget *parent)
     : QWidget(parent)
 {
     QVBoxLayout * login_layout = new QVBoxLayout(this);
+    login_layout->setContentsMargins(0, 0, 0, 0);
     QWidget * login_widget = new QWidget(this);
     login_layout->addWidget(login_widget);
     this->ui.setupUi(login_widget);
