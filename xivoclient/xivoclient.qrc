@@ -7,6 +7,7 @@
 
         <file>xivo.qss</file>
         <file>avencall.qss</file>
+        <file>default.qss</file>
 
         <file>obj/xivoclient_fr.qm</file>
         <file>obj/xivoclient_en.qm</file>
@@ -61,5 +62,8 @@
         <file>images/agent-pause.svg</file>
         <file>images/agent-off.svg</file>
         <file>images/selected-tab.png</file>
+        <file>images/search-circle.svg</file>
+        <file>images/search-regular.svg</file>
+        <file>images/search-bold.svg</file>
     </qresource>
 </RCC>

@@ -1198,8 +1198,7 @@ void BaseEngine::meetmeAction(const QString &function, const QString &functionar
 
 /*! \brief Send fax to CTI Server */
 void BaseEngine::sendFaxCommand(const QString & filename,
-                                const QString & number,
-                                Qt::CheckState hide)
+                                const QString & number)
 {
     m_filename = filename;
     QFile * qf = new QFile(filename);
@@ -1214,7 +1213,7 @@ void BaseEngine::sendFaxCommand(const QString & filename,
             m_filedata = truefiledata.toBase64();
             QVariantMap command;
             command["class"] = "faxsend";
-            command["hide"] = QString::number(hide);
+            command["hide"] = "0";
             command["filename"] = filename;
             command["destination"] = number;
             sendJsonCommand(command);
