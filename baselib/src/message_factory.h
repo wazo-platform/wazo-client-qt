@@ -62,6 +62,9 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap unpauseAgentInQueue(const QString &agent_id, const QString &queue_id);
         static QVariantMap pauseAgentInAllQueues(const QString &agent_id, const QString &ipbxid);
         static QVariantMap unpauseAgentInAllQueues(const QString &agent_id, const QString &ipbxid);
+        static QVariantMap setUnconditionalForward(QString destination, bool enabled);
+        static QVariantMap setForwardBusy(QString destination, bool enabled);
+        static QVariantMap setForwardNoAnswer(QString destination, bool enabled);
     private:
         static QVariantMap baseMessage(const QString &class_name);
         static QVariantMap ipbxcommand(const QString &action_name);
