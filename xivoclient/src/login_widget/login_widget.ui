@@ -327,7 +327,7 @@ QComboBox QAbstractItemView::item {
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: #d7d2d0; border-radius: 16px; padding: 7px; color: #4f4946;
+            <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
 </string>
            </property>
            <property name="text">
@@ -362,7 +362,7 @@ QComboBox QAbstractItemView::item {
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: #d7d2d0; border-radius: 16px; padding: 7px; color: #4f4946;
+            <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
 </string>
            </property>
            <property name="text">
@@ -436,8 +436,8 @@ QComboBox QAbstractItemView::item {
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: #d7d2d0; border-radius: 16px; padding: 7px; selection-background-color: rgb(231,123, 57);
-color: #4f4946;
+              <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; selection-background-color: rgb(231,123, 57);
+color: #2c2927;
 
 </string>
              </property>
@@ -472,7 +472,7 @@ color: #4f4946;
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: #d7d2d0; border-radius: 16px; padding: 7px; color: #4f4946;
+              <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
 </string>
              </property>
              <property name="text">
