@@ -190,6 +190,9 @@
        <property name="text">
         <string>&amp;Unconditional forward to</string>
        </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>xlet_list</string>
@@ -207,6 +210,9 @@
        </property>
        <property name="text">
         <string>No call forward</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
