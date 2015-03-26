@@ -234,7 +234,7 @@ void ServicesPanel::on_fwdbusy_checkbox_stateChanged(int state)
 
 void ServicesPanel::on_nofwd_radiobutton_toggled(bool checked)
 {
-    m_nofwd_sended = checked;
+    m_nofwd_sent = checked;
 
     if( checked ) {
         this->ui.fwdna_checkbox->setChecked(false);
@@ -353,7 +353,7 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
         }
 
         // Activate the right radiobutton
-        if (m_nofwd_sended) {
+        if (m_nofwd_sent) {
             this->ui.nofwd_radiobutton->setChecked(true);
         } else if (call_fwdunc.enabled) {
             this->ui.fwdunc_radiobutton->setChecked(true);
@@ -363,9 +363,9 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
             this->ui.nofwd_radiobutton->setChecked(true);
         }
 
-        if (m_nofwd_sended && ! call_fwdunc.enabled && ! call_fwdna.enabled
+        if (m_nofwd_sent && ! call_fwdunc.enabled && ! call_fwdna.enabled
                 && ! call_fwdbusy.enabled) {
-            m_nofwd_sended = false;
+            m_nofwd_sent = false;
         }
 
         this->ui.nofwd_radiobutton->blockSignals(false);

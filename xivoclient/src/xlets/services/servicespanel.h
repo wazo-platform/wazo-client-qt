@@ -93,7 +93,7 @@ class ServicesPanel : public XLet
 
         Ui::ServicesWidget ui;
         //QStringList m_capas;
-        bool m_nofwd_sended;
+        bool m_nofwd_sent;
         //QHash<QString, QString> m_capalegend;
         //QHash<QString, WaitingWidget<QCheckBox> *> m_chkopt;
         //QHash<QString, WaitingWidget<QAbstractButton> *> m_forward;
