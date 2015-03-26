@@ -170,8 +170,10 @@ void XletDispatcher::prepareXletsGrid()
         const QString &options = xlet_and_option.second;
         if (name == "tabber") {
             this->prepareXletsTab();
-            m_tab_container = new TabBackground(m_tabber, this->m_main_widget);
-            this->m_grid_container->insertWidget(options.toInt(), m_tab_container);
+            if (this->m_has_tabber) {
+                m_tab_container = new TabBackground(m_tabber, this->m_main_widget);
+                this->m_grid_container->insertWidget(options.toInt(), m_tab_container);
+            }
         } else {
             XLet *xlet = this->xletFactory(name);
             if (xlet) {
