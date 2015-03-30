@@ -39,7 +39,7 @@ QColor tab_icon_inactive_color = QColor("#6c6763");
 
 TabberStyle::TabberStyle(QStyle *style)
     : QProxyStyle(style),
-      selected_tab_indicator(":/images/selected-tab.png")
+      selected_tab_indicator(QIcon(":/images/selected-tab.svg").pixmap(6, 14))
 {
 }
 
@@ -81,11 +81,10 @@ void TabberStyle::drawControl(ControlElement element,
             painter->drawPixmap(icon_rect, icon_image);
 
             if (option_tab->state & State_Selected) {
-                // We need a SVG image, because this will break on high-DPI displays
                 QRect select_indicator_rect;
                 select_indicator_rect.setSize(this->selected_tab_indicator.size());
                 select_indicator_rect.moveCenter(option_tab->rect.center());
-                select_indicator_rect.setX(option_tab->rect.right() - select_indicator_rect.width() / 2);
+                select_indicator_rect.moveRight(option_tab->rect.right());
                 painter->drawPixmap(select_indicator_rect, this->selected_tab_indicator);
             }
             return;
