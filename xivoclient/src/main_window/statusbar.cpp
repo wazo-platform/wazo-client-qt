@@ -38,9 +38,7 @@ Statusbar::Statusbar(MainWindow *parent)
     : QObject(parent),
       m_statusbar(parent->ui->statusbar),
       m_padlock(new QLabel),
-      m_config_profile(new QLabel),
-      m_pixmap_disconnected(QPixmap(":/images/disconnected.png").scaledToHeight(18, Qt::SmoothTransformation)),
-      m_pixmap_connected(QPixmap(":/images/connected.png").scaledToHeight(18, Qt::SmoothTransformation))
+      m_config_profile(new QLabel)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
