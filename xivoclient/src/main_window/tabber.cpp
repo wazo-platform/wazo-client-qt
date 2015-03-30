@@ -24,7 +24,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tab_background.h"
+#include "tabber.h"
 
 #include <QDebug>
 #include <QPainter>
@@ -32,7 +32,10 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-TabBackground::TabBackground(QWidget *parent)
+/* This class aims to paint the background for QTabWidget, because QTabWidget is
+   unable to paint the background of the zone where there are no tabs */
+
+Tabber::Tabber(QWidget *parent)
     : QWidget(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -54,7 +57,7 @@ TabBackground::TabBackground(QWidget *parent)
     this->m_tab_widget->tabBar()->setDrawBase(true);
 }
 
-void TabBackground::paintEvent(QPaintEvent */*event*/)
+void Tabber::paintEvent(QPaintEvent */*event*/)
 {
     QRect tab_bar_rect = this->m_tab_widget->tabBar()->rect();
     this->m_gradient.setStart(tab_bar_rect.topLeft());
@@ -67,7 +70,7 @@ void TabBackground::paintEvent(QPaintEvent */*event*/)
     painter.end();
 }
 
-QTabWidget *TabBackground::tabWidget()
+QTabWidget *Tabber::tabWidget()
 {
     return this->m_tab_widget;
 }

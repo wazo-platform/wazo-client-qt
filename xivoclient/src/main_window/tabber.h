@@ -24,8 +24,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TAB_BACKGROUND_H__
-#define __TAB_BACKGROUND_H__
+#ifndef __TABBER_H__
+#define __TABBER_H__
 
 #include <QWidget>
 
@@ -33,10 +33,10 @@
 
 class QTabWidget;
 
-class TabBackground : public QWidget
+class Tabber : public QWidget
 {
     public:
-        TabBackground(QWidget *parent = NULL);
+        Tabber(QWidget *parent = NULL);
         void paintEvent(QPaintEvent *event);
         QTabWidget *tabWidget();
 
