@@ -58,9 +58,6 @@ class Statusbar : public QObject
 
         QLabel *m_padlock; //!< padlock icon (SSL indicator)
         QLabel *m_config_profile; //!< profile indicator (status bar)
-
-        QPixmap m_pixmap_disconnected;
-        QPixmap m_pixmap_connected;
 };
 
 #endif
