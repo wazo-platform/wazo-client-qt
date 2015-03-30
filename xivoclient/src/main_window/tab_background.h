@@ -29,17 +29,21 @@
 
 #include <QWidget>
 
+#include "tabber_style.h"
+
 class QTabWidget;
 
 class TabBackground : public QWidget
 {
     public:
-        TabBackground(QTabWidget *tab_widget, QWidget *parent = NULL);
+        TabBackground(QWidget *parent = NULL);
         void paintEvent(QPaintEvent *event);
+        QTabWidget *tabWidget();
 
     private:
-        QTabWidget *tab_widget;
-        QLinearGradient gradient;
+        TabberStyle m_tabber_style;
+        QTabWidget *m_tab_widget;
+        QLinearGradient m_gradient;
 };
 
 #endif

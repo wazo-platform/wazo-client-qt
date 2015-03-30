@@ -32,27 +32,42 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-TabBackground::TabBackground(QTabWidget *tab_widget, QWidget *parent)
+TabBackground::TabBackground(QWidget *parent)
     : QWidget(parent)
 {
-    this->tab_widget = tab_widget;
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(tab_widget);
 
-    this->gradient.setColorAt(0, QColor("#9E9995"));
-    this->gradient.setColorAt(1, QColor("#8C8783"));
+    this->m_gradient.setColorAt(0, QColor("#9E9995"));
+    this->m_gradient.setColorAt(1, QColor("#8C8783"));
+
+    this->m_tab_widget = new QTabWidget(this);
+    layout->addWidget(this->m_tab_widget);
+    this->m_tab_widget->setTabPosition(QTabWidget::West);
+    // A little more space before the first tab
+    this->m_tab_widget->setStyleSheet("QTabWidget::tab-bar {top: 17px;}"
+                                      "QTabWidget::pane {border: 0px;}");
+
+    this->m_tab_widget->tabBar()->setAttribute(Qt::WA_Hover);
+    this->m_tab_widget->tabBar()->setStyle(&this->m_tabber_style);
+    this->m_tab_widget->tabBar()->setIconSize(QSize(30, 30));
+    this->m_tab_widget->tabBar()->setDrawBase(true);
 }
 
 void TabBackground::paintEvent(QPaintEvent */*event*/)
 {
-    QRect tab_bar_rect = tab_widget->tabBar()->rect();
-    this->gradient.setStart(tab_bar_rect.topLeft());
-    this->gradient.setFinalStop(tab_bar_rect.topRight());
+    QRect tab_bar_rect = this->m_tab_widget->tabBar()->rect();
+    this->m_gradient.setStart(tab_bar_rect.topLeft());
+    this->m_gradient.setFinalStop(tab_bar_rect.topRight());
 
     QPainter painter(this);
     QRect paint_rect = this->rect();
-    paint_rect.setRight(tab_widget->tabBar()->rect().right());
-    painter.fillRect(paint_rect, QBrush(this->gradient));
+    paint_rect.setRight(tab_bar_rect.right());
+    painter.fillRect(paint_rect, QBrush(this->m_gradient));
     painter.end();
+}
+
+QTabWidget *TabBackground::tabWidget()
+{
+    return this->m_tab_widget;
 }

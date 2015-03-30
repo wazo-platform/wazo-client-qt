@@ -37,7 +37,6 @@
 #include <QHash>
 #include <QSignalMapper>
 
-#include "tabber_style.h"
 #include <xletlib/functests.h>
 
 class MainWidget;
@@ -94,12 +93,9 @@ class XletDispatcher : public QObject
         QMap<QString, XLet *> m_xlets_grid_widget;
         QList<XletAndOption> m_xlets_grid;
 
-        QTabWidget *m_tabber;
         QMap<QString, XLet *> m_xlets_tab_widget;
         QList<XletAndOption> m_xlets_tab;
 
-        bool m_has_tabber;
-        TabberStyle m_tabber_style;
         TabBackground *m_tab_container;
 
         QSignalMapper *m_fold_signal_mapper;
