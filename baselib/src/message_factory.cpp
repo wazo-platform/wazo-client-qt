@@ -240,6 +240,31 @@ QVariantMap MessageFactory::setForwardBusy(QString destination, bool enabled)
     return command;
 }
 
+QVariantMap MessageFactory::setVoicemail(bool enabled)
+{
+    QVariantMap command;
+    command["class"]    = "featuresput";
+    command["function"] = "enablevoicemail";
+    command["value"]    = enabled;
+    return command;
+}
+QVariantMap MessageFactory::setCallFiltering(bool enabled)
+{
+    QVariantMap command;
+    command["class"]    = "featuresput";
+    command["function"] = "incallfilter";
+    command["value"]    = enabled;
+    return command;
+}
+QVariantMap MessageFactory::setDoNotDisturb(bool enabled)
+{
+    QVariantMap command;
+    command["class"]    = "featuresput";
+    command["function"] = "enablednd";
+    command["value"]    = enabled;
+    return command;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

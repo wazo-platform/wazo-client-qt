@@ -65,6 +65,9 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap setUnconditionalForward(QString destination, bool enabled);
         static QVariantMap setForwardBusy(QString destination, bool enabled);
         static QVariantMap setForwardNoAnswer(QString destination, bool enabled);
+        static QVariantMap setVoicemail(bool enabled);
+        static QVariantMap setCallFiltering(bool enabled);
+        static QVariantMap setDoNotDisturb(bool enabled);
     private:
         static QVariantMap baseMessage(const QString &class_name);
         static QVariantMap ipbxcommand(const QString &action_name);
