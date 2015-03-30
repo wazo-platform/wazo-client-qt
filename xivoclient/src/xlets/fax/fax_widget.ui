@@ -133,6 +133,9 @@
           <property name="text">
            <string>BROWSE...</string>
           </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
@@ -234,6 +237,9 @@
             <height>13</height>
            </size>
           </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
@@ -278,6 +284,9 @@
        </property>
        <property name="text">
         <string>SEND FAX</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
