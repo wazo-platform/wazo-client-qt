@@ -1607,6 +1607,12 @@ void BaseEngine::timerEvent(QTimerEvent *event)
     }
 }
 
+void BaseEngine::fetchIPBXList() {
+    QVariantMap command;
+    command["class"] = "getipbxlist";
+    sendJsonCommand(command);
+}
+
 /*! \brief send a lot of getlist commands to the CTI server
  *
  * send getlist for "users", "queues", "agents", "phones",
