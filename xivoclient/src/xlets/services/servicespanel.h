@@ -37,15 +37,6 @@
 #include <ui_services_widget.h>
 #include <message_factory.h>
 
-class QLineEdit;
-class QCheckBox;
-class QRadioButton;
-class QButtonGroup;
-class QAbstractButton;
-
-class UserInfo;
-class BaseEngine;
-
 struct CallForwardStruct {
     bool enabled;
     QString destination;

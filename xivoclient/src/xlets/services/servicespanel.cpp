@@ -27,15 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGroupBox>
-#include <QGridLayout>
-#include <QLineEdit>
-#include <QCheckBox>
-#include <QRadioButton>
-#include <QButtonGroup>
-#include <QAbstractButton>
-#include <QDebug>
-
 #include <baseengine.h>
 
 #include "servicespanel.h"
@@ -100,13 +91,11 @@ ServicesPanel::ServicesPanel(QWidget * parent)
 void ServicesPanel::on_call_filtering_checkbox_stateChanged(int state)
 {
     b_engine->sendJsonCommand(MessageFactory::setCallFiltering((bool)state));
-    qDebug() << "Send: call filtering checked:" << (bool)state;
 }
 
 void ServicesPanel::on_dnd_checkbox_stateChanged(int state)
 {
     b_engine->sendJsonCommand(MessageFactory::setDoNotDisturb((bool)state));
-    qDebug() << "Send: DND checked:" << (bool)state;
 }
 
 void ServicesPanel::on_fwdna_checkbox_stateChanged(int state)
@@ -217,19 +206,16 @@ void ServicesPanel::on_fwdbusy_input_editingFinished()
 void ServicesPanel::sendSetUnconditionalForward(bool checked)
 {
     b_engine->sendJsonCommand(MessageFactory::setUnconditionalForward(checked, this->ui.fwdunc_input->text()));
-    qDebug() << "Send: FWDUNC checked:" << checked << " fwd_dest:" << this->ui.fwdunc_input->text();
 }
 
 void ServicesPanel::sendSetForwardNoAnswer(bool checked)
 {
     b_engine->sendJsonCommand(MessageFactory::setForwardNoAnswer(checked, this->ui.fwdna_input->text()));
-    qDebug() << "Send: FWDNA checked:" << checked << " fwd_dest:" << this->ui.fwdna_input->text();
 }
 
 void ServicesPanel::sendSetForwardBusy(bool checked)
 {
     b_engine->sendJsonCommand(MessageFactory::setForwardBusy(checked, this->ui.fwdbusy_input->text()));
-    qDebug() << "Send: FWDBUSY checked:" << checked << " fwd_dest:" << this->ui.fwdbusy_input->text();
 }
 
 void ServicesPanel::toggledSimpleFwd(bool checked)
@@ -243,7 +229,6 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
 {
     if (xuserid == m_xuserid) {
         QVariantMap deltaConfig = datamap["config"].toMap();
-        qDebug() << "run updateUserConfig: " << deltaConfig;
 
         this->ui.call_filtering_checkbox->blockSignals(true);
         this->ui.dnd_checkbox->blockSignals(true);
