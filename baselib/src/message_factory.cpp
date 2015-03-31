@@ -209,7 +209,7 @@ QVariantMap MessageFactory::unpauseAgentInAllQueues(const QString &agent_id, con
     return message;
 }
 
-QVariantMap MessageFactory::setUnconditionalForward(QString destination, bool enabled)
+QVariantMap MessageFactory::setUnconditionalForward(bool enabled, QString destination)
 {
     QVariantMap command, value;
     command["class"]    = "featuresput";
@@ -219,7 +219,7 @@ QVariantMap MessageFactory::setUnconditionalForward(QString destination, bool en
     command["value"]    = value;
     return command;
 }
-QVariantMap MessageFactory::setForwardNoAnswer(QString destination, bool enabled)
+QVariantMap MessageFactory::setForwardNoAnswer(bool enabled, QString destination)
 {
     QVariantMap command, value;
     command["class"]    = "featuresput";
@@ -229,7 +229,7 @@ QVariantMap MessageFactory::setForwardNoAnswer(QString destination, bool enabled
     command["value"]    = value;
     return command;
 }
-QVariantMap MessageFactory::setForwardBusy(QString destination, bool enabled)
+QVariantMap MessageFactory::setForwardBusy(bool enabled, QString destination)
 {
     QVariantMap command, value;
     command["class"]    = "featuresput";
