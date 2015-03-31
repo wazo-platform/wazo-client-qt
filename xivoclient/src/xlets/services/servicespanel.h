@@ -37,8 +37,6 @@
 #include <ui_services_widget.h>
 #include <message_factory.h>
 
-#include "waitingwidget.h"
-
 class QLineEdit;
 class QCheckBox;
 class QRadioButton;
@@ -61,46 +59,31 @@ class ServicesPanel : public XLet
         ServicesPanel(QWidget *parent=0);
 
     public slots:
-       // void syncOpt(const QString &);
        void updateUserConfig(const QString &, const QVariantMap &);
-       // void updatePhoneConfig(const QString &);
 
     private slots:
-       // void chkoptToggled(bool);
-       // void forwardToggled(bool);
-       // void forwardLostFocus();
-       // void servicePutIsOK(const QString &, const QString &);
-       // void forwardModeChanged();
-
         void on_call_filtering_checkbox_stateChanged(int state);
         void on_dnd_checkbox_stateChanged(int state);
         void on_fwdna_checkbox_stateChanged(int state);
         void on_fwdbusy_checkbox_stateChanged(int state);
-
         void on_nofwd_radiobutton_toggled(bool checked);
         void on_fwdunc_radiobutton_toggled(bool checked);
         void on_fwdsimple_radiobutton_toggled(bool checked);
-
         void on_fwdunc_input_returnPressed();
         void on_fwdna_input_returnPressed();
         void on_fwdbusy_input_returnPressed();
+        void on_fwdunc_input_editingFinished();
+        void on_fwdna_input_editingFinished();
+        void on_fwdbusy_input_editingFinished();
 
     private:
-        //void updateCheckboxEnabled(const QString &);
-        //void updateTextboxEnabled(const QString &);
-        CallForwardStruct localCallForward(const QString &);
         void toggledSimpleFwd(bool checked);
+        void sendSetUnconditionalForward(bool checked);
+        void sendSetForwardNoAnswer(bool checked);
+        void sendSetForwardBusy(bool checked);
 
         Ui::ServicesWidget ui;
-        //QStringList m_capas;
         bool m_nofwd_sent;
-        //QHash<QString, QString> m_capalegend;
-        //QHash<QString, WaitingWidget<QCheckBox> *> m_chkopt;
-        //QHash<QString, WaitingWidget<QAbstractButton> *> m_forward;
-        //QHash<QString, WaitingWidget<QLineEdit> *> m_forwarddest;
-        QHash<QString, QString>                    m_replyids;
-        //QRadioButton * m_nofwd, * m_uncfwd, * m_otherfwd;
-        //QButtonGroup * m_fwdmode;
 };
 
 class XLetServicesPlugin : public QObject, XLetInterface
