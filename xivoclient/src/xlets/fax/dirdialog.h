@@ -27,66 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __DIRECTORYPANEL_H__
-#define __DIRECTORYPANEL_H__
+#ifndef __DIRDIALOG_H__
+#define __DIRDIALOG_H__
 
-#include <QContextMenuEvent>
 #include <QDebug>
-#include <QDesktopServices>
-#include <QDropEvent>
-#include <QFocusEvent>
-#include <QHBoxLayout>
+#include <QDialog>
+#include <QDialogButtonBox>
 #include <QLabel>
-#include <QMenu>
+#include <QLineEdit>
 #include <QPushButton>
-#include <QUrl>
+#include <QSettings>
 #include <QVBoxLayout>
 
 #include <baseengine.h>
-#include <storage/userinfo.h>
-#include <storage/phoneinfo.h>
-#include <xivoconsts.h>
-#include <xletlib/extendedtablewidget.h>
-#include <xletlib/extendedlineedit.h>
-#include <xletlib/xlet.h>
+#include <xletlib/directorypanel.h>
 
-#include <xletlib/functests.h>
-
-#define CONFIG_SORT_COLUMN "remote_directory_sort_column"
-#define CONFIG_SORT_ORDER "remote_directory_sort_order"
-
-class DirectoryPanel : public XLet
+/*! \brief Directory dialog used for fax
+ */
+class DirDialog: public QDialog
 {
     Q_OBJECT
 
     public:
-        DirectoryPanel(QWidget *parent=0);
-
-    protected:
-        void dropEvent(QDropEvent *);
-        void focusInEvent(QFocusEvent *);
-    private slots:
-        void startSearch();
-        void itemClicked(QTableWidgetItem *);
-        void itemDoubleClicked(QTableWidgetItem *);
-        void saveColumnSorting(int column, Qt::SortOrder order);
-
-    signals:
-        void selectedText(const QString &);
-
-    public slots:
-        void setSearchResponse(const QStringList &, const QStringList &);
-        void stop();
+        DirDialog(QWidget *);
+        ~DirDialog();
+        DirectoryPanel * dirpanel();
 
     private:
-        ExtendedLineEdit *m_searchText;
-        ExtendedTableWidget *m_table;
-        QPushButton *m_searchButton;
-        QString m_mailAddr;
-
-        void restoreColumnSorting();
-
-    FUNCTESTED
+        DirectoryPanel *m_directory;   //!< Directory panel
+        QDialogButtonBox *m_btnbox;    //!< Buttons box
 };
-
 #endif

@@ -27,34 +27,15 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __DIRDIALOG_H__
-#define __DIRDIALOG_H__
-
-#include <QDebug>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QSettings>
-#include <QVBoxLayout>
+#include <QtPlugin>
 
 #include <baseengine.h>
-#include <xlets/remotedirectory-builtin/directorypanel.h>
 
-/*! \brief Directory dialog used for fax
- */
-class DirDialog: public QDialog
+#include "faxpanel.h"
+#include "faxplugin.h"
+
+XLet * FaxPlugin::newXLetInstance(QWidget *parent)
 {
-    Q_OBJECT
-
-    public:
-        DirDialog(QWidget *);
-        ~DirDialog();
-        DirectoryPanel * dirpanel();
-
-    private:
-        DirectoryPanel *m_directory;   //!< Directory panel
-        QDialogButtonBox *m_btnbox;    //!< Buttons box
-};
-#endif
+    b_engine->registerTranslation(":/obj/fax_%1");
+    return new FaxPanel(parent);
+}
