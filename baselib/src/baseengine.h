@@ -202,9 +202,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void textEdited(const QString &);
 
-        void servicePutOpt(const QString &, bool);
-        QString servicePutForward(const QString &, bool, const QString &dst = "");
-
         void fetchIPBXList();
         void fetchLists();
 
