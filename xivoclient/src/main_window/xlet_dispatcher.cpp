@@ -218,6 +218,7 @@ void XletDispatcher::prepareXletsTab()
     this->m_tabber->setTabPosition(QTabWidget::West);
     // A little more space before the first tab
     this->m_tabber->setStyleSheet("QTabWidget::tab-bar {top: 17px;}");
+    this->m_tabber->setStyleSheet("QTabWidget::pane {border: 0px;}");
 
     this->m_tabber->tabBar()->setAttribute(Qt::WA_Hover);
     this->m_tabber->tabBar()->setStyle(&m_tabber_style);
