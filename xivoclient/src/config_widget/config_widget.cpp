@@ -104,19 +104,6 @@ void ConfigWidget::load_values()
             this->ui.language->setCurrentIndex(i);
     }
 
-    this->ui.style->clear();
-    this->ui.style->addItem(tr("Default style"), QString("none"));
-    QDir qss_dir(":/") ;
-    QStringList qss_files = qss_dir.entryList(QStringList("*.qss"));
-    foreach(QString qss_file, qss_files) {
-        qss_file.truncate(qss_file.length()-4);
-        this->ui.style->addItem(qss_file, qss_file);
-    }
-    int qss_index = this->ui.style->findData(this->m_config["qss"]);
-    if(qss_index != -1) {
-        this->ui.style->setCurrentIndex(qss_index);
-    }
-
     this->ui.auto_reconnect->setChecked(this->m_config["trytoreconnect"].toBool());
     this->ui.startup_connect->setChecked(this->m_config["autoconnect"].toBool());
     this->ui.start_systrayed->setChecked(this->m_config["systrayed"].toBool());
@@ -177,7 +164,6 @@ void ConfigWidget::accept()
 {
     // User
     this->m_config["forcelocale"] = this->ui.language->itemData(this->ui.language->currentIndex());
-    this->m_config["qss"] = this->ui.style->itemData(this->ui.style->currentIndex());
     this->m_config["trytoreconnect"] = this->ui.auto_reconnect->isChecked();
     this->m_config["autoconnect"] = this->ui.startup_connect->isChecked();
     this->m_config["systrayed"] = this->ui.start_systrayed->isChecked();
