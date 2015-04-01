@@ -391,7 +391,7 @@ void IdentityDisplay::updateOptions()
         this->ui.options->setText(tr("CALL FILTER"));
         this->ui.options->setToolTip("");
     } else {
-        this->ui.options->setText("AVAILABLE");
+        this->ui.options->setText(tr("AVAILABLE"));
         this->ui.options->setToolTip("");
     }
 }
