@@ -103,7 +103,6 @@ void SystemTrayIcon::systrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) {
         #ifndef Q_OS_MAC
-        qDebug() << "visible " << this->mainWindow()->isVisible() << "toggling visibility";
         if(this->mainWindow()->isVisible()) {
             this->mainWindow()->hideWindow();
         } else {
