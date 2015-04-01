@@ -1,0 +1,16 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>../../../images/search-regular.svg</file>
+
+        <file>../../../obj/fax_fr.qm</file>
+        <file>../../../obj/fax_en.qm</file>
+        <file>../../../obj/fax_es_ES.qm</file>
+        <file>../../../obj/fax_pt_BR.qm</file>
+        <file>../../../obj/fax_hu.qm</file>
+        <file>../../../obj/fax_de.qm</file>
+        <file>../../../obj/fax_ja.qm</file>
+        <file>../../../obj/fax_it.qm</file>
+        <file>../../../obj/fax_nl.qm</file>
+    </qresource>
+</RCC>

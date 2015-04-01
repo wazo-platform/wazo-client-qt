@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,34 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __DIRDIALOG_H__
-#define __DIRDIALOG_H__
-
-#include <QDebug>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QSettings>
 #include <QVBoxLayout>
 
-#include <baseengine.h>
-#include <xlets/remotedirectory-builtin/directorypanel.h>
+#include "remote_directory.h"
 
-/*! \brief Directory dialog used for fax
- */
-class DirDialog: public QDialog
+RemoteDirectory::RemoteDirectory(QWidget *parent)
+    : XLet(parent, tr("Remote Directory"), ":/images/tab-people.svg")
 {
-    Q_OBJECT
-
-    public:
-        DirDialog(QWidget *);
-        ~DirDialog();
-        DirectoryPanel * dirpanel();
-
-    private:
-        DirectoryPanel *m_directory;   //!< Directory panel
-        QDialogButtonBox *m_btnbox;    //!< Buttons box
-};
-#endif
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    m_directory_panel = new DirectoryPanel(this);
+    layout->addWidget(m_directory_panel);
+}

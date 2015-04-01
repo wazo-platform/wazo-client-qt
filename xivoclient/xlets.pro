@@ -7,6 +7,7 @@ SUBDIRS  = \
     src/xlets/conference \
     src/xlets/directory \
     src/xlets/datetime \
+    src/xlets/fax \
     src/xlets/history \
     src/xlets/identity \
     src/xlets/people \
