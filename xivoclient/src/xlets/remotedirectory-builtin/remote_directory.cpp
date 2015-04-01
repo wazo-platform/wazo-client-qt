@@ -29,13 +29,12 @@
 
 #include <QVBoxLayout>
 
-#include <xletlib/directorypanel.h>
-
 #include "remote_directory.h"
 
 RemoteDirectory::RemoteDirectory(QWidget *parent)
     : XLet(parent, tr("Remote Directory"), ":/images/tab-people.svg")
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->addWidget(new DirectoryPanel(this));
+    m_directory_panel = new DirectoryPanel(this);
+    layout->addWidget(m_directory_panel);
 }

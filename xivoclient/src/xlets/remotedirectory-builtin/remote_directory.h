@@ -30,6 +30,7 @@
 #ifndef __REMOTE_DIRECTORY_H__
 #define __REMOTE_DIRECTORY_H__
 
+#include <xletlib/directorypanel.h>
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
 
@@ -39,6 +40,8 @@ class RemoteDirectory : public XLet
 
     public:
         RemoteDirectory(QWidget *parent=0);
+    private:
+        DirectoryPanel *m_directory_panel;
 
     FUNCTESTED
 };
