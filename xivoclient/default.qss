@@ -3,7 +3,7 @@ height: 30px;
 border-radius: 15px; 
 padding-left: 15px;
 background-color: #D7D2D0;
-font: 10pt "Liberation Sans";
+font: 12px "Liberation Sans";
 color: #2C2927;
 }
 QPushButton{
@@ -14,12 +14,12 @@ padding-right: 18px;
 }
 QPushButton[qss_tags~="orange"]{
 background-color: #E77D39;
-font: 10pt "Dyno";
+font: 12px "Dyno";
 color: #FFFFFF;
 }
 QPushButton[qss_tags~="black"]{
 background-color: #58524F;
-font: 10pt "Dyno";
+font: 12px "Dyno";
 color: #FFFFFF;
 padding-left: 22px;
 padding-right: 22px;
@@ -32,11 +32,11 @@ background-color: #D7D2D0;
 }
 QLabel[qss_tags~="xlet_h1"] {
 padding-bottom: 30px;
-font: bold 26pt "Dyno";
+font: bold 36px "Dyno";
 color: #E77D39;
 }
 QLabel[qss_tags~="xlet_h4"] {
-font: 13pt "Dyno";
+font: 18px "Dyno";
 }
 QWidget[qss_tags~="xlet_frame"] {
 /*margin: 30px; /*unused*/
@@ -46,7 +46,7 @@ background-color: #FFFFFF;
   * Fax Xlet 
   */
 QLabel[qss_tags~="step_number"] {
-font: bold 26pt "Dyno";
+font: bold 36px "Dyno";
 color: #D7D2D0;
 }
 

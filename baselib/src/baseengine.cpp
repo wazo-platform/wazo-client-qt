@@ -187,7 +187,6 @@ void BaseEngine::loadSettings()
 {
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
-    m_config["qss"] = m_settings->value("display/qss", "none").toString();
 
     // this part had been commented for Win32, see svn 5882 or git 70eb1793
     // to allow a bit more flexibility, we leave it as a configurable setting,
@@ -309,7 +308,6 @@ void BaseEngine::saveSettings()
     m_settings->setValue("version/git_date", __git_date__);
     m_settings->setValue("display/systrayed", m_config["systrayed"].toBool());
     m_settings->setValue("display/unique", m_config["uniqueinstance"].toBool());
-    m_settings->setValue("display/qss", m_config["qss"].toString());
     m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
 

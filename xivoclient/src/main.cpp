@@ -129,12 +129,6 @@ ExecObjects init_xivoclient(int & argc, char **argv)
 
     b_engine = new BaseEngine(settings, info_osname);
 
-    QString qsskind = b_engine->getConfig("qss").toString();
-
-    QFile qssFile(QString(":/%1.qss").arg(qsskind));
-    if(qssFile.open(QIODevice::ReadOnly)) {
-        app->setStyleSheet(qssFile.readAll());
-    }
     assembler = new Assembler();
     if (! assembler) {
         qDebug() << Q_FUNC_INFO << "Failed to instantiate the Assembler";
