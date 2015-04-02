@@ -27,39 +27,37 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "confroom.h"
+#ifndef _CONFROOM_VIEW_H_
+#define _CONFROOM_VIEW_H_
+#include <QWidget>
+#include <QDebug>
+#include <QTimer>
+#include <QAbstractTableModel>
+#include <QTableView>
+#include <QModelIndex>
+#include <QMouseEvent>
+#include <QHeaderView>
 
+#include <xletlib/abstract_table_view.h>
+#include "baseengine.h"
 
-ConfRoom::ConfRoom(QWidget *parent, ConfTab *tab, const QString &number, const QVariantMap &members)
-    : QWidget(parent), m_number(number)
+class ConfRoomView : public AbstractTableView
 {
-    QVBoxLayout *vBox = new QVBoxLayout(this);
-    setLayout(vBox);
-    QHBoxLayout *hBox = new QHBoxLayout();
-    m_model = new ConfRoomModel(tab, this, number, members);
-    QLabel *redondant = new QLabel(tr(" Conference room %1").arg(number));
-    setProperty("id", number);
+    Q_OBJECT
 
-    hBox->addStretch(1);
-    hBox->addWidget(redondant, 6);
-    hBox->addStretch(1);
-    vBox->addLayout(hBox);
+    public:
+        ConfRoomView(QWidget *parent = NULL);
+        void updateHeadersView();
 
-    hBox = new QHBoxLayout();
+    private slots:
+        void onViewClick(const QModelIndex &);
+        void sectionHeaderClicked(int);
 
-    m_view = new ConfRoomView(this);
-    m_view->setModel(m_model);
-    m_view->updateHeadersView();
+    protected:
+        virtual void mousePressEvent(QMouseEvent *event);
 
-    m_view->setStyleSheet("ConfRoomView {"
-                            "border: none;"
-                            "background:transparent;"
-                            "color:black;"
-                        "}");
+    private:
+        int lastPressed;
+};
 
-    m_view->verticalHeader()->hide();
-
-    hBox->addWidget(m_view);
-
-    vBox->addLayout(hBox);
-}
+#endif
