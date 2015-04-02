@@ -33,16 +33,14 @@
 
 
 enum ColOrder {
-    ID, ACTION_MUTE, ACTION_KICK, ACTION_TALK_TO,
-    ACTION_ALLOW_IN, ACTION_RECORD, ADMIN,
-    NAME, NUMBER, SINCE, NB_COL
+    ID, ACTION_MUTE, NAME, NUMBER, SINCE, NB_COL
 };
 
 static QVariant COL_TITLE[NB_COL];
 
 ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &number, const QVariantMap &members)
-    : QAbstractTableModel(parent), m_tab(tab), m_parent(parent), m_admin(0),
-      m_authed(0), m_number(number), m_members(members)
+    : QAbstractTableModel(parent),
+      m_number(number), m_members(members)
 {
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateMeetmeConfig(const QVariantMap &)));
@@ -53,12 +51,6 @@ ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &numbe
     COL_TITLE[NUMBER] = tr("Number");
     COL_TITLE[NAME] = tr("Name");
     COL_TITLE[SINCE] = tr("Since");
-    COL_TITLE[ADMIN] = tr("Admin");
-    COL_TITLE[ACTION_KICK] = tr("K");
-    COL_TITLE[ACTION_RECORD] = tr("R");
-    COL_TITLE[ACTION_ALLOW_IN] = tr("A");
-    COL_TITLE[ACTION_TALK_TO] = tr("T");
-    COL_TITLE[ACTION_MUTE] = tr("M");
 
     QTimer * join_time_timer = new QTimer(this);
     connect(join_time_timer, SIGNAL(timeout()),
@@ -174,14 +166,8 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
         return member["join_order"].toInt();
     case NUMBER:
         return member["number"].toString();
-    case ACTION_RECORD:
-        return tr("No");
-    case ADMIN:
-        return tr("No");
     case NAME:
         return member["name"].toString();
-    case ACTION_ALLOW_IN:
-        return tr("Yes");
     case SINCE:
         if (started_since == -1)
             return tr("Unknown");

@@ -27,14 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "confroom_view.h"
 #include "confroom.h"
-
-enum ColOrder {
-    ID, ACTION_MUTE, ACTION_KICK, ACTION_TALK_TO,
-    ACTION_ALLOW_IN, ACTION_RECORD, ADMIN,
-    NAME, NUMBER, SINCE, NB_COL
-};
+#include "confroom_model.h"
+#include "confroom_view.h"
 
 ConfRoomView::ConfRoomView(QWidget *parent)
     : AbstractTableView(parent)
@@ -62,32 +57,16 @@ ConfRoomView::ConfRoomView(QWidget *parent)
 
 void ConfRoomView::updateHeadersView()
 {
-    static int actions[] = { ACTION_RECORD,
-                             ACTION_KICK,
-                             ACTION_ALLOW_IN,
-                             ACTION_TALK_TO };
-    for (int i = 0; i < nelem(actions); ++i)
-        this->hideColumn(actions[i]);
-    this->hideColumn(ADMIN);
-
-    setColumnWidth(ACTION_MUTE, 32);
-    horizontalHeader()->setSectionResizeMode(ACTION_MUTE, QHeaderView::Fixed);
+    setColumnWidth(ConfRoomModel::ACTION_MUTE, 32);
+    horizontalHeader()->setSectionResizeMode(ConfRoomModel::ACTION_MUTE, QHeaderView::Fixed);
     hideColumn(0);
 }
 
 void ConfRoomView::sectionHeaderClicked(int index)
 {
-    int nonSortable[] = { ACTION_MUTE,
-                          ACTION_TALK_TO,
-                          ACTION_RECORD,
-                          ACTION_ALLOW_IN,
-                          ACTION_KICK };
-
-    for(int i = 0; i < nelem(nonSortable); i++) {
-        if (nonSortable[i] == index) {
-            setSortingEnabled(false);
-            return ;
-        }
+    if (index == ConfRoomModel::ACTION_MUTE) {
+        setSortingEnabled(false);
+        return ;
     }
     setSortingEnabled(true);
 }
@@ -95,7 +74,7 @@ void ConfRoomView::sectionHeaderClicked(int index)
 void ConfRoomView::onViewClick(const QModelIndex &index)
 {
     switch (index.column()) {
-        case ACTION_MUTE:
+        case ConfRoomModel::ACTION_MUTE:
         {
             int row = index.row();
             ConfRoomModel *model = static_cast<ConfRoomModel *>(this->model());

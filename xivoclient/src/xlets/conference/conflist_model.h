@@ -27,52 +27,57 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFROOM_MODEL_H_
-#define _CONFROOM_MODEL_H_
+#ifndef _CONFLIST_MODEL_H_
+#define _CONFLIST_MODEL_H_
 
-#include <QWidget>
-#include <QAbstractTableModel>
+#include <QLabel>
+#include <QTimer>
+#include <QVBoxLayout>
+#include <QTableView>
 #include <QModelIndex>
+#include <QVariant>
+#include <QAbstractTableModel>
+#include <QHeaderView>
+#include <QMenu>
+#include <QAction>
+#include <QMouseEvent>
 
-#include "conference.h"
-#include "baseengine.h"
+#include <xletlib/functests.h>
+#include <baseengine.h>
 
-class ConfTab;
 
-class ConfRoomModel : public QAbstractTableModel
+class ConfListModel : public QAbstractTableModel
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         enum ColOrder {
             ID,
-            ACTION_MUTE,
             NAME,
             NUMBER,
-            SINCE,
+            PIN_REQUIRED,
+            MODERATED,
+            MEMBER_COUNT,
+            STARTED_SINCE,
             NB_COL
         };
-        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &, const QVariantMap &);
-        QString number() const { return m_number; }
-        QString row2participantId(int row) const { return m_row2number[row]; }
-        bool isRowMuted(int row) const;
-        const QString &roomNumber() const { return m_number; }
-        int userNumberFromRow(int row) const;
+        ConfListModel(QWidget *parent = NULL);
+        QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
     public slots:
-        void updateMeetmeConfig(const QVariantMap &);
-    private slots:
-        void extractRow2IdMap();
-        void updateJoinTime();
+        void updateConfTime();
+        void updateRoomConfigs(const QVariantMap &);
     private:
-        void sort(int, Qt::SortOrder);
-        int rowCount(const QModelIndex&) const;
+        void refreshRow2Number();
+        QString startedSince(double time) const;
+        int rowCount(const QModelIndex& = QModelIndex()) const;
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;
-        QVariant headerData(int, Qt::Orientation, int) const;
+        QVariant headerData(int , Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
-        QString m_number;
         QStringList m_row2number;
-        QVariantMap m_members;
+        QVariantMap m_room_configs;
+        QString COL_TITLE[NB_COL];
 };
 
 #endif

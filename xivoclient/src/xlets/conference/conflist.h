@@ -46,52 +46,8 @@
 #include <baseengine.h>
 
 #include "conference.h"
-
-class ConfListModel : public QAbstractTableModel
-{
-    Q_OBJECT
-    FUNCTESTED
-
-    public:
-        enum ColOrder {
-            ID,
-            NAME,
-            NUMBER,
-            PIN_REQUIRED,
-            MODERATED,
-            MEMBER_COUNT,
-            STARTED_SINCE,
-            NB_COL
-        };
-        ConfListModel(QWidget *parent = NULL);
-        QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
-    public slots:
-        void updateConfTime();
-        void updateRoomConfigs(const QVariantMap &);
-    private:
-        void refreshRow2Number();
-        QString startedSince(double time) const;
-        int rowCount(const QModelIndex& = QModelIndex()) const;
-        int columnCount(const QModelIndex&) const;
-        QVariant data(const QModelIndex&, int) const;
-        QVariant headerData(int , Qt::Orientation, int) const;
-        Qt::ItemFlags flags(const QModelIndex &) const;
-        QStringList m_row2number;
-        QVariantMap m_room_configs;
-        QString COL_TITLE[NB_COL];
-};
-
-
-class ConfListView : public QTableView
-{
-    Q_OBJECT
-
-    public:
-        ConfListView(QWidget *parent);
-    public slots:
-        void onViewClick(const QModelIndex &);
-	void contextMenuEvent(QContextMenuEvent * event);
-};
+#include "conflist_view.h"
+#include "conflist_model.h"
 
 
 class ConfList : public QWidget
