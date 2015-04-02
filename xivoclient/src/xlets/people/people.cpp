@@ -47,6 +47,9 @@ People::People(QWidget *parent)
 {
     this->ui.setupUi(this);
 
+    ui.menu->addAction(tr("all"));
+    ui.menu->setSelectedIndex(0);
+
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
     m_model = new PeopleEntryModel(m_people_entry_manager, this);
     m_proxy_model->setSourceModel(m_model);

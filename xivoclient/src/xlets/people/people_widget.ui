@@ -6,80 +6,74 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background: white;</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item alignment="Qt::AlignVCenter">
-    <widget class="QLabel" name="entry_title">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="header_layout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>231</red>
-           <green>123</green>
-           <blue>57</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>231</red>
-           <green>123</green>
-           <blue>57</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>190</red>
-           <green>190</green>
-           <blue>190</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="font">
-      <font>
-       <family>Dyno</family>
-       <pointsize>32</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Contacts</string>
-     </property>
-     <property name="margin">
+     <property name="leftMargin">
       <number>30</number>
      </property>
-     <property name="indent">
-      <number>-1</number>
+     <property name="bottomMargin">
+      <number>40</number>
      </property>
-    </widget>
+     <item>
+      <widget class="QLabel" name="title">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Dyno</family>
+         <pointsize>28</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #e77d39; padding-top: 20px; padding-bottom: 20px; padding-left: 0px;</string>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
+       <property name="text">
+        <string>Contacts</string>
+       </property>
+       <property name="indent">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="HorizontalMenu" name="menu" native="true"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLineEdit" name="entry_filter">
@@ -98,6 +92,12 @@
    <class>PeopleEntryView</class>
    <extends>QTableWidget</extends>
    <header location="global">xlets/people/people_entry_view.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HorizontalMenu</class>
+   <extends>QWidget</extends>
+   <header location="global">xletlib/horizontal_menu.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
