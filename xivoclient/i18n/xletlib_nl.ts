@@ -246,6 +246,34 @@ wachtrijen</translation>
     </message>
 </context>
 <context>
+    <name>DirectoryPanel</name>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="37"/>
+        <source>Remote Directory Panel</source>
+        <translation>Externe telefoonlijst venster</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="40"/>
+        <source>Remote Di&amp;rectory</source>
+        <translation>Externe telefoonlijst</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="48"/>
+        <source>Search</source>
+        <translation>Zoeken</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="131"/>
+        <source>Double-click to send an E-mail to</source>
+        <translation>Dubbel klik om een e-mail te sturen</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="133"/>
+        <source>Double-click to call</source>
+        <translation>Dubbel klik om te bellen</translation>
+    </message>
+</context>
+<context>
     <name>ExtendedTableWidget</name>
     <message>
         <location filename="../src/xletlib/extendedtablewidget.cpp" line="73"/>

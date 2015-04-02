@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="hu_HU">
+<TS version="2.1" language="hu">
 <context>
     <name>DirDialog</name>
     <message>
@@ -30,11 +30,6 @@
 <context>
     <name>FaxWidget</name>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="43"/>
         <source>Send fax</source>
         <translation type="unfinished"></translation>
@@ -60,22 +55,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="145"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="148"/>
         <source>2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="160"/>
         <source>Choose destination number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="192"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="195"/>
         <source>fax number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="254"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="260"/>
         <source>SEND FAX</source>
         <translation type="unfinished"></translation>
     </message>

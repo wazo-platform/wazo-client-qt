@@ -78,6 +78,11 @@
         <source>CALL FILTER</source>
         <translation>CALL FILTER</translation>
     </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.cpp" line="394"/>
+        <source>AVAILABLE</source>
+        <translation>AVAILABLE</translation>
+    </message>
 </context>
 <context>
     <name>IdentityWidget</name>

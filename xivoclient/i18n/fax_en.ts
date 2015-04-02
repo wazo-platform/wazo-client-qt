@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.1" language="en">
 <context>
     <name>DirDialog</name>
     <message>
         <location filename="../src/xlets/fax/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Directory</translation>
     </message>
 </context>
 <context>
@@ -14,70 +14,65 @@
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="35"/>
         <source>Fax</source>
-        <translation type="unfinished"></translation>
+        <translation>Fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="91"/>
         <source>Open Fax File</source>
-        <translation type="unfinished"></translation>
+        <translation>Open Fax File</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="93"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF Files (*.pdf);;All Files (*)</translation>
     </message>
 </context>
 <context>
     <name>FaxWidget</name>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="43"/>
         <source>Send fax</source>
-        <translation type="unfinished"></translation>
+        <translation>Send fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="66"/>
         <source>1.</source>
-        <translation type="unfinished"></translation>
+        <translation>1.</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="78"/>
         <source>Choose file to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose file to send</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="113"/>
         <source>file</source>
-        <translation type="unfinished"></translation>
+        <translation>file</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="120"/>
         <source>BROWSE...</source>
-        <translation type="unfinished"></translation>
+        <translation>BROWSE...</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="145"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="148"/>
         <source>2.</source>
-        <translation type="unfinished"></translation>
+        <translation>2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="160"/>
         <source>Choose destination number</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose destination number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="192"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="195"/>
         <source>fax number</source>
-        <translation type="unfinished"></translation>
+        <translation>fax number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="254"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="260"/>
         <source>SEND FAX</source>
-        <translation type="unfinished"></translation>
+        <translation>SEND FAX</translation>
     </message>
 </context>
 </TS>

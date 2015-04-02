@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/fax/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Directorio </translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="35"/>
         <source>Fax</source>
-        <translation type="unfinished"></translation>
+        <translation>Fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="91"/>
@@ -30,11 +30,6 @@
 <context>
     <name>FaxWidget</name>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="43"/>
         <source>Send fax</source>
         <translation type="unfinished"></translation>
@@ -42,7 +37,7 @@
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="66"/>
         <source>1.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1.</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="78"/>
@@ -60,22 +55,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="145"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="148"/>
         <source>2.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="160"/>
         <source>Choose destination number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="192"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="195"/>
         <source>fax number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="254"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="260"/>
         <source>SEND FAX</source>
         <translation type="unfinished"></translation>
     </message>
