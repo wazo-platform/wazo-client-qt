@@ -39,6 +39,8 @@ ConfList::ConfList(ConfTab *parent)
     QVBoxLayout *vBox = new QVBoxLayout(this);
     setLayout(vBox);
 
+    vBox->setContentsMargins(0,0,0,0);
+
     // this contains the data, unordered
     m_model = new ConfListModel(this);
     m_model->setObjectName("conflist_model");

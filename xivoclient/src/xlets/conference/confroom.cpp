@@ -38,6 +38,8 @@ ConfRoom::ConfRoom(QWidget *parent, const QString &number, const QVariantMap &me
     : QWidget(parent)
 {
     QVBoxLayout *vBox = new QVBoxLayout(this);
+    vBox->setContentsMargins(0,0,0,0);
+
     setLayout(vBox);
     m_model = new ConfRoomModel(this, number, members);
     setProperty("id", number);
