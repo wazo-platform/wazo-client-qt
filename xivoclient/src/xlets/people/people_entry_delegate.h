@@ -32,6 +32,8 @@
 
 #include <QStyledItemDelegate>
 
+class QMenu;
+
 class PeopleEntryDotDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -69,6 +71,14 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
 
     protected:
         bool pressed;
+
+    private:
+        void showContextMenu(const QStyleOptionViewItem &option,
+                             QAbstractItemModel *model,
+                             const QModelIndex &index);
+        void fillContextMenu(QMenu *menu,
+                             QAbstractItemModel *model,
+                             const QModelIndex &index);
 };
 
 class PeopleEntryAgentDelegate : public QStyledItemDelegate

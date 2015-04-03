@@ -14,7 +14,34 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: white;</string>
+   <string notr="true">#PeopleWidget {
+    background: white;
+}
+
+QMenu {
+    background: white;
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+QMenu::item {
+    padding-top: 5px;
+    padding-left: 13px;
+    padding-right: 23px;
+    padding-bottom: 5px;
+}
+
+QMenu::separator {
+    background: #e8e4e2;
+    height: 1px;
+}
+
+QMenu::item:selected {
+    background: #e8e4e2;
+    color: black;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
