@@ -30,6 +30,7 @@
 #include <QAbstractScrollArea>
 #include <QEvent>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QPainter>
 
 #include "people_entry_delegate.h"
@@ -37,7 +38,8 @@
 QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
-QMargins PeopleEntryDotDelegate::button_margins = QMargins(10, 0, 10, 0);
+QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
+int PeopleEntryNumberDelegate::action_selector_width = 40;
 
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
@@ -112,7 +114,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
     if(option.state & QStyle::State_MouseOver) {
         painter->save();
         QPainterPath path;
-        QRect button_rect = QRect(option.rect).marginsRemoved(button_margins);
+        QRect button_rect = this->contentsRect(option.rect);
         path.addRoundedRect(button_rect, 8, 8);
         if (this->pressed) {
             painter->fillPath(path, Qt::black);
@@ -126,8 +128,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
 
-        QRect selector_rect(button_rect);
-        selector_rect.setX(button_rect.right() - 40);
+        QRect selector_rect = this->actionSelectorRect(option.rect);
 
         QRect separator_rect(selector_rect);
         separator_rect.setWidth(1);
@@ -156,15 +157,41 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
     }
 
     if(event->type() == QEvent::MouseButtonPress) {
-        this->pressed = true;
+        QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
+        if (this->contentsRect(option.rect).contains(mouse_event->pos())) {
+            this->pressed = true;
+        }
     }
     if (event->type() == QEvent::MouseButtonRelease) {
         this->pressed = false;
 
-        this->showContextMenu(option, model, index);
-        emit clicked(model, index);
+        QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
+        if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
+            emit clicked(model, index);
+        } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
+            this->showContextMenu(option, model, index);
+        }
     }
     return true;
+}
+
+QRect PeopleEntryNumberDelegate::contentsRect(const QRect &option_rect) const
+{
+    return option_rect.marginsRemoved(button_margins);
+}
+
+QRect PeopleEntryNumberDelegate::buttonRect(const QRect &option_rect) const
+{
+    QRect rect = this->contentsRect(option_rect);
+    rect.setRight(rect.right() - action_selector_width);
+    return rect;
+}
+
+QRect PeopleEntryNumberDelegate::actionSelectorRect(const QRect &option_rect) const
+{
+    QRect rect = this->contentsRect(option_rect);
+    rect.setLeft(rect.right() - action_selector_width);
+    return rect;
 }
 
 void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &option,
@@ -186,7 +213,6 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
     menu.exec(globalPosition);
 }
 
-
 void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
                                                 QAbstractItemModel *model,
                                                 const QModelIndex &index)
@@ -194,6 +220,7 @@ void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
     menu->addAction("action1");
     menu->addAction("action2");
 }
+
 
 PeopleEntryAgentDelegate::PeopleEntryAgentDelegate(QWidget *parent)
     : QStyledItemDelegate(parent)

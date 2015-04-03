@@ -49,8 +49,6 @@ class PeopleEntryDotDelegate : public QStyledItemDelegate
     protected:
         static QSize icon_size;
         static int icon_text_spacing;
-        static QMargins button_margins;
-        static int button_height;
 };
 
 class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
@@ -59,24 +57,29 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
 
     public:
         PeopleEntryNumberDelegate(QWidget *parent = NULL);
-        void paint(QPainter *painter,
-                   const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const;
         bool editorEvent(QEvent *event,
                          QAbstractItemModel *model,
                          const QStyleOptionViewItem &option,
                          const QModelIndex &index);
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
     signals:
         void clicked(QAbstractItemModel *, const QModelIndex &);
 
     protected:
         bool pressed;
+        static QMargins button_margins;
+        static int action_selector_width;
 
     private:
-        void showContextMenu(const QStyleOptionViewItem &option,
+        QRect buttonRect(const QRect &option_rect) const;
+        QRect contentsRect(const QRect &option_rect) const;
+        QRect actionSelectorRect(const QRect &option_rect) const;
+        void fillContextMenu(QMenu *menu,
                              QAbstractItemModel *model,
                              const QModelIndex &index);
-        void fillContextMenu(QMenu *menu,
+        void showContextMenu(const QStyleOptionViewItem &option,
                              QAbstractItemModel *model,
                              const QModelIndex &index);
 };
