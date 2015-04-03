@@ -104,8 +104,27 @@ QMenu::item:selected {
    </item>
    <item>
     <widget class="QLineEdit" name="entry_filter">
+     <property name="font">
+      <font>
+       <family>Liberation Sans</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #e8e4e2;
+border-radius: 14px;
+padding-left: 14px;
+padding-right: 28px;
+color: #2c2927;
+height: 30px;
+margin-left: 30px;
+margin-right: 30px;</string>
+     </property>
      <property name="text">
       <string notr="true"/>
+     </property>
+     <property name="placeholderText">
+      <string>search</string>
      </property>
     </widget>
    </item>
