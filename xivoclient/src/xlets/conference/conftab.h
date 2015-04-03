@@ -27,30 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CONFTAB_H__
+#define __CONFTAB_H__
+
+#include <QDebug>
+#include <QWidget>
+#include <QtPlugin>
+#include <QTabWidget>
 #include <QVBoxLayout>
+#include <QPushButton>
 
-#include "confroom.h"
-#include "confroom_model.h"
-#include "confroom_view.h"
+#include <xletlib/functests.h>
+#include <xletlib/xlet.h>
+#include <xletlib/xletinterface.h>
 
 
-ConfRoom::ConfRoom(QWidget *parent, const QString &number, const QVariantMap &members)
-    : QWidget(parent)
+class ConfTab : public QTabWidget
 {
-    QVBoxLayout *vBox = new QVBoxLayout(this);
-    setLayout(vBox);
-    m_model = new ConfRoomModel(this, number, members);
-    setProperty("id", number);
+    Q_OBJECT
 
-    m_view = new ConfRoomView(this);
-    m_view->setModel(m_model);
-    m_view->updateHeadersView();
+    public:
+        ConfTab(QWidget *parent);
+        void showConfRoom(const QString &number, const QVariantMap &members);
+        int indexOf(QWidget *w) { return QTabWidget::indexOf(w); };
+        int indexOf(const QString &id);
 
-    m_view->setStyleSheet("ConfRoomView {"
-                            "border: none;"
-                            "background:transparent;"
-                            "color:black;"
-                        "}");
+    public slots:
+        void closeTab(int index);
 
-    vBox->addWidget(m_view);
-}
+};
+
+#endif

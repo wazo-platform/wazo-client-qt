@@ -27,29 +27,23 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFERENCE2_CONFROOM_H_
-#define _CONFERENCE2_CONFROOM_H_
-#include <QLabel>
+#ifndef __CONFROOM_H__
+#define __CONFROOM_H__
 
-#include "conference.h"
-#include "baseengine.h"
+#include <QWidget>
 
-#include "confroom_view.h"
-#include "confroom_model.h"
 
 class ConfRoomModel;
-class ConfTab;
+class ConfRoomView;
 
 class ConfRoom : public QWidget
 {
     Q_OBJECT
 
     public:
-        ConfRoom(QWidget *parent, ConfTab *tab, const QString &, const QVariantMap &);
+        ConfRoom(QWidget *parent, const QString &, const QVariantMap &);
     private:
-        QString m_number;
         ConfRoomModel *m_model;
-        QLabel *m_moderatedRoom;
         ConfRoomView *m_view;
 };
 

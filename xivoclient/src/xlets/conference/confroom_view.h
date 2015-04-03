@@ -27,19 +27,15 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFROOM_VIEW_H_
-#define _CONFROOM_VIEW_H_
+#ifndef __CONFROOM_VIEW_H__
+#define __CONFROOM_VIEW_H__
 #include <QWidget>
 #include <QDebug>
 #include <QTimer>
-#include <QAbstractTableModel>
-#include <QTableView>
 #include <QModelIndex>
-#include <QMouseEvent>
 #include <QHeaderView>
 
 #include <xletlib/abstract_table_view.h>
-#include "baseengine.h"
 
 
 class ConfRoomView : public AbstractTableView
@@ -53,12 +49,6 @@ class ConfRoomView : public AbstractTableView
     private slots:
         void onViewClick(const QModelIndex &);
         void sectionHeaderClicked(int);
-
-    protected:
-        virtual void mousePressEvent(QMouseEvent *event);
-
-    private:
-        int lastPressed;
 };
 
 #endif

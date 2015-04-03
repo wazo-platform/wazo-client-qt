@@ -27,13 +27,17 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "conference.h"
 #include "conflist.h"
+#include "conflist_model.h"
+#include "conflist_view.h"
+#include "conftab.h"
 
-ConfList::ConfList(XletConference *parent)
-    : QWidget(), m_manager(parent)
+ConfList::ConfList(ConfTab *parent)
+    : QWidget(), m_conf_tab(parent)
 {
     QVBoxLayout *vBox = new QVBoxLayout(this);
-    QHBoxLayout *hBox = new QHBoxLayout();
+    setLayout(vBox);
 
     // this contains the data, unordered
     m_model = new ConfListModel(this);
@@ -57,10 +61,7 @@ ConfList::ConfList(XletConference *parent)
     view->hideColumn(ConfListModel::MODERATED);
     view->sortByColumn(ConfListModel::NAME, Qt::AscendingOrder);
 
-    hBox->addWidget(view);
-
-    vBox->addLayout(hBox);
-    setLayout(vBox);
+    vBox->addWidget(view);
 }
 
 void ConfList::phoneConfRoom()
@@ -69,7 +70,7 @@ void ConfList::phoneConfRoom()
     QVariantMap members = m_model->getMembers(roomNumber);
 
     b_engine->actionDial(roomNumber);
-    m_manager->openConfRoom(roomNumber, members);
+    m_conf_tab->showConfRoom(roomNumber, members);
 }
 
 void ConfList::openConfRoom()
@@ -77,5 +78,5 @@ void ConfList::openConfRoom()
     const QString &number = sender()->property("number").toString();
     QVariantMap members = m_model->getMembers(number);
 
-    m_manager->openConfRoom(number, members);
+    m_conf_tab->showConfRoom(number, members);
 }

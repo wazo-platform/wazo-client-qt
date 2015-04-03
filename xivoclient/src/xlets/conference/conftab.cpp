@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,30 +27,41 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QVBoxLayout>
-
+#include "conftab.h"
+#include "conflist.h"
 #include "confroom.h"
-#include "confroom_model.h"
-#include "confroom_view.h"
 
-
-ConfRoom::ConfRoom(QWidget *parent, const QString &number, const QVariantMap &members)
-    : QWidget(parent)
+ConfTab::ConfTab(QWidget *parent)
+    : QTabWidget(parent)
 {
-    QVBoxLayout *vBox = new QVBoxLayout(this);
-    setLayout(vBox);
-    m_model = new ConfRoomModel(this, number, members);
-    setProperty("id", number);
+    connect(this, SIGNAL(tabCloseRequested(int)),
+            this, SLOT(closeTab(int)));
+}
 
-    m_view = new ConfRoomView(this);
-    m_view->setModel(m_model);
-    m_view->updateHeadersView();
+void ConfTab::closeTab(int index)
+{
+    widget(index)->deleteLater();
+    removeTab(index);
+}
 
-    m_view->setStyleSheet("ConfRoomView {"
-                            "border: none;"
-                            "background:transparent;"
-                            "color:black;"
-                        "}");
+void ConfTab::showConfRoom(const QString &number, const QVariantMap &members)
+{
+    int index = indexOf(number);
 
-    vBox->addWidget(m_view);
+    if (index == -1) {
+        index = addTab(new ConfRoom(this, number, members), number);
+        widget(index)->setProperty("number", number);
+    }
+
+    setCurrentIndex(index);
+}
+
+int ConfTab::indexOf(const QString &number)
+{
+    for (int i = 1; i < count(); i++) {
+        if (widget(i)->property("number").toString() == number) {
+            return i;
+        }
+    }
+    return -1;
 }

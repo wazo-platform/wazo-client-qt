@@ -29,16 +29,13 @@
 
 #include <QTimer>
 
+#include "baseengine.h"
 #include "confroom_model.h"
 
 
-enum ColOrder {
-    ID, ACTION_MUTE, NAME, NUMBER, SINCE, NB_COL
-};
+static QVariant COL_TITLE[ConfRoomModel::NB_COL];
 
-static QVariant COL_TITLE[NB_COL];
-
-ConfRoomModel::ConfRoomModel(ConfTab *tab, QWidget *parent, const QString &number, const QVariantMap &members)
+ConfRoomModel::ConfRoomModel(QWidget *parent, const QString &number, const QVariantMap &members)
     : QAbstractTableModel(parent),
       m_number(number), m_members(members)
 {

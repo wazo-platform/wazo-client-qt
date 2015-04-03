@@ -27,16 +27,18 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFLIST_VIEW_H_
-#define _CONFLIST_VIEW_H_
+#ifndef __CONFLIST_VIEW_H__
+#define __CONFLIST_VIEW_H__
 
 #include <QTableView>
 #include <QModelIndex>
 
+#include <xletlib/abstract_table_view.h>
+
 #include <baseengine.h>
 
 
-class ConfListView : public QTableView
+class ConfListView : public AbstractTableView
 {
     Q_OBJECT
 

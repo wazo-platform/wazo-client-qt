@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFLIST_MODEL_H_
-#define _CONFLIST_MODEL_H_
+#ifndef __CONFLIST_MODEL_H__
+#define __CONFLIST_MODEL_H__
 
 #include <QLabel>
 #include <QTimer>

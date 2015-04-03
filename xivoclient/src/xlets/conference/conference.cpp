@@ -28,82 +28,28 @@
  */
 
 #include "conference.h"
+#include "conflist.h"
+#include "conftab.h"
 
-ConfTab::ConfTab(QWidget *parent)
-    : QTabWidget(parent)
-{
-}
-
-void ConfTab::closeTab(QWidget *w)
-{
-    int index;
-
-    if (!w) {
-        w = sender()->property("index").value<QWidget*>();
-    }
-
-    index = indexOf(w);
-    removeTab(index);
-    w->deleteLater();
-}
-
-int ConfTab::addClosableTab(QWidget *w, const QString &number)
-{
-    int index = addTab(w, number);
-
-    QPushButton *p = new QPushButton("X");
-    p->setFlat(true);
-    p->setMaximumSize(12, 20);
-    p->setFocusPolicy(Qt::NoFocus);
-    p->setProperty("index", qVariantFromValue(w));
-    widget(index)->setProperty("number", number);
-    connect(p, SIGNAL(clicked()), this, SLOT(closeTab()));
-    tabBar()->setTabButton(index, QTabBar::RightSide, p);
-
-    return index;
-}
-
-void ConfTab::showConfRoom(const QString &number, const QVariantMap &members)
-{
-    int index = indexOf(number);
-
-    if (index == -1) {
-        index = addClosableTab(new ConfRoom(this, this, number, members), number);
-    }
-
-    setCurrentIndex(index);
-}
-
-int ConfTab::indexOf(const QString &number)
-{
-    for (int i = 1; i < count(); i++) {
-        if (widget(i)->property("number").toString() == number) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-XLet* XLetConferencePlugin::newXLetInstance(QWidget *parent)
-{
-    b_engine->registerTranslation(":/obj/conference_%1");
-    return new XletConference(parent);
-}
-
-XletConference::XletConference(QWidget *parent)
+Conference::Conference(QWidget *parent)
     : XLet(parent, tr("Conference"), ":/images/tab-conference.svg")
 {
-    QVBoxLayout *vLayout = new QVBoxLayout();
-    setLayout(vLayout);
+    this->ui.setupUi(this);
 
-    m_tab = new ConfTab(this);
-    m_tab->addTab(new ConfList(this), tr("Conference room list"));
-    vLayout->addWidget(m_tab);
+    QFile qssFile(QString(":/default.qss"));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        this->setStyleSheet(qssFile.readAll());
+    }
+
+    this->ui.conf_tab->addTab(new ConfList(this->ui.conf_tab), tr("Room list"));
+    this->ui.conf_tab->setTabsClosable(true);
+    this->ui.conf_tab->tabBar()->setTabButton(0, QTabBar::RightSide, NULL);
+    this->ui.conf_tab->tabBar()->setTabButton(0, QTabBar::LeftSide, NULL);
 
     registerMeetmeUpdate();
 }
 
-void XletConference::registerMeetmeUpdate() const
+void Conference::registerMeetmeUpdate() const
 {
     QVariantMap command;
 
@@ -113,7 +59,9 @@ void XletConference::registerMeetmeUpdate() const
     b_engine->sendJsonCommand(command);
 }
 
-void XletConference::openConfRoom(const QString &number, const QVariantMap &members)
+
+XLet* XLetConferencePlugin::newXLetInstance(QWidget *parent)
 {
-    m_tab->showConfRoom(number, members);
+    b_engine->registerTranslation(":/obj/conference_%1");
+    return new Conference(parent);
 }

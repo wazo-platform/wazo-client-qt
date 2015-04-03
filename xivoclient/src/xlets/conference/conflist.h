@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFERENCE2_CONFLIST_H_
-#define _CONFERENCE2_CONFLIST_H_
+#ifndef __CONFLIST_H__
+#define __CONFLIST_H__
 
 #include <QLabel>
 #include <QTimer>
@@ -45,22 +45,20 @@
 #include <xletlib/functests.h>
 #include <baseengine.h>
 
-#include "conference.h"
-#include "conflist_view.h"
-#include "conflist_model.h"
-
+class ConfListModel;
+class ConfTab;
 
 class ConfList : public QWidget
 {
     Q_OBJECT
 
     public:
-        ConfList(XletConference *parent);
+        ConfList(ConfTab *parent);
     private slots:
         void openConfRoom();
         void phoneConfRoom();
     private:
-        XletConference *m_manager;
+        ConfTab *m_conf_tab;
         ConfListModel *m_model;
 
 };

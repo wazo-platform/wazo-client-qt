@@ -27,15 +27,13 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFROOM_MODEL_H_
-#define _CONFROOM_MODEL_H_
+#ifndef __CONFROOM_MODEL_H__
+#define __CONFROOM_MODEL_H__
 
 #include <QWidget>
 #include <QAbstractTableModel>
 #include <QModelIndex>
 
-#include "conference.h"
-#include "baseengine.h"
 
 class ConfTab;
 
@@ -52,7 +50,7 @@ class ConfRoomModel : public QAbstractTableModel
             SINCE,
             NB_COL
         };
-        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &, const QVariantMap &);
+        ConfRoomModel(QWidget *parent, const QString &, const QVariantMap &);
         QString number() const { return m_number; }
         QString row2participantId(int row) const { return m_row2number[row]; }
         bool isRowMuted(int row) const;

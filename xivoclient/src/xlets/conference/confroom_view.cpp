@@ -27,6 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "baseengine.h"
 #include "confroom.h"
 #include "confroom_model.h"
 #include "confroom_view.h"
@@ -34,19 +35,6 @@
 ConfRoomView::ConfRoomView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    setSortingEnabled(true);
-    setShowGrid(0);
-    verticalHeader()->hide();
-    horizontalHeader()->setSectionsMovable(true);
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-
-    setStyleSheet("ConfListView {"
-                      "border: none;"
-                      "background:transparent;"
-                      "color:black;"
-                  "}");
-
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
 
@@ -57,8 +45,8 @@ ConfRoomView::ConfRoomView(QWidget *parent)
 
 void ConfRoomView::updateHeadersView()
 {
-    setColumnWidth(ConfRoomModel::ACTION_MUTE, 32);
     horizontalHeader()->setSectionResizeMode(ConfRoomModel::ACTION_MUTE, QHeaderView::Fixed);
+    setColumnWidth(ConfRoomModel::ACTION_MUTE, 32);
     hideColumn(0);
 }
 
@@ -73,27 +61,15 @@ void ConfRoomView::sectionHeaderClicked(int index)
 
 void ConfRoomView::onViewClick(const QModelIndex &index)
 {
-    switch (index.column()) {
-        case ConfRoomModel::ACTION_MUTE:
-        {
-            int row = index.row();
-            ConfRoomModel *model = static_cast<ConfRoomModel *>(this->model());
-            bool isMuted = model->isRowMuted(row);
-            QString room_number = model->roomNumber();
-            QString user_number = QString("%0").arg(model->userNumberFromRow(row));
-            QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
-            QString param = QString("%0 %1").arg(room_number).arg(user_number);
-            b_engine->meetmeAction(action, param);
-            break;
-        }
-        default:
-            qDebug() << Q_FUNC_INFO << "No Action";
-            break;
+    if (index.column() == ConfRoomModel::ACTION_MUTE)
+    {
+        int row = index.row();
+        ConfRoomModel *model = static_cast<ConfRoomModel *>(this->model());
+        bool isMuted = model->isRowMuted(row);
+        QString room_number = model->roomNumber();
+        QString user_number = QString("%0").arg(model->userNumberFromRow(row));
+        QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
+        QString param = QString("%0 %1").arg(room_number).arg(user_number);
+        b_engine->meetmeAction(action, param);
     }
-}
-
-void ConfRoomView::mousePressEvent(QMouseEvent *event)
-{
-    lastPressed = event->button();
-    QTableView::mousePressEvent(event);
 }

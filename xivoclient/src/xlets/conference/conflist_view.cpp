@@ -36,13 +36,8 @@
 #include "conflist_model.h"
 
 ConfListView::ConfListView(QWidget *parent)
-    : QTableView(parent)
+    : AbstractTableView(parent)
 {
-    setSortingEnabled(true);
-    setShowGrid(0);
-    verticalHeader()->hide();
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    horizontalHeader()->setSectionsMovable(true);
     setStyleSheet("ConfListView {"
                     "border: none;"
                     "background: transparent;"
