@@ -56,8 +56,8 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
         QVariant headerData(int,
                             Qt::Orientation,
                             int) const;
-        int getNumberColumnIndex() const;
         int getNameColumnIndex() const;
+
     public slots:
         void addPeopleEntry(int entry_index);
         void updatePeopleEntry(int entry_index);

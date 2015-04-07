@@ -289,17 +289,6 @@ void PeopleEntryModel::parseCommand(const QVariantMap &command)
     }
 }
 
-int PeopleEntryModel::getNumberColumnIndex() const
-{
-    for (int i = 0; i < m_fields.size(); ++i) {
-        const QPair<QString, enum ColumnType> &field = m_fields[i];
-        if (field.second == NUMBER) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 int PeopleEntryModel::getNameColumnIndex() const
 {
     for (int i = 0; i < m_fields.size(); ++i) {
