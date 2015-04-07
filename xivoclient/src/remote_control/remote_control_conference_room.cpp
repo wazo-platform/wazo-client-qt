@@ -35,12 +35,13 @@
 
 #include "xlets/conference/conference.h"
 #include "xlets/conference/conflist.h"
+#include "xlets/conference/conflist_model.h"
 #include "remote_control.h"
 
 QVariantMap RemoteControl::get_conference_room_infos()
 {
     QVariantMap args;
-    XletConference* conference_xlet = this->get_xlet<XletConference>("conference");
+    Conference* conference_xlet = this->get_xlet<Conference>("conference");
     QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
 
     args["conference_xlet"] = conference_xlet != NULL;
