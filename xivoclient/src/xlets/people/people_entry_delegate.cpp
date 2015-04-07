@@ -167,10 +167,12 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         this->pressed = false;
 
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
+        PeopleActions *people_actions = model->data(index, Qt::UserRole).value<PeopleActions*>();
+
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
-            emit clicked(model, index);
+            people_actions->call();
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
-            this->showContextMenu(option, model, index);
+            this->showContextMenu(option, people_actions);
         }
     }
     return true;
@@ -196,8 +198,7 @@ QRect PeopleEntryNumberDelegate::actionSelectorRect(const QRect &option_rect) co
 }
 
 void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &option,
-                                                QAbstractItemModel *model,
-                                                const QModelIndex &index)
+                                                PeopleActions *people_actions)
 {
     QAbstractScrollArea *view = static_cast<QAbstractScrollArea*>(option.styleObject);
     if (! view) {
@@ -210,16 +211,13 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
 
     QMenu menu(view);
     menu.setAttribute(Qt::WA_TranslucentBackground);
-    this->fillContextMenu(&menu, model, index);
+    this->fillContextMenu(&menu, people_actions);
     menu.exec(globalPosition);
 }
 
 void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
-                                                QAbstractItemModel *model,
-                                                const QModelIndex &index)
+                                                PeopleActions *people_actions)
 {
-    PeopleActions *people_actions = model->data(index, Qt::UserRole).value<PeopleActions*>();
-
     if (QAction *mobile_action = people_actions->callMobileAction()) {
         menu->addAction(mobile_action);
     }

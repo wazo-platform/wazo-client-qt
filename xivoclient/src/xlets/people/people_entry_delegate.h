@@ -32,6 +32,7 @@
 
 #include <QStyledItemDelegate>
 
+class PeopleActions;
 class QMenu;
 
 class PeopleEntryDotDelegate : public QStyledItemDelegate
@@ -64,8 +65,6 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
         void paint(QPainter *painter,
                    const QStyleOptionViewItem &option,
                    const QModelIndex &index) const;
-    signals:
-        void clicked(QAbstractItemModel *, const QModelIndex &);
 
     protected:
         bool pressed;
@@ -77,11 +76,9 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
         QRect contentsRect(const QRect &option_rect) const;
         QRect actionSelectorRect(const QRect &option_rect) const;
         void fillContextMenu(QMenu *menu,
-                             QAbstractItemModel *model,
-                             const QModelIndex &index);
+                             PeopleActions *people_actions);
         void showContextMenu(const QStyleOptionViewItem &option,
-                             QAbstractItemModel *model,
-                             const QModelIndex &index);
+                             PeopleActions *people_actions);
 };
 
 class PeopleEntryAgentDelegate : public QStyledItemDelegate
