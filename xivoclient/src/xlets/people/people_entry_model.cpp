@@ -65,9 +65,9 @@ PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manag
 void PeopleEntryModel::addField(const QString &name, const QString &type)
 {
     ColumnType t = this->m_type_map.value(type, OTHER);
-    m_fields.append(QPair<QString, enum ColumnType>(name, t));
     int inserted_column = m_fields.size() - 1;
     this->beginInsertColumns(QModelIndex(), inserted_column, inserted_column);
+    m_fields.append(QPair<QString, enum ColumnType>(name, t));
     this->endInsertColumns();
 }
 
@@ -78,8 +78,8 @@ void PeopleEntryModel::clearFields()
     }
 
     int last_column = m_fields.size() - 1;
-    m_fields.clear();
     this->beginRemoveColumns(QModelIndex(), 0, last_column);
+    m_fields.clear();
     this->endRemoveColumns();
 }
 
