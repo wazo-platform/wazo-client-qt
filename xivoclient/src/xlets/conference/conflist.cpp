@@ -66,14 +66,14 @@ ConfList::ConfList(ConfTab *parent)
 
 void ConfList::phoneConfRoom()
 {
-    const QString &room_number = sender()->property("number").toString();
+    const QString & room_number = sender()->property("number").toString();
     b_engine->actionDial(room_number);
 }
 
 void ConfList::openConfRoom()
 {
-    const QString &number = sender()->property("number").toString();
-    QVariantMap members = m_model->getMembers(number);
+    const QString & room_number = sender()->property("number").toString();
+    QVariantMap members = m_model->getMembers(room_number);
 
-    m_conf_tab->showConfRoom(number, members);
+    m_conf_tab->showConfRoom(room_number, members);
 }
