@@ -33,7 +33,7 @@
 #include <QAbstractTableModel>
 #include <QStringList>
 #include <ipbxlistener.h>
-#include <xletlib/directory_entry.h>
+#include <xletlib/people_entry.h>
 
 class PeopleEntryManager;
 class PeopleEntry;

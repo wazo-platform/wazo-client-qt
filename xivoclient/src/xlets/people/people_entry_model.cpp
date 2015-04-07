@@ -27,8 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QString>
+#include <QAction>
 #include <QPixmap>
+#include <QString>
 #include <cassert>
 
 #include <baseengine.h>
@@ -36,6 +37,7 @@
 #include <xletlib/people_entry.h>
 
 #include "people_entry_model.h"
+#include "people_actions.h"
 
 PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manager,
                                          QObject *parent)
@@ -57,14 +59,16 @@ PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manag
 void PeopleEntryModel::addField(const QString &name, const QString &type)
 {
     enum ColumnType t;
-    if (type == "name") {
+    if (type == "agent") {
+        t = AGENT;
+    } else if (type == "mobile") {
+        t = MOBILE;
+    } else if (type == "name") {
         t = NAME;
     } else if (type == "number") {
         t = NUMBER;
     } else if (type == "status") {
         t = STATUS_ICON;
-    } else if (type == "agent") {
-        t = AGENT;
     } else {
         t = OTHER;
     }
@@ -247,22 +251,27 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
     return QVariant();
 }
 
-QVariant PeopleEntryModel::dataUser(const PeopleEntry & entry, int column) const
+QVariant PeopleEntryModel::dataUser(const PeopleEntry &entry, int column) const
 {
     ColumnType column_type = m_fields[column].second;
     QPair<QString, int> agent_key = entry.uniqueAgentId();
 
     switch (column_type) {
-    case AGENT:
-        return m_people_entry_manager.getAgentStatus(agent_key);
-        break;
-    default:
-        return QVariant();
-        break;
+        case AGENT: {
+            return m_people_entry_manager.getAgentStatus(agent_key);
+            break;
+        }
+        case NUMBER: {
+            return QVariant::fromValue(new PeopleActions(m_fields, entry));
+            break;
+        }
+        default: {
+            return QVariant();
+            break;
+        }
     }
     return QVariant();
 }
-
 
 bool PeopleEntryModel::removeRows(int row, int count, const QModelIndex & index)
 {

@@ -48,6 +48,7 @@ class PeopleEntryView : public AbstractTableView
 
     public slots:
         void updateColumnsDelegates(const QModelIndex &parent, int first, int last);
+        void updateColumnsVisibility(const QModelIndex &parent, int first, int last);
         void extensionClick(QAbstractItemModel *model, const QModelIndex &index);
 };
 

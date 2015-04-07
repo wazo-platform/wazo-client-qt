@@ -28,6 +28,8 @@ QMenu::item {
     padding-left: 13px;
     padding-right: 23px;
     padding-bottom: 5px;
+    font-family: &quot;Liberation Sans&quot;;
+    font-size: 14px;
 }
 
 QMenu::separator {

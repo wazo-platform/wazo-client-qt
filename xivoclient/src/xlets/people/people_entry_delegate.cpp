@@ -34,6 +34,7 @@
 #include <QPainter>
 
 #include "people_entry_delegate.h"
+#include "people_actions.h"
 
 QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
@@ -217,8 +218,11 @@ void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
                                                 QAbstractItemModel *model,
                                                 const QModelIndex &index)
 {
-    menu->addAction("action1");
-    menu->addAction("action2");
+    PeopleActions *people_actions = model->data(index, Qt::UserRole).value<PeopleActions*>();
+
+    if (QAction *mobile_action = people_actions->callMobileAction()) {
+        menu->addAction(mobile_action);
+    }
 }
 
 

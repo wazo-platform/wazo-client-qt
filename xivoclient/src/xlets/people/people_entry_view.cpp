@@ -89,6 +89,19 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
     }
 }
 
+void PeopleEntryView::updateColumnsVisibility(const QModelIndex &, int first, int last)
+{
+    for (int column_index = first ; column_index <= last ; column_index ++) {
+        int column_type = this->model()->headerData(column_index, Qt::Horizontal, Qt::UserRole).toInt();
+        switch (column_type) {
+            case MOBILE: {
+                this->hideColumn(column_index);
+                break;
+            }
+        }
+    }
+}
+
 void PeopleEntryView::extensionClick(QAbstractItemModel *model, const QModelIndex &index)
 {
     QString extension = model->data(index).toString();
