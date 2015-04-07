@@ -176,7 +176,12 @@
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:#fff;</string>
+      <string notr="true"/>
+     </property>
+     <property name="qss_tags" stdset="0">
+      <stringlist notr="true">
+       <string>login_frame</string>
+      </stringlist>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
@@ -209,31 +214,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">
-QComboBox {
-	/*border-radius: 10px;*/
-	padding-left: 16px;  /* bug: without padding, color in not applied in the text field */
-}
-
-QComboBox::drop-down {
-	border-left: 0px solid #58524f;
-	width: 45px;
-}
-
-QComboBox::down-arrow {
-	image: url(&quot;:/images/down-arrow-grey.svg&quot;);
-}
-
-QComboBox QAbstractItemView {
-	border-radius: 10px;
-	/*border: 3px solid white;*/
-	/* margin-top: 35px; /*leaves unwanted rectangle on top*/
-	top: 35px; /*doesn't work: only for subcontrols*/
-}
-
-QComboBox QAbstractItemView::item {
-	border-radius: 10px;
-}</string>
+         <string notr="true"/>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
@@ -321,18 +302,6 @@ QComboBox QAbstractItemView::item {
          </item>
          <item>
           <widget class="QLineEdit" name="user_login">
-           <property name="font">
-            <font>
-             <family>Liberation Sans</family>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
            <property name="placeholderText">
             <string>login</string>
            </property>
@@ -356,15 +325,6 @@ QComboBox QAbstractItemView::item {
          </item>
          <item>
           <widget class="QLineEdit" name="user_password">
-           <property name="font">
-            <font>
-             <family>Liberation Sans</family>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
-</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -430,17 +390,6 @@ QComboBox QAbstractItemView::item {
            </property>
            <item>
             <widget class="QComboBox" name="agent_options">
-             <property name="font">
-              <font>
-               <family>Liberation Sans</family>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; selection-background-color: rgb(231,123, 57);
-color: #2c2927;
-
-</string>
-             </property>
              <item>
               <property name="text">
                <string>No Agent</string>
@@ -460,24 +409,6 @@ color: #2c2927;
            </item>
            <item>
             <widget class="QLineEdit" name="agent_phone_number">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>Liberation Sans</family>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: #e8e4e2; border-radius: 14px; padding: 7px; color: #2c2927;
-</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
              <property name="placeholderText">
               <string>phone</string>
              </property>
@@ -507,26 +438,42 @@ color: #2c2927;
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="connect_button">
-             <property name="maximumSize">
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
               <size>
-               <width>150</width>
-               <height>16777215</height>
+               <width>40</width>
+               <height>20</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <family>Dyno</family>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color:#E77D39; border-radius:10px; padding:10px; color:#fff;</string>
-             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="connect_button">
              <property name="text">
               <string>CONNECT</string>
              </property>
+             <property name="qss_tags" stdset="0">
+              <stringlist notr="true">
+               <string>orange</string>
+              </stringlist>
+             </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>

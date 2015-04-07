@@ -40,6 +40,12 @@ LoginWidget::LoginWidget(MainWindow *main_window, QWidget *parent)
     QWidget * login_widget = new QWidget(this);
     login_layout->addWidget(login_widget);
     this->ui.setupUi(login_widget);
+
+    QFile qssFile(QString(":/default.qss"));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        this->setStyleSheet(qssFile.readAll());
+    }
+
     this->connect(this->ui.user_login, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.user_password, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.agent_phone_number, SIGNAL(returnPressed()), SLOT(saveConfigAndStart()));
