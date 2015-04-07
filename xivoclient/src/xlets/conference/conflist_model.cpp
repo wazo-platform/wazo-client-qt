@@ -34,12 +34,10 @@
 ConfListModel::ConfListModel(QWidget *parent)
     : QAbstractTableModel(parent)
 {
-    COL_TITLE[ID] = tr("Room UID");
     COL_TITLE[NUMBER] = tr("Number");
     COL_TITLE[NAME] = tr("Name");
     COL_TITLE[PIN_REQUIRED] = tr("Pin code");
     COL_TITLE[MEMBER_COUNT] = tr("Member count");
-    COL_TITLE[MODERATED] = tr("Moderated");
     COL_TITLE[STARTED_SINCE] = tr("Started since");
 
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
@@ -98,16 +96,12 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     const QVariantMap &room_config = m_room_configs[room_number].toMap();
 
     switch (col) {
-    case ID:
-        return room_number.toInt();
     case NUMBER:
         return room_config["number"].toString();
     case NAME:
         return room_config["name"].toString();
     case PIN_REQUIRED:
         return room_config["pin_required"].toString();
-    case MODERATED:
-        return tr("No");  // to remove
     case MEMBER_COUNT:
         return room_config["member_count"].toString();
     case STARTED_SINCE:

@@ -50,16 +50,15 @@ ConfListView::ConfListView(QWidget *parent)
 
 void ConfListView::onViewClick(const QModelIndex &model)
 {
-    QString number = model.sibling(model.row(), ConfListModel::ID).data().toString();
     QString roomName = model.sibling(model.row(), ConfListModel::NAME).data().toString();
     QString roomNumber = model.sibling(model.row(), ConfListModel::NUMBER).data().toString();
 
 
-    if (number != "") {
+    if (roomNumber != "") {
         b_engine->pasteToDial(roomNumber);
         QTimer *timer = new QTimer(this);
         timer->setSingleShot(true);
-        timer->setProperty("number", number);
+        timer->setProperty("number", roomNumber);
         connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
         timer->start(10);
     }
@@ -70,7 +69,6 @@ void ConfListView::contextMenuEvent(QContextMenuEvent * event)
 {
     const QModelIndex &index = indexAt(event->pos());
 
-    QString number = index.sibling(index.row(), ConfListModel::ID).data().toString();
     QString roomName = index.sibling(index.row(), ConfListModel::NAME).data().toString();
     QString roomNumber = index.sibling(index.row(), ConfListModel::NUMBER).data().toString();
 
@@ -79,7 +77,7 @@ void ConfListView::contextMenuEvent(QContextMenuEvent * event)
     QAction *action = new QAction(
         tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
 
-    action->setProperty("number", number);
+    action->setProperty("number", roomNumber);
     connect(action, SIGNAL(triggered(bool)),
 	    parentWidget(), SLOT(openConfRoom()));
     connect(action, SIGNAL(triggered(bool)),

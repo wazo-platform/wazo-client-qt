@@ -59,8 +59,6 @@ ConfList::ConfList(ConfTab *parent)
     // this displays the sorted data
     ConfListView *view = new ConfListView(this);
     view->setModel(proxyModel);
-    view->hideColumn(ConfListModel::ID);
-    view->hideColumn(ConfListModel::MODERATED);
     view->sortByColumn(ConfListModel::NAME, Qt::AscendingOrder);
 
     vBox->addWidget(view);
@@ -68,11 +66,8 @@ ConfList::ConfList(ConfTab *parent)
 
 void ConfList::phoneConfRoom()
 {
-    const QString &roomNumber = sender()->property("number").toString();
-    QVariantMap members = m_model->getMembers(roomNumber);
-
-    b_engine->actionDial(roomNumber);
-    m_conf_tab->showConfRoom(roomNumber, members);
+    const QString &room_number = sender()->property("number").toString();
+    b_engine->actionDial(room_number);
 }
 
 void ConfList::openConfRoom()

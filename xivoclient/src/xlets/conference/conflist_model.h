@@ -53,11 +53,9 @@ class ConfListModel : public QAbstractTableModel
 
     public:
         enum ColOrder {
-            ID,
             NAME,
             NUMBER,
             PIN_REQUIRED,
-            MODERATED,
             MEMBER_COUNT,
             STARTED_SINCE,
             NB_COL
