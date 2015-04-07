@@ -27,7 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include <QHeaderView>
 #include <QItemSelectionModel>
 #include <QKeyEvent>
