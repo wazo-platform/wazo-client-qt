@@ -77,6 +77,7 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
 
         QList< QPair<QString, enum ColumnType> >  m_fields;
         const PeopleEntryManager & m_people_entry_manager;
+        QMap<QString, ColumnType> m_type_map;
 };
 
 #endif

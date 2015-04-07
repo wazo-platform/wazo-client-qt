@@ -44,6 +44,12 @@ PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manag
     : QAbstractTableModel(parent),
       m_people_entry_manager(people_entry_manager)
 {
+    this->m_type_map["agent"] = AGENT;
+    this->m_type_map["mobile"] = MOBILE;
+    this->m_type_map["name"] = NAME;
+    this->m_type_map["number"] = NUMBER;
+    this->m_type_map["status"] = STATUS_ICON;
+
     connect(b_engine, SIGNAL(clearingCache()),
             this, SLOT(clearCache()));
     connect(&m_people_entry_manager, SIGNAL(entryAdded(int)),
@@ -58,20 +64,7 @@ PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manag
 
 void PeopleEntryModel::addField(const QString &name, const QString &type)
 {
-    enum ColumnType t;
-    if (type == "agent") {
-        t = AGENT;
-    } else if (type == "mobile") {
-        t = MOBILE;
-    } else if (type == "name") {
-        t = NAME;
-    } else if (type == "number") {
-        t = NUMBER;
-    } else if (type == "status") {
-        t = STATUS_ICON;
-    } else {
-        t = OTHER;
-    }
+    ColumnType t = this->m_type_map.value(type, OTHER);
     m_fields.append(QPair<QString, enum ColumnType>(name, t));
     int inserted_column = m_fields.size() - 1;
     this->beginInsertColumns(QModelIndex(), inserted_column, inserted_column);
