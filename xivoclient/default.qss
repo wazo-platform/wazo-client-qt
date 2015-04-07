@@ -39,7 +39,6 @@ QLabel[qss_tags~="xlet_h4"] {
 font: 13pt "Dyno";
 }
 QWidget[qss_tags~="xlet_frame"] {
-/*margin: 30px; /*unused*/
 background-color: #FFFFFF;
 }
 /* 

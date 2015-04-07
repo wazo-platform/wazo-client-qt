@@ -38,12 +38,6 @@
 ConfListView::ConfListView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    setStyleSheet("ConfListView {"
-                    "border: none;"
-                    "background: transparent;"
-                    "color:black;"
-                  "}");
-
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
 }

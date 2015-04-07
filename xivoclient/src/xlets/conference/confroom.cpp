@@ -48,11 +48,5 @@ ConfRoom::ConfRoom(QWidget *parent, const QString &number, const QVariantMap &me
     m_view->setModel(m_model);
     m_view->updateHeadersView();
 
-    m_view->setStyleSheet("ConfRoomView {"
-                            "border: none;"
-                            "background:transparent;"
-                            "color:black;"
-                        "}");
-
     vBox->addWidget(m_view);
 }
