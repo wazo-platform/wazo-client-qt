@@ -16,6 +16,11 @@
 }
 </string>
   </property>
+  <property name="qss_tags" stdset="0">
+   <stringlist>
+    <string>xlet_frame</string>
+   </stringlist>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
     <number>0</number>
@@ -37,8 +42,11 @@
      <property name="leftMargin">
       <number>30</number>
      </property>
+     <property name="topMargin">
+      <number>30</number>
+     </property>
      <property name="bottomMargin">
-      <number>40</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QLabel" name="title">
@@ -48,25 +56,13 @@
          <height>16777215</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <family>Dyno</family>
-         <pointsize>28</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #e77d39; padding-top: 20px; padding-bottom: 20px; padding-left: 0px;</string>
-       </property>
-       <property name="lineWidth">
-        <number>0</number>
-       </property>
        <property name="text">
         <string>Contacts</string>
        </property>
-       <property name="indent">
-        <number>0</number>
+       <property name="qss_tags" stdset="0">
+        <stringlist>
+         <string>xlet_h1</string>
+        </stringlist>
        </property>
       </widget>
      </item>
@@ -76,35 +72,49 @@
     </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="entry_filter">
-     <property name="font">
-      <font>
-       <family>Liberation Sans</family>
-       <pointsize>9</pointsize>
-      </font>
+    <layout class="QVBoxLayout" name="body_layout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit {
-    background-color: #e8e4e2;
-    border-radius: 14px;
-    padding-left: 14px;
-    padding-right: 28px;
-    color: #2c2927;
-    height: 30px;
-    margin-left: 30px;
-    margin-right: 30px;
-}</string>
+     <property name="topMargin">
+      <number>15</number>
      </property>
-     <property name="text">
-      <string notr="true"/>
-     </property>
-     <property name="placeholderText">
-      <string>search</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PeopleEntryView" name="entry_table"/>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>30</number>
+       </property>
+       <property name="rightMargin">
+        <number>30</number>
+       </property>
+       <property name="bottomMargin">
+        <number>15</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="entry_filter">
+         <property name="font">
+          <font>
+           <family>Liberation Sans</family>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="placeholderText">
+          <string>search</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="PeopleEntryView" name="entry_table"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
