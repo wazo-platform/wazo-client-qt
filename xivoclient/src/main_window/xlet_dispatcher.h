@@ -37,14 +37,13 @@
 #include <QHash>
 #include <QSignalMapper>
 
-#include "tabber_style.h"
 #include <xletlib/functests.h>
 
 class MainWidget;
 class MainWindow;
 class QTabWidget;
 class QVBoxLayout;
-class TabBackground;
+class Tabber;
 class XLet;
 
 class XletDispatcher : public QObject
@@ -94,13 +93,10 @@ class XletDispatcher : public QObject
         QMap<QString, XLet *> m_xlets_grid_widget;
         QList<XletAndOption> m_xlets_grid;
 
-        QTabWidget *m_tabber;
         QMap<QString, XLet *> m_xlets_tab_widget;
         QList<XletAndOption> m_xlets_tab;
 
-        bool m_has_tabber;
-        TabberStyle m_tabber_style;
-        TabBackground *m_tab_container;
+        Tabber *m_tabber;
 
         QSignalMapper *m_fold_signal_mapper;
         QSignalMapper *m_unfold_signal_mapper;

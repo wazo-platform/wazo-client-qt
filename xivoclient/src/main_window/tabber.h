@@ -24,22 +24,26 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TAB_BACKGROUND_H__
-#define __TAB_BACKGROUND_H__
+#ifndef __TABBER_H__
+#define __TABBER_H__
 
 #include <QWidget>
 
+#include "tabber_style.h"
+
 class QTabWidget;
 
-class TabBackground : public QWidget
+class Tabber : public QWidget
 {
     public:
-        TabBackground(QTabWidget *tab_widget, QWidget *parent = NULL);
+        Tabber(QWidget *parent = NULL);
         void paintEvent(QPaintEvent *event);
+        QTabWidget *tabWidget();
 
     private:
-        QTabWidget *tab_widget;
-        QLinearGradient gradient;
+        TabberStyle m_tabber_style;
+        QTabWidget *m_tab_widget;
+        QLinearGradient m_gradient;
 };
 
 #endif
