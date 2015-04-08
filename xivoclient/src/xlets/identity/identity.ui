@@ -352,11 +352,13 @@ QToolButton::menu-indicator {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: #e8e4e2;
-border-radius: 14px;
-padding-left: 14px;
-padding-right: 28px;
-color: #2c2927;</string>
+    <string notr="true">QLineEdit {
+    background-color: #e8e4e2;
+    border-radius: 14px;
+    padding-left: 14px;
+    padding-right: 28px;
+    color: #2c2927;
+}</string>
    </property>
    <property name="placeholderText">
     <string>call</string>
