@@ -1604,38 +1604,6 @@ void BaseEngine::timerEvent(QTimerEvent *event)
     }
 }
 
-/*! \brief send a feature put command to the cti server */
-void BaseEngine::servicePutOpt(const QString &capa, bool b)
-{
-    QVariantMap command;
-    command["class"] = "featuresput";
-    if (capa == "enablevoicemail")
-        command["function"] = "enablevoicemail";
-    else if (capa == "incallfilter")
-        command["function"] = "incallfilter";
-    else if (capa == "enablednd")
-        command["function"] = "enablednd";
-    command["value"] = b;
-    sendJsonCommand(command);
-}
-
-/*! \brief send a feature put command to the cti server
- *
- * NOTE: we send value (forward target number) BEFORE status (enabled/disabled)
- *       to prevent server disabling back forward if value was empty
- */
-QString BaseEngine::servicePutForward(const QString & capa, bool b, const QString & dst)
-{
-    QVariantMap command, value;
-    command["class"]    = "featuresput";
-    command["function"] = "fwd";
-
-    value["enable"+capa.mid(3)] = b;
-    value["dest"+capa.mid(3)]   = dst;
-    command["value"]            = value;
-    return sendJsonCommand(command);
-}
-
 void BaseEngine::fetchIPBXList() {
     QVariantMap command;
     command["class"] = "getipbxlist";

@@ -2,10 +2,12 @@ QLineEdit {
 height: 30px;
 border-radius: 15px; 
 padding-left: 15px;
+padding-right: 15px;
 background-color: #D7D2D0;
 font: 12px "Liberation Sans";
 color: #2C2927;
 }
+
 QPushButton{
 height: 30px;
 border-radius: 8px; 
@@ -24,24 +26,46 @@ color: #FFFFFF;
 padding-left: 22px;
 padding-right: 22px;
 }
+
 QFrame[qss_tags~="input_button"]{
 margin-top: 15px;
 margin-bottom: 15px;
 border-radius: 15px; 
 background-color: #D7D2D0;
 }
+.QWidget[qss_tags~="xlet_frame"] {
+background-color: #FFFFFF;
+}
+
+QRadioButton{
+margin-top: 15px;
+margin-bottom: 15px;
+}
+QCheckBox{
+margin-top: 8px;
+margin-bottom: 8px;
+}
+
 QLabel[qss_tags~="xlet_h1"] {
 padding-bottom: 30px;
 font: bold 36px "Dyno";
 color: #E77D39;
 }
+QLabel[qss_tags~="xlet_h2"] {
+padding-bottom: 30px;
+font: bold 22pt "Dyno";
+color: #E77D39;
+}
 QLabel[qss_tags~="xlet_h4"] {
 font: 18px "Dyno";
 }
-QWidget[qss_tags~="xlet_frame"] {
-/*margin: 30px; /*unused*/
-background-color: #FFFFFF;
+*[qss_tags~=xlet_list]{
+font: 14px "Liberation Sans";
 }
+*[qss_tags~=xlet_sub_list]{
+font: 12px "Liberation Sans";
+}
+
 /* 
   * Fax Xlet 
   */
