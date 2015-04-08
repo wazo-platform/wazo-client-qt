@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,57 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __FAXPANEL_H__
-#define __FAXPANEL_H__
-
-#include <QDebug>
-#include <QHBoxLayout>
-#include <QGroupBox>
-#include <QCheckBox>
-#include <QFileDialog>
-#include <QLabel>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QSettings>
 #include <QVBoxLayout>
-#include <QLineEdit>
 
-#include <baseengine.h>
-#include <xletlib/xlet.h>
-#include <xletlib/extendedlineedit.h>
+#include "remote_directory.h"
 
-#include "dirdialog.h"
-
-/*! \brief Panel used to send an receive fax
- */
-class FaxPanel : public XLet
+RemoteDirectory::RemoteDirectory(QWidget *parent)
+    : XLet(parent, tr("Remote Directory"), ":/images/tab-people.svg")
 {
-    Q_OBJECT
-
-    public:
-        FaxPanel(QWidget *parent=0);
-        ~FaxPanel();
-
-    signals:
-        void faxSend(const QString &, const QString &, Qt::CheckState);
-
-    public slots:
-        void setOpenFileName();
-        void sendFax();
-        void dirLookup();
-        void popupMsg(const QString &, const QString &);
-        void destNumberChanged(const QString &);
-        void fileNameChanged(const QString &);
-
-    private:
-        QWidget *m_mainwindow;  //!< MainWidget where some parameters are commited to
-        FileNameLineEdit *m_openFileNameLabel;
-        QLineEdit *m_destination;
-        QCheckBox *m_maskornot;
-        QPushButton *m_sendButton;
-
-        QString m_dest_string;
-        QString m_file_string;
-};
-
-#endif
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    m_directory_panel = new DirectoryPanel(this);
+    layout->addWidget(m_directory_panel);
+}

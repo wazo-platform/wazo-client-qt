@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -56,12 +56,8 @@ class Statusbar : public QObject
         bool shouldDisplayProfile() const;
         QStatusBar *m_statusbar;
 
-        QLabel *m_status;  //!< status indicator
         QLabel *m_padlock; //!< padlock icon (SSL indicator)
         QLabel *m_config_profile; //!< profile indicator (status bar)
-
-        QPixmap m_pixmap_disconnected;
-        QPixmap m_pixmap_connected;
 };
 
 #endif

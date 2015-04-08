@@ -4,6 +4,8 @@ DEPENDPATH += $$PWD
 QT *= network
 greaterThan(QT_MAJOR_VERSION, 4): QT *= widgets
 
+TR_EXCLUDE += $$PWD/*
+
 qtsingleapplication-uselib:!qtsingleapplication-buildlib {
     LIBS += -L$$QTSINGLEAPPLICATION_LIBDIR -l$$QTSINGLEAPPLICATION_LIBNAME
 } else {

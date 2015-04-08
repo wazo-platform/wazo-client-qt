@@ -60,7 +60,8 @@ class IdentityDisplay : public XLet
 
         void on_fold_button_toggled(bool fold);
         void on_voicemail_button_clicked();
-        void on_call_input_returnPressed();
+        void on_dial_input_returnPressed();
+        void on_dial_search_button_clicked();
 
         void login();
         void logout();
@@ -71,7 +72,11 @@ class IdentityDisplay : public XLet
         void setAppIcon(const QString &);
 
     private:
+        void addPresence(const QString &);
+        void dial();
         void fillAgentMenu(QMenu *menu);
+        QPixmap newMessagesIcon(int message_count);
+        QPixmap presenceIcon(const QColor &color);
         void requestVoicemailMessageCount(const VoiceMailInfo *voicemail);
         void updateAgentVisibility();
         void updateCurrentPresence();
@@ -79,8 +84,8 @@ class IdentityDisplay : public XLet
         void updateOptions();
         void updateVoiceMailVisibility();
 
-        static QIcon m_hide_icon;
-        static QIcon m_show_icon;
+        QIcon m_hide_icon;
+        QIcon m_show_icon;
 
         Ui::IdentityWidget ui;
         QSignalMapper *m_presence_mapper;

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -37,16 +37,13 @@
 Statusbar::Statusbar(MainWindow *parent)
     : QObject(parent),
       m_statusbar(parent->ui->statusbar),
-      m_status(new QLabel),
       m_padlock(new QLabel),
-      m_config_profile(new QLabel),
-      m_pixmap_disconnected(QPixmap(":/images/disconnected.png").scaledToHeight(18, Qt::SmoothTransformation)),
-      m_pixmap_connected(QPixmap(":/images/connected.png").scaledToHeight(18, Qt::SmoothTransformation))
+      m_config_profile(new QLabel)
 {
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
-    connect(b_engine, SIGNAL(emitTextMessage(const QString &)), this->m_statusbar, SLOT(showMessage(const QString &)));
+    this->connect(b_engine, SIGNAL(emitTextMessage(const QString &)), this->m_statusbar, SLOT(showMessage(const QString &)));
     this->connect(parent, SIGNAL(initialized()), SLOT(initialize()));
 }
 
@@ -64,9 +61,6 @@ void Statusbar::initialize()
     this->m_padlock->setPixmap(padlock_pixmap);
     this->m_padlock->hide();
     this->m_statusbar->addPermanentWidget(this->m_padlock);
-
-    this->m_status->setPixmap(this->m_pixmap_disconnected);
-    this->m_statusbar->addPermanentWidget(this->m_status);
 }
 
 void Statusbar::confUpdated()
@@ -82,13 +76,11 @@ bool Statusbar::shouldDisplayProfile() const
 void Statusbar::setStatusLogged()
 {
     this->m_statusbar->showMessage(tr("Connected"));
-    this->m_status->setPixmap(m_pixmap_connected);
     this->m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
 }
 
 void Statusbar::setStatusNotLogged()
 {
     this->m_statusbar->showMessage(tr("Disconnected"));
-    this->m_status->setPixmap(m_pixmap_disconnected);
     this->m_padlock->hide();
 }

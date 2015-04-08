@@ -37,8 +37,7 @@
 
 #include <xlets/customerinfo-builtin/customerinfopanel.h>
 #include <xlets/dial-builtin/dialpanel.h>
-#include <xlets/remotedirectory-builtin/directorypanel.h>
-#include <xlets/fax-builtin/faxpanel.h>
+#include <xlets/remotedirectory-builtin/remote_directory.h>
 #include <xlets/mylocaldir-builtin/mylocaldirpanel.h>
 #include <xlets/search-builtin/searchpanel.h>
 
@@ -60,9 +59,8 @@ static const struct {
 } xlets[] = {
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
     { "dial"              ,newXLet<DialPanel>              },
-    { "fax"               ,newXLet<FaxPanel>               },
     { "search"            ,newXLet<SearchPanel>            },
-    { "remotedirectory"   ,newXLet<DirectoryPanel>         },
+    { "remotedirectory"   ,newXLet<RemoteDirectory>        },
     { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },
 };
 

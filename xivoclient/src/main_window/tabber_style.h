@@ -35,14 +35,21 @@
 class TabberStyle : public QProxyStyle
 {
     public:
-    QSize sizeFromContents(ContentsType type,
-                           const QStyleOption *option,
-                           const QSize &size,
-                           const QWidget *widget) const;
-    void drawControl(ControlElement element,
-                     const QStyleOption *option,
-                     QPainter *painter,
-                     const QWidget *widget) const;
+        TabberStyle(QStyle *style = NULL);
+        QSize sizeFromContents(ContentsType type,
+                               const QStyleOption *option,
+                               const QSize &size,
+                               const QWidget *widget) const;
+        void drawControl(ControlElement element,
+                         const QStyleOption *option,
+                         QPainter *painter,
+                         const QWidget *widget) const;
+        void drawPrimitive(PrimitiveElement element,
+                           const QStyleOption * option,
+                           QPainter * painter,
+                           const QWidget * widget = NULL) const;
+    private:
+        QPixmap selected_tab_indicator;
 };
 
 #endif

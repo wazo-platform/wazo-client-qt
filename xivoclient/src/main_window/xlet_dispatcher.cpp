@@ -33,9 +33,10 @@
 #include <xletfactory.h>
 #include <QPushButton>
 
-#include "xlet_dispatcher.h"
 #include "main_window.h"
 #include "main_widget.h"
+#include "tabber.h"
+#include "xlet_dispatcher.h"
 
 XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget, QObject *parent)
     : QObject(parent),
@@ -47,11 +48,9 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_grid_container(NULL),
       m_xlets_grid_widget(),
       m_xlets_grid(),
-      m_tab_container(NULL),
       m_xlets_tab_widget(),
       m_xlets_tab(),
-      m_has_tabber(false),
-      m_tabber_style(),
+      m_tabber(NULL),
       m_fold_signal_mapper(new QSignalMapper(this)),
       m_unfold_signal_mapper(new QSignalMapper(this))
 {
@@ -71,9 +70,10 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
 
     this->hideXletsDock();
 
-    if(m_has_tabber) {
-        b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
-        m_tab_container->hide();
+    if (this->m_tabber) {
+        int current_index = this->m_tabber->tabWidget()->currentIndex();
+        b_engine->getSettings()->setValue("display/lastfocusedtab", current_index);
+        m_tabber->hide();
     }
 
     foreach (QWidget *widget, xlets_to_hide.values()) {
@@ -99,9 +99,10 @@ void XletDispatcher::showAllXlets()
         widget->show();
     }
 
-    if(m_has_tabber) {
-        m_tab_container->setVisible(true);
-        this->m_tab_container->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
+    if (this->m_tabber) {
+        this->m_tabber->show();
+        int new_index = b_engine->getSettings()->value("display/lastfocusedtab").toInt();
+        this->m_tabber->tabWidget()->setCurrentIndex(new_index);
     }
 
     this->showXletsDock();
@@ -118,6 +119,7 @@ void XletDispatcher::setStatusLogged()
 {
     this->prepareAppearance();
     this->prepareXletsGrid();
+    this->prepareXletsTab();
     this->prepareXletsDock();
     m_unfolded_height = m_main_window->height();
 }
@@ -127,8 +129,9 @@ void XletDispatcher::setStatusNotLogged()
     this->restoreMainWindow();
     this->m_main_window->saveState();
 
-    this->cleanXletsGrid();
     this->cleanXletsDock();
+    this->cleanXletsTab();
+    this->cleanXletsGrid();
     this->clearAppearance();
 }
 
@@ -157,17 +160,16 @@ void XletDispatcher::prepareXletsGrid()
 
     this->m_grid_container = new QVBoxLayout(this->m_main_widget);
     this->m_grid_container->setContentsMargins(0,0,0,0);
-    if (! m_grid_container) {
-        qDebug() << Q_FUNC_INFO << "Failed to instanciate the grid container";
-        return;
-    }
+    this->m_grid_container->setSpacing(0);
 
     foreach (const XletAndOption &xlet_and_option, this->m_xlets_grid) {
         const QString &name = xlet_and_option.first;
         const QString &options = xlet_and_option.second;
         if (name == "tabber") {
-            this->prepareXletsTab();
-            this->m_grid_container->insertWidget(options.toInt(), this->m_tab_container);
+            if (this->m_xlets_tab.size() > 0) {
+                this->m_tabber = new Tabber(this->m_main_widget);
+                this->m_grid_container->insertWidget(options.toInt(), this->m_tabber);
+            }
         } else {
             XLet *xlet = this->xletFactory(name);
             if (xlet) {
@@ -194,53 +196,51 @@ void XletDispatcher::cleanXletsGrid()
         this->m_grid_container->removeWidget(widget);
         widget->deleteLater();
     }
-    if (this->m_has_tabber) {
-        this->m_grid_container->removeWidget(this->m_tab_container);
-        this->cleanXletsTab();
-    }
+
     this->m_grid_container->deleteLater();
     this->m_xlets_grid_widget.clear();
 }
 
 void XletDispatcher::prepareXletsTab()
 {
-    if (this->m_xlets_tab.size() == 0) {
+    if (! this->m_tabber) {
         return;
     }
 
-    this->m_tab_container = new QTabWidget(this->m_main_widget);
-    this->m_tab_container->setTabPosition(QTabWidget::West);
-
-    this->m_tab_container->tabBar()->setStyle(&m_tabber_style);
-    this->m_tab_container->tabBar()->setIconSize(QSize(25,25));
-    this->m_has_tabber = true;
+    QTabWidget *tab_widget = this->m_tabber->tabWidget();
 
     foreach (const XletAndOption &xlet_and_option, this->m_xlets_tab) {
         const QString &name = xlet_and_option.first;
         XLet *xlet = this->xletFactory(name);
         if (xlet) {
-            int tabIndex = this->m_tab_container->addTab(xlet, QIcon(xlet->iconPath()), "");
-            this->m_tab_container->setTabToolTip(tabIndex, xlet->title());
+            int tabIndex = tab_widget->addTab(xlet, QIcon(xlet->iconPath()), "");
+            tab_widget->setTabToolTip(tabIndex, xlet->title());
             this->m_xlets_tab_widget.insert(name, xlet);
         }
     }
 
-    this->m_tab_container->setCurrentIndex(b_engine->getSettings()->value("display/lastfocusedtab").toInt());
+    int new_index = b_engine->getSettings()->value("display/lastfocusedtab").toInt();
+    tab_widget->setCurrentIndex(new_index);
 }
 
 void XletDispatcher::cleanXletsTab()
 {
-    if (this->m_xlets_tab.size() == 0) {
+    if (! this->m_tabber) {
         return;
     }
 
-    b_engine->getSettings()->setValue("display/lastfocusedtab", this->m_tab_container->currentIndex());
+    this->m_grid_container->removeWidget(this->m_tabber);
+
+    int current_index = this->m_tabber->tabWidget()->currentIndex();
+    b_engine->getSettings()->setValue("display/lastfocusedtab", current_index);
+
     foreach (QWidget *widget, this->m_xlets_tab_widget.values()) {
         widget->deleteLater();
     }
-    this->m_tab_container->deleteLater();
     this->m_xlets_tab_widget.clear();
-    this->m_has_tabber = false;
+
+    this->m_tabber->deleteLater();
+    this->m_tabber = NULL;
 }
 
 void XletDispatcher::prepareXletsDock()
@@ -324,8 +324,9 @@ void XletDispatcher::showXletsDock()
  */
 void XletDispatcher::showWidgetOnTop(QWidget *widget)
 {
-    if (this->m_tab_container)
-        this->m_tab_container->setCurrentWidget(widget);
+    if (this->m_tabber) {
+        this->m_tabber->tabWidget()->setCurrentWidget(widget);
+    }
 }
 
 void XletDispatcher::prepareAppearance()

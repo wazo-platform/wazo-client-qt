@@ -246,6 +246,34 @@ queues</translation>
     </message>
 </context>
 <context>
+    <name>DirectoryPanel</name>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="37"/>
+        <source>Remote Directory Panel</source>
+        <translation>Remote Directory Panel</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="40"/>
+        <source>Remote Di&amp;rectory</source>
+        <translation>Remote Di&amp;rectory</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="48"/>
+        <source>Search</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="131"/>
+        <source>Double-click to send an E-mail to</source>
+        <translation>Double-click to send an E-mail to</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/directorypanel.cpp" line="133"/>
+        <source>Double-click to call</source>
+        <translation>Double-click to call</translation>
+    </message>
+</context>
+<context>
     <name>ExtendedTableWidget</name>
     <message>
         <location filename="../src/xletlib/extendedtablewidget.cpp" line="73"/>

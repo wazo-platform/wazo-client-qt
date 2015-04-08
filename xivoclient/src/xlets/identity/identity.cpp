@@ -36,9 +36,6 @@
 
 #include "identity.h"
 
-QIcon IdentityDisplay::m_show_icon(":/images/show.svg");
-QIcon IdentityDisplay::m_hide_icon(":/images/hide.svg");
-
 const QString icon_user_unlogged = "xivo-black";
 const QString icon_user_logged = "xivo-transp";
 const QString icon_agent_logged = "xivo-green";
@@ -52,21 +49,24 @@ XLet* XLetIdentityPlugin::newXLetInstance(QWidget *parent)
 
 IdentityDisplay::IdentityDisplay(QWidget *parent)
     : XLet(parent, tr("Identity")),
+      m_hide_icon(":/identity/images/hide.svg"),
+      m_show_icon(":/identity/images/show.svg"),
       m_presence_mapper(new QSignalMapper(this)),
       m_agent_menu(new QMenu(this)),
       m_presence_menu(new QMenu(this))
 {
     setAccessibleName(tr("Current User Panel"));
-    setObjectName("identityXlet");
 
     this->ui.setupUi(this);
 
     this->ui.presence_button->setMenu(m_presence_menu);
+    this->m_presence_menu->setAttribute(Qt::WA_TranslucentBackground);
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
 
     this->ui.agent_button->setMenu(m_agent_menu);
     this->fillAgentMenu(m_agent_menu);
+    this->m_agent_menu->setAttribute(Qt::WA_TranslucentBackground);
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
@@ -96,14 +96,19 @@ void IdentityDisplay::fillAgentMenu(QMenu *menu)
         action = menu->addAction(tr("Login"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(login()));
+        menu->addSeparator();
         action = menu->addAction(tr("Logout"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(logout()));
+    }
+    if (may_log_agent && may_pause_agent) {
+        menu->addSeparator();
     }
     if (may_pause_agent) {
         action = menu->addAction(tr("Pause"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(pause()));
+        menu->addSeparator();
         action = menu->addAction(tr("Unpause"));
         connect(action, SIGNAL(triggered()),
                 this, SLOT(unpause()));
@@ -201,7 +206,11 @@ void IdentityDisplay::updateAgentStatus(const QString & agent_id)
     }
 
     if (agentinfo->logged()) {
-        this->ui.agent_button->setIcon(QIcon(":/images/agent-on.svg"));
+        if (agentinfo->paused()) {
+            this->ui.agent_button->setIcon(QIcon(":/images/agent-pause.svg"));
+        } else {
+            this->ui.agent_button->setIcon(QIcon(":/images/agent-on.svg"));
+        }
     } else {
         this->ui.agent_button->setIcon(QIcon(":/images/agent-off.svg"));
     }
@@ -229,27 +238,90 @@ void IdentityDisplay::updateVoiceMailStatus(const QString & xvoicemailid)
     if (voicemail == NULL) {
         return;
     }
-    this->ui.voicemail_messages->setText(tr("%n message(s)", "unread voicemail messages", voicemail->newMessages()));
+
+    QPixmap new_messages_image = newMessagesIcon(voicemail->newMessages());
+
+    this->ui.voicemail_messages->setPixmap(new_messages_image);
+}
+
+QPixmap IdentityDisplay::newMessagesIcon(int message_count)
+{
+    QColor background_color, text_color;
+    background_color = text_color = QColor("#2c2927");
+    QColor circle_color = QColor("#e77d39");
+
+    QPixmap new_messages_image = QPixmap(this->ui.voicemail_messages->size());
+    new_messages_image.fill(Qt::transparent);
+
+    if (message_count > 0) {
+        QPainter voicemail_painter(&new_messages_image);
+        voicemail_painter.setRenderHint(QPainter::Antialiasing);
+        // background circle
+        QRect background_circle_rect = new_messages_image.rect().adjusted(1, 1, -1, -1);
+        voicemail_painter.setBrush(background_color);
+        voicemail_painter.setPen(background_color);
+        voicemail_painter.drawEllipse(background_circle_rect);
+        // colored circle
+        QRect colored_circle_rect = background_circle_rect.adjusted(3, 3, -3, -3);
+        voicemail_painter.setBrush(circle_color);
+        voicemail_painter.setPen(circle_color);
+        voicemail_painter.drawEllipse(colored_circle_rect);
+        voicemail_painter.setPen(text_color);
+        voicemail_painter.setFont(this->ui.voicemail_messages->font());
+        voicemail_painter.drawText(background_circle_rect, Qt::AlignCenter, QString::number(message_count));
+        voicemail_painter.end();
+    }
+
+    return new_messages_image;
 }
 
 void IdentityDisplay::updateCurrentPresence() {
     if (! m_ui) {
         return;
     }
+
     QString presence = m_ui->availstate();
     QVariantMap presencemap = b_engine->getOptionsUserStatus();
     QString presence_color_string = presencemap.value(presence).toMap().value("color").toString();
     QColor presence_color = QColor(presence_color_string);
 
-    QIcon image = QIcon(":/images/show.svg");
-    QPixmap tinted_image = image.pixmap(this->ui.presence_button->iconSize());
+    QPixmap presence_image = this->presenceIcon(presence_color);
 
-    QPainter tint_painter(&tinted_image);
+    this->ui.presence_button->setIcon(presence_image);
+}
+
+QPixmap IdentityDisplay::presenceIcon(const QColor & presence_color) {
+    QColor background_color = QColor("#2c2927");
+    QPixmap presence_arrow = QIcon(":/identity/images/down-arrow.svg").pixmap(QSize(8, 4));
+    QPainter tint_painter(&presence_arrow);
+    tint_painter.setRenderHint(QPainter::Antialiasing);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-    tint_painter.fillRect(tinted_image.rect(), presence_color);
+    tint_painter.fillRect(presence_arrow.rect(), background_color);
     tint_painter.end();
 
-    this->ui.presence_button->setIcon(tinted_image);
+    QPixmap presence_image = QPixmap(this->ui.presence_button->size());
+    presence_image.fill(Qt::transparent);
+
+    QRect arrow_rect = presence_arrow.rect();
+    arrow_rect.moveCenter(presence_image.rect().center());
+
+    QPainter presence_painter(&presence_image);
+    presence_painter.setRenderHint(QPainter::Antialiasing);
+    // background circle
+    QRect background_circle_rect = presence_image.rect().adjusted(1, 1, -1, -1);
+    presence_painter.setBrush(background_color);
+    presence_painter.setPen(background_color);
+    presence_painter.drawEllipse(background_circle_rect);
+    // colored circle
+    QRect colored_circle_rect = background_circle_rect.adjusted(3, 3, -3, -3);
+    presence_painter.setBrush(presence_color);
+    presence_painter.setPen(presence_color);
+    presence_painter.drawEllipse(colored_circle_rect);
+    // down arrow
+    presence_painter.drawPixmap(arrow_rect, presence_arrow);
+    presence_painter.end();
+
+    return presence_image;
 }
 
 void IdentityDisplay::updatePresenceList()
@@ -273,14 +345,29 @@ void IdentityDisplay::updatePresenceList()
     if (! allowed_presences.contains(presence)) {
         allowed_presences << presence;
     }
-    foreach (QString presence_name, allowed_presences) {
-        QString presence_display_name = presencemap.value(presence_name).toMap().value("longname").toString();
-
-        QAction *action = this->ui.presence_button->menu()->addAction(presence_display_name);
-        m_presence_mapper->setMapping(action, presence_name);
-        connect(action, SIGNAL(triggered()),
-                m_presence_mapper, SLOT(map()));
+    if (allowed_presences.isEmpty()) {
+        return;
     }
+
+    QString first_presence_name = allowed_presences.takeFirst();
+    this->addPresence(first_presence_name);
+
+    foreach (QString presence_name, allowed_presences) {
+        this->ui.presence_button->menu()->addSeparator();
+        this->addPresence(presence_name);
+
+    }
+}
+
+void IdentityDisplay::addPresence(const QString &presence_name)
+{
+    QVariantMap presencemap = b_engine->getOptionsUserStatus();
+    QString presence_display_name = presencemap.value(presence_name).toMap().value("longname").toString();
+
+    QAction *action = this->ui.presence_button->menu()->addAction(presence_display_name);
+    m_presence_mapper->setMapping(action, presence_name);
+    connect(action, SIGNAL(triggered()),
+            m_presence_mapper, SLOT(map()));
 }
 
 void IdentityDisplay::updateOptions()
@@ -295,15 +382,16 @@ void IdentityDisplay::updateOptions()
         this->ui.options->setText(tr("UNC %1").arg(m_ui->destunc()));
         this->ui.options->setToolTip(tr("Unconditional Forward towards %1").arg(m_ui->destunc()));
     } else if (m_ui->enablebusy()) {
-        this->ui.options->setText(tr("Busy %1").arg(m_ui->destbusy()));
+        this->ui.options->setText(tr("BUSY %1").arg(m_ui->destbusy()));
         this->ui.options->setToolTip(tr("Busy Forward towards %1").arg(m_ui->destbusy()));
     } else if (m_ui->enablerna()) {
         this->ui.options->setText(tr("FNA %1").arg(m_ui->destrna()));
         this->ui.options->setToolTip(tr("Non-Answer Forward towards %1").arg(m_ui->destrna()));
     } else if (m_ui->incallfilter()) {
-        this->ui.options->setText(tr("Call Filter"));
+        this->ui.options->setText(tr("CALL FILTER"));
+        this->ui.options->setToolTip("");
     } else {
-        this->ui.options->setText("");
+        this->ui.options->setText(tr("AVAILABLE"));
         this->ui.options->setToolTip("");
     }
 }
@@ -390,13 +478,24 @@ void IdentityDisplay::on_voicemail_button_clicked()
     b_engine->actionDial(QString("vm_consult:%1").arg(voicemail_id));
 }
 
-void IdentityDisplay::on_call_input_returnPressed()
+void IdentityDisplay::on_dial_search_button_clicked()
 {
-    QString extension = this->ui.call_input->text();
-    if (extension.isEmpty())
+    this->dial();
+}
+
+void IdentityDisplay::on_dial_input_returnPressed()
+{
+    this->dial();
+}
+
+void IdentityDisplay::dial()
+{
+    QString extension = this->ui.dial_input->text();
+    if (extension.isEmpty()) {
         return;
+    }
     b_engine->actionDial(extension);
-    this->ui.call_input->clear();
+    this->ui.dial_input->clear();
 }
 
 

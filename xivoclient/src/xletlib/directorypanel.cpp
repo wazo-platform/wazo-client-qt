@@ -32,7 +32,7 @@
 #include <message_factory.h>
 
 DirectoryPanel::DirectoryPanel(QWidget *parent)
-    : XLet(parent, tr("Remote Directory"), ":/images/tab-people.svg")
+    : QWidget(parent)
 {
     setAccessibleName(tr("Remote Directory Panel"));
     QVBoxLayout *vlayout = new QVBoxLayout(this);

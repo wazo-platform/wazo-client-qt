@@ -4,7 +4,7 @@ border-radius: 15px;
 padding-left: 15px;
 padding-right: 15px;
 background-color: #D7D2D0;
-font: 10pt "Liberation Sans";
+font: 12px "Liberation Sans";
 color: #2C2927;
 }
 
@@ -16,12 +16,12 @@ padding-right: 18px;
 }
 QPushButton[qss_tags~="orange"]{
 background-color: #E77D39;
-font: 10pt "Dyno";
+font: 12px "Dyno";
 color: #FFFFFF;
 }
 QPushButton[qss_tags~="black"]{
 background-color: #58524F;
-font: 10pt "Dyno";
+font: 12px "Dyno";
 color: #FFFFFF;
 padding-left: 22px;
 padding-right: 22px;
@@ -33,9 +33,7 @@ margin-bottom: 15px;
 border-radius: 15px; 
 background-color: #D7D2D0;
 }
-
 .QWidget[qss_tags~="xlet_frame"] {
-/*margin: 30px; /*unused*/
 background-color: #FFFFFF;
 }
 
@@ -50,7 +48,7 @@ margin-bottom: 8px;
 
 QLabel[qss_tags~="xlet_h1"] {
 padding-bottom: 30px;
-font: bold 26pt "Dyno";
+font: bold 36px "Dyno";
 color: #E77D39;
 }
 QLabel[qss_tags~="xlet_h2"] {
@@ -58,18 +56,21 @@ padding-bottom: 30px;
 font: bold 22pt "Dyno";
 color: #E77D39;
 }
+QLabel[qss_tags~="xlet_h4"] {
+font: 18px "Dyno";
+}
 *[qss_tags~=xlet_list]{
-font: 11pt "Liberation Sans";
+font: 14px "Liberation Sans";
 }
 *[qss_tags~=xlet_sub_list]{
-font: 9pt "Liberation Sans";
+font: 12px "Liberation Sans";
 }
 
 /* 
   * Fax Xlet 
   */
 QLabel[qss_tags~="step_number"] {
-font: bold 26pt "Dyno";
+font: bold 36px "Dyno";
 color: #D7D2D0;
 }
 

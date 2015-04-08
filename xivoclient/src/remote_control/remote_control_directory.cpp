@@ -29,7 +29,7 @@
 
 #ifdef FUNCTESTS
 
-#include "xlets/remotedirectory-builtin/directorypanel.h"
+#include "xlets/remotedirectory-builtin/remote_directory.h"
 #include "remote_control.h"
 
 
@@ -37,7 +37,7 @@ QVariantMap RemoteControl::get_remote_directory_infos()
 {
     QVariantMap args;
 
-    DirectoryPanel* xlet = this->get_xlet<DirectoryPanel>("remotedirectory");
+    DirectoryPanel* xlet = this->get_xlet<RemoteDirectory>("remotedirectory")->m_directory_panel;
     if (xlet == NULL)
         return args;
 
@@ -65,7 +65,7 @@ void RemoteControl::set_search_for_remote_directory(const QVariantList & args)
 {
     const QString& search = args[0].toString();
 
-    DirectoryPanel* panel = this->get_xlet<DirectoryPanel>("remotedirectory");
+    DirectoryPanel* panel = this->get_xlet<RemoteDirectory>("remotedirectory")->m_directory_panel;
 
     panel->m_searchText->setText(search);
     panel->startSearch();
@@ -75,7 +75,7 @@ void RemoteControl::exec_double_click_on_number_for_name(const QVariantList &arg
 {
     QString name = args[0].toString();
 
-    DirectoryPanel* xlet = this->get_xlet<DirectoryPanel>("remotedirectory");
+    DirectoryPanel* xlet = this->get_xlet<RemoteDirectory>("remotedirectory")->m_directory_panel;
 
     connect(this,
             SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
@@ -102,7 +102,7 @@ void RemoteControl::sort_list_for_remote_directory(const QVariantList &args)
     QString sort_column = args[0].toString();
     Qt::SortOrder order = (Qt::SortOrder)args[1].toInt();
 
-    DirectoryPanel* xlet = this->get_xlet<DirectoryPanel>("remotedirectory");
+    DirectoryPanel* xlet = this->get_xlet<RemoteDirectory>("remotedirectory")->m_directory_panel;
     this->assert(xlet != NULL, "remote directory xlet not found");
 
     ExtendedTableWidget* table = xlet->m_table;

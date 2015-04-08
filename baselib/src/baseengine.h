@@ -207,7 +207,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void inviteConfRoom(const QString &);
 
-        void sendFaxCommand(const QString &, const QString &, Qt::CheckState);
+        void sendFaxCommand(const QString &, const QString &);
 
         void meetmeAction(const QString &, const QString &);
 

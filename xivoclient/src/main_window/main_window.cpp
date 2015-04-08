@@ -48,6 +48,10 @@ MainWindow::MainWindow(QWidget *parent)
     b_engine->setParent(this);
     b_engine->logAction("application started on " + b_engine->osname());
 
+    QFontDatabase fontDB;
+    fontDB.addApplicationFont(":/fonts/Dyno-Regular.ttf");
+    fontDB.addApplicationFont(":/fonts/LiberationSans-Regular.ttf");
+
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
