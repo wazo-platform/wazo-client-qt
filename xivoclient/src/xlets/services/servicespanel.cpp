@@ -276,13 +276,13 @@ void ServicesPanel::updateUserConfig(const QString & xuserid, const QVariantMap 
         } else if (call_fwdunc.enabled) {
             this->ui.fwdunc_radiobutton->setChecked(true);
         } else if (call_fwdna.enabled || call_fwdbusy.enabled) {
-                this->toggledSimpleFwd(true);
+            this->toggledSimpleFwd(true);
         } else if (this->ui.fwdunc_radiobutton->isChecked()) {
             this->ui.nofwd_radiobutton->setChecked(true);
         }
 
         if (m_nofwd_sent && ! call_fwdunc.enabled && ! call_fwdna.enabled
-                && ! call_fwdbusy.enabled) {
+            && ! call_fwdbusy.enabled) {
             m_nofwd_sent = false;
         }
 
