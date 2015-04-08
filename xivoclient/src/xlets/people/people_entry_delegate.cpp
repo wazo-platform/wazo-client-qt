@@ -33,6 +33,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include <xletlib/menu.h>
+
 #include "people_entry_delegate.h"
 #include "people_actions.h"
 
@@ -209,8 +211,7 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
     position.setX(position.x() + button_margins.left());
     QPoint globalPosition = view->viewport()->mapToGlobal(position);
 
-    QMenu menu(view);
-    menu.setAttribute(Qt::WA_TranslucentBackground);
+    Menu menu(view);
     this->fillContextMenu(&menu, people_actions);
     if (! menu.isEmpty()) {
         menu.exec(globalPosition);
