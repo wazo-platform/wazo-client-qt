@@ -212,7 +212,9 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
     QMenu menu(view);
     menu.setAttribute(Qt::WA_TranslucentBackground);
     this->fillContextMenu(&menu, people_actions);
-    menu.exec(globalPosition);
+    if (! menu.isEmpty()) {
+        menu.exec(globalPosition);
+    }
 }
 
 void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,

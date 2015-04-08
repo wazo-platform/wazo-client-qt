@@ -64,9 +64,11 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
 
-    this->ui.agent_button->setMenu(m_agent_menu);
     this->fillAgentMenu(m_agent_menu);
-    this->m_agent_menu->setAttribute(Qt::WA_TranslucentBackground);
+    if (! m_agent_menu->isEmpty()) {
+        this->ui.agent_button->setMenu(m_agent_menu);
+        this->m_agent_menu->setAttribute(Qt::WA_TranslucentBackground);
+    }
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
