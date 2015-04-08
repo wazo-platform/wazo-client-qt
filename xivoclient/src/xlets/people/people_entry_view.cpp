@@ -80,8 +80,6 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
             {
                 PeopleEntryNumberDelegate *delegate = new PeopleEntryNumberDelegate(this);
                 this->setItemDelegateForColumn(column_index, delegate);
-                connect(delegate, SIGNAL(clicked(QAbstractItemModel *, const QModelIndex &)),
-                        this, SLOT(extensionClick(QAbstractItemModel *, const QModelIndex &)));
                 break;
             }
         }
@@ -99,10 +97,4 @@ void PeopleEntryView::updateColumnsVisibility(const QModelIndex &, int first, in
             }
         }
     }
-}
-
-void PeopleEntryView::extensionClick(QAbstractItemModel *model, const QModelIndex &index)
-{
-    QString extension = model->data(index).toString();
-    emit extensionClicked(extension);
 }
