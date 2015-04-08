@@ -115,7 +115,6 @@ QVariantMap MessageFactory::directorySearch(const QString &pattern)
     return message;
 }
 
-
 QVariantMap MessageFactory::switchboardDirectorySearch(const QString &pattern)
 {
     QVariantMap message = MessageFactory::baseMessage("switchboard_directory_search");
@@ -134,29 +133,29 @@ QVariantMap MessageFactory::peopleSearch(const QString &pattern)
 
 QVariantMap MessageFactory::registerAgentStatus(const QVariantList &ids)
 {
-  QVariantMap message = MessageFactory::baseMessage("register_agent_status_update");
+    QVariantMap message = MessageFactory::baseMessage("register_agent_status_update");
 
-  message["agent_ids"] = ids;
+    message["agent_ids"] = ids;
 
-  return message;
+    return message;
 }
 
 QVariantMap MessageFactory::registerEndpointStatus(const QVariantList &ids)
 {
-  QVariantMap message = MessageFactory::baseMessage("register_endpoint_status_update");
+    QVariantMap message = MessageFactory::baseMessage("register_endpoint_status_update");
 
-  message["endpoint_ids"] = ids;
+    message["endpoint_ids"] = ids;
 
-  return message;
+    return message;
 }
 
 QVariantMap MessageFactory::registerUserStatus(const QVariantList &ids)
 {
-  QVariantMap message = MessageFactory::baseMessage("register_user_status_update");
+    QVariantMap message = MessageFactory::baseMessage("register_user_status_update");
 
-  message["user_ids"] = ids;
+    message["user_ids"] = ids;
 
-  return message;
+    return message;
 }
 
 QVariantMap MessageFactory::getSwitchboardDirectoryHeaders()
@@ -212,56 +211,63 @@ QVariantMap MessageFactory::unpauseAgentInAllQueues(const QString &agent_id, con
 QVariantMap MessageFactory::setUnconditionalForward(bool enabled, QString destination)
 {
     QVariantMap command, value;
-    command["class"]    = "featuresput";
+    command["class"] = "featuresput";
     command["function"] = "fwd";
-    value["enableunc"]  = enabled;
-    value["destunc"]    = destination;
-    command["value"]    = value;
+    value["enableunc"] = enabled;
+    value["destunc"] = destination;
+    command["value"] = value;
+
     return command;
 }
+
 QVariantMap MessageFactory::setForwardNoAnswer(bool enabled, QString destination)
 {
     QVariantMap command, value;
-    command["class"]    = "featuresput";
+    command["class"] = "featuresput";
     command["function"] = "fwd";
-    value["enablerna"]  = enabled;
-    value["destrna"]    = destination;
-    command["value"]    = value;
+    value["enablerna"] = enabled;
+    value["destrna"] = destination;
+    command["value"] = value;
+
     return command;
 }
+
 QVariantMap MessageFactory::setForwardBusy(bool enabled, QString destination)
 {
     QVariantMap command, value;
-    command["class"]    = "featuresput";
+    command["class"] = "featuresput";
     command["function"] = "fwd";
     value["enablebusy"] = enabled;
-    value["destbusy"]   = destination;
-    command["value"]    = value;
+    value["destbusy"] = destination;
+    command["value"] = value;
+
     return command;
 }
 
 QVariantMap MessageFactory::setVoicemail(bool enabled)
 {
-    QVariantMap command;
-    command["class"]    = "featuresput";
+    QVariantMap command = MessageFactory::baseMessage("featuresput");
     command["function"] = "enablevoicemail";
-    command["value"]    = enabled;
+    command["value"] = enabled;
+
     return command;
 }
+
 QVariantMap MessageFactory::setCallFiltering(bool enabled)
 {
-    QVariantMap command;
-    command["class"]    = "featuresput";
+    QVariantMap command = MessageFactory::baseMessage("featuresput");
     command["function"] = "incallfilter";
-    command["value"]    = enabled;
+    command["value"] = enabled;
+
     return command;
 }
+
 QVariantMap MessageFactory::setDoNotDisturb(bool enabled)
 {
-    QVariantMap command;
-    command["class"]    = "featuresput";
+    QVariantMap command = MessageFactory::baseMessage("featuresput");
     command["function"] = "enablednd";
-    command["value"]    = enabled;
+    command["value"] = enabled;
+
     return command;
 }
 
