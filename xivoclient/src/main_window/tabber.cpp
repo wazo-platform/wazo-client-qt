@@ -45,11 +45,12 @@ Tabber::Tabber(QWidget *parent)
     this->m_gradient.setColorAt(1, QColor("#8C8783"));
 
     this->m_tab_widget = new QTabWidget(this);
+    this->m_tab_widget->setObjectName("tabber");
     layout->addWidget(this->m_tab_widget);
     this->m_tab_widget->setTabPosition(QTabWidget::West);
     // A little more space before the first tab
-    this->m_tab_widget->setStyleSheet("QTabWidget::tab-bar {top: 17px;}"
-                                      "QTabWidget::pane {border: 0px;}");
+    this->m_tab_widget->setStyleSheet("#tabber::tab-bar {top: 17px;}"
+                                      "#tabber::pane {border: 0px;}");
 
     this->m_tab_widget->tabBar()->setAttribute(Qt::WA_Hover);
     this->m_tab_widget->tabBar()->setStyle(&this->m_tabber_style);

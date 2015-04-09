@@ -81,6 +81,11 @@ font: 14px "Liberation Sans";
 font: 12px "Liberation Sans";
 }
 
+QTabWidget::pane {
+border: 0px;
+}
+
+
 /* 
   * Fax Xlet 
   */
