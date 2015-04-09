@@ -38,7 +38,8 @@ XLet* XLetServicesPlugin::newXLetInstance(QWidget *parent)
 }
 
 ServicesPanel::ServicesPanel(QWidget * parent)
-    : XLet(parent, tr("Services"), ":/images/tab-services.svg")
+    : XLet(parent, tr("Services"), ":/images/tab-services.svg"),
+      m_nofwd_sent(false)
 {
     this->ui.setupUi(this);
 
