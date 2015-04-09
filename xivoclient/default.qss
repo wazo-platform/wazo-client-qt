@@ -1,16 +1,28 @@
-QLineEdit {
+QLineEdit, QComboBox#agent_options {
 height: 30px;
-border-radius: 15px; 
+border-radius: 15px;
 padding-left: 15px;
 padding-right: 15px;
 background-color: #D7D2D0;
+selection-background-color: #E77D39;
 font: 12px "Liberation Sans";
 color: #2C2927;
 }
 
+QComboBox::down-arrow#agent_options {
+image: url(":/images/down-arrow-grey.svg");
+}
+QComboBox::drop-down#agent_options {
+border-left: 0px solid;
+width: 45px;
+}
+QComboBox#agent_options QAbstractItemView {
+background-color: #D7D2D0;
+}
+
 QPushButton{
 height: 30px;
-border-radius: 8px; 
+border-radius: 8px;
 padding-left: 18px;
 padding-right: 18px;
 }
@@ -59,6 +71,9 @@ color: #E77D39;
 QLabel[qss_tags~="xlet_h4"] {
 font: 18px "Dyno";
 }
+QWidget[qss_tags~="xlet_frame"], QWidget[qss_tags~="login_frame"] {
+background-color: #FFFFFF;
+}
 *[qss_tags~=xlet_list]{
 font: 14px "Liberation Sans";
 }
@@ -73,4 +88,3 @@ QLabel[qss_tags~="step_number"] {
 font: bold 36px "Dyno";
 color: #D7D2D0;
 }
-
