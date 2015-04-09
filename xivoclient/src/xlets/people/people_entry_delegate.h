@@ -32,6 +32,9 @@
 
 #include <QStyledItemDelegate>
 
+class PeopleActions;
+class QMenu;
+
 class PeopleEntryDotDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -47,8 +50,6 @@ class PeopleEntryDotDelegate : public QStyledItemDelegate
     protected:
         static QSize icon_size;
         static int icon_text_spacing;
-        static QMargins button_margins;
-        static int button_height;
 };
 
 class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
@@ -57,18 +58,27 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
 
     public:
         PeopleEntryNumberDelegate(QWidget *parent = NULL);
-        void paint(QPainter *painter,
-                   const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const;
         bool editorEvent(QEvent *event,
                          QAbstractItemModel *model,
                          const QStyleOptionViewItem &option,
                          const QModelIndex &index);
-    signals:
-        void clicked(QAbstractItemModel *, const QModelIndex &);
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
 
     protected:
         bool pressed;
+        static QMargins button_margins;
+        static int action_selector_width;
+
+    private:
+        QRect buttonRect(const QRect &option_rect) const;
+        QRect contentsRect(const QRect &option_rect) const;
+        QRect actionSelectorRect(const QRect &option_rect) const;
+        void fillContextMenu(QMenu *menu,
+                             PeopleActions *people_actions);
+        void showContextMenu(const QStyleOptionViewItem &option,
+                             PeopleActions *people_actions);
 };
 
 class PeopleEntryAgentDelegate : public QStyledItemDelegate

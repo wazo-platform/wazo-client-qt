@@ -1,7 +1,4 @@
-/* XiVO Client
- * Copyright (C) 2014-2015 Avencall
- *
- * This file is part of XiVO Client.
+/* Copyright (C) 2015 Avencall
  *
  * XiVO Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,44 +24,36 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PEOPLE_ENTRY_H_
-#define _PEOPLE_ENTRY_H_
 
-#include <QVariant>
+#ifndef __PEOPLE_ACTIONS_H__
+#define __PEOPLE_ACTIONS_H__
 
-#include <xletlib/xletlib_export.h>
+#include <QAction>
+#include <QObject>
 
-enum ColumnType {
-  AGENT,
-  MOBILE,
-  NAME,
-  NUMBER,
-  OTHER,
-  STATUS_ICON
-};
+#include <xletlib/people_entry.h>
 
-class XLETLIB_EXPORT PeopleEntry
+class PeopleActions: public QObject
 {
+    Q_OBJECT
+
     public:
-        PeopleEntry(const QVariantList &data, const QVariantMap &relations);
-        PeopleEntry(const PeopleEntry &other);
-        ~PeopleEntry();
-        const QVariant data(int column) const;
-        PeopleEntry &operator=(const PeopleEntry &other);
-        const QString &xivoUuid() const;
-        int agentId() const;
-        int endpointId() const;
-        int userId() const;
-        QPair<QString, int> uniqueAgentId() const;
-        QPair<QString, int> uniqueEndpointId() const;
-        QPair<QString, int> uniqueUserId() const;
+        PeopleActions(QList< QPair<QString, ColumnType> > fields, const PeopleEntry &entry);
+        QAction *callAction();
+        QAction *callMobileAction();
+
+    public slots:
+        void call();
+        void callMobile();
 
     private:
-        QVariantList m_data;
-        QString m_xivo_uuid;
-        int m_agent_id;
-        int m_user_id;
-        int m_endpoint_id;
+        const PeopleEntry &m_entry;
+
+        int m_mobile_column;
+        int m_number_column;
+
+        QAction *m_call_action;
+        QAction *m_call_mobile_action;
 };
 
-#endif /* _PEOPLE_ENTRY_H_ */
+#endif

@@ -33,31 +33,6 @@
     background: #2c2927;
 }
 
-QMenu {
-    background: white;
-    border: 1px solid grey;
-    border-radius: 10px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-}
-
-QMenu::item {
-    padding-top: 5px;
-    padding-left: 13px;
-    padding-right: 23px;
-    padding-bottom: 5px;
-}
-
-QMenu::separator {
-    background: #e8e4e2;
-    height: 1px;
-}
-
-QMenu::item:selected {
-    background: #e8e4e2;
-    color: black;
-}
-
 QToolButton::menu-indicator {
     image: none;
 }</string>
@@ -377,11 +352,13 @@ QToolButton::menu-indicator {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: #e8e4e2;
-border-radius: 14px;
-padding-left: 14px;
-padding-right: 28px;
-color: #2c2927;</string>
+    <string notr="true">QLineEdit {
+    background-color: #e8e4e2;
+    border-radius: 14px;
+    padding-left: 14px;
+    padding-right: 28px;
+    color: #2c2927;
+}</string>
    </property>
    <property name="placeholderText">
     <string>call</string>

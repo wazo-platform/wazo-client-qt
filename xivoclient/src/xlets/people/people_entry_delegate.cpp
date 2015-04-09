@@ -27,15 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QPainter>
+#include <QAbstractScrollArea>
 #include <QEvent>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QPainter>
+
+#include <xletlib/menu.h>
 
 #include "people_entry_delegate.h"
+#include "people_actions.h"
 
 QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
-QMargins PeopleEntryDotDelegate::button_margins = QMargins(10, 0, 10, 0);
+QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
+int PeopleEntryNumberDelegate::action_selector_width = 40;
 
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
@@ -110,7 +117,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
     if(option.state & QStyle::State_MouseOver) {
         painter->save();
         QPainterPath path;
-        QRect button_rect = QRect(option.rect).marginsRemoved(button_margins);
+        QRect button_rect = this->contentsRect(option.rect);
         path.addRoundedRect(button_rect, 8, 8);
         if (this->pressed) {
             painter->fillPath(path, Qt::black);
@@ -123,6 +130,19 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
+
+        QRect selector_rect = this->actionSelectorRect(option.rect);
+
+        QRect separator_rect(selector_rect);
+        separator_rect.setWidth(1);
+
+        painter->fillRect(separator_rect, "grey");
+
+        QRect arrow_image_rect;
+        QSize arrow_image_size = QSize(9, 6);
+        arrow_image_rect.setSize(arrow_image_size);
+        arrow_image_rect.moveCenter(selector_rect.center());
+        painter->drawPixmap(arrow_image_rect, QIcon(":/images/down-arrow-white.svg").pixmap(arrow_image_size));
         painter->restore();
         return;
     }
@@ -140,14 +160,72 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
     }
 
     if(event->type() == QEvent::MouseButtonPress) {
-        this->pressed = true;
+        QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
+        if (this->contentsRect(option.rect).contains(mouse_event->pos())) {
+            this->pressed = true;
+        }
     }
     if (event->type() == QEvent::MouseButtonRelease) {
         this->pressed = false;
-        emit clicked(model, index);
+
+        QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
+        PeopleActions *people_actions = model->data(index, Qt::UserRole).value<PeopleActions*>();
+
+        if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
+            people_actions->call();
+        } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
+            this->showContextMenu(option, people_actions);
+        }
     }
     return true;
 }
+
+QRect PeopleEntryNumberDelegate::contentsRect(const QRect &option_rect) const
+{
+    return option_rect.marginsRemoved(button_margins);
+}
+
+QRect PeopleEntryNumberDelegate::buttonRect(const QRect &option_rect) const
+{
+    QRect rect = this->contentsRect(option_rect);
+    rect.setRight(rect.right() - action_selector_width);
+    return rect;
+}
+
+QRect PeopleEntryNumberDelegate::actionSelectorRect(const QRect &option_rect) const
+{
+    QRect rect = this->contentsRect(option_rect);
+    rect.setLeft(rect.right() - action_selector_width);
+    return rect;
+}
+
+void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &option,
+                                                PeopleActions *people_actions)
+{
+    QAbstractScrollArea *view = static_cast<QAbstractScrollArea*>(option.styleObject);
+    if (! view) {
+        return;
+    }
+
+    QPoint position = option.rect.bottomLeft();
+    position.setX(position.x() + button_margins.left());
+    QPoint globalPosition = view->viewport()->mapToGlobal(position);
+
+    Menu menu(view);
+    this->fillContextMenu(&menu, people_actions);
+    if (! menu.isEmpty()) {
+        menu.exec(globalPosition);
+    }
+}
+
+void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
+                                                PeopleActions *people_actions)
+{
+    if (QAction *mobile_action = people_actions->callMobileAction()) {
+        menu->addAction(mobile_action);
+    }
+}
+
 
 PeopleEntryAgentDelegate::PeopleEntryAgentDelegate(QWidget *parent)
     : QStyledItemDelegate(parent)

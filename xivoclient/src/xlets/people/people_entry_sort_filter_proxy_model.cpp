@@ -29,7 +29,6 @@
 
 #include "people_entry_model.h"
 #include "people_entry_sort_filter_proxy_model.h"
-#include <xletlib/directory_entry.h>
 
 PeopleEntrySortFilterProxyModel::PeopleEntrySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
@@ -37,7 +36,7 @@ PeopleEntrySortFilterProxyModel::PeopleEntrySortFilterProxyModel(QObject *parent
 }
 
 bool PeopleEntrySortFilterProxyModel::lessThan(const QModelIndex &left,
-                                                  const QModelIndex &right) const
+                                               const QModelIndex &right) const
 {
     QVariant left_data = sourceModel()->data(left);
     QVariant right_data = sourceModel()->data(right);

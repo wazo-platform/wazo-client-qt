@@ -60,7 +60,6 @@ class People: public XLet
         void focusEntryTable();
         void schedulePeopleLookup(const QString &lookup_pattern);
         void searchPeople();
-        void dial(const QString &extension);
         void defaultColumnSort(const QModelIndex &, int, int);
 
     private:

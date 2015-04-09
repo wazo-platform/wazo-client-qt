@@ -35,6 +35,7 @@
 
 #include <ui_identity.h>
 
+class Menu;
 class VoiceMailInfo;
 
 class IdentityDisplay : public XLet
@@ -89,8 +90,8 @@ class IdentityDisplay : public XLet
 
         Ui::IdentityWidget ui;
         QSignalMapper *m_presence_mapper;
-        QMenu *m_agent_menu;
-        QMenu *m_presence_menu;
+        Menu *m_agent_menu;
+        Menu *m_presence_menu;
 };
 
 class XLetIdentityPlugin : public QObject, XLetInterface

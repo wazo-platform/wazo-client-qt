@@ -47,12 +47,23 @@ People::People(QWidget *parent)
 {
     this->ui.setupUi(this);
 
+    QFile qssFile(QString(":/default.qss"));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        this->setStyleSheet(qssFile.readAll());
+    }
+
+    ui.menu->addAction(tr("all"));
+    ui.menu->setSelectedIndex(0);
+    ui.menu->hide();  // will be shown when useful
+
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
     m_model = new PeopleEntryModel(m_people_entry_manager, this);
     m_proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(m_proxy_model);
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             ui.entry_table, SLOT(updateColumnsDelegates(const QModelIndex &, int, int)));
+    connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+            ui.entry_table, SLOT(updateColumnsVisibility(const QModelIndex &, int, int)));
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             this, SLOT(defaultColumnSort(const QModelIndex &, int, int)));
 
@@ -64,8 +75,6 @@ People::People(QWidget *parent)
             this, SLOT(focusEntryTable()));
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
-    connect(this->ui.entry_table, SIGNAL(extensionClicked(const QString &)),
-            this, SLOT(dial(const QString &)));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
@@ -114,9 +123,4 @@ void People::defaultColumnSort(const QModelIndex &, int, int)
     int name_column_index = this->m_model->getNameColumnIndex();
     this->m_proxy_model->sort(name_column_index, Qt::AscendingOrder);
     this->ui.entry_table->horizontalHeader()->setSortIndicator(name_column_index, Qt::AscendingOrder);
-}
-
-void People::dial(const QString &extension)
-{
-    b_engine->sendJsonCommand(MessageFactory::dial(extension));
 }

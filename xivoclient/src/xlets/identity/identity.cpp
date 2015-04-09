@@ -34,6 +34,8 @@
 #include <storage/phoneinfo.h>
 #include <storage/voicemailinfo.h>
 
+#include <xletlib/menu.h>
+
 #include "identity.h"
 
 const QString icon_user_unlogged = "xivo-black";
@@ -52,21 +54,21 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
       m_hide_icon(":/identity/images/hide.svg"),
       m_show_icon(":/identity/images/show.svg"),
       m_presence_mapper(new QSignalMapper(this)),
-      m_agent_menu(new QMenu(this)),
-      m_presence_menu(new QMenu(this))
+      m_agent_menu(new Menu(this)),
+      m_presence_menu(new Menu(this))
 {
     setAccessibleName(tr("Current User Panel"));
 
     this->ui.setupUi(this);
 
     this->ui.presence_button->setMenu(m_presence_menu);
-    this->m_presence_menu->setAttribute(Qt::WA_TranslucentBackground);
     connect(m_presence_mapper, SIGNAL(mapped(const QString &)),
             this, SLOT(setPresence(const QString &)));
 
-    this->ui.agent_button->setMenu(m_agent_menu);
     this->fillAgentMenu(m_agent_menu);
-    this->m_agent_menu->setAttribute(Qt::WA_TranslucentBackground);
+    if (! m_agent_menu->isEmpty()) {
+        this->ui.agent_button->setMenu(m_agent_menu);
+    }
 
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));

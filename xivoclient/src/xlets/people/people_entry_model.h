@@ -33,7 +33,7 @@
 #include <QAbstractTableModel>
 #include <QStringList>
 #include <ipbxlistener.h>
-#include <xletlib/directory_entry.h>
+#include <xletlib/people_entry.h>
 
 class PeopleEntryManager;
 class PeopleEntry;
@@ -56,8 +56,8 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
         QVariant headerData(int,
                             Qt::Orientation,
                             int) const;
-        int getNumberColumnIndex() const;
         int getNameColumnIndex() const;
+
     public slots:
         void addPeopleEntry(int entry_index);
         void updatePeopleEntry(int entry_index);
@@ -77,6 +77,7 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
 
         QList< QPair<QString, enum ColumnType> >  m_fields;
         const PeopleEntryManager & m_people_entry_manager;
+        QMap<QString, ColumnType> m_type_map;
 };
 
 #endif
