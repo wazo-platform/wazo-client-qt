@@ -380,47 +380,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="290"/>
+        <location filename="../src/login_widget/login_widget.ui" line="271"/>
         <source>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="337"/>
+        <location filename="../src/login_widget/login_widget.ui" line="306"/>
         <source>login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="375"/>
+        <location filename="../src/login_widget/login_widget.ui" line="335"/>
         <source>password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="406"/>
+        <location filename="../src/login_widget/login_widget.ui" line="366"/>
         <source>Remember me</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="446"/>
+        <location filename="../src/login_widget/login_widget.ui" line="395"/>
         <source>No Agent</source>
         <translation>Geen agent</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="451"/>
+        <location filename="../src/login_widget/login_widget.ui" line="400"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (niet gelogd)</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="456"/>
+        <location filename="../src/login_widget/login_widget.ui" line="405"/>
         <source>Agent (logged)</source>
         <translation>Agent (gelogd)</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="482"/>
+        <location filename="../src/login_widget/login_widget.ui" line="413"/>
         <source>phone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="527"/>
+        <location filename="../src/login_widget/login_widget.ui" line="456"/>
         <source>CONNECT</source>
         <translation type="unfinished"></translation>
     </message>

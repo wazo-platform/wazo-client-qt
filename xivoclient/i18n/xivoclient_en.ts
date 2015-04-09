@@ -380,47 +380,47 @@
         <translation>LOGIN</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="290"/>
+        <location filename="../src/login_widget/login_widget.ui" line="271"/>
         <source>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</source>
         <translation>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="337"/>
+        <location filename="../src/login_widget/login_widget.ui" line="306"/>
         <source>login</source>
         <translation>login</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="375"/>
+        <location filename="../src/login_widget/login_widget.ui" line="335"/>
         <source>password</source>
         <translation>password</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="406"/>
+        <location filename="../src/login_widget/login_widget.ui" line="366"/>
         <source>Remember me</source>
         <translation>Remember me</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="446"/>
+        <location filename="../src/login_widget/login_widget.ui" line="395"/>
         <source>No Agent</source>
         <translation>No Agent</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="451"/>
+        <location filename="../src/login_widget/login_widget.ui" line="400"/>
         <source>Agent (unlogged)</source>
         <translation>Agent (unlogged)</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="456"/>
+        <location filename="../src/login_widget/login_widget.ui" line="405"/>
         <source>Agent (logged)</source>
         <translation>Agent (logged)</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="482"/>
+        <location filename="../src/login_widget/login_widget.ui" line="413"/>
         <source>phone</source>
         <translation>phone</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.ui" line="527"/>
+        <location filename="../src/login_widget/login_widget.ui" line="456"/>
         <source>CONNECT</source>
         <translation>CONNECT</translation>
     </message>

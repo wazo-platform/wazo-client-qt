@@ -8,11 +8,29 @@
         <source>People</source>
         <translation>People</translation>
     </message>
+    <message>
+        <location filename="../src/xlets/people/people.cpp" line="55"/>
+        <source>all</source>
+        <translation>all</translation>
+    </message>
+</context>
+<context>
+    <name>PeopleActions</name>
+    <message>
+        <location filename="../src/xlets/people/people_actions.cpp" line="56"/>
+        <source>Call</source>
+        <translation>Call</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/people/people_actions.cpp" line="65"/>
+        <source>%1 - %2</source>
+        <translation>%1 - %2</translation>
+    </message>
 </context>
 <context>
     <name>PeopleEntryNumberDelegate</name>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="121"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="128"/>
         <source>CALL</source>
         <translation>CALL</translation>
     </message>
@@ -20,14 +38,14 @@
 <context>
     <name>PeopleWidget</name>
     <message>
-        <location filename="../src/xlets/people/people_widget.ui" line="14"/>
-        <source>Form</source>
-        <translation>Form</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/people/people_widget.ui" line="74"/>
+        <location filename="../src/xlets/people/people_widget.ui" line="60"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/people/people_widget.ui" line="108"/>
+        <source>search</source>
+        <translation>search</translation>
     </message>
 </context>
 </TS>
