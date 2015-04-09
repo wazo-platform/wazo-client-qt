@@ -27,58 +27,30 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __XLET_CONFERENCE
-#define __XLET_CONFERENCE
+#ifndef __CONFERENCE_H__
+#define __CONFERENCE_H__
 
-#include <QDebug>
-#include <QWidget>
-#include <QtPlugin>
-#include <QTabWidget>
-#include <QVBoxLayout>
-#include <QPushButton>
-
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include <QObject>
 
 #include <xletlib/functests.h>
+#include <xletlib/xlet.h>
+#include <xletlib/xletinterface.h>
 
-class XletConference;
+#include <ui_conference_widget.h>
 
-#include "conflist.h"
-#include "confroom.h"
+class ConfTab;
 
-Q_DECLARE_METATYPE(QWidget*);
-
-class ConfTab : public QTabWidget
-{
-    Q_OBJECT
-
-    public:
-        ConfTab(QWidget *parent);
-        int addClosableTab(QWidget *w, const QString &title);
-        void showConfRoom(const QString &number, const QVariantMap &members);
-        int indexOf(QWidget *w) { return QTabWidget::indexOf(w); };
-        int indexOf(const QString &id);
-
-    public slots:
-        void closeTab(QWidget *w=0);
-
-};
-
-
-class XletConference : public XLet
+class Conference : public XLet
 {
     Q_OBJECT
     FUNCTESTED
 
     public:
-        XletConference(QWidget *parent=0);
+        Conference(QWidget *parent=0);
 
-    public slots:
-        void openConfRoom(const QString &number, const QVariantMap &members);
     private:
         void registerMeetmeUpdate() const;
-        ConfTab *m_tab;
+        Ui::ConferenceWidget ui;
 
 };
 

@@ -53,6 +53,7 @@ AbstractTableView::AbstractTableView(QWidget * parent)
         "AbstractTableView {"
             "border: none;"
             "background: transparent;"
+            "color: black;"
         "}"
 
         // Remove corner

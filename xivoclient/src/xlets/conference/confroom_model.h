@@ -1,4 +1,3 @@
-
 /* XiVO Client
  * Copyright (C) 2007-2014 Avencall
  *
@@ -28,45 +27,50 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef FUNCTESTS
+#ifndef __CONFROOM_MODEL_H__
+#define __CONFROOM_MODEL_H__
 
+#include <QWidget>
+#include <QAbstractTableModel>
 #include <QModelIndex>
-#include <QVariant>
 
-#include "xlets/conference/conference.h"
-#include "xlets/conference/conflist.h"
-#include "xlets/conference/conflist_model.h"
-#include "remote_control.h"
 
-QVariantMap RemoteControl::get_conference_room_infos()
+class ConfTab;
+
+class ConfRoomModel : public QAbstractTableModel
 {
-    QVariantMap args;
-    Conference* conference_xlet = this->get_xlet<Conference>("conference");
-    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
+    Q_OBJECT
 
-    args["conference_xlet"] = conference_xlet != NULL;
-    args["conflist_model"] = conflist_model != NULL;
-
-    QVariantList content;
-    QVariantMap header_data;
-    header_data["name"] = ConfListModel::NAME;
-    header_data["number"] = ConfListModel::NUMBER;
-    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConfListModel::STARTED_SINCE;
-
-    int nb_rows = conflist_model->rowCount(QModelIndex());
-    for (int row = 0; row < nb_rows; row++) {
-        QVariantMap header_value;
-        QVariantMap::const_iterator i;
-        for(i = header_data.begin(); i != header_data.end(); ++i) {
-            header_value[i.key()] = getValueInModel(conflist_model, row, i.value().toInt());
-        }
-        content.append(header_value);
-    }
-    args["content"] = content;
-
-    return args;
-}
+    public:
+        enum ColOrder {
+            ID,
+            ACTION_MUTE,
+            NAME,
+            NUMBER,
+            SINCE,
+            NB_COL
+        };
+        ConfRoomModel(QWidget *parent, const QString &, const QVariantMap &);
+        QString number() const { return m_number; }
+        QString row2participantId(int row) const { return m_row2number[row]; }
+        bool isRowMuted(int row) const;
+        const QString &roomNumber() const { return m_number; }
+        int userNumberFromRow(int row) const;
+    public slots:
+        void updateMeetmeConfig(const QVariantMap &);
+    private slots:
+        void extractRow2IdMap();
+        void updateJoinTime();
+    private:
+        void sort(int, Qt::SortOrder);
+        int rowCount(const QModelIndex&) const;
+        int columnCount(const QModelIndex&) const;
+        QVariant data(const QModelIndex&, int) const;
+        QVariant headerData(int, Qt::Orientation, int) const;
+        Qt::ItemFlags flags(const QModelIndex &) const;
+        QString m_number;
+        QStringList m_row2number;
+        QVariantMap m_members;
+};
 
 #endif

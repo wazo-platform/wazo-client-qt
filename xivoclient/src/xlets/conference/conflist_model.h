@@ -1,4 +1,3 @@
-
 /* XiVO Client
  * Copyright (C) 2007-2014 Avencall
  *
@@ -28,45 +27,55 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef FUNCTESTS
+#ifndef __CONFLIST_MODEL_H__
+#define __CONFLIST_MODEL_H__
 
+#include <QLabel>
+#include <QTimer>
+#include <QVBoxLayout>
+#include <QTableView>
 #include <QModelIndex>
 #include <QVariant>
+#include <QAbstractTableModel>
+#include <QHeaderView>
+#include <QMenu>
+#include <QAction>
+#include <QMouseEvent>
 
-#include "xlets/conference/conference.h"
-#include "xlets/conference/conflist.h"
-#include "xlets/conference/conflist_model.h"
-#include "remote_control.h"
+#include <xletlib/functests.h>
+#include <baseengine.h>
 
-QVariantMap RemoteControl::get_conference_room_infos()
+
+class ConfListModel : public QAbstractTableModel
 {
-    QVariantMap args;
-    Conference* conference_xlet = this->get_xlet<Conference>("conference");
-    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
+    Q_OBJECT
+    FUNCTESTED
 
-    args["conference_xlet"] = conference_xlet != NULL;
-    args["conflist_model"] = conflist_model != NULL;
-
-    QVariantList content;
-    QVariantMap header_data;
-    header_data["name"] = ConfListModel::NAME;
-    header_data["number"] = ConfListModel::NUMBER;
-    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConfListModel::STARTED_SINCE;
-
-    int nb_rows = conflist_model->rowCount(QModelIndex());
-    for (int row = 0; row < nb_rows; row++) {
-        QVariantMap header_value;
-        QVariantMap::const_iterator i;
-        for(i = header_data.begin(); i != header_data.end(); ++i) {
-            header_value[i.key()] = getValueInModel(conflist_model, row, i.value().toInt());
-        }
-        content.append(header_value);
-    }
-    args["content"] = content;
-
-    return args;
-}
+    public:
+        enum ColOrder {
+            NAME,
+            NUMBER,
+            PIN_REQUIRED,
+            MEMBER_COUNT,
+            STARTED_SINCE,
+            NB_COL
+        };
+        ConfListModel(QWidget *parent = NULL);
+        QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
+    public slots:
+        void updateConfTime();
+        void updateRoomConfigs(const QVariantMap &);
+    private:
+        void refreshRow2Number();
+        QString startedSince(double time) const;
+        int rowCount(const QModelIndex& = QModelIndex()) const;
+        int columnCount(const QModelIndex&) const;
+        QVariant data(const QModelIndex&, int) const;
+        QVariant headerData(int , Qt::Orientation, int) const;
+        Qt::ItemFlags flags(const QModelIndex &) const;
+        QStringList m_row2number;
+        QVariantMap m_room_configs;
+        QString COL_TITLE[NB_COL];
+};
 
 #endif

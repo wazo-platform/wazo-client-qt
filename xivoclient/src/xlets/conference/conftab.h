@@ -1,4 +1,3 @@
-
 /* XiVO Client
  * Copyright (C) 2007-2014 Avencall
  *
@@ -28,45 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef FUNCTESTS
+#ifndef __CONFTAB_H__
+#define __CONFTAB_H__
 
-#include <QModelIndex>
-#include <QVariant>
+#include <QDebug>
+#include <QWidget>
+#include <QtPlugin>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QPushButton>
 
-#include "xlets/conference/conference.h"
-#include "xlets/conference/conflist.h"
-#include "xlets/conference/conflist_model.h"
-#include "remote_control.h"
+#include <xletlib/functests.h>
+#include <xletlib/xlet.h>
+#include <xletlib/xletinterface.h>
 
-QVariantMap RemoteControl::get_conference_room_infos()
+
+class ConfTab : public QTabWidget
 {
-    QVariantMap args;
-    Conference* conference_xlet = this->get_xlet<Conference>("conference");
-    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
+    Q_OBJECT
 
-    args["conference_xlet"] = conference_xlet != NULL;
-    args["conflist_model"] = conflist_model != NULL;
+    public:
+        ConfTab(QWidget *parent);
+        void showConfRoom(const QString &number, const QVariantMap &members);
+        int indexOf(QWidget *w) { return QTabWidget::indexOf(w); };
+        int indexOf(const QString &id);
 
-    QVariantList content;
-    QVariantMap header_data;
-    header_data["name"] = ConfListModel::NAME;
-    header_data["number"] = ConfListModel::NUMBER;
-    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConfListModel::STARTED_SINCE;
+    public slots:
+        void closeTab(int index);
 
-    int nb_rows = conflist_model->rowCount(QModelIndex());
-    for (int row = 0; row < nb_rows; row++) {
-        QVariantMap header_value;
-        QVariantMap::const_iterator i;
-        for(i = header_data.begin(); i != header_data.end(); ++i) {
-            header_value[i.key()] = getValueInModel(conflist_model, row, i.value().toInt());
-        }
-        content.append(header_value);
-    }
-    args["content"] = content;
-
-    return args;
-}
+};
 
 #endif

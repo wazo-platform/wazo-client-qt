@@ -27,88 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFERENCE2_CONFROOM_H_
-#define _CONFERENCE2_CONFROOM_H_
+#ifndef __CONFROOM_H__
+#define __CONFROOM_H__
+
 #include <QWidget>
-#include <QDebug>
-#include <QLabel>
-#include <QTimer>
-#include <QAbstractTableModel>
-#include <QTableView>
-#include <QModelIndex>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QMouseEvent>
-#include <QMap>
-#include <QHeaderView>
 
-#include "conference.h"
-#include "baseengine.h"
+
+class ConfRoomModel;
 class ConfRoomView;
-class ConfTab;
-
-class ConfRoomModel : public QAbstractTableModel
-{
-    Q_OBJECT
-
-    public:
-        ConfRoomModel(ConfTab *t, QWidget *parent, const QString &, const QVariantMap &);
-        void setView(ConfRoomView *m_view);
-        QString number() const { return m_number; }
-        QString row2participantId(int row) const { return m_row2number[row]; }
-        int isAdmin() { return m_admin; }
-        int isAuthed() { return m_authed; }
-        bool isRowMuted(int row) const;
-        const QString &roomNumber() const { return m_number; }
-        int userNumberFromRow(int row) const;
-    public slots:
-        void updateMeetmeConfig(const QVariantMap &);
-    private slots:
-        void extractRow2IdMap();
-        void updateJoinTime();
-    private:
-        void updateView();
-        void sort(int, Qt::SortOrder);
-        int rowCount(const QModelIndex&) const;
-        int columnCount(const QModelIndex&) const;
-        QVariant data(const QModelIndex&, int) const;
-        QVariant headerData(int, Qt::Orientation, int) const;
-        Qt::ItemFlags flags(const QModelIndex &) const;
-        ConfTab *m_tab;
-        QWidget *m_parent;
-        bool m_admin;
-        bool m_authed;
-        QString m_number;
-        ConfRoomView *m_view;
-        QStringList m_row2number;
-        QVariantMap m_members;
-};
-
-class ConfRoomView : public QTableView
-{
-    Q_OBJECT
-
-    public:
-        ConfRoomView(QWidget *parent, ConfRoomModel *model);
-    private slots:
-        void onViewClick(const QModelIndex &);
-        void sectionHeaderClicked(int);
-    protected:
-        virtual void mousePressEvent(QMouseEvent *event);
-    private:
-        int lastPressed;
-};
 
 class ConfRoom : public QWidget
 {
     Q_OBJECT
 
     public:
-        ConfRoom(QWidget *parent, ConfTab *tab, const QString &, const QVariantMap &);
+        ConfRoom(QWidget *parent, const QString &, const QVariantMap &);
     private:
-        QString m_number;
         ConfRoomModel *m_model;
-        QLabel *m_moderatedRoom;
+        ConfRoomView *m_view;
 };
 
 #endif

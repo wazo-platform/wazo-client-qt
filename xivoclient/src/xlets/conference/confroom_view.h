@@ -1,4 +1,3 @@
-
 /* XiVO Client
  * Copyright (C) 2007-2014 Avencall
  *
@@ -28,45 +27,28 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef FUNCTESTS
-
+#ifndef __CONFROOM_VIEW_H__
+#define __CONFROOM_VIEW_H__
+#include <QWidget>
+#include <QDebug>
+#include <QTimer>
 #include <QModelIndex>
-#include <QVariant>
+#include <QHeaderView>
 
-#include "xlets/conference/conference.h"
-#include "xlets/conference/conflist.h"
-#include "xlets/conference/conflist_model.h"
-#include "remote_control.h"
+#include <xletlib/abstract_table_view.h>
 
-QVariantMap RemoteControl::get_conference_room_infos()
+
+class ConfRoomView : public AbstractTableView
 {
-    QVariantMap args;
-    Conference* conference_xlet = this->get_xlet<Conference>("conference");
-    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
+    Q_OBJECT
 
-    args["conference_xlet"] = conference_xlet != NULL;
-    args["conflist_model"] = conflist_model != NULL;
+    public:
+        ConfRoomView(QWidget *parent = NULL);
+        void updateHeadersView();
 
-    QVariantList content;
-    QVariantMap header_data;
-    header_data["name"] = ConfListModel::NAME;
-    header_data["number"] = ConfListModel::NUMBER;
-    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConfListModel::STARTED_SINCE;
-
-    int nb_rows = conflist_model->rowCount(QModelIndex());
-    for (int row = 0; row < nb_rows; row++) {
-        QVariantMap header_value;
-        QVariantMap::const_iterator i;
-        for(i = header_data.begin(); i != header_data.end(); ++i) {
-            header_value[i.key()] = getValueInModel(conflist_model, row, i.value().toInt());
-        }
-        content.append(header_value);
-    }
-    args["content"] = content;
-
-    return args;
-}
+    private slots:
+        void onViewClick(const QModelIndex &);
+        void sectionHeaderClicked(int);
+};
 
 #endif

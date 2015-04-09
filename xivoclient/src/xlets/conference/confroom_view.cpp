@@ -27,26 +27,49 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QVBoxLayout>
-
+#include "baseengine.h"
 #include "confroom.h"
 #include "confroom_model.h"
 #include "confroom_view.h"
 
-
-ConfRoom::ConfRoom(QWidget *parent, const QString &number, const QVariantMap &members)
-    : QWidget(parent)
+ConfRoomView::ConfRoomView(QWidget *parent)
+    : AbstractTableView(parent)
 {
-    QVBoxLayout *vBox = new QVBoxLayout(this);
-    vBox->setContentsMargins(0,0,0,0);
+    connect(this, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(onViewClick(const QModelIndex &)));
 
-    setLayout(vBox);
-    m_model = new ConfRoomModel(this, number, members);
-    setProperty("id", number);
+    QHeaderView *h = horizontalHeader();
+    connect(h, SIGNAL(sectionClicked(int)),
+            this, SLOT(sectionHeaderClicked(int)));
+}
 
-    m_view = new ConfRoomView(this);
-    m_view->setModel(m_model);
-    m_view->updateHeadersView();
+void ConfRoomView::updateHeadersView()
+{
+    horizontalHeader()->setSectionResizeMode(ConfRoomModel::ACTION_MUTE, QHeaderView::Fixed);
+    setColumnWidth(ConfRoomModel::ACTION_MUTE, 32);
+    hideColumn(0);
+}
 
-    vBox->addWidget(m_view);
+void ConfRoomView::sectionHeaderClicked(int index)
+{
+    if (index == ConfRoomModel::ACTION_MUTE) {
+        setSortingEnabled(false);
+        return ;
+    }
+    setSortingEnabled(true);
+}
+
+void ConfRoomView::onViewClick(const QModelIndex &index)
+{
+    if (index.column() == ConfRoomModel::ACTION_MUTE)
+    {
+        int row = index.row();
+        ConfRoomModel *model = static_cast<ConfRoomModel *>(this->model());
+        bool isMuted = model->isRowMuted(row);
+        QString room_number = model->roomNumber();
+        QString user_number = QString("%0").arg(model->userNumberFromRow(row));
+        QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
+        QString param = QString("%0 %1").arg(room_number).arg(user_number);
+        b_engine->meetmeAction(action, param);
+    }
 }
