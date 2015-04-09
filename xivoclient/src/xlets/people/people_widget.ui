@@ -17,7 +17,7 @@
 </string>
   </property>
   <property name="qss_tags" stdset="0">
-   <stringlist>
+   <stringlist notr="true">
     <string>xlet_frame</string>
    </stringlist>
   </property>
@@ -60,7 +60,7 @@
         <string>Contacts</string>
        </property>
        <property name="qss_tags" stdset="0">
-        <stringlist>
+        <stringlist notr="true">
          <string>xlet_h1</string>
         </stringlist>
        </property>
