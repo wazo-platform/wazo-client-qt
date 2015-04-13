@@ -105,10 +105,9 @@ void XletDispatcher::showAllXlets()
         this->m_tabber->tabWidget()->setCurrentIndex(new_index);
     }
 
-    this->showXletsDock();
-
-
     this->restoreMainWindow();
+
+    this->showXletsDock();
 }
 
 XletDispatcher::~XletDispatcher()
@@ -370,9 +369,8 @@ void XletDispatcher::clearAppearance()
 void XletDispatcher::restoreMainWindow()
 {
     m_main_window->setMaximumHeight(QWIDGETSIZE_MAX);
-    QRect transformed_rect = m_main_window->geometry();
-    transformed_rect.setHeight(m_unfolded_height);
 
-    m_main_window->setGeometry(transformed_rect);
-    m_main_window->updateGeometry();
+    QSize main_window_size = m_main_window->size();
+    main_window_size.setHeight(m_unfolded_height);
+    m_main_window->resize(main_window_size);
 }
