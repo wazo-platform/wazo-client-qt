@@ -159,14 +159,15 @@ Section "Uninstall"
   Delete $INSTDIR\uninstall.exe
   RMDir /r $INSTDIR\imageformats
   RMDir /r $INSTDIR\platforms
-  RMDir /r $INSTDIR\sqldrivers
   RMDir /r $INSTDIR\plugins
-  Delete $INSTDIR\qt.conf
-  Delete $INSTDIR\libeay32.dll
-  Delete $INSTDIR\ssleay32.dll
-  RMDir /r $INSTDIR\Qt
+  RMDir /r $INSTDIR\sqldrivers
+  RMDir /r $INSTDIR\translations
   Delete $INSTDIR\*.dll
   Delete $INSTDIR\xivoclient.exe
+
+  ; content present only in earlier versions
+  Delete $INSTDIR\qt.conf
+  RMDir /r $INSTDIR\Qt
 
   RMDir $INSTDIR
 
@@ -227,4 +228,4 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Computer Telephony Integration
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Avencall"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "XiVO client installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${XC_VERSION}-${GIT_HASH}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2007-2014 Avencall"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2007-2015 Avencall"
