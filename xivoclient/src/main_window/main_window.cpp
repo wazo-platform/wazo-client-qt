@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(setStatusLogged()));
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(setStatusNotLogged()));
-    connect(b_engine, SIGNAL(aboutToBeDelloged()),
+    connect(b_engine, SIGNAL(aboutToBeDelogged()),
             this, SLOT(saveStateToConfigFile()));
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(confUpdated()));
@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    this->saveGeometry();
+    b_engine->getSettings()->setValue("display/mainwingeometry", QMainWindow::saveGeometry());
     b_engine->logAction("application quit");
     delete this->ui;
     this->ui = NULL;
@@ -97,7 +97,7 @@ void MainWindow::initialize()
     bool start_minimized = b_engine->getConfig("systrayed").toBool();
 
     this->m_config_widget = assembler->configWidget();
-    this->restoreGeometry();
+    QMainWindow::restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
     this->setAppIcon("default");
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
@@ -229,7 +229,7 @@ void MainWindow::setStatusNotLogged()
 void MainWindow::prepareState()
 {
     this->saveDefaultState();
-    this->restoreState();
+    this->restoreStateFromConfigFile();
 }
 
 void MainWindow::saveDefaultState()
@@ -247,26 +247,9 @@ void MainWindow::saveStateToConfigFile()
     b_engine->getSettings()->setValue("display/mainwindowstate", QMainWindow::saveState());
 }
 
-QByteArray MainWindow::saveState()
+void MainWindow::restoreStateFromConfigFile()
 {
-    this->saveStateToConfigFile();
-    return QMainWindow::saveState();
-}
-
-bool MainWindow::restoreState()
-{
-    return QMainWindow::restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
-}
-
-QByteArray MainWindow::saveGeometry()
-{
-    b_engine->getSettings()->setValue("display/mainwingeometry", QMainWindow::saveGeometry());
-    return QMainWindow::saveGeometry();
-}
-
-bool MainWindow::restoreGeometry()
-{
-    return QMainWindow::restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
+    QMainWindow::restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
 }
 
 bool MainWindow::isFolded()

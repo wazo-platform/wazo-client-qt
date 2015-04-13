@@ -50,11 +50,8 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void initialize();
-        virtual QByteArray saveState();
         void saveDefaultState();
-        virtual bool restoreState();
-        virtual QByteArray saveGeometry();
-        virtual bool restoreGeometry();
+        void restoreStateFromConfigFile();
         bool isFolded();
         void setFolded(bool folded);
 

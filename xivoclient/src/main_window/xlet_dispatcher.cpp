@@ -108,7 +108,7 @@ void XletDispatcher::showAllXlets()
 
     this->restoreMainWindow();
     this->showXletsDock();
-    this->m_main_window->restoreState();
+    this->m_main_window->restoreStateFromConfigFile();
 
     m_main_window->setFolded(false);
 }
@@ -306,7 +306,7 @@ void XletDispatcher::cleanXletsDock()
 
 void XletDispatcher::hideXletsDock()
 {
-    this->m_main_window->saveState();
+    this->m_main_window->saveStateToConfigFile();
     foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
         widget->hide();
     }
