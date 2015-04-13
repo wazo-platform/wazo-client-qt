@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -36,7 +36,7 @@ ConfListModel::ConfListModel(QWidget *parent)
 {
     COL_TITLE[NUMBER] = tr("Number");
     COL_TITLE[NAME] = tr("Name");
-    COL_TITLE[PIN_REQUIRED] = tr("Pin code");
+    COL_TITLE[PIN_REQUIRED] = tr("PIN code");
     COL_TITLE[MEMBER_COUNT] = tr("Member count");
     COL_TITLE[STARTED_SINCE] = tr("Started since");
 
