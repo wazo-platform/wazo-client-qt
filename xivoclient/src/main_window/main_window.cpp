@@ -33,7 +33,6 @@
 #include <assembler.h>
 
 #include "main_window.h"
-#include "central_widget.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -42,7 +41,8 @@ MainWindow::MainWindow(QWidget *parent)
       m_config_widget(NULL),
       m_clipboard(NULL),
       m_default_state(NULL),
-      m_launch_date_time(QDateTime::currentDateTime())
+      m_launch_date_time(QDateTime::currentDateTime()),
+      m_folded(false)
 {
     this->ui->setupUi(this);
     b_engine->setParent(this);
@@ -52,25 +52,41 @@ MainWindow::MainWindow(QWidget *parent)
     fontDB.addApplicationFont(":/fonts/Dyno-Regular.ttf");
     fontDB.addApplicationFont(":/fonts/LiberationSans-Regular.ttf");
 
-    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
-    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
-    this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
-    this->connect(b_engine, SIGNAL(emitMessageBox(const QString &)), SLOT(showMessageBox(const QString &)), Qt::QueuedConnection);
-    this->connect(this->ui->action_configure, SIGNAL(triggered()), SLOT(showConfDialog()));
-    this->connect(this->ui->action_to_systray, SIGNAL(triggered()), SLOT(hideWindow()));
-    this->connect(this->ui->action_show_window, SIGNAL(triggered()), SLOT(showWindow()));
-    this->connect(this->ui->action_about_client, SIGNAL(triggered()), SLOT(about()));
-    this->connect(this->ui->action_credits, SIGNAL(triggered()), SLOT(showCredits()));
-    qApp->connect(this->ui->action_about_qt, SIGNAL(triggered()), SLOT(aboutQt()));
-    qApp->connect(this->ui->action_quit, SIGNAL(triggered()), SLOT(quit()));
-    b_engine->connect(this->ui->action_quit, SIGNAL(triggered()), SLOT(stop()));
-    b_engine->connect(this->ui->action_connect, SIGNAL(triggered()), SLOT(start()));
-    b_engine->connect(this->ui->action_disconnect, SIGNAL(triggered()), SLOT(stop()));
+    connect(b_engine, SIGNAL(logged()),
+            this, SLOT(setStatusLogged()));
+    connect(b_engine, SIGNAL(delogged()),
+            this, SLOT(setStatusNotLogged()));
+    connect(b_engine, SIGNAL(aboutToBeDelloged()),
+            this, SLOT(saveStateToConfigFile()));
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(confUpdated()));
+    connect(b_engine, SIGNAL(emitMessageBox(const QString &)),
+            this, SLOT(showMessageBox(const QString &)), Qt::QueuedConnection);
+    connect(this->ui->action_configure, SIGNAL(triggered()),
+            this, SLOT(showConfDialog()));
+    connect(this->ui->action_to_systray, SIGNAL(triggered()),
+            this, SLOT(hideWindow()));
+    connect(this->ui->action_show_window, SIGNAL(triggered()),
+            this, SLOT(showWindow()));
+    connect(this->ui->action_about_client, SIGNAL(triggered()),
+            this, SLOT(about()));
+    connect(this->ui->action_credits, SIGNAL(triggered()),
+            this, SLOT(showCredits()));
+    connect(this->ui->action_about_qt, SIGNAL(triggered()),
+            qApp, SLOT(aboutQt()));
+    connect(this->ui->action_quit, SIGNAL(triggered()),
+            qApp, SLOT(quit()));
+    connect(this->ui->action_quit, SIGNAL(triggered()),
+            b_engine, SLOT(stop()));
+    connect(this->ui->action_connect, SIGNAL(triggered()),
+            b_engine, SLOT(start()));
+    connect(this->ui->action_disconnect, SIGNAL(triggered()),
+            b_engine, SLOT(stop()));
 }
 
 MainWindow::~MainWindow()
 {
-    b_engine->getSettings()->setValue("display/mainwingeometry", saveGeometry());
+    this->saveGeometry();
     b_engine->logAction("application quit");
     delete this->ui;
     this->ui = NULL;
@@ -81,7 +97,7 @@ void MainWindow::initialize()
     bool start_minimized = b_engine->getConfig("systrayed").toBool();
 
     this->m_config_widget = assembler->configWidget();
-    this->restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
+    this->restoreGeometry();
     this->setAppIcon("default");
     this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
@@ -165,7 +181,8 @@ void MainWindow::showMessageBox(const QString & message)
 void MainWindow::showConfDialog()
 {
     this->m_config_widget->show();
-    this->connect(this->m_config_widget, SIGNAL(finished(int)), SLOT(cleanConfDialog()));
+    connect(this->m_config_widget, SIGNAL(finished(int)),
+            this, SLOT(cleanConfDialog()));
 }
 
 void MainWindow::cleanConfDialog()
@@ -178,8 +195,10 @@ void MainWindow::confUpdated()
 {
     if (b_engine->getConfig("enableclipboard").toBool()) {
         this->m_clipboard = QApplication::clipboard();
-        this->connect(this->m_clipboard, SIGNAL(selectionChanged()), SLOT(clipselection()));
-        this->connect(this->m_clipboard, SIGNAL(dataChanged()), SLOT(clipdata()));
+        connect(this->m_clipboard, SIGNAL(selectionChanged()),
+                this, SLOT(clipselection()));
+        connect(this->m_clipboard, SIGNAL(dataChanged()),
+                this, SLOT(clipdata()));
         this->m_clipboard->setText("", QClipboard::Selection);
     }
 }
@@ -223,15 +242,41 @@ void MainWindow::restoreDefaultState()
     QMainWindow::restoreState(this->m_default_state);
 }
 
-QByteArray MainWindow::saveState()
+void MainWindow::saveStateToConfigFile()
 {
     b_engine->getSettings()->setValue("display/mainwindowstate", QMainWindow::saveState());
+}
+
+QByteArray MainWindow::saveState()
+{
+    this->saveStateToConfigFile();
     return QMainWindow::saveState();
 }
 
-void MainWindow::restoreState()
+bool MainWindow::restoreState()
 {
-    QMainWindow::restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
+    return QMainWindow::restoreState(b_engine->getSettings()->value("display/mainwindowstate").toByteArray());
+}
+
+QByteArray MainWindow::saveGeometry()
+{
+    b_engine->getSettings()->setValue("display/mainwingeometry", QMainWindow::saveGeometry());
+    return QMainWindow::saveGeometry();
+}
+
+bool MainWindow::restoreGeometry()
+{
+    return QMainWindow::restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
+}
+
+bool MainWindow::isFolded()
+{
+    return m_folded;
+}
+
+void MainWindow::setFolded(bool folded)
+{
+    m_folded = folded;
 }
 
 void MainWindow::customerInfoPopup(const QString & msgtitle,

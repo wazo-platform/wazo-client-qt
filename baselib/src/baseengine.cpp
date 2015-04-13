@@ -470,6 +470,7 @@ void BaseEngine::emitDelogged()
 {
     if(m_state != ENotLogged) {
         m_state = ENotLogged;
+        emit aboutToBeDelogged();
         emit delogged();
     }
 }

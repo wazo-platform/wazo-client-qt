@@ -52,7 +52,11 @@ class MainWindow : public QMainWindow
         void initialize();
         virtual QByteArray saveState();
         void saveDefaultState();
-        virtual void restoreState();
+        virtual bool restoreState();
+        virtual QByteArray saveGeometry();
+        virtual bool restoreGeometry();
+        bool isFolded();
+        void setFolded(bool folded);
 
         Ui::MainWindow *ui;
 
@@ -63,6 +67,7 @@ class MainWindow : public QMainWindow
         void hideWindow();
         void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
         void prepareState();
+        void saveStateToConfigFile();
 
     private slots:
         void clipselection();
@@ -91,6 +96,8 @@ class MainWindow : public QMainWindow
 
         QByteArray m_default_state;
         QDateTime m_launch_date_time;
+
+        bool m_folded;
 };
 
 #endif

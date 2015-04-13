@@ -81,6 +81,7 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
     }
 
     m_unfolded_height = m_main_window->height();
+    m_main_window->setFolded(true);
 
     if (m_main_window->isMaximized()) {
         m_main_window->showNormal();
@@ -106,8 +107,10 @@ void XletDispatcher::showAllXlets()
     }
 
     this->restoreMainWindow();
-
     this->showXletsDock();
+    this->m_main_window->restoreState();
+
+    m_main_window->setFolded(false);
 }
 
 XletDispatcher::~XletDispatcher()
@@ -125,9 +128,9 @@ void XletDispatcher::setStatusLogged()
 
 void XletDispatcher::setStatusNotLogged()
 {
-    this->restoreMainWindow();
-    this->m_main_window->saveState();
-
+    if (m_main_window->isFolded()) {
+        this->showAllXlets();
+    }
     this->cleanXletsDock();
     this->cleanXletsTab();
     this->cleanXletsGrid();
@@ -314,7 +317,6 @@ void XletDispatcher::showXletsDock()
     foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
         widget->show();
     }
-    this->m_main_window->restoreState();
 }
 
 /*! \brief show this XLet on top of others
