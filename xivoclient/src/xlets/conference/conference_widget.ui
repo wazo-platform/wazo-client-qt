@@ -39,6 +39,9 @@
      <property name="text">
       <string>Conference</string>
      </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
      <property name="qss_tags" stdset="0">
       <stringlist notr="true">
        <string>xlet_h1</string>
