@@ -58,6 +58,7 @@ cp -r $QT_DIR/plugins/sqldrivers/*.dll $DEST_DIR/qtlibs/sqldrivers
 # Qt translations
 rm -rf $DEST_DIR/qtlibs/translations
 cp -r $QT_DIR/translations $DEST_DIR/qtlibs
+cp ${RES_DIR}/qt.conf $DEST_DIR/qtlibs
 
 # OpenSSL libraries
 cp ${RES_DIR}/libeay32.dll $DEST_DIR/qtlibs

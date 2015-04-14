@@ -156,17 +156,17 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Clients\Internet Call\XiVO Client"
 
   ; remove the program dir
-  Delete $INSTDIR\uninstall.exe
   RMDir /r $INSTDIR\imageformats
   RMDir /r $INSTDIR\platforms
   RMDir /r $INSTDIR\plugins
   RMDir /r $INSTDIR\sqldrivers
   RMDir /r $INSTDIR\translations
   Delete $INSTDIR\*.dll
+  Delete $INSTDIR\qt.conf
+  Delete $INSTDIR\uninstall.exe
   Delete $INSTDIR\xivoclient.exe
 
   ; content present only in earlier versions
-  Delete $INSTDIR\qt.conf
   RMDir /r $INSTDIR\Qt
 
   RMDir $INSTDIR
