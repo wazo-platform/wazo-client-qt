@@ -44,7 +44,6 @@ tests {
                      packaging/resources/xivo.bmp \
                      packaging/resources/xivoclient.png \
                      packaging/resources/xivoicon.ico \
-                     packaging/resources/xivoicon_un.ico \
                      packaging/xc-packaging-windows.sh
         pack.commands = packaging/xc-package-windows.sh
     }
