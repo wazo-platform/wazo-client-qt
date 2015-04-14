@@ -15,8 +15,8 @@
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist_model.cpp" line="39"/>
-        <source>Pin code</source>
-        <translation>Pin code</translation>
+        <source>PIN code</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist_model.cpp" line="40"/>

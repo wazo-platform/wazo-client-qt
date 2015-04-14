@@ -35,42 +35,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="66"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="69"/>
         <source>1.</source>
         <translation type="unfinished">1.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="78"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="84"/>
         <source>Choose file to send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="113"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="122"/>
         <source>file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="120"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="129"/>
         <source>BROWSE...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="148"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
         <source>2.</source>
         <translation type="unfinished">2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="160"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="172"/>
         <source>Choose destination number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="195"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="210"/>
         <source>fax number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="260"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="275"/>
         <source>SEND FAX</source>
         <translation type="unfinished"></translation>
     </message>

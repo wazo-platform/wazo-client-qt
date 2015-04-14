@@ -43,7 +43,7 @@
         <translation>Contacts</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_widget.ui" line="108"/>
+        <location filename="../src/xlets/people/people_widget.ui" line="111"/>
         <source>search</source>
         <translation>search</translation>
     </message>

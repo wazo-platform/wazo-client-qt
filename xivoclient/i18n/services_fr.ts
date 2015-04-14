@@ -48,8 +48,8 @@
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="356"/>
-        <source>Forward on busy to</source>
-        <translation>Renvoi sur occupation vers</translation>
+        <source>Forward on &amp;busy to</source>
+        <translation>Renvoi sur &amp;occupation vers</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="387"/>

@@ -35,42 +35,42 @@
         <translation>Send fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="66"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="69"/>
         <source>1.</source>
         <translation>1.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="78"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="84"/>
         <source>Choose file to send</source>
         <translation>Choose file to send</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="113"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="122"/>
         <source>file</source>
         <translation>file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="120"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="129"/>
         <source>BROWSE...</source>
         <translation>BROWSE...</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="148"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
         <source>2.</source>
         <translation>2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="160"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="172"/>
         <source>Choose destination number</source>
         <translation>Choose destination number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="195"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="210"/>
         <source>fax number</source>
         <translation>fax number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="260"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="275"/>
         <source>SEND FAX</source>
         <translation>SEND FAX</translation>
     </message>
