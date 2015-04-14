@@ -353,7 +353,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Forward on busy to</string>
+        <string>Forward on &amp;busy to</string>
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
