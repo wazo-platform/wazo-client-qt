@@ -54,12 +54,16 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_fold_signal_mapper(new QSignalMapper(this)),
       m_unfold_signal_mapper(new QSignalMapper(this))
 {
-    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
-    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
-    this->connect(this->m_fold_signal_mapper, SIGNAL(mapped(const QString &)),
-                  this, SLOT(showOneXlet(const QString &)));
-    this->connect(this->m_unfold_signal_mapper, SIGNAL(mapped(const QString &)),
-                  this, SLOT(showAllXlets()));
+    connect(b_engine, SIGNAL(logged()),
+            this, SLOT(setStatusLogged()));
+    connect(b_engine, SIGNAL(delogged()),
+            this, SLOT(setStatusNotLogged()));
+    connect(this->m_fold_signal_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(showOneXlet(const QString &)));
+    connect(this->m_unfold_signal_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(showAllXlets()));
+    connect(b_engine, SIGNAL(aboutToBeDelogged()),
+            this, SLOT(setAboutToBeNotLogged()));
 }
 
 void XletDispatcher::showOneXlet(const QString &xlet_name)
@@ -128,13 +132,18 @@ void XletDispatcher::setStatusLogged()
 
 void XletDispatcher::setStatusNotLogged()
 {
-    if (m_main_window->isFolded()) {
-        this->showAllXlets();
-    }
     this->cleanXletsDock();
     this->cleanXletsTab();
     this->cleanXletsGrid();
     this->clearAppearance();
+}
+
+void XletDispatcher::setAboutToBeNotLogged()
+{
+    if (m_main_window->isFolded()) {
+        this->showAllXlets();
+    }
+    m_main_window->saveStateToConfigFile();
 }
 
 bool XletDispatcher::hasWidget()

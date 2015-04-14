@@ -56,8 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(setStatusLogged()));
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(setStatusNotLogged()));
-    connect(b_engine, SIGNAL(aboutToBeDelogged()),
-            this, SLOT(saveStateToConfigFile()));
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(confUpdated()));
     connect(b_engine, SIGNAL(emitMessageBox(const QString &)),

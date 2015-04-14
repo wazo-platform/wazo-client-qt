@@ -60,6 +60,7 @@ class XletDispatcher : public QObject
 
     private slots:
         void setStatusNotLogged();
+        void setAboutToBeNotLogged();
         void setStatusLogged();
         void showWidgetOnTop(QWidget *);
         void showOneXlet(const QString &xlet_name);

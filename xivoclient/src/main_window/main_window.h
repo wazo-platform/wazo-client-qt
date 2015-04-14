@@ -51,6 +51,7 @@ class MainWindow : public QMainWindow
         ~MainWindow();
         void initialize();
         void saveDefaultState();
+        void saveStateToConfigFile();
         void restoreStateFromConfigFile();
         bool isFolded();
         void setFolded(bool folded);
@@ -64,7 +65,6 @@ class MainWindow : public QMainWindow
         void hideWindow();
         void customerInfoPopup(const QString &, const QHash<QString, QString> &, const QString &);
         void prepareState();
-        void saveStateToConfigFile();
 
     private slots:
         void clipselection();
