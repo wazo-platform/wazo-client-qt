@@ -42,6 +42,9 @@
      <property name="text">
       <string>Send fax</string>
      </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
      <property name="qss_tags" stdset="0">
       <stringlist notr="true">
        <string>xlet_h1</string>
@@ -65,6 +68,9 @@
        <property name="text">
         <string>1.</string>
        </property>
+       <property name="indent">
+        <number>0</number>
+       </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>step_number</string>
@@ -76,6 +82,9 @@
       <widget class="QLabel" name="choose_file_label">
        <property name="text">
         <string>Choose file to send</string>
+       </property>
+       <property name="indent">
+        <number>0</number>
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
@@ -147,6 +156,9 @@
        <property name="text">
         <string>2.</string>
        </property>
+       <property name="indent">
+        <number>0</number>
+       </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>step_number</string>
@@ -158,6 +170,9 @@
       <widget class="QLabel" name="choose_number_label">
        <property name="text">
         <string>Choose destination number</string>
+       </property>
+       <property name="indent">
+        <number>0</number>
        </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
