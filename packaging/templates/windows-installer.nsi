@@ -5,7 +5,7 @@ SetCompressor /FINAL /SOLID lzma
 !include MultiUser.nsh
 !include "MUI2.nsh"
 !define MUI_ICON "xivoicon.ico"
-!define MUI_UNICON "xivoicon_un.ico"
+!define MUI_UNICON "xivoicon.ico"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP xivo.bmp
 !define MUI_HEADERIMAGE_UNBITMAP xivo.bmp
