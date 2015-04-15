@@ -36,7 +36,6 @@
 #include <xletlib/xletinterface.h>
 
 #include <xlets/customerinfo-builtin/customerinfopanel.h>
-#include <xlets/dial-builtin/dialpanel.h>
 #include <xlets/remotedirectory-builtin/remote_directory.h>
 #include <xlets/mylocaldir-builtin/mylocaldirpanel.h>
 #include <xlets/search-builtin/searchpanel.h>
@@ -58,7 +57,6 @@ static const struct {
     const newXLetProto construct;
 } xlets[] = {
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
-    { "dial"              ,newXLet<DialPanel>              },
     { "search"            ,newXLet<SearchPanel>            },
     { "remotedirectory"   ,newXLet<RemoteDirectory>        },
     { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },

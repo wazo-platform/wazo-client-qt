@@ -53,4 +53,14 @@ QVariantMap RemoteControl::get_identity_infos()
     return args;
 }
 
+void RemoteControl::dial(const QVariantList &args)
+{
+    QString extension = args[0].toString();
+
+    IdentityDisplay *xlet = this->get_xlet<IdentityDisplay>("identity");
+    QLineEdit *dial_input = xlet->findChild<QLineEdit *>("dial_input");
+    QToolButton *button = xlet->findChild<QToolButton *>("dial_search_button");
+    dial_input->setText(extension);
+    button->click();
+}
 #endif
