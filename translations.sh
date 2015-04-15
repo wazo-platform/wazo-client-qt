@@ -10,7 +10,7 @@
 # find . -name '*.qrc' -exec sed -i -e 's|^\( *\)<file>\(.*\)obj/\(.*\)_fr.qm</file>|\0\n\1<file>\2obj/\3_de.qm</file>|' {} \;
 
 THIS_SCRIPT_DIRECTORY="$(dirname $0)"
-XIVO_CLIENT_ROOT="$THIS_SCRIPT_DIRECTORY/.."
+XIVO_CLIENT_ROOT="$THIS_SCRIPT_DIRECTORY"
 
 LOCALES_LIST="en fr it de nl ja hu pt_BR es_ES"
 
@@ -71,11 +71,11 @@ function process_arguments {
             copy_from_transifex_to_git
             ;;
         push)
-            push_english_to_transifex
-            ;;
-        commit)
+            pull_from_transifex
+            copy_from_transifex_to_git
             update_translations_from_source
             merge_translations
+            push_english_to_transifex
             ;;
         *)
             usage

@@ -60,6 +60,13 @@ tests {
     }
     QMAKE_EXTRA_TARGETS += pack
 
+    # Translation rules
+    pulltr.target = pulltr
+    pulltr.commands = ./translations.sh pull
+    pushtr.target = pushtr
+    pushtr.commands = ./translations.sh push
+    QMAKE_EXTRA_TARGETS += pulltr pushtr
+
     # Clean rules
     FILES_TO_CLEAN = versions.mak
     DIRS_TO_CLEAN = bin
