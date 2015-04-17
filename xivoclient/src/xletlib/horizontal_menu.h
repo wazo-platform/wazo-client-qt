@@ -28,6 +28,7 @@
 #define __HORIZONTAL_MENU_H__
 
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QWidget>
 
 #include "xletlib_export.h"
@@ -48,9 +49,12 @@ class XLETLIB_EXPORT HorizontalMenu : public QWidget
 
     public:
         HorizontalMenu(QWidget *parent = NULL);
-        QAction *addAction(const QString &text);
+        QAction *addAction(const QString &text = "");
         int count();
+        void hideIndex(int index);
+        void showIndex(int index);
         void setSelectedIndex(int index);
+        void setTextIndex(int index, const QString & text);
 
     private:
         QAction *addItem(const QString &text);
@@ -59,6 +63,7 @@ class XLETLIB_EXPORT HorizontalMenu : public QWidget
         QHBoxLayout m_layout;
         QPixmap dot;
         QList<Item> m_items;
+        QList<QLabel*> m_separators;
 };
 
 #endif

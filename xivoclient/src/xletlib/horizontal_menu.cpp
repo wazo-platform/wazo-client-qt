@@ -81,6 +81,7 @@ void HorizontalMenu::addSeparator()
     QLabel *separator = new QLabel(this);
     separator->setStyleSheet("margin-left: 12px; margin-right: 12px;");
     separator->setPixmap(this->dot);
+    this->m_separators.append(separator);
     this->m_layout.insertWidget(this->m_layout.count() - 1, separator);
 }
 
@@ -95,4 +96,34 @@ void HorizontalMenu::setSelectedIndex(int index)
         return;
     }
     this->m_items[index].button->setChecked(true);
+}
+
+void HorizontalMenu::setTextIndex(int index, const QString & text)
+{
+    if (index < 0 || index >= this->m_items.size()) {
+        return;
+    }
+    this->m_items[index].button->setText(text);
+}
+
+void HorizontalMenu::hideIndex(int index)
+{
+    if (index < 1 || index >= this->m_items.size()) {
+        return;
+    }
+    this->m_items[index].button->hide();
+    if (index > 0) {
+        this->m_separators[index-1]->hide();
+    }
+}
+
+void HorizontalMenu::showIndex(int index)
+{
+    if (index < 0 && index >= this->m_items.size()) {
+        return;
+    }
+    this->m_items[index].button->show();
+    if (index > 0) {
+        this->m_separators[index-1]->show();
+    }
 }
