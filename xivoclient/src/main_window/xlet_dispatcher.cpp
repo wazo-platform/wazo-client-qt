@@ -54,12 +54,16 @@ XletDispatcher::XletDispatcher(MainWindow *main_window, MainWidget *main_widget,
       m_fold_signal_mapper(new QSignalMapper(this)),
       m_unfold_signal_mapper(new QSignalMapper(this))
 {
-    this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
-    this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
-    this->connect(this->m_fold_signal_mapper, SIGNAL(mapped(const QString &)),
-                  this, SLOT(showOneXlet(const QString &)));
-    this->connect(this->m_unfold_signal_mapper, SIGNAL(mapped(const QString &)),
-                  this, SLOT(showAllXlets()));
+    connect(b_engine, SIGNAL(logged()),
+            this, SLOT(setStatusLogged()));
+    connect(b_engine, SIGNAL(delogged()),
+            this, SLOT(setStatusNotLogged()));
+    connect(this->m_fold_signal_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(showOneXlet(const QString &)));
+    connect(this->m_unfold_signal_mapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(showAllXlets()));
+    connect(b_engine, SIGNAL(aboutToBeDelogged()),
+            this, SLOT(setAboutToBeNotLogged()));
 }
 
 void XletDispatcher::showOneXlet(const QString &xlet_name)
@@ -81,6 +85,7 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
     }
 
     m_unfolded_height = m_main_window->height();
+    m_main_window->setFolded(true);
 
     if (m_main_window->isMaximized()) {
         m_main_window->showNormal();
@@ -105,10 +110,11 @@ void XletDispatcher::showAllXlets()
         this->m_tabber->tabWidget()->setCurrentIndex(new_index);
     }
 
-    this->showXletsDock();
-
-
     this->restoreMainWindow();
+    this->showXletsDock();
+    this->m_main_window->restoreStateFromConfigFile();
+
+    m_main_window->setFolded(false);
 }
 
 XletDispatcher::~XletDispatcher()
@@ -126,13 +132,18 @@ void XletDispatcher::setStatusLogged()
 
 void XletDispatcher::setStatusNotLogged()
 {
-    this->restoreMainWindow();
-    this->m_main_window->saveState();
-
     this->cleanXletsDock();
     this->cleanXletsTab();
     this->cleanXletsGrid();
     this->clearAppearance();
+}
+
+void XletDispatcher::setAboutToBeNotLogged()
+{
+    if (m_main_window->isFolded()) {
+        this->showAllXlets();
+    }
+    m_main_window->saveStateToConfigFile();
 }
 
 bool XletDispatcher::hasWidget()
@@ -304,7 +315,7 @@ void XletDispatcher::cleanXletsDock()
 
 void XletDispatcher::hideXletsDock()
 {
-    this->m_main_window->saveState();
+    this->m_main_window->saveStateToConfigFile();
     foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
         widget->hide();
     }
@@ -315,7 +326,6 @@ void XletDispatcher::showXletsDock()
     foreach (QDockWidget *widget, this->m_xlets_dock_widget.values()) {
         widget->show();
     }
-    this->m_main_window->restoreState();
 }
 
 /*! \brief show this XLet on top of others
@@ -370,9 +380,8 @@ void XletDispatcher::clearAppearance()
 void XletDispatcher::restoreMainWindow()
 {
     m_main_window->setMaximumHeight(QWIDGETSIZE_MAX);
-    QRect transformed_rect = m_main_window->geometry();
-    transformed_rect.setHeight(m_unfolded_height);
 
-    m_main_window->setGeometry(transformed_rect);
-    m_main_window->updateGeometry();
+    QSize main_window_size = m_main_window->size();
+    main_window_size.setHeight(m_unfolded_height);
+    m_main_window->resize(main_window_size);
 }

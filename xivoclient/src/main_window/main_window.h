@@ -50,9 +50,11 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void initialize();
-        virtual QByteArray saveState();
         void saveDefaultState();
-        virtual void restoreState();
+        void saveStateToConfigFile();
+        void restoreStateFromConfigFile();
+        bool isFolded();
+        void setFolded(bool folded);
 
         Ui::MainWindow *ui;
 
@@ -91,6 +93,8 @@ class MainWindow : public QMainWindow
 
         QByteArray m_default_state;
         QDateTime m_launch_date_time;
+
+        bool m_folded;
 };
 
 #endif
