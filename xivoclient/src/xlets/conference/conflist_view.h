@@ -32,6 +32,7 @@
 
 #include <QTableView>
 #include <QModelIndex>
+#include <QString>
 
 #include <xletlib/abstract_table_view.h>
 
@@ -47,6 +48,13 @@ class ConfListView : public AbstractTableView
     public slots:
         void onViewClick(const QModelIndex &);
 	    void contextMenuEvent(QContextMenuEvent * event);
+    private slots:
+        void getInRoom();
+    signals:
+        void openConfRoom(QString & room_number);
+    private:
+        QString m_room_number_clicked;
+
 };
 
 #endif

@@ -61,10 +61,10 @@ class ConfListModel : public QAbstractTableModel
             NB_COL
         };
         ConfListModel(QWidget *parent = NULL);
-        QVariantMap getMembers(const QString &number) { return m_room_configs[number].toMap()["members"].toMap(); }
     public slots:
+        void updateConfList(const QVariantMap &);
+    private slots:
         void updateConfTime();
-        void updateRoomConfigs(const QVariantMap &);
     private:
         void refreshRow2Number();
         QString startedSince(double time) const;

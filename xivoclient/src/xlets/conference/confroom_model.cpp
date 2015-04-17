@@ -31,19 +31,14 @@
 
 #include "baseengine.h"
 #include "confroom_model.h"
+#include <QDebug>
 
 
 static QVariant COL_TITLE[ConfRoomModel::NB_COL];
 
-ConfRoomModel::ConfRoomModel(QWidget *parent, const QString &number, const QVariantMap &members)
-    : QAbstractTableModel(parent),
-      m_number(number), m_members(members)
+ConfRoomModel::ConfRoomModel(QWidget *parent)
+    : QAbstractTableModel(parent)
 {
-    connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
-            this, SLOT(updateMeetmeConfig(const QVariantMap &)));
-
-    extractRow2IdMap();
-
     COL_TITLE[ID] = tr("ID");
     COL_TITLE[NUMBER] = tr("Number");
     COL_TITLE[NAME] = tr("Name");
@@ -55,10 +50,17 @@ ConfRoomModel::ConfRoomModel(QWidget *parent, const QString &number, const QVari
     join_time_timer->start(1000);
 }
 
-void ConfRoomModel::updateMeetmeConfig(const QVariantMap &config)
+
+
+void ConfRoomModel::setRoomNumber(QString &room_number)
+{
+    m_room_number = room_number;
+}
+
+void ConfRoomModel::updateConfRoom(const QVariantMap &members)
 {
     beginResetModel();
-    m_members = config[m_number].toMap()["members"].toMap();
+    m_members = members;
     extractRow2IdMap();
     endResetModel();
 }
@@ -139,7 +141,7 @@ QVariant ConfRoomModel::data(const QModelIndex & index, int role) const
     const QString &number = m_row2number[row];
     const QVariantMap &member = m_members[number].toMap();
     int join_sequence = member["join_order"].toInt();
-    bool isMe = b_engine->isMeetmeMember(m_number, join_sequence);
+    bool isMe = b_engine->isMeetmeMember(m_room_number, join_sequence);
 
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole) {
@@ -203,7 +205,7 @@ Qt::ItemFlags ConfRoomModel::flags(const QModelIndex &index) const
     const QString &number = m_row2number[row];
     const QVariantMap &member = m_members[number].toMap();
     bool isMuted = member["muted"] == "Yes";
-    bool isMe = b_engine->isMeetmeMember(m_number, number.toInt());
+    bool isMe = b_engine->isMeetmeMember(m_room_number, number.toInt());
 
     if (isMe && col == ACTION_MUTE && isMuted) {
         return Qt::ItemIsEnabled;

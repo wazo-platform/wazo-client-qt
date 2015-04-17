@@ -50,14 +50,16 @@ class ConfRoomModel : public QAbstractTableModel
             SINCE,
             NB_COL
         };
-        ConfRoomModel(QWidget *parent, const QString &, const QVariantMap &);
-        QString number() const { return m_number; }
+        ConfRoomModel(QWidget *parent);
         QString row2participantId(int row) const { return m_row2number[row]; }
+        const QString & getRoomNumber() const { return m_room_number; }
+
         bool isRowMuted(int row) const;
-        const QString &roomNumber() const { return m_number; }
         int userNumberFromRow(int row) const;
+        void setRoomNumber(QString &room_number);
+
     public slots:
-        void updateMeetmeConfig(const QVariantMap &);
+        void updateConfRoom(const QVariantMap &members);
     private slots:
         void extractRow2IdMap();
         void updateJoinTime();
@@ -68,7 +70,7 @@ class ConfRoomModel : public QAbstractTableModel
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int, Qt::Orientation, int) const;
         Qt::ItemFlags flags(const QModelIndex &) const;
-        QString m_number;
+        QString m_room_number;
         QStringList m_row2number;
         QVariantMap m_members;
 };

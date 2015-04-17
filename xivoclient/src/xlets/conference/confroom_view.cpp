@@ -28,7 +28,6 @@
  */
 
 #include "baseengine.h"
-#include "confroom.h"
 #include "confroom_model.h"
 #include "confroom_view.h"
 
@@ -66,7 +65,7 @@ void ConfRoomView::onViewClick(const QModelIndex &index)
         int row = index.row();
         ConfRoomModel *model = static_cast<ConfRoomModel *>(this->model());
         bool isMuted = model->isRowMuted(row);
-        QString room_number = model->roomNumber();
+        QString room_number = model->getRoomNumber();
         QString user_number = QString("%0").arg(model->userNumberFromRow(row));
         QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
         QString param = QString("%0 %1").arg(room_number).arg(user_number);

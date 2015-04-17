@@ -38,7 +38,9 @@
 
 #include <ui_conference_widget.h>
 
-class ConfTab;
+
+class ConfListModel;
+class ConfRoomModel;
 
 class Conference : public XLet
 {
@@ -48,9 +50,25 @@ class Conference : public XLet
     public:
         Conference(QWidget *parent=0);
 
+    private slots:
+        void showConfList();
+        void showConfRoom(QString & room_number);
+        void updateConference(const QVariantMap & config);
+
     private:
+        //The order of this enum is determined by the order of the menu creation
+        enum MenuIndex {
+            ROOM_LIST,
+            ROOM_NUMBER
+        };
         void registerMeetmeUpdate() const;
+        void phoneConfRoom();
+
         Ui::ConferenceWidget ui;
+        ConfListModel *m_list_model;
+        ConfRoomModel *m_room_model;
+        QString m_confroom_number;
+        QVariantMap m_confroom_configs;
 
 };
 

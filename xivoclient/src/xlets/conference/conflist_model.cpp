@@ -40,17 +40,17 @@ ConfListModel::ConfListModel(QWidget *parent)
     COL_TITLE[MEMBER_COUNT] = tr("Member count");
     COL_TITLE[STARTED_SINCE] = tr("Started since");
 
-    connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
-            this, SLOT(updateRoomConfigs(const QVariantMap &)));
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            this, SLOT(updateConfTime()));
+    timer_display->start(1000);
 }
 
-void ConfListModel::updateRoomConfigs(const QVariantMap &configs)
+void ConfListModel::updateConfList(const QVariantMap &configs)
 {
     beginResetModel();
-
     m_room_configs = configs;
     refreshRow2Number();
-
     endResetModel();
 }
 
@@ -84,8 +84,7 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
 
     /* Rows here are not the same than the lines displayed by the view,
      * as there is a proxy model between the view and this model,
-     * that maps the displayed lines to the stored lines, see ConfList
-     * constructor
+     * that maps the displayed lines to the stored lines
      */
     int row = index.row(), col = index.column();
     if (m_row2number.size() <= row) {
@@ -121,7 +120,7 @@ QString ConfListModel::startedSince(double time) const
         return tr("Unknown");
 
     uint now = QDateTime::currentDateTime().toTime_t();
-    uint started_since = now - uint(time) -b_engine->timeDeltaServerClient();
+    uint started_since = now - uint(time) - b_engine->timeDeltaServerClient();
 
     return QDateTime::fromTime_t(started_since).toUTC().toString("hh:mm:ss");
 }
