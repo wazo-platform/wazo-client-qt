@@ -1,95 +1,116 @@
-QLineEdit, QComboBox#agent_options {
-height: 30px;
-border-radius: 15px;
-padding-left: 15px;
-padding-right: 15px;
-background-color: #D7D2D0;
-selection-background-color: #E77D39;
-font: 12px "Liberation Sans";
-color: #2C2927;
+/*
+ * FONT STYLE
+ */
+QLabel[qss_tags~="xlet_h1"] {
+    color: #E77D39;
+    font: bold 36px "Dyno";
+    padding-bottom: 30px;
 }
 
-QComboBox::down-arrow#agent_options {
-image: url(":/images/down-arrow-grey.svg");
-}
-QComboBox::drop-down#agent_options {
-border-left: 0px solid;
-width: 45px;
-}
-QComboBox#agent_options QAbstractItemView {
-background-color: #D7D2D0;
+QLabel[qss_tags~="xlet_h2"] {
+    color: #E77D39;
+    font: bold 22pt "Dyno";
+    padding-bottom: 30px;
 }
 
+QLabel[qss_tags~="xlet_h4"] {
+    font: 18px "Dyno";
+}
+
+*[qss_tags~=xlet_list]{
+    font: 14px "Liberation Sans";
+}
+
+*[qss_tags~=xlet_sub_list]{
+    font: 12px "Liberation Sans";
+}
+
+/*
+ * QPUSHBUTTON
+ */
 QPushButton{
-height: 30px;
-border-radius: 8px;
-padding-left: 18px;
-padding-right: 18px;
+    border-radius: 8px;
+    height: 30px;
+    padding-left: 18px;
+    padding-right: 18px;
 }
+
 QPushButton[qss_tags~="orange"]{
-background-color: #E77D39;
-font: 12px "Dyno";
-color: #FFFFFF;
+    background-color: #E77D39;
+    color: #FFFFFF;
+    font: 12px "Dyno";
 }
+
 QPushButton[qss_tags~="black"]{
-background-color: #58524F;
-font: 12px "Dyno";
-color: #FFFFFF;
-padding-left: 22px;
-padding-right: 22px;
+    background-color: #58524F;
+    color: #FFFFFF;
+    font: 12px "Dyno";
+    padding-left: 22px;
+    padding-right: 22px;
+}
+
+/*
+ * QRADIOBUTTON
+ */
+QRadioButton{
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+/*
+ * QCHECKBOX
+ */
+QCheckBox{
+    margin-bottom: 8px;
+    margin-top: 8px;
 }
 
 QFrame[qss_tags~="input_button"]{
-margin-top: 15px;
-margin-bottom: 15px;
-border-radius: 15px; 
-background-color: #D7D2D0;
-}
-.QWidget[qss_tags~="xlet_frame"] {
-background-color: #FFFFFF;
+    background-color: #D7D2D0;
+    border-radius: 15px; 
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
-QRadioButton{
-margin-top: 15px;
-margin-bottom: 15px;
-}
-QCheckBox{
-margin-top: 8px;
-margin-bottom: 8px;
+/*
+ * OTHERS
+ */
+QLineEdit, QComboBox#agent_options {
+    background-color: #D7D2D0;
+    border-radius: 15px;
+    color: #2C2927;
+    font: 12px "Liberation Sans";
+    height: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    selection-background-color: #E77D39;
 }
 
-QLabel[qss_tags~="xlet_h1"] {
-padding-bottom: 30px;
-font: bold 36px "Dyno";
-color: #E77D39;
+QComboBox::down-arrow#agent_options {
+    image: url(":/images/down-arrow-grey.svg");
 }
-QLabel[qss_tags~="xlet_h2"] {
-padding-bottom: 30px;
-font: bold 22pt "Dyno";
-color: #E77D39;
+
+QComboBox::drop-down#agent_options {
+    border-left: 0px solid;
+    width: 45px;
 }
-QLabel[qss_tags~="xlet_h4"] {
-font: 18px "Dyno";
+
+QComboBox#agent_options QAbstractItemView {
+    background-color: #D7D2D0;
 }
+
 QWidget[qss_tags~="xlet_frame"], QWidget[qss_tags~="login_frame"] {
-background-color: #FFFFFF;
-}
-*[qss_tags~=xlet_list]{
-font: 14px "Liberation Sans";
-}
-*[qss_tags~=xlet_sub_list]{
-font: 12px "Liberation Sans";
+    background-color: #FFFFFF;
 }
 
 QTabWidget::pane {
-border: 0px;
+    border: 0px;
 }
 
-
 /* 
-  * Fax Xlet 
+  * FAX XLET 
   */
 QLabel[qss_tags~="step_number"] {
-font: bold 36px "Dyno";
-color: #D7D2D0;
+    color: #D7D2D0;
+    font: bold 36px "Dyno";
 }
