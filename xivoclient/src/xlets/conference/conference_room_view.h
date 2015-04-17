@@ -29,21 +29,21 @@
 
 #ifndef __CONFROOM_VIEW_H__
 #define __CONFROOM_VIEW_H__
-#include <QWidget>
 #include <QDebug>
-#include <QTimer>
-#include <QModelIndex>
 #include <QHeaderView>
+#include <QModelIndex>
+#include <QTimer>
+#include <QWidget>
 
 #include <xletlib/abstract_table_view.h>
 
 
-class ConfRoomView : public AbstractTableView
+class ConferenceRoomView : public AbstractTableView
 {
     Q_OBJECT
 
     public:
-        ConfRoomView(QWidget *parent = NULL);
+        ConferenceRoomView(QWidget *parent = NULL);
         void updateHeadersView();
 
     private slots:

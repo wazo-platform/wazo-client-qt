@@ -43,7 +43,7 @@
       <number>0</number>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="list_page">
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -63,7 +63,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="ConfListView" name="list_table"/>
+        <widget class="ConferenceListView" name="list_table"/>
        </item>
       </layout>
      </widget>
@@ -85,7 +85,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="ConfRoomView" name="room_table"/>
+        <widget class="ConferenceRoomView" name="room_table"/>
        </item>
       </layout>
      </widget>
@@ -101,14 +101,14 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ConfListView</class>
+   <class>ConferenceListView</class>
    <extends>QTableView</extends>
-   <header location="global">xlets/conference/conflist_view.h</header>
+   <header location="global">xlets/conference/conference_list_view.h</header>
   </customwidget>
   <customwidget>
-   <class>ConfRoomView</class>
+   <class>ConferenceRoomView</class>
    <extends>QTableView</extends>
-   <header location="global">xlets/conference/confroom_view.h</header>
+   <header location="global">xlets/conference/conference_room_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

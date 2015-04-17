@@ -32,20 +32,20 @@
 #include <QHeaderView>
 #include <QMenu>
 
-#include "conflist_view.h"
-#include "conflist_model.h"
+#include "conference_list_view.h"
+#include "conference_list_model.h"
 
-ConfListView::ConfListView(QWidget *parent)
+ConferenceListView::ConferenceListView(QWidget *parent)
     : AbstractTableView(parent)
 {
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
 }
 
-void ConfListView::onViewClick(const QModelIndex &model)
+void ConferenceListView::onViewClick(const QModelIndex &model)
 {
-    QString room_name = model.sibling(model.row(), ConfListModel::NAME).data().toString();
-    QString room_number = model.sibling(model.row(), ConfListModel::NUMBER).data().toString();
+    QString room_name = model.sibling(model.row(), ConferenceListModel::NAME).data().toString();
+    QString room_number = model.sibling(model.row(), ConferenceListModel::NUMBER).data().toString();
 
     if (room_number != "") {
         b_engine->pasteToDial(room_number);
@@ -53,12 +53,12 @@ void ConfListView::onViewClick(const QModelIndex &model)
     }
 }
 
-void ConfListView::contextMenuEvent(QContextMenuEvent * event)
+void ConferenceListView::contextMenuEvent(QContextMenuEvent * event)
 {
     const QModelIndex &index = indexAt(event->pos());
 
-    QString room_name = index.sibling(index.row(), ConfListModel::NAME).data().toString();
-    m_room_number_clicked = index.sibling(index.row(), ConfListModel::NUMBER).data().toString();
+    QString room_name = index.sibling(index.row(), ConferenceListModel::NAME).data().toString();
+    m_room_number_clicked = index.sibling(index.row(), ConferenceListModel::NUMBER).data().toString();
 
     QMenu *menu = new QMenu(this);
     QAction *action = new QAction(
@@ -71,7 +71,7 @@ void ConfListView::contextMenuEvent(QContextMenuEvent * event)
     menu->exec(QCursor::pos());
 }
 
-void ConfListView::getInRoom()
+void ConferenceListView::getInRoom()
 {
     b_engine->actionDial(m_room_number_clicked);
     emit this->openConfRoom(m_room_number_clicked);

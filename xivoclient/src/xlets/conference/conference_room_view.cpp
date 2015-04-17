@@ -28,10 +28,10 @@
  */
 
 #include "baseengine.h"
-#include "confroom_model.h"
-#include "confroom_view.h"
+#include "conference_room_model.h"
+#include "conference_room_view.h"
 
-ConfRoomView::ConfRoomView(QWidget *parent)
+ConferenceRoomView::ConferenceRoomView(QWidget *parent)
     : AbstractTableView(parent)
 {
     connect(this, SIGNAL(clicked(const QModelIndex &)),
@@ -42,28 +42,28 @@ ConfRoomView::ConfRoomView(QWidget *parent)
             this, SLOT(sectionHeaderClicked(int)));
 }
 
-void ConfRoomView::updateHeadersView()
+void ConferenceRoomView::updateHeadersView()
 {
-    horizontalHeader()->setSectionResizeMode(ConfRoomModel::ACTION_MUTE, QHeaderView::Fixed);
-    setColumnWidth(ConfRoomModel::ACTION_MUTE, 32);
+    horizontalHeader()->setSectionResizeMode(ConferenceRoomModel::ACTION_MUTE, QHeaderView::Fixed);
+    setColumnWidth(ConferenceRoomModel::ACTION_MUTE, 32);
     hideColumn(0);
 }
 
-void ConfRoomView::sectionHeaderClicked(int index)
+void ConferenceRoomView::sectionHeaderClicked(int index)
 {
-    if (index == ConfRoomModel::ACTION_MUTE) {
+    if (index == ConferenceRoomModel::ACTION_MUTE) {
         setSortingEnabled(false);
         return ;
     }
     setSortingEnabled(true);
 }
 
-void ConfRoomView::onViewClick(const QModelIndex &index)
+void ConferenceRoomView::onViewClick(const QModelIndex &index)
 {
-    if (index.column() == ConfRoomModel::ACTION_MUTE)
+    if (index.column() == ConferenceRoomModel::ACTION_MUTE)
     {
         int row = index.row();
-        ConfRoomModel *model = static_cast<ConfRoomModel *>(this->model());
+        ConferenceRoomModel *model = static_cast<ConferenceRoomModel *>(this->model());
         bool isMuted = model->isRowMuted(row);
         QString room_number = model->getRoomNumber();
         QString user_number = QString("%0").arg(model->userNumberFromRow(row));

@@ -33,8 +33,8 @@
 #include <baseengine.h>
 
 #include "conference.h"
-#include "conflist_model.h"
-#include "confroom_model.h"
+#include "conference_list_model.h"
+#include "conference_room_model.h"
 
 Conference::Conference(QWidget *parent)
     : XLet(parent, tr("Conference"), ":/images/tab-conference.svg"),
@@ -55,7 +55,7 @@ Conference::Conference(QWidget *parent)
 
     /* CONFLIST */
     // this contains the data, unordered
-    m_list_model = new ConfListModel(this);
+    m_list_model = new ConferenceListModel(this);
 
     // this maps the indexes between the sorted view and the unordered model
     QSortFilterProxyModel *list_proxy_model = new QSortFilterProxyModel(this);
@@ -65,10 +65,10 @@ Conference::Conference(QWidget *parent)
 
     // this displays the sorted data
     this->ui.list_table->setModel(list_proxy_model);
-    this->ui.list_table->sortByColumn(ConfListModel::NAME, Qt::AscendingOrder);
+    this->ui.list_table->sortByColumn(ConferenceListModel::NAME, Qt::AscendingOrder);
 
     /* CONFROOM */
-    m_room_model = new ConfRoomModel(this);
+    m_room_model = new ConferenceRoomModel(this);
     this->ui.room_table->setModel(m_room_model);
     this->ui.room_table->updateHeadersView();
 

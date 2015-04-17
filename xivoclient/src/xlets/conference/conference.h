@@ -39,8 +39,8 @@
 #include <ui_conference_widget.h>
 
 
-class ConfListModel;
-class ConfRoomModel;
+class ConferenceListModel;
+class ConferenceRoomModel;
 
 class Conference : public XLet
 {
@@ -65,8 +65,8 @@ class Conference : public XLet
         void phoneConfRoom();
 
         Ui::ConferenceWidget ui;
-        ConfListModel *m_list_model;
-        ConfRoomModel *m_room_model;
+        ConferenceListModel *m_list_model;
+        ConferenceRoomModel *m_room_model;
         QString m_confroom_number;
         QVariantMap m_confroom_configs;
 

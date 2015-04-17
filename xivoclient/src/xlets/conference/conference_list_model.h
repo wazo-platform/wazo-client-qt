@@ -46,7 +46,7 @@
 #include <baseengine.h>
 
 
-class ConfListModel : public QAbstractTableModel
+class ConferenceListModel : public QAbstractTableModel
 {
     Q_OBJECT
     FUNCTESTED
@@ -60,7 +60,7 @@ class ConfListModel : public QAbstractTableModel
             STARTED_SINCE,
             NB_COL
         };
-        ConfListModel(QWidget *parent = NULL);
+        ConferenceListModel(QWidget *parent = NULL);
     public slots:
         void updateConfList(const QVariantMap &);
     private slots:

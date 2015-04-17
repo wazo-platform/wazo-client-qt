@@ -29,9 +29,9 @@
 
 #include <QSortFilterProxyModel>
 
-#include "conflist_model.h"
+#include "conference_list_model.h"
 
-ConfListModel::ConfListModel(QWidget *parent)
+ConferenceListModel::ConferenceListModel(QWidget *parent)
     : QAbstractTableModel(parent)
 {
     COL_TITLE[NUMBER] = tr("Number");
@@ -46,7 +46,7 @@ ConfListModel::ConfListModel(QWidget *parent)
     timer_display->start(1000);
 }
 
-void ConfListModel::updateConfList(const QVariantMap &configs)
+void ConferenceListModel::updateConfList(const QVariantMap &configs)
 {
     beginResetModel();
     m_room_configs = configs;
@@ -54,27 +54,27 @@ void ConfListModel::updateConfList(const QVariantMap &configs)
     endResetModel();
 }
 
-void ConfListModel::refreshRow2Number()
+void ConferenceListModel::refreshRow2Number()
 {
     m_row2number = m_room_configs.keys();
 }
 
-Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
+Qt::ItemFlags ConferenceListModel::flags(const QModelIndex &) const
 {
     return Qt::NoItemFlags;
 }
 
-int ConfListModel::rowCount(const QModelIndex&) const
+int ConferenceListModel::rowCount(const QModelIndex&) const
 {
     return m_row2number.size();
 }
 
-int ConfListModel::columnCount(const QModelIndex&) const
+int ConferenceListModel::columnCount(const QModelIndex&) const
 {
     return NB_COL;
 }
 
-QVariant ConfListModel::data(const QModelIndex &index, int role) const
+QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
@@ -112,7 +112,7 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QString ConfListModel::startedSince(double time) const
+QString ConferenceListModel::startedSince(double time) const
 {
     if (time == 0)
         return tr("Not started");
@@ -125,7 +125,7 @@ QString ConfListModel::startedSince(double time) const
     return QDateTime::fromTime_t(started_since).toUTC().toString("hh:mm:ss");
 }
 
-QVariant ConfListModel::headerData(int section,
+QVariant ConferenceListModel::headerData(int section,
                                    Qt::Orientation orientation,
                                    int role) const
 {
@@ -139,7 +139,7 @@ QVariant ConfListModel::headerData(int section,
     return QVariant();
 }
 
-void ConfListModel::updateConfTime()
+void ConferenceListModel::updateConfTime()
 {
     QModelIndex cellChanged1 = createIndex(0, STARTED_SINCE);
     QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, STARTED_SINCE);

@@ -27,34 +27,52 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFLIST_VIEW_H__
-#define __CONFLIST_VIEW_H__
+#ifndef __CONFROOM_MODEL_H__
+#define __CONFROOM_MODEL_H__
 
-#include <QTableView>
+#include <QWidget>
+#include <QAbstractTableModel>
 #include <QModelIndex>
-#include <QString>
-
-#include <xletlib/abstract_table_view.h>
-
-#include <baseengine.h>
 
 
-class ConfListView : public AbstractTableView
+class ConfTab;
+
+class ConferenceRoomModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        ConfListView(QWidget *parent);
-    public slots:
-        void onViewClick(const QModelIndex &);
-	    void contextMenuEvent(QContextMenuEvent * event);
-    private slots:
-        void getInRoom();
-    signals:
-        void openConfRoom(QString & room_number);
-    private:
-        QString m_room_number_clicked;
+        enum ColOrder {
+            ID,
+            ACTION_MUTE,
+            NAME,
+            NUMBER,
+            SINCE,
+            NB_COL
+        };
+        ConferenceRoomModel(QWidget *parent);
+        QString row2participantId(int row) const { return m_row2number[row]; }
+        const QString & getRoomNumber() const { return m_room_number; }
 
+        bool isRowMuted(int row) const;
+        int userNumberFromRow(int row) const;
+        void setRoomNumber(QString &room_number);
+
+    public slots:
+        void updateConfRoom(const QVariantMap &members);
+    private slots:
+        void extractRow2IdMap();
+        void updateJoinTime();
+    private:
+        void sort(int, Qt::SortOrder);
+        int rowCount(const QModelIndex&) const;
+        int columnCount(const QModelIndex&) const;
+        QVariant data(const QModelIndex&, int) const;
+        QVariant headerData(int, Qt::Orientation, int) const;
+        Qt::ItemFlags flags(const QModelIndex &) const;
+        QString m_room_number;
+        QStringList m_row2number;
+        QVariantMap m_members;
 };
 
 #endif
