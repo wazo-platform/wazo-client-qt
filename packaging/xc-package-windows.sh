@@ -46,9 +46,9 @@ Qt5Widgets.dll,\
 Qt5Xml.dll,\
 Qt5XmlPatterns.dll,\
 libwinpthread-1.dll,\
-icuin51.dll,\
-icuuc51.dll,\
-icudt51.dll} $DEST_DIR/qtlibs
+icuin*.dll,\
+icuuc*.dll,\
+icudt*.dll} $DEST_DIR/qtlibs
 rm -rf $DEST_DIR/qtlibs/{imageformats,platforms,sqldrivers}
 mkdir $DEST_DIR/qtlibs/{imageformats,platforms,sqldrivers}
 cp -r $QT_DIR/plugins/imageformats/*.dll $DEST_DIR/qtlibs/imageformats
