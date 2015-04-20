@@ -176,6 +176,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
             this->showContextMenu(option, people_actions);
         }
+        delete people_actions;
     }
     return true;
 }
