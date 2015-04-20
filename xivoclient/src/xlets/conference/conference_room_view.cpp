@@ -28,6 +28,7 @@
  */
 
 #include <QTimer>
+#include <QHeaderView>
 
 #include "baseengine.h"
 #include "conference_room_model.h"
