@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="230"/>
         <source>History</source>
-        <translation>Anruferliste</translation>
+        <translation>Chronik</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="242"/>
@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="244"/>
         <source>Missed calls</source>
-        <translation>Unbeantwortete Anrufe</translation>
+        <translation>Anrufe in Abwesenheit</translation>
     </message>
 </context>
 <context>
@@ -37,17 +37,17 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="127"/>
         <source>%1 hr %2 min %3 s</source>
-        <translation>%1 st %2 min %3 sek</translation>
+        <translation>%1 St. %2 Min. %3 Sek.</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="129"/>
         <source>%1 min %2 s</source>
-        <translation>%1 min %2 sek</translation>
+        <translation>%1 Min. %2 Sek.</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="131"/>
         <source>%1 s</source>
-        <translation>%1 sek</translation>
+        <translation>%1 Sek.</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="198"/>
@@ -62,7 +62,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="203"/>
         <source>Duration</source>
-        <translation>Zeit</translation>
+        <translation>Dauer</translation>
     </message>
 </context>
 </TS>

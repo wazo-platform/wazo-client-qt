@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/xlets/conference/conflist_model.cpp" line="39"/>
         <source>PIN code</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN-Code</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conflist_model.cpp" line="40"/>
@@ -36,7 +36,7 @@
     <message>
         <location filename="../src/xlets/conference/conflist_model.cpp" line="121"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannt</translation>
     </message>
 </context>
 <context>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/xlets/conference/confroom_model.cpp" line="47"/>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation>Kennung</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom_model.cpp" line="48"/>
@@ -67,22 +67,22 @@
     <message>
         <location filename="../src/xlets/conference/confroom_model.cpp" line="50"/>
         <source>Since</source>
-        <translation>seit</translation>
+        <translation>Seit</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom_model.cpp" line="153"/>
         <source>Mute/UnMute</source>
-        <translation type="unfinished"></translation>
+        <translation>Stumm/Stumm aus</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom_model.cpp" line="170"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannt</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/confroom_model.cpp" line="172"/>
         <source>Not started</source>
-        <translation type="unfinished">Nicht gestartet</translation>
+        <translation>Nicht gestartet</translation>
     </message>
 </context>
 <context>
@@ -90,12 +90,12 @@
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="35"/>
         <source>Conference</source>
-        <translation type="unfinished"></translation>
+        <translation>Konferenz</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="44"/>
         <source>Room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumliste</translation>
     </message>
 </context>
 <context>
@@ -103,7 +103,7 @@
     <message>
         <location filename="../src/xlets/conference/conference_widget.ui" line="40"/>
         <source>Conference</source>
-        <translation type="unfinished"></translation>
+        <translation>Konferenz</translation>
     </message>
 </context>
 </TS>

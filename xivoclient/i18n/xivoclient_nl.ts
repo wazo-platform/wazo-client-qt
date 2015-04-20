@@ -345,29 +345,6 @@
     </message>
 </context>
 <context>
-    <name>DialPanel</name>
-    <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="35"/>
-        <source>Dial</source>
-        <translation>Bel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="37"/>
-        <source>Dial Panel</source>
-        <translation>Bel paneel</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="43"/>
-        <source>Input here the phone number to dial</source>
-        <translation>Geef hier een nummer op om te bellen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/dial-builtin/dialpanel.cpp" line="50"/>
-        <source>Enter &amp;Number :</source>
-        <translation>Geef een &amp;nummer op:</translation>
-    </message>
-</context>
-<context>
     <name>LoginWidget</name>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="20"/>
@@ -406,13 +383,13 @@
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="400"/>
-        <source>Agent (unlogged)</source>
-        <translation>Agent (niet gelogd)</translation>
+        <source>Agent (logged off)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="405"/>
-        <source>Agent (logged)</source>
-        <translation>Agent (gelogd)</translation>
+        <source>Agent (logged in)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="413"/>
@@ -523,99 +500,99 @@
         <translation>&amp;Credits</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="87"/>
-        <location filename="../src/main_window/main_window.cpp" line="207"/>
-        <location filename="../src/main_window/main_window.cpp" line="283"/>
+        <location filename="../src/main_window/main_window.cpp" line="101"/>
+        <location filename="../src/main_window/main_window.cpp" line="224"/>
+        <location filename="../src/main_window/main_window.cpp" line="309"/>
         <source>Client %1</source>
         <translation>Client %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="162"/>
+        <location filename="../src/main_window/main_window.cpp" line="176"/>
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI-fout</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="189"/>
+        <location filename="../src/main_window/main_window.cpp" line="206"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (%2 profiel)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="275"/>
+        <location filename="../src/main_window/main_window.cpp" line="301"/>
         <source>Fetch the last one</source>
         <translation>De laatste ophalen</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="282"/>
+        <location filename="../src/main_window/main_window.cpp" line="308"/>
         <source>About XiVO Client</source>
         <translation>Over XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="284"/>
+        <location filename="../src/main_window/main_window.cpp" line="310"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>De XiVO CTI-toepassingen, eens verbonden met de juiste server, vervolledigen het XiVO-telefoonsysteem, door computertools ter beschikking te stellen zoals de weergave van klanteninformatie, opzoekingen in de directory&apos;s, of verschillende supervisie-xlets voor callcenters.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="289"/>
+        <location filename="../src/main_window/main_window.cpp" line="315"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Versie Informatie&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="290"/>
+        <location filename="../src/main_window/main_window.cpp" line="316"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Major: &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="291"/>
+        <location filename="../src/main_window/main_window.cpp" line="317"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Minor : git hash &lt;b&gt;%1&lt;/b&gt; van : %2</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="294"/>
+        <location filename="../src/main_window/main_window.cpp" line="320"/>
         <source>(Application Built on : %1)</source>
         <translation>(Applicatie Gecompileerd op : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="295"/>
+        <location filename="../src/main_window/main_window.cpp" line="321"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Applicatie gestart op: %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="296"/>
+        <location filename="../src/main_window/main_window.cpp" line="322"/>
         <source>(Config File Location : %1)</source>
         <translation>(Locatie Configuratie Bestand : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="299"/>
+        <location filename="../src/main_window/main_window.cpp" line="325"/>
         <source>E-mail : </source>
         <translation>E-mail: </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="300"/>
+        <location filename="../src/main_window/main_window.cpp" line="326"/>
         <source>Phone : </source>
         <translation>Tel. : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="301"/>
+        <location filename="../src/main_window/main_window.cpp" line="327"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="301"/>
+        <location filename="../src/main_window/main_window.cpp" line="327"/>
         <source>Avencall Development Team</source>
         <translation>Avencall Development Team</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="303"/>
+        <location filename="../src/main_window/main_window.cpp" line="329"/>
         <source>License : </source>
         <translation>Licentie: </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="305"/>
+        <location filename="../src/main_window/main_window.cpp" line="331"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>met een speciale uitzondering om het te koppelen met OpenSSL, onder bepaalde voorwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="311"/>
+        <location filename="../src/main_window/main_window.cpp" line="337"/>
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
@@ -702,8 +679,8 @@
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="190"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="206"/>
-        <source>Comma Separated Value (*.csv)</source>
-        <translation>Comma Separated Value (*.csv)</translation>
+        <source>CSV file (*.csv)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="204"/>

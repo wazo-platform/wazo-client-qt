@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/services/servicespanel.cpp" line="41"/>
         <source>Services</source>
-        <translation type="unfinished"></translation>
+        <translation>Dienste</translation>
     </message>
 </context>
 <context>
@@ -14,47 +14,47 @@
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="46"/>
         <source>Services</source>
-        <translation type="unfinished"></translation>
+        <translation>Dienste</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="72"/>
         <source>Call &amp;filtering</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf&amp;filterung</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="84"/>
         <source>Do not &amp;disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte nicht &amp;stören</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="98"/>
         <source>Call forwards</source>
-        <translation type="unfinished"></translation>
+        <translation>Gesprächsweiterleitungen</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="131"/>
         <source>Simple call forwards</source>
-        <translation type="unfinished"></translation>
+        <translation>Einfache Gesprächsweiterleitungen</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="191"/>
         <source>&amp;Unconditional forward to</source>
-        <translation type="unfinished"></translation>
+        <translation>Beding&amp;ungslose Weiterleitung zu</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="212"/>
         <source>No call forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Gesprächsweiterleitung</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="356"/>
         <source>Forward on &amp;busy to</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiterleitung bei &amp;besetzt zu</translation>
     </message>
     <message>
         <location filename="../src/xlets/services/services_widget.ui" line="387"/>
         <source>Forward on &amp;no answer to</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiterleitung bei keiner Antw&amp;ort zu</translation>
     </message>
 </context>
 </TS>

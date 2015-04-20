@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="49"/>
         <source>Agent Details</source>
-        <translation>Details der Agenten</translation>
+        <translation>Agentdetails</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
@@ -16,12 +16,12 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="57"/>
         <source>Joined</source>
-        <translation>Angekommen</translation>
+        <translation>Beigetreten</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="58"/>
         <source>Paused</source>
-        <translation>Pause</translation>
+        <translation>Pausiert</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="62"/>
@@ -37,17 +37,17 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="203"/>
         <source>Logout</source>
-        <translation>Ausloggen</translation>
+        <translation>Abmelden</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="227"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht in Gebrauch</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation>In Gebrauch</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
@@ -72,12 +72,12 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
         <source>Unlogged</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht angemeldet</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="255"/>
         <source>%1 since %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 seit %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="346"/>

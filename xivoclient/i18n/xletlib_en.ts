@@ -31,9 +31,8 @@
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="390"/>
-        <source>Logged</source>
-        <translation>Logged</translation>
+        <source>Logged in</source>
+        <translation>Logged in</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="49"/>
@@ -114,6 +113,11 @@ queues</translation>
         <location filename="../src/xletlib/agents_model.cpp" line="344"/>
         <source>Ext. Outgoing</source>
         <translation>Ext. Outgoing</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="390"/>
+        <source>Logged</source>
+        <translation>Logged</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>

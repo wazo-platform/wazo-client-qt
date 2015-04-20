@@ -6,12 +6,12 @@
     <message>
         <location filename="../src/xlets/people/people.cpp" line="44"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Leute</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="55"/>
         <source>all</source>
-        <translation type="unfinished"></translation>
+        <translation>alle</translation>
     </message>
 </context>
 <context>
@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/xlets/people/people_actions.cpp" line="56"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_actions.cpp" line="65"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="128"/>
         <source>CALL</source>
-        <translation type="unfinished"></translation>
+        <translation>ANRUF</translation>
     </message>
 </context>
 <context>
@@ -40,12 +40,12 @@
     <message>
         <location filename="../src/xlets/people/people_widget.ui" line="60"/>
         <source>Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakte</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_widget.ui" line="111"/>
         <source>search</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche</translation>
     </message>
 </context>
 </TS>

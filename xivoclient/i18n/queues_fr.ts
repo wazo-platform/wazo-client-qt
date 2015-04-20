@@ -57,12 +57,12 @@ attente</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
-        <source>Logged</source>
+        <source>Logged in</source>
         <translation>Logués</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
-        <source>Number of logged agents</source>
+        <source>Number of agents logged in</source>
         <translation>Nombre d&apos;agents logués</translation>
     </message>
     <message>

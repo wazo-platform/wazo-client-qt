@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/fax/dirdialog.cpp" line="36"/>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Verzeichnis</translation>
     </message>
 </context>
 <context>
@@ -14,17 +14,17 @@
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="35"/>
         <source>Fax</source>
-        <translation type="unfinished"></translation>
+        <translation>Fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="91"/>
         <source>Open Fax File</source>
-        <translation type="unfinished"></translation>
+        <translation>Faxdatei öffnen</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/faxpanel.cpp" line="93"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF-Dateien (*.pdf);;Alle Dateien (*)</translation>
     </message>
 </context>
 <context>
@@ -32,47 +32,47 @@
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="43"/>
         <source>Send fax</source>
-        <translation type="unfinished"></translation>
+        <translation>Fax senden</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="69"/>
         <source>1.</source>
-        <translation type="unfinished"></translation>
+        <translation>1.</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="84"/>
         <source>Choose file to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei zum Senden auswählen</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="122"/>
         <source>file</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="129"/>
         <source>BROWSE...</source>
-        <translation type="unfinished"></translation>
+        <translation>DURCHSUCHEN...</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
         <source>2.</source>
-        <translation type="unfinished"></translation>
+        <translation>2.</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="172"/>
         <source>Choose destination number</source>
-        <translation type="unfinished"></translation>
+        <translation>Zielnummer auswählen</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="210"/>
         <source>fax number</source>
-        <translation type="unfinished"></translation>
+        <translation>Faxnummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="275"/>
         <source>SEND FAX</source>
-        <translation type="unfinished"></translation>
+        <translation>FAX SENDEN</translation>
     </message>
 </context>
 </TS>

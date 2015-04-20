@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/agents/agents.cpp" line="46"/>
         <source>Agents&apos; List (plain)</source>
-        <translation>Agenten Liste ()</translation>
+        <translation>Agentenliste (klar)</translation>
     </message>
 </context>
 </TS>

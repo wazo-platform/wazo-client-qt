@@ -31,8 +31,7 @@
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
-        <location filename="../src/xletlib/agents_model.cpp" line="390"/>
-        <source>Logged</source>
+        <source>Logged in</source>
         <translation>Logué</translation>
     </message>
     <message>
@@ -114,6 +113,11 @@ en retrait</translation>
         <location filename="../src/xletlib/agents_model.cpp" line="344"/>
         <source>Ext. Outgoing</source>
         <translation>Externe émis</translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/agents_model.cpp" line="390"/>
+        <source>Logged</source>
+        <translation>Logué</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>

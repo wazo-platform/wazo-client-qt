@@ -78,8 +78,8 @@
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
-        <source>Logged</source>
-        <translation>Logged</translation>
+        <source>Logged in</source>
+        <translation>Logged in</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>

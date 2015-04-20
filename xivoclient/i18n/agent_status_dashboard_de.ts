@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="49"/>
         <source>66:66</source>
-        <translation type="unfinished"></translation>
+        <translation>66:66</translation>
     </message>
 </context>
 <context>
@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status_dashboard.cpp" line="48"/>
         <source>Agent status dashboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Agentenstatusübersicht</translation>
     </message>
 </context>
 </TS>

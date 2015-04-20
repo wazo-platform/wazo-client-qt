@@ -55,13 +55,13 @@
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
-        <source>Logged</source>
-        <translation>Logged</translation>
+        <source>Logged in</source>
+        <translation>Logged in</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
-        <source>Number of logged agents</source>
-        <translation>Number of logged agents</translation>
+        <source>Number of agents logged in</source>
+        <translation>Number of agents logged in</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
