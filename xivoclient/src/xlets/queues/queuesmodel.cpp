@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -49,8 +49,8 @@ QueuesModel::QueuesModel(QObject *parent)
     m_headers[EWT].tooltip = tr("Estimated Waiting Time");
     m_headers[CURRENT_MAX_WAIT].label = tr("Longest wait");
     m_headers[CURRENT_MAX_WAIT].tooltip = tr("Longest waiting call");
-    m_headers[LOGGEDAGENTS].label = tr("Logged");
-    m_headers[LOGGEDAGENTS].tooltip = tr("Number of logged agents");
+    m_headers[LOGGEDAGENTS].label = tr("Logged in");
+    m_headers[LOGGEDAGENTS].tooltip = tr("Number of agents logged in");
     m_headers[AVAILABLE_AGENTS].label = tr("Available");
     m_headers[AVAILABLE_AGENTS].tooltip = tr("Number of agents ready to take a call");
     m_headers[TALKING_AGENTS].label = tr("Talking");

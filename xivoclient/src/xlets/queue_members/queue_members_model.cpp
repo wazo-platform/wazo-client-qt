@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -64,7 +64,7 @@ void QueueMembersModel::fillHeaders()
     m_headers[FIRSTNAME].tooltip = tr("Queue member's firstname");
     m_headers[LASTNAME].label = tr("Lastname");
     m_headers[LASTNAME].tooltip = tr("Queue member's lastname");
-    m_headers[LOGGED].label = tr("Logged");
+    m_headers[LOGGED].label = tr("Logged in");
     m_headers[LOGGED].tooltip = tr("Queue member's login status");
     m_headers[PAUSED].label = tr("Paused");
     m_headers[PAUSED].tooltip = tr("Queue member's pause status");

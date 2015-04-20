@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -45,7 +45,7 @@ AgentsModel::AgentsModel(QObject *parent)
     m_headers[LASTNAME] = tr("Last name");
     m_headers[LISTEN] = tr("Listen");
     m_headers[AVAILABILITY] = tr("Status since");
-    m_headers[LOGGED_STATUS] = tr("Logged");
+    m_headers[LOGGED_STATUS] = tr("Logged in");
     m_headers[JOINED_QUEUES] = tr("Joined\nqueues");
     m_headers[PAUSED_STATUS] = tr("Paused");
     m_headers[PAUSED_QUEUES] = tr("Paused\nqueues");

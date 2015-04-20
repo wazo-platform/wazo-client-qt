@@ -397,12 +397,12 @@
              </item>
              <item>
               <property name="text">
-               <string>Agent (unlogged)</string>
+               <string>Agent (logged off)</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Agent (logged)</string>
+               <string>Agent (logged in)</string>
               </property>
              </item>
             </widget>
