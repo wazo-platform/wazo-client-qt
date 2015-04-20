@@ -187,7 +187,7 @@ void MyLocalDirPanel::importContacts()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Contacts File"),
                                                     QString(),
-                                                    tr("Comma Separated Values (*.csv)"));
+                                                    tr("CSV file (*.csv)"));
     if(fileName.isEmpty())
         return;
     QFile file(fileName);
@@ -203,7 +203,7 @@ void MyLocalDirPanel::exportContacts()
     // qDebug() << Q_FUNC_INFO;
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Contacts File"),
                                                     QString(),
-                                                    tr("Comma Separated Values (*.csv)"));
+                                                    tr("CSV file (*.csv)"));
     if(fileName.isEmpty())
         return;
     QFile file(fileName);
