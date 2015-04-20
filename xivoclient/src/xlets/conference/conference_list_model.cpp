@@ -27,7 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QSortFilterProxyModel>
+#include <QTimer>
 
 #include "conference_list_model.h"
 
@@ -59,11 +59,6 @@ void ConferenceListModel::refreshRow2Number()
     m_row2number = m_room_configs.keys();
 }
 
-Qt::ItemFlags ConferenceListModel::flags(const QModelIndex &) const
-{
-    return Qt::NoItemFlags;
-}
-
 int ConferenceListModel::rowCount(const QModelIndex&) const
 {
     return m_row2number.size();
@@ -78,7 +73,7 @@ QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
-            return Qt::AlignCenter;
+            return Qt::AlignVCenter;
         return QVariant();
     }
 

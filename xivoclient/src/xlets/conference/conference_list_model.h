@@ -30,21 +30,13 @@
 #ifndef __CONFLIST_MODEL_H__
 #define __CONFLIST_MODEL_H__
 
-#include <QLabel>
-#include <QTimer>
-#include <QVBoxLayout>
-#include <QTableView>
+#include <QAbstractTableModel>
 #include <QModelIndex>
 #include <QVariant>
-#include <QAbstractTableModel>
-#include <QHeaderView>
-#include <QMenu>
-#include <QAction>
-#include <QMouseEvent>
+#include <QWidget>
 
 #include <xletlib/functests.h>
 #include <baseengine.h>
-
 
 class ConferenceListModel : public QAbstractTableModel
 {
@@ -72,7 +64,6 @@ class ConferenceListModel : public QAbstractTableModel
         int columnCount(const QModelIndex&) const;
         QVariant data(const QModelIndex&, int) const;
         QVariant headerData(int , Qt::Orientation, int) const;
-        Qt::ItemFlags flags(const QModelIndex &) const;
         QStringList m_row2number;
         QVariantMap m_room_configs;
         QString COL_TITLE[NB_COL];

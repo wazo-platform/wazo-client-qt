@@ -71,11 +71,12 @@ Conference::Conference(QWidget *parent)
     m_room_model = new ConferenceRoomModel(this);
     this->ui.room_table->setModel(m_room_model);
     this->ui.room_table->updateHeadersView();
+    this->ui.room_table->sortByColumn(ConferenceRoomModel::NAME, Qt::AscendingOrder);
 
     connect(conflist_action, SIGNAL(triggered()),
             this, SLOT(showConfList()));
-    connect(this->ui.list_table, SIGNAL(openConfRoom(QString &)),
-            this, SLOT(showConfRoom(QString &)));
+    connect(this->ui.list_table, SIGNAL(openConfRoom(QString &, QString &)),
+            this, SLOT(showConfRoom(QString &, QString &)));
     connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
             this, SLOT(updateConference(const QVariantMap &)));
     registerMeetmeUpdate();
@@ -113,7 +114,7 @@ void Conference::showConfList()
     this->ui.menu->hideIndex(ROOM_NUMBER);
 }
 
-void Conference::showConfRoom(QString & room_number)
+void Conference::showConfRoom(QString &room_number, QString &room_name)
 {
     this->m_room_model->setRoomNumber(room_number);
     QVariantMap confroom_config = m_confroom_configs[room_number].toMap()["members"].toMap();
@@ -122,8 +123,9 @@ void Conference::showConfRoom(QString & room_number)
     int index = this->ui.conference_tables->indexOf(this->ui.room_page);
     this->ui.conference_tables->setCurrentIndex(index);
 
+    QString confroom_label = tr("%1 (%2)").arg(room_name, room_number);
     this->ui.menu->showIndex(ROOM_NUMBER);
-    this->ui.menu->setTextIndex(ROOM_NUMBER, room_number);
+    this->ui.menu->setTextIndex(ROOM_NUMBER, confroom_label);
     this->ui.menu->setSelectedIndex(ROOM_NUMBER);
 }
 

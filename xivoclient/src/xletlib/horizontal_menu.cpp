@@ -26,8 +26,8 @@
 
 #include <QAction>
 #include <QLabel>
-#include <QRadioButton>
 #include <QPainter>
+#include <QRadioButton>
 
 #include <xletlib/signal_filter.h>
 
@@ -39,9 +39,6 @@ HorizontalMenu::HorizontalMenu(QWidget *parent)
 {
     QString checked_color = "#2c2927";
     QString unchecked_color = "#a09790";
-    this->setStyleSheet(QString("QRadioButton::indicator {image: none; height: 0px; width: 0px;}"
-                                "QRadioButton {color: %1; font-family: \"Dyno\"; font-size: 16px; spacing: 0px;}"
-                                "QRadioButton:checked {color: %2; font-weight: bold; }").arg(unchecked_color).arg(checked_color));
     this->m_layout.setContentsMargins(0, 0, 0, 0);
     this->m_layout.addStretch();
     this->dot = QIcon(":/images/dot.svg").pixmap(QSize(3, 3));
@@ -103,7 +100,7 @@ void HorizontalMenu::setTextIndex(int index, const QString & text)
     if (index < 0 || index >= this->m_items.size()) {
         return;
     }
-    this->m_items[index].button->setText(text);
+    this->m_items[index].button->setText(text.toUpper());
 }
 
 void HorizontalMenu::hideIndex(int index)

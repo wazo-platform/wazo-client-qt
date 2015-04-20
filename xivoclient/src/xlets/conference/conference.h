@@ -31,6 +31,8 @@
 #define __CONFERENCE_H__
 
 #include <QObject>
+#include <QString>
+#include <QVariantMap>
 
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
@@ -52,7 +54,7 @@ class Conference : public XLet
 
     private slots:
         void showConfList();
-        void showConfRoom(QString & room_number);
+        void showConfRoom(QString &room_number, QString &room_name);
         void updateConference(const QVariantMap & config);
 
     private:

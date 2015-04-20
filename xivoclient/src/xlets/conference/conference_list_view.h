@@ -38,7 +38,6 @@
 
 #include <baseengine.h>
 
-
 class ConferenceListView : public AbstractTableView
 {
     Q_OBJECT
@@ -51,9 +50,10 @@ class ConferenceListView : public AbstractTableView
     private slots:
         void getInRoom();
     signals:
-        void openConfRoom(QString & room_number);
+        void openConfRoom(QString &room_number, QString &name_room);
     private:
         QString m_room_number_clicked;
+        QString m_room_name_clicked;
 
 };
 

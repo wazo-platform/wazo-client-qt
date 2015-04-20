@@ -19,23 +19,51 @@
    </stringlist>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>30</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>90</number>
+   </property>
    <item>
-    <widget class="QLabel" name="conference_label">
-     <property name="text">
-      <string>Conference</string>
-     </property>
-     <property name="indent">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <property name="spacing">
       <number>0</number>
      </property>
-     <property name="qss_tags" stdset="0">
-      <stringlist notr="true">
-       <string>xlet_h1</string>
-      </stringlist>
+     <property name="leftMargin">
+      <number>30</number>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="HorizontalMenu" name="menu" native="true"/>
+     <property name="rightMargin">
+      <number>30</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="conference_label">
+       <property name="text">
+        <string>Conference</string>
+       </property>
+       <property name="indent">
+        <number>0</number>
+       </property>
+       <property name="qss_tags" stdset="0">
+        <stringlist notr="true">
+         <string>xlet_h1</string>
+        </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="HorizontalMenu" name="menu" native="true"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QStackedWidget" name="conference_tables">
@@ -43,7 +71,7 @@
       <number>0</number>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="list_page">
       <layout class="QVBoxLayout" name="verticalLayout_3">

@@ -34,40 +34,22 @@
 
 AbstractTableView::AbstractTableView(QWidget * parent)
     : QTableView(parent)
+
 {
     this->setSortingEnabled(true);
     this->setShowGrid(0);
 
-    this->horizontalHeader()->setSectionsMovable(true);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     this->horizontalHeader()->setCascadingSectionResizes(true);
+    this->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    this->horizontalHeader()->setFixedHeight(30);
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->horizontalHeader()->setSectionsMovable(true);
 
+    this->verticalHeader()->setDefaultSectionSize(50);
     this->verticalHeader()->hide();
 
-    this->setAlternatingRowColors(true);
     this->setSelectionMode(QAbstractItemView::NoSelection);
-
-    this->setStyleSheet(
-
-        // No decoration of the view itself
-        "AbstractTableView {"
-            "border: none;"
-            "background: transparent;"
-            "color: black;"
-        "}"
-
-        // Remove corner
-        "AbstractTableView QTableCornerButton::section {"
-            "background: transparent;"
-            "border: none;"
-        "}"
-    );
-
-    // Necessary to make the tooltip visible, we can't see the text without this
-    this->horizontalHeader()->setStyleSheet(
-        "QToolTip {"
-            "color: #000;"
-        "}");
+    //this->viewport()->setAttribute(Qt::WA_Hover, true);
 
     QStyle *plastique = QStyleFactory::create("cleanlooks");
     this->horizontalHeader()->setStyle(plastique);
@@ -81,7 +63,6 @@ AbstractTableView::~AbstractTableView()
 QSize AbstractTableView::sizeHint() const
 {
     int width = this->horizontalHeader()->length();
-    int heigth = this->verticalHeader()->length();
-    return QSize(width, heigth);
+    int height = this->verticalHeader()->length();
+    return QSize(width, height);
 }
-

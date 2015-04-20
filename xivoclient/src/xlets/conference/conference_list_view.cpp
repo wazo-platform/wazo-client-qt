@@ -28,8 +28,8 @@
  */
 
 #include <QAction>
+#include <QContextMenuEvent>
 #include <QTimer>
-#include <QHeaderView>
 #include <QMenu>
 
 #include "conference_list_view.h"
@@ -49,7 +49,7 @@ void ConferenceListView::onViewClick(const QModelIndex &model)
 
     if (room_number != "") {
         b_engine->pasteToDial(room_number);
-        emit this->openConfRoom(room_number);
+        emit this->openConfRoom(room_number, room_name);
     }
 }
 
@@ -57,12 +57,12 @@ void ConferenceListView::contextMenuEvent(QContextMenuEvent * event)
 {
     const QModelIndex &index = indexAt(event->pos());
 
-    QString room_name = index.sibling(index.row(), ConferenceListModel::NAME).data().toString();
+    m_room_name_clicked = index.sibling(index.row(), ConferenceListModel::NAME).data().toString();
     m_room_number_clicked = index.sibling(index.row(), ConferenceListModel::NUMBER).data().toString();
 
     QMenu *menu = new QMenu(this);
     QAction *action = new QAction(
-        tr("Get in room %1 (%2)").arg(room_name).arg(m_room_number_clicked), menu);
+        tr("Get in room %1 (%2)").arg(m_room_name_clicked).arg(m_room_number_clicked), menu);
 
     connect(action, SIGNAL(triggered()),
 	        this, SLOT(getInRoom()));
@@ -74,5 +74,5 @@ void ConferenceListView::contextMenuEvent(QContextMenuEvent * event)
 void ConferenceListView::getInRoom()
 {
     b_engine->actionDial(m_room_number_clicked);
-    emit this->openConfRoom(m_room_number_clicked);
+    emit this->openConfRoom(m_room_number_clicked, m_room_name_clicked);
 }

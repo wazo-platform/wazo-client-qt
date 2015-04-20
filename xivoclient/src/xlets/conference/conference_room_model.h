@@ -30,10 +30,9 @@
 #ifndef __CONFROOM_MODEL_H__
 #define __CONFROOM_MODEL_H__
 
-#include <QWidget>
 #include <QAbstractTableModel>
 #include <QModelIndex>
-
+#include <QWidget>
 
 class ConfTab;
 

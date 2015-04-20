@@ -31,8 +31,6 @@
 
 #include "baseengine.h"
 #include "conference_room_model.h"
-#include <QDebug>
-
 
 static QVariant COL_TITLE[ConferenceRoomModel::NB_COL];
 
@@ -143,7 +141,7 @@ QVariant ConferenceRoomModel::data(const QModelIndex & index, int role) const
 
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole) {
-            return Qt::AlignCenter;
+            return Qt::AlignVCenter;
         } else if (role == Qt::DecorationRole) {
             if (col == ACTION_MUTE && isMe) {
                 return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
@@ -197,7 +195,7 @@ QVariant ConferenceRoomModel::headerData(int section,
 Qt::ItemFlags ConferenceRoomModel::flags(const QModelIndex &index) const
 {
     int col = index.column();
-    if (col != ACTION_MUTE) return Qt::NoItemFlags;
+    if (col != ACTION_MUTE) return QAbstractItemModel::flags(index);
 
     int row = index.row();
     const QString &number = m_row2number[row];

@@ -27,6 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QTimer>
+
 #include "baseengine.h"
 #include "conference_room_model.h"
 #include "conference_room_view.h"
@@ -45,7 +47,7 @@ ConferenceRoomView::ConferenceRoomView(QWidget *parent)
 void ConferenceRoomView::updateHeadersView()
 {
     horizontalHeader()->setSectionResizeMode(ConferenceRoomModel::ACTION_MUTE, QHeaderView::Fixed);
-    setColumnWidth(ConferenceRoomModel::ACTION_MUTE, 32);
+    setColumnWidth(ConferenceRoomModel::ACTION_MUTE, 55);
     hideColumn(0);
 }
 

@@ -29,14 +29,11 @@
 
 #ifndef __CONFROOM_VIEW_H__
 #define __CONFROOM_VIEW_H__
-#include <QDebug>
-#include <QHeaderView>
+
 #include <QModelIndex>
-#include <QTimer>
 #include <QWidget>
 
 #include <xletlib/abstract_table_view.h>
-
 
 class ConferenceRoomView : public AbstractTableView
 {
