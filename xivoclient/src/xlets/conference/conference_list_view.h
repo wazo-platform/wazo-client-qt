@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFLIST_VIEW_H__
-#define __CONFLIST_VIEW_H__
+#ifndef __CONFERENCE_LIST_VIEW_H__
+#define __CONFERENCE_LIST_VIEW_H__
 
 #include <QTableView>
 #include <QModelIndex>
