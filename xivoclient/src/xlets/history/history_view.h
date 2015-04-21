@@ -27,39 +27,28 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_H__
-#define __HISTORY_H__
+#ifndef __HISTORY_VIEW_H__
+#define __HISTORY_VIEW_H__
 
-#include <QObject>
+#include <QContextMenuEvent>
+#include <QModelIndex>
+#include <QTableView>
 #include <QWidget>
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include <ipbxlistener.h>
 
-class LogTableView;
 class LogWidgetModel;
 
-/*! \brief Call Log display widget
- */
-class LogWidget : public XLet
+class LogTableView : public QTableView
 {
     Q_OBJECT
 
     public:
-        LogWidget(QWidget *parent=0);
-    private:
-        LogTableView * m_view;
-        LogWidgetModel *m_history_model;
-};
-
-class XLetHistoryPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xlethistory.json")
-
-    public:
-        XLet* newXLetInstance(QWidget *parent=0);
+        LogTableView(QWidget *parent, LogWidgetModel *model);
+    private slots:
+        void onViewClick(const QModelIndex &);
+        void callOnClick(bool);
+        void contextMenuEvent(QContextMenuEvent *);
 };
 
 #endif
