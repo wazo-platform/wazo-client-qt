@@ -37,14 +37,14 @@
 
 #include <ipbxlistener.h>
 
-class LogWidgetModel;
+class HistoryModel;
 
-class LogTableView : public QTableView
+class HistoryView : public QTableView
 {
     Q_OBJECT
 
     public:
-        LogTableView(QWidget *parent, LogWidgetModel *model);
+        HistoryView(QWidget *parent, HistoryModel *model);
     private slots:
         void onViewClick(const QModelIndex &);
         void callOnClick(bool);

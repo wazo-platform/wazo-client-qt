@@ -50,12 +50,12 @@ const QString DATE_PATTERN = "yyyy-MM-ddThh:mm:ss";
 
 /*! \brief cdr model
  */
-class LogWidgetModel : public QAbstractTableModel, public IPBXListener
+class HistoryModel : public QAbstractTableModel, public IPBXListener
 {
     Q_OBJECT
 
     public:
-        LogWidgetModel(int, QWidget * parent = NULL);
+        HistoryModel(int, QWidget * parent = NULL);
         void parseCommand(const QVariantMap &);
 
     protected:

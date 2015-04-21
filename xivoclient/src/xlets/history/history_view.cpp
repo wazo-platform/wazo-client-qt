@@ -37,7 +37,7 @@
 #include "history_model.h"
 #include "history_view.h"
 
-LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
+HistoryView::HistoryView(QWidget *parent, HistoryModel *model)
     : QTableView(parent)
 {
     setSortingEnabled(true);
@@ -49,7 +49,7 @@ LogTableView::LogTableView(QWidget *parent, LogWidgetModel *model)
             this, SLOT(onViewClick(const QModelIndex &)));
 }
 
-void LogTableView::contextMenuEvent(QContextMenuEvent * event)
+void HistoryView::contextMenuEvent(QContextMenuEvent * event)
 {
     const QModelIndex &index = indexAt(event->pos());
     QString caller = index.sibling(index.row(), 0).data().toString();
@@ -70,14 +70,14 @@ void LogTableView::contextMenuEvent(QContextMenuEvent * event)
 }
 
 
-void LogTableView::callOnClick(bool)
+void HistoryView::callOnClick(bool)
 {
     QAction *calling_action = qobject_cast<QAction *>(sender());
     QString num_to_call = calling_action->property("num_to_call").toString();
     b_engine->actionDial(num_to_call);
 }
 
-void LogTableView::onViewClick(const QModelIndex &index)
+void HistoryView::onViewClick(const QModelIndex &index)
 {
     QString caller = index.sibling(index.row(), 0).data().toString();
 

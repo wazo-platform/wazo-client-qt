@@ -37,7 +37,7 @@
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/history_%1");
-    return new LogWidget(parent);
+    return new History(parent);
 }
 
 
@@ -47,7 +47,7 @@ QRadioButton* buildRadioButton(QString text,
                                int mode,
                                QGroupBox *groupBox,
                                QHBoxLayout *hbox,
-                               LogWidgetModel *m_viewmodel)
+                               HistoryModel *m_viewmodel)
 {
     QRadioButton *build = new QRadioButton(text, groupBox);
 
@@ -61,7 +61,7 @@ QRadioButton* buildRadioButton(QString text,
     return build;
 }
 
-LogWidget::LogWidget(QWidget *parent)
+History::History(QWidget *parent)
     : XLet(parent, tr("History"), ":/images/tab-history.svg"),
       m_view(0),
       m_history_model(0)
@@ -71,7 +71,7 @@ LogWidget::LogWidget(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *hBox = new QHBoxLayout(groupBox);
 
-    m_history_model = new LogWidgetModel(0, this);
+    m_history_model = new HistoryModel(0, this);
 
     hBox->addStretch(1);
     buildRadioButton(tr("Sent calls"), "sent_call.png", OUTCALLS, groupBox, hBox, m_history_model)->setChecked(true);
@@ -79,7 +79,7 @@ LogWidget::LogWidget(QWidget *parent)
     buildRadioButton(tr("Missed calls"), "missed_call.png", MISSEDCALLS, groupBox, hBox, m_history_model);
     hBox->addStretch(1);
 
-    m_view = new LogTableView(this, m_history_model);
+    m_view = new HistoryView(this, m_history_model);
     m_view->installEventFilter(this);
 
     layout->addWidget(groupBox);

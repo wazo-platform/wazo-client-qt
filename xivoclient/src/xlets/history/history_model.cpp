@@ -33,7 +33,7 @@
 
 #include "history_model.h"
 
-LogWidgetModel::LogWidgetModel(int initialMode, QWidget * parent)
+HistoryModel::HistoryModel(int initialMode, QWidget * parent)
     : QAbstractTableModel(parent), m_sorted(false), m_sorted_column(0), m_sort_order(Qt::AscendingOrder)
 {
     registerListener("history");
@@ -43,11 +43,11 @@ LogWidgetModel::LogWidgetModel(int initialMode, QWidget * parent)
             this, SLOT(requestHistory()));
 }
 
-void LogWidgetModel::parseCommand(const QVariantMap &map) {
+void HistoryModel::parseCommand(const QVariantMap &map) {
     updateHistory(map);
 }
 
-void LogWidgetModel::sort(int column, Qt::SortOrder order)
+void HistoryModel::sort(int column, Qt::SortOrder order)
 {
     m_sorted = true;
     m_sorted_column = column;
@@ -78,7 +78,7 @@ void LogWidgetModel::sort(int column, Qt::SortOrder order)
     endResetModel();
 }
 
-int LogWidgetModel::rowCount(const QModelIndex&) const
+int HistoryModel::rowCount(const QModelIndex&) const
 {
     int nbrow = 0;
 
@@ -88,7 +88,7 @@ int LogWidgetModel::rowCount(const QModelIndex&) const
     return nbrow;
 }
 
-int LogWidgetModel::columnCount(const QModelIndex&) const
+int HistoryModel::columnCount(const QModelIndex&) const
 {
     if ((m_mode == OUTCALLS) || (m_mode == INCALLS))
         return 3;
@@ -98,7 +98,7 @@ int LogWidgetModel::columnCount(const QModelIndex&) const
     return 0;
 }
 
-QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
+QVariant HistoryModel::data(const QModelIndex &a, int role) const
 {
     int row, column; row = a.row(); column = a.column();
 
@@ -133,7 +133,7 @@ QVariant LogWidgetModel::data(const QModelIndex &a, int role) const
 
 /*! \brief parse history command response
  */
-void LogWidgetModel::updateHistory(const QVariantMap &p)
+void HistoryModel::updateHistory(const QVariantMap &p)
 {
     int mode = p.value("mode").toInt();
     QVariantList h = p.value("history").toList();
@@ -146,13 +146,13 @@ void LogWidgetModel::updateHistory(const QVariantMap &p)
     endResetModel();
 }
 
-Qt::ItemFlags LogWidgetModel::flags(const QModelIndex &) const
+Qt::ItemFlags HistoryModel::flags(const QModelIndex &) const
 {
     return Qt::NoItemFlags;
 }
 
 /*! \brief ask history for an extension */
-void LogWidgetModel::requestHistory(HistoryMode mode, QString xuserid)
+void HistoryModel::requestHistory(HistoryMode mode, QString xuserid)
 {
     if (mode == DEFAULT) {
         mode = m_mode;
@@ -170,7 +170,7 @@ void LogWidgetModel::requestHistory(HistoryMode mode, QString xuserid)
     }
 }
 
-void LogWidgetModel::changeMode(bool active)
+void HistoryModel::changeMode(bool active)
 {
     if (active) {
         m_mode = (HistoryMode)sender()->property("mode").toInt();
@@ -181,7 +181,7 @@ void LogWidgetModel::changeMode(bool active)
     }
 }
 
-QVariant LogWidgetModel::headerData(int section,
+QVariant HistoryModel::headerData(int section,
                                     Qt::Orientation orientation,
                                     int role = Qt::DisplayRole) const
 {

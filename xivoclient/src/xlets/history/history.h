@@ -36,20 +36,20 @@
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 
-class LogTableView;
-class LogWidgetModel;
+class HistoryView;
+class HistoryModel;
 
 /*! \brief Call Log display widget
  */
-class LogWidget : public XLet
+class History : public XLet
 {
     Q_OBJECT
 
     public:
-        LogWidget(QWidget *parent=0);
+        History(QWidget *parent=0);
     private:
-        LogTableView * m_view;
-        LogWidgetModel *m_history_model;
+        HistoryView * m_view;
+        HistoryModel *m_history_model;
 };
 
 class XLetHistoryPlugin : public QObject, XLetInterface
