@@ -31,7 +31,7 @@ Menu::Menu(QWidget *parent)
 {
     // These disable the corners around QMenu, so that rounded corners are visible
     this->setAttribute(Qt::WA_TranslucentBackground);
-    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint);
+    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
     this->setStyleSheet("QMenu {background: white; border: 1px solid grey; border-radius: 10px; padding-top: 7px; padding-bottom: 7px;}"
                         "QMenu::item {padding-top: 5px; padding-left: 13px; padding-right: 23px; padding-bottom: 5px;}"
                         "QMenu::separator {background: #e8e4e2; height: 1px;}"
