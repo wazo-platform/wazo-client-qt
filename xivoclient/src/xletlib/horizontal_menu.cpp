@@ -84,10 +84,10 @@ void HorizontalMenu::addSeparator()
 
 int HorizontalMenu::count()
 {
-    return this->m_layout.count() / 2;  // 2 * count = (spacer + first_item) + (separator + next_item) * (count - 1)
+    return this->m_items.size();
 }
 
-void HorizontalMenu::setSelectedIndex(int index)
+void HorizontalMenu::setSelectedAction(int index)
 {
     if (index < 0 || index >= this->m_items.size()) {
         return;
@@ -95,7 +95,7 @@ void HorizontalMenu::setSelectedIndex(int index)
     this->m_items[index].button->setChecked(true);
 }
 
-void HorizontalMenu::setTextIndex(int index, const QString & text)
+void HorizontalMenu::setActionText(int index, const QString & text)
 {
     if (index < 0 || index >= this->m_items.size()) {
         return;
@@ -103,7 +103,7 @@ void HorizontalMenu::setTextIndex(int index, const QString & text)
     this->m_items[index].button->setText(text.toUpper());
 }
 
-void HorizontalMenu::hideIndex(int index)
+void HorizontalMenu::hideAction(int index)
 {
     if (index < 1 || index >= this->m_items.size()) {
         return;
@@ -114,7 +114,7 @@ void HorizontalMenu::hideIndex(int index)
     }
 }
 
-void HorizontalMenu::showIndex(int index)
+void HorizontalMenu::showAction(int index)
 {
     if (index < 0 && index >= this->m_items.size()) {
         return;

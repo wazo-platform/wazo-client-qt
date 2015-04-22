@@ -50,7 +50,7 @@ Conference::Conference(QWidget *parent)
 
     QAction *conflist_action = this->ui.menu->addAction(tr("Room list"));
     this->ui.menu->addAction();
-    this->ui.menu->setSelectedIndex(ROOM_LIST);
+    this->ui.menu->setSelectedAction(ROOM_LIST);
     this->showConfList();
 
     /* CONFLIST */
@@ -112,7 +112,7 @@ void Conference::showConfList()
 {
     int index = this->ui.conference_tables->indexOf(this->ui.list_page);
     this->ui.conference_tables->setCurrentIndex(index);
-    this->ui.menu->hideIndex(ROOM_NUMBER);
+    this->ui.menu->hideAction(ROOM_NUMBER);
 }
 
 void Conference::showConfRoom(QString &room_number, QString &room_name)
@@ -125,9 +125,9 @@ void Conference::showConfRoom(QString &room_number, QString &room_name)
     this->ui.conference_tables->setCurrentIndex(index);
 
     QString confroom_label = tr("%1 (%2)").arg(room_name, room_number);
-    this->ui.menu->showIndex(ROOM_NUMBER);
-    this->ui.menu->setTextIndex(ROOM_NUMBER, confroom_label);
-    this->ui.menu->setSelectedIndex(ROOM_NUMBER);
+    this->ui.menu->showAction(ROOM_NUMBER);
+    this->ui.menu->setActionText(ROOM_NUMBER, confroom_label);
+    this->ui.menu->setSelectedAction(ROOM_NUMBER);
 }
 
 

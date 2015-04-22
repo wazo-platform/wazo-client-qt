@@ -53,7 +53,7 @@ People::People(QWidget *parent)
     }
 
     ui.menu->addAction(tr("all"));
-    ui.menu->setSelectedIndex(0);
+    ui.menu->setSelectedAction(0);
     ui.menu->hide();  // will be shown when useful
 
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);

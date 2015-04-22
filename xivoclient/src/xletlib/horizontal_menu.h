@@ -52,10 +52,10 @@ class XLETLIB_EXPORT HorizontalMenu : public QWidget
         HorizontalMenu(QWidget *parent = NULL);
         QAction *addAction(const QString &text = "");
         int count();
-        void hideIndex(int index);
-        void showIndex(int index);
-        void setSelectedIndex(int index);
-        void setTextIndex(int index, const QString &text);
+        void hideAction(int index);
+        void showAction(int index);
+        void setSelectedAction(int index);
+        void setActionText(int index, const QString &text);
 
     private:
         QAction *addItem(const QString &text);
