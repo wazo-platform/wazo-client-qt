@@ -116,7 +116,7 @@ void HorizontalMenu::hideAction(int index)
 
 void HorizontalMenu::showAction(int index)
 {
-    if (index < 0 && index >= this->m_items.size()) {
+    if (index < 0 || index >= this->m_items.size()) {
         return;
     }
     this->m_items[index].button->show();
