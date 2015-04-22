@@ -65,7 +65,6 @@ class XLETLIB_EXPORT HorizontalMenu : public QWidget
         QPixmap dot;
         QList<Item> m_items;
         QList<QLabel*> m_separators;
-
 };
 
 #endif

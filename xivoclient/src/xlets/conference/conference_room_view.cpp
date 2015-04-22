@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -56,9 +56,9 @@ void ConferenceRoomView::sectionHeaderClicked(int index)
 {
     if (index == ConferenceRoomModel::ACTION_MUTE) {
         setSortingEnabled(false);
-        return ;
+    } else {
+        setSortingEnabled(true);
     }
-    setSortingEnabled(true);
 }
 
 void ConferenceRoomView::onViewClick(const QModelIndex &index)

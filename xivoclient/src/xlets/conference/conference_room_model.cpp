@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -179,8 +179,8 @@ QVariant ConferenceRoomModel::data(const QModelIndex & index, int role) const
 }
 
 QVariant ConferenceRoomModel::headerData(int section,
-                                   Qt::Orientation orientation,
-                                   int role) const
+                                         Qt::Orientation orientation,
+                                         int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
@@ -195,7 +195,9 @@ QVariant ConferenceRoomModel::headerData(int section,
 Qt::ItemFlags ConferenceRoomModel::flags(const QModelIndex &index) const
 {
     int col = index.column();
-    if (col != ACTION_MUTE) return QAbstractItemModel::flags(index);
+    if (col != ACTION_MUTE) {
+        return QAbstractItemModel::flags(index);
+    }
 
     int row = index.row();
     const QString &number = m_row2number[row];
@@ -208,4 +210,3 @@ Qt::ItemFlags ConferenceRoomModel::flags(const QModelIndex &index) const
     }
     return Qt::NoItemFlags;
 }
-

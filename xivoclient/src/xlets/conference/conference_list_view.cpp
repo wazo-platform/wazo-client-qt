@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -65,7 +65,7 @@ void ConferenceListView::contextMenuEvent(QContextMenuEvent * event)
         tr("Get in room %1 (%2)").arg(m_room_name_clicked).arg(m_room_number_clicked), menu);
 
     connect(action, SIGNAL(triggered()),
-	        this, SLOT(getInRoom()));
+            this, SLOT(getInRoom()));
 
     menu->addAction(action);
     menu->exec(QCursor::pos());

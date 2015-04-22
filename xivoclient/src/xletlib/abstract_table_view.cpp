@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -49,7 +49,6 @@ AbstractTableView::AbstractTableView(QWidget * parent)
     this->verticalHeader()->hide();
 
     this->setSelectionMode(QAbstractItemView::NoSelection);
-    //this->viewport()->setAttribute(Qt::WA_Hover, true);
 
     QStyle *plastique = QStyleFactory::create("cleanlooks");
     this->horizontalHeader()->setStyle(plastique);

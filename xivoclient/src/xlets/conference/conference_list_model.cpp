@@ -121,8 +121,8 @@ QString ConferenceListModel::startedSince(double time) const
 }
 
 QVariant ConferenceListModel::headerData(int section,
-                                   Qt::Orientation orientation,
-                                   int role) const
+                                         Qt::Orientation orientation,
+                                         int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();

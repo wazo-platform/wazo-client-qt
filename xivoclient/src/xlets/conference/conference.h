@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -64,14 +64,12 @@ class Conference : public XLet
             ROOM_NUMBER
         };
         void registerMeetmeUpdate() const;
-        void phoneConfRoom();
 
         Ui::ConferenceWidget ui;
         ConferenceListModel *m_list_model;
         ConferenceRoomModel *m_room_model;
         QString m_confroom_number;
         QVariantMap m_confroom_configs;
-
 };
 
 class XLetConferencePlugin : public QObject, XLetInterface

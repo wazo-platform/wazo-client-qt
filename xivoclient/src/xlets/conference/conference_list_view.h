@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,7 +32,6 @@
 
 #include <QTableView>
 #include <QModelIndex>
-#include <QString>
 
 #include <xletlib/abstract_table_view.h>
 
@@ -46,7 +45,7 @@ class ConferenceListView : public AbstractTableView
         ConferenceListView(QWidget *parent);
     public slots:
         void onViewClick(const QModelIndex &);
-	    void contextMenuEvent(QContextMenuEvent * event);
+        void contextMenuEvent(QContextMenuEvent * event);
     private slots:
         void getInRoom();
     signals:
