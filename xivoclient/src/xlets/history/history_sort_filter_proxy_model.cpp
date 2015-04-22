@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,42 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_H__
-#define __HISTORY_H__
-
-#include <QObject>
-#include <QWidget>
-
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
-
-#include <ui_history_widget.h>
-
 #include "history_sort_filter_proxy_model.h"
 
-class HistoryModel;
-class HistoryView;
-
-class History : public XLet
+HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
+    : AbstractSortFilterProxyModel(parent)
 {
-    Q_OBJECT
+}
 
-    public:
-        History(QWidget *parent=0);
-    private:
-        HistoryModel *m_model;
-        HistorySortFilterProxyModel *m_proxy_model;
-        Ui::HistoryWidget ui;
-};
-
-class XLetHistoryPlugin : public QObject, XLetInterface
+bool HistorySortFilterProxyModel::lessThan(const QModelIndex &left,
+                                           const QModelIndex &right) const
 {
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xlethistory.json")
+    QVariant left_data = sourceModel()->data(left, Qt::UserRole);
+    QVariant right_data = sourceModel()->data(right, Qt::UserRole);
 
-    public:
-        XLet* newXLetInstance(QWidget *parent=0);
-};
-
-#endif
+    if (left.column() == 1) {
+        return left_data < right_data;
+    } else if (left.column() == 2) {
+        return left_data < right_data;
+    } else {
+        return AbstractSortFilterProxyModel::lessThan(left, right);
+    }
+}

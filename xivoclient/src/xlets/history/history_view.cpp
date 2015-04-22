@@ -27,49 +27,58 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <baseengine.h>
-#include <phonenumber.h>
+#include <QAction>
+#include <QMenu>
+#include <QString>
 
-#include "history.h"
+#include <baseengine.h>
+
 #include "history_model.h"
 #include "history_view.h"
 
-History::History(QWidget *parent)
-    : XLet(parent, tr("History"), ":/images/tab-history.svg"),
-      m_model(NULL),
-      m_proxy_model(NULL)
+HistoryView::HistoryView(QWidget *parent)
+    : AbstractTableView(parent)
 {
-    this->ui.setupUi(this);
+    connect(this, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(onViewClick(const QModelIndex &)));
+}
 
-    QFile qssFile(QString(":/default.qss"));
-    if(qssFile.open(QIODevice::ReadOnly)) {
-        this->setStyleSheet(qssFile.readAll());
+void HistoryView::contextMenuEvent(QContextMenuEvent * event)
+{
+    const QModelIndex &index = indexAt(event->pos());
+    QString caller = index.sibling(index.row(), 0).data().toString();
+    if (caller.isEmpty()) {
+        return;
     }
 
-    m_model = new HistoryModel(this);
-    this->ui.history_table->setModel(m_model);
+    QMenu *menu = new QMenu(this);
 
-    m_proxy_model = new HistorySortFilterProxyModel(this);
-    m_proxy_model->setSourceModel(m_model);
-    this->ui.history_table->setModel(m_proxy_model);
-    this->ui.history_table->sortByColumn(0, Qt::AscendingOrder);
+    QAction *action = new QAction(tr("Call %1").arg(caller), menu);
+    action->setProperty("num_to_call", caller);
+    connect(action, SIGNAL(triggered(bool)),
+            this, SLOT(callOnClick(bool)));
 
-    QAction *sent_call_action = this->ui.menu->addAction(tr("Sent calls"));
-    QAction *received_call_action = this->ui.menu->addAction(tr("Received calls"));
-    QAction *missed_call_action = this->ui.menu->addAction(tr("Missed calls"));
+    menu->addAction(action);
+    menu->exec(QCursor::pos());
 
-    connect(sent_call_action, SIGNAL(triggered()),
-            m_model, SLOT(sentCallMode()));
-    connect(received_call_action, SIGNAL(triggered()),
-            m_model, SLOT(receivedCallMode()));
-    connect(missed_call_action, SIGNAL(triggered()),
-            m_model, SLOT(missedCallMode()));
-
-    this->ui.menu->setSelectedIndex(0);
 }
 
-XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
+
+void HistoryView::callOnClick(bool)
 {
-    b_engine->registerTranslation(":/obj/history_%1");
-    return new History(parent);
+    QAction *calling_action = qobject_cast<QAction *>(sender());
+    QString num_to_call = calling_action->property("num_to_call").toString();
+    b_engine->actionDial(num_to_call);
 }
+
+void HistoryView::onViewClick(const QModelIndex &index)
+{
+    QString caller = index.sibling(index.row(), 0).data().toString();
+
+    if (caller.isEmpty()) {
+        return;
+    }
+
+    b_engine->pasteToDial(caller);
+}
+

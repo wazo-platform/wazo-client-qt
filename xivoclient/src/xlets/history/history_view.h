@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,42 +27,27 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_H__
-#define __HISTORY_H__
+#ifndef __HISTORY_VIEW_H__
+#define __HISTORY_VIEW_H__
 
-#include <QObject>
+#include <QContextMenuEvent>
+#include <QModelIndex>
 #include <QWidget>
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include <ipbxlistener.h>
+#include <xletlib/abstract_table_view.h>
 
-#include <ui_history_widget.h>
-
-#include "history_sort_filter_proxy_model.h"
-
-class HistoryModel;
-class HistoryView;
-
-class History : public XLet
+class HistoryView : public AbstractTableView
 {
     Q_OBJECT
 
     public:
-        History(QWidget *parent=0);
-    private:
-        HistoryModel *m_model;
-        HistorySortFilterProxyModel *m_proxy_model;
-        Ui::HistoryWidget ui;
-};
+        HistoryView(QWidget *parent = NULL);
 
-class XLetHistoryPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xlethistory.json")
-
-    public:
-        XLet* newXLetInstance(QWidget *parent=0);
+    private slots:
+        void onViewClick(const QModelIndex &);
+        void callOnClick(bool);
+        void contextMenuEvent(QContextMenuEvent *);
 };
 
 #endif

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,42 +27,51 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_H__
-#define __HISTORY_H__
+#ifndef __HISTORY_MODEL_H__
+#define __HISTORY_MODEL_H__
 
-#include <QObject>
+#include <QAbstractTableModel>
+#include <QDateTime>
+#include <QModelIndex>
+#include <QString>
+#include <QVariant>
 #include <QWidget>
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include <ipbxlistener.h>
 
-#include <ui_history_widget.h>
-
-#include "history_sort_filter_proxy_model.h"
-
-class HistoryModel;
-class HistoryView;
-
-class History : public XLet
-{
-    Q_OBJECT
-
-    public:
-        History(QWidget *parent=0);
-    private:
-        HistoryModel *m_model;
-        HistorySortFilterProxyModel *m_proxy_model;
-        Ui::HistoryWidget ui;
+enum HistoryMode {
+    OUTCALLS = 0,
+    INCALLS,
+    MISSEDCALLS,
+    DEFAULT
 };
 
-class XLetHistoryPlugin : public QObject, XLetInterface
+class HistoryModel : public QAbstractTableModel, public IPBXListener
 {
     Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xlethistory.json")
 
     public:
-        XLet* newXLetInstance(QWidget *parent=0);
+        HistoryModel(QWidget * parent = NULL);
+        void parseCommand(const QVariantMap &);
+
+    protected:
+        virtual int rowCount(const QModelIndex&) const;
+        virtual int columnCount(const QModelIndex&) const;
+        virtual QVariant data(const QModelIndex&, int) const;
+        virtual QVariant headerData(int , Qt::Orientation, int) const;
+
+    public slots:
+        void missedCallMode();
+        void receivedCallMode();
+        void sentCallMode();
+        void updateHistory(const QVariantMap &p);
+
+    private slots:
+        void requestHistory(HistoryMode mode = DEFAULT, QString xuserid = "");
+
+    private:
+        QVariantList m_history;
+        HistoryMode m_mode;
 };
 
 #endif

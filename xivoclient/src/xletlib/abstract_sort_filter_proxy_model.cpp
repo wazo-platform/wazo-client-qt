@@ -32,6 +32,7 @@
 AbstractSortFilterProxyModel::AbstractSortFilterProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
+    this->setSortCaseSensitivity(Qt::CaseInsensitive);
     this->setSortLocaleAware(true);
     this->setDynamicSortFilter(true);
 }

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,42 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_H__
-#define __HISTORY_H__
+#ifndef __HISTORY_SORT_FILTER_PROXY_MODEL_H__
+#define __HISTORY_SORT_FILTER_PROXY_MODEL_H__
 
-#include <QObject>
-#include <QWidget>
+#include <QModelIndex>
+#include <QString>
 
-#include <xletlib/xletinterface.h>
-#include <xletlib/xlet.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
 
-#include <ui_history_widget.h>
+#include "history_model.h"
 
-#include "history_sort_filter_proxy_model.h"
-
-class HistoryModel;
-class HistoryView;
-
-class History : public XLet
+class HistorySortFilterProxyModel : public AbstractSortFilterProxyModel
 {
     Q_OBJECT
 
     public:
-        History(QWidget *parent=0);
-    private:
-        HistoryModel *m_model;
-        HistorySortFilterProxyModel *m_proxy_model;
-        Ui::HistoryWidget ui;
-};
-
-class XLetHistoryPlugin : public QObject, XLetInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(XLetInterface)
-    Q_PLUGIN_METADATA(IID "com.avencall.Plugin.XLetInterface/1.2" FILE "xlethistory.json")
-
-    public:
-        XLet* newXLetInstance(QWidget *parent=0);
+        HistorySortFilterProxyModel(QObject *parent);
+    protected:
+        virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 };
 
 #endif
