@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,6 +31,8 @@
 #define __CONFERENCE_H__
 
 #include <QObject>
+#include <QString>
+#include <QVariantMap>
 
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
@@ -38,7 +40,9 @@
 
 #include <ui_conference_widget.h>
 
-class ConfTab;
+
+class ConferenceListModel;
+class ConferenceRoomModel;
 
 class Conference : public XLet
 {
@@ -48,10 +52,24 @@ class Conference : public XLet
     public:
         Conference(QWidget *parent=0);
 
-    private:
-        void registerMeetmeUpdate() const;
-        Ui::ConferenceWidget ui;
+    private slots:
+        void showConfList();
+        void showConfRoom(QString &room_number, QString &room_name);
+        void updateConference(const QVariantMap & config);
 
+    private:
+        //The order of this enum is determined by the order of the menu creation
+        enum MenuIndex {
+            ROOM_LIST,
+            ROOM_NUMBER
+        };
+        void registerMeetmeUpdate() const;
+
+        Ui::ConferenceWidget ui;
+        ConferenceListModel *m_list_model;
+        ConferenceRoomModel *m_room_model;
+        QString m_confroom_number;
+        QVariantMap m_confroom_configs;
 };
 
 class XLetConferencePlugin : public QObject, XLetInterface

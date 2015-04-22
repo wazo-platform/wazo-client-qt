@@ -26,8 +26,8 @@
 
 #include <QAction>
 #include <QLabel>
-#include <QRadioButton>
 #include <QPainter>
+#include <QRadioButton>
 
 #include <xletlib/signal_filter.h>
 
@@ -39,9 +39,6 @@ HorizontalMenu::HorizontalMenu(QWidget *parent)
 {
     QString checked_color = "#2c2927";
     QString unchecked_color = "#a09790";
-    this->setStyleSheet(QString("QRadioButton::indicator {image: none; height: 0px; width: 0px;}"
-                                "QRadioButton {color: %1; font-family: \"Dyno\"; font-size: 16px; spacing: 0px;}"
-                                "QRadioButton:checked {color: %2; font-weight: bold; }").arg(unchecked_color).arg(checked_color));
     this->m_layout.setContentsMargins(0, 0, 0, 0);
     this->m_layout.addStretch();
     this->dot = QIcon(":/images/dot.svg").pixmap(QSize(3, 3));
@@ -81,18 +78,49 @@ void HorizontalMenu::addSeparator()
     QLabel *separator = new QLabel(this);
     separator->setStyleSheet("margin-left: 12px; margin-right: 12px;");
     separator->setPixmap(this->dot);
+    this->m_separators.append(separator);
     this->m_layout.insertWidget(this->m_layout.count() - 1, separator);
 }
 
 int HorizontalMenu::count()
 {
-    return this->m_layout.count() / 2;  // 2 * count = (spacer + first_item) + (separator + next_item) * (count - 1)
+    return this->m_items.size();
 }
 
-void HorizontalMenu::setSelectedIndex(int index)
+void HorizontalMenu::setSelectedAction(int index)
 {
     if (index < 0 || index >= this->m_items.size()) {
         return;
     }
     this->m_items[index].button->setChecked(true);
+}
+
+void HorizontalMenu::setActionText(int index, const QString & text)
+{
+    if (index < 0 || index >= this->m_items.size()) {
+        return;
+    }
+    this->m_items[index].button->setText(text.toUpper());
+}
+
+void HorizontalMenu::hideAction(int index)
+{
+    if (index < 1 || index >= this->m_items.size()) {
+        return;
+    }
+    this->m_items[index].button->hide();
+    if (index > 0) {
+        this->m_separators[index-1]->hide();
+    }
+}
+
+void HorizontalMenu::showAction(int index)
+{
+    if (index < 0 || index >= this->m_items.size()) {
+        return;
+    }
+    this->m_items[index].button->show();
+    if (index > 0) {
+        this->m_separators[index-1]->show();
+    }
 }

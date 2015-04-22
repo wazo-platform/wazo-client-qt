@@ -27,11 +27,11 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QSortFilterProxyModel>
+#include <QTimer>
 
-#include "conflist_model.h"
+#include "conference_list_model.h"
 
-ConfListModel::ConfListModel(QWidget *parent)
+ConferenceListModel::ConferenceListModel(QWidget *parent)
     : QAbstractTableModel(parent)
 {
     COL_TITLE[NUMBER] = tr("Number");
@@ -40,52 +40,46 @@ ConfListModel::ConfListModel(QWidget *parent)
     COL_TITLE[MEMBER_COUNT] = tr("Member count");
     COL_TITLE[STARTED_SINCE] = tr("Started since");
 
-    connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
-            this, SLOT(updateRoomConfigs(const QVariantMap &)));
+    QTimer * timer_display = new QTimer(this);
+    connect(timer_display, SIGNAL(timeout()),
+            this, SLOT(updateConfTime()));
+    timer_display->start(1000);
 }
 
-void ConfListModel::updateRoomConfigs(const QVariantMap &configs)
+void ConferenceListModel::updateConfList(const QVariantMap &configs)
 {
     beginResetModel();
-
     m_room_configs = configs;
     refreshRow2Number();
-
     endResetModel();
 }
 
-void ConfListModel::refreshRow2Number()
+void ConferenceListModel::refreshRow2Number()
 {
     m_row2number = m_room_configs.keys();
 }
 
-Qt::ItemFlags ConfListModel::flags(const QModelIndex &) const
-{
-    return Qt::NoItemFlags;
-}
-
-int ConfListModel::rowCount(const QModelIndex&) const
+int ConferenceListModel::rowCount(const QModelIndex&) const
 {
     return m_row2number.size();
 }
 
-int ConfListModel::columnCount(const QModelIndex&) const
+int ConferenceListModel::columnCount(const QModelIndex&) const
 {
     return NB_COL;
 }
 
-QVariant ConfListModel::data(const QModelIndex &index, int role) const
+QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
-            return Qt::AlignCenter;
+            return Qt::AlignVCenter;
         return QVariant();
     }
 
     /* Rows here are not the same than the lines displayed by the view,
      * as there is a proxy model between the view and this model,
-     * that maps the displayed lines to the stored lines, see ConfList
-     * constructor
+     * that maps the displayed lines to the stored lines
      */
     int row = index.row(), col = index.column();
     if (m_row2number.size() <= row) {
@@ -113,7 +107,7 @@ QVariant ConfListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QString ConfListModel::startedSince(double time) const
+QString ConferenceListModel::startedSince(double time) const
 {
     if (time == 0)
         return tr("Not started");
@@ -121,14 +115,14 @@ QString ConfListModel::startedSince(double time) const
         return tr("Unknown");
 
     uint now = QDateTime::currentDateTime().toTime_t();
-    uint started_since = now - uint(time) -b_engine->timeDeltaServerClient();
+    uint started_since = now - uint(time) - b_engine->timeDeltaServerClient();
 
     return QDateTime::fromTime_t(started_since).toUTC().toString("hh:mm:ss");
 }
 
-QVariant ConfListModel::headerData(int section,
-                                   Qt::Orientation orientation,
-                                   int role) const
+QVariant ConferenceListModel::headerData(int section,
+                                         Qt::Orientation orientation,
+                                         int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
@@ -140,7 +134,7 @@ QVariant ConfListModel::headerData(int section,
     return QVariant();
 }
 
-void ConfListModel::updateConfTime()
+void ConferenceListModel::updateConfTime()
 {
     QModelIndex cellChanged1 = createIndex(0, STARTED_SINCE);
     QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, STARTED_SINCE);

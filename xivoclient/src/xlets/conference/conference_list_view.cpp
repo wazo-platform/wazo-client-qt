@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -28,55 +28,51 @@
  */
 
 #include <QAction>
+#include <QContextMenuEvent>
 #include <QTimer>
-#include <QHeaderView>
 #include <QMenu>
 
-#include "conflist_view.h"
-#include "conflist_model.h"
+#include "conference_list_view.h"
+#include "conference_list_model.h"
 
-ConfListView::ConfListView(QWidget *parent)
+ConferenceListView::ConferenceListView(QWidget *parent)
     : AbstractTableView(parent)
 {
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
 }
 
-void ConfListView::onViewClick(const QModelIndex &model)
+void ConferenceListView::onViewClick(const QModelIndex &model)
 {
-    QString roomName = model.sibling(model.row(), ConfListModel::NAME).data().toString();
-    QString roomNumber = model.sibling(model.row(), ConfListModel::NUMBER).data().toString();
+    QString room_name = model.sibling(model.row(), ConferenceListModel::NAME).data().toString();
+    QString room_number = model.sibling(model.row(), ConferenceListModel::NUMBER).data().toString();
 
-
-    if (roomNumber != "") {
-        b_engine->pasteToDial(roomNumber);
-        QTimer *timer = new QTimer(this);
-        timer->setSingleShot(true);
-        timer->setProperty("number", roomNumber);
-        connect(timer, SIGNAL(timeout()), parentWidget(), SLOT(openConfRoom()));
-        timer->start(10);
+    if (room_number != "") {
+        b_engine->pasteToDial(room_number);
+        emit this->openConfRoom(room_number, room_name);
     }
 }
 
-
-void ConfListView::contextMenuEvent(QContextMenuEvent * event)
+void ConferenceListView::contextMenuEvent(QContextMenuEvent * event)
 {
     const QModelIndex &index = indexAt(event->pos());
 
-    QString roomName = index.sibling(index.row(), ConfListModel::NAME).data().toString();
-    QString roomNumber = index.sibling(index.row(), ConfListModel::NUMBER).data().toString();
+    m_room_name_clicked = index.sibling(index.row(), ConferenceListModel::NAME).data().toString();
+    m_room_number_clicked = index.sibling(index.row(), ConferenceListModel::NUMBER).data().toString();
 
     QMenu *menu = new QMenu(this);
-
     QAction *action = new QAction(
-        tr("Get in room %1 (%2)").arg(roomName).arg(roomNumber), menu);
+        tr("Get in room %1 (%2)").arg(m_room_name_clicked).arg(m_room_number_clicked), menu);
 
-    action->setProperty("number", roomNumber);
-    connect(action, SIGNAL(triggered(bool)),
-	    parentWidget(), SLOT(openConfRoom()));
-    connect(action, SIGNAL(triggered(bool)),
-	    parentWidget(), SLOT(phoneConfRoom()));
+    connect(action, SIGNAL(triggered()),
+            this, SLOT(getInRoom()));
 
     menu->addAction(action);
     menu->exec(QCursor::pos());
+}
+
+void ConferenceListView::getInRoom()
+{
+    b_engine->actionDial(m_room_number_clicked);
+    emit this->openConfRoom(m_room_number_clicked, m_room_name_clicked);
 }

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,28 +27,33 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFROOM_VIEW_H__
-#define __CONFROOM_VIEW_H__
-#include <QWidget>
-#include <QDebug>
-#include <QTimer>
+#ifndef __CONFERENCE_LIST_VIEW_H__
+#define __CONFERENCE_LIST_VIEW_H__
+
+#include <QTableView>
 #include <QModelIndex>
-#include <QHeaderView>
 
 #include <xletlib/abstract_table_view.h>
 
+#include <baseengine.h>
 
-class ConfRoomView : public AbstractTableView
+class ConferenceListView : public AbstractTableView
 {
     Q_OBJECT
 
     public:
-        ConfRoomView(QWidget *parent = NULL);
-        void updateHeadersView();
-
-    private slots:
+        ConferenceListView(QWidget *parent);
+    public slots:
         void onViewClick(const QModelIndex &);
-        void sectionHeaderClicked(int);
+        void contextMenuEvent(QContextMenuEvent * event);
+    private slots:
+        void getInRoom();
+    signals:
+        void openConfRoom(QString &room_number, QString &name_room);
+    private:
+        QString m_room_number_clicked;
+        QString m_room_name_clicked;
+
 };
 
 #endif

@@ -27,26 +27,46 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QVBoxLayout>
+#ifndef __CONFERENCE_LIST_MODEL_H__
+#define __CONFERENCE_LIST_MODEL_H__
 
-#include "confroom.h"
-#include "confroom_model.h"
-#include "confroom_view.h"
+#include <QAbstractTableModel>
+#include <QModelIndex>
+#include <QVariant>
+#include <QWidget>
 
+#include <xletlib/functests.h>
+#include <baseengine.h>
 
-ConfRoom::ConfRoom(QWidget *parent, const QString &number, const QVariantMap &members)
-    : QWidget(parent)
+class ConferenceListModel : public QAbstractTableModel
 {
-    QVBoxLayout *vBox = new QVBoxLayout(this);
-    vBox->setContentsMargins(0,0,0,0);
+    Q_OBJECT
+    FUNCTESTED
 
-    setLayout(vBox);
-    m_model = new ConfRoomModel(this, number, members);
-    setProperty("id", number);
+    public:
+        enum ColOrder {
+            NAME,
+            NUMBER,
+            PIN_REQUIRED,
+            MEMBER_COUNT,
+            STARTED_SINCE,
+            NB_COL
+        };
+        ConferenceListModel(QWidget *parent = NULL);
+    public slots:
+        void updateConfList(const QVariantMap &);
+    private slots:
+        void updateConfTime();
+    private:
+        void refreshRow2Number();
+        QString startedSince(double time) const;
+        int rowCount(const QModelIndex& = QModelIndex()) const;
+        int columnCount(const QModelIndex&) const;
+        QVariant data(const QModelIndex&, int) const;
+        QVariant headerData(int , Qt::Orientation, int) const;
+        QStringList m_row2number;
+        QVariantMap m_room_configs;
+        QString COL_TITLE[NB_COL];
+};
 
-    m_view = new ConfRoomView(this);
-    m_view->setModel(m_model);
-    m_view->updateHeadersView();
-
-    vBox->addWidget(m_view);
-}
+#endif

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2014 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,41 +27,25 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "conftab.h"
-#include "conflist.h"
-#include "confroom.h"
+#ifndef __CONFERENCE_ROOM_VIEW_H__
+#define __CONFERENCE_ROOM_VIEW_H__
 
-ConfTab::ConfTab(QWidget *parent)
-    : QTabWidget(parent)
+#include <QModelIndex>
+#include <QWidget>
+
+#include <xletlib/abstract_table_view.h>
+
+class ConferenceRoomView : public AbstractTableView
 {
-    connect(this, SIGNAL(tabCloseRequested(int)),
-            this, SLOT(closeTab(int)));
-}
+    Q_OBJECT
 
-void ConfTab::closeTab(int index)
-{
-    widget(index)->deleteLater();
-    removeTab(index);
-}
+    public:
+        ConferenceRoomView(QWidget *parent = NULL);
+        void updateHeadersView();
 
-void ConfTab::showConfRoom(const QString &number, const QVariantMap &members)
-{
-    int index = indexOf(number);
+    private slots:
+        void onViewClick(const QModelIndex &);
+        void sectionHeaderClicked(int);
+};
 
-    if (index == -1) {
-        index = addTab(new ConfRoom(this, number, members), number);
-        widget(index)->setProperty("number", number);
-    }
-
-    setCurrentIndex(index);
-}
-
-int ConfTab::indexOf(const QString &number)
-{
-    for (int i = 1; i < count(); i++) {
-        if (widget(i)->property("number").toString() == number) {
-            return i;
-        }
-    }
-    return -1;
-}
+#endif

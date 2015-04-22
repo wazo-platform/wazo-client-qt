@@ -27,12 +27,19 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QAction>
+#include <QDebug>
+
+#include <baseengine.h>
+
 #include "conference.h"
-#include "conflist.h"
-#include "conftab.h"
+#include "conference_list_model.h"
+#include "conference_room_model.h"
 
 Conference::Conference(QWidget *parent)
-    : XLet(parent, tr("Conference"), ":/images/tab-conference.svg")
+    : XLet(parent, tr("Conference"), ":/images/tab-conference.svg"),
+      m_list_model(NULL),
+      m_room_model(NULL)
 {
     this->ui.setupUi(this);
 
@@ -41,12 +48,54 @@ Conference::Conference(QWidget *parent)
         this->setStyleSheet(qssFile.readAll());
     }
 
-    this->ui.conf_tab->addTab(new ConfList(this->ui.conf_tab), tr("Room list"));
-    this->ui.conf_tab->setTabsClosable(true);
-    this->ui.conf_tab->tabBar()->setTabButton(0, QTabBar::RightSide, NULL);
-    this->ui.conf_tab->tabBar()->setTabButton(0, QTabBar::LeftSide, NULL);
+    QAction *conflist_action = this->ui.menu->addAction(tr("Room list"));
+    this->ui.menu->addAction();
+    this->ui.menu->setSelectedAction(ROOM_LIST);
+    this->showConfList();
 
+    /* CONFLIST */
+    // this contains the data, unordered
+    m_list_model = new ConferenceListModel(this);
+    m_list_model->setObjectName("conference_list_model");
+
+    // this maps the indexes between the sorted view and the unordered model
+    QSortFilterProxyModel *list_proxy_model = new QSortFilterProxyModel(this);
+    list_proxy_model->setSourceModel(m_list_model);
+    list_proxy_model->setDynamicSortFilter(true); /* sorts right on insertion, instead
+    of half a second after the window has appeared */
+
+    // this displays the sorted data
+    this->ui.list_table->setModel(list_proxy_model);
+    this->ui.list_table->sortByColumn(ConferenceListModel::NAME, Qt::AscendingOrder);
+
+    /* CONFROOM */
+    m_room_model = new ConferenceRoomModel(this);
+    this->ui.room_table->setModel(m_room_model);
+    this->ui.room_table->updateHeadersView();
+    this->ui.room_table->sortByColumn(ConferenceRoomModel::NAME, Qt::AscendingOrder);
+
+    connect(conflist_action, SIGNAL(triggered()),
+            this, SLOT(showConfList()));
+    connect(this->ui.list_table, SIGNAL(openConfRoom(QString &, QString &)),
+            this, SLOT(showConfRoom(QString &, QString &)));
+    connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
+            this, SLOT(updateConference(const QVariantMap &)));
     registerMeetmeUpdate();
+}
+
+void Conference::updateConference(const QVariantMap & config)
+{
+    m_confroom_configs = config;
+    this->m_list_model->updateConfList(m_confroom_configs);
+
+    QString room_number = this->m_room_model->roomNumber();
+    if (! room_number.isEmpty() &&
+        this->ui.conference_tables->currentIndex() ==
+        this->ui.conference_tables->indexOf(this->ui.room_page))
+    {
+        QVariantMap confroom_members = m_confroom_configs[room_number].toMap()["members"].toMap();
+        m_room_model->setConfRoom(room_number, confroom_members);
+    }
 }
 
 void Conference::registerMeetmeUpdate() const
@@ -57,6 +106,27 @@ void Conference::registerMeetmeUpdate() const
     command["message"] = "meetme_update";
 
     b_engine->sendJsonCommand(command);
+}
+
+void Conference::showConfList()
+{
+    int index = this->ui.conference_tables->indexOf(this->ui.list_page);
+    this->ui.conference_tables->setCurrentIndex(index);
+    this->ui.menu->hideAction(ROOM_NUMBER);
+}
+
+void Conference::showConfRoom(QString &room_number, QString &room_name)
+{
+    QVariantMap confroom_config = m_confroom_configs[room_number].toMap()["members"].toMap();
+    this->m_room_model->setConfRoom(room_number, confroom_config);
+
+    int index = this->ui.conference_tables->indexOf(this->ui.room_page);
+    this->ui.conference_tables->setCurrentIndex(index);
+
+    QString confroom_label = tr("%1 (%2)").arg(room_name, room_number);
+    this->ui.menu->showAction(ROOM_NUMBER);
+    this->ui.menu->setActionText(ROOM_NUMBER, confroom_label);
+    this->ui.menu->setSelectedAction(ROOM_NUMBER);
 }
 
 

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,34 +27,50 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFTAB_H__
-#define __CONFTAB_H__
+#ifndef __CONFERENCE_ROOM_MODEL_H__
+#define __CONFERENCE_ROOM_MODEL_H__
 
-#include <QDebug>
+#include <QAbstractTableModel>
+#include <QModelIndex>
 #include <QWidget>
-#include <QtPlugin>
-#include <QTabWidget>
-#include <QVBoxLayout>
-#include <QPushButton>
 
-#include <xletlib/functests.h>
-#include <xletlib/xlet.h>
-#include <xletlib/xletinterface.h>
+class ConfTab;
 
-
-class ConfTab : public QTabWidget
+class ConferenceRoomModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        ConfTab(QWidget *parent);
-        void showConfRoom(const QString &number, const QVariantMap &members);
-        int indexOf(QWidget *w) { return QTabWidget::indexOf(w); };
-        int indexOf(const QString &id);
+        enum ColOrder {
+            ID,
+            ACTION_MUTE,
+            NAME,
+            NUMBER,
+            SINCE,
+            NB_COL
+        };
+        ConferenceRoomModel(QWidget *parent);
+        QString row2participantId(int row) const;
+        const QString & roomNumber() const;
 
-    public slots:
-        void closeTab(int index);
+        bool isRowMuted(int row) const;
+        int userNumberFromRow(int row) const;
+        void setConfRoom(const QString &room_number, const QVariantMap &members);
 
+    private slots:
+        void extractRow2IdMap();
+        void updateJoinTime();
+
+    private:
+        void sort(int, Qt::SortOrder);
+        int rowCount(const QModelIndex&) const;
+        int columnCount(const QModelIndex&) const;
+        QVariant data(const QModelIndex&, int) const;
+        QVariant headerData(int, Qt::Orientation, int) const;
+        Qt::ItemFlags flags(const QModelIndex &) const;
+        QString m_room_number;
+        QStringList m_row2number;
+        QVariantMap m_members;
 };
 
 #endif
