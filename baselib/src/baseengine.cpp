@@ -44,8 +44,9 @@
 #include <QUrlQuery>
 #include <QLibraryInfo>
 #include <QSslError>
-#include <QSslSocket>
+#include <QWebSocket>
 #include <QUdpSocket>
+#include <QtSocketIo/QSocketIoClient>
 
 #include <QJsonDocument>
 
@@ -115,27 +116,27 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     m_xinfoList.insert("queuemembers", newXInfo<QueueMemberInfo>);
 
     // TCP connection with CTI Server
-    m_ctiserversocket = new QSslSocket(this);
-    m_ctiserversocket->setProtocol(QSsl::TlsV1_0);
+    m_ctiserversocket = new QSocketIoClient(this);
+    // m_ctiserversocket->setProtocol(QSsl::TlsV1_0);
     m_cti_server = new CTIServer(m_ctiserversocket);
 
-    connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
-            this, SLOT(sslErrors(const QList<QSslError> & )));
+    // connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
+    //         this, SLOT(sslErrors(const QList<QSslError> & )));
     connect(m_ctiserversocket, SIGNAL(connected()),
             this, SLOT(authenticate()));
-    connect(m_ctiserversocket, SIGNAL(readyRead()),
-            this, SLOT(ctiSocketReadyRead()));
+    connect(m_ctiserversocket, SIGNAL(messageReceived(const QString &)),
+            this, SLOT(parseRawMessage(QString)));
     connect(m_cti_server, SIGNAL(disconnected()),
             this, SLOT(onCTIServerDisconnected()));
-    connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
-            this, SLOT(popupError(const QString &, const QString &, const QString &)));
+    connect(m_cti_server, SIGNAL(errorReceived(const QString &, const QString &)),
+            this, SLOT(errorReceived(const QString &, const QString &)));
 
     connect(&m_init_watcher, SIGNAL(watching()),
             this, SIGNAL(initializing()));
     connect(&m_init_watcher, SIGNAL(sawAll()),
             this, SIGNAL(initialized()));
 
-    connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
+    connect(m_cti_server, SIGNAL(errorReceived(const QString &, const QString &)),
             this, SIGNAL(doneConnecting()));
     connect(this, SIGNAL(initialized()),
             this, SIGNAL(doneConnecting()));
@@ -153,17 +154,17 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     setupTranslation();
 }
 
-void BaseEngine::sslErrors(const QList<QSslError> & qlse)
-{
-    qDebug() << Q_FUNC_INFO;
-    foreach (QSslError qse, qlse)
-        qDebug() << " ssl error" << qse;
-    m_ctiserversocket->ignoreSslErrors();
+// void BaseEngine::sslErrors(const QList<QSslError> & qlse)
+// {
+//     qDebug() << Q_FUNC_INFO;
+//     foreach (QSslError qse, qlse)
+//         qDebug() << " ssl error" << qse;
+//     m_ctiserversocket->ignoreSslErrors();
     // "The host name did not match any of the valid hosts for this certificate"
     // "The certificate is self-signed, and untrusted"
     // "The certificate has expired"
     // see http://doc.trolltech.com/4.6/qsslerror.html for a list
-}
+// }
 
 /*! \brief Destructor
  */
@@ -606,8 +607,7 @@ void BaseEngine::restoreAvailState()
 /*! \brief send command to XiVO CTI server */
 void BaseEngine::sendCommand(const QByteArray &command)
 {
-    if (m_ctiserversocket->state() == QAbstractSocket::ConnectedState)
-        m_ctiserversocket->write(command + "\n");
+    m_ctiserversocket->emitMessage("json", QString::fromUtf8(command));
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
@@ -1350,6 +1350,11 @@ void BaseEngine::popupError(const QString & errorid,
         emit emitMessageBox(errormsg);
 }
 
+void BaseEngine::errorReceived(const QString &error, const QString &advice)
+{
+    emit emitTextMessage(QString("%1: %2").arg(error).arg(advice));
+}
+
 /*! \brief save BaseEngine::m_downloaded to a file
  *  \sa BaseEngine::m_downloaded
  */
@@ -1366,20 +1371,15 @@ void BaseEngine::saveToFile(const QString & filename)
  *
  * Read and process the data from the server.
  */
-void BaseEngine::ctiSocketReadyRead()
+void BaseEngine::parseRawMessage(QString message)
 {
-    while (m_ctiserversocket->canReadLine()) {
-        QByteArray data  = m_ctiserversocket->readLine();
-        QString line = QString::fromUtf8(data);
-
-        if (line.startsWith("<ui version=")) {
-            // we get here when receiving a sheet as a Qt4 .ui form
-            qDebug() << "Incoming sheet, size:" << line.size();
-            emit displayFiche(line, true, QString());
-        } else {
-            data.chop(1);  // remove the \n the the end of the json
-            parseCommand(data);
-        }
+    if (message.startsWith("<ui version=")) {
+        // we get here when receiving a sheet as a Qt4 .ui form
+        qDebug() << "Incoming sheet, size:" << message.size();
+        emit displayFiche(message, true, QString());
+    } else {
+        message.chop(1);  // remove the \n the the end of the json
+        parseCommand(message.toUtf8());
     }
 }
 

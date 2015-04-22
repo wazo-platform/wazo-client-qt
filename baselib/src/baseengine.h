@@ -49,7 +49,7 @@ class QFile;
 class QSettings;
 class QSocketNotifier;
 class QSslError;
-class QSslSocket;
+class QSocketIoClient;
 class QTcpSocket;
 class QTimerEvent;
 class QTranslator;
@@ -222,7 +222,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitMessage(const QString &);
 
         // void sslSocketReadyRead();
-        void sslErrors(const QList<QSslError> &);
+        // void sslErrors(const QList<QSslError> &);
 
     private slots:
         void keepLoginAlive();  //!< Keep session alive
@@ -232,7 +232,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void authenticate();
         void authenticated();
-        void ctiSocketReadyRead();
+        void parseRawMessage(QString message);
         void onCTIServerDisconnected();
 
         void filetransferSocketConnected();
@@ -243,6 +243,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void popupError(const QString & message,
                         const QString & server_address = "",
                         const QString & server_port = "");
+        void errorReceived(const QString &error, const QString &advice);
 
     signals:
         void settingsChanged();  //!< signal emitted when the setting are changed
@@ -382,10 +383,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         EngineState m_state;            //!< State of the engine (Logged/Not Logged)
         QString m_availstate;           //!< Availability state to send to the server
 
-        // QSslSocket * m_sslsocket;
-
         // Internal management
-        QSslSocket * m_ctiserversocket;     //!< Connection to the CTI server
+        QSocketIoClient * m_ctiserversocket;     //!< Connection to the CTI server
         QTcpSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
         QTcpSocket * m_tcpsheetsocket;  //!< TCP connection for Sheet sockets
         QUdpSocket * m_udpsheetsocket;  //!< UDP connection for Sheet sockets

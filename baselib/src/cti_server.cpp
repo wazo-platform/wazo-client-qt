@@ -29,7 +29,9 @@
 
 #include "cti_server.h"
 
-CTIServer::CTIServer(QSslSocket * socket)
+#include <QtSocketIo/QSocketIoClient>
+
+CTIServer::CTIServer(QSocketIoClient * socket)
     : QObject(NULL), m_socket(socket), m_last_port(0)
 {
 }
@@ -92,22 +94,21 @@ void CTIServer::connectToServer(ConnectionConfig config)
     this->connectSocket(config.main_address,
                         config.main_port,
                         config.main_encrypt);
-    if (config.backup_address.isEmpty() == false &&
-        m_socket->waitForConnected(3000) == false) {
-        catchSocketError();
-        this->connectSocket(config.backup_address,
-                            config.backup_port,
-                            config.backup_encrypt);
-    }
+    // if (config.backup_address.isEmpty() == false &&
+    //     m_socket->waitForConnected(3000) == false) {
+    //     catchSocketError();
+    //     this->connectSocket(config.backup_address,
+    //                         config.backup_port,
+    //                         config.backup_encrypt);
+    // }
 }
 
 void CTIServer::disconnectFromServer() {
-    m_socket->flush();
     disconnect(m_socket, SIGNAL(disconnected()),
                this, SLOT(onSocketDisconnected()));
-    m_socket->disconnectFromHost();
-    if (m_socket->isEncrypted() && m_socket->state() != QAbstractSocket::UnconnectedState)
-      m_socket->waitForDisconnected();
+    m_socket->close();
+    // if (m_socket->isEncrypted() && m_socket->state() != QAbstractSocket::UnconnectedState)
+      // m_socket->waitForDisconnected();
     connect(m_socket, SIGNAL(disconnected()),
             this, SLOT(onSocketDisconnected()));
 }
@@ -131,11 +132,11 @@ void CTIServer::connectSocket(const QString & address,
     m_last_address = address;
     m_last_port = port;
     m_socket->abort();
-    if (encrypted) {
-        m_socket->connectToHostEncrypted(address, port);
-    } else {
-        m_socket->connectToHost(address, port);
-    }
+    // if (encrypted) {
+    //     m_socket->connectToHostEncrypted(address, port);
+    // } else {
+        m_socket->open(QString("ws://%1:%2").arg(address).arg(port));
+    // }
 }
 
 bool CTIServer::connected()

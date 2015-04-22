@@ -15,14 +15,17 @@ INCLUDEPATH += $${ROOT_DIR}/src
 HEADERS     += $${ROOT_DIR}/src/*.h
 HEADERS     += $${ROOT_DIR}/src/storage/*.h
 HEADERS     += $${ROOT_DIR}/src/dao/*.h
+# HEADERS     += $${ROOT_DIR}/src/socketio/*.h
 
 SOURCES     += $${ROOT_DIR}/src/*.cpp
 SOURCES     += $${ROOT_DIR}/src/storage/*.cpp
 SOURCES     += $${ROOT_DIR}/src/dao/*.cpp
+# SOURCES     += $${ROOT_DIR}/src/socketio/*.cpp
 
 DESTDIR     = $${BIN_DIR}
 
 QT += network
+QT += websockets
 QT += widgets
 
 TRANSLATIONS += $${ROOT_DIR}/baselib_en.ts
@@ -48,6 +51,15 @@ RESOURCES += $${ROOT_DIR}/baselib.qrc $${ROOT_DIR}/translations.qrc
 MOC_DIR = $$ROOT_DIR/obj
 OBJECTS_DIR = $$ROOT_DIR/obj
 RCC_DIR = $$ROOT_DIR/obj
+
+CONFIG += c++11
+INCLUDEPATH += /home/seb/data/git/QtSocketIo/include/
+LIBS += -L$${BIN_DIR}
+unix:LIBS += -lQt5SocketIo
+win32 {
+    debug:LIBS += -lQt5SocketIod
+    release:LIBS += -lQt5SocketIo
+}
 
 # This adds test-coverage infos
 # debug {

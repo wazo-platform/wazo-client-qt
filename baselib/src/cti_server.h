@@ -30,7 +30,7 @@
 #ifndef __CTISERVER_H__
 #define __CTISERVER_H__
 
-#include <QSslSocket>
+#include <QWebSocket>
 #include <QObject>
 #include <QTimer>
 
@@ -42,7 +42,7 @@ class CTIServer : public QObject
     Q_OBJECT
 
     public:
-        CTIServer(QSslSocket * socket);
+        CTIServer(QSocketIoClient * socket);
         void connectToServer(ConnectionConfig config);
         void disconnectFromServer();
         bool connected();
@@ -64,7 +64,7 @@ class CTIServer : public QObject
         void sendError(const QString & message);
 
     private:
-        QSslSocket * m_socket;
+        QSocketIoClient * m_socket;
         QString m_last_address;
         unsigned m_last_port;
 };
