@@ -65,7 +65,7 @@ History::History(QWidget *parent)
     connect(missed_call_action, SIGNAL(triggered()),
             m_model, SLOT(missedCallMode()));
 
-    this->ui.menu->setSelectedIndex(0);
+    this->ui.menu->setSelectedAction(0);
 }
 
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
