@@ -58,13 +58,9 @@ const QString & ConferenceRoomModel::roomNumber() const
     return m_room_number;
 }
 
-void ConferenceRoomModel::setRoomNumber(QString &room_number)
+void ConferenceRoomModel::setConfRoom(const QString &room_number, const QVariantMap &members)
 {
     m_room_number = room_number;
-}
-
-void ConferenceRoomModel::updateConfRoom(const QVariantMap &members)
-{
     beginResetModel();
     m_members = members;
     extractRow2IdMap();

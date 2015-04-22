@@ -55,13 +55,12 @@ class ConferenceRoomModel : public QAbstractTableModel
 
         bool isRowMuted(int row) const;
         int userNumberFromRow(int row) const;
-        void setRoomNumber(QString &room_number);
+        void setConfRoom(const QString &room_number, const QVariantMap &members);
 
-    public slots:
-        void updateConfRoom(const QVariantMap &members);
     private slots:
         void extractRow2IdMap();
         void updateJoinTime();
+
     private:
         void sort(int, Qt::SortOrder);
         int rowCount(const QModelIndex&) const;

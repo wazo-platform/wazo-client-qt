@@ -94,7 +94,7 @@ void Conference::updateConference(const QVariantMap & config)
         this->ui.conference_tables->indexOf(this->ui.room_page))
     {
         QVariantMap confroom_members = m_confroom_configs[room_number].toMap()["members"].toMap();
-        m_room_model->updateConfRoom(confroom_members);
+        m_room_model->setConfRoom(room_number, confroom_members);
     }
 }
 
@@ -117,9 +117,8 @@ void Conference::showConfList()
 
 void Conference::showConfRoom(QString &room_number, QString &room_name)
 {
-    this->m_room_model->setRoomNumber(room_number);
     QVariantMap confroom_config = m_confroom_configs[room_number].toMap()["members"].toMap();
-    this->m_room_model->updateConfRoom(confroom_config);
+    this->m_room_model->setConfRoom(room_number, confroom_config);
 
     int index = this->ui.conference_tables->indexOf(this->ui.room_page);
     this->ui.conference_tables->setCurrentIndex(index);
