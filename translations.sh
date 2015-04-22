@@ -20,7 +20,7 @@ TRANSIFEX_PROJECT_URL=https://www.transifex.com/projects/p/xivo/resource/xivo-cl
 TRANSIFEX_I18N_DIR="$XIVO_CLIENT_ROOT/translations/xivo.xivo-client"
 XIVO_CLIENT_I18N_DIR="$XIVO_CLIENT_ROOT/xivoclient/i18n"
 : ${QT_PATH:=/opt/qt5/5.4.1/5.4/gcc/bin}
-
+PATH="$PATH:$QT_PATH"
 
 function main {
     if [ $# -eq 0 ] ; then
@@ -60,7 +60,8 @@ function qmake_is_not_run {
 }
 
 function qt_tools_in_path {
-    [ -f "$QT_PATH/lconvert" -a -f "$QT_PATH/lupdate" ]
+    hash lconvert 2>/dev/null && hash lupdate 2>/dev/null
+    return $?
 }
 
 
@@ -137,7 +138,7 @@ function merge_translations {
     do
         rm "$XIVO_CLIENT_I18N_DIR/all_$locale.ts" -f
         find_all_ts_files "$locale" \
-            | xargs "$QT_PATH/lconvert" -o "$XIVO_CLIENT_I18N_DIR/all_$locale.ts"
+            | xargs lconvert -o "$XIVO_CLIENT_I18N_DIR/all_$locale.ts"
     done
 }
 
@@ -154,10 +155,10 @@ function find_all_ts_files {
 
 
 function lupdate_all {
-    "$QT_PATH/lupdate" "baselib/baselib.pro" -no-obsolete
-    "$QT_PATH/lupdate" "xivoclient/xletlib.pro" -no-obsolete
-    "$QT_PATH/lupdate" "xivoclient/xivoclient.pro" -no-obsolete
-    "$QT_PATH/lupdate" "xivoclient/xlets.pro" -no-obsolete
+    lupdate "baselib/baselib.pro" -no-obsolete
+    lupdate "xivoclient/xletlib.pro" -no-obsolete
+    lupdate "xivoclient/xivoclient.pro" -no-obsolete
+    lupdate "xivoclient/xlets.pro" -no-obsolete
 }
 
 
