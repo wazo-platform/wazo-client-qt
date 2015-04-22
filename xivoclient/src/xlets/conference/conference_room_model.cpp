@@ -149,41 +149,37 @@ QVariant ConferenceRoomModel::data(const QModelIndex & index, int role) const
     int join_sequence = member["join_order"].toInt();
     bool isMe = b_engine->isMeetmeMember(m_room_number, join_sequence);
 
-    if (role != Qt::DisplayRole) {
-        if (role == Qt::TextAlignmentRole) {
-            return Qt::AlignVCenter;
-        } else if (role == Qt::DecorationRole) {
-            if (col == ACTION_MUTE && isMe) {
-                return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
-            }
-        } else if (role == Qt::ToolTipRole) {
-            if (col == ACTION_MUTE) {
-                return tr("Mute/UnMute");
-            }
+    if (role == Qt::TextAlignmentRole) {
+        return Qt::AlignVCenter;
+    } else if (role == Qt::DecorationRole) {
+        if (col == ACTION_MUTE && isMe) {
+            return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
         }
-        return QVariant();
-    }
+    } else if (role == Qt::ToolTipRole) {
+        if (col == ACTION_MUTE) {
+            return tr("Mute/UnMute");
+        }
+    } else if (role == Qt::DisplayRole) {
+        int started_since = member["join_time"].toInt();
 
-    int started_since = member["join_time"].toInt();
-
-    switch (col) {
-    case ID:
-        return member["join_order"].toInt();
-    case NUMBER:
-        return member["number"].toString();
-    case NAME:
-        return member["name"].toString();
-    case SINCE:
-        if (started_since == -1)
-            return tr("Unknown");
-        else if (started_since == 0)
-            return tr("Not started");
-        return QDateTime::fromTime_t(
-            QDateTime::currentDateTime().toTime_t()
-            - started_since
-            - b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
-    default:
-        break;
+        switch (col) {
+        case ID:
+            return member["join_order"].toInt();
+        case NUMBER:
+            return member["number"].toString();
+        case NAME:
+            return member["name"].toString();
+        case SINCE:
+            if (started_since == -1)
+                return tr("Unknown");
+            else if (started_since == 0)
+                return tr("Not started");
+            return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t()
+                                         - started_since
+                                         - b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
+        default:
+            break;
+        }
     }
     return QVariant();
 }
