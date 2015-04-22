@@ -166,10 +166,9 @@ QVariant ConferenceRoomModel::data(const QModelIndex & index, int role) const
         case NAME:
             return member["name"].toString();
         case SINCE:
-            if (started_since == -1)
+            if (started_since == -1) {
                 return tr("Unknown");
-            else if (started_since == 0)
-                return tr("Not started");
+            }
             return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t()
                                          - started_since
                                          - b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
