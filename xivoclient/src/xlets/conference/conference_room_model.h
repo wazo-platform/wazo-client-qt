@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -50,8 +50,8 @@ class ConferenceRoomModel : public QAbstractTableModel
             NB_COL
         };
         ConferenceRoomModel(QWidget *parent);
-        QString row2participantId(int row) const { return m_row2number[row]; }
-        const QString & getRoomNumber() const { return m_room_number; }
+        QString row2participantId(int row) const;
+        const QString & roomNumber() const;
 
         bool isRowMuted(int row) const;
         int userNumberFromRow(int row) const;

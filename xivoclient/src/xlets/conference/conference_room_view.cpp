@@ -68,7 +68,7 @@ void ConferenceRoomView::onViewClick(const QModelIndex &index)
         int row = index.row();
         ConferenceRoomModel *model = static_cast<ConferenceRoomModel *>(this->model());
         bool isMuted = model->isRowMuted(row);
-        QString room_number = model->getRoomNumber();
+        QString room_number = model->roomNumber();
         QString user_number = QString("%0").arg(model->userNumberFromRow(row));
         QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
         QString param = QString("%0 %1").arg(room_number).arg(user_number);

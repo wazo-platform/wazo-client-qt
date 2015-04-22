@@ -48,6 +48,16 @@ ConferenceRoomModel::ConferenceRoomModel(QWidget *parent)
     join_time_timer->start(1000);
 }
 
+QString ConferenceRoomModel::row2participantId(int row) const
+{
+    return m_row2number[row];
+}
+
+const QString & ConferenceRoomModel::roomNumber() const
+{
+    return m_room_number;
+}
+
 void ConferenceRoomModel::setRoomNumber(QString &room_number)
 {
     m_room_number = room_number;

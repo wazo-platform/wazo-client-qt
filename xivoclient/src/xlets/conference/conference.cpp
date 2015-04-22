@@ -88,7 +88,7 @@ void Conference::updateConference(const QVariantMap & config)
     m_confroom_configs = config;
     this->m_list_model->updateConfList(m_confroom_configs);
 
-    QString room_number = this->m_room_model->getRoomNumber();
+    QString room_number = this->m_room_model->roomNumber();
     if (! room_number.isEmpty() &&
         this->ui.conference_tables->currentIndex() ==
         this->ui.conference_tables->indexOf(this->ui.room_page))
