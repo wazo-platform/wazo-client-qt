@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -46,10 +46,6 @@ enum HistoryMode {
     DEFAULT
 };
 
-//const QString DATE_PATTERN = "yyyy-MM-ddThh:mm:ss";
-
-/*! \brief cdr model
- */
 class HistoryModel : public QAbstractTableModel, public IPBXListener
 {
     Q_OBJECT

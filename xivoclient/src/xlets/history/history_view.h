@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -37,14 +37,13 @@
 #include <ipbxlistener.h>
 #include <xletlib/abstract_table_view.h>
 
-class HistoryModel;
-
 class HistoryView : public AbstractTableView
 {
     Q_OBJECT
 
     public:
         HistoryView(QWidget *parent = NULL);
+
     private slots:
         void onViewClick(const QModelIndex &);
         void callOnClick(bool);

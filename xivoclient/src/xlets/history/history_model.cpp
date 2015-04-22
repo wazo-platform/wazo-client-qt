@@ -102,8 +102,6 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
     return QVariant();
 }
 
-/*! \brief parse history command response
- */
 void HistoryModel::updateHistory(const QVariantMap &p)
 {
     int mode = p.value("mode").toInt();
@@ -114,7 +112,6 @@ void HistoryModel::updateHistory(const QVariantMap &p)
     endResetModel();
 }
 
-/*! \brief ask history for an extension */
 void HistoryModel::requestHistory(HistoryMode mode, QString xuserid)
 {
     if (mode == DEFAULT) {
@@ -137,27 +134,27 @@ void HistoryModel::missedCallMode()
 {
     m_mode = MISSEDCALLS;
     requestHistory(m_mode);
-	beginResetModel();
+    beginResetModel();
     emit headerDataChanged(Qt::Horizontal, 0, 3);
-	endResetModel();
+    endResetModel();
 }
 
 void HistoryModel::receivedCallMode()
 {
     m_mode = INCALLS;
     requestHistory(m_mode);
-	beginResetModel();
+    beginResetModel();
     emit headerDataChanged(Qt::Horizontal, 0, 3);
-	endResetModel();
+    endResetModel();
 }
 
 void HistoryModel::sentCallMode()
 {
     m_mode = OUTCALLS;
     requestHistory(m_mode);
-	beginResetModel();
+    beginResetModel();
     emit headerDataChanged(Qt::Horizontal, 0, 3);
-	endResetModel();
+    endResetModel();
 }
 
 QVariant HistoryModel::headerData(int section,
@@ -179,4 +176,3 @@ QVariant HistoryModel::headerData(int section,
 
     return QVariant();
 }
-
