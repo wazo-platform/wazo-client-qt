@@ -355,8 +355,6 @@ void BaseEngine::saveSettings()
         foreach (QString function, CheckFunctions)
             m_settings->setValue(function, m_config["checked_function." + function].toBool());
     m_settings->endGroup();
-
-    emit settingsChanged();
 }
 
 QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const
@@ -1525,6 +1523,7 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
     }
 
     saveSettings();
+    emit settingsChanged();
 }
 
 // === Getter and Setters ===

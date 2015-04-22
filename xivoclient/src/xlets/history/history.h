@@ -36,11 +36,13 @@
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 
-class HistoryView;
-class HistoryModel;
+#include <ui_history_widget.h>
 
-/*! \brief Call Log display widget
- */
+#include "history_sort_filter_proxy_model.h"
+
+class HistoryModel;
+class HistoryView;
+
 class History : public XLet
 {
     Q_OBJECT
@@ -48,8 +50,9 @@ class History : public XLet
     public:
         History(QWidget *parent=0);
     private:
-        HistoryView * m_view;
-        HistoryModel *m_history_model;
+        HistoryModel *m_model;
+        HistorySortFilterProxyModel *m_proxy_model;
+        Ui::HistoryWidget ui;
 };
 
 class XLetHistoryPlugin : public QObject, XLetInterface

@@ -46,7 +46,7 @@ enum HistoryMode {
     DEFAULT
 };
 
-const QString DATE_PATTERN = "yyyy-MM-ddThh:mm:ss";
+//const QString DATE_PATTERN = "yyyy-MM-ddThh:mm:ss";
 
 /*! \brief cdr model
  */
@@ -55,60 +55,25 @@ class HistoryModel : public QAbstractTableModel, public IPBXListener
     Q_OBJECT
 
     public:
-        HistoryModel(int, QWidget * parent = NULL);
+        HistoryModel(QWidget * parent = NULL);
         void parseCommand(const QVariantMap &);
 
     protected:
         virtual int rowCount(const QModelIndex&) const;
         virtual int columnCount(const QModelIndex&) const;
         virtual QVariant data(const QModelIndex&, int) const;
-        virtual Qt::ItemFlags flags(const QModelIndex &) const;
-        virtual void sort(int, Qt::SortOrder);
         virtual QVariant headerData(int , Qt::Orientation, int) const;
 
     public slots:
-        void changeMode(bool);
+        void missedCallMode();
+        void receivedCallMode();
+        void sentCallMode();
         void updateHistory(const QVariantMap &p);
 
     private slots:
         void requestHistory(HistoryMode mode = DEFAULT, QString xuserid = "");
 
     private:
-        bool m_sorted;
-        int m_sorted_column;
-        Qt::SortOrder m_sort_order;
-
-        static QDateTime dateFromString(const QString &string) {
-            QString date = string.split(".")[0];
-            return QDateTime::fromString(date, DATE_PATTERN);
-        }
-        static int ascendingOrderByDuration(const QVariant &a, const QVariant &b) {
-                return a.toMap().value("duration").toInt() <
-                        b.toMap().value("duration").toInt();
-        }
-        static int descendingOrderByDuration(const QVariant &a, const QVariant &b) {
-                return a.toMap().value("duration").toInt() >
-                        b.toMap().value("duration").toInt();
-        }
-        static int ascendingOrderByNumber(const QVariant &a, const QVariant &b) {
-                return a.toMap().value("fullname").toString() <
-                        b.toMap().value("fullname").toString();
-        }
-        static int descendingOrderByNumber(const QVariant &a, const QVariant &b) {
-                return a.toMap().value("fullname").toString() >
-                        b.toMap().value("fullname").toString();
-        }
-        static int ascendingOrderByDate(const QVariant &a, const QVariant &b) {
-            QDateTime first_date = dateFromString(a.toMap()["calldate"].toString());
-            QDateTime second_date = dateFromString(b.toMap()["calldate"].toString());
-            return first_date.toTime_t() < second_date.toTime_t();
-        }
-        static int descendingOrderByDate(const QVariant &a, const QVariant &b) {
-            QDateTime first_date = dateFromString(a.toMap()["calldate"].toString());
-            QDateTime second_date = dateFromString(b.toMap()["calldate"].toString());
-            return first_date.toTime_t() > second_date.toTime_t();
-        }
-
         QVariantList m_history;
         HistoryMode m_mode;
 };

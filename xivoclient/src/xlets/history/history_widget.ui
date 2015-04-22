@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>HistoryWidget</class>
+ <widget class="QWidget" name="HistoryWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +12,11 @@
   </property>
   <property name="windowTitle">
    <string notr="true">History</string>
+  </property>
+  <property name="qss_tags" stdset="0">
+   <stringlist notr="true">
+    <string>xlet_frame</string>
+   </stringlist>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
@@ -27,17 +32,26 @@
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>30</number>
+    <number>90</number>
    </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
       <number>0</number>
      </property>
+     <property name="leftMargin">
+      <number>30</number>
+     </property>
+     <property name="rightMargin">
+      <number>30</number>
+     </property>
+     <property name="bottomMargin">
+      <number>40</number>
+     </property>
      <item>
       <widget class="QLabel" name="history_label">
        <property name="text">
-        <string>HIstory</string>
+        <string>History</string>
        </property>
        <property name="indent">
         <number>0</number>
@@ -55,7 +69,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="tableView"/>
+    <widget class="HistoryView" name="history_table"/>
    </item>
   </layout>
  </widget>
@@ -63,8 +77,13 @@
   <customwidget>
    <class>HorizontalMenu</class>
    <extends>QWidget</extends>
-   <header location="global">xletlib/horizontalmenu.h</header>
+   <header location="global">xletlib/horizontal_menu.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>HistoryView</class>
+   <extends>QTableView</extends>
+   <header location="global">xlets/history/history_view.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

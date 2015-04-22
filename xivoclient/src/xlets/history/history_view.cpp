@@ -28,7 +28,6 @@
  */
 
 #include <QAction>
-#include <QHeaderView>
 #include <QMenu>
 #include <QString>
 
@@ -37,14 +36,9 @@
 #include "history_model.h"
 #include "history_view.h"
 
-HistoryView::HistoryView(QWidget *parent, HistoryModel *model)
-    : QTableView(parent)
+HistoryView::HistoryView(QWidget *parent)
+    : AbstractTableView(parent)
 {
-    setSortingEnabled(true);
-    setModel(model);
-    verticalHeader()->hide();
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
 }

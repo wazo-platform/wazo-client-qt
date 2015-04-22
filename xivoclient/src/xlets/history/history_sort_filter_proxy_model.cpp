@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,28 +27,24 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_VIEW_H__
-#define __HISTORY_VIEW_H__
+#include "history_sort_filter_proxy_model.h"
 
-#include <QContextMenuEvent>
-#include <QModelIndex>
-#include <QWidget>
-
-#include <ipbxlistener.h>
-#include <xletlib/abstract_table_view.h>
-
-class HistoryModel;
-
-class HistoryView : public AbstractTableView
+HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
+    : AbstractSortFilterProxyModel(parent)
 {
-    Q_OBJECT
+}
 
-    public:
-        HistoryView(QWidget *parent = NULL);
-    private slots:
-        void onViewClick(const QModelIndex &);
-        void callOnClick(bool);
-        void contextMenuEvent(QContextMenuEvent *);
-};
+bool HistorySortFilterProxyModel::lessThan(const QModelIndex &left,
+                                           const QModelIndex &right) const
+{
+    QVariant left_data = sourceModel()->data(left, Qt::UserRole);
+    QVariant right_data = sourceModel()->data(right, Qt::UserRole);
 
-#endif
+    if (left.column() == 1) {
+        return left_data < right_data;
+    } else if (left.column() == 2) {
+        return left_data < right_data;
+    } else {
+        return AbstractSortFilterProxyModel::lessThan(left, right);
+    }
+}
