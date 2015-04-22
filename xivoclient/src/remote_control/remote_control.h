@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -44,7 +44,6 @@
 #include <main_window/main_widget.h>
 #include <main_window/central_widget.h>
 #include <main_window/statusbar.h>
-#include <xlets/conference/conflist.h>
 #include <xletlib/extendedtablewidget.h>
 
 using namespace std;

@@ -56,6 +56,7 @@ Conference::Conference(QWidget *parent)
     /* CONFLIST */
     // this contains the data, unordered
     m_list_model = new ConferenceListModel(this);
+    m_list_model->setObjectName("conference_list_model");
 
     // this maps the indexes between the sorted view and the unordered model
     QSortFilterProxyModel *list_proxy_model = new QSortFilterProxyModel(this);

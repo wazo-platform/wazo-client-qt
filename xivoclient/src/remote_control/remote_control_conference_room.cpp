@@ -1,6 +1,5 @@
-
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -34,26 +33,25 @@
 #include <QVariant>
 
 #include "xlets/conference/conference.h"
-#include "xlets/conference/conflist.h"
-#include "xlets/conference/conflist_model.h"
+#include "xlets/conference/conference_list_model.h"
 #include "remote_control.h"
 
 QVariantMap RemoteControl::get_conference_room_infos()
 {
     QVariantMap args;
     Conference* conference_xlet = this->get_xlet<Conference>("conference");
-    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conflist_model");
+    QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conference_list_model");
 
     args["conference_xlet"] = conference_xlet != NULL;
     args["conflist_model"] = conflist_model != NULL;
 
     QVariantList content;
     QVariantMap header_data;
-    header_data["name"] = ConfListModel::NAME;
-    header_data["number"] = ConfListModel::NUMBER;
-    header_data["pin_required"] = ConfListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConfListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConfListModel::STARTED_SINCE;
+    header_data["name"] = ConferenceListModel::NAME;
+    header_data["number"] = ConferenceListModel::NUMBER;
+    header_data["pin_required"] = ConferenceListModel::PIN_REQUIRED;
+    header_data["member_count"] = ConferenceListModel::MEMBER_COUNT;
+    header_data["started_since"] = ConferenceListModel::STARTED_SINCE;
 
     int nb_rows = conflist_model->rowCount(QModelIndex());
     for (int row = 0; row < nb_rows; row++) {
