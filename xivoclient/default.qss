@@ -121,6 +121,10 @@ AbstractTableView::item {
     padding-left: 30px;
 }
 
+PeopleEntryView::item {
+    border-top: none;
+}
+
 AbstractTableView > QHeaderView::down-arrow {
     image: url(:/images/down-arrow-grey.svg);
     right: 8px;
