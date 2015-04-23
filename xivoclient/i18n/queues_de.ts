@@ -56,12 +56,12 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
         <source>Logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>Angemeldet</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Number of agents logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl der angemeldeten Agenten</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>

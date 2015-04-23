@@ -44,7 +44,7 @@
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="59"/>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="60"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ID</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>

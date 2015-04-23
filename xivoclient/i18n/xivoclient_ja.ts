@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="382"/>
         <source>History</source>
-        <translation type="unfinished">履歴</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="417"/>

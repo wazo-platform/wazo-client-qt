@@ -2,67 +2,75 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nl">
 <context>
-    <name>LogTableView</name>
+    <name>History</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="276"/>
-        <source>Call %1</source>
-        <translation>Oproep %1</translation>
-    </message>
-</context>
-<context>
-    <name>LogWidget</name>
-    <message>
-        <location filename="../src/xlets/history/history.cpp" line="230"/>
+        <location filename="../src/xlets/history/history.cpp" line="38"/>
         <source>History</source>
-        <translation>Historiek</translation>
+        <translation type="unfinished">Historiek</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="242"/>
+        <location filename="../src/xlets/history/history.cpp" line="57"/>
         <source>Sent calls</source>
-        <translation>Gemaakte oproepen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="243"/>
+        <location filename="../src/xlets/history/history.cpp" line="58"/>
         <source>Received calls</source>
-        <translation>Ontvangen oproepen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="244"/>
+        <location filename="../src/xlets/history/history.cpp" line="59"/>
         <source>Missed calls</source>
-        <translation>Gemiste oproepen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>LogWidgetModel</name>
+    <name>HistoryModel</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="127"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="85"/>
         <source>%1 hr %2 min %3 s</source>
-        <translation>%1 u %2 min %3 s</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="129"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="87"/>
         <source>%1 min %2 s</source>
-        <translation>%1 min %2 s</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="131"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="89"/>
         <source>%1 s</source>
-        <translation>%1 s</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="198"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="169"/>
         <source>Number</source>
-        <translation>Nummer</translation>
+        <translation type="unfinished">Nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="200"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="171"/>
         <source>Date</source>
-        <translation>Datum</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="203"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="174"/>
         <source>Duration</source>
-        <translation>Duur</translation>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryView</name>
+    <message>
+        <location filename="../src/xlets/history/history_view.cpp" line="56"/>
+        <source>Call %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryWidget</name>
+    <message>
+        <location filename="../src/xlets/history/history_widget.ui" line="54"/>
+        <source>History</source>
+        <translation type="unfinished">Historiek</translation>
     </message>
 </context>
 </TS>

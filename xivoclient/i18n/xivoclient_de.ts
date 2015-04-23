@@ -83,7 +83,7 @@
         <location filename="../src/config_widget/config_widget.ui" line="166"/>
         <location filename="../src/config_widget/config_widget.ui" line="806"/>
         <source>You must restart the program for this setting to apply.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie müssen das Programm zum Anwenden dieser Einstellung neu starten.</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="113"/>
@@ -384,12 +384,12 @@
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="400"/>
         <source>Agent (logged off)</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent (abgemeldet)</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="405"/>
         <source>Agent (logged in)</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent (angemeldet)</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="413"/>
@@ -680,7 +680,7 @@
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="190"/>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="206"/>
         <source>CSV file (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV-Datei (*.csv)</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="204"/>

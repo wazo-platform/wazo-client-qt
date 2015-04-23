@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
         <source>Logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>Angemeldet</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="49"/>

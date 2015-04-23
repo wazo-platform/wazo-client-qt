@@ -407,7 +407,7 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="54"/>
         <source>ID</source>
-        <translation type="unfinished">ID</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="55"/>
@@ -417,7 +417,7 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
         <source>Name</source>
-        <translation type="unfinished">名前</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
