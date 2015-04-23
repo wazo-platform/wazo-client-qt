@@ -202,19 +202,16 @@ void IdentityDisplay::updateAgentStatus(const QString & agent_id)
         return;
 
     if (agentinfo->logged()) {
-        emit setAppIcon(icon_agent_logged);
-    } else {
-        emit setAppIcon(icon_user_logged);
-    }
-
-    if (agentinfo->logged()) {
         if (agentinfo->paused()) {
             this->ui.agent_button->setIcon(QIcon(":/images/agent-pause.svg"));
+            emit setAppIcon(icon_agent_paused);
         } else {
             this->ui.agent_button->setIcon(QIcon(":/images/agent-on.svg"));
+            emit setAppIcon(icon_agent_logged);
         }
     } else {
         this->ui.agent_button->setIcon(QIcon(":/images/agent-off.svg"));
+        emit setAppIcon(icon_user_logged);
     }
 }
 
