@@ -52,7 +52,7 @@ History::History(QWidget *parent)
     m_proxy_model = new HistorySortFilterProxyModel(this);
     m_proxy_model->setSourceModel(m_model);
     this->ui.history_table->setModel(m_proxy_model);
-    this->ui.history_table->sortByColumn(0, Qt::AscendingOrder);
+    this->ui.history_table->sortByColumn(1, Qt::DescendingOrder);
 
     QAction *sent_call_action = this->ui.menu->addAction(tr("Sent calls"));
     QAction *received_call_action = this->ui.menu->addAction(tr("Received calls"));
