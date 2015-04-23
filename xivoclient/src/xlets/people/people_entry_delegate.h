@@ -68,8 +68,9 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
 
     protected:
         bool pressed;
-        static QMargins button_margins;
         static int action_selector_width;
+        static int button_height;
+        static QMargins button_margins;
 
     private:
         QRect buttonRect(const QRect &option_rect) const;

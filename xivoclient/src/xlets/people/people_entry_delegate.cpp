@@ -39,10 +39,13 @@
 #include "people_actions.h"
 
 QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
+
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
-QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
+
 int PeopleEntryNumberDelegate::action_selector_width = 40;
+int PeopleEntryNumberDelegate::button_height = 30;
+QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
 
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
@@ -183,7 +186,10 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
 
 QRect PeopleEntryNumberDelegate::contentsRect(const QRect &option_rect) const
 {
-    return option_rect.marginsRemoved(button_margins);
+    QRect result = option_rect.marginsRemoved(button_margins);
+    result.setHeight(button_height);
+    result.moveCenter(option_rect.center());
+    return result;
 }
 
 QRect PeopleEntryNumberDelegate::buttonRect(const QRect &option_rect) const
@@ -208,8 +214,7 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
         return;
     }
 
-    QPoint position = option.rect.bottomLeft();
-    position.setX(position.x() + button_margins.left());
+    QPoint position = this->contentsRect(option.rect).bottomLeft();
     QPoint globalPosition = view->viewport()->mapToGlobal(position);
 
     Menu menu(view);
