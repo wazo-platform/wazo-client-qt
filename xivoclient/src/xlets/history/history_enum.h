@@ -27,57 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
-#include <QMenu>
-#include <QString>
+#ifndef __HISTORY_ENUM_H__
+#define __HISTORY_ENUM_H__
 
-#include <baseengine.h>
+enum HistoryMode {
+    OUTCALLS = 0,
+    INCALLS,
+    MISSEDCALLS,
+    ALLCALLS
+};
 
-#include "history_view.h"
+enum HistoryColumn {
+    NAME = 0,
+    EXTEN,
+    DATE,
+    DURATION,
+    NB_COLS
+};
 
-HistoryView::HistoryView(QWidget *parent)
-    : AbstractTableView(parent)
-{
-    connect(this, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(onViewClick(const QModelIndex &)));
-}
-
-void HistoryView::contextMenuEvent(QContextMenuEvent * event)
-{
-    const QModelIndex &index = indexAt(event->pos());
-    QString caller = index.sibling(index.row(), 0).data().toString();
-    if (caller.isEmpty()) {
-        return;
-    }
-
-    QMenu *menu = new QMenu(this);
-
-    QAction *action = new QAction(tr("Call %1").arg(caller), menu);
-    action->setProperty("num_to_call", caller);
-    connect(action, SIGNAL(triggered(bool)),
-            this, SLOT(callOnClick(bool)));
-
-    menu->addAction(action);
-    menu->exec(QCursor::pos());
-
-}
-
-
-void HistoryView::callOnClick(bool)
-{
-    QAction *calling_action = qobject_cast<QAction *>(sender());
-    QString num_to_call = calling_action->property("num_to_call").toString();
-    b_engine->actionDial(num_to_call);
-}
-
-void HistoryView::onViewClick(const QModelIndex &index)
-{
-    QString caller = index.sibling(index.row(), 0).data().toString();
-
-    if (caller.isEmpty()) {
-        return;
-    }
-
-    b_engine->pasteToDial(caller);
-}
-
+#endif

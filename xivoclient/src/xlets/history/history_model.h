@@ -39,12 +39,7 @@
 
 #include <ipbxlistener.h>
 
-enum HistoryMode {
-    OUTCALLS = 0,
-    INCALLS,
-    MISSEDCALLS,
-    DEFAULT
-};
+#include "history_enum.h"
 
 class HistoryModel : public QAbstractTableModel, public IPBXListener
 {
@@ -61,16 +56,17 @@ class HistoryModel : public QAbstractTableModel, public IPBXListener
         virtual QVariant headerData(int , Qt::Orientation, int) const;
 
     public slots:
-        void missedCallMode();
-        void receivedCallMode();
-        void sentCallMode();
+        void allCallsMode();
+        void missedCallsMode();
+        void receivedCallsMode();
+        void sentCallsMode();
         void updateHistory(const QVariantMap &p);
 
     private slots:
-        void requestHistory(HistoryMode mode = DEFAULT, QString xuserid = "");
+        void requestHistory(HistoryMode mode = ALLCALLS, QString xuserid = "");
 
     private:
-        QVariantList m_history;
+        QVariantList m_all_history;
         HistoryMode m_mode;
 };
 

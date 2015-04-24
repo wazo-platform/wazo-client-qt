@@ -31,7 +31,9 @@
 #include <phonenumber.h>
 
 #include "history.h"
+#include "history_enum.h"
 #include "history_model.h"
+#include "history_sort_filter_proxy_model.h"
 #include "history_view.h"
 
 History::History(QWidget *parent)
@@ -52,20 +54,52 @@ History::History(QWidget *parent)
     m_proxy_model = new HistorySortFilterProxyModel(this);
     m_proxy_model->setSourceModel(m_model);
     this->ui.history_table->setModel(m_proxy_model);
-    this->ui.history_table->sortByColumn(1, Qt::DescendingOrder);
+    this->ui.history_table->sortByColumn(2, Qt::DescendingOrder);
 
+    QAction *all_call_action = this->ui.menu->addAction(tr("All calls"));
     QAction *sent_call_action = this->ui.menu->addAction(tr("Sent calls"));
     QAction *received_call_action = this->ui.menu->addAction(tr("Received calls"));
     QAction *missed_call_action = this->ui.menu->addAction(tr("Missed calls"));
 
+    connect(all_call_action, SIGNAL(triggered()),
+            m_model, SLOT(allCallsMode()));
     connect(sent_call_action, SIGNAL(triggered()),
-            m_model, SLOT(sentCallMode()));
+            m_model, SLOT(sentCallsMode()));
     connect(received_call_action, SIGNAL(triggered()),
-            m_model, SLOT(receivedCallMode()));
+            m_model, SLOT(receivedCallsMode()));
     connect(missed_call_action, SIGNAL(triggered()),
-            m_model, SLOT(missedCallMode()));
+            m_model, SLOT(missedCallsMode()));
+
+    connect(all_call_action, SIGNAL(triggered()),
+            this, SLOT(allCallsMode()));
+    connect(sent_call_action, SIGNAL(triggered()),
+            this, SLOT(sentCallsMode()));
+    connect(received_call_action, SIGNAL(triggered()),
+            this, SLOT(receivedCallsMode()));
+    connect(missed_call_action, SIGNAL(triggered()),
+            this, SLOT(missedCallsMode()));
 
     this->ui.menu->setSelectedAction(0);
+}
+
+void History::allCallsMode()
+{
+    m_proxy_model->setFilterMode(ALLCALLS);
+}
+
+void History::missedCallsMode()
+{
+    m_proxy_model->setFilterMode(MISSEDCALLS);
+}
+
+void History::receivedCallsMode()
+{
+    m_proxy_model->setFilterMode(INCALLS);
+}
+
+void History::sentCallsMode()
+{
+    m_proxy_model->setFilterMode(OUTCALLS);
 }
 
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)

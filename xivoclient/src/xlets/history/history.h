@@ -38,9 +38,8 @@
 
 #include <ui_history_widget.h>
 
-#include "history_sort_filter_proxy_model.h"
-
 class HistoryModel;
+class HistorySortFilterProxyModel;
 class HistoryView;
 
 class History : public XLet
@@ -49,6 +48,13 @@ class History : public XLet
 
     public:
         History(QWidget *parent=0);
+
+    public slots:
+        void allCallsMode();
+        void missedCallsMode();
+        void receivedCallsMode();
+        void sentCallsMode();
+
     private:
         HistoryModel *m_model;
         HistorySortFilterProxyModel *m_proxy_model;

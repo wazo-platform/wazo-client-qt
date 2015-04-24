@@ -27,11 +27,41 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "history_enum.h"
 #include "history_sort_filter_proxy_model.h"
 
 HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
+    this->setFilterKeyColumn(0);
+}
+
+void HistorySortFilterProxyModel::setFilterMode(int mode)
+{
+    m_mode = mode;
+    invalidateFilter();
+}
+
+bool HistorySortFilterProxyModel::filterAcceptsColumn(int source_column,
+                                                      const QModelIndex &/*source_parent*/) const
+{
+    if (source_column == 3 && m_mode == MISSEDCALLS) {
+        return false;
+    }
+    return true;
+}
+
+bool HistorySortFilterProxyModel::filterAcceptsRow(int source_row,
+                                                   const QModelIndex &source_parent) const
+{
+    if (m_mode == ALLCALLS) {
+        return true;
+    }
+
+    QModelIndex name_index = sourceModel()->index(source_row, 0, source_parent);
+    QVariant mode = sourceModel()->data(name_index, Qt::UserRole);
+
+    return mode == m_mode;
 }
 
 bool HistorySortFilterProxyModel::lessThan(const QModelIndex &left,

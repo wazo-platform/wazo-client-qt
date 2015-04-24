@@ -43,8 +43,17 @@ class HistorySortFilterProxyModel : public AbstractSortFilterProxyModel
 
     public:
         HistorySortFilterProxyModel(QObject *parent);
+
+        int filterMode() const { return m_mode; }
+        void setFilterMode(int mode);
+
     protected:
+        virtual bool filterAcceptsColumn(int source_column, const QModelIndex &source_parent) const;
+        virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
         virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+
+    private:
+        int m_mode;
 };
 
 #endif
