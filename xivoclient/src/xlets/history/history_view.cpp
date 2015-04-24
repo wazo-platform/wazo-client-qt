@@ -33,6 +33,7 @@
 
 #include <baseengine.h>
 
+#include "history_enum.h"
 #include "history_view.h"
 
 HistoryView::HistoryView(QWidget *parent)
@@ -45,7 +46,7 @@ HistoryView::HistoryView(QWidget *parent)
 void HistoryView::contextMenuEvent(QContextMenuEvent * event)
 {
     const QModelIndex &index = indexAt(event->pos());
-    QString caller = index.sibling(index.row(), 0).data().toString();
+    QString caller = index.sibling(index.row(), COL_EXTEN).data().toString();
     if (caller.isEmpty()) {
         return;
     }
@@ -72,7 +73,7 @@ void HistoryView::callOnClick(bool)
 
 void HistoryView::onViewClick(const QModelIndex &index)
 {
-    QString caller = index.sibling(index.row(), 0).data().toString();
+    QString caller = index.sibling(index.row(), COL_EXTEN).data().toString();
 
     if (caller.isEmpty()) {
         return;

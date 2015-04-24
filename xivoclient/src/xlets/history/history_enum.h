@@ -38,10 +38,10 @@ enum HistoryMode {
 };
 
 enum HistoryColumn {
-    NAME = 0,
-    EXTEN,
-    DATE,
-    DURATION,
+    COL_NAME = 0,
+    COL_EXTEN,
+    COL_DATE,
+    COL_DURATION,
     NB_COLS
 };
 

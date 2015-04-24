@@ -53,7 +53,7 @@ int HistoryModel::rowCount(const QModelIndex&) const
 
 int HistoryModel::columnCount(const QModelIndex&) const
 {
-    return 4;
+    return NB_COLS;
 }
 
 QVariant HistoryModel::data(const QModelIndex &a, int role) const
@@ -64,15 +64,15 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
     if (role == Qt::DisplayRole) {
         if (((histlist.count()) &&
              ((histlist).value(row).toMap().count()))) {
-            if (column == 0) {
+            if (column == COL_NAME) {
                 return histlist.value(row).toMap().value("fullname");
-            } else if (column == 1) {
+            } else if (column == COL_EXTEN) {
                 return histlist.value(row).toMap().value("extension");
-            } else if (column == 2) {
+            } else if (column == COL_DATE) {
                 QString qsd = histlist.value(row).toMap().value("calldate").toString();
                 QDateTime qdt = QDateTime::fromString(qsd, Qt::ISODate);
                 return qdt.toString(QString("dd/MM/yyyy  HH:mm:ss"));
-            } else if (column == 3) {
+            } else if (column == COL_DURATION) {
                 int duration = histlist.value(row).toMap().value("duration").toInt();
                 int sec =   ( duration % 60);
                 int min =   ( duration - sec ) / 60 % 60;
@@ -86,12 +86,12 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
             }
         }
     } else if (role == Qt::UserRole) {
-        if (column == 0) {
+        if (column == COL_NAME) {
             return histlist.value(row).toMap().value("mode");
-        } else if (column == 2) {
+        } else if (column == COL_DATE) {
             QString call_datetime = histlist.value(row).toMap().value("calldate").toString();
             return QDateTime::fromString(call_datetime, Qt::ISODate);
-        } else if (column == 3) {
+        } else if (column == COL_DURATION) {
             return histlist.value(row).toMap().value("duration").toInt();
         }
     }
@@ -163,13 +163,13 @@ QVariant HistoryModel::headerData(int section,
 {
     if ((role == Qt::DisplayRole) &&
         (orientation == Qt::Horizontal)) {
-        if (section == 0) {
+        if (section == COL_NAME) {
             return QVariant(tr("Name"));
-        } else if (section == 1) {
+        } else if (section == COL_EXTEN) {
             return QVariant(tr("Number"));
-        } else if (section == 2) {
+        } else if (section == COL_DATE) {
             return QVariant(tr("Date"));
-        } else if (section == 3) {
+        } else if (section == COL_DURATION) {
             return QVariant(tr("Duration"));
         }
     }

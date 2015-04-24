@@ -33,7 +33,7 @@
 HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
-    this->setFilterKeyColumn(0);
+    this->setFilterKeyColumn(COL_DATE);
 }
 
 void HistorySortFilterProxyModel::setFilterMode(int mode)
@@ -58,7 +58,7 @@ bool HistorySortFilterProxyModel::filterAcceptsRow(int source_row,
         return true;
     }
 
-    QModelIndex name_index = sourceModel()->index(source_row, 0, source_parent);
+    QModelIndex name_index = sourceModel()->index(source_row, COL_NAME, source_parent);
     QVariant mode = sourceModel()->data(name_index, Qt::UserRole);
 
     return mode == m_mode;
@@ -70,9 +70,9 @@ bool HistorySortFilterProxyModel::lessThan(const QModelIndex &left,
     QVariant left_data = sourceModel()->data(left, Qt::UserRole);
     QVariant right_data = sourceModel()->data(right, Qt::UserRole);
 
-    if (left.column() == 1) {
+    if (left.column() == COL_DATE) {
         return left_data < right_data;
-    } else if (left.column() == 2) {
+    } else if (left.column() == COL_DURATION) {
         return left_data < right_data;
     } else {
         return AbstractSortFilterProxyModel::lessThan(left, right);
