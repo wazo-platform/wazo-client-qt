@@ -1,9 +1,9 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource>
-        <file>../../../images/history/sent_call.png</file>
-        <file>../../../images/history/received_call.png</file>
-        <file>../../../images/history/missed_call.png</file>
+        <file>../../../images/history/sent-call.svg</file>
+        <file>../../../images/history/received-call.svg</file>
+        <file>../../../images/history/missed-call.svg</file>
         <file>../../../obj/history_fr.qm</file>
         <file>../../../obj/history_en.qm</file>
         <file>../../../obj/history_es_ES.qm</file>

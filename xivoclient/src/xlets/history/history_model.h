@@ -68,6 +68,7 @@ class HistoryModel : public QAbstractTableModel, public IPBXListener
     private:
         QVariantList m_all_history;
         HistoryMode m_mode;
+        static QSize icon_size;
 };
 
 #endif

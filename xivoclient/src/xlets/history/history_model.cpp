@@ -27,11 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QIcon>
 #include <QList>
 
 #include <baseengine.h>
 
 #include "history_model.h"
+
+QSize HistoryModel::icon_size = QSize(12, 12);
 
 HistoryModel::HistoryModel(QWidget * parent)
     : QAbstractTableModel(parent)
@@ -93,6 +96,15 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
             return QDateTime::fromString(call_datetime, Qt::ISODate);
         } else if (column == COL_DURATION) {
             return histlist.value(row).toMap().value("duration").toInt();
+        }
+    } else if (role == Qt::DecorationRole && column == COL_NAME) {
+        int mode = histlist.value(row).toMap().value("mode").toInt();
+        if (mode == OUTCALLS) {
+            return QIcon(":/images/history/sent-call.svg").pixmap(icon_size);
+        } else if (mode == INCALLS) {
+            return QIcon(":/images/history/received-call.svg").pixmap(icon_size);
+        } else if (mode == MISSEDCALLS) {
+            return QIcon(":/images/history/missed-call.svg").pixmap(icon_size);
         }
     }
 
