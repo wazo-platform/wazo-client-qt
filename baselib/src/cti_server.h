@@ -45,7 +45,7 @@ class CTIServer : public QObject
         CTIServer(QSocketIoClient * socket);
         void connectToServer(ConnectionConfig config);
         void disconnectFromServer();
-        bool connected();
+        // bool connected();
 
     signals:
         void failedToConnect(const QString &, const QString &, const QString &);

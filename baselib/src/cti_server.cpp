@@ -131,7 +131,7 @@ void CTIServer::connectSocket(const QString & address,
 {
     m_last_address = address;
     m_last_port = port;
-    m_socket->abort();
+    m_socket->close();
     // if (encrypted) {
     //     m_socket->connectToHostEncrypted(address, port);
     // } else {
@@ -139,7 +139,7 @@ void CTIServer::connectSocket(const QString & address,
     // }
 }
 
-bool CTIServer::connected()
-{
-    return m_socket->state() == QAbstractSocket::ConnectedState;
-}
+// bool CTIServer::connected()
+// {
+//     return m_socket->state() == QAbstractSocket::ConnectedState;
+// }
