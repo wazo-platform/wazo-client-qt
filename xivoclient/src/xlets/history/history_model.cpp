@@ -40,7 +40,7 @@ HistoryModel::HistoryModel(QWidget * parent)
     : QAbstractTableModel(parent)
 {
     registerListener("history");
-    m_mode = ALLCALLS;
+    m_mode = ALLCALL;
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(requestHistory()));
 }
@@ -99,11 +99,11 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
         }
     } else if (role == Qt::DecorationRole && column == COL_NAME) {
         int mode = histlist.value(row).toMap().value("mode").toInt();
-        if (mode == OUTCALLS) {
+        if (mode == OUTCALL) {
             return QIcon(":/images/history/sent-call.svg").pixmap(icon_size);
-        } else if (mode == INCALLS) {
+        } else if (mode == INCALL) {
             return QIcon(":/images/history/received-call.svg").pixmap(icon_size);
-        } else if (mode == MISSEDCALLS) {
+        } else if (mode == MISSEDCALL) {
             return QIcon(":/images/history/missed-call.svg").pixmap(icon_size);
         }
     }
@@ -128,13 +128,13 @@ void HistoryModel::updateHistory(const QVariantMap &p)
 
 void HistoryModel::requestHistory(HistoryMode mode, QString xuserid)
 {
-    if (mode == ALLCALLS) {
+    if (mode == ALLCALL) {
         mode = m_mode;
     }
     if (xuserid.isEmpty()) {
         xuserid = b_engine->getFullId();
     }
-    if (mode == OUTCALLS || mode == INCALLS || mode == MISSEDCALLS) {
+    if (mode == OUTCALL || mode == INCALL || mode == MISSEDCALL) {
         QVariantMap command;
         command["class"] = "history";
         command["xuserid"] = xuserid;
@@ -146,26 +146,26 @@ void HistoryModel::requestHistory(HistoryMode mode, QString xuserid)
 
 void HistoryModel::allCallsMode()
 {
-    m_mode = ALLCALLS;
-    requestHistory(INCALLS);
-    requestHistory(MISSEDCALLS);
-    requestHistory(OUTCALLS);
+    m_mode = ALLCALL;
+    requestHistory(INCALL);
+    requestHistory(MISSEDCALL);
+    requestHistory(OUTCALL);
 }
 void HistoryModel::missedCallsMode()
 {
-    m_mode = MISSEDCALLS;
+    m_mode = MISSEDCALL;
     requestHistory(m_mode);
 }
 
 void HistoryModel::receivedCallsMode()
 {
-    m_mode = INCALLS;
+    m_mode = INCALL;
     requestHistory(m_mode);
 }
 
 void HistoryModel::sentCallsMode()
 {
-    m_mode = OUTCALLS;
+    m_mode = OUTCALL;
     requestHistory(m_mode);
 }
 

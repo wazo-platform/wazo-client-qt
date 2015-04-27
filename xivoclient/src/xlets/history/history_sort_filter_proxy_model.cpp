@@ -45,7 +45,7 @@ void HistorySortFilterProxyModel::setFilterMode(int mode)
 bool HistorySortFilterProxyModel::filterAcceptsColumn(int source_column,
                                                       const QModelIndex &/*source_parent*/) const
 {
-    if (source_column == 3 && m_mode == MISSEDCALLS) {
+    if (source_column == 3 && m_mode == MISSEDCALL) {
         return false;
     }
     return true;
@@ -54,7 +54,7 @@ bool HistorySortFilterProxyModel::filterAcceptsColumn(int source_column,
 bool HistorySortFilterProxyModel::filterAcceptsRow(int source_row,
                                                    const QModelIndex &source_parent) const
 {
-    if (m_mode == ALLCALLS) {
+    if (m_mode == ALLCALL) {
         return true;
     }
 

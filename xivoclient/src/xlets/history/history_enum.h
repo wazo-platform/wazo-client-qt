@@ -31,10 +31,10 @@
 #define __HISTORY_ENUM_H__
 
 enum HistoryMode {
-    OUTCALLS = 0,
-    INCALLS,
-    MISSEDCALLS,
-    ALLCALLS
+    OUTCALL = 0,
+    INCALL,
+    MISSEDCALL,
+    ALLCALL
 };
 
 enum HistoryColumn {

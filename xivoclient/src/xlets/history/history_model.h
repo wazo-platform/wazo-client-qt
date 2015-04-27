@@ -63,7 +63,7 @@ class HistoryModel : public QAbstractTableModel, public IPBXListener
         void updateHistory(const QVariantMap &p);
 
     private slots:
-        void requestHistory(HistoryMode mode = ALLCALLS, QString xuserid = "");
+        void requestHistory(HistoryMode mode = ALLCALL, QString xuserid = "");
 
     private:
         QVariantList m_all_history;

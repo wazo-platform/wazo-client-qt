@@ -84,22 +84,22 @@ History::History(QWidget *parent)
 
 void History::allCallsMode()
 {
-    m_proxy_model->setFilterMode(ALLCALLS);
+    m_proxy_model->setFilterMode(ALLCALL);
 }
 
 void History::missedCallsMode()
 {
-    m_proxy_model->setFilterMode(MISSEDCALLS);
+    m_proxy_model->setFilterMode(MISSEDCALL);
 }
 
 void History::receivedCallsMode()
 {
-    m_proxy_model->setFilterMode(INCALLS);
+    m_proxy_model->setFilterMode(INCALL);
 }
 
 void History::sentCallsMode()
 {
-    m_proxy_model->setFilterMode(OUTCALLS);
+    m_proxy_model->setFilterMode(OUTCALL);
 }
 
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)
