@@ -71,6 +71,10 @@ void NumberButtonDelegate::paint(QPainter *painter,
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
 
+        painter->setPen(QColor("#D7D2D0"));
+        QRect border_rect(option.rect);
+        painter->drawLine(border_rect.bottomLeft(), border_rect.bottomRight());
+
         painter->restore();
         return;
     }
