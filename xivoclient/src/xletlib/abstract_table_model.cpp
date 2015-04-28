@@ -27,33 +27,30 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
-#include <QMenu>
-#include <QString>
+#include <QFont>
 
-#include <baseengine.h>
-#include <xletlib/number_button_delegate.h>
+#include "abstract_table_model.h"
 
-#include "history_enum.h"
-#include "history_view.h"
-
-HistoryView::HistoryView(QWidget *parent)
-    : AbstractTableView(parent)
+AbstractTableModel::AbstractTableModel(QObject * parent)
+    : QAbstractTableModel(parent)
 {
-    connect(this, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(onViewClick(const QModelIndex &)));
-
-    this->viewport()->setAttribute(Qt::WA_Hover);
-    this->setItemDelegateForColumn(COL_EXTEN, new NumberButtonDelegate(this));
 }
 
-void HistoryView::onViewClick(const QModelIndex &index)
+AbstractTableModel::~AbstractTableModel()
 {
-    QString caller = index.sibling(index.row(), COL_EXTEN).data().toString();
+}
 
-    if (caller.isEmpty()) {
-        return;
+QVariant AbstractTableModel::data(const QModelIndex &a, int role) const
+{
+    int row, column; row = a.row(); column = a.column();
+
+    if (role == Qt::FontRole) {
+        QFont font("Liberation Sans");
+        font.setPixelSize(14);
+        if (column == 0) {
+            font.setBold(true);
+        }
+        return font;
     }
-
-    b_engine->pasteToDial(caller);
+    return QVariant();
 }

@@ -27,33 +27,23 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
-#include <QMenu>
-#include <QString>
+#ifndef __ABSTRACT_TABLE_MODEL_H__
+#define __ABSTRACT_TABLE_MODEL_H__
 
-#include <baseengine.h>
-#include <xletlib/number_button_delegate.h>
+#include <QAbstractTableModel>
+#include <QVariant>
 
-#include "history_enum.h"
-#include "history_view.h"
+#include "xletlib_export.h"
 
-HistoryView::HistoryView(QWidget *parent)
-    : AbstractTableView(parent)
+class XLETLIB_EXPORT AbstractTableModel : public QAbstractTableModel
 {
-    connect(this, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(onViewClick(const QModelIndex &)));
+    Q_OBJECT
 
-    this->viewport()->setAttribute(Qt::WA_Hover);
-    this->setItemDelegateForColumn(COL_EXTEN, new NumberButtonDelegate(this));
-}
+    public:
+        AbstractTableModel(QObject *parent = NULL);
+        virtual ~AbstractTableModel() = 0;
+        virtual QVariant data(const QModelIndex &a, int role) const;
+};
 
-void HistoryView::onViewClick(const QModelIndex &index)
-{
-    QString caller = index.sibling(index.row(), COL_EXTEN).data().toString();
+#endif
 
-    if (caller.isEmpty()) {
-        return;
-    }
-
-    b_engine->pasteToDial(caller);
-}

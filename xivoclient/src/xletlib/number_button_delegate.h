@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,33 +27,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
-#include <QMenu>
-#include <QString>
+#ifndef __NUMBER_BUTTON_DELEGATE_H__
+#define __NUMBER_BUTTON_DELEGATE_H__
 
-#include <baseengine.h>
-#include <xletlib/number_button_delegate.h>
+#include <QStyledItemDelegate>
 
-#include "history_enum.h"
-#include "history_view.h"
+#include "xletlib_export.h"
 
-HistoryView::HistoryView(QWidget *parent)
-    : AbstractTableView(parent)
+class XLETLIB_EXPORT NumberButtonDelegate : public QStyledItemDelegate
 {
-    connect(this, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(onViewClick(const QModelIndex &)));
+    Q_OBJECT
 
-    this->viewport()->setAttribute(Qt::WA_Hover);
-    this->setItemDelegateForColumn(COL_EXTEN, new NumberButtonDelegate(this));
-}
+    public:
+        NumberButtonDelegate(QWidget *parent = NULL);
+        bool editorEvent(QEvent *event,
+                         QAbstractItemModel *model,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index);
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
 
-void HistoryView::onViewClick(const QModelIndex &index)
-{
-    QString caller = index.sibling(index.row(), COL_EXTEN).data().toString();
+    protected:
+        bool pressed;
+        static int button_height;
+        static QMargins button_margins;
 
-    if (caller.isEmpty()) {
-        return;
-    }
+    private:
+        QRect contentsRect(const QRect &option_rect) const;
+};
 
-    b_engine->pasteToDial(caller);
-}
+#endif
+

@@ -37,7 +37,7 @@
 QSize HistoryModel::icon_size = QSize(12, 12);
 
 HistoryModel::HistoryModel(QWidget * parent)
-    : QAbstractTableModel(parent)
+    : AbstractTableModel(parent)
 {
     registerListener("history");
     m_mode = ALLCALL;
@@ -74,7 +74,7 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
             } else if (column == COL_DATE) {
                 QString qsd = histlist.value(row).toMap().value("calldate").toString();
                 QDateTime qdt = QDateTime::fromString(qsd, Qt::ISODate);
-                return qdt.toString(QString("dd/MM/yyyy  HH:mm:ss"));
+                return qdt.toString(QString("dd/MM/yyyy HH:mm:ss"));
             } else if (column == COL_DURATION) {
                 int duration = histlist.value(row).toMap().value("duration").toInt();
                 int sec =   ( duration % 60);
@@ -106,9 +106,14 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
         } else if (mode == MISSEDCALL) {
             return QIcon(":/images/history/missed-call.svg").pixmap(icon_size);
         }
+    } else if (role == Qt::FontRole) {
+        if (column == COL_DATE || column == COL_DURATION) {
+            QFont font;
+            font.setPixelSize(13);
+            return font;
+        }
     }
-
-    return QVariant();
+    return AbstractTableModel::data(a,role);
 }
 
 void HistoryModel::updateHistory(const QVariantMap &p)
@@ -176,13 +181,13 @@ QVariant HistoryModel::headerData(int section,
     if ((role == Qt::DisplayRole) &&
         (orientation == Qt::Horizontal)) {
         if (section == COL_NAME) {
-            return QVariant(tr("Name"));
+            return QVariant(tr("Name").toUpper());
         } else if (section == COL_EXTEN) {
-            return QVariant(tr("Number"));
+            return QVariant(tr("Number").toUpper());
         } else if (section == COL_DATE) {
-            return QVariant(tr("Date"));
+            return QVariant(tr("Date").toUpper());
         } else if (section == COL_DURATION) {
-            return QVariant(tr("Duration"));
+            return QVariant(tr("Duration").toUpper());
         }
     }
 

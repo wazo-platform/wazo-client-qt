@@ -139,6 +139,7 @@ AbstractTableView > QHeaderView::section {
     border: none;
     border-left: 1px solid #D7D2D0;
     background-color: #E8E4E2;
+    font: 12px "Liberation Sans";
     padding-left: 30px;
 }
 

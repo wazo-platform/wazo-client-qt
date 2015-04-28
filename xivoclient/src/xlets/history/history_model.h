@@ -37,11 +37,12 @@
 #include <QVariant>
 #include <QWidget>
 
+#include <xletlib/abstract_table_model.h>
 #include <ipbxlistener.h>
 
 #include "history_enum.h"
 
-class HistoryModel : public QAbstractTableModel, public IPBXListener
+class HistoryModel : public AbstractTableModel, public IPBXListener
 {
     Q_OBJECT
 

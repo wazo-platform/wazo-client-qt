@@ -30,7 +30,6 @@
 #ifndef __HISTORY_VIEW_H__
 #define __HISTORY_VIEW_H__
 
-#include <QContextMenuEvent>
 #include <QModelIndex>
 #include <QWidget>
 
@@ -46,8 +45,6 @@ class HistoryView : public AbstractTableView
 
     private slots:
         void onViewClick(const QModelIndex &);
-        void callOnClick(bool);
-        void contextMenuEvent(QContextMenuEvent *);
 };
 
 #endif
