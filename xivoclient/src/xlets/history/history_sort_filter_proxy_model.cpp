@@ -33,19 +33,20 @@
 HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
-    this->setFilterKeyColumn(COL_DATE);
 }
 
 void HistorySortFilterProxyModel::setFilterMode(int mode)
 {
-    m_mode = mode;
-    invalidateFilter();
+    if (m_mode != mode) {
+        m_mode = mode;
+        invalidateFilter();
+    }
 }
 
 bool HistorySortFilterProxyModel::filterAcceptsColumn(int source_column,
                                                       const QModelIndex &/*source_parent*/) const
 {
-    if (source_column == 3 && m_mode == MISSEDCALL) {
+    if (source_column == COL_DURATION && m_mode == MISSEDCALL) {
         return false;
     }
     return true;

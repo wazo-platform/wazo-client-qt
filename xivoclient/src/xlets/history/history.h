@@ -38,6 +38,8 @@
 
 #include <ui_history_widget.h>
 
+#include "history_enum.h"
+
 class HistoryModel;
 class HistorySortFilterProxyModel;
 class HistoryView;
@@ -56,6 +58,8 @@ class History : public XLet
         void sentCallsMode();
 
     private:
+        void requestHistory(QString xuserid = "");
+
         HistoryModel *m_model;
         HistorySortFilterProxyModel *m_proxy_model;
         Ui::HistoryWidget ui;

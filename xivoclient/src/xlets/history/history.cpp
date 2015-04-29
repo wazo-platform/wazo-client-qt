@@ -31,7 +31,6 @@
 #include <phonenumber.h>
 
 #include "history.h"
-#include "history_enum.h"
 #include "history_model.h"
 #include "history_sort_filter_proxy_model.h"
 #include "history_view.h"
@@ -62,15 +61,6 @@ History::History(QWidget *parent)
     QAction *missed_call_action = this->ui.menu->addAction(tr("Missed calls"));
 
     connect(all_call_action, SIGNAL(triggered()),
-            m_model, SLOT(allCallsMode()));
-    connect(sent_call_action, SIGNAL(triggered()),
-            m_model, SLOT(sentCallsMode()));
-    connect(received_call_action, SIGNAL(triggered()),
-            m_model, SLOT(receivedCallsMode()));
-    connect(missed_call_action, SIGNAL(triggered()),
-            m_model, SLOT(missedCallsMode()));
-
-    connect(all_call_action, SIGNAL(triggered()),
             this, SLOT(allCallsMode()));
     connect(sent_call_action, SIGNAL(triggered()),
             this, SLOT(sentCallsMode()));
@@ -80,25 +70,46 @@ History::History(QWidget *parent)
             this, SLOT(missedCallsMode()));
 
     this->ui.menu->setSelectedAction(0);
+
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(allCallsMode()));
+
+}
+
+void History::requestHistory(QString xuserid)
+{
+    if (xuserid.isEmpty()) {
+        xuserid = b_engine->getFullId();
+    }
+
+    QVariantMap command;
+    command["class"] = "history";
+    command["xuserid"] = xuserid;
+    command["size"] = QString::number(b_engine->getConfig("historysize").toUInt());
+    b_engine->sendJsonCommand(command);
 }
 
 void History::allCallsMode()
 {
+    this->requestHistory();
     m_proxy_model->setFilterMode(ALLCALL);
 }
 
 void History::missedCallsMode()
 {
+    this->requestHistory();
     m_proxy_model->setFilterMode(MISSEDCALL);
 }
 
 void History::receivedCallsMode()
 {
+    this->requestHistory();
     m_proxy_model->setFilterMode(INCALL);
 }
 
 void History::sentCallsMode()
 {
+    this->requestHistory();
     m_proxy_model->setFilterMode(OUTCALL);
 }
 

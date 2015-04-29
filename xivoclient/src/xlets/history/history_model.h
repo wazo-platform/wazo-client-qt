@@ -51,24 +51,16 @@ class HistoryModel : public AbstractTableModel, public IPBXListener
         void parseCommand(const QVariantMap &);
 
     protected:
-        virtual int rowCount(const QModelIndex&) const;
-        virtual int columnCount(const QModelIndex&) const;
+        virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+        virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
         virtual QVariant data(const QModelIndex&, int) const;
         virtual QVariant headerData(int , Qt::Orientation, int) const;
 
-    public slots:
-        void allCallsMode();
-        void missedCallsMode();
-        void receivedCallsMode();
-        void sentCallsMode();
+    private:
+        void initializeHistory(const QVariantMap &p);
         void updateHistory(const QVariantMap &p);
 
-    private slots:
-        void requestHistory(HistoryMode mode = ALLCALL, QString xuserid = "");
-
-    private:
         QVariantList m_all_history;
-        HistoryMode m_mode;
         static QSize icon_size;
 };
 
