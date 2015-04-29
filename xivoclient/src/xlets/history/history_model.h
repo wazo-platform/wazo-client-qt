@@ -30,10 +30,8 @@
 #ifndef __HISTORY_MODEL_H__
 #define __HISTORY_MODEL_H__
 
-#include <QAbstractTableModel>
-#include <QDateTime>
 #include <QModelIndex>
-#include <QString>
+#include <QSize>
 #include <QVariant>
 #include <QWidget>
 
@@ -42,13 +40,13 @@
 
 #include "history_enum.h"
 
-class HistoryModel : public AbstractTableModel, public IPBXListener
+class HistoryModel : public AbstractTableModel
 {
     Q_OBJECT
 
     public:
         HistoryModel(QWidget * parent = NULL);
-        void parseCommand(const QVariantMap &);
+        void updateHistory(const QVariantMap &p);
 
     protected:
         virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -58,7 +56,6 @@ class HistoryModel : public AbstractTableModel, public IPBXListener
 
     private:
         void initializeHistory(const QVariantMap &p);
-        void updateHistory(const QVariantMap &p);
 
         QVariantList m_all_history;
         static QSize icon_size;

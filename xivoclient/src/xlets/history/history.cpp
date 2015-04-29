@@ -72,8 +72,14 @@ History::History(QWidget *parent)
     this->ui.menu->setSelectedAction(0);
 
     connect(b_engine, SIGNAL(settingsChanged()),
-            this, SLOT(allCallsMode()));
+            this, SLOT(requestHistory()));
 
+    registerListener("history");
+}
+
+void History::parseCommand(const QVariantMap &map)
+{
+    m_model->updateHistory(map);
 }
 
 void History::requestHistory(QString xuserid)

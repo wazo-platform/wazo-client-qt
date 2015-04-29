@@ -44,12 +44,13 @@ class HistoryModel;
 class HistorySortFilterProxyModel;
 class HistoryView;
 
-class History : public XLet
+class History : public XLet, public IPBXListener
 {
     Q_OBJECT
 
     public:
         History(QWidget *parent=0);
+        void parseCommand(const QVariantMap &map);
 
     public slots:
         void allCallsMode();
@@ -57,9 +58,10 @@ class History : public XLet
         void receivedCallsMode();
         void sentCallsMode();
 
-    private:
+    private slots:
         void requestHistory(QString xuserid = "");
 
+    private:
         HistoryModel *m_model;
         HistorySortFilterProxyModel *m_proxy_model;
         Ui::HistoryWidget ui;

@@ -27,10 +27,9 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDateTime>
 #include <QIcon>
-#include <QList>
-
-#include <baseengine.h>
+#include <QString>
 
 #include "history_model.h"
 
@@ -39,11 +38,6 @@ QSize HistoryModel::icon_size = QSize(12, 12);
 HistoryModel::HistoryModel(QWidget * parent)
     : AbstractTableModel(parent)
 {
-    registerListener("history");
-}
-
-void HistoryModel::parseCommand(const QVariantMap &map) {
-    updateHistory(map);
 }
 
 void HistoryModel::initializeHistory(const QVariantMap &p)
