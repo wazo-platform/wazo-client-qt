@@ -46,7 +46,6 @@
 #include <QSslError>
 #include <QWebSocket>
 #include <QUdpSocket>
-#include <QtSocketIo/QSocketIoClient>
 
 #include <QJsonDocument>
 
@@ -116,7 +115,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     m_xinfoList.insert("queuemembers", newXInfo<QueueMemberInfo>);
 
     // TCP connection with CTI Server
-    m_ctiserversocket = new QSocketIoClient(this);
+    m_ctiserversocket = new QWebSocket("", QWebSocketProtocol::VersionLatest, this);
     // m_ctiserversocket->setProtocol(QSsl::TlsV1_0);
     m_cti_server = new CTIServer(m_ctiserversocket);
 
@@ -124,8 +123,8 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     //         this, SLOT(sslErrors(const QList<QSslError> & )));
     connect(m_ctiserversocket, SIGNAL(connected()),
             this, SLOT(authenticate()));
-    connect(m_ctiserversocket, SIGNAL(messageReceived(const QString &)),
-            this, SLOT(parseRawMessage(QString)));
+    connect(m_ctiserversocket, SIGNAL(binaryMessageReceived(const QByteArray &)),
+            this, SLOT(parseRawMessage(QByteArray)));
     connect(m_cti_server, SIGNAL(disconnected()),
             this, SLOT(onCTIServerDisconnected()));
     connect(m_cti_server, SIGNAL(errorReceived(const QString &, const QString &)),
@@ -438,6 +437,7 @@ void BaseEngine::emitLogged()
 
 void BaseEngine::authenticate()
 {
+    qDebug() << Q_FUNC_INFO;
     stopTryAgainTimer();
     /* do the login/identification */
     m_attempt_loggedin = false;
@@ -607,7 +607,10 @@ void BaseEngine::restoreAvailState()
 /*! \brief send command to XiVO CTI server */
 void BaseEngine::sendCommand(const QByteArray &command)
 {
-    m_ctiserversocket->emitMessage("json", QString::fromUtf8(command));
+    QByteArray new_command = command;
+    new_command.append('\n');
+    qDebug() << new_command;
+    m_ctiserversocket->sendBinaryMessage(new_command);
 }
 
 /*! \brief encode json and then send command to XiVO CTI server */
@@ -1371,8 +1374,10 @@ void BaseEngine::saveToFile(const QString & filename)
  *
  * Read and process the data from the server.
  */
-void BaseEngine::parseRawMessage(QString message)
+void BaseEngine::parseRawMessage(QByteArray raw_message)
 {
+    QString message = QString::fromUtf8(raw_message);
+    qDebug() << Q_FUNC_INFO << message;
     if (message.startsWith("<ui version=")) {
         // we get here when receiving a sheet as a Qt4 .ui form
         qDebug() << "Incoming sheet, size:" << message.size();

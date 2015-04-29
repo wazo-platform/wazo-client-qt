@@ -29,9 +29,7 @@
 
 #include "cti_server.h"
 
-#include <QtSocketIo/QSocketIoClient>
-
-CTIServer::CTIServer(QSocketIoClient * socket)
+CTIServer::CTIServer(QWebSocket * socket)
     : QObject(NULL), m_socket(socket), m_last_port(0)
 {
 }

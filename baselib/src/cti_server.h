@@ -42,7 +42,7 @@ class CTIServer : public QObject
     Q_OBJECT
 
     public:
-        CTIServer(QSocketIoClient * socket);
+        CTIServer(QWebSocket * socket);
         void connectToServer(ConnectionConfig config);
         void disconnectFromServer();
         // bool connected();
@@ -64,7 +64,7 @@ class CTIServer : public QObject
         void sendError(const QString & message);
 
     private:
-        QSocketIoClient * m_socket;
+        QWebSocket * m_socket;
         QString m_last_address;
         unsigned m_last_port;
 };

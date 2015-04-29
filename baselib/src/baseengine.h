@@ -49,12 +49,12 @@ class QFile;
 class QSettings;
 class QSocketNotifier;
 class QSslError;
-class QSocketIoClient;
 class QTcpSocket;
 class QTimerEvent;
 class QTranslator;
 class QUdpSocket;
 class QVariant;
+class QWebSocket;
 
 class IPBXListener;
 class XletDebug;
@@ -232,7 +232,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void authenticate();
         void authenticated();
-        void parseRawMessage(QString message);
+        void parseRawMessage(QByteArray message);
         void onCTIServerDisconnected();
 
         void filetransferSocketConnected();
@@ -384,7 +384,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_availstate;           //!< Availability state to send to the server
 
         // Internal management
-        QSocketIoClient * m_ctiserversocket;     //!< Connection to the CTI server
+        QWebSocket * m_ctiserversocket;     //!< Connection to the CTI server
         QTcpSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
         QTcpSocket * m_tcpsheetsocket;  //!< TCP connection for Sheet sockets
         QUdpSocket * m_udpsheetsocket;  //!< UDP connection for Sheet sockets
