@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -1291,7 +1291,7 @@ void BaseEngine::popupError(const QString & errorid,
             .arg(server_address).arg(server_port);
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
-        errormsg = tr("You are already connected from %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
+        errormsg = tr("You are already connected to %1:%2.").arg(ipinfo[1]).arg(ipinfo[2]);
     } else if (errorid.toLower() == "no_capability") {
         errormsg = tr("No capability allowed.");
     } else if (errorid.startsWith("toomuchusers:")) {
