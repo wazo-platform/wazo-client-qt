@@ -84,6 +84,7 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
         widget->hide();
     }
 
+    m_minimum_height = m_main_window->minimumHeight();
     m_unfolded_height = m_main_window->height();
     m_main_window->setFolded(true);
 
@@ -380,6 +381,7 @@ void XletDispatcher::clearAppearance()
 void XletDispatcher::restoreMainWindow()
 {
     m_main_window->setMaximumHeight(QWIDGETSIZE_MAX);
+    m_main_window->setMinimumHeight(m_minimum_height);
 
     QSize main_window_size = m_main_window->size();
     main_window_size.setHeight(m_unfolded_height);
