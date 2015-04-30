@@ -27,41 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_MODEL_H__
-#define __HISTORY_MODEL_H__
+#ifndef __HISTORY_ITEM_H__
+#define __HISTORY_ITEM_H__
 
-#include <QList>
-#include <QModelIndex>
-#include <QSize>
-#include <QVariant>
-#include <QWidget>
+#include <QString>
+#include <QDateTime>
 
-#include <xletlib/abstract_table_model.h>
-#include <ipbxlistener.h>
+#include <history_enum.h>
 
-#include "history_enum.h"
-#include "history_item.h"
-
-class HistoryModel : public AbstractTableModel
+struct HistoryItem
 {
-    Q_OBJECT
-
-    public:
-        HistoryModel(QWidget * parent = NULL);
-        void updateHistory(const QVariantMap &p);
-
-    protected:
-        virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
-        virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
-        virtual QVariant data(const QModelIndex&, int) const;
-        virtual QVariant headerData(int , Qt::Orientation, int) const;
-
-    private:
-        void initializeHistory(const QVariantMap &p);
-        QString prettyPrintDuration(int duration, int mode = ALLCALL) const;
-
-        QList<HistoryItem> m_history_item;
-        static QSize icon_size;
+    QDateTime datetime;
+    QString extension;
+    QString name;
+    int duration;
+    int mode;
 };
 
 #endif
+

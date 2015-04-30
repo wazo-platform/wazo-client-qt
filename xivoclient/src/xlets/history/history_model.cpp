@@ -43,12 +43,21 @@ HistoryModel::HistoryModel(QWidget * parent)
 void HistoryModel::initializeHistory(const QVariantMap &p)
 {
     QVariantList history_items = p.value("history").toList();
-    m_all_history.clear();
+    m_history_item.clear();
 
     beginResetModel();
     foreach (QVariant item, history_items) {
         QVariantMap history_item = item.toMap();
-        m_all_history.append(history_item);
+        if (history_item.value("fullname").toString().isEmpty()) {
+            history_item.insert("fullname", QString("-"));
+        }
+        HistoryItem call_log;
+        call_log.mode = history_item.value("mode").toInt();
+        call_log.name = history_item.value("fullname").toString();
+        call_log.datetime = history_item.value("calldate").toDateTime();
+        call_log.duration = history_item.value("duration").toInt();
+        call_log.extension = history_item.value("extension").toString();
+        m_history_item.append(call_log);
     }
     endResetModel();
 }
@@ -60,7 +69,7 @@ void HistoryModel::updateHistory(const QVariantMap &p)
 
 int HistoryModel::rowCount(const QModelIndex&) const
 {
-    return m_all_history.count();
+    return m_history_item.count();
 }
 
 int HistoryModel::columnCount(const QModelIndex&) const
@@ -71,49 +80,42 @@ int HistoryModel::columnCount(const QModelIndex&) const
 QVariant HistoryModel::data(const QModelIndex &a, int role) const
 {
     int row, column; row = a.row(); column = a.column();
-    QVariantList histlist = m_all_history;
+    const HistoryItem &item = m_history_item.at(row);
 
     if (role == Qt::DisplayRole) {
-        if (((histlist.count()) &&
-             ((histlist).value(row).toMap().count()))) {
-            if (column == COL_NAME) {
-                return histlist.value(row).toMap().value("fullname");
-            } else if (column == COL_EXTEN) {
-                return histlist.value(row).toMap().value("extension");
-            } else if (column == COL_DATE) {
-                QString qsd = histlist.value(row).toMap().value("calldate").toString();
-                QDateTime qdt = QDateTime::fromString(qsd, Qt::ISODate);
-                return qdt.toString(QString("dd/MM/yyyy HH:mm:ss"));
-            } else if (column == COL_DURATION) {
-                int duration = histlist.value(row).toMap().value("duration").toInt();
-                int sec =   ( duration % 60);
-                int min =   ( duration - sec ) / 60 % 60;
-                int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
-                if (hou)
-                    return tr("%1 hr %2 min %3 s").arg(hou).arg(min).arg(sec);
-                else if (min)
-                    return tr("%1 min %2 s").arg(min).arg(sec);
-                else
-                    return tr("%1 s").arg(sec);
-            }
+        switch (column) {
+        case COL_NAME:
+            return item.name;
+        case COL_EXTEN:
+            return item.extension;
+        case COL_DATE:
+            return item.datetime.toString(QString("dd/MM/yyyy HH:mm:ss"));
+        case COL_DURATION:
+            return this->prettyPrintDuration(item.duration, item.mode);
+        default:
+            break;
         }
     } else if (role == Qt::UserRole) {
-        if (column == COL_NAME) {
-            return histlist.value(row).toMap().value("mode");
-        } else if (column == COL_DATE) {
-            QString call_datetime = histlist.value(row).toMap().value("calldate").toString();
-            return QDateTime::fromString(call_datetime, Qt::ISODate);
-        } else if (column == COL_DURATION) {
-            return histlist.value(row).toMap().value("duration").toInt();
+        switch (column) {
+        case COL_NAME:
+            return item.mode;
+        case COL_DATE:
+            return item.datetime;
+        case COL_DURATION:
+            return item.duration;
+        default:
+            break;
         }
     } else if (role == Qt::DecorationRole && column == COL_NAME) {
-        int mode = histlist.value(row).toMap().value("mode").toInt();
-        if (mode == OUTCALL) {
+        switch (item.mode) {
+        case OUTCALL:
             return QIcon(":/images/history/sent-call.svg").pixmap(icon_size);
-        } else if (mode == INCALL) {
+        case INCALL:
             return QIcon(":/images/history/received-call.svg").pixmap(icon_size);
-        } else if (mode == MISSEDCALL) {
+        case MISSEDCALL:
             return QIcon(":/images/history/missed-call.svg").pixmap(icon_size);
+        default:
+            break;
         }
     } else if (role == Qt::FontRole) {
         if (column == COL_DATE || column == COL_DURATION) {
@@ -129,18 +131,38 @@ QVariant HistoryModel::headerData(int section,
                                     Qt::Orientation orientation,
                                     int role = Qt::DisplayRole) const
 {
-    if ((role == Qt::DisplayRole) &&
-        (orientation == Qt::Horizontal)) {
-        if (section == COL_NAME) {
-            return QVariant(tr("Name").toUpper());
-        } else if (section == COL_EXTEN) {
-            return QVariant(tr("Number").toUpper());
-        } else if (section == COL_DATE) {
-            return QVariant(tr("Date").toUpper());
-        } else if (section == COL_DURATION) {
-            return QVariant(tr("Duration").toUpper());
-        }
+    if (role != Qt::DisplayRole ||
+        orientation != Qt::Horizontal) {
+        return QVariant();
     }
 
-    return QVariant();
+    switch (section) {
+    case COL_NAME:
+        return QVariant(tr("Name").toUpper());
+    case COL_EXTEN:
+        return QVariant(tr("Number").toUpper());
+    case COL_DATE:
+        return QVariant(tr("Date").toUpper());
+    case COL_DURATION:
+        return QVariant(tr("Duration").toUpper());
+    default:
+        return QVariant();
+    }
+}
+
+QString HistoryModel::prettyPrintDuration(int duration, int mode) const
+{
+    if (mode == MISSEDCALL) {
+        return "-";
+    }
+
+    int sec =   ( duration % 60);
+    int min =   ( duration - sec ) / 60 % 60;
+    int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
+    if (hou)
+        return tr("%1 hr %2 min %3 s").arg(hou).arg(min).arg(sec);
+    else if (min)
+        return tr("%1 min %2 s").arg(min).arg(sec);
+    else
+        return tr("%1 s").arg(sec);
 }
