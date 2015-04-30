@@ -78,14 +78,15 @@ Conference::Conference(QWidget *parent)
             this, SLOT(showConfList()));
     connect(this->ui.list_table, SIGNAL(openConfRoom(QString &, QString &)),
             this, SLOT(showConfRoom(QString &, QString &)));
-    connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
-            this, SLOT(updateConference(const QVariantMap &)));
-    registerMeetmeUpdate();
+
+    this->registerListener("meetme_update");
+
+    this->registerMeetmeUpdate();
 }
 
-void Conference::updateConference(const QVariantMap & config)
+void Conference::parseCommand(const QVariantMap & datamap)
 {
-    m_confroom_configs = config;
+    m_confroom_configs = datamap.value("config").toMap();
     this->m_list_model->updateConfList(m_confroom_configs);
 
     QString room_number = this->m_room_model->roomNumber();

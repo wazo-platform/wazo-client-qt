@@ -34,6 +34,8 @@
 #include <QString>
 #include <QVariantMap>
 
+#include <baseengine.h>
+#include <ipbxlistener.h>
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
 #include <xletlib/xletinterface.h>
@@ -44,7 +46,7 @@
 class ConferenceListModel;
 class ConferenceRoomModel;
 
-class Conference : public XLet
+class Conference : public XLet, IPBXListener
 {
     Q_OBJECT
     FUNCTESTED
@@ -52,10 +54,12 @@ class Conference : public XLet
     public:
         Conference(QWidget *parent=0);
 
+    public slots:
+        void parseCommand(const QVariantMap &command);
+
     private slots:
         void showConfList();
         void showConfRoom(QString &room_number, QString &room_name);
-        void updateConference(const QVariantMap & config);
 
     private:
         //The order of this enum is determined by the order of the menu creation
