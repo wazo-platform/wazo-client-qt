@@ -123,15 +123,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PeopleEntryView</class>
-   <extends>QTableWidget</extends>
-   <header location="global">xlets/people/people_entry_view.h</header>
-  </customwidget>
-  <customwidget>
    <class>HorizontalMenu</class>
    <extends>QWidget</extends>
    <header location="global">xletlib/horizontal_menu.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PeopleEntryView</class>
+   <extends>QTableView</extends>
+   <header location="global">xlets/people/people_entry_view.h</header>
   </customwidget>
  </customwidgets>
  <resources>
