@@ -74,6 +74,9 @@ History::History(QWidget *parent)
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(requestHistory()));
 
+    connect(this->ui.history_table, SIGNAL(extensionClicked(const QString &)),
+            b_engine, SLOT(pasteToDial(const QString &)));
+
     registerListener("history");
 }
 

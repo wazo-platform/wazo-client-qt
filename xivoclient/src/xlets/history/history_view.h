@@ -31,6 +31,7 @@
 #define __HISTORY_VIEW_H__
 
 #include <QModelIndex>
+#include <QString>
 #include <QWidget>
 
 #include <ipbxlistener.h>
@@ -45,6 +46,9 @@ class HistoryView : public AbstractTableView
 
     private slots:
         void onViewClick(const QModelIndex &);
+
+    signals:
+        void extensionClicked(const QString &);
 };
 
 #endif

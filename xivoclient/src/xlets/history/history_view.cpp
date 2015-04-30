@@ -31,7 +31,6 @@
 #include <QMenu>
 #include <QString>
 
-#include <baseengine.h>
 #include <xletlib/number_button_delegate.h>
 
 #include "history_enum.h"
@@ -55,5 +54,5 @@ void HistoryView::onViewClick(const QModelIndex &index)
         return;
     }
 
-    b_engine->pasteToDial(caller);
+    emit extensionClicked(caller);
 }
