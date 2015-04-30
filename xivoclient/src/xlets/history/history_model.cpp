@@ -77,6 +77,16 @@ int HistoryModel::columnCount(const QModelIndex&) const
     return NB_COLS;
 }
 
+QList<int> HistoryModel::columnDisplayBold() const
+{
+    return QList<int>() << COL_NAME;
+}
+
+QList<int> HistoryModel::columnDisplaySmaller() const
+{
+    return QList<int>() << COL_DATE << COL_DURATION;
+}
+
 QVariant HistoryModel::data(const QModelIndex &a, int role) const
 {
     int row, column; row = a.row(); column = a.column();
@@ -116,12 +126,6 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
             return QIcon(":/images/history/missed-call.svg").pixmap(icon_size);
         default:
             break;
-        }
-    } else if (role == Qt::FontRole) {
-        if (column == COL_DATE || column == COL_DURATION) {
-            QFont font;
-            font.setPixelSize(13);
-            return font;
         }
     }
     return AbstractTableModel::data(a,role);

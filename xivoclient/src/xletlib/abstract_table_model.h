@@ -31,6 +31,7 @@
 #define __ABSTRACT_TABLE_MODEL_H__
 
 #include <QAbstractTableModel>
+#include <QList>
 #include <QVariant>
 
 #include "xletlib_export.h"
@@ -43,6 +44,8 @@ class XLETLIB_EXPORT AbstractTableModel : public QAbstractTableModel
         AbstractTableModel(QObject *parent = NULL);
         virtual ~AbstractTableModel() = 0;
         virtual QVariant data(const QModelIndex &a, int role) const;
+        virtual QList<int> columnDisplayBold() const { return QList<int>(); }
+        virtual QList<int> columnDisplaySmaller() const { return QList<int>(); };
 };
 
 #endif

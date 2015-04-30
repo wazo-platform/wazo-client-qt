@@ -42,13 +42,17 @@ AbstractTableModel::~AbstractTableModel()
 
 QVariant AbstractTableModel::data(const QModelIndex &a, int role) const
 {
-    int row, column; row = a.row(); column = a.column();
+    int column = a.column();
 
     if (role == Qt::FontRole) {
         QFont font("Liberation Sans");
-        font.setPixelSize(14);
-        if (column == 0) {
+        if (this->columnDisplayBold().contains(column)) {
             font.setBold(true);
+        }
+        if (this->columnDisplaySmaller().contains(column)) {
+            font.setPixelSize(13);
+        } else {
+            font.setPixelSize(14);
         }
         return font;
     }

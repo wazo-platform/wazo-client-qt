@@ -55,6 +55,8 @@ class HistoryModel : public AbstractTableModel
         virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
         virtual QVariant data(const QModelIndex&, int) const;
         virtual QVariant headerData(int , Qt::Orientation, int) const;
+        virtual QList<int> columnDisplayBold() const;
+        virtual QList<int> columnDisplaySmaller() const;
 
     private:
         void initializeHistory(const QVariantMap &p);
