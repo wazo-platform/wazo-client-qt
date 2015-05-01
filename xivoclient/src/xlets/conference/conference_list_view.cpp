@@ -28,9 +28,10 @@
  */
 
 #include <QAction>
-#include <QContextMenuEvent>
 #include <QTimer>
 #include <QMenu>
+
+#include <xletlib/number_button_delegate.h>
 
 #include "conference_enum.h"
 #include "conference_list_view.h"
@@ -40,6 +41,9 @@ ConferenceListView::ConferenceListView(QWidget *parent)
 {
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
+
+    this->viewport()->setAttribute(Qt::WA_Hover);
+    this->setItemDelegateForColumn(ConferenceList::COL_NUMBER, new NumberButtonDelegate(this));
 }
 
 void ConferenceListView::onViewClick(const QModelIndex &model)
@@ -51,28 +55,4 @@ void ConferenceListView::onViewClick(const QModelIndex &model)
         b_engine->pasteToDial(room_number);
         emit this->openConfRoom(room_number, room_name);
     }
-}
-
-void ConferenceListView::contextMenuEvent(QContextMenuEvent * event)
-{
-    const QModelIndex &index = indexAt(event->pos());
-
-    m_room_name_clicked = index.sibling(index.row(), ConferenceList::COL_NAME).data().toString();
-    m_room_number_clicked = index.sibling(index.row(), ConferenceList::COL_NUMBER).data().toString();
-
-    QMenu *menu = new QMenu(this);
-    QAction *action = new QAction(
-        tr("Get in room %1 (%2)").arg(m_room_name_clicked).arg(m_room_number_clicked), menu);
-
-    connect(action, SIGNAL(triggered()),
-            this, SLOT(getInRoom()));
-
-    menu->addAction(action);
-    menu->exec(QCursor::pos());
-}
-
-void ConferenceListView::getInRoom()
-{
-    b_engine->actionDial(m_room_number_clicked);
-    emit this->openConfRoom(m_room_number_clicked, m_room_name_clicked);
 }

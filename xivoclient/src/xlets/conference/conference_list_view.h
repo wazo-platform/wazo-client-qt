@@ -45,9 +45,6 @@ class ConferenceListView : public AbstractTableView
         ConferenceListView(QWidget *parent);
     public slots:
         void onViewClick(const QModelIndex &);
-        void contextMenuEvent(QContextMenuEvent * event);
-    private slots:
-        void getInRoom();
     signals:
         void openConfRoom(QString &room_number, QString &name_room);
     private:
