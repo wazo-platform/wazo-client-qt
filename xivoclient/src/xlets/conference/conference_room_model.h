@@ -35,11 +35,13 @@
 #include <QModelIndex>
 #include <QWidget>
 
+#include <xletlib/abstract_table_model.h>
+
 #include "conference_room_item.h"
 
 class ConfTab;
 
-class ConferenceRoomModel : public QAbstractTableModel
+class ConferenceRoomModel : public AbstractTableModel
 {
     Q_OBJECT
 
@@ -59,6 +61,8 @@ class ConferenceRoomModel : public QAbstractTableModel
                                    Qt::Orientation orientation,
                                    int role = Qt::DisplayRole) const;
         virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+        virtual QList<int> columnDisplayBold() const;
+        virtual QList<int> columnDisplaySmaller() const;
 
     private slots:
         void updateJoinTime();

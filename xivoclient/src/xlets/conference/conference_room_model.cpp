@@ -35,7 +35,7 @@
 #include "conference_room_model.h"
 
 ConferenceRoomModel::ConferenceRoomModel(QWidget *parent)
-    : QAbstractTableModel(parent)
+    : AbstractTableModel(parent)
 {
     QTimer * join_time_timer = new QTimer(this);
     connect(join_time_timer, SIGNAL(timeout()),
@@ -78,6 +78,16 @@ int ConferenceRoomModel::rowCount(const QModelIndex &) const
 int ConferenceRoomModel::columnCount(const QModelIndex&) const
 {
     return ConferenceRoom::NB_COL;
+}
+
+QList<int> ConferenceRoomModel::columnDisplayBold() const
+{
+    return QList<int>() << ConferenceRoom::COL_NAME;
+}
+
+QList<int> ConferenceRoomModel::columnDisplaySmaller() const
+{
+    return QList<int>() << ConferenceRoom::COL_SINCE;
 }
 
 bool ConferenceRoomModel::isExtensionMuted(const QString &extension) const
@@ -151,7 +161,7 @@ QVariant ConferenceRoomModel::data(const QModelIndex & index, int role) const
     default:
         break;
     }
-    return QVariant();
+    return AbstractTableModel::data(index, role);
 }
 
 QVariant ConferenceRoomModel::headerData(int section,
