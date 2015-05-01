@@ -97,7 +97,11 @@ QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
     case ConferenceList::COL_NUMBER:
         return m_conflist_item[row].extension;
     case ConferenceList::COL_PIN_REQUIRED:
-        return m_conflist_item[row].pin_required;
+        if (m_conflist_item[row].pin_required) {
+            return tr("Yes");
+        } else {
+            return tr("No");
+        }
     case ConferenceList::COL_MEMBER_COUNT:
         return m_conflist_item[row].member_count;
     case ConferenceList::COL_STARTED_SINCE:
