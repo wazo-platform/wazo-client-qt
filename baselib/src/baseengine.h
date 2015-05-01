@@ -46,6 +46,8 @@
 class QApplication;
 class QDateTime;
 class QFile;
+class QNetworkReply;
+class QNetworkAccessManager;
 class QSettings;
 class QSocketNotifier;
 class QSslError;
@@ -156,6 +158,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QVariant parseJson(const QByteArray &) const;
         QByteArray toJson(const QVariantMap &map) const;
+
+        QNetworkReply *restAPI(const QString &path);
 
     private:
 
@@ -420,6 +424,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
         QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
         QVariantList m_meetme_membership;
+        QNetworkAccessManager *m_network;
 
         InitWatcher m_init_watcher;
 

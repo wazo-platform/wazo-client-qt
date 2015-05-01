@@ -10,6 +10,7 @@ SUBDIRS  = \
     src/xlets/fax \
     src/xlets/history \
     src/xlets/identity \
+    src/xlets/infos \
     src/xlets/people \
     src/xlets/queues \
     src/xlets/queue_members \

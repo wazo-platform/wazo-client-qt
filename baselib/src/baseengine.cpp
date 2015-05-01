@@ -36,6 +36,7 @@
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QLocale>
+#include <QNetworkAccessManager>
 #include <QSettings>
 #include <QProcess>
 #include <QTcpSocket>
@@ -97,7 +98,8 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
       m_pendingkeepalivemsg(0),
       m_logfile(NULL),
       m_attempt_loggedin(false),
-      m_forced_to_disconnect(false)
+      m_forced_to_disconnect(false),
+      m_network(new QNetworkAccessManager(this))
 {
     settings->setParent(this);
     m_timerid_keepalive = 0;
@@ -1899,4 +1901,14 @@ void BaseEngine::urlAuto(const QString & value)
         QDesktopServices::openUrl(url);
 #endif
     }
+}
+
+QNetworkReply *BaseEngine::restAPI(const QString &path)
+{
+    QUrl url = QUrl();
+    url.setScheme("http");
+    url.setHost(m_config["cti_address"].toString());
+    url.setPort(port_to_use());
+    url.setPath(path);
+    return m_network->get(QNetworkRequest(url));
 }

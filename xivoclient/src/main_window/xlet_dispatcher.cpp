@@ -220,6 +220,8 @@ void XletDispatcher::prepareXletsTab()
 
     QTabWidget *tab_widget = this->m_tabber->tabWidget();
 
+    this->m_xlets_tab.append(QPair<QString, QString>("infos", ""));
+
     foreach (const XletAndOption &xlet_and_option, this->m_xlets_tab) {
         const QString &name = xlet_and_option.first;
         XLet *xlet = this->xletFactory(name);
