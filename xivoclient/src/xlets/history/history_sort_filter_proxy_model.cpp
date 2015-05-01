@@ -35,7 +35,7 @@ HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
 {
 }
 
-void HistorySortFilterProxyModel::setFilterMode(int mode)
+void HistorySortFilterProxyModel::setFilterMode(HistoryMode mode)
 {
     if (m_mode != mode) {
         m_mode = mode;

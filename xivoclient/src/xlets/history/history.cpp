@@ -83,6 +83,7 @@ History::History(QWidget *parent)
 void History::parseCommand(const QVariantMap &map)
 {
     m_model->updateHistory(map);
+    m_proxy_model->setFilterMode(m_mode);
 }
 
 void History::requestHistory(QString xuserid)
@@ -100,26 +101,26 @@ void History::requestHistory(QString xuserid)
 
 void History::allCallsMode()
 {
+    m_mode = ALLCALL;
     this->requestHistory();
-    m_proxy_model->setFilterMode(ALLCALL);
 }
 
 void History::missedCallsMode()
 {
+    m_mode = MISSEDCALL;
     this->requestHistory();
-    m_proxy_model->setFilterMode(MISSEDCALL);
 }
 
 void History::receivedCallsMode()
 {
+    m_mode = INCALL;
     this->requestHistory();
-    m_proxy_model->setFilterMode(INCALL);
 }
 
 void History::sentCallsMode()
 {
+    m_mode = OUTCALL;
     this->requestHistory();
-    m_proxy_model->setFilterMode(OUTCALL);
 }
 
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)

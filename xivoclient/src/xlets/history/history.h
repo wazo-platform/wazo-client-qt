@@ -63,6 +63,7 @@ class History : public XLet, public IPBXListener
 
     private:
         HistoryModel *m_model;
+        HistoryMode m_mode;
         HistorySortFilterProxyModel *m_proxy_model;
         Ui::HistoryWidget ui;
 };
