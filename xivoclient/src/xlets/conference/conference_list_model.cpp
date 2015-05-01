@@ -50,11 +50,12 @@ void ConferenceListModel::updateConfList(const QVariantMap &configs)
         ConferenceListItem entry;
         entry.name = conflist_item.value("name").toString();
         entry.extension = conflist_item.value("number").toString();
-        entry.pin_required = conflist_item.value("pin_required").toString();
+        entry.pin_required = conflist_item.value("pin_required").toBool();
         entry.start_time = conflist_item.value("start_time").toDouble();
         entry.member_count = conflist_item.value("member_count").toInt();
         m_conflist_item.append(entry);
     }
+
     endResetModel();
 }
 
@@ -65,7 +66,7 @@ int ConferenceListModel::rowCount(const QModelIndex&) const
 
 int ConferenceListModel::columnCount(const QModelIndex&) const
 {
-    return NB_COL;
+    return ConferenceList::NB_COL;
 }
 
 QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
@@ -79,15 +80,15 @@ QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
     int row = index.row(), col = index.column();
 
     switch (col) {
-    case NAME:
+    case ConferenceList::COL_NAME:
         return m_conflist_item[row].name;
-    case NUMBER:
+    case ConferenceList::COL_NUMBER:
         return m_conflist_item[row].extension;
-    case PIN_REQUIRED:
+    case ConferenceList::COL_PIN_REQUIRED:
         return m_conflist_item[row].pin_required;
-    case MEMBER_COUNT:
+    case ConferenceList::COL_MEMBER_COUNT:
         return m_conflist_item[row].member_count;
-    case STARTED_SINCE:
+    case ConferenceList::COL_STARTED_SINCE:
         return this->startedSince(m_conflist_item[row].start_time);
     default:
         break;
@@ -101,19 +102,20 @@ QVariant ConferenceListModel::headerData(int section,
                                          int role) const
 {
     if (role != Qt::DisplayRole ||
-        orientation != Qt::Horizontal)
+        orientation != Qt::Horizontal) {
         return QVariant();
+    }
 
     switch (section) {
-    case NUMBER:
+    case ConferenceList::COL_NUMBER:
         return tr("Number");
-    case NAME:
+    case ConferenceList::COL_NAME:
         return tr("Name");
-    case PIN_REQUIRED:
+    case ConferenceList::COL_PIN_REQUIRED:
         return tr("PIN code");
-    case MEMBER_COUNT:
+    case ConferenceList::COL_MEMBER_COUNT:
         return tr("Member count");
-    case STARTED_SINCE:
+    case ConferenceList::COL_STARTED_SINCE:
         return tr("Started since");
     default:
         return QVariant();
@@ -135,7 +137,7 @@ QString ConferenceListModel::startedSince(double time) const
 
 void ConferenceListModel::updateConfTime()
 {
-    QModelIndex cellChanged1 = createIndex(0, STARTED_SINCE);
-    QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, STARTED_SINCE);
+    QModelIndex cellChanged1 = createIndex(0, ConferenceList::COL_STARTED_SINCE);
+    QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, ConferenceList::COL_STARTED_SINCE);
     emit dataChanged(cellChanged1, cellChanged2);
 }

@@ -46,6 +46,7 @@
 class ConferenceListModel;
 class ConferenceListSortFilterProxyModel;
 class ConferenceRoomModel;
+class ConferenceRoomSortFilterProxyModel;
 
 class Conference : public XLet, IPBXListener
 {
@@ -61,6 +62,7 @@ class Conference : public XLet, IPBXListener
     private slots:
         void showConfList();
         void showConfRoom(QString &room_number, QString &room_name);
+        void muteToggled(const QString &extension);
 
     private:
         //The order of this enum is determined by the order of the menu creation
@@ -74,6 +76,7 @@ class Conference : public XLet, IPBXListener
         ConferenceListModel *m_list_model;
         ConferenceListSortFilterProxyModel *m_list_proxy_model;
         ConferenceRoomModel *m_room_model;
+        ConferenceRoomSortFilterProxyModel *m_room_proxy_model;
         QString m_confroom_number;
         QVariantMap m_confroom_configs;
 };

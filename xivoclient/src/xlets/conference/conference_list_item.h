@@ -36,7 +36,7 @@ struct ConferenceListItem
 {
     QString name;
     QString extension;
-    QString pin_required;
+    bool pin_required;
     double start_time;
     int member_count;
 };

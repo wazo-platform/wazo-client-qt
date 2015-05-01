@@ -27,17 +27,28 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFERENCE_LIST_ENUM_H__
-#define __CONFERENCE_LIST_ENUM_H__
+#ifndef __CONFERENCE_ENUM_H__
+#define __CONFERENCE_ENUM_H__
 
+namespace ConferenceList {
+    enum Column {
+        COL_NAME,
+        COL_NUMBER,
+        COL_PIN_REQUIRED,
+        COL_MEMBER_COUNT,
+        COL_STARTED_SINCE,
+        NB_COL
+    };
+};
 
-enum ConferenceListCol {
-    NAME,
-    NUMBER,
-    PIN_REQUIRED,
-    MEMBER_COUNT,
-    STARTED_SINCE,
-    NB_COL
+namespace ConferenceRoom {
+    enum Column {
+        COL_ACTION_MUTE,
+        COL_NAME,
+        COL_NUMBER,
+        COL_SINCE,
+        NB_COL
+    };
 };
 
 #endif

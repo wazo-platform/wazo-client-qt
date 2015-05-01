@@ -39,7 +39,7 @@
 #include <xletlib/functests.h>
 #include <baseengine.h>
 
-#include "conference_list_enum.h"
+#include "conference_enum.h"
 #include "conference_list_item.h"
 
 class ConferenceListModel : public QAbstractTableModel
@@ -51,12 +51,12 @@ class ConferenceListModel : public QAbstractTableModel
         ConferenceListModel(QWidget *parent = NULL);
 
     protected:
-       virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-       virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-       virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-       virtual QVariant headerData(int section,
-                                   Qt::Orientation orientation,
-                                   int role = Qt::DisplayRole) const;
+        virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+        virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+        virtual QVariant headerData(int section,
+                                    Qt::Orientation orientation,
+                                    int role = Qt::DisplayRole) const;
 
     public slots:
         void updateConfList(const QVariantMap &);
