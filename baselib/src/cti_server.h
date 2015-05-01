@@ -30,9 +30,9 @@
 #ifndef __CTISERVER_H__
 #define __CTISERVER_H__
 
-#include <QWebSocket>
 #include <QObject>
 #include <QTimer>
+#include <QWebSocket>
 
 #include "baseengine.h"
 #include "connection_config.h"
@@ -43,17 +43,21 @@ class CTIServer : public QObject
 
     public:
         CTIServer(QWebSocket * socket);
+        bool canReadLine();
         void connectToServer(ConnectionConfig config);
         void disconnectFromServer();
+        QByteArray readLine();
         // bool connected();
 
     signals:
-        void failedToConnect(const QString &, const QString &, const QString &);
         void disconnected();
+        void failedToConnect(const QString &, const QString &, const QString &);
+        void readyRead();
 
     private slots:
         void ctiSocketError(QAbstractSocket::SocketError);
         void onSocketDisconnected();
+        void receiveBinaryMessage(const QByteArray &message);
 
     private:
         void connectSocket(const QString & address,
@@ -65,6 +69,7 @@ class CTIServer : public QObject
 
     private:
         QWebSocket * m_socket;
+        QByteArray m_buffer;
         QString m_last_address;
         unsigned m_last_port;
 };

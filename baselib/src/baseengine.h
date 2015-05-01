@@ -232,11 +232,11 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void authenticate();
         void authenticated();
-        void parseRawMessage(QByteArray message);
+        void ctiSocketReadyRead();
         void onCTIServerDisconnected();
 
         void filetransferSocketConnected();
-        void filetransferSocketReadyRead();
+        void filetransferMessageReceived(const QByteArray &);
 
         void sheetSocketConnected();
 
@@ -385,7 +385,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // Internal management
         QWebSocket * m_ctiserversocket;     //!< Connection to the CTI server
-        QTcpSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
+        QWebSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
         QTcpSocket * m_tcpsheetsocket;  //!< TCP connection for Sheet sockets
         QUdpSocket * m_udpsheetsocket;  //!< UDP connection for Sheet sockets
         int m_timerid_keepalive;        //!< timer id for keep alive

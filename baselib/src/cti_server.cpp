@@ -32,6 +32,8 @@
 CTIServer::CTIServer(QWebSocket * socket)
     : QObject(NULL), m_socket(socket), m_last_port(0)
 {
+    connect(m_socket, SIGNAL(binaryMessageReceived(const QByteArray &)),
+            this, SLOT(receiveBinaryMessage(const QByteArray &)));
 }
 
 void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
@@ -133,8 +135,28 @@ void CTIServer::connectSocket(const QString & address,
     // if (encrypted) {
     //     m_socket->connectToHostEncrypted(address, port);
     // } else {
-        m_socket->open(QString("ws://%1:%2").arg(address).arg(port));
+    QString uri = QString("ws://%1:%2/ws").arg(address).arg(port);
+    m_socket->open(uri);
     // }
+}
+
+void CTIServer::receiveBinaryMessage(const QByteArray &message)
+{
+    this->m_buffer.append(message);
+    emit readyRead();
+}
+
+bool CTIServer::canReadLine()
+{
+    return this->m_buffer.contains('\n');
+}
+
+QByteArray CTIServer::readLine()
+{
+    int line_length = this->m_buffer.indexOf('\n') + 1;
+    QByteArray result = this->m_buffer.left(line_length);
+    this->m_buffer.remove(0, line_length);
+    return result;
 }
 
 // bool CTIServer::connected()

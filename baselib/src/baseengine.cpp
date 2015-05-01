@@ -123,11 +123,11 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     //         this, SLOT(sslErrors(const QList<QSslError> & )));
     connect(m_ctiserversocket, SIGNAL(connected()),
             this, SLOT(authenticate()));
-    connect(m_ctiserversocket, SIGNAL(binaryMessageReceived(const QByteArray &)),
-            this, SLOT(parseRawMessage(QByteArray)));
+    connect(m_cti_server, SIGNAL(readyRead()),
+            this, SLOT(ctiSocketReadyRead()));
     connect(m_cti_server, SIGNAL(disconnected()),
             this, SLOT(onCTIServerDisconnected()));
-    connect(m_cti_server, SIGNAL(errorReceived(const QString &, const QString &)),
+    connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
             this, SLOT(errorReceived(const QString &, const QString &)));
 
     connect(&m_init_watcher, SIGNAL(watching()),
@@ -142,11 +142,11 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
 
     // TCP connection for file transfer
     // (this could be moved to some other class)
-    m_filetransfersocket = new QTcpSocket(this);
+    m_filetransfersocket = new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this);
     connect(m_filetransfersocket, SIGNAL(connected()),
             this, SLOT(filetransferSocketConnected()));
-    connect(m_filetransfersocket, SIGNAL(readyRead()),
-            this, SLOT(filetransferSocketReadyRead()));
+    connect(m_filetransfersocket, SIGNAL(binaryMessageReceived(const QByteArray &)),
+            this, SLOT(filetransferMessageReceived(const QByteArray &)));
 
     if (m_config["autoconnect"].toBool())
         start();
@@ -437,7 +437,6 @@ void BaseEngine::emitLogged()
 
 void BaseEngine::authenticate()
 {
-    qDebug() << Q_FUNC_INFO;
     stopTryAgainTimer();
     /* do the login/identification */
     m_attempt_loggedin = false;
@@ -609,7 +608,6 @@ void BaseEngine::sendCommand(const QByteArray &command)
 {
     QByteArray new_command = command;
     new_command.append('\n');
-    qDebug() << new_command;
     m_ctiserversocket->sendBinaryMessage(new_command);
 }
 
@@ -787,14 +785,13 @@ void BaseEngine::parseCommand(const QByteArray &raw)
             qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
         else {
             m_fileid = datamap.value("fileid").toString();
-            m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), port_to_use());
+            m_filetransfersocket->open(QString("ws://%1:%2/ws").arg(m_config["cti_address"].toString()).arg(port_to_use()));
         }
 
     } else if (thisclass == "filetransfer") {
-        qint64 written = m_filetransfersocket->write(m_filedata + "\n");
+        qint64 written = m_filetransfersocket->sendBinaryMessage(m_filedata + "\n");
         qDebug() << Q_FUNC_INFO << written << datamap;
-        m_filetransfersocket->flush();
-        m_filetransfersocket->disconnectFromHost();
+        m_filetransfersocket->close();
         m_filedata.clear();
 
     } else if (thisclass == "faxprogress") {
@@ -1374,17 +1371,19 @@ void BaseEngine::saveToFile(const QString & filename)
  *
  * Read and process the data from the server.
  */
-void BaseEngine::parseRawMessage(QByteArray raw_message)
+void BaseEngine::ctiSocketReadyRead()
 {
-    QString message = QString::fromUtf8(raw_message);
-    qDebug() << Q_FUNC_INFO << message;
-    if (message.startsWith("<ui version=")) {
-        // we get here when receiving a sheet as a Qt4 .ui form
-        qDebug() << "Incoming sheet, size:" << message.size();
-        emit displayFiche(message, true, QString());
-    } else {
-        message.chop(1);  // remove the \n the the end of the json
-        parseCommand(message.toUtf8());
+    while (m_cti_server->canReadLine()) {
+        QByteArray data  = m_cti_server->readLine();
+        QString line = QString::fromUtf8(data);
+        if (line.startsWith("<ui version=")) {
+            // we get here when receiving a sheet as a Qt4 .ui form
+            qDebug() << "Incoming sheet, size:" << line.size();
+            emit displayFiche(line, true, QString());
+        } else {
+            data.chop(1);  // remove the \n the the end of the json
+            parseCommand(data);
+        }
     }
 }
 
@@ -1392,30 +1391,27 @@ void BaseEngine::parseRawMessage(QByteArray raw_message)
  *
  * Read text data, the file is encapsulated into JSON as a base 64 string.
  */
-void BaseEngine::filetransferSocketReadyRead()
+void BaseEngine::filetransferMessageReceived(const QByteArray &message)
 {
-    while (m_filetransfersocket->canReadLine()) {
-        QByteArray data = m_filetransfersocket->readLine();
-        QVariantMap jsondatamap = this->parseJson(data).toMap();
-        if (jsondatamap.value("class").toString() == "fileref") {
-            if (m_filedir == "download") {
-                m_downloaded = QByteArray::fromBase64(jsondatamap.value("payload").toByteArray());
-                qDebug() << jsondatamap.value("filename").toString() << m_downloaded.size();
-                emit fileReceived();
-            } else {
-                QByteArray fax64 = m_filedata.toBase64();
-                qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString()
-                         << m_faxsize << fax64.size();
-                if (m_faxsize > 0) {
-                    m_filetransfersocket->write(fax64 + "\n");
-                    m_filetransfersocket->flush();
-                }
-                m_filedata.clear();
+    QByteArray data = message;
+    QVariantMap jsondatamap = this->parseJson(data).toMap();
+    if (jsondatamap.value("class").toString() == "fileref") {
+        if (m_filedir == "download") {
+            m_downloaded = QByteArray::fromBase64(jsondatamap.value("payload").toByteArray());
+            qDebug() << jsondatamap.value("filename").toString() << m_downloaded.size();
+            emit fileReceived();
+        } else {
+            QByteArray fax64 = m_filedata.toBase64();
+            qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString()
+                     << m_faxsize << fax64.size();
+            if (m_faxsize > 0) {
+                m_filetransfersocket->sendBinaryMessage(fax64 + "\n");
             }
-            m_filetransfersocket->disconnectFromHost();
-            m_faxsize = 0;
-            m_fileid = "";
+            m_filedata.clear();
         }
+        m_filetransfersocket->close();
+        m_faxsize = 0;
+        m_fileid = "";
     }
 }
 
