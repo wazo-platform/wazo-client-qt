@@ -33,12 +33,15 @@
 #include <baseengine.h>
 
 #include "conference.h"
+#include "conference_list_enum.h"
 #include "conference_list_model.h"
+#include "conference_list_sort_filter_proxy_model.h"
 #include "conference_room_model.h"
 
 Conference::Conference(QWidget *parent)
     : XLet(parent, tr("Conference"), ":/images/tab-conference.svg"),
       m_list_model(NULL),
+      m_list_proxy_model(NULL),
       m_room_model(NULL)
 {
     this->ui.setupUi(this);
@@ -56,17 +59,12 @@ Conference::Conference(QWidget *parent)
     /* CONFLIST */
     // this contains the data, unordered
     m_list_model = new ConferenceListModel(this);
-    m_list_model->setObjectName("conference_list_model");
+    m_list_proxy_model = new ConferenceListSortFilterProxyModel(this);
 
-    // this maps the indexes between the sorted view and the unordered model
-    QSortFilterProxyModel *list_proxy_model = new QSortFilterProxyModel(this);
-    list_proxy_model->setSourceModel(m_list_model);
-    list_proxy_model->setDynamicSortFilter(true); /* sorts right on insertion, instead
-    of half a second after the window has appeared */
+    m_list_proxy_model->setSourceModel(m_list_model);
+    this->ui.list_table->setModel(m_list_proxy_model);
 
-    // this displays the sorted data
-    this->ui.list_table->setModel(list_proxy_model);
-    this->ui.list_table->sortByColumn(ConferenceListModel::NAME, Qt::AscendingOrder);
+    this->ui.list_table->sortByColumn(NAME, Qt::AscendingOrder);
 
     /* CONFROOM */
     m_room_model = new ConferenceRoomModel(this);

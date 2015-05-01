@@ -32,8 +32,8 @@
 #include <QTimer>
 #include <QMenu>
 
+#include "conference_list_enum.h"
 #include "conference_list_view.h"
-#include "conference_list_model.h"
 
 ConferenceListView::ConferenceListView(QWidget *parent)
     : AbstractTableView(parent)
@@ -44,8 +44,8 @@ ConferenceListView::ConferenceListView(QWidget *parent)
 
 void ConferenceListView::onViewClick(const QModelIndex &model)
 {
-    QString room_name = model.sibling(model.row(), ConferenceListModel::NAME).data().toString();
-    QString room_number = model.sibling(model.row(), ConferenceListModel::NUMBER).data().toString();
+    QString room_name = model.sibling(model.row(), NAME).data().toString();
+    QString room_number = model.sibling(model.row(), NUMBER).data().toString();
 
     if (room_number != "") {
         b_engine->pasteToDial(room_number);
@@ -57,8 +57,8 @@ void ConferenceListView::contextMenuEvent(QContextMenuEvent * event)
 {
     const QModelIndex &index = indexAt(event->pos());
 
-    m_room_name_clicked = index.sibling(index.row(), ConferenceListModel::NAME).data().toString();
-    m_room_number_clicked = index.sibling(index.row(), ConferenceListModel::NUMBER).data().toString();
+    m_room_name_clicked = index.sibling(index.row(), NAME).data().toString();
+    m_room_number_clicked = index.sibling(index.row(), NUMBER).data().toString();
 
     QMenu *menu = new QMenu(this);
     QAction *action = new QAction(

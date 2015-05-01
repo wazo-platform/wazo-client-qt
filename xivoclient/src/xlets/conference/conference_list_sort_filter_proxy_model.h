@@ -27,47 +27,20 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFERENCE_LIST_MODEL_H__
-#define __CONFERENCE_LIST_MODEL_H__
+#ifndef __CONFERENCE_LIST_SORT_FILTER_PROXY_MODEL_H__
+#define __CONFERENCE_LIST_SORT_FILTER_PROXY_MODEL_H__
 
-#include <QAbstractTableModel>
-#include <QList>
 #include <QModelIndex>
-#include <QVariant>
-#include <QWidget>
+#include <QString>
 
-#include <xletlib/functests.h>
-#include <baseengine.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
 
-#include "conference_list_enum.h"
-#include "conference_list_item.h"
-
-class ConferenceListModel : public QAbstractTableModel
+class ConferenceListSortFilterProxyModel : public AbstractSortFilterProxyModel
 {
     Q_OBJECT
-    FUNCTESTED
 
     public:
-        ConferenceListModel(QWidget *parent = NULL);
-
-    protected:
-       virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-       virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-       virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-       virtual QVariant headerData(int section,
-                                   Qt::Orientation orientation,
-                                   int role = Qt::DisplayRole) const;
-
-    public slots:
-        void updateConfList(const QVariantMap &);
-
-    private slots:
-        void updateConfTime();
-
-    private:
-        QString startedSince(double time) const;
-
-        QList<ConferenceListItem> m_conflist_item;
+        ConferenceListSortFilterProxyModel(QObject *parent);
 };
 
 #endif
