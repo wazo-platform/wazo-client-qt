@@ -30,7 +30,6 @@
 #ifndef __CONFERENCE_ROOM_MODEL_H__
 #define __CONFERENCE_ROOM_MODEL_H__
 
-#include <QAbstractTableModel>
 #include <QList>
 #include <QModelIndex>
 #include <QWidget>

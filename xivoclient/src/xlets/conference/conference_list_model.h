@@ -30,19 +30,19 @@
 #ifndef __CONFERENCE_LIST_MODEL_H__
 #define __CONFERENCE_LIST_MODEL_H__
 
-#include <QAbstractTableModel>
 #include <QList>
 #include <QModelIndex>
 #include <QVariant>
 #include <QWidget>
 
+#include <xletlib/abstract_table_model.h>
 #include <xletlib/functests.h>
 #include <baseengine.h>
 
 #include "conference_enum.h"
 #include "conference_list_item.h"
 
-class ConferenceListModel : public QAbstractTableModel
+class ConferenceListModel : public AbstractTableModel
 {
     Q_OBJECT
     FUNCTESTED
@@ -57,6 +57,8 @@ class ConferenceListModel : public QAbstractTableModel
         virtual QVariant headerData(int section,
                                     Qt::Orientation orientation,
                                     int role = Qt::DisplayRole) const;
+        virtual QList<int> columnDisplayBold() const;
+        virtual QList<int> columnDisplaySmaller() const;
 
     public slots:
         void updateConfList(const QVariantMap &);

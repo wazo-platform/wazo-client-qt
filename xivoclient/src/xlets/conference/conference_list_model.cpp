@@ -32,7 +32,7 @@
 #include "conference_list_model.h"
 
 ConferenceListModel::ConferenceListModel(QWidget *parent)
-    : QAbstractTableModel(parent)
+    : AbstractTableModel(parent)
 {
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
@@ -69,12 +69,24 @@ int ConferenceListModel::columnCount(const QModelIndex&) const
     return ConferenceList::NB_COL;
 }
 
+QList<int> ConferenceListModel::columnDisplayBold() const
+{
+    return QList<int>() << ConferenceList::COL_NAME;
+}
+
+QList<int> ConferenceListModel::columnDisplaySmaller() const
+{
+    return QList<int>() << ConferenceList::COL_STARTED_SINCE
+                        << ConferenceList::COL_MEMBER_COUNT
+                        << ConferenceList::COL_PIN_REQUIRED;
+}
+
 QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
             return Qt::AlignVCenter;
-        return QVariant();
+        return AbstractTableModel::data(index, role);
     }
 
     int row = index.row(), col = index.column();
@@ -94,7 +106,7 @@ QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
         break;
     }
 
-    return QVariant();
+    return AbstractTableModel::data(index, role);
 }
 
 QVariant ConferenceListModel::headerData(int section,
