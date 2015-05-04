@@ -29,7 +29,6 @@
 
 #include <QAction>
 #include <QTimer>
-#include <QMenu>
 
 #include <xletlib/number_button_delegate.h>
 
@@ -52,7 +51,6 @@ void ConferenceListView::onViewClick(const QModelIndex &model)
     QString room_number = model.sibling(model.row(), ConferenceList::COL_NUMBER).data().toString();
 
     if (room_number != "") {
-        b_engine->pasteToDial(room_number);
         emit this->openConfRoom(room_number, room_name);
     }
 }

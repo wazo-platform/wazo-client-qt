@@ -113,6 +113,8 @@ void Conference::showConfList()
 
 void Conference::showConfRoom(QString &room_number, QString &room_name)
 {
+    b_engine->pasteToDial(room_number);
+
     QVariantMap confroom_config = m_confroom_configs[room_number].toMap()["members"].toMap();
     this->m_room_model->setConfRoom(room_number, confroom_config);
 

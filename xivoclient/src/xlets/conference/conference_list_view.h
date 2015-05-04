@@ -35,8 +35,6 @@
 
 #include <xletlib/abstract_table_view.h>
 
-#include <baseengine.h>
-
 class ConferenceListView : public AbstractTableView
 {
     Q_OBJECT

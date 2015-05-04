@@ -30,8 +30,6 @@
 #include <QTimer>
 #include <QHeaderView>
 
-#include <baseengine.h>
-
 #include "conference_enum.h"
 #include "conference_room_model.h"
 #include "conference_room_view.h"
