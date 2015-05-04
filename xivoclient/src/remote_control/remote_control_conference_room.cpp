@@ -33,6 +33,7 @@
 #include <QVariant>
 
 #include "xlets/conference/conference.h"
+#include "xlets/conference/conference_enum.h"
 #include "xlets/conference/conference_list_model.h"
 #include "remote_control.h"
 
@@ -47,11 +48,11 @@ QVariantMap RemoteControl::get_conference_room_infos()
 
     QVariantList content;
     QVariantMap header_data;
-    header_data["name"] = ConferenceListModel::NAME;
-    header_data["number"] = ConferenceListModel::NUMBER;
-    header_data["pin_required"] = ConferenceListModel::PIN_REQUIRED;
-    header_data["member_count"] = ConferenceListModel::MEMBER_COUNT;
-    header_data["started_since"] = ConferenceListModel::STARTED_SINCE;
+    header_data["name"] = ConferenceList::COL_NAME;
+    header_data["number"] = ConferenceList::COL_NUMBER;
+    header_data["pin_required"] = ConferenceList::COL_PIN_REQUIRED;
+    header_data["member_count"] = ConferenceList::COL_MEMBER_COUNT;
+    header_data["started_since"] = ConferenceList::COL_STARTED_SINCE;
 
     int nb_rows = conflist_model->rowCount(QModelIndex());
     for (int row = 0; row < nb_rows; row++) {
