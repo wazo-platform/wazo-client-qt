@@ -70,12 +70,15 @@ class Conference : public XLet, IPBXListener
             ROOM_NUMBER_PANE
         };
 
+        int extractJoinOrder(const QString room_number);
+
         Ui::ConferenceWidget ui;
         ConferenceListModel *m_list_model;
         ConferenceListSortFilterProxyModel *m_list_proxy_model;
         ConferenceRoomModel *m_room_model;
         ConferenceRoomSortFilterProxyModel *m_room_proxy_model;
         QString m_confroom_number;
+        QVariantList m_my_confroom_joined;
         QVariantMap m_confroom_configs;
 };
 

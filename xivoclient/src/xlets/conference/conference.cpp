@@ -28,7 +28,6 @@
  */
 
 #include <QAction>
-#include <QDebug>
 
 #include <baseengine.h>
 
@@ -84,16 +83,30 @@ Conference::Conference(QWidget *parent)
     this->ui.menu->setSelectedAction(ROOM_LIST_PANE);
 
     this->registerListener("meetme_update");
+    this->registerListener("meetme_user");
 
     b_engine->registerMeetmeUpdate();
 }
 
 void Conference::parseCommand(const QVariantMap & datamap)
 {
+    QString room_number = this->m_room_model->roomNumber();
+
+    if (datamap.value("class").toString() == "meetme_user") {
+        m_my_confroom_joined = datamap["list"].toList();
+
+        if (! room_number.isEmpty() &&
+            this->ui.conference_tables->currentIndex() ==
+            this->ui.conference_tables->indexOf(this->ui.room_page))
+        {
+            m_room_model->setMyJoinOrder(this->extractJoinOrder(room_number));
+        }
+        return;
+    }
+
     m_confroom_configs = datamap.value("config").toMap();
     this->m_list_model->updateConfList(m_confroom_configs);
 
-    QString room_number = this->m_room_model->roomNumber();
     if (! room_number.isEmpty() &&
         this->ui.conference_tables->currentIndex() ==
         this->ui.conference_tables->indexOf(this->ui.room_page))
@@ -101,6 +114,17 @@ void Conference::parseCommand(const QVariantMap & datamap)
         QVariantMap confroom_members = m_confroom_configs[room_number].toMap()["members"].toMap();
         m_room_model->setConfRoom(room_number, confroom_members);
     }
+}
+
+int Conference::extractJoinOrder(const QString room_number)
+{
+    foreach (const QVariant &item, m_my_confroom_joined) {
+        const QVariantMap &map = item.toMap();
+        if (map["room_number"].toString() == room_number) {
+            return map["user_number"].toInt();
+        }
+    }
+    return -1;
 }
 
 void Conference::showConfList()
@@ -116,6 +140,8 @@ void Conference::showConfRoom(QString &room_number, QString &room_name)
 
     QVariantMap confroom_config = m_confroom_configs[room_number].toMap()["members"].toMap();
     this->m_room_model->setConfRoom(room_number, confroom_config);
+
+    m_room_model->setMyJoinOrder(this->extractJoinOrder(room_number));
 
     int index = this->ui.conference_tables->indexOf(this->ui.room_page);
     this->ui.conference_tables->setCurrentIndex(index);

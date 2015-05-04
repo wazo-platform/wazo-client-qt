@@ -27,6 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMutableListIterator>
 #include <QTimer>
 
 #include <baseengine.h>
@@ -37,6 +38,8 @@
 ConferenceRoomModel::ConferenceRoomModel(QWidget *parent)
     : AbstractTableModel(parent)
 {
+    m_my_join_order = -1;
+
     QTimer * join_time_timer = new QTimer(this);
     connect(join_time_timer, SIGNAL(timeout()),
             this, SLOT(updateJoinTime()));
@@ -50,7 +53,6 @@ const QString & ConferenceRoomModel::roomNumber() const
 
 void ConferenceRoomModel::setConfRoom(const QString &room_number, const QVariantMap &members)
 {
-
     beginResetModel();
 
     m_room_number = room_number;
@@ -60,7 +62,7 @@ void ConferenceRoomModel::setConfRoom(const QString &room_number, const QVariant
         ConferenceRoomItem entry;
         entry.extension = confroom_item.value("number").toString();
         entry.join_order = confroom_item.value("join_order").toInt();
-        entry.is_me = b_engine->isMeetmeMember(m_room_number, entry.join_order);
+        entry.is_me = entry.join_order == m_my_join_order;
         entry.join_time = confroom_item.value("join_time").toInt();
         entry.muted = confroom_item.value("muted").toBool();
         entry.name = confroom_item.value("name").toString();
@@ -68,6 +70,22 @@ void ConferenceRoomModel::setConfRoom(const QString &room_number, const QVariant
     }
 
     endResetModel();
+}
+
+void ConferenceRoomModel::setMyJoinOrder(int join_order)
+{
+    m_my_join_order = join_order;
+
+    QMutableListIterator<ConferenceRoomItem> item(m_confroom_item);
+    while (item.hasNext()) {
+        ConferenceRoomItem room_item = item.next();
+        room_item.is_me = room_item.join_order == m_my_join_order;
+        item.setValue(room_item);
+    }
+
+    QModelIndex first = createIndex(0, ConferenceRoom::COL_ACTION_MUTE);
+    QModelIndex last = createIndex(this->rowCount() - 1, ConferenceRoom::COL_ACTION_MUTE);
+    emit dataChanged(first, last);
 }
 
 int ConferenceRoomModel::rowCount(const QModelIndex &) const

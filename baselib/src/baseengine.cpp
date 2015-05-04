@@ -953,16 +953,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     }
 }
 
-bool BaseEngine::isMeetmeMember(const QString &room, int number) const
-{
-    foreach (const QVariant &item, m_meetme_membership) {
-        const QVariantMap &map = item.toMap();
-        if (map["room_number"].toString() == room && map["user_number"].toInt() == number)
-            return true;
-    }
-    return false;
-}
-
 void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
     if (! GenLists.contains(listname)) {

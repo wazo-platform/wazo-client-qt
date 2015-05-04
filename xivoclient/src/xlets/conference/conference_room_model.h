@@ -51,6 +51,7 @@ class ConferenceRoomModel : public AbstractTableModel
         bool isExtensionMuted(const QString &extension) const;
         int joinOrder(const QString &extension) const;
         void setConfRoom(const QString &room_number, const QVariantMap &members);
+        void setMyJoinOrder(int join_order);
 
     protected:
         virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -67,6 +68,7 @@ class ConferenceRoomModel : public AbstractTableModel
         void updateJoinTime();
 
     private:
+        int m_my_join_order;
         QString m_room_number;
         QList<ConferenceRoomItem> m_confroom_item;
 };
