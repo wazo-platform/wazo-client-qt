@@ -55,10 +55,7 @@ Conference::Conference(QWidget *parent)
 
     QAction *conflist_action = this->ui.menu->addAction(tr("Room list"));
     this->ui.menu->addAction();
-    this->ui.menu->setSelectedAction(ROOM_LIST);
-    this->showConfList();
 
-    /* CONFLIST */
     m_list_model = new ConferenceListModel(this);
     m_list_proxy_model = new ConferenceListSortFilterProxyModel(this);
 
@@ -67,7 +64,6 @@ Conference::Conference(QWidget *parent)
 
     this->ui.list_table->sortByColumn(ConferenceList::COL_NAME, Qt::AscendingOrder);
 
-    /* CONFROOM */
     m_room_model = new ConferenceRoomModel(this);
     m_room_proxy_model = new ConferenceRoomSortFilterProxyModel(this);
 
@@ -79,10 +75,13 @@ Conference::Conference(QWidget *parent)
 
     connect(conflist_action, SIGNAL(triggered()),
             this, SLOT(showConfList()));
+
     connect(this->ui.list_table, SIGNAL(openConfRoom(QString &, QString &)),
             this, SLOT(showConfRoom(QString &, QString &)));
     connect(this->ui.room_table, SIGNAL(muteToggled(const QString &)),
             this, SLOT(muteToggled(const QString &)));
+
+    this->ui.menu->setSelectedAction(ROOM_LIST_PANE);
 
     this->registerListener("meetme_update");
 
@@ -108,7 +107,7 @@ void Conference::showConfList()
 {
     int index = this->ui.conference_tables->indexOf(this->ui.list_page);
     this->ui.conference_tables->setCurrentIndex(index);
-    this->ui.menu->hideAction(ROOM_NUMBER);
+    this->ui.menu->hideAction(ROOM_NUMBER_PANE);
 }
 
 void Conference::showConfRoom(QString &room_number, QString &room_name)
@@ -122,9 +121,9 @@ void Conference::showConfRoom(QString &room_number, QString &room_name)
     this->ui.conference_tables->setCurrentIndex(index);
 
     QString confroom_label = tr("%1 (%2)").arg(room_name, room_number);
-    this->ui.menu->showAction(ROOM_NUMBER);
-    this->ui.menu->setActionText(ROOM_NUMBER, confroom_label);
-    this->ui.menu->setSelectedAction(ROOM_NUMBER);
+    this->ui.menu->showAction(ROOM_NUMBER_PANE);
+    this->ui.menu->setActionText(ROOM_NUMBER_PANE, confroom_label);
+    this->ui.menu->setSelectedAction(ROOM_NUMBER_PANE);
 }
 
 void Conference::muteToggled(const QString &extension)

@@ -67,8 +67,8 @@ class Conference : public XLet, IPBXListener
     private:
         //The order of this enum is determined by the order of the menu creation
         enum MenuIndex {
-            ROOM_LIST,
-            ROOM_NUMBER
+            ROOM_LIST_PANE,
+            ROOM_NUMBER_PANE
         };
 
         Ui::ConferenceWidget ui;
