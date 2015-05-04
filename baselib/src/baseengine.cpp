@@ -1245,7 +1245,7 @@ void BaseEngine::popupError(const QString & errorid,
 
     // keepalive (internal)
     } else if (errorid.toLower() == "no_keepalive_from_server") {
-        errormsg = tr("The XiVO CTI server on %1:%2 did not reply to the last keepalive.")
+        errormsg = tr("The server %1:%2 did not reply to the last keepalive packet.")
             .arg(server_address).arg(server_port);
 
     // socket errors - while attempting to connect
