@@ -1193,6 +1193,17 @@ void BaseEngine::meetmeAction(const QString &function, const QString &functionar
     ipbxCommand(command);
 }
 
+void BaseEngine::registerMeetmeUpdate()
+{
+    QVariantMap command;
+
+    command["class"] = "subscribe";
+    command["message"] = "meetme_update";
+
+    sendJsonCommand(command);
+}
+
+
 /*! \brief Send fax to CTI Server */
 void BaseEngine::sendFaxCommand(const QString & filename,
                                 const QString & number)

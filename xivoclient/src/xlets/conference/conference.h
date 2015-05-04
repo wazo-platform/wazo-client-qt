@@ -70,7 +70,6 @@ class Conference : public XLet, IPBXListener
             ROOM_LIST,
             ROOM_NUMBER
         };
-        void registerMeetmeUpdate() const;
 
         Ui::ConferenceWidget ui;
         ConferenceListModel *m_list_model;

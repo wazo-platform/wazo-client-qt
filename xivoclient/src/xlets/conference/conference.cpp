@@ -86,7 +86,7 @@ Conference::Conference(QWidget *parent)
 
     this->registerListener("meetme_update");
 
-    this->registerMeetmeUpdate();
+    b_engine->registerMeetmeUpdate();
 }
 
 void Conference::parseCommand(const QVariantMap & datamap)
@@ -137,16 +137,6 @@ void Conference::muteToggled(const QString &extension)
    QString param = QString("%0 %1").arg(room_extension).arg(join_order);
 
    b_engine->meetmeAction(action, param);
-}
-
-void Conference::registerMeetmeUpdate() const
-{
-    QVariantMap command;
-
-    command["class"] = "subscribe";
-    command["message"] = "meetme_update";
-
-    b_engine->sendJsonCommand(command);
 }
 
 
