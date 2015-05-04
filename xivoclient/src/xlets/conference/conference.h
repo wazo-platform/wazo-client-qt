@@ -42,7 +42,6 @@
 
 #include <ui_conference_widget.h>
 
-
 class ConferenceListModel;
 class ConferenceListSortFilterProxyModel;
 class ConferenceRoomModel;

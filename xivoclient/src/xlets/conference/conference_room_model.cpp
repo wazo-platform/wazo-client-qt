@@ -114,7 +114,6 @@ void ConferenceRoomModel::updateJoinTime()
 {
     QModelIndex first = createIndex(0, ConferenceRoom::COL_SINCE);
     QModelIndex last = createIndex(this->rowCount() - 1, ConferenceRoom::COL_SINCE);
-
     emit dataChanged(first, last);
 }
 
