@@ -30,47 +30,47 @@
 #ifndef __CONFERENCE_ROOM_MODEL_H__
 #define __CONFERENCE_ROOM_MODEL_H__
 
-#include <QAbstractTableModel>
+#include <QList>
 #include <QModelIndex>
 #include <QWidget>
 
+#include <xletlib/abstract_table_model.h>
+
+#include "conference_room_item.h"
+
 class ConfTab;
 
-class ConferenceRoomModel : public QAbstractTableModel
+class ConferenceRoomModel : public AbstractTableModel
 {
     Q_OBJECT
 
     public:
-        enum ColOrder {
-            ID,
-            ACTION_MUTE,
-            NAME,
-            NUMBER,
-            SINCE,
-            NB_COL
-        };
         ConferenceRoomModel(QWidget *parent);
-        QString row2participantId(int row) const;
         const QString & roomNumber() const;
 
-        bool isRowMuted(int row) const;
-        int userNumberFromRow(int row) const;
+        bool isExtensionMuted(const QString &extension) const;
+        int joinOrder(const QString &extension) const;
         void setConfRoom(const QString &room_number, const QVariantMap &members);
+        void setMyJoinOrder(int join_order);
+
+    protected:
+        virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+        virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+        virtual QVariant headerData(int section,
+                                   Qt::Orientation orientation,
+                                   int role = Qt::DisplayRole) const;
+        virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+        virtual QList<int> columnDisplayBold() const;
+        virtual QList<int> columnDisplaySmaller() const;
 
     private slots:
-        void extractRow2IdMap();
         void updateJoinTime();
 
     private:
-        void sort(int, Qt::SortOrder);
-        int rowCount(const QModelIndex&) const;
-        int columnCount(const QModelIndex&) const;
-        QVariant data(const QModelIndex&, int) const;
-        QVariant headerData(int, Qt::Orientation, int) const;
-        Qt::ItemFlags flags(const QModelIndex &) const;
+        int m_my_join_order;
         QString m_room_number;
-        QStringList m_row2number;
-        QVariantMap m_members;
+        QList<ConferenceRoomItem> m_confroom_item;
 };
 
 #endif

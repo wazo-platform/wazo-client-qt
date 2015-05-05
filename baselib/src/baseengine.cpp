@@ -953,16 +953,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     }
 }
 
-bool BaseEngine::isMeetmeMember(const QString &room, int number) const
-{
-    foreach (const QVariant &item, m_meetme_membership) {
-        const QVariantMap &map = item.toMap();
-        if (map["room_number"].toString() == room && map["user_number"].toInt() == number)
-            return true;
-    }
-    return false;
-}
-
 void BaseEngine::handleGetlistListId(const QString &listname, const QString &ipbxid, const QStringList &listid)
 {
     if (! GenLists.contains(listname)) {
@@ -1192,6 +1182,17 @@ void BaseEngine::meetmeAction(const QString &function, const QString &functionar
     command["functionargs"] = functionargs.split(" ");
     ipbxCommand(command);
 }
+
+void BaseEngine::registerMeetmeUpdate()
+{
+    QVariantMap command;
+
+    command["class"] = "subscribe";
+    command["message"] = "meetme_update";
+
+    sendJsonCommand(command);
+}
+
 
 /*! \brief Send fax to CTI Server */
 void BaseEngine::sendFaxCommand(const QString & filename,

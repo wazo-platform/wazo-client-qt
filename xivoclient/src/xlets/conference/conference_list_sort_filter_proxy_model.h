@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,28 +27,20 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFERENCE_ROOM_VIEW_H__
-#define __CONFERENCE_ROOM_VIEW_H__
+#ifndef __CONFERENCE_LIST_SORT_FILTER_PROXY_MODEL_H__
+#define __CONFERENCE_LIST_SORT_FILTER_PROXY_MODEL_H__
 
 #include <QModelIndex>
-#include <QWidget>
+#include <QString>
 
-#include <xletlib/abstract_table_view.h>
+#include <xletlib/abstract_sort_filter_proxy_model.h>
 
-class ConferenceRoomView : public AbstractTableView
+class ConferenceListSortFilterProxyModel : public AbstractSortFilterProxyModel
 {
     Q_OBJECT
 
     public:
-        ConferenceRoomView(QWidget *parent = NULL);
-        void updateHeadersView();
-
-    private slots:
-        void onViewClick(const QModelIndex &);
-        void sectionHeaderClicked(int);
-
-    signals:
-        void muteToggled(const QString &extension);
+        ConferenceListSortFilterProxyModel(QObject *parent);
 };
 
 #endif

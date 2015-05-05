@@ -27,30 +27,23 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMutableListIterator>
 #include <QTimer>
 
-#include "baseengine.h"
+#include <baseengine.h>
+
+#include "conference_enum.h"
 #include "conference_room_model.h"
 
-static QVariant COL_TITLE[ConferenceRoomModel::NB_COL];
-
 ConferenceRoomModel::ConferenceRoomModel(QWidget *parent)
-    : QAbstractTableModel(parent)
+    : AbstractTableModel(parent)
 {
-    COL_TITLE[ID] = tr("ID");
-    COL_TITLE[NUMBER] = tr("Number");
-    COL_TITLE[NAME] = tr("Name");
-    COL_TITLE[SINCE] = tr("Since");
+    m_my_join_order = -1;
 
     QTimer * join_time_timer = new QTimer(this);
     connect(join_time_timer, SIGNAL(timeout()),
             this, SLOT(updateJoinTime()));
     join_time_timer->start(1000);
-}
-
-QString ConferenceRoomModel::row2participantId(int row) const
-{
-    return m_row2number[row];
 }
 
 const QString & ConferenceRoomModel::roomNumber() const
@@ -60,79 +53,85 @@ const QString & ConferenceRoomModel::roomNumber() const
 
 void ConferenceRoomModel::setConfRoom(const QString &room_number, const QVariantMap &members)
 {
+    beginResetModel();
+
     m_room_number = room_number;
-    beginResetModel();
-    m_members = members;
-    extractRow2IdMap();
+    m_confroom_item.clear();
+    foreach(QVariant item, members) {
+        QVariantMap confroom_item = item.toMap();
+        ConferenceRoomItem entry;
+        entry.extension = confroom_item.value("number").toString();
+        entry.join_order = confroom_item.value("join_order").toInt();
+        entry.is_me = entry.join_order == m_my_join_order;
+        entry.join_time = confroom_item.value("join_time").toInt();
+        entry.muted = confroom_item.value("muted").toBool();
+        entry.name = confroom_item.value("name").toString();
+        m_confroom_item.append(entry);
+    }
+
     endResetModel();
 }
 
-void ConferenceRoomModel::extractRow2IdMap()
+void ConferenceRoomModel::setMyJoinOrder(int join_order)
 {
-    m_row2number = m_members.keys();
-}
+    m_my_join_order = join_order;
 
-void ConferenceRoomModel::sort(int column, Qt::SortOrder order)
-{
-    struct {
-        static bool ascending(const QPair<QString, QString> &a,
-                              const QPair<QString, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               true : false;
-        }
-        static bool descending(const QPair<QString, QString> &a,
-                               const QPair<QString, QString> &b) {
-            return QString::localeAwareCompare(a.second, b.second) < 0 ?
-                                               false : true;
-        }
-    } sFun;
-
-    QList<QPair<QString, QString> > toSort;
-
-    int count = rowCount(QModelIndex());
-    beginResetModel();
-    for (int i = 0; i < count; i++) {
-        toSort.append(QPair<QString, QString>(index(i, ID).data().toString(),
-                                              index(i, column).data().toString()));
+    QMutableListIterator<ConferenceRoomItem> item(m_confroom_item);
+    while (item.hasNext()) {
+        ConferenceRoomItem room_item = item.next();
+        room_item.is_me = room_item.join_order == m_my_join_order;
+        item.setValue(room_item);
     }
 
-    qSort(toSort.begin(), toSort.end(), (order == Qt::AscendingOrder) ?
-                                         sFun.ascending :
-                                         sFun.descending);
-
-    for (int i = 0; i < count; i++) {
-        m_row2number.insert(i, QString(toSort[i].first));
-    }
-    endResetModel();
+    QModelIndex first = createIndex(0, ConferenceRoom::COL_ACTION_MUTE);
+    QModelIndex last = createIndex(this->rowCount() - 1, ConferenceRoom::COL_ACTION_MUTE);
+    emit dataChanged(first, last);
 }
 
 int ConferenceRoomModel::rowCount(const QModelIndex &) const
 {
-    return m_members.size();
+    return m_confroom_item.size();
 }
 
 int ConferenceRoomModel::columnCount(const QModelIndex&) const
 {
-    return NB_COL;
+    return ConferenceRoom::NB_COL;
 }
 
-bool ConferenceRoomModel::isRowMuted(int row) const
+QList<int> ConferenceRoomModel::columnDisplayBold() const
 {
-    const QVariantMap &member = m_members[m_row2number[row]].toMap();
-    return member["muted"].toString() == "Yes";
+    return QList<int>() << ConferenceRoom::COL_NAME;
 }
 
-int ConferenceRoomModel::userNumberFromRow(int row) const
+QList<int> ConferenceRoomModel::columnDisplaySmaller() const
 {
-    const QString &number = m_row2number[row];
-    return number.toInt();
+    return QList<int>() << ConferenceRoom::COL_SINCE;
+}
+
+bool ConferenceRoomModel::isExtensionMuted(const QString &extension) const
+{
+    foreach(ConferenceRoomItem item, m_confroom_item) {
+        if (item.extension == extension) {
+            return item.muted;
+        }
+    }
+    return false;
+}
+
+int ConferenceRoomModel::joinOrder(const QString &extension) const
+{
+    foreach(ConferenceRoomItem item, m_confroom_item) {
+        if (item.extension == extension) {
+            return item.join_order;
+        }
+    }
+    return -1;
 }
 
 void ConferenceRoomModel::updateJoinTime()
 {
-    QModelIndex first = createIndex(0, SINCE);
-    QModelIndex last = createIndex(m_members.size() - 1, SINCE);
-
+    QModelIndex first = createIndex(0, ConferenceRoom::COL_SINCE);
+    QModelIndex last = createIndex(this->rowCount() - 1, ConferenceRoom::COL_SINCE);
     emit dataChanged(first, last);
 }
 
@@ -140,73 +139,82 @@ QVariant ConferenceRoomModel::data(const QModelIndex & index, int role) const
 {
     int row = index.row();
     int col = index.column();
-    const QString &number = m_row2number[row];
-    const QVariantMap &member = m_members[number].toMap();
-    int join_sequence = member["join_order"].toInt();
-    bool isMe = b_engine->isMeetmeMember(m_room_number, join_sequence);
 
-    if (role == Qt::TextAlignmentRole) {
+    switch (role) {
+    case Qt::TextAlignmentRole:
         return Qt::AlignVCenter;
-    } else if (role == Qt::DecorationRole) {
-        if (col == ACTION_MUTE && isMe) {
+    case Qt::DecorationRole:
+        if (col == ConferenceRoom::COL_ACTION_MUTE && m_confroom_item[row].is_me) {
             return QPixmap(":images/conference/mute.png").scaledToHeight(16, Qt::SmoothTransformation);
         }
-    } else if (role == Qt::ToolTipRole) {
-        if (col == ACTION_MUTE) {
+        break;
+    case Qt::ToolTipRole:
+        if (col == ConferenceRoom::COL_ACTION_MUTE) {
             return tr("Mute/UnMute");
         }
-    } else if (role == Qt::DisplayRole) {
-        int started_since = member["join_time"].toInt();
-
+        break;
+    case Qt::UserRole:
+        if (col == ConferenceRoom::COL_ACTION_MUTE) {
+            return m_confroom_item[row].is_me;
+        }
+        break;
+    case Qt::DisplayRole:
         switch (col) {
-        case ID:
-            return member["join_order"].toInt();
-        case NUMBER:
-            return member["number"].toString();
-        case NAME:
-            return member["name"].toString();
-        case SINCE:
-            if (started_since == -1) {
+        case ConferenceRoom::COL_NUMBER:
+            return m_confroom_item[row].extension;
+        case ConferenceRoom::COL_NAME:
+            return m_confroom_item[row].name;
+        case ConferenceRoom::COL_SINCE:
+            if (m_confroom_item[row].join_time == -1) {
                 return tr("Unknown");
+            } else {
+                return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t()
+                                             - m_confroom_item[row].join_time
+                                             - b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
             }
-            return QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t()
-                                         - started_since
-                                         - b_engine->timeDeltaServerClient()).toUTC().toString("hh:mm:ss");
         default:
             break;
         }
+    default:
+        break;
     }
-    return QVariant();
+    return AbstractTableModel::data(index, role);
 }
 
 QVariant ConferenceRoomModel::headerData(int section,
                                          Qt::Orientation orientation,
                                          int role) const
 {
-    if (role != Qt::DisplayRole)
+    if (role != Qt::DisplayRole ||
+        orientation != Qt::Horizontal) {
         return QVariant();
-
-    if (orientation == Qt::Horizontal) {
-        return COL_TITLE[section];
     }
 
-    return QVariant();
+    switch (section) {
+    case ConferenceRoom::COL_NUMBER:
+        return tr("Number");
+    case ConferenceRoom::COL_NAME:
+        return tr("Name");
+    case ConferenceRoom::COL_SINCE:
+        return tr("Since");
+    default:
+        return QVariant();
+    }
 }
 
 Qt::ItemFlags ConferenceRoomModel::flags(const QModelIndex &index) const
 {
     int col = index.column();
-    if (col != ACTION_MUTE) {
+    int row = index.row();
+
+    if (col != ConferenceRoom::COL_ACTION_MUTE) {
         return QAbstractItemModel::flags(index);
     }
 
-    int row = index.row();
-    const QString &number = m_row2number[row];
-    const QVariantMap &member = m_members[number].toMap();
-    bool isMuted = member["muted"] == "Yes";
-    bool isMe = b_engine->isMeetmeMember(m_room_number, number.toInt());
+    bool isMuted = m_confroom_item[row].muted;
+    bool is_me = m_confroom_item[row].is_me;
 
-    if (isMe && col == ACTION_MUTE && isMuted) {
+    if (col == ConferenceRoom::COL_ACTION_MUTE && is_me && isMuted) {
         return Qt::ItemIsEnabled;
     }
     return Qt::NoItemFlags;

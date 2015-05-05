@@ -34,17 +34,20 @@
 #include <QString>
 #include <QVariantMap>
 
+#include <baseengine.h>
+#include <ipbxlistener.h>
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
 #include <xletlib/xletinterface.h>
 
 #include <ui_conference_widget.h>
 
-
 class ConferenceListModel;
+class ConferenceListSortFilterProxyModel;
 class ConferenceRoomModel;
+class ConferenceRoomSortFilterProxyModel;
 
-class Conference : public XLet
+class Conference : public XLet, IPBXListener
 {
     Q_OBJECT
     FUNCTESTED
@@ -52,23 +55,30 @@ class Conference : public XLet
     public:
         Conference(QWidget *parent=0);
 
+    public slots:
+        void parseCommand(const QVariantMap &command);
+
     private slots:
         void showConfList();
         void showConfRoom(QString &room_number, QString &room_name);
-        void updateConference(const QVariantMap & config);
+        void muteToggled(const QString &extension);
 
     private:
         //The order of this enum is determined by the order of the menu creation
         enum MenuIndex {
-            ROOM_LIST,
-            ROOM_NUMBER
+            ROOM_LIST_PANE,
+            ROOM_NUMBER_PANE
         };
-        void registerMeetmeUpdate() const;
+
+        int extractJoinOrder(const QString room_number);
 
         Ui::ConferenceWidget ui;
         ConferenceListModel *m_list_model;
+        ConferenceListSortFilterProxyModel *m_list_proxy_model;
         ConferenceRoomModel *m_room_model;
+        ConferenceRoomSortFilterProxyModel *m_room_proxy_model;
         QString m_confroom_number;
+        QVariantList m_my_confroom_joined;
         QVariantMap m_confroom_configs;
 };
 

@@ -32,14 +32,8 @@
 #include "conference_list_model.h"
 
 ConferenceListModel::ConferenceListModel(QWidget *parent)
-    : QAbstractTableModel(parent)
+    : AbstractTableModel(parent)
 {
-    COL_TITLE[NUMBER] = tr("Number");
-    COL_TITLE[NAME] = tr("Name");
-    COL_TITLE[PIN_REQUIRED] = tr("PIN code");
-    COL_TITLE[MEMBER_COUNT] = tr("Member count");
-    COL_TITLE[STARTED_SINCE] = tr("Started since");
-
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
             this, SLOT(updateConfTime()));
@@ -49,24 +43,42 @@ ConferenceListModel::ConferenceListModel(QWidget *parent)
 void ConferenceListModel::updateConfList(const QVariantMap &configs)
 {
     beginResetModel();
-    m_room_configs = configs;
-    refreshRow2Number();
-    endResetModel();
-}
 
-void ConferenceListModel::refreshRow2Number()
-{
-    m_row2number = m_room_configs.keys();
+    m_conflist_item.clear();
+    foreach(QVariant item, configs) {
+        QVariantMap conflist_item = item.toMap();
+        ConferenceListItem entry;
+        entry.name = conflist_item.value("name").toString();
+        entry.extension = conflist_item.value("number").toString();
+        entry.pin_required = conflist_item.value("pin_required").toBool();
+        entry.start_time = conflist_item.value("start_time").toDouble();
+        entry.member_count = conflist_item.value("member_count").toInt();
+        m_conflist_item.append(entry);
+    }
+
+    endResetModel();
 }
 
 int ConferenceListModel::rowCount(const QModelIndex&) const
 {
-    return m_row2number.size();
+    return m_conflist_item.size();
 }
 
 int ConferenceListModel::columnCount(const QModelIndex&) const
 {
-    return NB_COL;
+    return ConferenceList::NB_COL;
+}
+
+QList<int> ConferenceListModel::columnDisplayBold() const
+{
+    return QList<int>() << ConferenceList::COL_NAME;
+}
+
+QList<int> ConferenceListModel::columnDisplaySmaller() const
+{
+    return QList<int>() << ConferenceList::COL_STARTED_SINCE
+                        << ConferenceList::COL_MEMBER_COUNT
+                        << ConferenceList::COL_PIN_REQUIRED;
 }
 
 QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
@@ -74,37 +86,56 @@ QVariant ConferenceListModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole) {
         if (role == Qt::TextAlignmentRole)
             return Qt::AlignVCenter;
-        return QVariant();
+        return AbstractTableModel::data(index, role);
     }
 
-    /* Rows here are not the same than the lines displayed by the view,
-     * as there is a proxy model between the view and this model,
-     * that maps the displayed lines to the stored lines
-     */
     int row = index.row(), col = index.column();
-    if (m_row2number.size() <= row) {
-        return QVariant();
-    }
-
-    const QString &room_number = m_row2number[row];
-    const QVariantMap &room_config = m_room_configs[room_number].toMap();
 
     switch (col) {
-    case NUMBER:
-        return room_config["number"].toString();
-    case NAME:
-        return room_config["name"].toString();
-    case PIN_REQUIRED:
-        return room_config["pin_required"].toString();
-    case MEMBER_COUNT:
-        return room_config["member_count"].toString();
-    case STARTED_SINCE:
-        return startedSince(room_config["start_time"].toDouble());
+    case ConferenceList::COL_NAME:
+        return m_conflist_item[row].name;
+    case ConferenceList::COL_NUMBER:
+        return m_conflist_item[row].extension;
+    case ConferenceList::COL_PIN_REQUIRED:
+        if (m_conflist_item[row].pin_required) {
+            return tr("Yes");
+        } else {
+            return tr("No");
+        }
+    case ConferenceList::COL_MEMBER_COUNT:
+        return m_conflist_item[row].member_count;
+    case ConferenceList::COL_STARTED_SINCE:
+        return this->startedSince(m_conflist_item[row].start_time);
     default:
         break;
     }
 
-    return QVariant();
+    return AbstractTableModel::data(index, role);
+}
+
+QVariant ConferenceListModel::headerData(int section,
+                                         Qt::Orientation orientation,
+                                         int role) const
+{
+    if (role != Qt::DisplayRole ||
+        orientation != Qt::Horizontal) {
+        return QVariant();
+    }
+
+    switch (section) {
+    case ConferenceList::COL_NUMBER:
+        return tr("Number");
+    case ConferenceList::COL_NAME:
+        return tr("Name");
+    case ConferenceList::COL_PIN_REQUIRED:
+        return tr("PIN code");
+    case ConferenceList::COL_MEMBER_COUNT:
+        return tr("Member count");
+    case ConferenceList::COL_STARTED_SINCE:
+        return tr("Started since");
+    default:
+        return QVariant();
+    }
 }
 
 QString ConferenceListModel::startedSince(double time) const
@@ -120,23 +151,9 @@ QString ConferenceListModel::startedSince(double time) const
     return QDateTime::fromTime_t(started_since).toUTC().toString("hh:mm:ss");
 }
 
-QVariant ConferenceListModel::headerData(int section,
-                                         Qt::Orientation orientation,
-                                         int role) const
-{
-    if (role != Qt::DisplayRole)
-        return QVariant();
-
-    if (orientation == Qt::Horizontal) {
-        return COL_TITLE[section];
-    }
-
-    return QVariant();
-}
-
 void ConferenceListModel::updateConfTime()
 {
-    QModelIndex cellChanged1 = createIndex(0, STARTED_SINCE);
-    QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, STARTED_SINCE);
+    QModelIndex cellChanged1 = createIndex(0, ConferenceList::COL_STARTED_SINCE);
+    QModelIndex cellChanged2 = createIndex(this->rowCount() - 1, ConferenceList::COL_STARTED_SINCE);
     emit dataChanged(cellChanged1, cellChanged2);
 }

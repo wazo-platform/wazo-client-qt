@@ -135,7 +135,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // public operations
 
         bool isInMeetme() const { return m_meetme_membership.size() > 0; }
-        bool isMeetmeMember(const QString &room, int number) const;
+        void registerMeetmeUpdate();
 
         void registerListener(const QString &, IPBXListener *); //!< Register an XLet wanting to listen IPBX messages
 

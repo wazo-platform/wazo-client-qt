@@ -30,7 +30,7 @@
 #include <QTimer>
 #include <QHeaderView>
 
-#include "baseengine.h"
+#include "conference_enum.h"
 #include "conference_room_model.h"
 #include "conference_room_view.h"
 
@@ -40,21 +40,19 @@ ConferenceRoomView::ConferenceRoomView(QWidget *parent)
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
 
-    QHeaderView *h = horizontalHeader();
-    connect(h, SIGNAL(sectionClicked(int)),
+    connect(this->horizontalHeader(), SIGNAL(sectionClicked(int)),
             this, SLOT(sectionHeaderClicked(int)));
 }
 
 void ConferenceRoomView::updateHeadersView()
 {
-    horizontalHeader()->setSectionResizeMode(ConferenceRoomModel::ACTION_MUTE, QHeaderView::Fixed);
-    setColumnWidth(ConferenceRoomModel::ACTION_MUTE, 55);
-    hideColumn(0);
+    horizontalHeader()->setSectionResizeMode(ConferenceRoom::COL_ACTION_MUTE, QHeaderView::Fixed);
+    setColumnWidth(ConferenceRoom::COL_ACTION_MUTE, 55);
 }
 
 void ConferenceRoomView::sectionHeaderClicked(int index)
 {
-    if (index == ConferenceRoomModel::ACTION_MUTE) {
+    if (index == ConferenceRoom::COL_ACTION_MUTE) {
         setSortingEnabled(false);
     } else {
         setSortingEnabled(true);
@@ -63,15 +61,13 @@ void ConferenceRoomView::sectionHeaderClicked(int index)
 
 void ConferenceRoomView::onViewClick(const QModelIndex &index)
 {
-    if (index.column() == ConferenceRoomModel::ACTION_MUTE)
+    int col = index.column();
+    int row = index.row();
+
+    if (col == ConferenceRoom::COL_ACTION_MUTE &&
+            index.sibling(row, col).data(Qt::UserRole).toBool())
     {
-        int row = index.row();
-        ConferenceRoomModel *model = static_cast<ConferenceRoomModel *>(this->model());
-        bool isMuted = model->isRowMuted(row);
-        QString room_number = model->roomNumber();
-        QString user_number = QString("%0").arg(model->userNumberFromRow(row));
-        QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
-        QString param = QString("%0 %1").arg(room_number).arg(user_number);
-        b_engine->meetmeAction(action, param);
+        QString user_extension = index.sibling(row, ConferenceRoom::COL_NUMBER).data().toString();
+        emit muteToggled(user_extension);
     }
 }

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -30,43 +30,46 @@
 #ifndef __CONFERENCE_LIST_MODEL_H__
 #define __CONFERENCE_LIST_MODEL_H__
 
-#include <QAbstractTableModel>
+#include <QList>
 #include <QModelIndex>
 #include <QVariant>
 #include <QWidget>
 
+#include <xletlib/abstract_table_model.h>
 #include <xletlib/functests.h>
 #include <baseengine.h>
 
-class ConferenceListModel : public QAbstractTableModel
+#include "conference_enum.h"
+#include "conference_list_item.h"
+
+class ConferenceListModel : public AbstractTableModel
 {
     Q_OBJECT
     FUNCTESTED
 
     public:
-        enum ColOrder {
-            NAME,
-            NUMBER,
-            PIN_REQUIRED,
-            MEMBER_COUNT,
-            STARTED_SINCE,
-            NB_COL
-        };
         ConferenceListModel(QWidget *parent = NULL);
+
+    protected:
+        virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+        virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+        virtual QVariant headerData(int section,
+                                    Qt::Orientation orientation,
+                                    int role = Qt::DisplayRole) const;
+        virtual QList<int> columnDisplayBold() const;
+        virtual QList<int> columnDisplaySmaller() const;
+
     public slots:
         void updateConfList(const QVariantMap &);
+
     private slots:
         void updateConfTime();
+
     private:
-        void refreshRow2Number();
         QString startedSince(double time) const;
-        int rowCount(const QModelIndex& = QModelIndex()) const;
-        int columnCount(const QModelIndex&) const;
-        QVariant data(const QModelIndex&, int) const;
-        QVariant headerData(int , Qt::Orientation, int) const;
-        QStringList m_row2number;
-        QVariantMap m_room_configs;
-        QString COL_TITLE[NB_COL];
+
+        QList<ConferenceListItem> m_conflist_item;
 };
 
 #endif

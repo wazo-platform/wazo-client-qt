@@ -28,18 +28,22 @@
  */
 
 #include <QAction>
-#include <QDebug>
 
 #include <baseengine.h>
 
 #include "conference.h"
+#include "conference_enum.h"
 #include "conference_list_model.h"
+#include "conference_list_sort_filter_proxy_model.h"
 #include "conference_room_model.h"
+#include "conference_room_sort_filter_proxy_model.h"
 
 Conference::Conference(QWidget *parent)
     : XLet(parent, tr("Conference"), ":/images/tab-conference.svg"),
       m_list_model(NULL),
-      m_room_model(NULL)
+      m_list_proxy_model(NULL),
+      m_room_model(NULL),
+      m_room_proxy_model(NULL)
 {
     this->ui.setupUi(this);
 
@@ -50,45 +54,59 @@ Conference::Conference(QWidget *parent)
 
     QAction *conflist_action = this->ui.menu->addAction(tr("Room list"));
     this->ui.menu->addAction();
-    this->ui.menu->setSelectedAction(ROOM_LIST);
-    this->showConfList();
 
-    /* CONFLIST */
-    // this contains the data, unordered
     m_list_model = new ConferenceListModel(this);
-    m_list_model->setObjectName("conference_list_model");
+    m_list_proxy_model = new ConferenceListSortFilterProxyModel(this);
 
-    // this maps the indexes between the sorted view and the unordered model
-    QSortFilterProxyModel *list_proxy_model = new QSortFilterProxyModel(this);
-    list_proxy_model->setSourceModel(m_list_model);
-    list_proxy_model->setDynamicSortFilter(true); /* sorts right on insertion, instead
-    of half a second after the window has appeared */
+    m_list_proxy_model->setSourceModel(m_list_model);
+    this->ui.list_table->setModel(m_list_proxy_model);
 
-    // this displays the sorted data
-    this->ui.list_table->setModel(list_proxy_model);
-    this->ui.list_table->sortByColumn(ConferenceListModel::NAME, Qt::AscendingOrder);
+    this->ui.list_table->sortByColumn(ConferenceList::COL_NAME, Qt::AscendingOrder);
 
-    /* CONFROOM */
     m_room_model = new ConferenceRoomModel(this);
-    this->ui.room_table->setModel(m_room_model);
+    m_room_proxy_model = new ConferenceRoomSortFilterProxyModel(this);
+
+    m_room_proxy_model->setSourceModel(m_room_model);
+    this->ui.room_table->setModel(m_room_proxy_model);
+
     this->ui.room_table->updateHeadersView();
-    this->ui.room_table->sortByColumn(ConferenceRoomModel::NAME, Qt::AscendingOrder);
+    this->ui.room_table->sortByColumn(ConferenceRoom::COL_NAME, Qt::AscendingOrder);
 
     connect(conflist_action, SIGNAL(triggered()),
             this, SLOT(showConfList()));
+
     connect(this->ui.list_table, SIGNAL(openConfRoom(QString &, QString &)),
             this, SLOT(showConfRoom(QString &, QString &)));
-    connect(b_engine, SIGNAL(meetmeUpdate(const QVariantMap &)),
-            this, SLOT(updateConference(const QVariantMap &)));
-    registerMeetmeUpdate();
+    connect(this->ui.room_table, SIGNAL(muteToggled(const QString &)),
+            this, SLOT(muteToggled(const QString &)));
+
+    this->ui.menu->setSelectedAction(ROOM_LIST_PANE);
+
+    this->registerListener("meetme_update");
+    this->registerListener("meetme_user");
+
+    b_engine->registerMeetmeUpdate();
 }
 
-void Conference::updateConference(const QVariantMap & config)
+void Conference::parseCommand(const QVariantMap & datamap)
 {
-    m_confroom_configs = config;
+    QString room_number = this->m_room_model->roomNumber();
+
+    if (datamap.value("class").toString() == "meetme_user") {
+        m_my_confroom_joined = datamap["list"].toList();
+
+        if (! room_number.isEmpty() &&
+            this->ui.conference_tables->currentIndex() ==
+            this->ui.conference_tables->indexOf(this->ui.room_page))
+        {
+            m_room_model->setMyJoinOrder(this->extractJoinOrder(room_number));
+        }
+        return;
+    }
+
+    m_confroom_configs = datamap.value("config").toMap();
     this->m_list_model->updateConfList(m_confroom_configs);
 
-    QString room_number = this->m_room_model->roomNumber();
     if (! room_number.isEmpty() &&
         this->ui.conference_tables->currentIndex() ==
         this->ui.conference_tables->indexOf(this->ui.room_page))
@@ -98,35 +116,52 @@ void Conference::updateConference(const QVariantMap & config)
     }
 }
 
-void Conference::registerMeetmeUpdate() const
+int Conference::extractJoinOrder(const QString room_number)
 {
-    QVariantMap command;
-
-    command["class"] = "subscribe";
-    command["message"] = "meetme_update";
-
-    b_engine->sendJsonCommand(command);
+    foreach (const QVariant &item, m_my_confroom_joined) {
+        const QVariantMap &map = item.toMap();
+        if (map["room_number"].toString() == room_number) {
+            return map["user_number"].toInt();
+        }
+    }
+    return -1;
 }
 
 void Conference::showConfList()
 {
     int index = this->ui.conference_tables->indexOf(this->ui.list_page);
     this->ui.conference_tables->setCurrentIndex(index);
-    this->ui.menu->hideAction(ROOM_NUMBER);
+    this->ui.menu->hideAction(ROOM_NUMBER_PANE);
 }
 
 void Conference::showConfRoom(QString &room_number, QString &room_name)
 {
+    b_engine->pasteToDial(room_number);
+
     QVariantMap confroom_config = m_confroom_configs[room_number].toMap()["members"].toMap();
     this->m_room_model->setConfRoom(room_number, confroom_config);
+
+    m_room_model->setMyJoinOrder(this->extractJoinOrder(room_number));
 
     int index = this->ui.conference_tables->indexOf(this->ui.room_page);
     this->ui.conference_tables->setCurrentIndex(index);
 
     QString confroom_label = tr("%1 (%2)").arg(room_name, room_number);
-    this->ui.menu->showAction(ROOM_NUMBER);
-    this->ui.menu->setActionText(ROOM_NUMBER, confroom_label);
-    this->ui.menu->setSelectedAction(ROOM_NUMBER);
+    this->ui.menu->showAction(ROOM_NUMBER_PANE);
+    this->ui.menu->setActionText(ROOM_NUMBER_PANE, confroom_label);
+    this->ui.menu->setSelectedAction(ROOM_NUMBER_PANE);
+}
+
+void Conference::muteToggled(const QString &extension)
+{
+   bool isMuted = m_room_model->isExtensionMuted(extension);
+   int join_order = m_room_model->joinOrder(extension);
+   QString room_extension = m_room_model->roomNumber();
+
+   QString action = isMuted ? "MeetmeUnmute" : "MeetmeMute";
+   QString param = QString("%0 %1").arg(room_extension).arg(join_order);
+
+   b_engine->meetmeAction(action, param);
 }
 
 
