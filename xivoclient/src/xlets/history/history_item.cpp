@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,22 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_ITEM_H__
-#define __HISTORY_ITEM_H__
+#include "history_item.h"
 
-#include <QString>
-#include <QDateTime>
-
-#include <history_enum.h>
-
-struct HistoryItem
+HistoryItem::HistoryItem(const QDateTime &datetime, const QString &extension,
+                         const QString &name, int duration, int mode)
+  :datetime(datetime),
+   extension(extension),
+   name(name),
+   duration(duration),
+   mode(mode)
 {
-    HistoryItem(const QDateTime &datetime, const QString &extension, const QString &name, int duration, int mode);
-    QDateTime datetime;
-    QString extension;
-    QString name;
-    int duration;
-    int mode;
-};
-
-#endif
+}

@@ -51,12 +51,11 @@ void HistoryModel::initializeHistory(const QVariantMap &p)
         if (history_item.value("fullname").toString().isEmpty()) {
             history_item.insert("fullname", QString("-"));
         }
-        HistoryItem call_log;
-        call_log.mode = history_item.value("mode").toInt();
-        call_log.name = history_item.value("fullname").toString();
-        call_log.datetime = history_item.value("calldate").toDateTime();
-        call_log.duration = history_item.value("duration").toInt();
-        call_log.extension = history_item.value("extension").toString();
+        HistoryItem call_log(history_item.value("calldate").toDateTime(),
+            history_item.value("extension").toString(),
+            history_item.value("fullname").toString(),
+            history_item.value("duration").toInt(),
+            history_item.value("mode").toInt());
         m_history_item.append(call_log);
     }
     endResetModel();
