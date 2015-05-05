@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
     fontDB.addApplicationFont(":/fonts/Dyno-Regular.ttf");
     fontDB.addApplicationFont(":/fonts/LiberationSans-Regular.ttf");
 
+    m_unfolded_height = this->height();
+
     connect(b_engine, SIGNAL(logged()),
             this, SLOT(setStatusLogged()));
     connect(b_engine, SIGNAL(delogged()),
@@ -255,9 +257,55 @@ bool MainWindow::isFolded()
     return m_folded;
 }
 
-void MainWindow::setFolded(bool folded)
+void MainWindow::setFolded(const QSize size)
 {
-    m_folded = folded;
+    if (m_folded) {
+        return;
+    }
+
+    bool is_maximized = this->isMaximized();
+    if (is_maximized) {
+        this->setWindowState(this->windowState() & ~Qt::WindowMaximized);
+    }
+
+    m_minimum_height = this->minimumHeight();
+    m_unfolded_height = this->height();
+
+    this->setFixedHeight(size.height()
+                         + this->statusBar()->height()
+                         + this->menuBar()->height()
+                        );
+
+    if (is_maximized) {
+        this->setWindowState(this->windowState() | Qt::WindowMaximized);
+    }
+
+    m_folded = true;
+}
+
+void MainWindow::restoreFolded()
+{
+    if (! m_folded) {
+        return;
+    }
+
+    bool is_maximized = this->isMaximized();
+    if (is_maximized) {
+        this->setWindowState(this->windowState() & ~Qt::WindowMaximized);
+    }
+
+    this->setMaximumHeight(QWIDGETSIZE_MAX);
+    this->setMinimumHeight(m_minimum_height);
+
+    QSize main_window_size = this->size();
+    main_window_size.setHeight(m_unfolded_height);
+    this->resize(main_window_size);
+
+    if (is_maximized) {
+        this->setWindowState(this->windowState() | Qt::WindowMaximized);
+    }
+
+    m_folded = false;
 }
 
 void MainWindow::customerInfoPopup(const QString & msgtitle,

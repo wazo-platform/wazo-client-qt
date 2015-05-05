@@ -54,7 +54,8 @@ class MainWindow : public QMainWindow
         void saveStateToConfigFile();
         void restoreStateFromConfigFile();
         bool isFolded();
-        void setFolded(bool folded);
+        void setFolded(const QSize size);
+        void restoreFolded();
 
         Ui::MainWindow *ui;
 
@@ -95,6 +96,8 @@ class MainWindow : public QMainWindow
         QDateTime m_launch_date_time;
 
         bool m_folded;
+        int m_minimum_height;
+        int m_unfolded_height;
 };
 
 #endif

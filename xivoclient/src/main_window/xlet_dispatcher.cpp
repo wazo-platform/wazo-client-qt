@@ -84,18 +84,7 @@ void XletDispatcher::showOneXlet(const QString &xlet_name)
         widget->hide();
     }
 
-    m_minimum_height = m_main_window->minimumHeight();
-    m_unfolded_height = m_main_window->height();
-    m_main_window->setFolded(true);
-
-    if (m_main_window->isMaximized()) {
-        m_main_window->showNormal();
-    }
-
-    m_main_window->setFixedHeight(identity->height() \
-                                  + m_main_window->statusBar()->height() \
-                                  + m_main_window->menuBar()->height() \
-                                  );
+    m_main_window->setFolded(identity->size());
 }
 
 void XletDispatcher::showAllXlets()
@@ -111,11 +100,9 @@ void XletDispatcher::showAllXlets()
         this->m_tabber->tabWidget()->setCurrentIndex(new_index);
     }
 
-    this->restoreMainWindow();
+    m_main_window->restoreFolded();
     this->showXletsDock();
-    this->m_main_window->restoreStateFromConfigFile();
-
-    m_main_window->setFolded(false);
+    m_main_window->restoreStateFromConfigFile();
 }
 
 XletDispatcher::~XletDispatcher()
@@ -128,7 +115,6 @@ void XletDispatcher::setStatusLogged()
     this->prepareXletsGrid();
     this->prepareXletsTab();
     this->prepareXletsDock();
-    m_unfolded_height = m_main_window->height();
 }
 
 void XletDispatcher::setStatusNotLogged()
@@ -376,14 +362,4 @@ void XletDispatcher::clearAppearance()
     m_xlets_dock.clear();
     m_xlets_grid.clear();
     m_xlets_tab.clear();
-}
-
-void XletDispatcher::restoreMainWindow()
-{
-    m_main_window->setMaximumHeight(QWIDGETSIZE_MAX);
-    m_main_window->setMinimumHeight(m_minimum_height);
-
-    QSize main_window_size = m_main_window->size();
-    main_window_size.setHeight(m_unfolded_height);
-    m_main_window->resize(main_window_size);
 }
