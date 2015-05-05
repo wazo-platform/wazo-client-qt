@@ -35,6 +35,7 @@
 
 #include <xletlib/abstract_sort_filter_proxy_model.h>
 
+#include "history_enum.h"
 #include "history_model.h"
 
 class HistorySortFilterProxyModel : public AbstractSortFilterProxyModel
@@ -43,8 +44,17 @@ class HistorySortFilterProxyModel : public AbstractSortFilterProxyModel
 
     public:
         HistorySortFilterProxyModel(QObject *parent);
+
+        int filterMode() const { return m_mode; }
+        void setFilterMode(HistoryMode mode);
+
     protected:
+        virtual bool filterAcceptsColumn(int source_column, const QModelIndex &source_parent) const;
+        virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
         virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+
+    private:
+        int m_mode;
 };
 
 #endif

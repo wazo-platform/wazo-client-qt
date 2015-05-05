@@ -105,7 +105,10 @@ HorizontalMenu QRadioButton::indicator {
     height: 0px;
     width: 0px;
 }
-
+QStyledItemDelegate {
+    background:red;
+    border: 2px solid black;
+}
 /*
  * ABSTRACT TABLE VIEW
  */
@@ -117,7 +120,7 @@ AbstractTableView {
 }
 
 AbstractTableView::item {
-    border-top: 1px solid #D7D2D0;
+    border-bottom: 1px solid #D7D2D0;
     padding-left: 30px;
 }
 
@@ -138,7 +141,9 @@ AbstractTableView > QHeaderView::up-arrow {
 AbstractTableView > QHeaderView::section {
     border: none;
     border-left: 1px solid #D7D2D0;
+    border-bottom: 1px solid #D7D2D0;
     background-color: #E8E4E2;
+    font: 12px "Liberation Sans";
     padding-left: 30px;
 }
 

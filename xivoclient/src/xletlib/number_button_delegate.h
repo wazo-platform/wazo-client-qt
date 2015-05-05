@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,28 +27,35 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_VIEW_H__
-#define __HISTORY_VIEW_H__
+#ifndef __NUMBER_BUTTON_DELEGATE_H__
+#define __NUMBER_BUTTON_DELEGATE_H__
 
-#include <QModelIndex>
-#include <QString>
-#include <QWidget>
+#include <QStyledItemDelegate>
 
-#include <ipbxlistener.h>
-#include <xletlib/abstract_table_view.h>
+#include "xletlib_export.h"
 
-class HistoryView : public AbstractTableView
+class XLETLIB_EXPORT NumberButtonDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
     public:
-        HistoryView(QWidget *parent = NULL);
+        NumberButtonDelegate(QWidget *parent = NULL);
+        bool editorEvent(QEvent *event,
+                         QAbstractItemModel *model,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index);
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
 
-    private slots:
-        void onViewClick(const QModelIndex &);
+    protected:
+        bool pressed;
+        static int button_height;
+        static QMargins button_margins;
 
-    signals:
-        void extensionClicked(const QString &);
+    private:
+        QRect contentsRect(const QRect &option_rect) const;
 };
 
 #endif
+

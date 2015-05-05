@@ -27,152 +27,145 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QList>
-
-#include <baseengine.h>
+#include <QDateTime>
+#include <QIcon>
+#include <QString>
 
 #include "history_model.h"
 
+QSize HistoryModel::icon_size = QSize(12, 12);
+
 HistoryModel::HistoryModel(QWidget * parent)
-    : QAbstractTableModel(parent)
+    : AbstractTableModel(parent)
 {
-    registerListener("history");
-    m_mode = OUTCALLS;
-    m_history << QVariant() << QVariant() << QVariant();
-    connect(b_engine, SIGNAL(settingsChanged()),
-            this, SLOT(requestHistory()));
 }
 
-void HistoryModel::parseCommand(const QVariantMap &map) {
-    updateHistory(map);
+void HistoryModel::initializeHistory(const QVariantMap &p)
+{
+    const QVariantList &history_items = p.value("history").toList();
+    m_history_item.clear();
+
+    beginResetModel();
+    foreach (const QVariant &item, history_items) {
+        QVariantMap history_item = item.toMap();
+        if (history_item.value("fullname").toString().isEmpty()) {
+            history_item.insert("fullname", QString("-"));
+        }
+        HistoryItem call_log(history_item.value("calldate").toDateTime(),
+            history_item.value("extension").toString(),
+            history_item.value("fullname").toString(),
+            history_item.value("duration").toInt(),
+            history_item.value("mode").toInt());
+        m_history_item.append(call_log);
+    }
+    endResetModel();
+}
+
+void HistoryModel::updateHistory(const QVariantMap &p)
+{
+    this->initializeHistory(p);
 }
 
 int HistoryModel::rowCount(const QModelIndex&) const
 {
-    return m_history[m_mode].toList().count();
+    return m_history_item.count();
 }
 
 int HistoryModel::columnCount(const QModelIndex&) const
 {
-    if ((m_mode == OUTCALLS) || (m_mode == INCALLS))
-        return 3;
-    else if (m_mode == MISSEDCALLS)
-        return 2;
+    return NB_COLS;
+}
 
-    return 0;
+QList<int> HistoryModel::columnDisplayBold() const
+{
+    return QList<int>() << COL_NAME;
+}
+
+QList<int> HistoryModel::columnDisplaySmaller() const
+{
+    return QList<int>() << COL_DATE << COL_DURATION;
 }
 
 QVariant HistoryModel::data(const QModelIndex &a, int role) const
 {
     int row, column; row = a.row(); column = a.column();
-    QVariantList histlist = m_history[m_mode].toList();
+    const HistoryItem &item = m_history_item.at(row);
 
     if (role == Qt::DisplayRole) {
-        if (((histlist.count()) &&
-             ((histlist).value(row).toMap().count()))) {
-            if (column == 0) {
-                return histlist.value(row).toMap().value("fullname");
-            } else if (column == 1) {
-                QString qsd = histlist.value(row).toMap().value("calldate").toString();
-                QDateTime qdt = QDateTime::fromString(qsd, Qt::ISODate);
-                return qdt.toString(QString("dd/MM/yyyy  HH:mm:ss"));
-            } else if (column == 2) {
-                int duration = histlist.value(row).toMap().value("duration").toInt();
-                int sec =   ( duration % 60);
-                int min =   ( duration - sec ) / 60 % 60;
-                int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
-                if (hou)
-                    return tr("%1 hr %2 min %3 s").arg(hou).arg(min).arg(sec);
-                else if (min)
-                    return tr("%1 min %2 s").arg(min).arg(sec);
-                else
-                    return tr("%1 s").arg(sec);
-            }
+        switch (column) {
+        case COL_NAME:
+            return item.name;
+        case COL_EXTEN:
+            return item.extension;
+        case COL_DATE:
+            return item.datetime.toString(QString("dd/MM/yyyy HH:mm:ss"));
+        case COL_DURATION:
+            return this->prettyPrintDuration(item.duration, item.mode);
+        default:
+            break;
         }
     } else if (role == Qt::UserRole) {
-        if (column == 1) {
-            QString call_datetime = histlist.value(row).toMap().value("calldate").toString();
-            return QDateTime::fromString(call_datetime, Qt::ISODate);
+        switch (column) {
+        case COL_NAME:
+            return item.mode;
+        case COL_DATE:
+            return item.datetime;
+        case COL_DURATION:
+            return item.duration;
+        default:
+            break;
         }
-        if (column == 2) {
-            return histlist.value(row).toMap().value("duration").toInt();
+    } else if (role == Qt::DecorationRole && column == COL_NAME) {
+        switch (item.mode) {
+        case OUTCALL:
+            return QIcon(":/images/history/sent-call.svg").pixmap(icon_size);
+        case INCALL:
+            return QIcon(":/images/history/received-call.svg").pixmap(icon_size);
+        case MISSEDCALL:
+            return QIcon(":/images/history/missed-call.svg").pixmap(icon_size);
+        default:
+            break;
         }
     }
-
-    return QVariant();
-}
-
-void HistoryModel::updateHistory(const QVariantMap &p)
-{
-    int mode = p.value("mode").toInt();
-    QVariantList h = p.value("history").toList();
-    beginResetModel();
-    if (mode == m_mode)
-        m_history[m_mode] = h;
-    endResetModel();
-}
-
-void HistoryModel::requestHistory(HistoryMode mode, QString xuserid)
-{
-    if (mode == DEFAULT) {
-        mode = m_mode;
-    }
-    if (xuserid.isEmpty()) {
-        xuserid = b_engine->getFullId();
-    }
-    if (mode == OUTCALLS || mode == INCALLS || mode == MISSEDCALLS) {
-        QVariantMap command;
-        command["class"] = "history";
-        command["xuserid"] = xuserid;
-        command["size"] = QString::number(b_engine->getConfig("historysize").toUInt());
-        command["mode"] = QString::number(mode);
-        b_engine->sendJsonCommand(command);
-    }
-}
-
-void HistoryModel::missedCallMode()
-{
-    m_mode = MISSEDCALLS;
-    requestHistory(m_mode);
-    beginResetModel();
-    emit headerDataChanged(Qt::Horizontal, 0, 3);
-    endResetModel();
-}
-
-void HistoryModel::receivedCallMode()
-{
-    m_mode = INCALLS;
-    requestHistory(m_mode);
-    beginResetModel();
-    emit headerDataChanged(Qt::Horizontal, 0, 3);
-    endResetModel();
-}
-
-void HistoryModel::sentCallMode()
-{
-    m_mode = OUTCALLS;
-    requestHistory(m_mode);
-    beginResetModel();
-    emit headerDataChanged(Qt::Horizontal, 0, 3);
-    endResetModel();
+    return AbstractTableModel::data(a,role);
 }
 
 QVariant HistoryModel::headerData(int section,
-                                    Qt::Orientation orientation,
-                                    int role = Qt::DisplayRole) const
+                                  Qt::Orientation orientation,
+                                  int role = Qt::DisplayRole) const
 {
-    if (role != Qt::DisplayRole)
+    if (role != Qt::DisplayRole ||
+        orientation != Qt::Horizontal) {
         return QVariant();
-
-    if (orientation == Qt::Horizontal) {
-        if (section == 0)
-            return QVariant(tr("Number"));
-        else if (section == 1)
-            return QVariant(tr("Date"));
-
-        if ((section == 2) && ((m_mode == OUTCALLS) || (m_mode == INCALLS)))
-            return QVariant(tr("Duration"));
     }
 
-    return QVariant();
+    switch (section) {
+    case COL_NAME:
+        return QVariant(tr("Name").toUpper());
+    case COL_EXTEN:
+        return QVariant(tr("Number").toUpper());
+    case COL_DATE:
+        return QVariant(tr("Date").toUpper());
+    case COL_DURATION:
+        return QVariant(tr("Duration").toUpper());
+    default:
+        return QVariant();
+    }
+}
+
+QString HistoryModel::prettyPrintDuration(int duration, int mode) const
+{
+    if (mode == MISSEDCALL) {
+        return "-";
+    }
+
+    int sec =   ( duration % 60);
+    int min =   ( duration - sec ) / 60 % 60;
+    int hou = ( ( duration - sec - min * 60 ) / 60 ) / 60;
+    if (hou)
+        return tr("%1 hr %2 min %3 s").arg(hou).arg(min).arg(sec);
+    else if (min)
+        return tr("%1 min %2 s").arg(min).arg(sec);
+    else
+        return tr("%1 s").arg(sec);
 }

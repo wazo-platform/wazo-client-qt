@@ -27,28 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_VIEW_H__
-#define __HISTORY_VIEW_H__
+#ifndef __HISTORY_ITEM_H__
+#define __HISTORY_ITEM_H__
 
-#include <QModelIndex>
 #include <QString>
-#include <QWidget>
+#include <QDateTime>
 
-#include <ipbxlistener.h>
-#include <xletlib/abstract_table_view.h>
+#include <history_enum.h>
 
-class HistoryView : public AbstractTableView
+struct HistoryItem
 {
-    Q_OBJECT
-
-    public:
-        HistoryView(QWidget *parent = NULL);
-
-    private slots:
-        void onViewClick(const QModelIndex &);
-
-    signals:
-        void extensionClicked(const QString &);
+    HistoryItem(const QDateTime &datetime, const QString &extension, const QString &name, int duration, int mode);
+    QDateTime datetime;
+    QString extension;
+    QString name;
+    int duration;
+    int mode;
 };
 
 #endif

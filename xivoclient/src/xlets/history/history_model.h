@@ -30,48 +30,40 @@
 #ifndef __HISTORY_MODEL_H__
 #define __HISTORY_MODEL_H__
 
-#include <QAbstractTableModel>
-#include <QDateTime>
+#include <QList>
 #include <QModelIndex>
-#include <QString>
+#include <QSize>
 #include <QVariant>
 #include <QWidget>
 
+#include <xletlib/abstract_table_model.h>
 #include <ipbxlistener.h>
 
-enum HistoryMode {
-    OUTCALLS = 0,
-    INCALLS,
-    MISSEDCALLS,
-    DEFAULT
-};
+#include "history_enum.h"
+#include "history_item.h"
 
-class HistoryModel : public QAbstractTableModel, public IPBXListener
+class HistoryModel : public AbstractTableModel
 {
     Q_OBJECT
 
     public:
         HistoryModel(QWidget * parent = NULL);
-        void parseCommand(const QVariantMap &);
-
-    protected:
-        virtual int rowCount(const QModelIndex&) const;
-        virtual int columnCount(const QModelIndex&) const;
-        virtual QVariant data(const QModelIndex&, int) const;
-        virtual QVariant headerData(int , Qt::Orientation, int) const;
-
-    public slots:
-        void missedCallMode();
-        void receivedCallMode();
-        void sentCallMode();
         void updateHistory(const QVariantMap &p);
 
-    private slots:
-        void requestHistory(HistoryMode mode = DEFAULT, QString xuserid = "");
+    protected:
+        virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+        virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+        virtual QVariant data(const QModelIndex&, int) const;
+        virtual QVariant headerData(int , Qt::Orientation, int) const;
+        virtual QList<int> columnDisplayBold() const;
+        virtual QList<int> columnDisplaySmaller() const;
 
     private:
-        QVariantList m_history;
-        HistoryMode m_mode;
+        void initializeHistory(const QVariantMap &p);
+        QString prettyPrintDuration(int duration, int mode = ALLCALL) const;
+
+        QList<HistoryItem> m_history_item;
+        static QSize icon_size;
 };
 
 #endif

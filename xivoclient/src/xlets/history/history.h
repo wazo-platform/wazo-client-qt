@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -38,19 +38,32 @@
 
 #include <ui_history_widget.h>
 
-#include "history_sort_filter_proxy_model.h"
+#include "history_enum.h"
 
 class HistoryModel;
+class HistorySortFilterProxyModel;
 class HistoryView;
 
-class History : public XLet
+class History : public XLet, public IPBXListener
 {
     Q_OBJECT
 
     public:
         History(QWidget *parent=0);
+        void parseCommand(const QVariantMap &map);
+
+    public slots:
+        void allCallsMode();
+        void missedCallsMode();
+        void receivedCallsMode();
+        void sentCallsMode();
+
+    private slots:
+        void requestHistory();
+
     private:
         HistoryModel *m_model;
+        HistoryMode m_mode;
         HistorySortFilterProxyModel *m_proxy_model;
         Ui::HistoryWidget ui;
 };

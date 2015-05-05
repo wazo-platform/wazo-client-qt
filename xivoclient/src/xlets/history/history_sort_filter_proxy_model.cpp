@@ -27,6 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "history_enum.h"
 #include "history_sort_filter_proxy_model.h"
 
 HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
@@ -34,15 +35,45 @@ HistorySortFilterProxyModel::HistorySortFilterProxyModel(QObject *parent)
 {
 }
 
+void HistorySortFilterProxyModel::setFilterMode(HistoryMode mode)
+{
+    if (m_mode != mode) {
+        m_mode = mode;
+        invalidateFilter();
+    }
+}
+
+bool HistorySortFilterProxyModel::filterAcceptsColumn(int source_column,
+                                                      const QModelIndex &/*source_parent*/) const
+{
+    if (source_column == COL_DURATION && m_mode == MISSEDCALL) {
+        return false;
+    }
+    return true;
+}
+
+bool HistorySortFilterProxyModel::filterAcceptsRow(int source_row,
+                                                   const QModelIndex &source_parent) const
+{
+    if (m_mode == ALLCALL) {
+        return true;
+    }
+
+    const QModelIndex &name_index = sourceModel()->index(source_row, COL_NAME, source_parent);
+    const QVariant &mode = sourceModel()->data(name_index, Qt::UserRole);
+
+    return mode == m_mode;
+}
+
 bool HistorySortFilterProxyModel::lessThan(const QModelIndex &left,
                                            const QModelIndex &right) const
 {
-    QVariant left_data = sourceModel()->data(left, Qt::UserRole);
-    QVariant right_data = sourceModel()->data(right, Qt::UserRole);
+    const QVariant &left_data = sourceModel()->data(left, Qt::UserRole);
+    const QVariant &right_data = sourceModel()->data(right, Qt::UserRole);
 
-    if (left.column() == 1) {
+    if (left.column() == COL_DATE) {
         return left_data < right_data;
-    } else if (left.column() == 2) {
+    } else if (left.column() == COL_DURATION) {
         return left_data < right_data;
     } else {
         return AbstractSortFilterProxyModel::lessThan(left, right);

@@ -27,28 +27,34 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_VIEW_H__
-#define __HISTORY_VIEW_H__
+#include <QFont>
 
-#include <QModelIndex>
-#include <QString>
-#include <QWidget>
+#include "abstract_table_model.h"
 
-#include <ipbxlistener.h>
-#include <xletlib/abstract_table_view.h>
-
-class HistoryView : public AbstractTableView
+AbstractTableModel::AbstractTableModel(QObject * parent)
+    : QAbstractTableModel(parent)
 {
-    Q_OBJECT
+}
 
-    public:
-        HistoryView(QWidget *parent = NULL);
+AbstractTableModel::~AbstractTableModel()
+{
+}
 
-    private slots:
-        void onViewClick(const QModelIndex &);
+QVariant AbstractTableModel::data(const QModelIndex &a, int role) const
+{
+    int column = a.column();
 
-    signals:
-        void extensionClicked(const QString &);
-};
-
-#endif
+    if (role == Qt::FontRole) {
+        QFont font("Liberation Sans");
+        if (this->columnDisplayBold().contains(column)) {
+            font.setBold(true);
+        }
+        if (this->columnDisplaySmaller().contains(column)) {
+            font.setPixelSize(13);
+        } else {
+            font.setPixelSize(14);
+        }
+        return font;
+    }
+    return QVariant();
+}

@@ -32,6 +32,7 @@
 
 #include "history.h"
 #include "history_model.h"
+#include "history_sort_filter_proxy_model.h"
 #include "history_view.h"
 
 History::History(QWidget *parent)
@@ -52,20 +53,70 @@ History::History(QWidget *parent)
     m_proxy_model = new HistorySortFilterProxyModel(this);
     m_proxy_model->setSourceModel(m_model);
     this->ui.history_table->setModel(m_proxy_model);
-    this->ui.history_table->sortByColumn(1, Qt::DescendingOrder);
+    this->ui.history_table->sortByColumn(2, Qt::DescendingOrder);
 
+    QAction *all_call_action = this->ui.menu->addAction(tr("All calls"));
     QAction *sent_call_action = this->ui.menu->addAction(tr("Sent calls"));
     QAction *received_call_action = this->ui.menu->addAction(tr("Received calls"));
     QAction *missed_call_action = this->ui.menu->addAction(tr("Missed calls"));
 
+    connect(all_call_action, SIGNAL(triggered()),
+            this, SLOT(allCallsMode()));
     connect(sent_call_action, SIGNAL(triggered()),
-            m_model, SLOT(sentCallMode()));
+            this, SLOT(sentCallsMode()));
     connect(received_call_action, SIGNAL(triggered()),
-            m_model, SLOT(receivedCallMode()));
+            this, SLOT(receivedCallsMode()));
     connect(missed_call_action, SIGNAL(triggered()),
-            m_model, SLOT(missedCallMode()));
+            this, SLOT(missedCallsMode()));
 
     this->ui.menu->setSelectedAction(0);
+
+    connect(b_engine, SIGNAL(settingsChanged()),
+            this, SLOT(requestHistory()));
+
+    connect(this->ui.history_table, SIGNAL(extensionClicked(const QString &)),
+            b_engine, SLOT(pasteToDial(const QString &)));
+
+    registerListener("history");
+}
+
+void History::parseCommand(const QVariantMap &map)
+{
+    m_model->updateHistory(map);
+    m_proxy_model->setFilterMode(m_mode);
+}
+
+void History::requestHistory()
+{
+    QVariantMap command;
+    command["class"] = "history";
+    command["xuserid"] = b_engine->getFullId();
+    command["size"] = QString::number(b_engine->getConfig("historysize").toUInt());
+    b_engine->sendJsonCommand(command);
+}
+
+void History::allCallsMode()
+{
+    m_mode = ALLCALL;
+    this->requestHistory();
+}
+
+void History::missedCallsMode()
+{
+    m_mode = MISSEDCALL;
+    this->requestHistory();
+}
+
+void History::receivedCallsMode()
+{
+    m_mode = INCALL;
+    this->requestHistory();
+}
+
+void History::sentCallsMode()
+{
+    m_mode = OUTCALL;
+    this->requestHistory();
 }
 
 XLet* XLetHistoryPlugin::newXLetInstance(QWidget *parent)

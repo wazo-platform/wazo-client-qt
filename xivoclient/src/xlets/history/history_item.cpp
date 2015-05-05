@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,28 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_VIEW_H__
-#define __HISTORY_VIEW_H__
+#include "history_item.h"
 
-#include <QModelIndex>
-#include <QString>
-#include <QWidget>
-
-#include <ipbxlistener.h>
-#include <xletlib/abstract_table_view.h>
-
-class HistoryView : public AbstractTableView
+HistoryItem::HistoryItem(const QDateTime &datetime, const QString &extension,
+                         const QString &name, int duration, int mode)
+  :datetime(datetime),
+   extension(extension),
+   name(name),
+   duration(duration),
+   mode(mode)
 {
-    Q_OBJECT
-
-    public:
-        HistoryView(QWidget *parent = NULL);
-
-    private slots:
-        void onViewClick(const QModelIndex &);
-
-    signals:
-        void extensionClicked(const QString &);
-};
-
-#endif
+}

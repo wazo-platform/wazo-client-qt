@@ -27,28 +27,22 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_VIEW_H__
-#define __HISTORY_VIEW_H__
+#ifndef __HISTORY_ENUM_H__
+#define __HISTORY_ENUM_H__
 
-#include <QModelIndex>
-#include <QString>
-#include <QWidget>
+enum HistoryMode {
+    OUTCALL = 0,
+    INCALL,
+    MISSEDCALL,
+    ALLCALL
+};
 
-#include <ipbxlistener.h>
-#include <xletlib/abstract_table_view.h>
-
-class HistoryView : public AbstractTableView
-{
-    Q_OBJECT
-
-    public:
-        HistoryView(QWidget *parent = NULL);
-
-    private slots:
-        void onViewClick(const QModelIndex &);
-
-    signals:
-        void extensionClicked(const QString &);
+enum HistoryColumn {
+    COL_NAME = 0,
+    COL_EXTEN,
+    COL_DATE,
+    COL_DURATION,
+    NB_COLS
 };
 
 #endif

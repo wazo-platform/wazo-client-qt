@@ -27,28 +27,26 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __HISTORY_VIEW_H__
-#define __HISTORY_VIEW_H__
+#ifndef __ABSTRACT_TABLE_MODEL_H__
+#define __ABSTRACT_TABLE_MODEL_H__
 
-#include <QModelIndex>
-#include <QString>
-#include <QWidget>
+#include <QAbstractTableModel>
+#include <QList>
+#include <QVariant>
 
-#include <ipbxlistener.h>
-#include <xletlib/abstract_table_view.h>
+#include "xletlib_export.h"
 
-class HistoryView : public AbstractTableView
+class XLETLIB_EXPORT AbstractTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
     public:
-        HistoryView(QWidget *parent = NULL);
-
-    private slots:
-        void onViewClick(const QModelIndex &);
-
-    signals:
-        void extensionClicked(const QString &);
+        AbstractTableModel(QObject *parent = NULL);
+        virtual ~AbstractTableModel() = 0;
+        virtual QVariant data(const QModelIndex &a, int role) const;
+        virtual QList<int> columnDisplayBold() const { return QList<int>(); }
+        virtual QList<int> columnDisplaySmaller() const { return QList<int>(); };
 };
 
 #endif
+

@@ -31,9 +31,9 @@
 #include <QMenu>
 #include <QString>
 
-#include <baseengine.h>
+#include <xletlib/number_button_delegate.h>
 
-#include "history_model.h"
+#include "history_enum.h"
 #include "history_view.h"
 
 HistoryView::HistoryView(QWidget *parent)
@@ -41,44 +41,18 @@ HistoryView::HistoryView(QWidget *parent)
 {
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onViewClick(const QModelIndex &)));
-}
 
-void HistoryView::contextMenuEvent(QContextMenuEvent * event)
-{
-    const QModelIndex &index = indexAt(event->pos());
-    QString caller = index.sibling(index.row(), 0).data().toString();
-    if (caller.isEmpty()) {
-        return;
-    }
-
-    QMenu *menu = new QMenu(this);
-
-    QAction *action = new QAction(tr("Call %1").arg(caller), menu);
-    action->setProperty("num_to_call", caller);
-    connect(action, SIGNAL(triggered(bool)),
-            this, SLOT(callOnClick(bool)));
-
-    menu->addAction(action);
-    menu->exec(QCursor::pos());
-
-}
-
-
-void HistoryView::callOnClick(bool)
-{
-    QAction *calling_action = qobject_cast<QAction *>(sender());
-    QString num_to_call = calling_action->property("num_to_call").toString();
-    b_engine->actionDial(num_to_call);
+    this->viewport()->setAttribute(Qt::WA_Hover);
+    this->setItemDelegateForColumn(COL_EXTEN, new NumberButtonDelegate(this));
 }
 
 void HistoryView::onViewClick(const QModelIndex &index)
 {
-    QString caller = index.sibling(index.row(), 0).data().toString();
+    const QString &caller = index.sibling(index.row(), COL_EXTEN).data().toString();
 
     if (caller.isEmpty()) {
         return;
     }
 
-    b_engine->pasteToDial(caller);
+    emit extensionClicked(caller);
 }
-
