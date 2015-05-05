@@ -86,15 +86,11 @@ void History::parseCommand(const QVariantMap &map)
     m_proxy_model->setFilterMode(m_mode);
 }
 
-void History::requestHistory(QString xuserid)
+void History::requestHistory()
 {
-    if (xuserid.isEmpty()) {
-        xuserid = b_engine->getFullId();
-    }
-
     QVariantMap command;
     command["class"] = "history";
-    command["xuserid"] = xuserid;
+    command["xuserid"] = b_engine->getFullId();
     command["size"] = QString::number(b_engine->getConfig("historysize").toUInt());
     b_engine->sendJsonCommand(command);
 }

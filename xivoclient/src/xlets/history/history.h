@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -59,7 +59,7 @@ class History : public XLet, public IPBXListener
         void sentCallsMode();
 
     private slots:
-        void requestHistory(QString xuserid = "");
+        void requestHistory();
 
     private:
         HistoryModel *m_model;
