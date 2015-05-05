@@ -6,7 +6,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="519"/>
         <source>Connection lost with XiVO CTI server</source>
-        <translation>Verbindung mit XiVO CTI-Server verloren</translation>
+        <translation>Verbindung mit dem XiVO CTI-Server verloren</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="827"/>
@@ -40,7 +40,8 @@
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1248"/>
-        <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
+        <source>The server %1:%2 did not reply to the last keepalive packet.</source>
+        <oldsource>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -98,8 +99,9 @@
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1294"/>
-        <source>You are already connected from %1:%2.</source>
-        <translation type="unfinished"></translation>
+        <source>You are already connected to %1:%2.</source>
+        <oldsource>You are already connected from %1:%2.</oldsource>
+        <translation>Sie sind bereits mit %1:%2 verbunden.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1296"/>
@@ -134,7 +136,8 @@ Bitte aktualisieren Sie sie.</translation>
         <location filename="src/baseengine.cpp" line="1317"/>
         <source>Your client&apos;s major version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Hauptversion Ihres Client (%1)
+ist nicht die gleiche wie die des Servers (%2).</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1324"/>

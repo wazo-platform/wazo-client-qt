@@ -55,22 +55,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="154"/>
         <source>2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="172"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="169"/>
         <source>Choose destination number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="210"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="207"/>
         <source>fax number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="275"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="269"/>
         <source>SEND FAX</source>
         <translation type="unfinished"></translation>
     </message>

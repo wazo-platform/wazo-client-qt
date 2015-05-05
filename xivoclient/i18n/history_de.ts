@@ -4,22 +4,27 @@
 <context>
     <name>History</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="38"/>
+        <location filename="../src/xlets/history/history.cpp" line="39"/>
         <source>History</source>
         <translation>Chronik</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="57"/>
+        <location filename="../src/xlets/history/history.cpp" line="58"/>
+        <source>All calls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history.cpp" line="59"/>
         <source>Sent calls</source>
         <translation>Gesendete Anrufe</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="58"/>
+        <location filename="../src/xlets/history/history.cpp" line="60"/>
         <source>Received calls</source>
         <translation>Angenommene Anrufe</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="59"/>
+        <location filename="../src/xlets/history/history.cpp" line="61"/>
         <source>Missed calls</source>
         <translation>Anrufe in Abwesenheit</translation>
     </message>
@@ -27,42 +32,39 @@
 <context>
     <name>HistoryModel</name>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="85"/>
-        <source>%1 hr %2 min %3 s</source>
-        <translation>%1 Std. %2 min %3 s</translation>
+        <location filename="../src/xlets/history/history_model.cpp" line="144"/>
+        <source>Name</source>
+        <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="87"/>
-        <source>%1 min %2 s</source>
-        <translation>%1 min %2 s</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="89"/>
-        <source>%1 s</source>
-        <translation>%1 s</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="169"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="146"/>
         <source>Number</source>
         <translation>Nummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="171"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="148"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="174"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="150"/>
         <source>Duration</source>
         <translation>Dauer</translation>
     </message>
-</context>
-<context>
-    <name>HistoryView</name>
     <message>
-        <location filename="../src/xlets/history/history_view.cpp" line="56"/>
-        <source>Call %1</source>
-        <translation>Anruf %1</translation>
+        <location filename="../src/xlets/history/history_model.cpp" line="166"/>
+        <source>%1 hr %2 min %3 s</source>
+        <translation>%1 Std. %2 min %3 s</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="168"/>
+        <source>%1 min %2 s</source>
+        <translation>%1 min %2 s</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="170"/>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
     </message>
 </context>
 <context>

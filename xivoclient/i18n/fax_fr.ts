@@ -55,22 +55,22 @@
         <translation>PARCOURIR...</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="157"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="154"/>
         <source>2.</source>
         <translation>2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="172"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="169"/>
         <source>Choose destination number</source>
         <translation>Choisir un numéro de destinataire</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="210"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="207"/>
         <source>fax number</source>
         <translation>numéro de fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="275"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="269"/>
         <source>SEND FAX</source>
         <translation>ENVOYER LE FAX</translation>
     </message>

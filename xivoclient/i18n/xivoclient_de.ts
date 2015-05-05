@@ -285,7 +285,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="820"/>
         <source>Auto-reconnect interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervall der automatischen Wiederverbindung</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="859"/>

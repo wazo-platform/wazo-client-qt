@@ -34,52 +34,52 @@
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="378"/>
         <source>DND</source>
         <translation>NPD</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="382"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="379"/>
         <source>Do Not Disturb</source>
         <translation>Ne Pas Déranger</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
         <source>UNC %1</source>
         <translation>INC %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="385"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="382"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Renvoi Inconditionnel vers %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
         <source>BUSY %1</source>
         <translation>OCCUPÉ %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="388"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="385"/>
         <source>Busy Forward towards %1</source>
         <translation>Renvoi sur Occupation vers %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="390"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
         <source>FNA %1</source>
         <translation>RNR %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="391"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="388"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Renvoi sur Non-Réponse vers %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="393"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="390"/>
         <source>CALL FILTER</source>
         <translation>FILTRAGE D&apos;APPEL</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="396"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="393"/>
         <source>AVAILABLE</source>
         <translation>DISPONIBLE</translation>
     </message>

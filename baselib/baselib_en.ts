@@ -40,7 +40,8 @@
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1248"/>
-        <source>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</source>
+        <source>The server %1:%2 did not reply to the last keepalive packet.</source>
+        <oldsource>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</oldsource>
         <translation>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</translation>
     </message>
     <message>
@@ -101,7 +102,8 @@
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1294"/>
-        <source>You are already connected from %1:%2.</source>
+        <source>You are already connected to %1:%2.</source>
+        <oldsource>You are already connected from %1:%2.</oldsource>
         <translation>You are already connected from %1:%2.</translation>
     </message>
     <message>

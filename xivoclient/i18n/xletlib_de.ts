@@ -56,7 +56,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="268"/>
         <source>Agent ready to receive a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent bereit zum Annehmen eines Anrufs</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="270"/>
@@ -181,7 +181,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
         <source>Cancel transfer</source>
-        <translation>Übertragung abbrechen</translation>
+        <translation>Verbindung abbrechen</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="417"/>
@@ -201,7 +201,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="521"/>
         <source>Blind transfer &lt;%0&gt;</source>
-        <translation>Blindübertragung &lt;%0&gt;</translation>
+        <translation>Blindverbindung &lt;%0&gt;</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="538"/>
@@ -211,7 +211,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
         <source>Transfer to &amp;voice mail</source>
-        <translation>Zum &amp;Anrufbeantworter übertragen</translation>
+        <translation>Zum &amp;Anrufbeantworter verbinden</translation>
     </message>
 </context>
 <context>
@@ -332,6 +332,14 @@ Sind Sie sicher?</translation>
 Phone Number : %2</source>
         <translation>Bezeichnung : %1
 Telefonnummer : %2</translation>
+    </message>
+</context>
+<context>
+    <name>NumberButtonDelegate</name>
+    <message>
+        <location filename="../src/xletlib/number_button_delegate.cpp" line="68"/>
+        <source>CALL</source>
+        <translation type="unfinished">ANRUF</translation>
     </message>
 </context>
 <context>

@@ -332,6 +332,14 @@ Phone Number : %2</source>
     </message>
 </context>
 <context>
+    <name>NumberButtonDelegate</name>
+    <message>
+        <location filename="../src/xletlib/number_button_delegate.cpp" line="68"/>
+        <source>CALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PeerWidget</name>
     <message>
         <location filename="../src/xletlib/peerwidget.cpp" line="237"/>
