@@ -42,11 +42,11 @@ HistoryModel::HistoryModel(QWidget * parent)
 
 void HistoryModel::initializeHistory(const QVariantMap &p)
 {
-    QVariantList history_items = p.value("history").toList();
+    const QVariantList &history_items = p.value("history").toList();
     m_history_item.clear();
 
     beginResetModel();
-    foreach (QVariant item, history_items) {
+    foreach (const QVariant &item, history_items) {
         QVariantMap history_item = item.toMap();
         if (history_item.value("fullname").toString().isEmpty()) {
             history_item.insert("fullname", QString("-"));
@@ -131,8 +131,8 @@ QVariant HistoryModel::data(const QModelIndex &a, int role) const
 }
 
 QVariant HistoryModel::headerData(int section,
-                                    Qt::Orientation orientation,
-                                    int role = Qt::DisplayRole) const
+                                  Qt::Orientation orientation,
+                                  int role = Qt::DisplayRole) const
 {
     if (role != Qt::DisplayRole ||
         orientation != Qt::Horizontal) {

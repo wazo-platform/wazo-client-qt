@@ -48,7 +48,7 @@ HistoryView::HistoryView(QWidget *parent)
 
 void HistoryView::onViewClick(const QModelIndex &index)
 {
-    QString caller = index.sibling(index.row(), COL_EXTEN).data().toString();
+    const QString &caller = index.sibling(index.row(), COL_EXTEN).data().toString();
 
     if (caller.isEmpty()) {
         return;

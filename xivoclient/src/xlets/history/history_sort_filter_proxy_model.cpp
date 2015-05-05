@@ -59,8 +59,8 @@ bool HistorySortFilterProxyModel::filterAcceptsRow(int source_row,
         return true;
     }
 
-    QModelIndex name_index = sourceModel()->index(source_row, COL_NAME, source_parent);
-    QVariant mode = sourceModel()->data(name_index, Qt::UserRole);
+    const QModelIndex &name_index = sourceModel()->index(source_row, COL_NAME, source_parent);
+    const QVariant &mode = sourceModel()->data(name_index, Qt::UserRole);
 
     return mode == m_mode;
 }
@@ -68,8 +68,8 @@ bool HistorySortFilterProxyModel::filterAcceptsRow(int source_row,
 bool HistorySortFilterProxyModel::lessThan(const QModelIndex &left,
                                            const QModelIndex &right) const
 {
-    QVariant left_data = sourceModel()->data(left, Qt::UserRole);
-    QVariant right_data = sourceModel()->data(right, Qt::UserRole);
+    const QVariant &left_data = sourceModel()->data(left, Qt::UserRole);
+    const QVariant &right_data = sourceModel()->data(right, Qt::UserRole);
 
     if (left.column() == COL_DATE) {
         return left_data < right_data;
