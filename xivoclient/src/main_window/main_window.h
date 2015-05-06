@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -30,9 +30,10 @@
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
 
-#include <QtWidgets>
 #include <QList>
 #include <QMainWindow>
+#include <QSize>
+#include <QtWidgets>
 
 #include <ui_main_window.h>
 #include <xletlib/functests.h>
@@ -40,6 +41,8 @@
 
 
 class ConfigWidget;
+class QCloseEvent;
+class QResizeEvent;
 
 class MainWindow : public QMainWindow
 {
@@ -54,7 +57,8 @@ class MainWindow : public QMainWindow
         void saveStateToConfigFile();
         void restoreStateFromConfigFile();
         bool isFolded();
-        void setFolded(bool folded);
+        void setFolded(const QSize size);
+        void restoreFolded();
 
         Ui::MainWindow *ui;
 
@@ -78,7 +82,10 @@ class MainWindow : public QMainWindow
         void minimizeWindow();
         void about();
         void showCredits();
+
+    protected:
         virtual void closeEvent(QCloseEvent *);
+        virtual void resizeEvent(QResizeEvent *event);
 
     signals:
         void initialized();
@@ -95,6 +102,8 @@ class MainWindow : public QMainWindow
         QDateTime m_launch_date_time;
 
         bool m_folded;
+        int m_minimum_height;
+        QSize m_unfolded_size;
 };
 
 #endif

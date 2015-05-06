@@ -101,9 +101,6 @@ class XletDispatcher : public QObject
 
         QSignalMapper *m_fold_signal_mapper;
         QSignalMapper *m_unfold_signal_mapper;
-
-        int m_unfolded_height;
-        int m_minimum_height;
 };
 
 #endif

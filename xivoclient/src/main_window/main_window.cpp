@@ -34,7 +34,6 @@
 
 #include "main_window.h"
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
@@ -51,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
     QFontDatabase fontDB;
     fontDB.addApplicationFont(":/fonts/Dyno-Regular.ttf");
     fontDB.addApplicationFont(":/fonts/LiberationSans-Regular.ttf");
+
+    m_unfolded_size = this->size();
 
     connect(b_engine, SIGNAL(logged()),
             this, SLOT(setStatusLogged()));
@@ -255,9 +256,71 @@ bool MainWindow::isFolded()
     return m_folded;
 }
 
-void MainWindow::setFolded(bool folded)
+void MainWindow::setFolded(const QSize size)
 {
-    m_folded = folded;
+    if (m_folded) {
+        return;
+    }
+    m_folded = true;
+
+    m_minimum_height = this->minimumHeight();
+    if (! (this->isMaximized() || this->isFullScreen())) {
+        m_unfolded_size = this->size();
+    }
+
+    Qt::WindowStates state = this->windowState();
+    // Disable WindowMaximized and/or WindowFullScreen
+    // setWindowState resolve glitch when fold/unfold while maximized
+    // BUG WHEN PREVIOUSLY MAXIMIZED/FULLSCREEN: 
+    // resizeEvent is only executed after this function, 
+    // so this->size() return the old (maximized) size
+    this->setWindowState(state & ~Qt::WindowMaximized & ~Qt::WindowFullScreen);
+
+    // setFixedHeight probably takes this->size().width() for not changing width
+    this->setFixedHeight(size.height()
+                         + this->statusBar()->height()
+                         + this->menuBar()->height()
+                        );
+
+    this->setWindowState(state);
+
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    // we need to keep the size before maximizing, because of "bug" setWindowState
+    // The only resize event with (isMiximized == true) is when you maximized, so the
+    // oldSize will be the minimized size
+    if ((this->isMaximized() || this->isFullScreen())) {
+        if (m_folded) {
+            m_unfolded_size.setWidth(event->oldSize().width());
+        } else {
+            m_unfolded_size = event->oldSize();
+        }
+    }
+}
+
+void MainWindow::restoreFolded()
+{
+    if (! m_folded) {
+        return;
+    }
+
+    if (! (this->isMaximized() || this->isFullScreen())) {
+        m_unfolded_size.setWidth(this->size().width());
+    }
+
+    Qt::WindowStates state = this->windowState();
+    this->setWindowState(state & ~Qt::WindowMaximized & ~Qt::WindowFullScreen);
+
+    this->setMaximumHeight(QWIDGETSIZE_MAX);
+    this->setMinimumHeight(m_minimum_height);
+
+    this->resize(m_unfolded_size);
+
+    this->setWindowState(state);
+
+    m_folded = false;
 }
 
 void MainWindow::customerInfoPopup(const QString & msgtitle,
