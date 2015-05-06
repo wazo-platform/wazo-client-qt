@@ -34,7 +34,6 @@
 
 #include "main_window.h"
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
@@ -52,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     fontDB.addApplicationFont(":/fonts/Dyno-Regular.ttf");
     fontDB.addApplicationFont(":/fonts/LiberationSans-Regular.ttf");
 
-    m_unfolded_height = this->height();
+    m_unfolded_size = this->size();
 
     connect(b_engine, SIGNAL(logged()),
             this, SLOT(setStatusLogged()));
@@ -262,25 +261,43 @@ void MainWindow::setFolded(const QSize size)
     if (m_folded) {
         return;
     }
-
-    bool is_maximized = this->isMaximized();
-    if (is_maximized) {
-        this->setWindowState(this->windowState() & ~Qt::WindowMaximized);
-    }
+    m_folded = true;
 
     m_minimum_height = this->minimumHeight();
-    m_unfolded_height = this->height();
+    if (! (this->isMaximized() || this->isFullScreen())) {
+        m_unfolded_size = this->size();
+    }
 
+    Qt::WindowStates state = this->windowState();
+    // Disable WindowMaximized and/or WindowFullScreen
+    // setWindowState resolve glitch when fold/unfold while maximized
+    // BUG WHEN PREVIOUSLY MAXIMIZED/FULLSCREEN: 
+    // resizeEvent is only executed after this function, 
+    // so this->size() return the old (maximized) size
+    this->setWindowState(state & ~Qt::WindowMaximized & ~Qt::WindowFullScreen);
+
+    // setFixedHeight probably takes this->size().width() for not changing width
     this->setFixedHeight(size.height()
                          + this->statusBar()->height()
                          + this->menuBar()->height()
                         );
 
-    if (is_maximized) {
-        this->setWindowState(this->windowState() | Qt::WindowMaximized);
-    }
+    this->setWindowState(state);
 
-    m_folded = true;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    // we need to keep the size before maximizing, because of "bug" setWindowState
+    // The only resize event with (isMiximized == true) is when you maximized, so the
+    // oldSize will be the minimized size
+    if ((this->isMaximized() || this->isFullScreen())) {
+        if (m_folded) {
+            m_unfolded_size.setWidth(event->oldSize().width());
+        } else {
+            m_unfolded_size = event->oldSize();
+        }
+    }
 }
 
 void MainWindow::restoreFolded()
@@ -289,21 +306,19 @@ void MainWindow::restoreFolded()
         return;
     }
 
-    bool is_maximized = this->isMaximized();
-    if (is_maximized) {
-        this->setWindowState(this->windowState() & ~Qt::WindowMaximized);
+    if (! (this->isMaximized() || this->isFullScreen())) {
+        m_unfolded_size.setWidth(this->size().width());
     }
+
+    Qt::WindowStates state = this->windowState();
+    this->setWindowState(state & ~Qt::WindowMaximized & ~Qt::WindowFullScreen);
 
     this->setMaximumHeight(QWIDGETSIZE_MAX);
     this->setMinimumHeight(m_minimum_height);
 
-    QSize main_window_size = this->size();
-    main_window_size.setHeight(m_unfolded_height);
-    this->resize(main_window_size);
+    this->resize(m_unfolded_size);
 
-    if (is_maximized) {
-        this->setWindowState(this->windowState() | Qt::WindowMaximized);
-    }
+    this->setWindowState(state);
 
     m_folded = false;
 }

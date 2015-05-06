@@ -30,9 +30,12 @@
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
 
-#include <QtWidgets>
+#include <QCloseEvent>
 #include <QList>
 #include <QMainWindow>
+#include <QResizeEvent>
+#include <QSize>
+#include <QtWidgets>
 
 #include <ui_main_window.h>
 #include <xletlib/functests.h>
@@ -79,7 +82,10 @@ class MainWindow : public QMainWindow
         void minimizeWindow();
         void about();
         void showCredits();
+
+    protected:
         virtual void closeEvent(QCloseEvent *);
+        virtual void resizeEvent(QResizeEvent *event);
 
     signals:
         void initialized();
@@ -97,7 +103,7 @@ class MainWindow : public QMainWindow
 
         bool m_folded;
         int m_minimum_height;
-        int m_unfolded_height;
+        QSize m_unfolded_size;
 };
 
 #endif
