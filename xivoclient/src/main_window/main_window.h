@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -30,10 +30,8 @@
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
 
-#include <QCloseEvent>
 #include <QList>
 #include <QMainWindow>
-#include <QResizeEvent>
 #include <QSize>
 #include <QtWidgets>
 
@@ -43,6 +41,8 @@
 
 
 class ConfigWidget;
+class QCloseEvent;
+class QResizeEvent;
 
 class MainWindow : public QMainWindow
 {
