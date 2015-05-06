@@ -226,7 +226,6 @@
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
-            <string>search</string>
            </stringlist>
           </property>
          </widget>
