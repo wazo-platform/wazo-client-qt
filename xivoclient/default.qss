@@ -10,7 +10,7 @@ QLabel[qss_tags~="xlet_h1"] {
 QLabel[qss_tags~="xlet_h2"] {
     color: #E77D39;
     font: bold 22pt "Dyno";
-    padding-bottom: 30px;
+    padding-bottom: 10px;
 }
 
 QLabel[qss_tags~="xlet_h4"] {
@@ -61,8 +61,8 @@ QPushButton[qss_tags~="black"]{
  * QRADIOBUTTON
  */
 QRadioButton{
-    margin-bottom: 15px;
-    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 /*
@@ -76,8 +76,8 @@ QCheckBox{
 QFrame[qss_tags~="input_button"]{
     background-color: #D7D2D0;
     border-radius: 15px; 
-    margin-bottom: 15px;
-    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 QStackedWidget {
