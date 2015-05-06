@@ -56,6 +56,7 @@ Conference::Conference(QWidget *parent)
     this->ui.menu->addAction();
 
     m_list_model = new ConferenceListModel(this);
+    m_list_model->setObjectName("conference_list_model");
     m_list_proxy_model = new ConferenceListSortFilterProxyModel(this);
 
     m_list_proxy_model->setSourceModel(m_list_model);

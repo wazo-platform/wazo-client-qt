@@ -43,8 +43,8 @@ QVariantMap RemoteControl::get_conference_room_infos()
     Conference* conference_xlet = this->get_xlet<Conference>("conference");
     QAbstractItemModel* conflist_model = conference_xlet->findChild<QAbstractItemModel*>("conference_list_model");
 
-    args["conference_xlet"] = conference_xlet != NULL;
-    args["conflist_model"] = conflist_model != NULL;
+    this->assert(conference_xlet != NULL);
+    this->assert(conflist_model != NULL);
 
     QVariantList content;
     QVariantMap header_data;
