@@ -61,7 +61,7 @@
       <number>0</number>
      </property>
      <property name="bottomMargin">
-      <number>80</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QCheckBox" name="call_filtering_checkbox">
@@ -89,6 +89,22 @@
         </stringlist>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Maximum</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>30</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
