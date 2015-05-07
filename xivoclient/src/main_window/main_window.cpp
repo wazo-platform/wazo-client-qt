@@ -398,6 +398,8 @@ void MainWindow::showCredits()
 {
     QMessageBox::about(this,
                        tr("Credits"),
+                       "<h3>Design</h3>"
+                       " by <a href=\"http://www.kerosine.fr/\">Kerosine</a>."
                        "<h3>Dyno Sans Font</h3>"
                        " by <a href=\"http://grandchaos9000.deviantart.com\">Grandos Plex</a>"
                        " is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\">Creative Commons Attribution-ShareAlike 4.0 International License</a>."
