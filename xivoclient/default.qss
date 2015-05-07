@@ -125,7 +125,7 @@ AbstractTableView::item {
 }
 
 PeopleEntryView::item {
-    border-top: none;
+    border: none;
 }
 
 AbstractTableView > QHeaderView::down-arrow {
