@@ -739,6 +739,10 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         m_timeclt = QDateTime::currentDateTime();
     }
 
+    if (thisclass == "meetme_user") {
+        m_meetme_membership = datamap["list"].toList();
+    }
+
     if (forwardToListeners(thisclass, datamap))  // a class callback was called,
         return;                                  // so zap the 500 loc of if-else soup
 
