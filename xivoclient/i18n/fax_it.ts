@@ -70,7 +70,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="269"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="268"/>
         <source>SEND FAX</source>
         <translation type="unfinished"></translation>
     </message>

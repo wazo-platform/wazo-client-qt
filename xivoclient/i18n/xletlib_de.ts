@@ -339,7 +339,7 @@ Telefonnummer : %2</translation>
     <message>
         <location filename="../src/xletlib/number_button_delegate.cpp" line="68"/>
         <source>CALL</source>
-        <translation type="unfinished">ANRUF</translation>
+        <translation>ANRUF</translation>
     </message>
 </context>
 <context>

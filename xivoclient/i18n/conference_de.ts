@@ -14,7 +14,7 @@
         <translation>Raumliste</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="149"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="150"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
@@ -24,12 +24,12 @@
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="101"/>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="103"/>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Nein</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="127"/>

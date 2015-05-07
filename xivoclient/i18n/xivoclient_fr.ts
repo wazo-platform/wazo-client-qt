@@ -500,99 +500,99 @@
         <translation>&amp;Crédits</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="101"/>
-        <location filename="../src/main_window/main_window.cpp" line="224"/>
-        <location filename="../src/main_window/main_window.cpp" line="309"/>
+        <location filename="../src/main_window/main_window.cpp" line="102"/>
+        <location filename="../src/main_window/main_window.cpp" line="225"/>
+        <location filename="../src/main_window/main_window.cpp" line="372"/>
         <source>Client %1</source>
         <translation>Client %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="176"/>
+        <location filename="../src/main_window/main_window.cpp" line="177"/>
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI Erreur</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="206"/>
+        <location filename="../src/main_window/main_window.cpp" line="207"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (profil %2)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="301"/>
+        <location filename="../src/main_window/main_window.cpp" line="364"/>
         <source>Fetch the last one</source>
         <translation>Récupérer la dernière</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="308"/>
+        <location filename="../src/main_window/main_window.cpp" line="371"/>
         <source>About XiVO Client</source>
         <translation>À propos de XiVO Client</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="310"/>
+        <location filename="../src/main_window/main_window.cpp" line="373"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation>Les applications CTI XiVO, une fois connectées au serveur adéquat, complètent le système téléphonique XiVO, en fournissant des outils informatiques, tels que la remontée de fiches, les recherches dans des répertoires, ainsi que divers &apos;X-lets&apos; de supervision pour les centres d&apos;appel.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="315"/>
+        <location filename="../src/main_window/main_window.cpp" line="378"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Information de version&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="316"/>
+        <location filename="../src/main_window/main_window.cpp" line="379"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Majeure : &lt;b&gt;%1&lt;/b&gt; (branche XiVO)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="317"/>
+        <location filename="../src/main_window/main_window.cpp" line="380"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Mineure : git hash &lt;b&gt;%1&lt;/b&gt; du : %2</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="320"/>
+        <location filename="../src/main_window/main_window.cpp" line="383"/>
         <source>(Application Built on : %1)</source>
         <translation>(Application compilée le : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="321"/>
+        <location filename="../src/main_window/main_window.cpp" line="384"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Application lancée le : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="322"/>
+        <location filename="../src/main_window/main_window.cpp" line="385"/>
         <source>(Config File Location : %1)</source>
         <translation>(Fichier de Configuration : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="325"/>
+        <location filename="../src/main_window/main_window.cpp" line="388"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="326"/>
+        <location filename="../src/main_window/main_window.cpp" line="389"/>
         <source>Phone : </source>
         <translation>Téléphone : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="327"/>
+        <location filename="../src/main_window/main_window.cpp" line="390"/>
         <source>Authors : </source>
         <translation>Auteurs : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="327"/>
+        <location filename="../src/main_window/main_window.cpp" line="390"/>
         <source>Avencall Development Team</source>
         <translation>Équipe de développement Avencall</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="329"/>
+        <location filename="../src/main_window/main_window.cpp" line="392"/>
         <source>License : </source>
         <translation>Licence : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="331"/>
+        <location filename="../src/main_window/main_window.cpp" line="394"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>avec une exception particulière vous permettant de le lier avec OpenSSL, sous certaines conditions.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="337"/>
+        <location filename="../src/main_window/main_window.cpp" line="400"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>

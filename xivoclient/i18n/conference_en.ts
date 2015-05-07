@@ -14,7 +14,7 @@
         <translation>Room list</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="149"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="150"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>

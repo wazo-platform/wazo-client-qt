@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="58"/>
         <source>All calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Anrufe</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="59"/>
@@ -34,7 +34,7 @@
     <message>
         <location filename="../src/xlets/history/history_model.cpp" line="144"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history_model.cpp" line="146"/>

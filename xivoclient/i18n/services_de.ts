@@ -27,32 +27,32 @@
         <translation>Bitte nicht &amp;stören</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="98"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="114"/>
         <source>Call forwards</source>
         <translation>Gesprächsweiterleitungen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="131"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="147"/>
         <source>Simple call forwards</source>
         <translation>Einfache Gesprächsweiterleitungen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="191"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="207"/>
         <source>&amp;Unconditional forward to</source>
         <translation>Beding&amp;ungslose Weiterleitung zu</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="212"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="228"/>
         <source>No call forward</source>
         <translation>Keine Gesprächsweiterleitung</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="356"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="372"/>
         <source>Forward on &amp;busy to</source>
         <translation>Weiterleitung bei &amp;besetzt zu</translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="387"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="403"/>
         <source>Forward on &amp;no answer to</source>
         <translation>Weiterleitung bei keiner Antw&amp;ort zu</translation>
     </message>
