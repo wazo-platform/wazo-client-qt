@@ -119,15 +119,6 @@ AbstractTableView {
     background-color: #F5F3F2;
 }
 
-AbstractTableView::item {
-    border-bottom: 1px solid #D7D2D0;
-    padding-left: 30px;
-}
-
-PeopleEntryView::item {
-    border: none;
-}
-
 AbstractTableView > QHeaderView::down-arrow {
     image: url(:/images/down-arrow-grey.svg);
     right: 8px;
@@ -144,7 +135,7 @@ AbstractTableView > QHeaderView::section {
     border-bottom: 1px solid #D7D2D0;
     background-color: #E8E4E2;
     font: 12px "Liberation Sans";
-    padding-left: 30px;
+    padding-left: 10px;
 }
 
 AbstractTableView > QHeaderView::section:first{

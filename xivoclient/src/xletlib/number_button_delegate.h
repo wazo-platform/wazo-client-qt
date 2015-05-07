@@ -30,11 +30,11 @@
 #ifndef __NUMBER_BUTTON_DELEGATE_H__
 #define __NUMBER_BUTTON_DELEGATE_H__
 
-#include <QStyledItemDelegate>
+#include "item_delegate.h"
 
 #include "xletlib_export.h"
 
-class XLETLIB_EXPORT NumberButtonDelegate : public QStyledItemDelegate
+class XLETLIB_EXPORT NumberButtonDelegate : public ItemDelegate
 {
     Q_OBJECT
 

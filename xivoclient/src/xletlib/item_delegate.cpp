@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,44 +27,37 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QHeaderView>
-#include <QStyleFactory>
 
-#include "abstract_table_view.h"
+#include <baseengine.h>
+
 #include "item_delegate.h"
 
-AbstractTableView::AbstractTableView(QWidget * parent)
-    : QTableView(parent)
-
-{
-    this->setSortingEnabled(true);
-    this->setShowGrid(0);
-
-    this->horizontalHeader()->setCascadingSectionResizes(true);
-    this->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    this->horizontalHeader()->setFixedHeight(30);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    this->horizontalHeader()->setSectionsMovable(true);
-
-    this->verticalHeader()->setDefaultSectionSize(50);
-    this->verticalHeader()->hide();
-
-    this->setSelectionMode(QAbstractItemView::NoSelection);
-
-    QStyle *plastique = QStyleFactory::create("cleanlooks");
-    this->horizontalHeader()->setStyle(plastique);
-    this->verticalHeader()->setStyle(plastique);
-
-    this->setItemDelegate(new ItemDelegate(this));
-}
-
-AbstractTableView::~AbstractTableView()
+ItemDelegate::ItemDelegate(QWidget *parent)
+    : QStyledItemDelegate(parent)
 {
 }
 
-QSize AbstractTableView::sizeHint() const
+void ItemDelegate::paint(QPainter *painter,
+                           const QStyleOptionViewItem &option,
+                           const QModelIndex &index) const
 {
-    int width = this->horizontalHeader()->length();
-    int height = this->verticalHeader()->length();
-    return QSize(width, height);
+    this->drawBorder(painter, option);
+
+    QStyleOptionViewItem opt = option;
+    this->initStyleOption(&opt, index);
+    if (index.column() == 0) {
+        opt.rect = opt.rect.marginsRemoved(QMargins(30,0,0,0));
+    } else {
+        opt.rect = opt.rect.marginsRemoved(QMargins(10,0,0,0));
+    }
+
+    QStyledItemDelegate::paint(painter, opt, index);
+}
+
+void ItemDelegate::drawBorder(QPainter *painter, const QStyleOptionViewItem &opt) const
+{
+    painter->save();
+    painter->setPen(QColor("#D7D2D0"));
+    painter->drawLine(opt.rect.bottomLeft(), opt.rect.bottomRight());
+    painter->restore();
 }

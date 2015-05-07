@@ -40,7 +40,7 @@ QMargins NumberButtonDelegate::button_margins = QMargins(10, 0, 10, 0);
 
 
 NumberButtonDelegate::NumberButtonDelegate(QWidget *parent)
-    : QStyledItemDelegate(parent),
+    : ItemDelegate(parent),
       pressed(false)
 {
 }
@@ -50,7 +50,7 @@ void NumberButtonDelegate::paint(QPainter *painter,
                                       const QModelIndex &index) const
 {
     if (index.data().isNull() || index.data().toString().isEmpty()) {
-        QStyledItemDelegate::paint(painter, option, index);
+        ItemDelegate::paint(painter, option, index);
         return;
     }
 
@@ -71,15 +71,13 @@ void NumberButtonDelegate::paint(QPainter *painter,
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
 
-        painter->setPen(QColor("#D7D2D0"));
-        QRect border_rect(option.rect);
-        painter->drawLine(border_rect.bottomLeft(), border_rect.bottomRight());
-
         painter->restore();
+
+        ItemDelegate::drawBorder(painter, option);
         return;
     }
 
-    QStyledItemDelegate::paint(painter, option, index);
+    ItemDelegate::paint(painter, option, index);
 }
 
 bool NumberButtonDelegate::editorEvent(QEvent *event,
