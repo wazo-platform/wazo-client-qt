@@ -32,7 +32,7 @@
 #include "remote_directory.h"
 
 RemoteDirectory::RemoteDirectory(QWidget *parent)
-    : XLet(parent, tr("Remote Directory"), ":/images/tab-people.svg")
+    : XLet(parent, tr("Remote Directory"), ":/images/tab-remotedir.svg")
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     m_directory_panel = new DirectoryPanel(this);

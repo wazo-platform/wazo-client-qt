@@ -406,5 +406,11 @@ void MainWindow::showCredits()
                        "<h3>Liberation Sans</h3>"
                        " by Ascender Corp."
                        " is licensed under a <a href=\"http://scripts.sil.org/OFL_web\">SIL Open Font License</a>."
+                       "<h3>Font Awesome</h3>"
+                       " by <a href=\"http://fontawesome.io\">Dave Gandy</a>"
+                       " is licensed under a <a href=\"http://scripts.sil.org/OFL_web\">SIL Open Font License</a>."
+                       "<h3>Font Awesome SVG-PNG</h3>"
+                       " by <a href=\"https://github.com/encharm/Font-Awesome-SVG-PNG\">Code Charm Ltd</a>"
+                       " is licensed under the <a href=\"http://opensource.org/licenses/MIT\">MIT license</a>."
                        );
 }
