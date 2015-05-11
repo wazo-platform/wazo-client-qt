@@ -45,11 +45,8 @@ void ItemDelegate::paint(QPainter *painter,
 
     QStyleOptionViewItem opt = option;
     this->initStyleOption(&opt, index);
-    if (index.column() == 0) {
-        opt.rect = opt.rect.marginsRemoved(QMargins(30,0,0,0));
-    } else {
-        opt.rect = opt.rect.marginsRemoved(QMargins(10,0,0,0));
-    }
+
+    opt.rect = this->marginsRemovedByColumn(option.rect, index.column());
 
     QStyledItemDelegate::paint(painter, opt, index);
 }
@@ -60,4 +57,13 @@ void ItemDelegate::drawBorder(QPainter *painter, const QStyleOptionViewItem &opt
     painter->setPen(QColor("#D7D2D0"));
     painter->drawLine(opt.rect.bottomLeft(), opt.rect.bottomRight());
     painter->restore();
+}
+
+QRect ItemDelegate::marginsRemovedByColumn(const QRect &rect, int column) const
+{
+    if (column == 0) {
+        return rect.marginsRemoved(QMargins(30,0,0,0));
+    } else {
+        return rect.marginsRemoved(QMargins(10,0,0,0));
+    }
 }

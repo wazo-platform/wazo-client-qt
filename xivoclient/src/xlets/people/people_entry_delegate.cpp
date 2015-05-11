@@ -49,7 +49,7 @@ QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
 
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
-    : QStyledItemDelegate(parent)
+    : ItemDelegate(parent)
 {
 }
 
@@ -57,10 +57,10 @@ QSize PeopleEntryDotDelegate::sizeHint(const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const
 {
     if (index.data(Qt::BackgroundRole).isNull()) {
-        return QStyledItemDelegate::sizeHint(option, index);
+        return ItemDelegate::sizeHint(option, index);
     }
 
-    const QSize &original_size = QStyledItemDelegate::sizeHint(option, index);
+    const QSize &original_size = ItemDelegate::sizeHint(option, index);
     int new_width = original_size.width() + icon_size.width() + icon_text_spacing;
     return QSize(new_width, original_size.height());
 }
@@ -70,7 +70,7 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
                                    const QModelIndex &index) const
 {
     if (index.data(Qt::BackgroundRole).isNull()) {
-        QStyledItemDelegate::paint(painter, option, index);
+        ItemDelegate::paint(painter, option, index);
         return;
     }
 
@@ -100,6 +100,8 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
                       Qt::AlignVCenter|Qt::AlignLeft,
                       text);
     painter->restore();
+
+    ItemDelegate::drawBorder(painter, option);
 }
 
 PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)
@@ -113,7 +115,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
                                       const QModelIndex &index) const
 {
     if (index.data().isNull()) {
-        QStyledItemDelegate::paint(painter, option, index);
+        ItemDelegate::paint(painter, option, index);
         return;
     }
 
@@ -147,6 +149,8 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         arrow_image_rect.moveCenter(selector_rect.center());
         painter->drawPixmap(arrow_image_rect, QIcon(":/images/down-arrow-white.svg").pixmap(arrow_image_size));
         painter->restore();
+
+        PeopleEntryDotDelegate::drawBorder(painter, option);
         return;
     }
 
@@ -159,7 +163,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
                                             const QModelIndex &index)
 {
     if (index.data().isNull()) {
-        return QStyledItemDelegate::editorEvent(event, model, option, index);
+        return ItemDelegate::editorEvent(event, model, option, index);
     }
 
     if(event->type() == QEvent::MouseButtonPress) {
@@ -234,14 +238,14 @@ void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
 
 
 PeopleEntryAgentDelegate::PeopleEntryAgentDelegate(QWidget *parent)
-    : QStyledItemDelegate(parent)
+    : ItemDelegate(parent)
 {
 }
 
 QSize PeopleEntryAgentDelegate::sizeHint(const QStyleOptionViewItem &option,
                                          const QModelIndex &index) const
 {
-    const QSize &original_size = QStyledItemDelegate::sizeHint(option, index);
+    const QSize &original_size = ItemDelegate::sizeHint(option, index);
     return QSize(icon_size.width(), original_size.height());
 }
 
@@ -249,6 +253,10 @@ void PeopleEntryAgentDelegate::paint(QPainter *painter,
                                      const QStyleOptionViewItem &option,
                                      const QModelIndex &index) const
 {
+    ItemDelegate::drawBorder(painter, option);
+    QStyleOptionViewItem opt = option;
+    opt.rect = ItemDelegate::marginsRemovedByColumn(option.rect, index.column());
+
     QString image_path;
 
     QString agent_status = index.data(Qt::UserRole).toString();
@@ -262,8 +270,8 @@ void PeopleEntryAgentDelegate::paint(QPainter *painter,
 
     QPixmap image = QIcon(image_path).pixmap(icon_size);
     painter->save();
-    painter->drawPixmap(option.rect.center().x() - image.width() / 2,
-                        option.rect.center().y() - image.height() / 2,
+    painter->drawPixmap(opt.rect.center().x() - image.width() / 2,
+                        opt.rect.center().y() - image.height() / 2,
                         image);
     painter->restore();
 }

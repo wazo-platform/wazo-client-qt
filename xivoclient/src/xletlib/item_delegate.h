@@ -32,6 +32,7 @@
 
 #include <QModelIndex>
 #include <QPainter>
+#include <QRect>
 #include <QStyleOptionViewItem>
 #include <QStyledItemDelegate>
 #include <QWidget>
@@ -50,6 +51,7 @@ class XLETLIB_EXPORT ItemDelegate : public QStyledItemDelegate
                      const QStyleOptionViewItem &option,
                      const QModelIndex &index) const;
         void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt) const;
+        QRect marginsRemovedByColumn(const QRect &rect, int column) const;
 };
 
 #endif

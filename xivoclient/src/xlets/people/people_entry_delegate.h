@@ -30,12 +30,12 @@
 #ifndef __PEOPLE_ENTRY_DELEGATE_H__
 #define __PEOPLE_ENTRY_DELEGATE_H__
 
-#include <QStyledItemDelegate>
+#include <xletlib/item_delegate.h>
 
 class PeopleActions;
 class QMenu;
 
-class PeopleEntryDotDelegate : public QStyledItemDelegate
+class PeopleEntryDotDelegate : public ItemDelegate
 {
     Q_OBJECT
 
@@ -82,7 +82,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
                              PeopleActions *people_actions);
 };
 
-class PeopleEntryAgentDelegate : public QStyledItemDelegate
+class PeopleEntryAgentDelegate : public ItemDelegate
 {
     public:
         PeopleEntryAgentDelegate(QWidget *parent = NULL);
