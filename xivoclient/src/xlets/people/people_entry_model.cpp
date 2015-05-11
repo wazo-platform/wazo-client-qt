@@ -28,6 +28,7 @@
  */
 
 #include <QAction>
+#include <QIcon>
 #include <QPixmap>
 #include <QString>
 #include <cassert>
@@ -135,15 +136,27 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     switch(role) {
     case Qt::TextAlignmentRole:
         return Qt::AlignCenter;
-    case  Qt::DisplayRole:
+    case Qt::DecorationRole:
+    {
+        QPair<QString, int> agent_key = entry.uniqueAgentId();
+        QString agent_status = m_people_entry_manager.getAgentStatus(agent_key);
+        if (agent_status == "logged_in") {
+            return QIcon(":/images/agent-on.svg").pixmap(QSize(20, 20));
+        } else if (agent_status == "logged_out") {
+            return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
+        }
+        break;
+    }
+    case Qt::DisplayRole:
         return this->dataDisplay(entry, column);
     case Qt::BackgroundRole:
-      return this->dataBackground(entry, column);
+        return this->dataBackground(entry, column);
     case Qt::UserRole:
         return this->dataUser(entry, column);
     default:
-        return QVariant();
+        break;
     }
+    return QVariant();
 }
 
 QVariant PeopleEntryModel::headerData(int column,
@@ -223,22 +236,7 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
         return QColor(color);
     }
     break;
-    case AGENT: // agent
-    {
-        QPair<QString, int> agent_key = entry.uniqueAgentId();
-
-        if (!m_people_entry_manager.hasAgentStatus(agent_key)) {
-            return QVariant();
-        }
-        if (m_people_entry_manager.getAgentStatus(agent_key) == "logged_in") {
-            return QColor("green");
-        } else {
-            return QVariant();
-        }
-        break;
-    }
     default:
-        return QVariant();
         break;
     }
     return QVariant();

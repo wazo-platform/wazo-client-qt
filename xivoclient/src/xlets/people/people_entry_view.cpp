@@ -67,9 +67,6 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
     for (int column_index = first ; column_index <= last ; column_index ++) {
         int column_type = this->model()->headerData(column_index, Qt::Horizontal, Qt::UserRole).toInt();
         switch (column_type) {
-        case AGENT:
-            this->setItemDelegateForColumn(column_index, new PeopleEntryAgentDelegate(this));
-            break;
         case NAME:
             {
                 PeopleEntryDotDelegate *delegate = new PeopleEntryDotDelegate(this);

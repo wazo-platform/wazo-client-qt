@@ -38,8 +38,6 @@
 #include "people_entry_delegate.h"
 #include "people_actions.h"
 
-QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
-
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
 
@@ -234,44 +232,4 @@ void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
     if (QAction *mobile_action = people_actions->callMobileAction()) {
         menu->addAction(mobile_action);
     }
-}
-
-
-PeopleEntryAgentDelegate::PeopleEntryAgentDelegate(QWidget *parent)
-    : ItemDelegate(parent)
-{
-}
-
-QSize PeopleEntryAgentDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                         const QModelIndex &index) const
-{
-    const QSize &original_size = ItemDelegate::sizeHint(option, index);
-    return QSize(icon_size.width(), original_size.height());
-}
-
-void PeopleEntryAgentDelegate::paint(QPainter *painter,
-                                     const QStyleOptionViewItem &option,
-                                     const QModelIndex &index) const
-{
-    ItemDelegate::drawBorder(painter, option);
-    QStyleOptionViewItem opt = option;
-    opt.rect = ItemDelegate::marginsRemovedByColumn(option.rect, index.column());
-
-    QString image_path;
-
-    QString agent_status = index.data(Qt::UserRole).toString();
-    if (agent_status == "logged_in") {
-        image_path = ":/images/agent-on.svg";
-    } else if (agent_status == "logged_out") {
-        image_path = ":/images/agent-off.svg";
-    } else {
-        return;
-    }
-
-    QPixmap image = QIcon(image_path).pixmap(icon_size);
-    painter->save();
-    painter->drawPixmap(opt.rect.center().x() - image.width() / 2,
-                        opt.rect.center().y() - image.height() / 2,
-                        image);
-    painter->restore();
 }

@@ -82,17 +82,4 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
                              PeopleActions *people_actions);
 };
 
-class PeopleEntryAgentDelegate : public ItemDelegate
-{
-    public:
-        PeopleEntryAgentDelegate(QWidget *parent = NULL);
-        QSize sizeHint(const QStyleOptionViewItem &option,
-                       const QModelIndex &index) const;
-        void paint(QPainter *painter,
-                   const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const;
-    private:
-        static QSize icon_size;
-};
-
 #endif
