@@ -132,23 +132,25 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
     const PeopleEntry & entry = m_people_entry_manager.getEntry(row);
+    ColumnType column_type = m_fields[column].second;
 
     switch(role) {
-    case Qt::TextAlignmentRole:
-        return Qt::AlignCenter;
     case Qt::DecorationRole:
-    {
-        QPair<QString, int> agent_key = entry.uniqueAgentId();
-        QString agent_status = m_people_entry_manager.getAgentStatus(agent_key);
-        if (agent_status == "logged_in") {
-            return QIcon(":/images/agent-on.svg").pixmap(QSize(20, 20));
-        } else if (agent_status == "logged_out") {
-            return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
+        if (column_type == AGENT) {
+            QPair<QString, int> agent_key = entry.uniqueAgentId();
+            QString agent_status = m_people_entry_manager.getAgentStatus(agent_key);
+            if (agent_status == "logged_in") {
+                return QIcon(":/images/agent-on.svg").pixmap(QSize(20, 20));
+            } else if (agent_status == "logged_out") {
+                return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
+            }
         }
         break;
-    }
     case Qt::DisplayRole:
-        return this->dataDisplay(entry, column);
+        if (column_type != AGENT) {
+            return entry.data(column);
+        }
+        break;
     case Qt::BackgroundRole:
         return this->dataBackground(entry, column);
     case Qt::UserRole:
@@ -186,24 +188,6 @@ enum ColumnType PeopleEntryModel::headerType(int column) const
 {
     return this->m_fields[column].second;
 }
-
-
-QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) const
-{
-    ColumnType column_type = m_fields[column].second;
-
-    switch (column_type) {
-    case AGENT:
-    {
-        QPair<QString, int> agent_key = entry.uniqueAgentId();
-        return m_people_entry_manager.getAgentStatus(agent_key);
-    }
-    default:
-        return entry.data(column);
-        break;
-    }
-}
-
 
 QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column) const
 {

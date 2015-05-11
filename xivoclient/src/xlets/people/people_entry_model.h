@@ -67,7 +67,6 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
 
     private:
         void refreshEntry(int entry_index);
-        QVariant dataDisplay(const PeopleEntry & entry, int column) const;
         QVariant dataBackground(const PeopleEntry & entry, int column) const;
         QVariant dataUser(const PeopleEntry & entry, int column) const;
         void addField(const QString &name, const QString &type);
