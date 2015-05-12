@@ -35,7 +35,6 @@ Fax::Fax(QWidget *parent)
     : XLet(parent, tr("Fax"), ":/images/tab-fax.svg"),
       m_mainwindow(parent)
 {
-
     this->ui.setupUi(this);
 
     QFile qssFile(QString(":/default.qss"));
@@ -59,7 +58,6 @@ Fax::Fax(QWidget *parent)
 
 void Fax::destNumberChanged(const QString &/* ext*/)
 {
-    // qDebug() << Q_FUNC_INFO << ext;
     if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
         this->ui.send_fax_button->setEnabled(true);
     } else {
@@ -69,7 +67,6 @@ void Fax::destNumberChanged(const QString &/* ext*/)
 
 void Fax::fileNameChanged(const QString &)
 {
-    // qDebug() << Q_FUNC_INFO << ext;
     if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
         this->ui.send_fax_button->setEnabled(true);
     } else {
@@ -99,10 +96,6 @@ void Fax::setOpenFileName()
 void Fax::sendFax()
 {
     if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
-        // qDebug() << Q_FUNC_INFO
-        // << this->ui.file_name_input->text()
-        // << this->ui.fax_number_input->text()
-        // this->ui.send_fax_button->setEnabled(false);
         m_dest_string = this->ui.fax_number_input->text();
         m_file_string = this->ui.file_name_input->text();
         this->ui.fax_number_input->clear();
@@ -114,7 +107,6 @@ void Fax::sendFax()
 
 void Fax::dirLookup()
 {
-    // qDebug() << Q_FUNC_INFO;
     DirDialog dirdialog(m_mainwindow);
     connect(dirdialog.dirpanel(), SIGNAL(selectedText(const QString &)),
             this->ui.fax_number_input, SLOT(setText(const QString &)));

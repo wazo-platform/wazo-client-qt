@@ -30,8 +30,6 @@
 #ifndef __FAX_H__
 #define __FAX_H__
 
-#include <QDebug>
-
 #include <baseengine.h>
 #include <xletlib/xlet.h>
 #include <xletlib/extendedlineedit.h>
@@ -39,8 +37,6 @@
 
 #include "dirdialog.h"
 
-/*! \brief Panel used to send an receive fax
- */
 class Fax : public XLet
 {
     Q_OBJECT
