@@ -151,10 +151,10 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             return entry.data(column);
         }
         break;
-    case Qt::BackgroundRole:
-        return this->dataBackground(entry, column);
     case Qt::UserRole:
         return this->dataUser(entry, column);
+    case Qt::UserRole+1:
+        return this->dataBackground(entry, column);
     default:
         break;
     }
@@ -229,21 +229,12 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
 QVariant PeopleEntryModel::dataUser(const PeopleEntry &entry, int column) const
 {
     ColumnType column_type = m_fields[column].second;
-    QPair<QString, int> agent_key = entry.uniqueAgentId();
 
     switch (column_type) {
-        case AGENT: {
-            return m_people_entry_manager.getAgentStatus(agent_key);
-            break;
-        }
-        case NUMBER: {
+        case NUMBER:
             return QVariant::fromValue(new PeopleActions(m_fields, entry));
+        default:
             break;
-        }
-        default: {
-            return QVariant();
-            break;
-        }
     }
     return QVariant();
 }

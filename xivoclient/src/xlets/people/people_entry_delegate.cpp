@@ -54,7 +54,7 @@ PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
 QSize PeopleEntryDotDelegate::sizeHint(const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const
 {
-    if (index.data(Qt::BackgroundRole).isNull()) {
+    if (index.data(Qt::UserRole+1).isNull()) {
         return ItemDelegate::sizeHint(option, index);
     }
 
@@ -67,10 +67,13 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
                                    const QStyleOptionViewItem &option,
                                    const QModelIndex &index) const
 {
-    if (index.data(Qt::BackgroundRole).isNull()) {
+    if (index.data(Qt::UserRole+1).isNull()) {
         ItemDelegate::paint(painter, option, index);
         return;
     }
+    QStyleOptionViewItem opt;
+
+    opt.rect = ItemDelegate::marginsRemovedByColumn(option.rect, index.column());
 
     QString text = index.data().toString();
     QIcon dot = QIcon(":/images/dot.svg");
@@ -78,7 +81,7 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
 
     QPainter tint_painter(&tinted_image);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-    tint_painter.fillRect(tinted_image.rect(), QColor(index.data(Qt::BackgroundRole).value<QColor>()));
+    tint_painter.fillRect(tinted_image.rect(), QColor(index.data(Qt::UserRole+1).value<QColor>()));
     tint_painter.end();
 
     painter->save();
@@ -88,6 +91,7 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
     int icon_left = cell_center.x() - content_width / 2;
     int icon_top = cell_center.y() - tinted_image.height() / 2;
     painter->drawPixmap(icon_left, icon_top, tinted_image);
+    //painter->drawPixmap(opt.rect, tinted_image);
 
     int text_left = icon_left + icon_size.width() + icon_text_spacing;
     QRect text_rect = QRect(text_left, option.rect.y(), text_width, option.rect.height());
@@ -99,7 +103,9 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
                       text);
     painter->restore();
 
+    opt.rect = opt.rect.marginsRemoved(QMargins(8,0,0,0));
     ItemDelegate::drawBorder(painter, option);
+    //ItemDelegate::paint(painter, opt, index);
 }
 
 PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)
