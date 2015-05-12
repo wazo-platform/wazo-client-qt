@@ -71,13 +71,15 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
         ItemDelegate::paint(painter, option, index);
         return;
     }
-    QStyleOptionViewItem opt;
+    QStyleOptionViewItem opt = option;
 
     opt.rect = ItemDelegate::marginsRemovedByColumn(option.rect, index.column());
 
-    QString text = index.data().toString();
     QIcon dot = QIcon(":/images/dot.svg");
-    QPixmap tinted_image = dot.pixmap(QSize(8, 8));
+    QPixmap tinted_image = dot.pixmap(icon_size);
+
+    int icon_left = opt.rect.x();
+    int icon_top = opt.rect.center().y() - tinted_image.height() / 2;
 
     QPainter tint_painter(&tinted_image);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
@@ -85,27 +87,14 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
     tint_painter.end();
 
     painter->save();
-    int text_width = option.fontMetrics.size(0, text).width();
-    QPoint cell_center = option.rect.center();
-    int content_width = text_width + icon_size.width() + icon_text_spacing;
-    int icon_left = cell_center.x() - content_width / 2;
-    int icon_top = cell_center.y() - tinted_image.height() / 2;
     painter->drawPixmap(icon_left, icon_top, tinted_image);
-    //painter->drawPixmap(opt.rect, tinted_image);
-
-    int text_left = icon_left + icon_size.width() + icon_text_spacing;
-    QRect text_rect = QRect(text_left, option.rect.y(), text_width, option.rect.height());
-    painter->drawText(text_rect.left(),
-                      text_rect.top(),
-                      text_rect.width(),
-                      text_rect.height(),
-                      Qt::AlignVCenter|Qt::AlignLeft,
-                      text);
     painter->restore();
 
-    opt.rect = opt.rect.marginsRemoved(QMargins(8,0,0,0));
     ItemDelegate::drawBorder(painter, option);
-    //ItemDelegate::paint(painter, opt, index);
+
+    int icon_total_width = icon_size.width() + icon_text_spacing;
+    opt.rect = opt.rect.marginsRemoved(QMargins(icon_total_width,0,0,0));
+    QStyledItemDelegate::paint(painter, opt, index);
 }
 
 PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)

@@ -43,6 +43,11 @@ enum ColumnType {
   STATUS_ICON
 };
 
+enum UserRoleCustom {
+    NUMBER_ROLE = Qt::UserRole,
+    INDICATOR_COLOR_ROLE = Qt::UserRole + 1
+};
+
 class XLETLIB_EXPORT PeopleEntry
 {
     public:

@@ -151,10 +151,13 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             return entry.data(column);
         }
         break;
-    case Qt::UserRole:
-        return this->dataUser(entry, column);
-    case Qt::UserRole+1:
-        return this->dataBackground(entry, column);
+    case NUMBER_ROLE:
+        if (column_type == NUMBER) {
+            return QVariant::fromValue(new PeopleActions(m_fields, entry));
+        }
+        break;
+    case INDICATOR_COLOR_ROLE:
+        return this->dataIndicatorColor(entry, column);
     default:
         break;
     }
@@ -189,7 +192,7 @@ enum ColumnType PeopleEntryModel::headerType(int column) const
     return this->m_fields[column].second;
 }
 
-QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column) const
+QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry & entry, int column) const
 {
     ColumnType column_type = m_fields[column].second;
 
@@ -222,19 +225,6 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
     break;
     default:
         break;
-    }
-    return QVariant();
-}
-
-QVariant PeopleEntryModel::dataUser(const PeopleEntry &entry, int column) const
-{
-    ColumnType column_type = m_fields[column].second;
-
-    switch (column_type) {
-        case NUMBER:
-            return QVariant::fromValue(new PeopleActions(m_fields, entry));
-        default:
-            break;
     }
     return QVariant();
 }
