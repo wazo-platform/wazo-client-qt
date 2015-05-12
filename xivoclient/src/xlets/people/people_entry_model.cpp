@@ -166,7 +166,7 @@ QVariant PeopleEntryModel::headerData(int column,
 
 QString PeopleEntryModel::headerText(int column) const
 {
-    return this->m_fields[column].first;
+    return this->m_fields[column].first.toUpper();
 }
 
 enum ColumnType PeopleEntryModel::headerType(int column) const

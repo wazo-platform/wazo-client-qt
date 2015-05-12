@@ -124,15 +124,15 @@ QVariant ConferenceListModel::headerData(int section,
 
     switch (section) {
     case ConferenceList::COL_NUMBER:
-        return tr("Number");
+        return tr("NUMBER");
     case ConferenceList::COL_NAME:
-        return tr("Name");
+        return tr("NAME");
     case ConferenceList::COL_PIN_REQUIRED:
-        return tr("PIN code");
+        return tr("PIN CODE");
     case ConferenceList::COL_MEMBER_COUNT:
-        return tr("Member count");
+        return tr("MEMBER COUNT");
     case ConferenceList::COL_STARTED_SINCE:
-        return tr("Started since");
+        return tr("STARTED SINCE");
     default:
         return QVariant();
     }
