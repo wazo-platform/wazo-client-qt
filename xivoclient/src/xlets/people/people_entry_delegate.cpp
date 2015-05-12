@@ -54,8 +54,8 @@ PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
 QSize PeopleEntryDotDelegate::sizeHint(const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const
 {
-    if (index.data(Qt::UserRole+1).isNull()) {
-        return ItemDelegate::sizeHint(option, index);
+    if (index.data(INDICATOR_COLOR_ROLE).isNull()) {
+        return AbstractItemDelegate::sizeHint(option, index);
     }
 
     const QSize &original_size = AbstractItemDelegate::sizeHint(option, index);
@@ -69,6 +69,8 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
 {
     AbstractItemDelegate::drawBorder(painter, option);
 
+    if (index.data(INDICATOR_COLOR_ROLE).isNull()) {
+        AbstractItemDelegate::paint(painter, option, index);
         return;
     }
     QStyleOptionViewItem opt = option;
@@ -83,7 +85,7 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
 
     QPainter tint_painter(&tinted_image);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-    tint_painter.fillRect(tinted_image.rect(), QColor(index.data(Qt::UserRole+1).value<QColor>()));
+    tint_painter.fillRect(tinted_image.rect(), QColor(index.data(INDICATOR_COLOR_ROLE).value<QColor>()));
     tint_painter.end();
 
     painter->save();
@@ -167,7 +169,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         this->pressed = false;
 
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        PeopleActions *people_actions = model->data(index, Qt::UserRole).value<PeopleActions*>();
+        PeopleActions *people_actions = model->data(index, NUMBER_ROLE).value<PeopleActions*>();
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
             people_actions->call();
