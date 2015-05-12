@@ -28,7 +28,7 @@
  */
 
 
-#include "faxpanel.h"
+#include "fax.h"
 #include "phonenumber.h"
 
 FaxPanel::FaxPanel(QWidget *parent)
