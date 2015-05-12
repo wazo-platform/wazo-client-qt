@@ -47,7 +47,7 @@ QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
 
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
-    : ItemDelegate(parent)
+    : AbstractItemDelegate(parent)
 {
 }
 
@@ -58,7 +58,7 @@ QSize PeopleEntryDotDelegate::sizeHint(const QStyleOptionViewItem &option,
         return ItemDelegate::sizeHint(option, index);
     }
 
-    const QSize &original_size = ItemDelegate::sizeHint(option, index);
+    const QSize &original_size = AbstractItemDelegate::sizeHint(option, index);
     int new_width = original_size.width() + icon_size.width() + icon_text_spacing;
     return QSize(new_width, original_size.height());
 }
@@ -67,13 +67,13 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
                                    const QStyleOptionViewItem &option,
                                    const QModelIndex &index) const
 {
-    if (index.data(Qt::UserRole+1).isNull()) {
-        ItemDelegate::paint(painter, option, index);
+    AbstractItemDelegate::drawBorder(painter, option);
+
         return;
     }
     QStyleOptionViewItem opt = option;
 
-    opt.rect = ItemDelegate::marginsRemovedByColumn(option.rect, index.column());
+    opt.rect = AbstractItemDelegate::marginsRemovedByColumn(option.rect, index.column());
 
     QIcon dot = QIcon(":/images/dot.svg");
     QPixmap tinted_image = dot.pixmap(icon_size);
@@ -90,11 +90,9 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
     painter->drawPixmap(icon_left, icon_top, tinted_image);
     painter->restore();
 
-    ItemDelegate::drawBorder(painter, option);
-
     int icon_total_width = icon_size.width() + icon_text_spacing;
     opt.rect = opt.rect.marginsRemoved(QMargins(icon_total_width,0,0,0));
-    QStyledItemDelegate::paint(painter, opt, index);
+    AbstractItemDelegate::paint(painter, opt, index);
 }
 
 PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)
@@ -108,7 +106,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
                                       const QModelIndex &index) const
 {
     if (index.data().isNull()) {
-        ItemDelegate::paint(painter, option, index);
+        PeopleEntryDotDelegate::paint(painter, option, index);
         return;
     }
 
@@ -156,7 +154,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
                                             const QModelIndex &index)
 {
     if (index.data().isNull()) {
-        return ItemDelegate::editorEvent(event, model, option, index);
+        return AbstractItemDelegate::editorEvent(event, model, option, index);
     }
 
     if(event->type() == QEvent::MouseButtonPress) {

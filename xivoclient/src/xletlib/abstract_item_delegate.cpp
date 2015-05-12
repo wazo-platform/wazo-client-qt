@@ -27,28 +27,27 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ITEM_DELEGATE_H__
-#define __ITEM_DELEGATE_H__
 
-#include <QModelIndex>
-#include <QPainter>
-#include <QStyleOptionViewItem>
-#include <QWidget>
-
-#include "xletlib_export.h"
 #include "abstract_item_delegate.h"
 
-class XLETLIB_EXPORT ItemDelegate : public AbstractItemDelegate
+AbstractItemDelegate::AbstractItemDelegate(QWidget *parent)
+    : QStyledItemDelegate(parent)
 {
-    Q_OBJECT
+}
 
-    public:
-        ItemDelegate(QWidget *parent = NULL);
+void AbstractItemDelegate::drawBorder(QPainter *painter, const QStyleOptionViewItem &opt) const
+{
+    painter->save();
+    painter->setPen(QColor("#D7D2D0"));
+    painter->drawLine(opt.rect.bottomLeft(), opt.rect.bottomRight());
+    painter->restore();
+}
 
-    protected:
-        virtual void paint(QPainter *painter,
-                           const QStyleOptionViewItem &option,
-                           const QModelIndex &index) const;
-};
-
-#endif
+QRect AbstractItemDelegate::marginsRemovedByColumn(const QRect &rect, int column) const
+{
+    if (column == 0) {
+        return rect.marginsRemoved(QMargins(30,0,0,0));
+    } else {
+        return rect.marginsRemoved(QMargins(10,0,0,0));
+    }
+}

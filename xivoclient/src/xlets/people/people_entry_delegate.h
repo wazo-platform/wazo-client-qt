@@ -35,7 +35,7 @@
 class PeopleActions;
 class QMenu;
 
-class PeopleEntryDotDelegate : public ItemDelegate
+class PeopleEntryDotDelegate : public AbstractItemDelegate
 {
     Q_OBJECT
 

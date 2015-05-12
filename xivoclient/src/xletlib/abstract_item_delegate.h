@@ -27,28 +27,27 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ITEM_DELEGATE_H__
-#define __ITEM_DELEGATE_H__
+#ifndef __ABSTRACT_ITEM_DELEGATE_H__
+#define __ABSTRACT_ITEM_DELEGATE_H__
 
-#include <QModelIndex>
 #include <QPainter>
+#include <QRect>
 #include <QStyleOptionViewItem>
+#include <QStyledItemDelegate>
 #include <QWidget>
 
 #include "xletlib_export.h"
-#include "abstract_item_delegate.h"
 
-class XLETLIB_EXPORT ItemDelegate : public AbstractItemDelegate
+class XLETLIB_EXPORT AbstractItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
     public:
-        ItemDelegate(QWidget *parent = NULL);
+        AbstractItemDelegate(QWidget *parent = NULL);
 
     protected:
-        virtual void paint(QPainter *painter,
-                           const QStyleOptionViewItem &option,
-                           const QModelIndex &index) const;
+        virtual void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt) const;
+        virtual QRect marginsRemovedByColumn(const QRect &rect, int column) const;
 };
 
 #endif
