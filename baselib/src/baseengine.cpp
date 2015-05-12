@@ -723,6 +723,7 @@ void BaseEngine::parseCommand(const QByteArray &raw)
 {
     m_pendingkeepalivemsg = 0;
     QVariant data = parseJson(raw);
+    bool command_processed = true;
 
     if (data.isNull()) {
         qDebug() << "Invalid json aborting";
@@ -733,18 +734,11 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     QString direction = datamap.value("direction").toString();
     QString function = datamap.value("function").toString();
     QString thisclass = datamap.value("class").toString();
-    QString replyid = datamap.value("replyid").toString();
+
     if (datamap.contains("timenow")) {
         m_timesrv = datamap.value("timenow").toDouble();
         m_timeclt = QDateTime::currentDateTime();
     }
-
-    if (thisclass == "meetme_user") {
-        m_meetme_membership = datamap["list"].toList();
-    }
-
-    if (forwardToListeners(thisclass, datamap))  // a class callback was called,
-        return;                                  // so zap the 500 loc of if-else soup
 
     if ((thisclass == "keepalive") || (thisclass == "availstate")) {
         // ack from the keepalive and availstate commands previously sent
@@ -952,8 +946,13 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "meetme_user") {
         m_meetme_membership = datamap["list"].toList();
     } else {
-        if (replyid.isEmpty())
-            qDebug() << "Unknown server command received:" << thisclass << datamap;
+        command_processed = false;
+    }
+
+    command_processed = command_processed || (bool)forwardToListeners(thisclass, datamap);
+
+    if (! command_processed) {
+       qDebug() << "Unhandled server command received:" << thisclass << datamap;
     }
 }
 
