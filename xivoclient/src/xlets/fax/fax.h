@@ -27,8 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __FAXPANEL_H__
-#define __FAXPANEL_H__
+#ifndef __FAX_H__
+#define __FAX_H__
 
 #include <QDebug>
 
@@ -41,12 +41,12 @@
 
 /*! \brief Panel used to send an receive fax
  */
-class FaxPanel : public XLet
+class Fax : public XLet
 {
     Q_OBJECT
 
     public:
-        FaxPanel(QWidget *parent=0);
+        Fax(QWidget *parent=0);
 
     signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);

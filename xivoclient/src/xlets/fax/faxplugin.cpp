@@ -37,5 +37,5 @@
 XLet * FaxPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/fax_%1");
-    return new FaxPanel(parent);
+    return new Fax(parent);
 }
