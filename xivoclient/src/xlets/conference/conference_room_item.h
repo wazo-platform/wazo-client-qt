@@ -34,6 +34,16 @@
 
 struct ConferenceRoomItem
 {
+    ConferenceRoomItem(const QString &_name, const QString &_extension,
+                       double _join_order, double _join_time,
+                       bool _muted, bool _is_me):
+        name(_name),
+        extension(_extension),
+        join_order(_join_order),
+        join_time(_join_time),
+        muted(_muted),
+        is_me(_is_me)
+    {}
     QString name;
     QString extension;
     double join_order;
