@@ -7,8 +7,7 @@ include (../../../common-tests.pri)
 # Mock classes inclusions can safely ignore this.
 QMAKE_CXXFLAGS += "-include mock_baseengine.h" \
                   "-include mock_phoneinfo.h" \
-                  "-include mock_channelinfo.h" \
-                  "-include mock_meetmeinfo.h"
+                  "-include mock_channelinfo.h"
 
 TARGET = testsuite
 
