@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -266,7 +266,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void updatePresence();
 
-        void serverFileList(const QStringList &);  //!< needed by agentdetails
         void fileReceived();                       //!< needed by agentdetails
 
         void statusListen(const QString &, const QString &, const QString &);
@@ -300,9 +299,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
 
-        void servicePutIsKO();
-        void servicePutIsOK(const QString &, const QString &);
-
         void localUserInfoDefined();
         void monitoredUserInfoDefined();
 
@@ -313,7 +309,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void broadcastNumberSelection(const QStringList &);  //!< numbers for a selected peer
         void queueEntryUpdate(const QString &, const QVariantList &);
-        void meetmeUpdate(const QVariantMap &);
         void clearingCache();
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events

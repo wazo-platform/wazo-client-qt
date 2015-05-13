@@ -793,9 +793,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "faxprogress") {
         emit ackFax(datamap.value("status").toString(), datamap.value("reason").toString());
 
-    } else if (thisclass == "filelist") {
-        emit serverFileList(datamap.value("filelist").toStringList());
-
     } else if (thisclass == "presence") {
         QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
         if (m_anylist.value("users").contains(id)) {
@@ -821,11 +818,8 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "featuresput") {
         QString featuresput_status = datamap.value("status").toString();
         if (featuresput_status != "OK") {
-            emit servicePutIsKO();
             emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
         } else {
-            emit servicePutIsOK(datamap.value("replyid").toString(),
-                                datamap.value("warning_string").toString());
             emit emitTextMessage("");
         }
     } else if (thisclass == "ipbxcommand" && datamap.contains("error_string")) {
@@ -941,8 +935,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         const QVariantList &entry_list = state["entries"].toList();
 
         emit queueEntryUpdate(queue_id, entry_list);
-    } else if (thisclass == "meetme_update") {
-        emit meetmeUpdate(datamap.value("config").toMap());
     } else if (thisclass == "meetme_user") {
         m_meetme_membership = datamap["list"].toList();
     } else {
