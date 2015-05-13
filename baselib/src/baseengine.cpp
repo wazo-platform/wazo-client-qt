@@ -723,6 +723,7 @@ void BaseEngine::parseCommand(const QByteArray &raw)
 {
     m_pendingkeepalivemsg = 0;
     QVariant data = parseJson(raw);
+    bool command_processed = true;
 
     if (data.isNull()) {
         qDebug() << "Invalid json aborting";
@@ -733,18 +734,11 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     QString direction = datamap.value("direction").toString();
     QString function = datamap.value("function").toString();
     QString thisclass = datamap.value("class").toString();
-    QString replyid = datamap.value("replyid").toString();
+
     if (datamap.contains("timenow")) {
         m_timesrv = datamap.value("timenow").toDouble();
         m_timeclt = QDateTime::currentDateTime();
     }
-
-    if (thisclass == "meetme_user") {
-        m_meetme_membership = datamap["list"].toList();
-    }
-
-    if (forwardToListeners(thisclass, datamap))  // a class callback was called,
-        return;                                  // so zap the 500 loc of if-else soup
 
     if ((thisclass == "keepalive") || (thisclass == "availstate")) {
         // ack from the keepalive and availstate commands previously sent
@@ -799,9 +793,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "faxprogress") {
         emit ackFax(datamap.value("status").toString(), datamap.value("reason").toString());
 
-    } else if (thisclass == "filelist") {
-        emit serverFileList(datamap.value("filelist").toStringList());
-
     } else if (thisclass == "presence") {
         QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
         if (m_anylist.value("users").contains(id)) {
@@ -827,11 +818,8 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "featuresput") {
         QString featuresput_status = datamap.value("status").toString();
         if (featuresput_status != "OK") {
-            emit servicePutIsKO();
             emit emitTextMessage(tr("Could not modify the Services data.") + " " + tr("Maybe Asterisk is down."));
         } else {
-            emit servicePutIsOK(datamap.value("replyid").toString(),
-                                datamap.value("warning_string").toString());
             emit emitTextMessage("");
         }
     } else if (thisclass == "ipbxcommand" && datamap.contains("error_string")) {
@@ -947,13 +935,16 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         const QVariantList &entry_list = state["entries"].toList();
 
         emit queueEntryUpdate(queue_id, entry_list);
-    } else if (thisclass == "meetme_update") {
-        emit meetmeUpdate(datamap.value("config").toMap());
     } else if (thisclass == "meetme_user") {
         m_meetme_membership = datamap["list"].toList();
     } else {
-        if (replyid.isEmpty())
-            qDebug() << "Unknown server command received:" << thisclass << datamap;
+        command_processed = false;
+    }
+
+    command_processed = command_processed || (bool)forwardToListeners(thisclass, datamap);
+
+    if (! command_processed) {
+       qDebug() << "Unhandled server command received:" << thisclass << datamap;
     }
 }
 
