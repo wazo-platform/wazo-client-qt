@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="382"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">履歴</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="417"/>
@@ -690,7 +690,7 @@
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="272"/>
         <source>Number</source>
-        <translation type="unfinished">番号</translation>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="278"/>

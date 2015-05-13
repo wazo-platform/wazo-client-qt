@@ -26,7 +26,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuleren</translation>
     </message>
 </context>
 <context>

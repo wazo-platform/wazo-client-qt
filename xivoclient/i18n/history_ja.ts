@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="39"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">履歴</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="58"/>
@@ -32,6 +32,26 @@
 <context>
     <name>HistoryModel</name>
     <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="41"/>
+        <source>Name</source>
+        <translation>名前</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="42"/>
+        <source>Number</source>
+        <translation>番号</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="43"/>
+        <source>Date</source>
+        <translation>日付</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="44"/>
+        <source>Duration</source>
+        <translation>期間</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/history/history_model.cpp" line="160"/>
         <source>%1 hr %2 min %3 s</source>
         <translation type="unfinished"></translation>
@@ -52,30 +72,7 @@
     <message>
         <location filename="../src/xlets/history/history_widget.ui" line="54"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="37"/>
-        <source>Name</source>
-        <translation>名前</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="38"/>
-        <source>Number</source>
-        <translation>番号</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="39"/>
-        <source>Date</source>
-        <translation>日付</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="40"/>
-        <source>Duration</source>
-        <translation>期間</translation>
+        <translation>履歴</translation>
     </message>
 </context>
 </TS>

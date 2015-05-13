@@ -32,6 +32,26 @@
 <context>
     <name>HistoryModel</name>
     <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="41"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="42"/>
+        <source>Number</source>
+        <translation type="unfinished">Szám</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="43"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="44"/>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/xlets/history/history_model.cpp" line="160"/>
         <source>%1 hr %2 min %3 s</source>
         <translation type="unfinished"></translation>
@@ -53,29 +73,6 @@
         <location filename="../src/xlets/history/history_widget.ui" line="54"/>
         <source>History</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="37"/>
-        <source>Name</source>
-        <translation>Név</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="38"/>
-        <source>Number</source>
-        <translation>Szám</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="39"/>
-        <source>Date</source>
-        <translation>Dátum</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="40"/>
-        <source>Duration</source>
-        <translation>Időtartam</translation>
     </message>
 </context>
 </TS>

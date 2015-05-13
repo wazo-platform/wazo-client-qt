@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="43"/>
         <source>Number</source>
-        <translation type="unfinished">番号</translation>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="44"/>
@@ -425,12 +425,12 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
         <source>Name</source>
-        <translation type="unfinished">名前</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
         <source>Number</source>
-        <translation type="unfinished">番号</translation>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>

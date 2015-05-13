@@ -223,46 +223,6 @@ Per favore aggiornala.</translation>
         <source>Current Search</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="37"/>
-        <source>Name</source>
-        <translation>Nome</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="38"/>
-        <source>Number</source>
-        <translation>Numero</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="39"/>
-        <source>Date</source>
-        <translation>Data</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="40"/>
-        <source>Duration</source>
-        <translation>Durata</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="36"/>
-        <source>PIN code</source>
-        <translation>Codice pin</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
-        <source>Member count</source>
-        <translation>Conteggio dei partecipanti</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
-        <source>Started since</source>
-        <translation>Avviata da</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="41"/>
-        <source>Since</source>
-        <translation>Da</translation>
-    </message>
 </context>
 <context>
     <name>QueueAgentStatus</name>
@@ -2326,7 +2286,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="42"/>
         <source>Conference</source>
-        <translation type="unfinished"/>
+        <translation>Conferenza</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="55"/>
@@ -2342,37 +2302,77 @@ parametri per le statistiche sulla torta:</translation>
 <context>
     <name>ConferenceListModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="108"/>
-        <source>Yes</source>
-        <translation type="unfinished"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
+        <source>Name</source>
+        <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="110"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
+        <source>Number</source>
+        <translation>Numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="39"/>
+        <source>PIN code</source>
+        <translation>Codice pin</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="40"/>
+        <source>Member count</source>
+        <translation>Conteggio dei partecipanti</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="41"/>
+        <source>Started since</source>
+        <translation>Avviata da</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="107"/>
+        <source>Yes</source>
+        <translation>Si</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="109"/>
         <source>No</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="138"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="137"/>
         <source>Not started</source>
-        <translation type="unfinished"/>
+        <translation>Non avviata</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="140"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="139"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Sconosciuto</translation>
     </message>
 </context>
 <context>
     <name>ConferenceRoomModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="159"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="42"/>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="43"/>
+        <source>Number</source>
+        <translation>Numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="44"/>
+        <source>Since</source>
+        <translation>Da</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="158"/>
         <source>Mute/UnMute</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="175"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="174"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Sconosciuto</translation>
     </message>
 </context>
 <context>
@@ -2380,7 +2380,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/conference/conference_widget.ui" line="51"/>
         <source>Conference</source>
-        <translation type="unfinished"/>
+        <translation>Conferenza</translation>
     </message>
 </context>
 <context>
@@ -2498,7 +2498,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="39"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Cronologia</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="58"/>
@@ -2524,6 +2524,26 @@ parametri per le statistiche sulla torta:</translation>
 <context>
     <name>HistoryModel</name>
     <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="41"/>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="42"/>
+        <source>Number</source>
+        <translation>Numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="43"/>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="44"/>
+        <source>Duration</source>
+        <translation>Durata</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/history/history_model.cpp" line="160"/>
         <source>%1 hr %2 min %3 s</source>
         <translation type="unfinished"/>
@@ -2544,7 +2564,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/history/history_widget.ui" line="54"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Cronologia</translation>
     </message>
 </context>
 <context>

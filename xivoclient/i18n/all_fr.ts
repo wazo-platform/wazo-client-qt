@@ -223,46 +223,6 @@ Merci de mettre à jour votre serveur.</translation>
         <source>Current Search</source>
         <translation>Recherche en cours</translation>
     </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="37"/>
-        <source>Name</source>
-        <translation>Nom</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="38"/>
-        <source>Number</source>
-        <translation>Numéro</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="39"/>
-        <source>Date</source>
-        <translation>Date</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="40"/>
-        <source>Duration</source>
-        <translation>Durée</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="36"/>
-        <source>PIN code</source>
-        <translation>Code PIN</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
-        <source>Member count</source>
-        <translation>Membres</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
-        <source>Started since</source>
-        <translation>Commencée depuis</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="41"/>
-        <source>Since</source>
-        <translation>Depuis</translation>
-    </message>
 </context>
 <context>
     <name>QueueAgentStatus</name>
@@ -2347,22 +2307,47 @@ ainsi que les paramètres pour les statistiques:</translation>
 <context>
     <name>ConferenceListModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="108"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
+        <source>Number</source>
+        <translation>Numéro</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="39"/>
+        <source>PIN code</source>
+        <translation>Code PIN</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="40"/>
+        <source>Member count</source>
+        <translation>Membres</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="41"/>
+        <source>Started since</source>
+        <translation>Commencée depuis</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="107"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="110"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="109"/>
         <source>No</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="138"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="137"/>
         <source>Not started</source>
         <translation>Pas commencée</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="140"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="139"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
@@ -2370,12 +2355,27 @@ ainsi que les paramètres pour les statistiques:</translation>
 <context>
     <name>ConferenceRoomModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="159"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="42"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="43"/>
+        <source>Number</source>
+        <translation>Numéro</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="44"/>
+        <source>Since</source>
+        <translation>Depuis</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="158"/>
         <source>Mute/UnMute</source>
         <translation>(Dés)activer le micro</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="175"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="174"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
@@ -2528,6 +2528,26 @@ ainsi que les paramètres pour les statistiques:</translation>
 </context>
 <context>
     <name>HistoryModel</name>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="41"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="42"/>
+        <source>Number</source>
+        <translation>Numéro</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="43"/>
+        <source>Date</source>
+        <translation>Date</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="44"/>
+        <source>Duration</source>
+        <translation>Durée</translation>
+    </message>
     <message>
         <location filename="../src/xlets/history/history_model.cpp" line="160"/>
         <source>%1 hr %2 min %3 s</source>

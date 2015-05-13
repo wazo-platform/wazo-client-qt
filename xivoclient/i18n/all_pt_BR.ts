@@ -215,46 +215,6 @@ Please upgrade it.</source>
         <source>Current Search</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="37"/>
-        <source>Name</source>
-        <translation>Nome</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="38"/>
-        <source>Number</source>
-        <translation>Numero</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="39"/>
-        <source>Date</source>
-        <translation>Data</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="40"/>
-        <source>Duration</source>
-        <translation>Duração</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="36"/>
-        <source>PIN code</source>
-        <translation>Código Pin</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
-        <source>Member count</source>
-        <translation>Membro numero</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
-        <source>Started since</source>
-        <translation>Iniciado desde</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="41"/>
-        <source>Since</source>
-        <translation>Desde</translation>
-    </message>
 </context>
 <context>
     <name>QueueAgentStatus</name>
@@ -1731,12 +1691,12 @@ Busy lines: %3</source>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="56"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="57"/>
         <source>Number</source>
-        <translation type="unfinished"/>
+        <translation>Numero</translation>
     </message>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
@@ -2073,7 +2033,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>
         <source>Number</source>
-        <translation type="unfinished"/>
+        <translation>Numero</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
@@ -2194,7 +2154,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -2329,37 +2289,77 @@ queues parameters for the Stats on slice:</source>
 <context>
     <name>ConferenceListModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="108"/>
-        <source>Yes</source>
-        <translation type="unfinished"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
+        <source>Name</source>
+        <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="110"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
+        <source>Number</source>
+        <translation>Numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="39"/>
+        <source>PIN code</source>
+        <translation>Código Pin</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="40"/>
+        <source>Member count</source>
+        <translation>Membro numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="41"/>
+        <source>Started since</source>
+        <translation>Iniciado desde</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="107"/>
+        <source>Yes</source>
+        <translation>Sim</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="109"/>
         <source>No</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="138"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="137"/>
         <source>Not started</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="140"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="139"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Desconhecido</translation>
     </message>
 </context>
 <context>
     <name>ConferenceRoomModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="159"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="42"/>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="43"/>
+        <source>Number</source>
+        <translation>Numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="44"/>
+        <source>Since</source>
+        <translation>Desde</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="158"/>
         <source>Mute/UnMute</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="175"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="174"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Desconhecido</translation>
     </message>
 </context>
 <context>
@@ -2367,7 +2367,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/conference/conference_widget.ui" line="51"/>
         <source>Conference</source>
-        <translation type="unfinished"/>
+        <translation>Conferencia</translation>
     </message>
 </context>
 <context>
@@ -2485,7 +2485,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="39"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Histórico</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="58"/>
@@ -2511,6 +2511,26 @@ queues parameters for the Stats on slice:</source>
 <context>
     <name>HistoryModel</name>
     <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="41"/>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="42"/>
+        <source>Number</source>
+        <translation>Numero</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="43"/>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/history/history_model.cpp" line="44"/>
+        <source>Duration</source>
+        <translation>Duração</translation>
+    </message>
+    <message>
         <location filename="../src/xlets/history/history_model.cpp" line="160"/>
         <source>%1 hr %2 min %3 s</source>
         <translation type="unfinished"/>
@@ -2531,7 +2551,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/history/history_widget.ui" line="54"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Histórico</translation>
     </message>
 </context>
 <context>
