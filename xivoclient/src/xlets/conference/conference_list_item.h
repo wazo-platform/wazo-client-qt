@@ -34,11 +34,19 @@
 
 struct ConferenceListItem
 {
+    ConferenceListItem(const QString &_name, const QString &_extension,
+                       double _start_time, int _member_count, bool _pin_required):
+        name(_name),
+        extension(_extension),
+        start_time(_start_time),
+        member_count(_member_count),
+        pin_required(_pin_required)
+    {}
     QString name;
     QString extension;
-    bool pin_required;
     double start_time;
     int member_count;
+    bool pin_required;
 };
 
 #endif

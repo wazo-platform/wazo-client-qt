@@ -53,12 +53,12 @@ void ConferenceListModel::updateConfList(const QVariantMap &configs)
     m_conflist_item.clear();
     foreach(QVariant item, configs) {
         QVariantMap conflist_item = item.toMap();
-        ConferenceListItem entry;
-        entry.name = conflist_item.value("name").toString();
-        entry.extension = conflist_item.value("number").toString();
-        entry.pin_required = conflist_item.value("pin_required").toBool();
-        entry.start_time = conflist_item.value("start_time").toDouble();
-        entry.member_count = conflist_item.value("member_count").toInt();
+        ConferenceListItem entry(conflist_item.value("name").toString(),
+                                 conflist_item.value("number").toString(),
+                                 conflist_item.value("start_time").toDouble(),
+                                 conflist_item.value("member_count").toInt(),
+                                 conflist_item.value("pin_required").toBool()
+                                );
         m_conflist_item.append(entry);
     }
 

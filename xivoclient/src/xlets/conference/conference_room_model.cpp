@@ -64,13 +64,13 @@ void ConferenceRoomModel::setConfRoom(const QString &room_number, const QVariant
     m_confroom_item.clear();
     foreach(QVariant item, members) {
         QVariantMap confroom_item = item.toMap();
-        ConferenceRoomItem entry;
-        entry.extension = confroom_item.value("number").toString();
-        entry.join_order = confroom_item.value("join_order").toInt();
-        entry.is_me = entry.join_order == m_my_join_order;
-        entry.join_time = confroom_item.value("join_time").toInt();
-        entry.muted = confroom_item.value("muted").toBool();
-        entry.name = confroom_item.value("name").toString();
+        ConferenceRoomItem entry(confroom_item.value("name").toString(),
+                                 confroom_item.value("number").toString(),
+                                 confroom_item.value("join_order").toInt(),
+                                 confroom_item.value("join_time").toInt(),
+                                 confroom_item.value("muted").toBool(),
+                                 confroom_item.value("join_order").toInt() == m_my_join_order
+                                );
         m_confroom_item.append(entry);
     }
 
