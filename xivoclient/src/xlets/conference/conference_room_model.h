@@ -70,6 +70,7 @@ class ConferenceRoomModel : public AbstractTableModel
     private:
         int m_my_join_order;
         QString m_room_number;
+        static QList<QString> m_headers;
         QList<ConferenceRoomItem> m_confroom_item;
 };
 

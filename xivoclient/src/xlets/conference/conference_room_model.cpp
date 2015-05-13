@@ -35,6 +35,12 @@
 #include "conference_enum.h"
 #include "conference_room_model.h"
 
+QList<QString> ConferenceRoomModel::m_headers = QList<QString>() << QString()
+                                                                 << QObject::tr("Name").toUpper()
+                                                                 << QObject::tr("Number").toUpper()
+                                                                 << QObject::tr("Since").toUpper();
+
+
 ConferenceRoomModel::ConferenceRoomModel(QWidget *parent)
     : AbstractTableModel(parent)
 {
@@ -190,16 +196,7 @@ QVariant ConferenceRoomModel::headerData(int section,
         return QVariant();
     }
 
-    switch (section) {
-    case ConferenceRoom::COL_NUMBER:
-        return tr("NUMBER");
-    case ConferenceRoom::COL_NAME:
-        return tr("NAME");
-    case ConferenceRoom::COL_SINCE:
-        return tr("SINCE");
-    default:
-        return QVariant();
-    }
+    return m_headers.value(section);
 }
 
 Qt::ItemFlags ConferenceRoomModel::flags(const QModelIndex &index) const
