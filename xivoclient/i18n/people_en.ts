@@ -30,7 +30,7 @@
 <context>
     <name>PeopleEntryNumberDelegate</name>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="131"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="126"/>
         <source>CALL</source>
         <translation>CALL</translation>
     </message>
