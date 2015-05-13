@@ -31,6 +31,13 @@
 
 #include "conference_list_model.h"
 
+QList<QString> ConferenceListModel::m_headers = QList<QString>() << QObject::tr("Name").toUpper()
+                                                                 << QObject::tr("Number").toUpper()
+                                                                 << QObject::tr("PIN code").toUpper()
+                                                                 << QObject::tr("Member count").toUpper()
+                                                                 << QObject::tr("Started since").toUpper();
+
+
 ConferenceListModel::ConferenceListModel(QWidget *parent)
     : AbstractTableModel(parent)
 {
@@ -122,20 +129,7 @@ QVariant ConferenceListModel::headerData(int section,
         return QVariant();
     }
 
-    switch (section) {
-    case ConferenceList::COL_NUMBER:
-        return tr("NUMBER");
-    case ConferenceList::COL_NAME:
-        return tr("NAME");
-    case ConferenceList::COL_PIN_REQUIRED:
-        return tr("PIN CODE");
-    case ConferenceList::COL_MEMBER_COUNT:
-        return tr("MEMBER COUNT");
-    case ConferenceList::COL_STARTED_SINCE:
-        return tr("STARTED SINCE");
-    default:
-        return QVariant();
-    }
+    return m_headers.value(section);
 }
 
 QString ConferenceListModel::startedSince(double time) const
