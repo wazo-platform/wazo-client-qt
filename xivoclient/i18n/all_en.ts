@@ -1077,17 +1077,17 @@ Are you sure ?</translation>
 <context>
     <name>FaxPanel</name>
     <message>
-        <location filename="../src/xlets/fax/faxpanel.cpp" line="35"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="35"/>
         <source>Fax</source>
         <translation>Fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/faxpanel.cpp" line="91"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="91"/>
         <source>Open Fax File</source>
         <translation>Open Fax File</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/faxpanel.cpp" line="93"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="93"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>PDF Files (*.pdf);;All Files (*)</translation>
     </message>
