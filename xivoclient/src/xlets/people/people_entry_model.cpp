@@ -67,7 +67,7 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
     ColumnType t = this->m_type_map.value(type, OTHER);
     int inserted_column = m_fields.size();
     this->beginInsertColumns(QModelIndex(), inserted_column, inserted_column);
-    m_fields.append(QPair<QString, enum ColumnType>(name, t));
+    m_fields.append(QPair<QString, enum ColumnType>(name.toUpper(), t));
     this->endInsertColumns();
 }
 
@@ -166,7 +166,7 @@ QVariant PeopleEntryModel::headerData(int column,
 
 QString PeopleEntryModel::headerText(int column) const
 {
-    return this->m_fields[column].first.toUpper();
+    return this->m_fields[column].first;
 }
 
 enum ColumnType PeopleEntryModel::headerType(int column) const
