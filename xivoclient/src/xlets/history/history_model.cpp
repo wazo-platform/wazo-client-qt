@@ -34,6 +34,11 @@
 #include "history_model.h"
 
 QSize HistoryModel::icon_size = QSize(12, 12);
+QList<QString> HistoryModel::m_headers = QList<QString>() << QObject::tr("Name").toUpper()
+                                                          << QObject::tr("Number").toUpper()
+                                                          << QObject::tr("Date").toUpper()
+                                                          << QObject::tr("Duration").toUpper();
+
 
 HistoryModel::HistoryModel(QWidget * parent)
     : AbstractTableModel(parent)
@@ -139,18 +144,7 @@ QVariant HistoryModel::headerData(int section,
         return QVariant();
     }
 
-    switch (section) {
-    case COL_NAME:
-        return QVariant(tr("NAME"));
-    case COL_EXTEN:
-        return QVariant(tr("NUMBER"));
-    case COL_DATE:
-        return QVariant(tr("DATE"));
-    case COL_DURATION:
-        return QVariant(tr("DURATION"));
-    default:
-        return QVariant();
-    }
+    return m_headers.value(section);
 }
 
 QString HistoryModel::prettyPrintDuration(int duration, int mode) const
