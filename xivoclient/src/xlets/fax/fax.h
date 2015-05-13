@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,10 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __FAXPANEL_H__
-#define __FAXPANEL_H__
-
-#include <QDebug>
+#ifndef __FAX_H__
+#define __FAX_H__
 
 #include <baseengine.h>
 #include <xletlib/xlet.h>
@@ -39,14 +37,12 @@
 
 #include "dirdialog.h"
 
-/*! \brief Panel used to send an receive fax
- */
-class FaxPanel : public XLet
+class Fax : public XLet
 {
     Q_OBJECT
 
     public:
-        FaxPanel(QWidget *parent=0);
+        Fax(QWidget *parent=0);
 
     signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);

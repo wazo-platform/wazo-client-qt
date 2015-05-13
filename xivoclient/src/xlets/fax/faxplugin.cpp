@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,11 +31,11 @@
 
 #include <baseengine.h>
 
-#include "faxpanel.h"
+#include "fax.h"
 #include "faxplugin.h"
 
 XLet * FaxPlugin::newXLetInstance(QWidget *parent)
 {
     b_engine->registerTranslation(":/obj/fax_%1");
-    return new FaxPanel(parent);
+    return new Fax(parent);
 }

@@ -28,14 +28,13 @@
  */
 
 
-#include "faxpanel.h"
+#include "fax.h"
 #include "phonenumber.h"
 
-FaxPanel::FaxPanel(QWidget *parent)
+Fax::Fax(QWidget *parent)
     : XLet(parent, tr("Fax"), ":/images/tab-fax.svg"),
       m_mainwindow(parent)
 {
-
     this->ui.setupUi(this);
 
     QFile qssFile(QString(":/default.qss"));
@@ -57,9 +56,8 @@ FaxPanel::FaxPanel(QWidget *parent)
              this, SLOT(sendFax()) );
 }
 
-void FaxPanel::destNumberChanged(const QString &/* ext*/)
+void Fax::destNumberChanged(const QString &/* ext*/)
 {
-    // qDebug() << Q_FUNC_INFO << ext;
     if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
         this->ui.send_fax_button->setEnabled(true);
     } else {
@@ -67,9 +65,8 @@ void FaxPanel::destNumberChanged(const QString &/* ext*/)
     }
 }
 
-void FaxPanel::fileNameChanged(const QString &)
+void Fax::fileNameChanged(const QString &)
 {
-    // qDebug() << Q_FUNC_INFO << ext;
     if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
         this->ui.send_fax_button->setEnabled(true);
     } else {
@@ -77,7 +74,7 @@ void FaxPanel::fileNameChanged(const QString &)
     }
 }
 
-void FaxPanel::setOpenFileName()
+void Fax::setOpenFileName()
 {
     // There has been an option set as QFileDialog::DontUseNativeDialog
     // previously, probably because of a too quick copy/paste from an example.
@@ -96,13 +93,9 @@ void FaxPanel::setOpenFileName()
 }
 
 
-void FaxPanel::sendFax()
+void Fax::sendFax()
 {
     if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
-        // qDebug() << Q_FUNC_INFO
-        // << this->ui.file_name_input->text()
-        // << this->ui.fax_number_input->text()
-        // this->ui.send_fax_button->setEnabled(false);
         m_dest_string = this->ui.fax_number_input->text();
         m_file_string = this->ui.file_name_input->text();
         this->ui.fax_number_input->clear();
@@ -112,9 +105,8 @@ void FaxPanel::sendFax()
     }
 }
 
-void FaxPanel::dirLookup()
+void Fax::dirLookup()
 {
-    // qDebug() << Q_FUNC_INFO;
     DirDialog dirdialog(m_mainwindow);
     connect(dirdialog.dirpanel(), SIGNAL(selectedText(const QString &)),
             this->ui.fax_number_input, SLOT(setText(const QString &)));
