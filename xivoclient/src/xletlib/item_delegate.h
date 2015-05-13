@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,44 +27,28 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QHeaderView>
-#include <QStyleFactory>
+#ifndef __ITEM_DELEGATE_H__
+#define __ITEM_DELEGATE_H__
 
-#include "abstract_table_view.h"
-#include "item_delegate.h"
+#include <QModelIndex>
+#include <QPainter>
+#include <QStyleOptionViewItem>
+#include <QWidget>
 
-AbstractTableView::AbstractTableView(QWidget * parent)
-    : QTableView(parent)
+#include "xletlib_export.h"
+#include "abstract_item_delegate.h"
 
+class XLETLIB_EXPORT ItemDelegate : public AbstractItemDelegate
 {
-    this->setSortingEnabled(true);
-    this->setShowGrid(0);
+    Q_OBJECT
 
-    this->horizontalHeader()->setCascadingSectionResizes(true);
-    this->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    this->horizontalHeader()->setFixedHeight(30);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    this->horizontalHeader()->setSectionsMovable(true);
+    public:
+        ItemDelegate(QWidget *parent = NULL);
 
-    this->verticalHeader()->setDefaultSectionSize(50);
-    this->verticalHeader()->hide();
+    protected:
+        virtual void paint(QPainter *painter,
+                           const QStyleOptionViewItem &option,
+                           const QModelIndex &index) const;
+};
 
-    this->setSelectionMode(QAbstractItemView::NoSelection);
-
-    QStyle *plastique = QStyleFactory::create("cleanlooks");
-    this->horizontalHeader()->setStyle(plastique);
-    this->verticalHeader()->setStyle(plastique);
-
-    this->setItemDelegate(new ItemDelegate(this));
-}
-
-AbstractTableView::~AbstractTableView()
-{
-}
-
-QSize AbstractTableView::sizeHint() const
-{
-    int width = this->horizontalHeader()->length();
-    int height = this->verticalHeader()->length();
-    return QSize(width, height);
-}
+#endif

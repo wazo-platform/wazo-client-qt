@@ -28,6 +28,7 @@
  */
 
 #include <QAction>
+#include <QIcon>
 #include <QPixmap>
 #include <QString>
 #include <cassert>
@@ -131,19 +132,36 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
     const PeopleEntry & entry = m_people_entry_manager.getEntry(row);
+    ColumnType column_type = m_fields[column].second;
 
     switch(role) {
-    case Qt::TextAlignmentRole:
-        return Qt::AlignCenter;
-    case  Qt::DisplayRole:
-        return this->dataDisplay(entry, column);
-    case Qt::BackgroundRole:
-      return this->dataBackground(entry, column);
-    case Qt::UserRole:
-        return this->dataUser(entry, column);
+    case Qt::DecorationRole:
+        if (column_type == AGENT) {
+            QPair<QString, int> agent_key = entry.uniqueAgentId();
+            QString agent_status = m_people_entry_manager.getAgentStatus(agent_key);
+            if (agent_status == "logged_in") {
+                return QIcon(":/images/agent-on.svg").pixmap(QSize(20, 20));
+            } else if (agent_status == "logged_out") {
+                return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
+            }
+        }
+        break;
+    case Qt::DisplayRole:
+        if (column_type != AGENT) {
+            return entry.data(column);
+        }
+        break;
+    case NUMBER_ROLE:
+        if (column_type == NUMBER) {
+            return QVariant::fromValue(new PeopleActions(m_fields, entry));
+        }
+        break;
+    case INDICATOR_COLOR_ROLE:
+        return this->dataIndicatorColor(entry, column);
     default:
-        return QVariant();
+        break;
     }
+    return QVariant();
 }
 
 QVariant PeopleEntryModel::headerData(int column,
@@ -174,25 +192,7 @@ enum ColumnType PeopleEntryModel::headerType(int column) const
     return this->m_fields[column].second;
 }
 
-
-QVariant PeopleEntryModel::dataDisplay(const PeopleEntry & entry, int column) const
-{
-    ColumnType column_type = m_fields[column].second;
-
-    switch (column_type) {
-    case AGENT:
-    {
-        QPair<QString, int> agent_key = entry.uniqueAgentId();
-        return m_people_entry_manager.getAgentStatus(agent_key);
-    }
-    default:
-        return entry.data(column);
-        break;
-    }
-}
-
-
-QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column) const
+QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry & entry, int column) const
 {
     ColumnType column_type = m_fields[column].second;
 
@@ -223,45 +223,8 @@ QVariant PeopleEntryModel::dataBackground(const PeopleEntry & entry, int column)
         return QColor(color);
     }
     break;
-    case AGENT: // agent
-    {
-        QPair<QString, int> agent_key = entry.uniqueAgentId();
-
-        if (!m_people_entry_manager.hasAgentStatus(agent_key)) {
-            return QVariant();
-        }
-        if (m_people_entry_manager.getAgentStatus(agent_key) == "logged_in") {
-            return QColor("green");
-        } else {
-            return QVariant();
-        }
-        break;
-    }
     default:
-        return QVariant();
         break;
-    }
-    return QVariant();
-}
-
-QVariant PeopleEntryModel::dataUser(const PeopleEntry &entry, int column) const
-{
-    ColumnType column_type = m_fields[column].second;
-    QPair<QString, int> agent_key = entry.uniqueAgentId();
-
-    switch (column_type) {
-        case AGENT: {
-            return m_people_entry_manager.getAgentStatus(agent_key);
-            break;
-        }
-        case NUMBER: {
-            return QVariant::fromValue(new PeopleActions(m_fields, entry));
-            break;
-        }
-        default: {
-            return QVariant();
-            break;
-        }
     }
     return QVariant();
 }

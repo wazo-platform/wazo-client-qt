@@ -30,12 +30,12 @@
 #ifndef __PEOPLE_ENTRY_DELEGATE_H__
 #define __PEOPLE_ENTRY_DELEGATE_H__
 
-#include <QStyledItemDelegate>
+#include <xletlib/item_delegate.h>
 
 class PeopleActions;
 class QMenu;
 
-class PeopleEntryDotDelegate : public QStyledItemDelegate
+class PeopleEntryDotDelegate : public AbstractItemDelegate
 {
     Q_OBJECT
 
@@ -80,19 +80,6 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
                              PeopleActions *people_actions);
         void showContextMenu(const QStyleOptionViewItem &option,
                              PeopleActions *people_actions);
-};
-
-class PeopleEntryAgentDelegate : public QStyledItemDelegate
-{
-    public:
-        PeopleEntryAgentDelegate(QWidget *parent = NULL);
-        QSize sizeHint(const QStyleOptionViewItem &option,
-                       const QModelIndex &index) const;
-        void paint(QPainter *painter,
-                   const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const;
-    private:
-        static QSize icon_size;
 };
 
 #endif

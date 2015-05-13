@@ -38,8 +38,6 @@
 #include "people_entry_delegate.h"
 #include "people_actions.h"
 
-QSize PeopleEntryAgentDelegate::icon_size = QSize(20, 20);
-
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
 
@@ -49,18 +47,18 @@ QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
 
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
-    : QStyledItemDelegate(parent)
+    : AbstractItemDelegate(parent)
 {
 }
 
 QSize PeopleEntryDotDelegate::sizeHint(const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const
 {
-    if (index.data(Qt::BackgroundRole).isNull()) {
-        return QStyledItemDelegate::sizeHint(option, index);
+    if (index.data(INDICATOR_COLOR_ROLE).isNull()) {
+        return AbstractItemDelegate::sizeHint(option, index);
     }
 
-    const QSize &original_size = QStyledItemDelegate::sizeHint(option, index);
+    const QSize &original_size = AbstractItemDelegate::sizeHint(option, index);
     int new_width = original_size.width() + icon_size.width() + icon_text_spacing;
     return QSize(new_width, original_size.height());
 }
@@ -69,37 +67,34 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
                                    const QStyleOptionViewItem &option,
                                    const QModelIndex &index) const
 {
-    if (index.data(Qt::BackgroundRole).isNull()) {
-        QStyledItemDelegate::paint(painter, option, index);
+    AbstractItemDelegate::drawBorder(painter, option);
+
+    if (index.data(INDICATOR_COLOR_ROLE).isNull()) {
+        AbstractItemDelegate::paint(painter, option, index);
         return;
     }
+    QStyleOptionViewItem opt = option;
 
-    QString text = index.data().toString();
+    opt.rect = AbstractItemDelegate::marginsRemovedByColumn(option.rect, index.column());
+
     QIcon dot = QIcon(":/images/dot.svg");
-    QPixmap tinted_image = dot.pixmap(QSize(8, 8));
+    QPixmap tinted_image = dot.pixmap(icon_size);
+
+    int icon_left = opt.rect.x();
+    int icon_top = opt.rect.center().y() - tinted_image.height() / 2;
 
     QPainter tint_painter(&tinted_image);
     tint_painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-    tint_painter.fillRect(tinted_image.rect(), QColor(index.data(Qt::BackgroundRole).value<QColor>()));
+    tint_painter.fillRect(tinted_image.rect(), QColor(index.data(INDICATOR_COLOR_ROLE).value<QColor>()));
     tint_painter.end();
 
     painter->save();
-    int text_width = option.fontMetrics.size(0, text).width();
-    QPoint cell_center = option.rect.center();
-    int content_width = text_width + icon_size.width() + icon_text_spacing;
-    int icon_left = cell_center.x() - content_width / 2;
-    int icon_top = cell_center.y() - tinted_image.height() / 2;
     painter->drawPixmap(icon_left, icon_top, tinted_image);
-
-    int text_left = icon_left + icon_size.width() + icon_text_spacing;
-    QRect text_rect = QRect(text_left, option.rect.y(), text_width, option.rect.height());
-    painter->drawText(text_rect.left(),
-                      text_rect.top(),
-                      text_rect.width(),
-                      text_rect.height(),
-                      Qt::AlignVCenter|Qt::AlignLeft,
-                      text);
     painter->restore();
+
+    int icon_total_width = icon_size.width() + icon_text_spacing;
+    opt.rect = opt.rect.marginsRemoved(QMargins(icon_total_width,0,0,0));
+    AbstractItemDelegate::paint(painter, opt, index);
 }
 
 PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)
@@ -113,7 +108,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
                                       const QModelIndex &index) const
 {
     if (index.data().isNull()) {
-        QStyledItemDelegate::paint(painter, option, index);
+        PeopleEntryDotDelegate::paint(painter, option, index);
         return;
     }
 
@@ -147,6 +142,8 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         arrow_image_rect.moveCenter(selector_rect.center());
         painter->drawPixmap(arrow_image_rect, QIcon(":/images/down-arrow-white.svg").pixmap(arrow_image_size));
         painter->restore();
+
+        PeopleEntryDotDelegate::drawBorder(painter, option);
         return;
     }
 
@@ -159,7 +156,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
                                             const QModelIndex &index)
 {
     if (index.data().isNull()) {
-        return QStyledItemDelegate::editorEvent(event, model, option, index);
+        return AbstractItemDelegate::editorEvent(event, model, option, index);
     }
 
     if(event->type() == QEvent::MouseButtonPress) {
@@ -172,7 +169,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         this->pressed = false;
 
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        PeopleActions *people_actions = model->data(index, Qt::UserRole).value<PeopleActions*>();
+        PeopleActions *people_actions = model->data(index, NUMBER_ROLE).value<PeopleActions*>();
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
             people_actions->call();
@@ -230,40 +227,4 @@ void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
     if (QAction *mobile_action = people_actions->callMobileAction()) {
         menu->addAction(mobile_action);
     }
-}
-
-
-PeopleEntryAgentDelegate::PeopleEntryAgentDelegate(QWidget *parent)
-    : QStyledItemDelegate(parent)
-{
-}
-
-QSize PeopleEntryAgentDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                         const QModelIndex &index) const
-{
-    const QSize &original_size = QStyledItemDelegate::sizeHint(option, index);
-    return QSize(icon_size.width(), original_size.height());
-}
-
-void PeopleEntryAgentDelegate::paint(QPainter *painter,
-                                     const QStyleOptionViewItem &option,
-                                     const QModelIndex &index) const
-{
-    QString image_path;
-
-    QString agent_status = index.data(Qt::UserRole).toString();
-    if (agent_status == "logged_in") {
-        image_path = ":/images/agent-on.svg";
-    } else if (agent_status == "logged_out") {
-        image_path = ":/images/agent-off.svg";
-    } else {
-        return;
-    }
-
-    QPixmap image = QIcon(image_path).pixmap(icon_size);
-    painter->save();
-    painter->drawPixmap(option.rect.center().x() - image.width() / 2,
-                        option.rect.center().y() - image.height() / 2,
-                        image);
-    painter->restore();
 }
