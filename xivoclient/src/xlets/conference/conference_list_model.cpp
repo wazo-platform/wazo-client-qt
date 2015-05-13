@@ -31,15 +31,14 @@
 
 #include "conference_list_model.h"
 
-QList<QString> ConferenceListModel::m_headers = QList<QString>() << QObject::tr("Name").toUpper()
-                                                                 << QObject::tr("Number").toUpper()
-                                                                 << QObject::tr("PIN code").toUpper()
-                                                                 << QObject::tr("Member count").toUpper()
-                                                                 << QObject::tr("Started since").toUpper();
-
 
 ConferenceListModel::ConferenceListModel(QWidget *parent)
-    : AbstractTableModel(parent)
+  : AbstractTableModel(parent),
+    m_headers(QList<QString>() << tr("Name").toUpper()
+                               << tr("Number").toUpper()
+                               << tr("PIN code").toUpper()
+                               << tr("Member count").toUpper()
+                               << tr("Started since").toUpper())
 {
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),

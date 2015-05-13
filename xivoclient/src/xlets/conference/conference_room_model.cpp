@@ -35,14 +35,13 @@
 #include "conference_enum.h"
 #include "conference_room_model.h"
 
-QList<QString> ConferenceRoomModel::m_headers = QList<QString>() << QString()
-                                                                 << QObject::tr("Name").toUpper()
-                                                                 << QObject::tr("Number").toUpper()
-                                                                 << QObject::tr("Since").toUpper();
-
 
 ConferenceRoomModel::ConferenceRoomModel(QWidget *parent)
-    : AbstractTableModel(parent)
+  : AbstractTableModel(parent),
+    m_headers(QList<QString>() << QString()
+                               << tr("Name").toUpper()
+                               << tr("Number").toUpper()
+                               << tr("Since").toUpper())
 {
     m_my_join_order = -1;
 

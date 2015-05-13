@@ -63,7 +63,7 @@ class HistoryModel : public AbstractTableModel
         QString prettyPrintDuration(int duration, int mode = ALLCALL) const;
 
         QList<HistoryItem> m_history_item;
-        static QList<QString> m_headers;
+        QList<QString> m_headers;
         static QSize icon_size;
 };
 

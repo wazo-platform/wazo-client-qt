@@ -34,14 +34,14 @@
 #include "history_model.h"
 
 QSize HistoryModel::icon_size = QSize(12, 12);
-QList<QString> HistoryModel::m_headers = QList<QString>() << QObject::tr("Name").toUpper()
-                                                          << QObject::tr("Number").toUpper()
-                                                          << QObject::tr("Date").toUpper()
-                                                          << QObject::tr("Duration").toUpper();
 
 
 HistoryModel::HistoryModel(QWidget * parent)
-    : AbstractTableModel(parent)
+  : AbstractTableModel(parent),
+    m_headers(QList<QString>() << tr("Name").toUpper()
+                               << tr("Number").toUpper()
+                               << tr("Date").toUpper()
+                               << tr("Duration").toUpper())
 {
 }
 

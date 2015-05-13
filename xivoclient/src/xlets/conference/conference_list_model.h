@@ -69,7 +69,7 @@ class ConferenceListModel : public AbstractTableModel
     private:
         QString startedSince(double time) const;
 
-        static QList<QString> m_headers;
+        QList<QString> m_headers;
         QList<ConferenceListItem> m_conflist_item;
 };
 
