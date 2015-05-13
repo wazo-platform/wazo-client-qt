@@ -67,7 +67,7 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
     ColumnType t = this->m_type_map.value(type, OTHER);
     int inserted_column = m_fields.size();
     this->beginInsertColumns(QModelIndex(), inserted_column, inserted_column);
-    m_fields.append(QPair<QString, enum ColumnType>(name, t));
+    m_fields.append(QPair<QString, enum ColumnType>(name.toUpper(), t));
     this->endInsertColumns();
 }
 

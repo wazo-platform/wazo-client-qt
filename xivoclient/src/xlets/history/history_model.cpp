@@ -141,13 +141,13 @@ QVariant HistoryModel::headerData(int section,
 
     switch (section) {
     case COL_NAME:
-        return QVariant(tr("Name").toUpper());
+        return QVariant(tr("NAME"));
     case COL_EXTEN:
-        return QVariant(tr("Number").toUpper());
+        return QVariant(tr("NUMBER"));
     case COL_DATE:
-        return QVariant(tr("Date").toUpper());
+        return QVariant(tr("DATE"));
     case COL_DURATION:
-        return QVariant(tr("Duration").toUpper());
+        return QVariant(tr("DURATION"));
     default:
         return QVariant();
     }

@@ -192,11 +192,11 @@ QVariant ConferenceRoomModel::headerData(int section,
 
     switch (section) {
     case ConferenceRoom::COL_NUMBER:
-        return tr("Number");
+        return tr("NUMBER");
     case ConferenceRoom::COL_NAME:
-        return tr("Name");
+        return tr("NAME");
     case ConferenceRoom::COL_SINCE:
-        return tr("Since");
+        return tr("SINCE");
     default:
         return QVariant();
     }
