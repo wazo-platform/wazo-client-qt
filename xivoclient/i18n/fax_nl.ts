@@ -10,19 +10,19 @@
     </message>
 </context>
 <context>
-    <name>FaxPanel</name>
+    <name>Fax</name>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="35"/>
         <source>Fax</source>
         <translation>Fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="91"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="88"/>
         <source>Open Fax File</source>
         <translation>Open Fax Bestand</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="93"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="90"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>PDF Bestanden (*.pdf);;Alle Bestanden (*)</translation>
     </message>
@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="84"/>
         <source>Choose file to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies het bestand om te versturen</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax_widget.ui" line="122"/>

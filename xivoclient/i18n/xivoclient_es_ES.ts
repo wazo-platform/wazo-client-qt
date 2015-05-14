@@ -705,7 +705,7 @@
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="293"/>
         <source>Fax</source>
-        <translation type="unfinished">Fax</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="300"/>

@@ -7,58 +7,58 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="831"/>
+        <location filename="src/baseengine.cpp" line="821"/>
         <source>Could not modify the Services data.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="831"/>
+        <location filename="src/baseengine.cpp" line="821"/>
         <source>Maybe Asterisk is down.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1239"/>
+        <location filename="src/baseengine.cpp" line="1230"/>
         <source>Server has sent an Error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1243"/>
+        <location filename="src/baseengine.cpp" line="1234"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1247"/>
+        <location filename="src/baseengine.cpp" line="1238"/>
         <source>You entered a wrong login / password.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1249"/>
+        <location filename="src/baseengine.cpp" line="1240"/>
         <source>You have no profile defined.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1253"/>
+        <location filename="src/baseengine.cpp" line="1244"/>
         <source>The server %1:%2 did not reply to the last keepalive packet.</source>
         <oldsource>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</oldsource>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1258"/>
+        <location filename="src/baseengine.cpp" line="1249"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1261"/>
+        <location filename="src/baseengine.cpp" line="1252"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1265"/>
+        <location filename="src/baseengine.cpp" line="1256"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1269"/>
+        <location filename="src/baseengine.cpp" line="1260"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -66,119 +66,119 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1275"/>
+        <location filename="src/baseengine.cpp" line="1266"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1279"/>
+        <location filename="src/baseengine.cpp" line="1270"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1283"/>
+        <location filename="src/baseengine.cpp" line="1274"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1288"/>
+        <location filename="src/baseengine.cpp" line="1279"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1292"/>
+        <location filename="src/baseengine.cpp" line="1283"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1295"/>
+        <location filename="src/baseengine.cpp" line="1286"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1299"/>
+        <location filename="src/baseengine.cpp" line="1290"/>
         <source>You are already connected to %1:%2.</source>
         <oldsource>You are already connected from %1:%2.</oldsource>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1301"/>
+        <location filename="src/baseengine.cpp" line="1292"/>
         <source>No capability allowed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1304"/>
+        <location filename="src/baseengine.cpp" line="1295"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1306"/>
+        <location filename="src/baseengine.cpp" line="1297"/>
         <source>Missing Argument(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1310"/>
+        <location filename="src/baseengine.cpp" line="1301"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it to %2 at least.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1315"/>
+        <location filename="src/baseengine.cpp" line="1306"/>
         <source>Your client version (%1) is too old for this server.
 Please upgrade it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1322"/>
+        <location filename="src/baseengine.cpp" line="1313"/>
         <source>Your client's major version (%1)
 is not the same as the server&apos;s (%2).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1329"/>
+        <location filename="src/baseengine.cpp" line="1320"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1334"/>
+        <location filename="src/baseengine.cpp" line="1325"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1338"/>
+        <location filename="src/baseengine.cpp" line="1329"/>
         <source>You were disconnected by the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1340"/>
+        <location filename="src/baseengine.cpp" line="1331"/>
         <source>You were forced to disconnect by the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1342"/>
+        <location filename="src/baseengine.cpp" line="1333"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1344"/>
+        <location filename="src/baseengine.cpp" line="1335"/>
         <source>Could not log agent: extension already in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1347"/>
+        <location filename="src/baseengine.cpp" line="1338"/>
         <source>Unreachable number: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1351"/>
+        <location filename="src/baseengine.cpp" line="1342"/>
         <source>ERROR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1597"/>
+        <location filename="src/baseengine.cpp" line="1588"/>
         <source>Attempting to reconnect to server</source>
         <translation type="unfinished"/>
     </message>
@@ -1066,21 +1066,21 @@ Are you sure ?</source>
     </message>
 </context>
 <context>
-    <name>FaxPanel</name>
+    <name>Fax</name>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="35"/>
         <source>Fax</source>
-        <translation>Fax</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="91"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="88"/>
         <source>Open Fax File</source>
-        <translation>Abrir arquivo de Fax</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="93"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="90"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
-        <translation>Arquivo PDF (*.pdf);; Todos arquivos (*)</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
