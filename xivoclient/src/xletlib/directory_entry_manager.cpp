@@ -166,7 +166,7 @@ void DirectoryEntryManager::removeUser(const QString &user_xid)
     }
 }
 
-int DirectoryEntryManager::findEntryByNumber(const QString &number) const
+int DirectoryEntryManager::findEntryByNameAndNumber(const QString &name, const QString &number) const
 {
     for (int i = 0; i < m_directory_entries.size(); i++) {
         DirectoryEntry *entry = m_directory_entries[i];
@@ -176,7 +176,7 @@ int DirectoryEntryManager::findEntryByNumber(const QString &number) const
         if (entry->name().isEmpty()) {
             continue;
         }
-        if (entry->number() == number) {
+        if (entry->name() == name && entry->number() == number) {
             return i;
         }
     }
@@ -187,11 +187,12 @@ void DirectoryEntryManager::parseCommand(const QVariantMap &result)
 {
     const QList<QVariant> &entries = result["results"].toList();
     foreach (const QVariant &entry, entries) {
+        const QString &name = entry.toMap()["name"].toString();
         const QString &number = entry.toMap()["number"].toString();
-        int matching_entry_index = this->findEntryByNumber(number);
+        int matching_entry_index = this->findEntryByNameAndNumber(name, number);
         if (matching_entry_index != -1) {
-            DirectoryEntry *matching_number_entry = m_directory_entries[matching_entry_index];
-            matching_number_entry->setExtraFields(entry.toMap());
+            DirectoryEntry *matching_entry = m_directory_entries[matching_entry_index];
+            matching_entry->setExtraFields(entry.toMap());
             this->updateEntryAt(matching_entry_index);
         } else if (! this->hasEntry(entry)) {
             this->addEntry(new LookupDirectoryEntry(entry));
