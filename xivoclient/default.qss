@@ -105,10 +105,6 @@ HorizontalMenu QRadioButton::indicator {
     height: 0px;
     width: 0px;
 }
-QStyledItemDelegate {
-    background:red;
-    border: 2px solid black;
-}
 
 /*
  * ABSTRACT TABLE VIEW
