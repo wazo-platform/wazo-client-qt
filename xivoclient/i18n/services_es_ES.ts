@@ -37,22 +37,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="207"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="214"/>
         <source>&amp;Unconditional forward to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="228"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="235"/>
         <source>No call forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="372"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="393"/>
         <source>Forward on &amp;busy to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/services/services_widget.ui" line="403"/>
+        <location filename="../src/xlets/services/services_widget.ui" line="424"/>
         <source>Forward on &amp;no answer to</source>
         <translation type="unfinished"></translation>
     </message>

@@ -9,7 +9,7 @@
         <translation>Leute</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="55"/>
+        <location filename="../src/xlets/people/people.cpp" line="50"/>
         <source>all</source>
         <translation>alle</translation>
     </message>

@@ -17,12 +17,12 @@
         <translation>Fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="88"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="83"/>
         <source>Open Fax File</source>
         <translation>Open Fax Bestand</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="90"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="85"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>PDF Bestanden (*.pdf);;Alle Bestanden (*)</translation>
     </message>
@@ -50,27 +50,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="129"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="134"/>
         <source>BROWSE...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="154"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="160"/>
         <source>2.</source>
         <translation type="unfinished">2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="169"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="175"/>
         <source>Choose destination number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="207"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="213"/>
         <source>fax number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="268"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="280"/>
         <source>SEND FAX</source>
         <translation type="unfinished"></translation>
     </message>

@@ -9,22 +9,22 @@
         <translation>Historiek</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="58"/>
+        <location filename="../src/xlets/history/history.cpp" line="53"/>
         <source>All calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="59"/>
+        <location filename="../src/xlets/history/history.cpp" line="54"/>
         <source>Sent calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="60"/>
+        <location filename="../src/xlets/history/history.cpp" line="55"/>
         <source>Received calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="61"/>
+        <location filename="../src/xlets/history/history.cpp" line="56"/>
         <source>Missed calls</source>
         <translation type="unfinished"></translation>
     </message>

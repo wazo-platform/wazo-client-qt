@@ -17,12 +17,12 @@
         <translation>Fax</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="88"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="83"/>
         <source>Open Fax File</source>
         <translation>Faxdatei öffnen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="90"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="85"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>PDF-Dateien (*.pdf);;Alle Dateien (*)</translation>
     </message>
@@ -50,27 +50,27 @@
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="129"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="134"/>
         <source>BROWSE...</source>
         <translation>DURCHSUCHEN...</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="154"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="160"/>
         <source>2.</source>
         <translation>2.</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="169"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="175"/>
         <source>Choose destination number</source>
         <translation>Zielnummer auswählen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="207"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="213"/>
         <source>fax number</source>
         <translation>Faxnummer</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax_widget.ui" line="268"/>
+        <location filename="../src/xlets/fax/fax_widget.ui" line="280"/>
         <source>SEND FAX</source>
         <translation>FAX SENDEN</translation>
     </message>

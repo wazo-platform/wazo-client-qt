@@ -9,7 +9,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="55"/>
+        <location filename="../src/xlets/people/people.cpp" line="50"/>
         <source>all</source>
         <translation type="unfinished"></translation>
     </message>

@@ -9,12 +9,12 @@
         <translation type="unfinished">Conferencia</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="55"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="50"/>
         <source>Room list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="150"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="145"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -98,7 +98,7 @@
 <context>
     <name>ConferenceWidget</name>
     <message>
-        <location filename="../src/xlets/conference/conference_widget.ui" line="51"/>
+        <location filename="../src/xlets/conference/conference_widget.ui" line="54"/>
         <source>Conference</source>
         <translation>Conferencia</translation>
     </message>
