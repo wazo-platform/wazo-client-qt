@@ -46,5 +46,5 @@ void ItemDelegate::paint(QPainter *painter,
 
     opt.rect = this->marginsRemovedByColumn(option.rect, index.column());
 
-    QStyledItemDelegate::paint(painter, opt, index);
+    AbstractItemDelegate::paint(painter, opt, index);
 }
