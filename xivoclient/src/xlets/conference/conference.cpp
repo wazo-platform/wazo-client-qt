@@ -47,11 +47,6 @@ Conference::Conference(QWidget *parent)
 {
     this->ui.setupUi(this);
 
-    QFile qssFile(QString(":/default.qss"));
-    if(qssFile.open(QIODevice::ReadOnly)) {
-        this->setStyleSheet(qssFile.readAll());
-    }
-
     QAction *conflist_action = this->ui.menu->addAction(tr("Room list"));
     this->ui.menu->addAction();
 

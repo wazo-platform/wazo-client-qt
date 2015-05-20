@@ -305,6 +305,11 @@
            <property name="placeholderText">
             <string>login</string>
            </property>
+           <property name="qss_tags" stdset="0">
+            <stringlist notr="true">
+             <string>styled</string>
+            </stringlist>
+           </property>
           </widget>
          </item>
          <item>
@@ -333,6 +338,11 @@
            </property>
            <property name="placeholderText">
             <string>password</string>
+           </property>
+           <property name="qss_tags" stdset="0">
+            <stringlist notr="true">
+             <string>styled</string>
+            </stringlist>
            </property>
           </widget>
          </item>
@@ -412,6 +422,11 @@
              <property name="placeholderText">
               <string>phone</string>
              </property>
+             <property name="qss_tags" stdset="0">
+              <stringlist notr="true">
+               <string>styled</string>
+              </stringlist>
+             </property>
             </widget>
            </item>
           </layout>
@@ -458,6 +473,7 @@
              <property name="qss_tags" stdset="0">
               <stringlist notr="true">
                <string>orange</string>
+               <string>styled</string>
               </stringlist>
              </property>
             </widget>
