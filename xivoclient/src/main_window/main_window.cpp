@@ -50,6 +50,10 @@ MainWindow::MainWindow(QWidget *parent)
     QFontDatabase fontDB;
     fontDB.addApplicationFont(":/fonts/Dyno-Regular.ttf");
     fontDB.addApplicationFont(":/fonts/LiberationSans-Regular.ttf");
+    QFile qssFile(QString(":/default.qss"));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        this->setStyleSheet(qssFile.readAll());
+    }
 
     m_unfolded_size = this->size();
 
