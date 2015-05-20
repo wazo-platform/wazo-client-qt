@@ -46,8 +46,8 @@ void AbstractItemDelegate::drawBorder(QPainter *painter, const QStyleOptionViewI
 QRect AbstractItemDelegate::marginsRemovedByColumn(const QRect &rect, int column) const
 {
     if (column == 0) {
-        return rect.marginsRemoved(QMargins(30,0,0,0));
+        return rect.marginsRemoved(QMargins(30,0,0,1));
     } else {
-        return rect.marginsRemoved(QMargins(10,0,0,0));
+        return rect.marginsRemoved(QMargins(10,0,0,1));
     }
 }
