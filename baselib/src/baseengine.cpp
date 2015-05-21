@@ -941,9 +941,9 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         command_processed = false;
     }
 
-    command_processed = command_processed || (bool)forwardToListeners(thisclass, datamap);
+    bool command_forwarded = (bool)forwardToListeners(thisclass, datamap);
 
-    if (! command_processed) {
+    if (! command_processed && ! command_forwarded) {
        qDebug() << "Unhandled server command received:" << thisclass << datamap;
     }
 }
