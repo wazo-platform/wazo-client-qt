@@ -110,11 +110,6 @@
          <property name="placeholderText">
           <string>search</string>
          </property>
-         <property name="qss_tags" stdset="0">
-          <stringlist notr="true">
-           <string>styled</string>
-          </stringlist>
-         </property>
         </widget>
        </item>
       </layout>

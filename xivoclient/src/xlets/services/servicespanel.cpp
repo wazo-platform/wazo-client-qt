@@ -43,6 +43,11 @@ ServicesPanel::ServicesPanel(QWidget * parent)
 {
     this->ui.setupUi(this);
 
+    QFile qssFile(QString(":/default.qss"));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        this->setStyleSheet(qssFile.readAll());
+    }
+
     QVariantList features = b_engine->getConfig("services").toList();
 
     if (! features.contains("incallfilter")) {

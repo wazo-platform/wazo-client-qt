@@ -35,7 +35,7 @@ QWidget[qss_tags~="xlet_frame"], QWidget[qss_tags~="login_frame"] {
 /*
  * QPUSHBUTTON
  */
-QPushButton[qss_tags~="styled"]{
+QPushButton{
     border-radius: 8px;
     min-height: 30px;
     max-height: 30px;
@@ -78,6 +78,10 @@ QFrame[qss_tags~="input_button"]{
     border-radius: 15px; 
     margin-bottom: 10px;
     margin-top: 10px;
+}
+
+QStackedWidget {
+    margin-top: 40px;
 }
 
 /*
@@ -163,7 +167,7 @@ AbstractTableView QScrollBar::sub-line:vertical {
 /*
  * OTHERS
  */
-QLineEdit[qss_tags~="styled"], QComboBox#agent_options {
+QLineEdit, QComboBox#agent_options {
     background-color: #D7D2D0;
     border-radius: 15px;
     color: #2C2927;

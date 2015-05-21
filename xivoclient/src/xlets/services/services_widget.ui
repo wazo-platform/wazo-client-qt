@@ -180,13 +180,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="fwdunc_input">
-          <property name="qss_tags" stdset="0">
-           <stringlist notr="true">
-            <string>styled</string>
-           </stringlist>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="fwdunc_input"/>
         </item>
         <item>
          <widget class="QPushButton" name="fwdunc_button">
@@ -200,7 +194,6 @@
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
-            <string>styled</string>
            </stringlist>
           </property>
          </widget>
@@ -272,13 +265,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="fwdna_input">
-          <property name="qss_tags" stdset="0">
-           <stringlist notr="true">
-            <string>styled</string>
-           </stringlist>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="fwdna_input"/>
         </item>
         <item>
          <widget class="QPushButton" name="fwdna_button">
@@ -292,7 +279,6 @@
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
-            <string>styled</string>
            </stringlist>
           </property>
          </widget>
@@ -356,13 +342,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="fwdbusy_input">
-          <property name="qss_tags" stdset="0">
-           <stringlist notr="true">
-            <string>styled</string>
-           </stringlist>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="fwdbusy_input"/>
         </item>
         <item>
          <widget class="QPushButton" name="fwdbusy_button">
@@ -376,7 +356,6 @@
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
-            <string>styled</string>
            </stringlist>
           </property>
          </widget>

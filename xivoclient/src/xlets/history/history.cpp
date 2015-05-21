@@ -42,6 +42,11 @@ History::History(QWidget *parent)
 {
     this->ui.setupUi(this);
 
+    QFile qssFile(QString(":/default.qss"));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        this->setStyleSheet(qssFile.readAll());
+    }
+
     m_model = new HistoryModel(this);
     this->ui.history_table->setModel(m_model);
 

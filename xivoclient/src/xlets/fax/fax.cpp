@@ -37,6 +37,11 @@ Fax::Fax(QWidget *parent)
 {
     this->ui.setupUi(this);
 
+    QFile qssFile(QString(":/default.qss"));
+    if(qssFile.open(QIODevice::ReadOnly)) {
+        this->setStyleSheet(qssFile.readAll());
+    }
+
     connect( this->ui.file_name_input, SIGNAL(textChanged(const QString &)),
              this, SLOT(fileNameChanged(const QString &)) );
     connect( this->ui.file_browse_button, SIGNAL(clicked()),
