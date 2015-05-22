@@ -39,8 +39,7 @@ function package-content {
     cp -r bin/* $PKGROOT/opt/xivoclient
     cp -P $DEBIAN_QT_PATH/lib/libQt5{Core,DBus,Gui,Network,Svg,Widgets,Xml}.so* $PKGROOT/opt/xivoclient
     cp -P $DEBIAN_QT_PATH/lib/libicu{i18n,uc,data}.so* $PKGROOT/opt/xivoclient
-    cp -r $DEBIAN_QT_PATH/plugins/imageformats $PKGROOT/opt/xivoclient
-    cp -r $DEBIAN_QT_PATH/plugins/platforms $PKGROOT/opt/xivoclient
+    cp -r $DEBIAN_QT_PATH/plugins $PKGROOT/opt/xivoclient
     cp -r $DEBIAN_QT_PATH/translations $PKGROOT/opt/xivoclient
     cp $RESOURCES_DIR/qt.conf $PKGROOT/opt/xivoclient
 
