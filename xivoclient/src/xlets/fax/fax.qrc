@@ -1,8 +1,6 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource>
-        <file>../../../images/search-regular.svg</file>
-
         <file>../../../obj/fax_fr.qm</file>
         <file>../../../obj/fax_en.qm</file>
         <file>../../../obj/fax_es_ES.qm</file>
