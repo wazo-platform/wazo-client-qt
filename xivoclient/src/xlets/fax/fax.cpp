@@ -27,15 +27,21 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMovie>
+
+#include <baseengine.h>
 
 #include "fax.h"
 #include "phonenumber.h"
 
 Fax::Fax(QWidget *parent)
     : XLet(parent, tr("Fax"), ":/images/tab-fax.svg"),
-      m_mainwindow(parent)
+      m_mainwindow(parent),
+      m_waiting_status(NULL)
 {
     this->ui.setupUi(this);
+
+    m_waiting_status = new QMovie(":/images/waiting-status.gif");
 
     connect( this->ui.file_name_input, SIGNAL(textChanged(const QString &)),
              this, SLOT(fileNameChanged(const QString &)) );
@@ -49,6 +55,24 @@ Fax::Fax(QWidget *parent)
 
     connect( this->ui.send_fax_button, SIGNAL(clicked()),
              this, SLOT(sendFax()) );
+
+    registerListener("faxstatus");
+}
+
+void Fax::parseCommand(const QVariantMap &map)
+{
+    QString status = map.value("status").toString();
+    int nb_pages_sent = map.value("pages").toInt();
+    QString pages_sent = tr("%1 pages sent").arg(nb_pages_sent);
+
+    if (status == "SUCCESS") {
+        this->ui.fax_status->setPixmap(QPixmap(":/images/button_ok.png"));
+        this->ui.fax_status->setToolTip(tr("SUCCESS - %1").arg(pages_sent));
+    } else {
+        this->ui.fax_status->setPixmap(QPixmap(":/images/cancel.png"));
+        this->ui.fax_status->setToolTip(tr("FAILED"));
+    }
+    this->setEnabledFaxWidget(true);
 }
 
 void Fax::destNumberChanged(const QString &/* ext*/)
@@ -97,7 +121,24 @@ void Fax::sendFax()
         this->ui.file_name_input->clear();
         b_engine->sendFaxCommand(m_file_string,
                                  m_dest_string);
+        this->setWaitingStatus();
     }
+}
+
+void Fax::setWaitingStatus()
+{
+    this->ui.fax_status->setMovie(m_waiting_status);
+    this->ui.fax_status->movie()->start();
+    this->ui.fax_status->setToolTip(tr("Sending"));
+    this->setEnabledFaxWidget(false);
+}
+
+void Fax::setEnabledFaxWidget(bool enabled)
+{
+    this->ui.file_name_input->setEnabled(enabled);
+    this->ui.fax_number_input->setEnabled(enabled);
+    this->ui.file_browse_button->setEnabled(enabled);
+    this->ui.fax_number_search_button->setEnabled(enabled);
 }
 
 void Fax::dirLookup()

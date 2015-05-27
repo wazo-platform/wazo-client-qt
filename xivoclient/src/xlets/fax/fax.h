@@ -30,19 +30,26 @@
 #ifndef __FAX_H__
 #define __FAX_H__
 
-#include <baseengine.h>
+#include <QMovie>
+#include <QString>
+#include <QVariantMap>
+#include <QWidget>
+
+#include <ipbxlistener.h>
 #include <xletlib/xlet.h>
 #include <xletlib/extendedlineedit.h>
+
 #include <ui_fax_widget.h>
 
 #include "dirdialog.h"
 
-class Fax : public XLet
+class Fax : public XLet, public IPBXListener
 {
     Q_OBJECT
 
     public:
         Fax(QWidget *parent=0);
+        void parseCommand(const QVariantMap &map);
 
     signals:
         void faxSend(const QString &, const QString &, Qt::CheckState);
@@ -55,8 +62,12 @@ class Fax : public XLet
         void fileNameChanged(const QString &);
 
     private:
+        void setWaitingStatus();
+        void setEnabledFaxWidget(bool enabled);
+
         Ui::FaxWidget ui;
         QWidget *m_mainwindow;  //!< MainWidget where some parameters are commited to
+        QMovie *m_waiting_status;
 
         QString m_dest_string;
         QString m_file_string;
