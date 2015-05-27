@@ -790,9 +790,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         m_filetransfersocket->disconnectFromHost();
         m_filedata.clear();
 
-    } else if (thisclass == "faxprogress") {
-        emit ackFax(datamap.value("status").toString(), datamap.value("reason").toString());
-
     } else if (thisclass == "presence") {
         QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
         if (m_anylist.value("users").contains(id)) {
@@ -1191,32 +1188,19 @@ void BaseEngine::registerMeetmeUpdate()
 
 /*! \brief Send fax to CTI Server */
 void BaseEngine::sendFaxCommand(const QString & filename,
-                                const QString & number)
+                                const QString & number,
+                                const QByteArray &truefiledata)
 {
     m_filename = filename;
-    QFile * qf = new QFile(filename);
-    bool canopen = qf->open(QIODevice::ReadOnly);
+    m_faxsize = truefiledata.size();
+    m_filedata = truefiledata.toBase64();
 
-    if (canopen) {
-        QByteArray truefiledata = QByteArray();
-        truefiledata.append(qf->readAll());
-        m_faxsize = truefiledata.size();
-
-        if (m_faxsize > 0) {
-            m_filedata = truefiledata.toBase64();
-            QVariantMap command;
-            command["class"] = "faxsend";
-            command["hide"] = "0";
-            command["filename"] = filename;
-            command["destination"] = number;
-            sendJsonCommand(command);
-        } else
-            emit ackFax("ko", "fileempty");
-    } else
-        emit ackFax("ko", "filenotfound");
-
-    qf->close();
-    delete qf;
+    QVariantMap command;
+    command["class"] = "faxsend";
+    command["hide"] = "0";
+    command["filename"] = filename;
+    command["destination"] = number;
+    sendJsonCommand(command);
 }
 
 /*! \brief select message and then display a messagebox

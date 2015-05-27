@@ -272,7 +272,7 @@
    <item>
     <layout class="QHBoxLayout" name="send_layout">
      <property name="spacing">
-      <number>5</number>
+      <number>10</number>
      </property>
      <item>
       <widget class="QPushButton" name="send_fax_button">

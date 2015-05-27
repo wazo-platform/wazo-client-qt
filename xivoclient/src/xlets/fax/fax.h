@@ -58,8 +58,6 @@ class Fax : public XLet, public IPBXListener
         void setOpenFileName();
         void sendFax();
         void dirLookup();
-        void destNumberChanged(const QString &);
-        void fileNameChanged(const QString &);
 
     private:
         void setWaitingStatus();
@@ -68,9 +66,6 @@ class Fax : public XLet, public IPBXListener
         Ui::FaxWidget ui;
         QWidget *m_mainwindow;  //!< MainWidget where some parameters are commited to
         QMovie *m_waiting_status;
-
-        QString m_dest_string;
-        QString m_file_string;
 };
 
 #endif

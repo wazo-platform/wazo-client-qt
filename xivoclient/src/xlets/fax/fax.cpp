@@ -43,16 +43,10 @@ Fax::Fax(QWidget *parent)
 
     m_waiting_status = new QMovie(":/images/waiting-status.gif");
 
-    connect( this->ui.file_name_input, SIGNAL(textChanged(const QString &)),
-             this, SLOT(fileNameChanged(const QString &)) );
     connect( this->ui.file_browse_button, SIGNAL(clicked()),
              this, SLOT(setOpenFileName()) );
-
     connect( this->ui.fax_number_search_button, SIGNAL(clicked()),
              this, SLOT(dirLookup()) );
-    connect( this->ui.fax_number_input, SIGNAL(textChanged(const QString &)),
-             this, SLOT(destNumberChanged(const QString &)) );
-
     connect( this->ui.send_fax_button, SIGNAL(clicked()),
              this, SLOT(sendFax()) );
 
@@ -68,29 +62,13 @@ void Fax::parseCommand(const QVariantMap &map)
     if (status == "SUCCESS") {
         this->ui.fax_status->setPixmap(QPixmap(":/images/button_ok.png"));
         this->ui.fax_status->setToolTip(tr("SUCCESS - %1").arg(pages_sent));
+        this->ui.fax_number_input->clear();
+        this->ui.file_name_input->clear();
     } else {
         this->ui.fax_status->setPixmap(QPixmap(":/images/cancel.png"));
         this->ui.fax_status->setToolTip(tr("FAILED"));
     }
     this->setEnabledFaxWidget(true);
-}
-
-void Fax::destNumberChanged(const QString &/* ext*/)
-{
-    if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
-        this->ui.send_fax_button->setEnabled(true);
-    } else {
-        this->ui.send_fax_button->setEnabled(false);
-    }
-}
-
-void Fax::fileNameChanged(const QString &)
-{
-    if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
-        this->ui.send_fax_button->setEnabled(true);
-    } else {
-        this->ui.send_fax_button->setEnabled(false);
-    }
 }
 
 void Fax::setOpenFileName()
@@ -111,22 +89,47 @@ void Fax::setOpenFileName()
         this->ui.file_name_input->setText(fileName);
 }
 
-
 void Fax::sendFax()
 {
-    if ((! this->ui.file_name_input->text().isEmpty()) && (! this->ui.fax_number_input->text().isEmpty())) {
-        m_dest_string = this->ui.fax_number_input->text();
-        m_file_string = this->ui.file_name_input->text();
-        this->ui.fax_number_input->clear();
-        this->ui.file_name_input->clear();
-        b_engine->sendFaxCommand(m_file_string,
-                                 m_dest_string);
-        this->setWaitingStatus();
+    const QString &filename = this->ui.file_name_input->text();
+    const QString &extension = this->ui.fax_number_input->text();
+
+    if (filename.isEmpty() && extension.isEmpty()) {
+        this->ui.fax_status->setText(tr("No file and number to fax"));
+        return;
+    } else if (filename.isEmpty()) {
+        this->ui.fax_status->setText(tr("No file to fax"));
+        return;
+    } else if (extension.isEmpty()) {
+        this->ui.fax_status->setText(tr("No extension to fax"));
+        return;
     }
+
+    QFile * qf = new QFile(filename);
+    bool is_open = qf->open(QIODevice::ReadOnly);
+
+    if (is_open) {
+        QByteArray truefiledata = QByteArray();
+        truefiledata.append(qf->readAll());
+        if (truefiledata.size() > 0) {
+            b_engine->sendFaxCommand(filename,
+                                     extension,
+                                     truefiledata);
+            this->setWaitingStatus();
+        } else {
+            this->ui.fax_status->setText(tr("File empty"));
+        }
+    } else {
+        this->ui.fax_status->setText(tr("File not found"));
+    }
+
+    qf->close();
+    delete qf;
 }
 
 void Fax::setWaitingStatus()
 {
+    this->ui.fax_status->clear();
     this->ui.fax_status->setMovie(m_waiting_status);
     this->ui.fax_status->movie()->start();
     this->ui.fax_status->setToolTip(tr("Sending"));
