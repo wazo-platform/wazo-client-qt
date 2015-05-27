@@ -47,11 +47,6 @@ People::People(QWidget *parent)
 {
     this->ui.setupUi(this);
 
-    QFile qssFile(QString(":/default.qss"));
-    if(qssFile.open(QIODevice::ReadOnly)) {
-        this->setStyleSheet(qssFile.readAll());
-    }
-
     ui.menu->addAction(tr("all"));
     ui.menu->setSelectedAction(0);
     ui.menu->hide();  // will be shown when useful

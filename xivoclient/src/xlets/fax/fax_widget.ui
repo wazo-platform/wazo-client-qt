@@ -121,6 +121,11 @@
           <property name="placeholderText">
            <string>file</string>
           </property>
+          <property name="qss_tags" stdset="0">
+           <stringlist notr="true">
+            <string>styled</string>
+           </stringlist>
+          </property>
          </widget>
         </item>
         <item>
@@ -128,9 +133,13 @@
           <property name="text">
            <string>BROWSE...</string>
           </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
+            <string>styled</string>
            </stringlist>
           </property>
          </widget>
@@ -206,6 +215,11 @@
           <property name="placeholderText">
            <string>fax number</string>
           </property>
+          <property name="qss_tags" stdset="0">
+           <stringlist notr="true">
+            <string>styled</string>
+           </stringlist>
+          </property>
          </widget>
         </item>
         <item>
@@ -223,9 +237,13 @@
             <height>13</height>
            </size>
           </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
           <property name="qss_tags" stdset="0">
            <stringlist notr="true">
             <string>black</string>
+            <string>styled</string>
            </stringlist>
           </property>
          </widget>
@@ -267,9 +285,13 @@
        <property name="text">
         <string>SEND FAX</string>
        </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
        <property name="qss_tags" stdset="0">
         <stringlist notr="true">
          <string>orange</string>
+         <string>styled</string>
         </stringlist>
        </property>
       </widget>
