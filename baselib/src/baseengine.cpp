@@ -145,8 +145,6 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     m_filetransfersocket = new QTcpSocket(this);
     connect(m_filetransfersocket, SIGNAL(connected()),
             this, SLOT(filetransferSocketConnected()));
-    connect(m_filetransfersocket, SIGNAL(readyRead()),
-            this, SLOT(filetransferSocketReadyRead()));
 
     if (m_config["autoconnect"].toBool())
         start();
@@ -1357,37 +1355,6 @@ void BaseEngine::ctiSocketReadyRead()
         } else {
             data.chop(1);  // remove the \n the the end of the json
             parseCommand(data);
-        }
-    }
-}
-
-/*! \brief read data from the file transfer socket
- *
- * Read text data, the file is encapsulated into JSON as a base 64 string.
- */
-void BaseEngine::filetransferSocketReadyRead()
-{
-    while (m_filetransfersocket->canReadLine()) {
-        QByteArray data = m_filetransfersocket->readLine();
-        QVariantMap jsondatamap = this->parseJson(data).toMap();
-        if (jsondatamap.value("class").toString() == "fileref") {
-            if (m_filedir == "download") {
-                m_downloaded = QByteArray::fromBase64(jsondatamap.value("payload").toByteArray());
-                qDebug() << jsondatamap.value("filename").toString() << m_downloaded.size();
-                emit fileReceived();
-            } else {
-                QByteArray fax64 = m_filedata.toBase64();
-                qDebug() << "sending fax contents" << jsondatamap.value("fileid").toString()
-                         << m_faxsize << fax64.size();
-                if (m_faxsize > 0) {
-                    m_filetransfersocket->write(fax64 + "\n");
-                    m_filetransfersocket->flush();
-                }
-                m_filedata.clear();
-            }
-            m_filetransfersocket->disconnectFromHost();
-            m_faxsize = 0;
-            m_fileid = "";
         }
     }
 }

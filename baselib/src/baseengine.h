@@ -237,7 +237,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void onCTIServerDisconnected();
 
         void filetransferSocketConnected();
-        void filetransferSocketReadyRead();
 
         void sheetSocketConnected();
 
