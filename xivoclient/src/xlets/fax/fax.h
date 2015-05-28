@@ -61,6 +61,7 @@ class Fax : public XLet, public IPBXListener
     private:
         void setWaitingStatus();
         void setEnabledFaxWidget(bool enabled);
+        void setFailureMessage(const QString &error);
 
         Ui::FaxWidget ui;
         QWidget *m_mainwindow;  //!< MainWidget where some parameters are commited to

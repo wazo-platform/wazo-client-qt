@@ -66,7 +66,6 @@ void Fax::parseCommand(const QVariantMap &map)
 {
     QString status = map.value("status").toString();
     int nb_pages_sent = map.value("pages").toInt();
-    QString pages_sent = tr("%1 pages sent").arg(nb_pages_sent);
 
     if (status == "PRESENDFAX") {
         m_failure_timer->stop();
@@ -74,13 +73,11 @@ void Fax::parseCommand(const QVariantMap &map)
     }
 
     if (status == "SUCCESS") {
-        this->ui.fax_status->setPixmap(QPixmap(":/images/button_ok.png"));
-        this->ui.fax_status->setToolTip(tr("SUCCESS - %1").arg(pages_sent));
+        this->ui.status_text->setText(tr("%n page(s) sent", "", nb_pages_sent));
         this->ui.fax_number_input->clear();
         this->ui.file_name_input->clear();
     } else {
-        this->ui.fax_status->setPixmap(QPixmap(":/images/cancel.png"));
-        this->ui.fax_status->setToolTip(tr("FAILED"));
+        this->setFailureMessage(tr("Failed to send"));
     }
     this->setEnabledFaxWidget(true);
 }
@@ -103,19 +100,24 @@ void Fax::setOpenFileName()
         this->ui.file_name_input->setText(fileName);
 }
 
+void Fax::setFailureMessage(const QString &error)
+{
+    this->ui.status_text->setText(error);
+}
+
 void Fax::sendFax()
 {
     const QString &filename = this->ui.file_name_input->text();
     const QString &extension = this->ui.fax_number_input->text();
 
     if (filename.isEmpty() && extension.isEmpty()) {
-        this->ui.fax_status->setText(tr("No file and number to fax"));
+        this->setFailureMessage(tr("Missing file and fax number"));
         return;
     } else if (filename.isEmpty()) {
-        this->ui.fax_status->setText(tr("No file to fax"));
+        this->setFailureMessage(tr("Missing file"));
         return;
     } else if (extension.isEmpty()) {
-        this->ui.fax_status->setText(tr("No extension to fax"));
+        this->setFailureMessage(tr("Missing fax number"));
         return;
     }
 
@@ -131,10 +133,10 @@ void Fax::sendFax()
                                      truefiledata);
             this->setWaitingStatus();
         } else {
-            this->ui.fax_status->setText(tr("File empty"));
+            this->setFailureMessage(tr("File empty"));
         }
     } else {
-        this->ui.fax_status->setText(tr("File not found"));
+        this->setFailureMessage(tr("File not found"));
     }
 
     qf->close();
@@ -143,16 +145,16 @@ void Fax::sendFax()
 
 void Fax::unreachableNumber()
 {
-    this->ui.fax_status->setText(tr("Unreachable number"));
+    this->setFailureMessage(tr("Unreachable number"));
     this->setEnabledFaxWidget(true);
 }
 
 void Fax::setWaitingStatus()
 {
-    this->ui.fax_status->clear();
-    this->ui.fax_status->setMovie(m_waiting_status);
-    this->ui.fax_status->movie()->start();
-    this->ui.fax_status->setToolTip(tr("Sending"));
+    this->ui.status_icon->clear();
+    this->ui.status_icon->setMovie(m_waiting_status);
+    this->ui.status_icon->movie()->start();
+    this->ui.status_text->setText(tr("Sending..."));
     this->setEnabledFaxWidget(false);
 }
 
