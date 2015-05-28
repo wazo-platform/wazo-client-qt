@@ -50,7 +50,16 @@ Fax::Fax(QWidget *parent)
     connect( this->ui.send_fax_button, SIGNAL(clicked()),
              this, SLOT(sendFax()) );
 
-    registerListener("faxstatus");
+    m_failure_timer = new QTimer(this);
+    m_failure_timer->setInterval(25*1000);
+    m_failure_timer->setSingleShot(true);
+
+    connect( b_engine, SIGNAL(faxUploaded()),
+             m_failure_timer, SLOT(start()) );
+    connect( m_failure_timer, SIGNAL(timeout()),
+             this, SLOT(unreachableNumber()) );
+
+    registerListener("faxprogress");
 }
 
 void Fax::parseCommand(const QVariantMap &map)
@@ -58,6 +67,11 @@ void Fax::parseCommand(const QVariantMap &map)
     QString status = map.value("status").toString();
     int nb_pages_sent = map.value("pages").toInt();
     QString pages_sent = tr("%1 pages sent").arg(nb_pages_sent);
+
+    if (status == "PRESENDFAX") {
+        m_failure_timer->stop();
+        return;
+    }
 
     if (status == "SUCCESS") {
         this->ui.fax_status->setPixmap(QPixmap(":/images/button_ok.png"));
@@ -127,6 +141,12 @@ void Fax::sendFax()
     delete qf;
 }
 
+void Fax::unreachableNumber()
+{
+    this->ui.fax_status->setText(tr("Unreachable number"));
+    this->setEnabledFaxWidget(true);
+}
+
 void Fax::setWaitingStatus()
 {
     this->ui.fax_status->clear();
@@ -140,8 +160,11 @@ void Fax::setEnabledFaxWidget(bool enabled)
 {
     this->ui.file_name_input->setEnabled(enabled);
     this->ui.fax_number_input->setEnabled(enabled);
+
     this->ui.file_browse_button->setEnabled(enabled);
     this->ui.fax_number_search_button->setEnabled(enabled);
+
+    this->ui.send_fax_button->setEnabled(enabled);
 }
 
 void Fax::dirLookup()

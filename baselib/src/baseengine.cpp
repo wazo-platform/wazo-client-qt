@@ -787,6 +787,7 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         m_filetransfersocket->flush();
         m_filetransfersocket->disconnectFromHost();
         m_filedata.clear();
+        emit faxUploaded();
 
     } else if (thisclass == "presence") {
         QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();

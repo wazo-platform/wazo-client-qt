@@ -32,6 +32,7 @@
 
 #include <QMovie>
 #include <QString>
+#include <QTimer>
 #include <QVariantMap>
 #include <QWidget>
 
@@ -51,13 +52,11 @@ class Fax : public XLet, public IPBXListener
         Fax(QWidget *parent=0);
         void parseCommand(const QVariantMap &map);
 
-    signals:
-        void faxSend(const QString &, const QString &, Qt::CheckState);
-
-    public slots:
+    private slots:
         void setOpenFileName();
         void sendFax();
         void dirLookup();
+        void unreachableNumber();
 
     private:
         void setWaitingStatus();
@@ -66,6 +65,7 @@ class Fax : public XLet, public IPBXListener
         Ui::FaxWidget ui;
         QWidget *m_mainwindow;  //!< MainWidget where some parameters are commited to
         QMovie *m_waiting_status;
+        QTimer *m_failure_timer;
 };
 
 #endif
