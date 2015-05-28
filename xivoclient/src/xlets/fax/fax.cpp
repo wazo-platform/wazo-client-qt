@@ -73,6 +73,7 @@ void Fax::parseCommand(const QVariantMap &map)
     }
 
     if (status == "SUCCESS") {
+        this->ui.status_icon->setPixmap(QPixmap(":/images/dot-green.svg"));
         this->ui.status_text->setText(tr("%n page(s) sent", "", nb_pages_sent));
         this->ui.fax_number_input->clear();
         this->ui.file_name_input->clear();
@@ -102,6 +103,7 @@ void Fax::setOpenFileName()
 
 void Fax::setFailureMessage(const QString &error)
 {
+    this->ui.status_icon->setPixmap(QPixmap(":/images/dot-red.svg"));
     this->ui.status_text->setText(error);
 }
 
@@ -109,6 +111,8 @@ void Fax::sendFax()
 {
     const QString &filename = this->ui.file_name_input->text();
     const QString &extension = this->ui.fax_number_input->text();
+
+    this->ui.status_icon->clear();
 
     if (filename.isEmpty() && extension.isEmpty()) {
         this->setFailureMessage(tr("Missing file and fax number"));
