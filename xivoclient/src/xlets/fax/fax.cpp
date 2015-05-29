@@ -59,7 +59,7 @@ Fax::Fax(QWidget *parent)
     connect( m_failure_timer, SIGNAL(timeout()),
              this, SLOT(unreachableNumber()) );
 
-    registerListener("faxprogress");
+    registerListener("fax_progress");
 }
 
 void Fax::parseCommand(const QVariantMap &map)
