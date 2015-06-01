@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -119,9 +119,6 @@ void ConfigWidget::load_values()
     this->ui.enable_auto_open_url->setChecked(this->m_config["guioptions.autourl_allowed"].toBool());
     this->ui.max_screen_popups->setValue(this->m_config["guioptions.sheet-tablimit"].toUInt());
 
-    /// Composer
-    this->ui.composer_history_size->setValue(this->m_config["dialpanel.history_length"].toUInt());
-
     /// History
     this->ui.history_size->setValue(this->m_config["historysize"].toUInt());
 
@@ -179,9 +176,6 @@ void ConfigWidget::accept()
     this->m_config["checked_function.customerinfo"] = this->ui.enable_screen_popup->isChecked();
     this->m_config["guioptions.autourl_allowed"] = this->ui.enable_auto_open_url->isChecked();
     this->m_config["guioptions.sheet-tablimit"] = this->ui.max_screen_popups->value();
-
-    /// Composer
-    this->m_config["dialpanel.history_length"] = this->ui.composer_history_size->value();
 
     /// History
     this->m_config["historysize"] = this->ui.history_size->value();
