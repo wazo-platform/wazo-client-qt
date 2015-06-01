@@ -308,6 +308,9 @@
        <property name="text">
         <string notr="true"/>
        </property>
+       <property name="xlet_p" stdset="0">
+        <stringlist/>
+       </property>
       </widget>
      </item>
      <item>
