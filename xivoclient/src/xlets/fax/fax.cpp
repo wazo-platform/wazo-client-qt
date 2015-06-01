@@ -27,6 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QByteArray>
 #include <QMovie>
 
 #include <baseengine.h>
@@ -41,7 +42,7 @@ Fax::Fax(QWidget *parent)
 {
     this->ui.setupUi(this);
 
-    m_waiting_status = new QMovie(":/images/waiting-status.gif");
+    m_waiting_status = new QMovie(":/images/waiting-status.gif", QByteArray(), this);
 
     connect( this->ui.file_browse_button, SIGNAL(clicked()),
              this, SLOT(setOpenFileName()) );
