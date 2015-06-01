@@ -167,10 +167,6 @@ AbstractTableView QScrollBar::sub-line:vertical {
 /*
  * OTHERS
  */
-QLineEdit:disabled {
-    color: grey;
-}
-
 QLineEdit[qss_tags~="styled"], QComboBox#agent_options {
     background-color: #D7D2D0;
     border-radius: 15px;
@@ -181,6 +177,10 @@ QLineEdit[qss_tags~="styled"], QComboBox#agent_options {
     padding-left: 15px;
     padding-right: 15px;
     selection-background-color: #E77D39;
+}
+
+QLineEdit:disabled {
+    color: grey;
 }
 
 QComboBox::down-arrow#agent_options {
