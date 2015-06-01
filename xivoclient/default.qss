@@ -17,6 +17,10 @@ QLabel[qss_tags~="xlet_h4"] {
     font: 18px "Dyno";
 }
 
+QLabel[qss_tags~="xlet_p"] {
+    font: 12px "Liberation Sans";
+}
+
 *[qss_tags~=xlet_list]{
     font: 14px "Liberation Sans";
 }
@@ -173,6 +177,10 @@ QLineEdit[qss_tags~="styled"], QComboBox#agent_options {
     padding-left: 15px;
     padding-right: 15px;
     selection-background-color: #E77D39;
+}
+
+QLineEdit:disabled {
+    color: grey;
 }
 
 QComboBox::down-arrow#agent_options {

@@ -272,7 +272,7 @@
    <item>
     <layout class="QHBoxLayout" name="send_layout">
      <property name="spacing">
-      <number>0</number>
+      <number>10</number>
      </property>
      <item>
       <widget class="QPushButton" name="send_fax_button">
@@ -293,6 +293,23 @@
          <string>orange</string>
          <string>styled</string>
         </stringlist>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="status_icon">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="status_text">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+       <property name="xlet_p" stdset="0">
+        <stringlist/>
        </property>
       </widget>
      </item>

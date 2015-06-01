@@ -206,7 +206,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void inviteConfRoom(const QString &);
 
-        void sendFaxCommand(const QString &, const QString &);
+        void sendFaxCommand(const QString &, const QString &, const QByteArray &);
 
         void meetmeAction(const QString &, const QString &);
 
@@ -237,7 +237,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void onCTIServerDisconnected();
 
         void filetransferSocketConnected();
-        void filetransferSocketReadyRead();
 
         void sheetSocketConnected();
 
@@ -259,8 +258,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitTextMessage(const QString &);  //!< message to be displayed to the user.
 
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
-
-        void ackFax(const QString &, const QString &);
 
         void monitorPeerChanged();
 
@@ -310,6 +307,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void broadcastNumberSelection(const QStringList &);  //!< numbers for a selected peer
         void queueEntryUpdate(const QString &, const QVariantList &);
         void clearingCache();
+
+        void faxUploaded();
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events
 
