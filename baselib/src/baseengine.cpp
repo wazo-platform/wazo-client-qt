@@ -232,7 +232,6 @@ void BaseEngine::loadSettings()
         m_config["keepaliveinterval"] = m_settings->value("keepaliveinterval", 120*1000).toUInt();
         m_availstate = m_settings->value("availstate", "available").toString();
         m_config["displayprofile"] = m_settings->value("displayprofile", false).toBool();
-        m_config["dialpanel.history_length"] = m_settings->value("dialpanel/history_length", 10).toInt();
 
         m_config["switchboard_queue_name"] = m_settings->value("switchboard.queue", "__switchboard").toString();
         m_config["switchboard_hold_queue_name"] = m_settings->value("switchboard.queue_hold", "__switchboard_hold").toString();
@@ -328,7 +327,6 @@ void BaseEngine::saveSettings()
         m_settings->setValue("trytoreconnectinterval", m_config["trytoreconnectinterval"].toUInt());
         m_settings->setValue("keepaliveinterval", m_config["keepaliveinterval"].toUInt());
         m_settings->setValue("displayprofile", m_config["displayprofile"].toBool());
-        m_settings->setValue("dialpanel/history_length", m_config["dialpanel.history_length"].toInt());
 
         m_settings->setValue("switchboard.queue", m_config["switchboard_queue_name"].toString());
         m_settings->setValue("switchboard.queue_hold", m_config["switchboard_hold_queue_name"].toString());
