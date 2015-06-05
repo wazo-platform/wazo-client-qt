@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -35,6 +35,10 @@
 #include "directory_entry_view.h"
 #include "directory_entry_model.h"
 
+
+static const int icon_size = 20;
+static const int margin_size = 35;
+
 DirectoryEntryView::DirectoryEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
@@ -48,6 +52,7 @@ void DirectoryEntryView::columnsInserted(const QModelIndex & /*parent*/, int fir
     for (int i = first; i <= last; ++i) {
         ColumnType type = static_cast<ColumnType>(model()->headerData(i, Qt::Horizontal, Qt::UserRole).toInt());
         if (type == STATUS_ICON) {
+            this->horizontalHeader()->setMinimumSectionSize(icon_size + margin_size);
             this->horizontalHeader()->setSectionResizeMode(type, QHeaderView::ResizeToContents);
         }
     }
