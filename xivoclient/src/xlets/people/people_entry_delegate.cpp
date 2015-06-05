@@ -69,13 +69,13 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
 {
     AbstractItemDelegate::drawBorder(painter, option);
 
+    QStyleOptionViewItem opt = option;
+    opt.rect = AbstractItemDelegate::marginsRemovedByColumn(option.rect, index.column());
+
     if (index.data(INDICATOR_COLOR_ROLE).isNull()) {
-        AbstractItemDelegate::paint(painter, option, index);
+        AbstractItemDelegate::paint(painter, opt, index);
         return;
     }
-    QStyleOptionViewItem opt = option;
-
-    opt.rect = AbstractItemDelegate::marginsRemovedByColumn(option.rect, index.column());
 
     QIcon dot = QIcon(":/images/dot.svg");
     QPixmap tinted_image = dot.pixmap(icon_size);
