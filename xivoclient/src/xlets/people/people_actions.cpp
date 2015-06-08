@@ -29,7 +29,7 @@
 
 #include "people_actions.h"
 
-PeopleActions::PeopleActions(QList< QPair<QString, ColumnType> > fields, const PeopleEntry &entry)
+PeopleActions::PeopleActions(QList< QPair<QString, ColumnType> > fields, const PeopleEntry &entry, int current_column)
     : m_entry(entry),
       m_call_action(NULL),
       m_call_mobile_action(NULL)
@@ -42,17 +42,14 @@ PeopleActions::PeopleActions(QList< QPair<QString, ColumnType> > fields, const P
                 this->m_mobile_column = i;
                 break;
             }
-            case NUMBER: {
-                this->m_number_column = i;
-                break;
-            }
             default: {
                 break;
             }
         }
     }
 
-    if (this->m_number_column != -1) {
+    if (fields[current_column].second == NUMBER) {
+        m_number_column = current_column;
         m_call_action = new QAction(tr("Call"), this);
         connect(m_call_action, SIGNAL(triggered()),
                 this, SLOT(call()));
