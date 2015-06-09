@@ -214,6 +214,9 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry & entry, int col
     {
         QPair<QString, int> endpoint_key = entry.uniqueEndpointId();
 
+        if (entry.data(column).toString().isEmpty()) {
+            return QVariant();
+        }
         if (!m_people_entry_manager.hasEndpointStatus(endpoint_key)) {
             return QVariant();
         }
