@@ -38,7 +38,7 @@ class PeopleActions: public QObject
     Q_OBJECT
 
     public:
-        PeopleActions(QList< QPair<QString, ColumnType> > fields, const PeopleEntry &entry);
+        PeopleActions(QList< QPair<QString, ColumnType> > fields, const PeopleEntry &entry, int current_column);
         QAction *callAction();
         QAction *callMobileAction();
 

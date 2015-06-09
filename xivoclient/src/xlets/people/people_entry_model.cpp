@@ -153,7 +153,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         break;
     case NUMBER_ROLE:
         if (column_type == NUMBER) {
-            return QVariant::fromValue(new PeopleActions(m_fields, entry));
+            return QVariant::fromValue(new PeopleActions(m_fields, entry, column));
         }
         break;
     case INDICATOR_COLOR_ROLE:
@@ -214,6 +214,9 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry & entry, int col
     {
         QPair<QString, int> endpoint_key = entry.uniqueEndpointId();
 
+        if (entry.data(column).toString().isEmpty()) {
+            return QVariant();
+        }
         if (!m_people_entry_manager.hasEndpointStatus(endpoint_key)) {
             return QVariant();
         }
