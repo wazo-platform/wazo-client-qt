@@ -19,15 +19,15 @@
     <message numerus="yes">
         <location filename="../src/xlets/fax/fax.cpp" line="78"/>
         <source>%n page(s) sent</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Seite(n) gesendet</numerusform>
+            <numerusform>%n Seite(n) gesendet</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="82"/>
         <source>Failed to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Senden fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="98"/>
@@ -42,37 +42,37 @@
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="119"/>
         <source>Missing file and fax number</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehlende Datei und Faxnummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="122"/>
         <source>Missing file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehlende Datei</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="125"/>
         <source>Missing fax number</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehlende Faxnummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="141"/>
         <source>File empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei ist leer</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="144"/>
         <source>File not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei nicht gefunden</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="153"/>
         <source>Unreachable number</source>
-        <translation type="unfinished"></translation>
+        <translation>Unerreichbare Nummer</translation>
     </message>
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="162"/>
         <source>Sending...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendevorgang...</translation>
     </message>
 </context>
 <context>

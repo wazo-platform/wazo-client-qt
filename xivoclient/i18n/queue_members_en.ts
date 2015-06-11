@@ -15,16 +15,16 @@
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="109"/>
         <source>%n agent(s)</source>
         <translation>
-            <numerusform>%n agent</numerusform>
-            <numerusform>%n agents</numerusform>
+            <numerusform>%n agent(s)</numerusform>
+            <numerusform>%n agent(s)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="110"/>
         <source>%n phone(s)</source>
         <translation>
-            <numerusform>%n phone</numerusform>
-            <numerusform>%n phones</numerusform>
+            <numerusform>%n phone(s)</numerusform>
+            <numerusform>%n phone(s)</numerusform>
         </translation>
     </message>
     <message>

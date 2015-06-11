@@ -81,7 +81,7 @@
         <location filename="../src/config_widget/config_widget.ui" line="80"/>
         <location filename="../src/config_widget/config_widget.ui" line="152"/>
         <location filename="../src/config_widget/config_widget.ui" line="166"/>
-        <location filename="../src/config_widget/config_widget.ui" line="806"/>
+        <location filename="../src/config_widget/config_widget.ui" line="774"/>
         <source>You must restart the program for this setting to apply.</source>
         <translation>Sie müssen das Programm zum Anwenden dieser Einstellung neu starten.</translation>
     </message>
@@ -157,138 +157,132 @@
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="350"/>
-        <source>Composer</source>
-        <translation>Verfasser</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="356"/>
-        <location filename="../src/config_widget/config_widget.ui" line="391"/>
-        <source>History size</source>
-        <translation>Chronikgröße</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="382"/>
         <source>History</source>
         <translation>Chronik</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="417"/>
+        <location filename="../src/config_widget/config_widget.ui" line="359"/>
+        <source>History size</source>
+        <translation>Chronikgröße</translation>
+    </message>
+    <message>
+        <location filename="../src/config_widget/config_widget.ui" line="385"/>
         <source>Contacts</source>
         <translation>Kontakte</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="423"/>
+        <location filename="../src/config_widget/config_widget.ui" line="391"/>
         <source>Maximum of contacts displayed</source>
         <translation>Maximale Anzahl der angezeigten Kontakte</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="452"/>
+        <location filename="../src/config_widget/config_widget.ui" line="420"/>
         <source>Queue list</source>
         <translation>Warteschlangenliste</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="460"/>
+        <location filename="../src/config_widget/config_widget.ui" line="428"/>
         <source>Show longest wait time</source>
         <translation>Längste Wartezeit anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="474"/>
+        <location filename="../src/config_widget/config_widget.ui" line="442"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="484"/>
+        <location filename="../src/config_widget/config_widget.ui" line="452"/>
         <source>Red</source>
         <translation>Rot</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="494"/>
+        <location filename="../src/config_widget/config_widget.ui" line="462"/>
         <source>Longest wait time thresholds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="521"/>
+        <location filename="../src/config_widget/config_widget.ui" line="489"/>
         <source>Waiting calls thresholds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="548"/>
+        <location filename="../src/config_widget/config_widget.ui" line="516"/>
         <source>calls</source>
         <translation>Anrufe</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="555"/>
+        <location filename="../src/config_widget/config_widget.ui" line="523"/>
         <source>seconds</source>
         <translation>Sekunden</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="586"/>
+        <location filename="../src/config_widget/config_widget.ui" line="554"/>
         <source>Queue Members</source>
         <translation>Warteschlangenmitglieder</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="592"/>
+        <location filename="../src/config_widget/config_widget.ui" line="560"/>
         <source>Hide unlogged agents</source>
         <translation>Nicht angemeldete Agenten ausblenden</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="608"/>
+        <location filename="../src/config_widget/config_widget.ui" line="576"/>
         <source>Switchboard</source>
         <translation>Telefonzentrale</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="617"/>
+        <location filename="../src/config_widget/config_widget.ui" line="585"/>
         <source>Switchboard call on hold queue name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="627"/>
+        <location filename="../src/config_widget/config_widget.ui" line="595"/>
         <source>Switchboard queue name</source>
         <translation>Telefonzentralwarteschlangenname</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="649"/>
+        <location filename="../src/config_widget/config_widget.ui" line="617"/>
         <source>Administration</source>
         <translation>Administration</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="657"/>
+        <location filename="../src/config_widget/config_widget.ui" line="625"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="671"/>
-        <location filename="../src/config_widget/config_widget.ui" line="718"/>
+        <location filename="../src/config_widget/config_widget.ui" line="639"/>
+        <location filename="../src/config_widget/config_widget.ui" line="686"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="704"/>
+        <location filename="../src/config_widget/config_widget.ui" line="672"/>
         <source>Backup server</source>
         <translation>Datensicherungsserver</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="793"/>
+        <location filename="../src/config_widget/config_widget.ui" line="761"/>
         <source>Advanced</source>
         <translation>Erweitert</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="799"/>
+        <location filename="../src/config_widget/config_widget.ui" line="767"/>
         <source>Display the configuration profile</source>
         <translation>Konfigurationsprofil anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="809"/>
+        <location filename="../src/config_widget/config_widget.ui" line="777"/>
         <source>Allow multiple instances</source>
         <translation>Mehrere Instanzen erlauben</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="820"/>
+        <location filename="../src/config_widget/config_widget.ui" line="788"/>
         <source>Auto-reconnect interval</source>
         <translation>Intervall der automatischen Wiederverbindung</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="859"/>
+        <location filename="../src/config_widget/config_widget.ui" line="827"/>
         <source>Keepalive interval</source>
         <translation>Aufrechterhaltungsintervall</translation>
     </message>

@@ -17,12 +17,12 @@
 <context>
     <name>PeopleActions</name>
     <message>
-        <location filename="../src/xlets/people/people_actions.cpp" line="56"/>
+        <location filename="../src/xlets/people/people_actions.cpp" line="53"/>
         <source>Call</source>
         <translation type="unfinished">Bel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_actions.cpp" line="65"/>
+        <location filename="../src/xlets/people/people_actions.cpp" line="62"/>
         <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>

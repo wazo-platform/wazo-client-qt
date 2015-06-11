@@ -20,8 +20,8 @@
         <location filename="../src/xlets/fax/fax.cpp" line="78"/>
         <source>%n page(s) sent</source>
         <translation>
-            <numerusform>%n page sent</numerusform>
-            <numerusform>%n pages sent</numerusform>
+            <numerusform>%n page(s) sent</numerusform>
+            <numerusform>%n page(s) sent</numerusform>
         </translation>
     </message>
     <message>
