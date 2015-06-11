@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -163,7 +163,7 @@ void Popup::feed(QIODevice * inputstream,
             year->setText(currentDateTime.toString("yyyy"));
     }
 
-    setWindowIcon(QIcon(":/images/xivoicon.png"));
+    setWindowIcon(QIcon(":/images/xivoicon-orange.png"));
     QDesktopServices::setUrlHandler(QString("tel"), this, "dispurl");
 
     qDebug() << Q_FUNC_INFO << this << m_inputstream->bytesAvailable() << "bytes available";

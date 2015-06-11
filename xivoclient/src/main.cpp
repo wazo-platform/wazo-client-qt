@@ -100,7 +100,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
         return ret;
     }
 
-    app->setWindowIcon(QIcon(":/images/xivo-login.png"));
+    app->setWindowIcon(QIcon(":/images/xivoicon-orange.png"));
 
     QString info_osname;
     QString info_endianness = QSysInfo::ByteOrder ? "LE" : "BE";

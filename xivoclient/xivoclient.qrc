@@ -64,11 +64,10 @@
         <file>images/up-arrow-grey.svg</file>
         <file>images/waiting-status.gif</file>
         <file>images/warning.png</file>
-        <file>images/xivo-login.png</file>
         <file>images/xivo-logo.png</file>
         <file>images/xivoicon-black.png</file>
         <file>images/xivoicon-green.png</file>
         <file>images/xivoicon-red.png</file>
-        <file>images/xivoicon.png</file>
+        <file>images/xivoicon-orange.png</file>
     </qresource>
 </RCC>
