@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -44,10 +44,8 @@
 
 #define CHAN_STATUS_READY "ready"
 #define CHAN_STATUS_HANGUP "hangup"
-#define CHAN_STATUS_CALLING "calling"
 #define CHAN_STATUS_RINGING "ringing"
-#define CHAN_STATUS_LINKED_CALLER "linked-caller"
-#define CHAN_STATUS_LINKED_CALLED "linked-called"
+#define CHAN_STATUS_LINKED "linked"
 #define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
 #define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
 

@@ -373,8 +373,7 @@ void BasePeerWidget::addEditMenu(QMenu * menu)
 void BasePeerWidget::addHangupMenu(QMenu * menu)
 {
     static QStringList can_hangup = QStringList()
-        << CHAN_STATUS_LINKED_CALLER
-        << CHAN_STATUS_LINKED_CALLED
+        << CHAN_STATUS_LINKED
         << CHAN_STATUS_RINGING;
     QStringList channels = m_ui_local->xchannels();
     qSort(channels.begin(), channels.end(), channelTimestampLessThan);
