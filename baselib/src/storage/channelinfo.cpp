@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -41,7 +41,6 @@ ChannelInfo::ChannelInfo(const QString & ipbxid,
 bool ChannelInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "talkingto_kind", & m_talkingto_kind);
     haschanged |= setIfChangeString(prop, "talkingto_id", & m_talkingto_id);
     haschanged |= setIfChangeString(prop, "commstatus", & m_commstatus);
     haschanged |= setIfChangeString(prop, "state", & m_state);
@@ -49,11 +48,6 @@ bool ChannelInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "holded", & m_isholded);
 
     return haschanged;
-}
-
-const QString & ChannelInfo::talkingto_kind() const
-{
-    return m_talkingto_kind;
 }
 
 const QString & ChannelInfo::talkingto_id() const
