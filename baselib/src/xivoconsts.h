@@ -46,8 +46,6 @@
 #define CHAN_STATUS_HANGUP "hangup"
 #define CHAN_STATUS_RINGING "ringing"
 #define CHAN_STATUS_LINKED "linked"
-#define CHAN_STATUS_UNLINKED_CALLER "unlinked-caller"
-#define CHAN_STATUS_UNLINKED_CALLED "unlinked-called"
 
 BASELIB_EXPORT extern const char __datebuild_client__[];
 BASELIB_EXPORT extern const char __xivo_version__[];
