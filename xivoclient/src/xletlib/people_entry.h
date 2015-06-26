@@ -36,6 +36,7 @@
 
 enum ColumnType {
   AGENT,
+  FAVORITE,
   MOBILE,
   NAME,
   NUMBER,
@@ -45,13 +46,14 @@ enum ColumnType {
 
 enum UserRoleCustom {
     NUMBER_ROLE = Qt::UserRole,
-    INDICATOR_COLOR_ROLE = Qt::UserRole + 1
+    INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
+    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2
 };
 
 class XLETLIB_EXPORT PeopleEntry
 {
     public:
-        PeopleEntry(const QVariantList &data, const QVariantMap &relations);
+        PeopleEntry(const QVariantList &data, const QVariantMap &relations, const QString &source_desc);
         PeopleEntry(const PeopleEntry &other);
         ~PeopleEntry();
         const QVariant data(int column) const;
@@ -60,13 +62,18 @@ class XLETLIB_EXPORT PeopleEntry
         int agentId() const;
         int endpointId() const;
         int userId() const;
+        QString sourceDesc() const;
+        QString sourceId() const;
         QPair<QString, int> uniqueAgentId() const;
         QPair<QString, int> uniqueEndpointId() const;
+        QPair<QString, QString> uniqueSourceId() const;
         QPair<QString, int> uniqueUserId() const;
 
     private:
         QVariantList m_data;
         QString m_xivo_uuid;
+        QString m_source_desc;
+        QString m_source_id;
         int m_agent_id;
         int m_user_id;
         int m_endpoint_id;

@@ -62,6 +62,9 @@ People::People(QWidget *parent)
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             this, SLOT(defaultColumnSort(const QModelIndex &, int, int)));
 
+    connect(ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
+            this, SLOT(setFavoriteStatus(const QVariantMap &)));
+
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),
@@ -118,4 +121,12 @@ void People::defaultColumnSort(const QModelIndex &, int, int)
     int name_column_index = this->m_model->getNameColumnIndex();
     this->m_proxy_model->sort(name_column_index, Qt::AscendingOrder);
     this->ui.entry_table->horizontalHeader()->setSortIndicator(name_column_index, Qt::AscendingOrder);
+}
+
+void People::setFavoriteStatus(const QVariantMap &unique_source_id)
+{
+    bool enabled = m_model->favoriteStatus(unique_source_id);
+    const QString &source_desc = unique_source_id["source"].toString();
+    const QString &source_id = unique_source_id["source_id"].toString();
+    b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_desc, source_id, enabled));
 }

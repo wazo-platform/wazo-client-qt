@@ -137,8 +137,9 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     foreach (const QVariant &result, entries) {
         QVariantMap entry_map = result.toMap();
         const QVariantList &values = entry_map["column_values"].toList();
+        const QString &source_desc = entry_map["source"].toString();
         const QVariantMap &relations = entry_map["relations"].toMap();
-        PeopleEntry entry(values, relations);
+        PeopleEntry entry(values, relations, source_desc);
         const QString &xivo_id = entry.xivoUuid();
         QVariantList agent;
         agent.append(xivo_id);
@@ -182,6 +183,11 @@ QString PeopleEntryManager::getAgentStatus(const RelationID &id) const
 int PeopleEntryManager::getEndpointStatus(const RelationID &id) const
 {
     return m_endpoint_status[id];
+}
+
+bool PeopleEntryManager::getFavoriteStatus(const RelationSourceID &id) const
+{
+    return m_favorite_status[id];
 }
 
 QString PeopleEntryManager::getUserStatus(const RelationID &id) const

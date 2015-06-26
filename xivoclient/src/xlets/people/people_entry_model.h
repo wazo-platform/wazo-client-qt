@@ -31,6 +31,7 @@
 #define __PEOPLE_ENTRY_MODEL_H__
 
 #include <QAbstractTableModel>
+#include <QPair>
 #include <QStringList>
 #include <ipbxlistener.h>
 #include <xletlib/people_entry.h>
@@ -57,6 +58,7 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
                             Qt::Orientation,
                             int) const;
         int getNameColumnIndex() const;
+        bool favoriteStatus(const QVariantMap &unique_source_id) const;
 
     public slots:
         void addPeopleEntry(int entry_index);

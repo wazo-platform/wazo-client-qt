@@ -41,6 +41,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
     Q_OBJECT
 
     typedef QPair<QString, int> RelationID;
+    typedef QPair<QString, QString> RelationSourceID;
 
     public:
         PeopleEntryManager(QObject *parent=NULL);
@@ -49,6 +50,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         const PeopleEntry &getEntry(int entry_index) const;
         QString getAgentStatus(const RelationID &id) const;
         int getEndpointStatus(const RelationID &id) const;
+        bool getFavoriteStatus(const RelationSourceID &id) const;
         QString getUserStatus(const RelationID &id) const;
         bool hasAgentStatus(const RelationID &id) const;
         bool hasEndpointStatus(const RelationID &id) const;
@@ -76,6 +78,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         QList<PeopleEntry> m_entries;
         QMap<RelationID, QString> m_agent_status;
         QMap<RelationID, int> m_endpoint_status;
+        QMap<RelationSourceID, bool> m_favorite_status;
         QMap<RelationID, QString> m_user_status;
 };
 

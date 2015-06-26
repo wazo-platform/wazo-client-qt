@@ -46,6 +46,7 @@ PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manag
       m_people_entry_manager(people_entry_manager)
 {
     this->m_type_map["agent"] = AGENT;
+    this->m_type_map["favorite"] = FAVORITE;
     this->m_type_map["mobile"] = MOBILE;
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
@@ -144,6 +145,14 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             } else if (agent_status == "logged_out") {
                 return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
             }
+        } else if (column_type == FAVORITE) {
+            QPair<QString, QString> favorite_key = entry.uniqueSourceId();
+            bool favorite_status = m_people_entry_manager.getFavoriteStatus(favorite_key);
+            if (favorite_status) {
+                return QIcon(":/images/star-filled.svg").pixmap(QSize(20, 20));
+            } else {
+                return QIcon(":/images/star-empty.svg").pixmap(QSize(20, 20));
+            }
         }
         break;
     case Qt::DisplayRole:
@@ -158,6 +167,14 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         break;
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
+    case UNIQUE_SOURCE_ID_ROLE:
+        {
+            QPair<QString, QString> source_id = entry.uniqueSourceId();
+            QVariantMap favorite_key;
+            favorite_key["source"] = source_id.first;
+            favorite_key["source_id"] = source_id.second;
+            return favorite_key;
+        }
     default:
         break;
     }
@@ -266,4 +283,11 @@ int PeopleEntryModel::getNameColumnIndex() const
         }
     }
     return -1;
+}
+
+bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_id) const
+{
+    QPair<QString, QString> usource_id(unique_source_id["source"].toString(),
+                                       unique_source_id["source_id"].toString());
+    return m_people_entry_manager.getFavoriteStatus(usource_id);
 }

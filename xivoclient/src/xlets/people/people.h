@@ -62,6 +62,9 @@ class People: public XLet
         void searchPeople();
         void defaultColumnSort(const QModelIndex &, int, int);
 
+    private slots:
+        void setFavoriteStatus(const QVariantMap &unique_source_id);
+
     private:
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
