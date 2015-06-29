@@ -47,6 +47,8 @@ PeopleEntry::PeopleEntry(const QVariantList &data,
 PeopleEntry::PeopleEntry(const PeopleEntry &other)
     : m_data(other.m_data),
       m_xivo_uuid(other.m_xivo_uuid),
+      m_source_name(other.m_source_name),
+      m_source_entry_id(other.m_source_entry_id),
       m_agent_id(other.m_agent_id),
       m_user_id(other.m_user_id),
       m_endpoint_id(other.m_endpoint_id)
@@ -62,12 +64,19 @@ const QVariant PeopleEntry::data(int column) const
     return this->m_data.value(column);
 }
 
+void PeopleEntry::setData(int column, const QVariant &status)
+{
+    this->m_data.replace(column, status);
+}
+
 PeopleEntry & PeopleEntry::operator=(const PeopleEntry &other)
 {
     this->m_data = other.m_data;
     this->m_xivo_uuid = other.m_xivo_uuid;
     this->m_agent_id = other.m_agent_id;
     this->m_endpoint_id = other.m_endpoint_id;
+    this->m_source_name = other.m_source_name;
+    this->m_source_entry_id = other.m_source_entry_id;
     this->m_user_id = other.m_user_id;
 
     return *this;
@@ -93,12 +102,12 @@ int PeopleEntry::userId() const
     return m_user_id;
 }
 
-QString PeopleEntry::sourceDesc() const
+QString PeopleEntry::sourceName() const
 {
     return m_source_name;
 }
 
-QString PeopleEntry::sourceId() const
+QString PeopleEntry::sourceEntryId() const
 {
     return m_source_entry_id;
 }

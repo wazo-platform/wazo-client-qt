@@ -56,6 +56,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         bool hasEndpointStatus(const RelationID &id) const;
         bool hasUserStatus(const RelationID &id) const;
         void clearEntries();
+        void setColumnTypes(const QVariantList &column_types);
 
 
     public slots:
@@ -74,6 +75,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void aboutToClearEntries();
 
     private:
+        QVariantList m_column_type;
         int getIndexFromAgentId(const RelationID &id) const;
         int getIndexFromEndpointId(const RelationID &id) const;
         int getIndexFromFavoriteId(const RelationSourceID &id) const;
@@ -81,7 +83,6 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         QList<PeopleEntry> m_entries;
         QMap<RelationID, QString> m_agent_status;
         QMap<RelationID, int> m_endpoint_status;
-        QMap<RelationSourceID, bool> m_favorite_status;
         QMap<RelationID, QString> m_user_status;
 };
 

@@ -37,6 +37,7 @@ PeopleEntryManager::PeopleEntryManager(QObject *parent)
     : QObject(parent)
 {
     this->registerListener("people_search_result");
+    this->registerListener("people_favorites_result");
     this->registerListener("people_set_favorite_result");
     this->registerListener("agent_status_update");
     this->registerListener("endpoint_status_update");
@@ -125,13 +126,13 @@ void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
 
 void PeopleEntryManager::parsePeopleSetFavoriteResult(const QVariantMap &result)
 {
-
     RelationSourceID id(result["data"].toMap()["source"].toString(),
                         result["data"].toMap()["source_entry_id"].toString());
     bool new_status = result["data"].toMap()["status"].toBool();
-    m_favorite_status[id] = new_status;
     int index = this->getIndexFromFavoriteId(id);
     if (index > -1) {
+        int column = m_column_type.indexOf("favorite");
+        m_entries[index].setData(column, new_status);
         emit entryUpdated(index);
     }
 }
@@ -153,6 +154,11 @@ void PeopleEntryManager::parseCommand(const QVariantMap &result)
     } else if (event == "people_set_favorite_result") {
         this->parsePeopleSetFavoriteResult(result);
     }
+}
+
+void PeopleEntryManager::setColumnTypes(const QVariantList &column_types)
+{
+    m_column_type = column_types;
 }
 
 void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
@@ -221,7 +227,12 @@ int PeopleEntryManager::getEndpointStatus(const RelationID &id) const
 
 bool PeopleEntryManager::getFavoriteStatus(const RelationSourceID &id) const
 {
-    return m_favorite_status[id];
+    int index = this->getIndexFromFavoriteId(id);
+    if (index > -1) {
+        int column = m_column_type.indexOf("favorite");
+        return m_entries[index].data(column).toBool();
+    }
+    return false;
 }
 
 QString PeopleEntryManager::getUserStatus(const RelationID &id) const

@@ -146,9 +146,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
                 return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
             }
         } else if (column_type == FAVORITE) {
-            QPair<QString, QString> favorite_key = entry.uniqueSourceId();
-            bool favorite_status = m_people_entry_manager.getFavoriteStatus(favorite_key);
-            if (favorite_status) {
+            if (entry.data(column).toBool()) {
                 return QIcon(":/images/star-filled.svg").pixmap(QSize(12, 12));
             } else {
                 return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
@@ -156,7 +154,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         }
         break;
     case Qt::DisplayRole:
-        if (column_type != AGENT) {
+        if (column_type != AGENT && column_type != FAVORITE) {
             return entry.data(column);
         }
         break;
@@ -168,7 +166,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
-        {
+        if (column_type == FAVORITE) {
             QPair<QString, QString> source_entry_id = entry.uniqueSourceId();
             QVariantMap favorite_key;
             favorite_key["source"] = source_entry_id.first;
@@ -263,6 +261,8 @@ void PeopleEntryModel::parseCommand(const QVariantMap &command)
     const QVariantList &headers = command["column_headers"].toList();
     const QVariantList &types = command["column_types"].toList();
     assert(headers.length() == types.length());
+
+    m_people_entry_manager.setColumnTypes(types);
 
     this->clearFields();
 

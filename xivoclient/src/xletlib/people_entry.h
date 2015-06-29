@@ -57,13 +57,14 @@ class XLETLIB_EXPORT PeopleEntry
         PeopleEntry(const PeopleEntry &other);
         ~PeopleEntry();
         const QVariant data(int column) const;
+        void setData(int column, const QVariant &status);
         PeopleEntry &operator=(const PeopleEntry &other);
         const QString &xivoUuid() const;
         int agentId() const;
         int endpointId() const;
         int userId() const;
-        QString sourceDesc() const;
-        QString sourceId() const;
+        QString sourceName() const;
+        QString sourceEntryId() const;
         QPair<QString, int> uniqueAgentId() const;
         QPair<QString, int> uniqueEndpointId() const;
         QPair<QString, QString> uniqueSourceId() const;

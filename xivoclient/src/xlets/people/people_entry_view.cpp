@@ -103,8 +103,6 @@ void PeopleEntryView::onViewClick(const QModelIndex &index)
     if (column_type != FAVORITE) {
         return;
     }
-    const QVariantMap &unique_source_entry_id = index.sibling(index.row(), FAVORITE)
-                                                             .data(UNIQUE_SOURCE_ID_ROLE)
-                                                             .toMap();
+    const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
     emit favoriteToggled(unique_source_entry_id);
 }

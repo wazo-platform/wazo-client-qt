@@ -138,7 +138,7 @@ void People::setFavoriteStatus(const QVariantMap &unique_source_entry_id)
     bool enabled = m_model->favoriteStatus(unique_source_entry_id);
     const QString &source_name = unique_source_entry_id["source"].toString();
     const QString &source_entry_id = unique_source_entry_id["source_entry_id"].toString();
-    b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_name, source_entry_id, enabled));
+    b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_name, source_entry_id, !enabled));
 }
 
 
