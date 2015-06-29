@@ -140,23 +140,36 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
         const QVariantMap &relations = entry_map["relations"].toMap();
         PeopleEntry entry(values, relations);
         const QString &xivo_id = entry.xivoUuid();
-        QVariantList agent;
-        agent.append(xivo_id);
-        agent.append(entry.agentId());
-        agent_ids.push_back(agent);
-        QVariantList endpoint;
-        endpoint.append(xivo_id);
-        endpoint.append(entry.endpointId());
-        endpoint_ids.push_back(endpoint);
-        QVariantList user;
-        user.append(xivo_id);
-        user.append(entry.userId());
-        user_ids.push_back(user);
+        if (entry.agentId() != 0) {
+            QVariantList agent;
+            agent.append(xivo_id);
+            agent.append(entry.agentId());
+            agent_ids.push_back(agent);
+        }
+        if (entry.endpointId() != 0) {
+            QVariantList endpoint;
+            endpoint.append(xivo_id);
+            endpoint.append(entry.endpointId());
+            endpoint_ids.push_back(endpoint);
+        }
+        if (entry.userId() != 0) {
+            QVariantList user;
+            user.append(xivo_id);
+            user.append(entry.userId());
+            user_ids.push_back(user);
+        }
         this->addEntry(entry);
     }
-    b_engine->sendJsonCommand(MessageFactory::registerAgentStatus(agent_ids));
-    b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoint_ids));
-    b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
+
+    if (!agent_ids.empty()) {
+        b_engine->sendJsonCommand(MessageFactory::registerAgentStatus(agent_ids));
+    }
+    if (!endpoint_ids.empty()) {
+        b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoint_ids));
+    }
+    if (!user_ids.empty()) {
+        b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
+    }
 }
 
 bool PeopleEntryManager::hasAgentStatus(const RelationID &id) const
