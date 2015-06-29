@@ -44,7 +44,7 @@ class PeopleEntryView : public AbstractTableView
         void keyPressEvent(QKeyEvent * event);
 
     signals:
-        void favoriteToggled(const QVariantMap &unique_source_id);
+        void favoriteToggled(const QVariantMap &unique_source_entry_id);
 
     public slots:
         void updateColumnsDelegates(const QModelIndex &parent, int first, int last);

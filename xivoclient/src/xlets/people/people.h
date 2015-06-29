@@ -70,7 +70,7 @@ class People: public XLet
         void defaultColumnSort(const QModelIndex &, int, int);
 
     private slots:
-        void setFavoriteStatus(const QVariantMap &unique_source_id);
+        void setFavoriteStatus(const QVariantMap &unique_source_entry_id);
         void searchMode();
         void favoriteMode();
 

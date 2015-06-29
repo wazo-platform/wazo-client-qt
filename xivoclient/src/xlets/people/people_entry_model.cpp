@@ -169,10 +169,10 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
         {
-            QPair<QString, QString> source_id = entry.uniqueSourceId();
+            QPair<QString, QString> source_entry_id = entry.uniqueSourceId();
             QVariantMap favorite_key;
-            favorite_key["source"] = source_id.first;
-            favorite_key["source_id"] = source_id.second;
+            favorite_key["source"] = source_entry_id.first;
+            favorite_key["source_entry_id"] = source_entry_id.second;
             return favorite_key;
         }
     default:
@@ -285,11 +285,11 @@ int PeopleEntryModel::getNameColumnIndex() const
     return -1;
 }
 
-bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_id) const
+bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id) const
 {
-    QPair<QString, QString> usource_id(unique_source_id["source"].toString(),
-                                       unique_source_id["source_id"].toString());
-    return m_people_entry_manager.getFavoriteStatus(usource_id);
+    QPair<QString, QString> usource_entry_id(unique_source_entry_id["source"].toString(),
+                                             unique_source_entry_id["source_entry_id"].toString());
+    return m_people_entry_manager.getFavoriteStatus(usource_entry_id);
 }
 
 void PeopleEntryModel::clearEntries()

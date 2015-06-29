@@ -133,12 +133,12 @@ void People::defaultColumnSort(const QModelIndex &, int, int)
     this->ui.entry_table->horizontalHeader()->setSortIndicator(name_column_index, Qt::AscendingOrder);
 }
 
-void People::setFavoriteStatus(const QVariantMap &unique_source_id)
+void People::setFavoriteStatus(const QVariantMap &unique_source_entry_id)
 {
-    bool enabled = m_model->favoriteStatus(unique_source_id);
-    const QString &source_name = unique_source_id["source"].toString();
-    const QString &source_id = unique_source_id["source_id"].toString();
-    b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_name, source_id, enabled));
+    bool enabled = m_model->favoriteStatus(unique_source_entry_id);
+    const QString &source_name = unique_source_entry_id["source"].toString();
+    const QString &source_entry_id = unique_source_entry_id["source_entry_id"].toString();
+    b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_name, source_entry_id, enabled));
 }
 
 

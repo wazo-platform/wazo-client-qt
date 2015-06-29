@@ -58,7 +58,7 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
                             Qt::Orientation,
                             int) const;
         int getNameColumnIndex() const;
-        bool favoriteStatus(const QVariantMap &unique_source_id) const;
+        bool favoriteStatus(const QVariantMap &unique_source_entry_id) const;
         void clearEntries();
 
     public slots:

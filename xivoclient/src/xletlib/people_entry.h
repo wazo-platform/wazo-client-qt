@@ -73,7 +73,7 @@ class XLETLIB_EXPORT PeopleEntry
         QVariantList m_data;
         QString m_xivo_uuid;
         QString m_source_name;
-        QString m_source_id;
+        QString m_source_entry_id;
         int m_agent_id;
         int m_user_id;
         int m_endpoint_id;

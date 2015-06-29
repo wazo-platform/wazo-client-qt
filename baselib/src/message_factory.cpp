@@ -271,11 +271,11 @@ QVariantMap MessageFactory::setDoNotDisturb(bool enabled)
     return command;
 }
 
-QVariantMap MessageFactory::setFavoriteStatus(const QString &source_name, const QString &source_id, bool enabled)
+QVariantMap MessageFactory::setFavoriteStatus(const QString &source_name, const QString &source_entry_id, bool enabled)
 {
     QVariantMap command = MessageFactory::baseMessage("people_set_favorite");
-    command["directory"] = source_name;
-    command["contact_id"] = source_id;
+    command["source"] = source_name;
+    command["source_entry_id"] = source_entry_id;
     command["status"] = enabled;
 
     return command;

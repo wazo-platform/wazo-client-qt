@@ -126,8 +126,8 @@ void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
 void PeopleEntryManager::parsePeopleSetFavoriteResult(const QVariantMap &result)
 {
 
-    RelationSourceID id(result["data"].toMap()["directory"].toString(),
-                        result["data"].toMap()["contact_id"].toString());
+    RelationSourceID id(result["data"].toMap()["source"].toString(),
+                        result["data"].toMap()["source_entry_id"].toString());
     bool new_status = result["data"].toMap()["status"].toBool();
     m_favorite_status[id] = new_status;
     int index = this->getIndexFromFavoriteId(id);
