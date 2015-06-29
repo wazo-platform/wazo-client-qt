@@ -28,15 +28,16 @@
  */
 
 #include <baseengine.h>
+#include <message_factory.h>
 
 #include "people_entry.h"
 #include "people_entry_manager.h"
-#include <message_factory.h>
 
 PeopleEntryManager::PeopleEntryManager(QObject *parent)
     : QObject(parent)
 {
     this->registerListener("people_search_result");
+    this->registerListener("people_set_favorite_result");
     this->registerListener("agent_status_update");
     this->registerListener("endpoint_status_update");
     this->registerListener("user_status_update");
@@ -58,6 +59,17 @@ int PeopleEntryManager::getIndexFromEndpointId(const RelationID &id) const
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
         if (entry.uniqueEndpointId() == id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int PeopleEntryManager::getIndexFromFavoriteId(const RelationSourceID &id) const
+{
+    for (int i = 0; i < m_entries.size(); ++i) {
+        const PeopleEntry &entry = m_entries[i];
+        if (entry.uniqueSourceId() == id) {
             return i;
         }
     }
@@ -111,6 +123,19 @@ void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
     }
 }
 
+void PeopleEntryManager::parsePeopleSetFavoriteResult(const QVariantMap &result)
+{
+
+    RelationSourceID id(result["data"].toMap()["directory"].toString(),
+                        result["data"].toMap()["contact_id"].toString());
+    bool new_status = result["data"].toMap()["status"].toBool();
+    m_favorite_status[id] = new_status;
+    int index = this->getIndexFromFavoriteId(id);
+    if (index > -1) {
+        emit entryUpdated(index);
+    }
+}
+
 void PeopleEntryManager::parseCommand(const QVariantMap &result)
 {
     const QString &event = result["class"].toString();
@@ -123,13 +148,16 @@ void PeopleEntryManager::parseCommand(const QVariantMap &result)
         this->parseUserStatusUpdate(result);
     } else if (event == "people_search_result") {
         this->parsePeopleSearchResult(result);
+    } else if (event == "people_favorites_result") {
+        this->parsePeopleSearchResult(result);
+    } else if (event == "people_set_favorite_result") {
+        this->parsePeopleSetFavoriteResult(result);
     }
 }
 
 void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
 {
-    emit aboutToClearEntries();
-    m_entries.clear();
+    this->clearEntries();
     const QList<QVariant> &entries = result["results"].toList();
     QVariantList endpoint_ids;
     QVariantList agent_ids;
@@ -158,6 +186,12 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     b_engine->sendJsonCommand(MessageFactory::registerAgentStatus(agent_ids));
     b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoint_ids));
     b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
+}
+
+void PeopleEntryManager::clearEntries()
+{
+    emit aboutToClearEntries();
+    m_entries.clear();
 }
 
 bool PeopleEntryManager::hasAgentStatus(const RelationID &id) const

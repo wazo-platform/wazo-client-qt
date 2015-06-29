@@ -42,6 +42,13 @@
 
 #include "people_entry_sort_filter_proxy_model.h"
 
+
+enum PeopleMode {
+    SEARCH_MODE = 0,
+    FAVORITE_MODE
+};
+
+
 class People: public XLet
 {
     Q_OBJECT
@@ -64,6 +71,8 @@ class People: public XLet
 
     private slots:
         void setFavoriteStatus(const QVariantMap &unique_source_id);
+        void searchMode();
+        void favoriteMode();
 
     private:
         Ui::PeopleWidget ui;
@@ -73,6 +82,7 @@ class People: public XLet
         QTimer m_remote_lookup_timer;
         QString m_searched_pattern;
         QStringList m_search_history;
+        PeopleMode m_mode;
 };
 
 #endif /* __PEOPLE_H__ */

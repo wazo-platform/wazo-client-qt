@@ -99,7 +99,8 @@ void PeopleEntryView::updateColumnsVisibility(const QModelIndex &, int first, in
 
 void PeopleEntryView::onViewClick(const QModelIndex &index)
 {
-    if (index.column() != FAVORITE) {
+    int column_type = this->model()->headerData(index.column(), Qt::Horizontal, Qt::UserRole).toInt();
+    if (column_type != FAVORITE) {
         return;
     }
     const QVariantMap &unique_source_id = index.sibling(index.row(), FAVORITE)

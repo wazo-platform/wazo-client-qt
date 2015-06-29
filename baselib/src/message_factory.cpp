@@ -281,6 +281,12 @@ QVariantMap MessageFactory::setFavoriteStatus(const QString &source_desc, const 
     return command;
 }
 
+QVariantMap MessageFactory::favorites()
+{
+    QVariantMap command = MessageFactory::baseMessage("people_favorites");
+    return command;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

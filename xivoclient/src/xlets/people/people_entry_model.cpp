@@ -40,8 +40,8 @@
 #include "people_entry_model.h"
 #include "people_actions.h"
 
-PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manager,
-                                         QObject *parent)
+PeopleEntryModel::PeopleEntryModel(PeopleEntryManager & people_entry_manager,
+                                   QObject *parent)
     : QAbstractTableModel(parent),
       m_people_entry_manager(people_entry_manager)
 {
@@ -149,9 +149,9 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             QPair<QString, QString> favorite_key = entry.uniqueSourceId();
             bool favorite_status = m_people_entry_manager.getFavoriteStatus(favorite_key);
             if (favorite_status) {
-                return QIcon(":/images/star-filled.svg").pixmap(QSize(20, 20));
+                return QIcon(":/images/star-filled.svg").pixmap(QSize(12, 12));
             } else {
-                return QIcon(":/images/star-empty.svg").pixmap(QSize(20, 20));
+                return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
             }
         }
         break;
@@ -290,4 +290,9 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_id) const
     QPair<QString, QString> usource_id(unique_source_id["source"].toString(),
                                        unique_source_id["source_id"].toString());
     return m_people_entry_manager.getFavoriteStatus(usource_id);
+}
+
+void PeopleEntryModel::clearEntries()
+{
+    m_people_entry_manager.clearEntries();
 }
