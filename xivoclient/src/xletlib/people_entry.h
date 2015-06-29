@@ -53,7 +53,7 @@ enum UserRoleCustom {
 class XLETLIB_EXPORT PeopleEntry
 {
     public:
-        PeopleEntry(const QVariantList &data, const QVariantMap &relations, const QString &source_desc);
+        PeopleEntry(const QVariantList &data, const QVariantMap &relations, const QString &source_name);
         PeopleEntry(const PeopleEntry &other);
         ~PeopleEntry();
         const QVariant data(int column) const;
@@ -72,7 +72,7 @@ class XLETLIB_EXPORT PeopleEntry
     private:
         QVariantList m_data;
         QString m_xivo_uuid;
-        QString m_source_desc;
+        QString m_source_name;
         QString m_source_id;
         int m_agent_id;
         int m_user_id;

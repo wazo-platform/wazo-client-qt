@@ -33,10 +33,10 @@
 
 PeopleEntry::PeopleEntry(const QVariantList &data,
                          const QVariantMap &relations,
-                         const QString &source_desc)
+                         const QString &source_name)
   : m_data(data),
     m_xivo_uuid(relations["xivo_id"].toString()),
-    m_source_desc(source_desc),
+    m_source_name(source_name),
     m_source_id(relations["source_entry_id"].toString()),
     m_agent_id(relations["agent_id"].toInt()),
     m_user_id(relations["user_id"].toInt()),
@@ -95,7 +95,7 @@ int PeopleEntry::userId() const
 
 QString PeopleEntry::sourceDesc() const
 {
-    return m_source_desc;
+    return m_source_name;
 }
 
 QString PeopleEntry::sourceId() const
@@ -115,7 +115,7 @@ QPair<QString, int> PeopleEntry::uniqueEndpointId() const
 
 QPair<QString, QString> PeopleEntry::uniqueSourceId() const
 {
-    return QPair<QString, QString>(m_source_desc, m_source_id);
+    return QPair<QString, QString>(m_source_name, m_source_id);
 }
 
 QPair<QString, int> PeopleEntry::uniqueUserId() const

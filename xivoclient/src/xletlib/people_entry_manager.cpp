@@ -165,9 +165,9 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     foreach (const QVariant &result, entries) {
         QVariantMap entry_map = result.toMap();
         const QVariantList &values = entry_map["column_values"].toList();
-        const QString &source_desc = entry_map["source"].toString();
+        const QString &source_name = entry_map["source"].toString();
         const QVariantMap &relations = entry_map["relations"].toMap();
-        PeopleEntry entry(values, relations, source_desc);
+        PeopleEntry entry(values, relations, source_name);
         const QString &xivo_id = entry.xivoUuid();
         QVariantList agent;
         agent.append(xivo_id);
