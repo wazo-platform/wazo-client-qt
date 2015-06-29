@@ -37,7 +37,7 @@ PeopleEntry::PeopleEntry(const QVariantList &data,
   : m_data(data),
     m_xivo_uuid(relations["xivo_id"].toString()),
     m_source_desc(source_desc),
-    m_source_id(relations["source_id"].toString()),
+    m_source_id(relations["source_entry_id"].toString()),
     m_agent_id(relations["agent_id"].toInt()),
     m_user_id(relations["user_id"].toInt()),
     m_endpoint_id(relations["endpoint_id"].toInt())
