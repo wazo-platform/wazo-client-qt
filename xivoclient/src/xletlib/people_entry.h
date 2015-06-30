@@ -47,7 +47,8 @@ enum ColumnType {
 enum UserRoleCustom {
     NUMBER_ROLE = Qt::UserRole,
     INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
-    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2
+    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2,
+    SORT_FILTER_ROLE = Qt::UserRole + 3
 };
 
 class XLETLIB_EXPORT PeopleEntry
