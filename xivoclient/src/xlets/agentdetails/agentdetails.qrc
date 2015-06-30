@@ -3,6 +3,7 @@
     <qresource>
         <file>../../../obj/agentdetails_fr.qm</file>
         <file>../../../obj/agentdetails_en.qm</file>
+        <file>../../../obj/agentdetails_es_CL.qm</file>
         <file>../../../obj/agentdetails_es_ES.qm</file>
         <file>../../../obj/agentdetails_pt_BR.qm</file>
         <file>../../../obj/agentdetails_hu.qm</file>

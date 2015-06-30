@@ -7,6 +7,7 @@ SOURCES     = *.cpp
 FORMS       = conference_widget.ui
 
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/conference_es_CL.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_hu.ts

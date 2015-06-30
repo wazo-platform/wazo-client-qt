@@ -3,6 +3,7 @@ include(../../../common-xlets.pri)
 HEADERS     = *.h
 SOURCES     = *.cpp
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_es_CL.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_hu.ts

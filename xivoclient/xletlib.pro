@@ -23,6 +23,7 @@ DESTDIR = $${BIN_DIR}
 QT += core gui widgets
 
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_es_CL.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xletlib_hu.ts

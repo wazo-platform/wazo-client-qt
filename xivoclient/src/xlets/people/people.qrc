@@ -3,6 +3,7 @@
     <qresource>
         <file>../../../obj/people_fr.qm</file>
         <file>../../../obj/people_en.qm</file>
+        <file>../../../obj/people_es_CL.qm</file>
         <file>../../../obj/people_es_ES.qm</file>
         <file>../../../obj/people_pt_BR.qm</file>
         <file>../../../obj/people_hu.qm</file>

@@ -94,6 +94,7 @@ void ConfigWidget::load_values()
     this->ui.language->addItem(tr("English"), QString("en_US"));
     this->ui.language->addItem(tr("French"), QString("fr_FR"));
     this->ui.language->addItem(tr("Italian"), QString("it_IT"));
+    this->ui.language->addItem(tr("Spanish (Chile)"), QString("es_CL"));
     this->ui.language->addItem(tr("German") + QString(" (%1)").arg(tr("incomplete")), QString("de_DE"));
     this->ui.language->addItem(tr("Hungarian") + QString(" (%1)").arg(tr("incomplete")), QString("hu_HU"));
     this->ui.language->addItem(tr("Japanese") + QString(" (%1)").arg(tr("incomplete")), QString("ja_JP"));

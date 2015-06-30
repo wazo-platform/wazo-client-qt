@@ -26,6 +26,7 @@ QT += network
 QT += widgets
 
 TRANSLATIONS += $${ROOT_DIR}/baselib_en.ts
+TRANSLATIONS += $${ROOT_DIR}/baselib_es_CL.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_es_ES.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_pt_BR.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_hu.ts

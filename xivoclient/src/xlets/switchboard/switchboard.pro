@@ -6,6 +6,7 @@ FORMS += current_call.ui
 TARGET = switchboardplugin
 
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_es_CL.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/switchboard_hu.ts

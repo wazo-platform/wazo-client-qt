@@ -9,6 +9,7 @@ FORMS       = fax_widget.ui
 TARGET      = faxplugin
 
 TRANSLATIONS += $$ROOT_DIR/i18n/fax_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/fax_es_CL.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/fax_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/fax_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/fax_hu.ts

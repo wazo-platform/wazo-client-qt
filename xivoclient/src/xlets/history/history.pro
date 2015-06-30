@@ -7,6 +7,7 @@ FORMS       = history_widget.ui
 TARGET      = historyplugin
 
 TRANSLATIONS += $$ROOT_DIR/i18n/history_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/history_es_CL.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/history_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/history_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/history_hu.ts
