@@ -47,20 +47,30 @@ People::People(QWidget *parent)
 {
     this->ui.setupUi(this);
 
-    ui.menu->addAction(tr("all"));
-    ui.menu->setSelectedAction(0);
-    ui.menu->hide();  // will be shown when useful
-
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
     m_model = new PeopleEntryModel(m_people_entry_manager, this);
     m_proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(m_proxy_model);
+
+    QAction *search_action = ui.menu->addAction(tr("all"));
+    QAction *favorite_action = ui.menu->addAction(tr("favorites"));
+
+    connect(search_action, SIGNAL(triggered()),
+            this, SLOT(searchMode()));
+    connect(favorite_action, SIGNAL(triggered()),
+            this, SLOT(favoriteMode()));
+
+    this->ui.menu->setSelectedAction(1);
+
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             ui.entry_table, SLOT(updateColumnsDelegates(const QModelIndex &, int, int)));
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             ui.entry_table, SLOT(updateColumnsVisibility(const QModelIndex &, int, int)));
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             this, SLOT(defaultColumnSort(const QModelIndex &, int, int)));
+
+    connect(ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
+            this, SLOT(setFavoriteStatus(const QVariantMap &)));
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
@@ -106,6 +116,9 @@ void People::searchPeople()
     if (m_searched_pattern.length() < min_lookup_length) {
         qDebug() << Q_FUNC_INFO << "ignoring pattern too short" << this->m_searched_pattern;
     } else {
+        if (m_mode == FAVORITE_MODE) {
+            this->ui.menu->setSelectedAction(0);
+        }
         m_search_history.append(m_searched_pattern);
         b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
         qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
@@ -118,4 +131,30 @@ void People::defaultColumnSort(const QModelIndex &, int, int)
     int name_column_index = this->m_model->getNameColumnIndex();
     this->m_proxy_model->sort(name_column_index, Qt::AscendingOrder);
     this->ui.entry_table->horizontalHeader()->setSortIndicator(name_column_index, Qt::AscendingOrder);
+}
+
+void People::setFavoriteStatus(const QVariantMap &unique_source_entry_id)
+{
+    bool enabled = m_model->favoriteStatus(unique_source_entry_id);
+    const QString &source_name = unique_source_entry_id["source"].toString();
+    const QString &source_entry_id = unique_source_entry_id["source_entry_id"].toString();
+    if (source_entry_id.isEmpty()) {
+        return;
+    }
+    b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_name, source_entry_id, !enabled));
+}
+
+
+void People::searchMode()
+{
+    m_mode = SEARCH_MODE;
+    m_model->clearEntries();
+}
+
+void People::favoriteMode()
+{
+    m_mode = FAVORITE_MODE;
+    ui.entry_filter->clear();
+    m_model->clearEntries();
+    b_engine->sendJsonCommand(MessageFactory::favorites());
 }

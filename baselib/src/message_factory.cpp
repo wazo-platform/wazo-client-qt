@@ -271,6 +271,22 @@ QVariantMap MessageFactory::setDoNotDisturb(bool enabled)
     return command;
 }
 
+QVariantMap MessageFactory::setFavoriteStatus(const QString &source_name, const QString &source_entry_id, bool enabled)
+{
+    QVariantMap command = MessageFactory::baseMessage("people_set_favorite");
+    command["source"] = source_name;
+    command["source_entry_id"] = source_entry_id;
+    command["favorite"] = enabled;
+
+    return command;
+}
+
+QVariantMap MessageFactory::favorites()
+{
+    QVariantMap command = MessageFactory::baseMessage("people_favorites");
+    return command;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

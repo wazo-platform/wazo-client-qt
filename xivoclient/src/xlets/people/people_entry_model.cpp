@@ -40,12 +40,13 @@
 #include "people_entry_model.h"
 #include "people_actions.h"
 
-PeopleEntryModel::PeopleEntryModel(const PeopleEntryManager & people_entry_manager,
-                                         QObject *parent)
+PeopleEntryModel::PeopleEntryModel(PeopleEntryManager & people_entry_manager,
+                                   QObject *parent)
     : QAbstractTableModel(parent),
       m_people_entry_manager(people_entry_manager)
 {
     this->m_type_map["agent"] = AGENT;
+    this->m_type_map["favorite"] = FAVORITE;
     this->m_type_map["mobile"] = MOBILE;
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
@@ -144,10 +145,20 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             } else if (agent_status == "logged_out") {
                 return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
             }
+        } else if (column_type == FAVORITE) {
+            const QString &source_entry_id = entry.sourceEntryId();
+            if (source_entry_id.isEmpty()) {
+                break;
+            }
+            if (entry.data(column).toBool()) {
+                return QIcon(":/images/star-filled.svg").pixmap(QSize(12, 12));
+            } else {
+                return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
+            }
         }
         break;
     case Qt::DisplayRole:
-        if (column_type != AGENT) {
+        if (column_type != AGENT && column_type != FAVORITE) {
             return entry.data(column);
         }
         break;
@@ -158,6 +169,14 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         break;
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
+    case UNIQUE_SOURCE_ID_ROLE:
+        if (column_type == FAVORITE) {
+            QPair<QString, QString> source_entry_id = entry.uniqueSourceId();
+            QVariantMap favorite_key;
+            favorite_key["source"] = source_entry_id.first;
+            favorite_key["source_entry_id"] = source_entry_id.second;
+            return favorite_key;
+        }
     default:
         break;
     }
@@ -247,6 +266,8 @@ void PeopleEntryModel::parseCommand(const QVariantMap &command)
     const QVariantList &types = command["column_types"].toList();
     assert(headers.length() == types.length());
 
+    m_people_entry_manager.setColumnTypes(types);
+
     this->clearFields();
 
     for (int i = 0; i < headers.length() ; i++) {
@@ -266,4 +287,16 @@ int PeopleEntryModel::getNameColumnIndex() const
         }
     }
     return -1;
+}
+
+bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id) const
+{
+    QPair<QString, QString> usource_entry_id(unique_source_entry_id["source"].toString(),
+                                             unique_source_entry_id["source_entry_id"].toString());
+    return m_people_entry_manager.getFavoriteStatus(usource_entry_id);
+}
+
+void PeopleEntryModel::clearEntries()
+{
+    m_people_entry_manager.clearEntries();
 }

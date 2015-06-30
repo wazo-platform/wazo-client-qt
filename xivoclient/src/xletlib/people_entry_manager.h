@@ -41,6 +41,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
     Q_OBJECT
 
     typedef QPair<QString, int> RelationID;
+    typedef QPair<QString, QString> RelationSourceID;
 
     public:
         PeopleEntryManager(QObject *parent=NULL);
@@ -49,10 +50,13 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         const PeopleEntry &getEntry(int entry_index) const;
         QString getAgentStatus(const RelationID &id) const;
         int getEndpointStatus(const RelationID &id) const;
+        bool getFavoriteStatus(const RelationSourceID &id) const;
         QString getUserStatus(const RelationID &id) const;
         bool hasAgentStatus(const RelationID &id) const;
         bool hasEndpointStatus(const RelationID &id) const;
         bool hasUserStatus(const RelationID &id) const;
+        void clearEntries();
+        void setColumnTypes(const QVariantList &column_types);
 
 
     public slots:
@@ -63,6 +67,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void parseEndpointStatusUpdate(const QVariantMap &command);
         void parseUserStatusUpdate(const QVariantMap &command);
         void parsePeopleSearchResult(const QVariantMap &command);
+        void parsePeopleFavoriteUpdate(const QVariantMap &result);
 
     signals:
         void entryAdded(int entry_index);
@@ -70,8 +75,10 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void aboutToClearEntries();
 
     private:
+        QVariantList m_column_type;
         int getIndexFromAgentId(const RelationID &id) const;
         int getIndexFromEndpointId(const RelationID &id) const;
+        int getIndexFromFavoriteId(const RelationSourceID &id) const;
         int getIndexFromUserId(const RelationID &id) const;
         QList<PeopleEntry> m_entries;
         QMap<RelationID, QString> m_agent_status;

@@ -31,6 +31,7 @@
 #define __PEOPLE_ENTRY_MODEL_H__
 
 #include <QAbstractTableModel>
+#include <QPair>
 #include <QStringList>
 #include <ipbxlistener.h>
 #include <xletlib/people_entry.h>
@@ -43,8 +44,8 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
     Q_OBJECT
 
     public:
-        PeopleEntryModel(const PeopleEntryManager & people_entry_manager,
-                            QObject *parent = NULL);
+        PeopleEntryModel(PeopleEntryManager & people_entry_manager,
+                         QObject *parent = NULL);
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const;
         int columnCount(const QModelIndex &) const;
@@ -57,6 +58,8 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
                             Qt::Orientation,
                             int) const;
         int getNameColumnIndex() const;
+        bool favoriteStatus(const QVariantMap &unique_source_entry_id) const;
+        void clearEntries();
 
     public slots:
         void addPeopleEntry(int entry_index);
@@ -74,7 +77,7 @@ class PeopleEntryModel : public QAbstractTableModel, IPBXListener
         enum ColumnType headerType(int column) const;
 
         QList< QPair<QString, enum ColumnType> >  m_fields;
-        const PeopleEntryManager & m_people_entry_manager;
+        PeopleEntryManager & m_people_entry_manager;
         QMap<QString, ColumnType> m_type_map;
 };
 

@@ -39,10 +39,7 @@
 PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    this->setSortingEnabled(true);
     this->horizontalHeader()->setSortIndicatorShown(true);
-    this->setSelectionMode(QAbstractItemView::NoSelection);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     this->viewport()->setAttribute(Qt::WA_Hover);
 }
 
@@ -79,6 +76,10 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
                 this->setItemDelegateForColumn(column_index, delegate);
                 break;
             }
+        case FAVORITE:
+            connect(this, SIGNAL(clicked(const QModelIndex &)),
+                    this, SLOT(onViewClick(const QModelIndex &)));
+            break;
         }
     }
 }
@@ -94,4 +95,14 @@ void PeopleEntryView::updateColumnsVisibility(const QModelIndex &, int first, in
             }
         }
     }
+}
+
+void PeopleEntryView::onViewClick(const QModelIndex &index)
+{
+    int column_type = this->model()->headerData(index.column(), Qt::Horizontal, Qt::UserRole).toInt();
+    if (column_type != FAVORITE) {
+        return;
+    }
+    const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
+    emit favoriteToggled(unique_source_entry_id);
 }

@@ -28,15 +28,17 @@
  */
 
 #include <baseengine.h>
+#include <message_factory.h>
 
 #include "people_entry.h"
 #include "people_entry_manager.h"
-#include <message_factory.h>
 
 PeopleEntryManager::PeopleEntryManager(QObject *parent)
     : QObject(parent)
 {
     this->registerListener("people_search_result");
+    this->registerListener("people_favorites_result");
+    this->registerListener("people_favorite_update");
     this->registerListener("agent_status_update");
     this->registerListener("endpoint_status_update");
     this->registerListener("user_status_update");
@@ -58,6 +60,17 @@ int PeopleEntryManager::getIndexFromEndpointId(const RelationID &id) const
     for (int i = 0; i < m_entries.size(); ++i) {
         const PeopleEntry &entry = m_entries[i];
         if (entry.uniqueEndpointId() == id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int PeopleEntryManager::getIndexFromFavoriteId(const RelationSourceID &id) const
+{
+    for (int i = 0; i < m_entries.size(); ++i) {
+        const PeopleEntry &entry = m_entries[i];
+        if (entry.uniqueSourceId() == id) {
             return i;
         }
     }
@@ -111,6 +124,19 @@ void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
     }
 }
 
+void PeopleEntryManager::parsePeopleFavoriteUpdate(const QVariantMap &result)
+{
+    QVariantMap data = result["data"].toMap();
+    RelationSourceID id(data["source"].toString(), data["source_entry_id"].toString());
+    bool new_status = data["favorite"].toBool();
+    int index = this->getIndexFromFavoriteId(id);
+    if (index > -1) {
+        int column = m_column_type.indexOf("favorite");
+        m_entries[index].setData(column, new_status);
+        emit entryUpdated(index);
+    }
+}
+
 void PeopleEntryManager::parseCommand(const QVariantMap &result)
 {
     const QString &event = result["class"].toString();
@@ -123,13 +149,21 @@ void PeopleEntryManager::parseCommand(const QVariantMap &result)
         this->parseUserStatusUpdate(result);
     } else if (event == "people_search_result") {
         this->parsePeopleSearchResult(result);
+    } else if (event == "people_favorites_result") {
+        this->parsePeopleSearchResult(result);
+    } else if (event == "people_favorite_update") {
+        this->parsePeopleFavoriteUpdate(result);
     }
+}
+
+void PeopleEntryManager::setColumnTypes(const QVariantList &column_types)
+{
+    m_column_type = column_types;
 }
 
 void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
 {
-    emit aboutToClearEntries();
-    m_entries.clear();
+    this->clearEntries();
     const QList<QVariant> &entries = result["results"].toList();
     QVariantList endpoint_ids;
     QVariantList agent_ids;
@@ -137,8 +171,9 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     foreach (const QVariant &result, entries) {
         QVariantMap entry_map = result.toMap();
         const QVariantList &values = entry_map["column_values"].toList();
+        const QString &source_name = entry_map["source"].toString();
         const QVariantMap &relations = entry_map["relations"].toMap();
-        PeopleEntry entry(values, relations);
+        PeopleEntry entry(values, relations, source_name);
         const QString &xivo_id = entry.xivoUuid();
         if (entry.agentId() != 0) {
             QVariantList agent;
@@ -172,6 +207,12 @@ void PeopleEntryManager::parsePeopleSearchResult(const QVariantMap &result)
     }
 }
 
+void PeopleEntryManager::clearEntries()
+{
+    emit aboutToClearEntries();
+    m_entries.clear();
+}
+
 bool PeopleEntryManager::hasAgentStatus(const RelationID &id) const
 {
     return m_agent_status.contains(id);
@@ -195,6 +236,16 @@ QString PeopleEntryManager::getAgentStatus(const RelationID &id) const
 int PeopleEntryManager::getEndpointStatus(const RelationID &id) const
 {
     return m_endpoint_status[id];
+}
+
+bool PeopleEntryManager::getFavoriteStatus(const RelationSourceID &id) const
+{
+    int index = this->getIndexFromFavoriteId(id);
+    if (index > -1) {
+        int column = m_column_type.indexOf("favorite");
+        return m_entries[index].data(column).toBool();
+    }
+    return false;
 }
 
 QString PeopleEntryManager::getUserStatus(const RelationID &id) const

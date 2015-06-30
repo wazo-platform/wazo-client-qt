@@ -31,9 +31,13 @@
 
 #include "people_entry.h"
 
-PeopleEntry::PeopleEntry(const QVariantList &data, const QVariantMap &relations)
+PeopleEntry::PeopleEntry(const QVariantList &data,
+                         const QVariantMap &relations,
+                         const QString &source_name)
   : m_data(data),
     m_xivo_uuid(relations["xivo_id"].toString()),
+    m_source_name(source_name),
+    m_source_entry_id(relations["source_entry_id"].toString()),
     m_agent_id(relations["agent_id"].toInt()),
     m_user_id(relations["user_id"].toInt()),
     m_endpoint_id(relations["endpoint_id"].toInt())
@@ -43,6 +47,8 @@ PeopleEntry::PeopleEntry(const QVariantList &data, const QVariantMap &relations)
 PeopleEntry::PeopleEntry(const PeopleEntry &other)
     : m_data(other.m_data),
       m_xivo_uuid(other.m_xivo_uuid),
+      m_source_name(other.m_source_name),
+      m_source_entry_id(other.m_source_entry_id),
       m_agent_id(other.m_agent_id),
       m_user_id(other.m_user_id),
       m_endpoint_id(other.m_endpoint_id)
@@ -58,12 +64,19 @@ const QVariant PeopleEntry::data(int column) const
     return this->m_data.value(column);
 }
 
+void PeopleEntry::setData(int column, const QVariant &status)
+{
+    this->m_data.replace(column, status);
+}
+
 PeopleEntry & PeopleEntry::operator=(const PeopleEntry &other)
 {
     this->m_data = other.m_data;
     this->m_xivo_uuid = other.m_xivo_uuid;
     this->m_agent_id = other.m_agent_id;
     this->m_endpoint_id = other.m_endpoint_id;
+    this->m_source_name = other.m_source_name;
+    this->m_source_entry_id = other.m_source_entry_id;
     this->m_user_id = other.m_user_id;
 
     return *this;
@@ -89,6 +102,16 @@ int PeopleEntry::userId() const
     return m_user_id;
 }
 
+QString PeopleEntry::sourceName() const
+{
+    return m_source_name;
+}
+
+QString PeopleEntry::sourceEntryId() const
+{
+    return m_source_entry_id;
+}
+
 QPair<QString, int> PeopleEntry::uniqueAgentId() const
 {
     return QPair<QString, int>(m_xivo_uuid, m_agent_id);
@@ -97,6 +120,11 @@ QPair<QString, int> PeopleEntry::uniqueAgentId() const
 QPair<QString, int> PeopleEntry::uniqueEndpointId() const
 {
     return QPair<QString, int>(m_xivo_uuid, m_endpoint_id);
+}
+
+QPair<QString, QString> PeopleEntry::uniqueSourceId() const
+{
+    return QPair<QString, QString>(m_source_name, m_source_entry_id);
 }
 
 QPair<QString, int> PeopleEntry::uniqueUserId() const
