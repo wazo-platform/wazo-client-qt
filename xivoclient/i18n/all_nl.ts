@@ -1193,35 +1193,40 @@ Bezette lijnen: %3</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <source>Spanish (Chile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.cpp" line="98"/>
         <location filename="../src/config_widget/config_widget.cpp" line="99"/>
         <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <location filename="../src/config_widget/config_widget.cpp" line="101"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="102"/>
         <source>incomplete</source>
         <translation>Onvolledig</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
         <source>German</source>
         <translation>Duits</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
         <source>Hungarian</source>
         <translation>Hongaars</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <source>Japanese</source>
         <translation>Japans</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
         <source>Portuguese</source>
         <translation>Portugees</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="102"/>
         <source>Spanish</source>
         <translation>Spaans</translation>
     </message>
