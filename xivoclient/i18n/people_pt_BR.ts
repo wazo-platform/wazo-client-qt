@@ -9,8 +9,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="50"/>
+        <location filename="../src/xlets/people/people.cpp" line="55"/>
         <source>all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/people/people.cpp" line="56"/>
+        <source>favorites</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -38,12 +43,12 @@
 <context>
     <name>PeopleWidget</name>
     <message>
-        <location filename="../src/xlets/people/people_widget.ui" line="60"/>
+        <location filename="../src/xlets/people/people_widget.ui" line="54"/>
         <source>Contacts</source>
         <translation type="unfinished">Contatos</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_widget.ui" line="111"/>
+        <location filename="../src/xlets/people/people_widget.ui" line="105"/>
         <source>search</source>
         <translation type="unfinished"></translation>
     </message>
