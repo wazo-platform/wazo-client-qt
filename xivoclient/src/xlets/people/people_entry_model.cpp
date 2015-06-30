@@ -177,6 +177,19 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             favorite_key["source_entry_id"] = source_entry_id.second;
             return favorite_key;
         }
+    case SORT_FILTER_ROLE:
+        if (column_type == AGENT) {
+            QPair<QString, int> agent_key = entry.uniqueAgentId();
+            return m_people_entry_manager.getAgentStatus(agent_key);
+        }
+        if (column_type == FAVORITE) {
+            const QString &source_entry_id = entry.sourceEntryId();
+            if (source_entry_id.isEmpty()) {
+                break;
+            }
+            return entry.data(column);
+        }
+        break;
     default:
         break;
     }

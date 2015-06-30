@@ -30,6 +30,7 @@
 #include "people_entry_model.h"
 #include "people_entry_sort_filter_proxy_model.h"
 
+
 PeopleEntrySortFilterProxyModel::PeopleEntrySortFilterProxyModel(QObject *parent)
     : AbstractSortFilterProxyModel(parent)
 {
@@ -38,21 +39,12 @@ PeopleEntrySortFilterProxyModel::PeopleEntrySortFilterProxyModel(QObject *parent
 bool PeopleEntrySortFilterProxyModel::lessThan(const QModelIndex &left,
                                                const QModelIndex &right) const
 {
-    QVariant left_data = sourceModel()->data(left);
-    QVariant right_data = sourceModel()->data(right);
+    const QVariant &column_type = sourceModel()->headerData(left.column(), Qt::Horizontal, Qt::UserRole);
 
-    if (left_data.type() == QVariant::String) {
-        const QString &left_string = left_data.toString();
-        if (left_string.isEmpty()) {
-            return false;
-        }
-
-        const QString &right_string = right_data.toString();
-        if (right_string.isEmpty()) {
-            return true;
-        }
-
-        return QString::localeAwareCompare(left_string, right_string) < 0;
+    if (column_type == FAVORITE || column_type == AGENT) {
+        const QVariant &left_data = sourceModel()->data(left, SORT_FILTER_ROLE);
+        const QVariant &right_data = sourceModel()->data(right, SORT_FILTER_ROLE);
+        return left_data < right_data;
     } else {
         return AbstractSortFilterProxyModel::lessThan(left, right);
     }
