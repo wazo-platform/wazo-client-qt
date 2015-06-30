@@ -146,6 +146,10 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
                 return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
             }
         } else if (column_type == FAVORITE) {
+            QPair<QString, QString> source_entry_id = entry.uniqueSourceId();
+            if (source_entry_id.first.isEmpty() || source_entry_id.second.isEmpty()) {
+                break;
+            }
             if (entry.data(column).toBool()) {
                 return QIcon(":/images/star-filled.svg").pixmap(QSize(12, 12));
             } else {
