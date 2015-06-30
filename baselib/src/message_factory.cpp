@@ -276,7 +276,7 @@ QVariantMap MessageFactory::setFavoriteStatus(const QString &source_name, const 
     QVariantMap command = MessageFactory::baseMessage("people_set_favorite");
     command["source"] = source_name;
     command["source_entry_id"] = source_entry_id;
-    command["status"] = enabled;
+    command["favorite"] = enabled;
 
     return command;
 }

@@ -38,7 +38,7 @@ PeopleEntryManager::PeopleEntryManager(QObject *parent)
 {
     this->registerListener("people_search_result");
     this->registerListener("people_favorites_result");
-    this->registerListener("people_set_favorite_result");
+    this->registerListener("people_favorite_update");
     this->registerListener("agent_status_update");
     this->registerListener("endpoint_status_update");
     this->registerListener("user_status_update");
@@ -124,11 +124,11 @@ void PeopleEntryManager::parseUserStatusUpdate(const QVariantMap &result)
     }
 }
 
-void PeopleEntryManager::parsePeopleSetFavoriteResult(const QVariantMap &result)
+void PeopleEntryManager::parsePeopleFavoriteUpdate(const QVariantMap &result)
 {
-    RelationSourceID id(result["data"].toMap()["source"].toString(),
-                        result["data"].toMap()["source_entry_id"].toString());
-    bool new_status = result["data"].toMap()["status"].toBool();
+    QVariantMap data = result["data"].toMap();
+    RelationSourceID id(data["source"].toString(), data["source_entry_id"].toString());
+    bool new_status = data["favorite"].toBool();
     int index = this->getIndexFromFavoriteId(id);
     if (index > -1) {
         int column = m_column_type.indexOf("favorite");
@@ -151,8 +151,8 @@ void PeopleEntryManager::parseCommand(const QVariantMap &result)
         this->parsePeopleSearchResult(result);
     } else if (event == "people_favorites_result") {
         this->parsePeopleSearchResult(result);
-    } else if (event == "people_set_favorite_result") {
-        this->parsePeopleSetFavoriteResult(result);
+    } else if (event == "people_favorite_update") {
+        this->parsePeopleFavoriteUpdate(result);
     }
 }
 

@@ -67,7 +67,7 @@ class XLETLIB_EXPORT PeopleEntryManager: public QObject, public IPBXListener
         void parseEndpointStatusUpdate(const QVariantMap &command);
         void parseUserStatusUpdate(const QVariantMap &command);
         void parsePeopleSearchResult(const QVariantMap &command);
-        void parsePeopleSetFavoriteResult(const QVariantMap &result);
+        void parsePeopleFavoriteUpdate(const QVariantMap &result);
 
     signals:
         void entryAdded(int entry_index);
