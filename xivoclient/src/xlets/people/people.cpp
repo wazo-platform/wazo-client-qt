@@ -43,12 +43,12 @@
 People::People(QWidget *parent)
     : XLet(parent, tr("People"), ":/images/tab-people.svg"),
       m_proxy_model(NULL),
-      m_people_entry_manager(this)
+      m_model(NULL)
 {
     this->ui.setupUi(this);
 
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
-    m_model = new PeopleEntryModel(m_people_entry_manager, this);
+    m_model = new PeopleEntryModel(this);
     m_proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(m_proxy_model);
 
@@ -83,10 +83,40 @@ People::People(QWidget *parent)
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
+
+    this->registerListener("agent_status_update");
+    this->registerListener("endpoint_status_update");
+    this->registerListener("people_favorite_update");
+    this->registerListener("people_favorites_result");
+    this->registerListener("people_headers_result");
+    this->registerListener("people_search_result");
+    this->registerListener("user_status_update");
 }
 
 People::~People()
 {
+}
+
+void People::parseCommand(const QVariantMap &result)
+{
+    const QString &event = result["class"].toString();
+
+    if (event == "agent_status_update") {
+        m_model->parseAgentStatusUpdate(result);
+    } else if (event == "endpoint_status_update") {
+        m_model->parseEndpointStatusUpdate(result);
+    } else if (event == "user_status_update") {
+        m_model->parseUserStatusUpdate(result);
+    } else if (event == "people_headers_result") {
+        m_model->parsePeopleHeadersResult(result);
+    } else if (event == "people_search_result") {
+        m_model->parsePeopleSearchResult(result);
+    } else if (event == "people_favorites_result") {
+        m_model->parsePeopleSearchResult(result);
+    } else if (event == "people_favorite_update") {
+        m_model->parsePeopleFavoriteUpdate(result);
+    }
+
 }
 
 void People::numberSelectionRequested()

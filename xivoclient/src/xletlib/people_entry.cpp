@@ -44,14 +44,31 @@ PeopleEntry::PeopleEntry(const QVariantList &data,
 {
 }
 
+PeopleEntry::PeopleEntry(const QVariantList &data,
+                         const QString &xivo_uuid,
+                         const QString &source_name,
+                         const QString &source_entry_id,
+                         int agent_id,
+                         int endpoint_id,
+                         int user_id)
+  : m_data(data),
+    m_xivo_uuid(xivo_uuid),
+    m_source_name(source_name),
+    m_source_entry_id(source_entry_id),
+    m_agent_id(agent_id),
+    m_user_id(user_id),
+    m_endpoint_id(endpoint_id)
+{
+}
+
 PeopleEntry::PeopleEntry(const PeopleEntry &other)
-    : m_data(other.m_data),
-      m_xivo_uuid(other.m_xivo_uuid),
-      m_source_name(other.m_source_name),
-      m_source_entry_id(other.m_source_entry_id),
-      m_agent_id(other.m_agent_id),
-      m_user_id(other.m_user_id),
-      m_endpoint_id(other.m_endpoint_id)
+  : m_data(other.m_data),
+    m_xivo_uuid(other.m_xivo_uuid),
+    m_source_name(other.m_source_name),
+    m_source_entry_id(other.m_source_entry_id),
+    m_agent_id(other.m_agent_id),
+    m_user_id(other.m_user_id),
+    m_endpoint_id(other.m_endpoint_id)
 {
 }
 
@@ -102,12 +119,12 @@ int PeopleEntry::userId() const
     return m_user_id;
 }
 
-QString PeopleEntry::sourceName() const
+const QString &PeopleEntry::sourceName() const
 {
     return m_source_name;
 }
 
-QString PeopleEntry::sourceEntryId() const
+const QString &PeopleEntry::sourceEntryId() const
 {
     return m_source_entry_id;
 }
@@ -130,4 +147,44 @@ QPair<QString, QString> PeopleEntry::uniqueSourceId() const
 QPair<QString, int> PeopleEntry::uniqueUserId() const
 {
     return QPair<QString, int>(m_xivo_uuid, m_user_id);
+}
+
+const QString &PeopleEntry::agentStatus() const
+{
+    return m_agent_status;
+}
+
+void PeopleEntry::setAgentStatus(const QString &status)
+{
+    m_agent_status = status;
+}
+
+int PeopleEntry::endpointStatus() const
+{
+    return m_endpoint_status;
+}
+
+void PeopleEntry::setEndpointStatus(int status)
+{
+    m_endpoint_status = status;
+}
+
+const QString &PeopleEntry::userStatus() const
+{
+    return m_user_status;
+}
+
+void PeopleEntry::setUserStatus(const QString &status)
+{
+    m_user_status = status;
+}
+
+bool PeopleEntry::isAgent() const
+{
+    return m_is_agent;
+}
+
+void PeopleEntry::setIsAgent(bool enabled)
+{
+    m_is_agent = enabled;
 }
