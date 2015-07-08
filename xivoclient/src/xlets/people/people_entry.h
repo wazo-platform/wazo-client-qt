@@ -49,7 +49,6 @@ class XLETLIB_EXPORT PeopleEntry
         void setData(int column, const QVariant &status);
 
         const QString &xivoUuid() const;
-        bool isAgent() const;
         int agentId() const;
         int endpointId() const;
         int userId() const;
@@ -63,7 +62,6 @@ class XLETLIB_EXPORT PeopleEntry
         void setAgentStatus(const QString &status);
         void setEndpointStatus(int status);
         void setUserStatus(const QString &status);
-        void setIsAgent(bool enabled);
 
         QPair<QString, int> uniqueAgentId() const;
         QPair<QString, int> uniqueEndpointId() const;
@@ -80,7 +78,6 @@ class XLETLIB_EXPORT PeopleEntry
         int m_endpoint_status;
 
         QString m_source_entry_id;
-        bool m_is_agent;
         int m_agent_id;
         int m_user_id;
         int m_endpoint_id;

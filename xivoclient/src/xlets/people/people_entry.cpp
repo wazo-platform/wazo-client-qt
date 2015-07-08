@@ -141,13 +141,3 @@ void PeopleEntry::setUserStatus(const QString &status)
 {
     m_user_status = status;
 }
-
-bool PeopleEntry::isAgent() const
-{
-    return m_is_agent;
-}
-
-void PeopleEntry::setIsAgent(bool enabled)
-{
-    m_is_agent = enabled;
-}
