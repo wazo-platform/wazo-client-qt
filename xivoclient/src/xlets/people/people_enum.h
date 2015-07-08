@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,36 +27,29 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PEOPLE_ENTRY_VIEW_H__
-#define __PEOPLE_ENTRY_VIEW_H__
+#ifndef __PEOPLE_ENUM_H__
+#define __PEOPLE_ENUM_H__
 
-#include <QKeyEvent>
-#include <QModelIndex>
-#include <QVariant>
-
-#include <xletlib/abstract_table_view.h>
-
-class QKeyEvent;
-
-class PeopleEntryView : public AbstractTableView
-{
-    Q_OBJECT
-
-    public:
-        PeopleEntryView(QWidget *parent = NULL);
-        void selectFirstRow();
-        void keyPressEvent(QKeyEvent * event);
-
-    signals:
-        void favoriteToggled(const QVariantMap &unique_source_entry_id);
-
-    public slots:
-        void updateColumnsDelegates(const QModelIndex &parent, int first, int last);
-        void updateColumnsVisibility(const QModelIndex &parent, int first, int last);
-
-    private slots:
-        void onViewClick(const QModelIndex &index);
-
+enum ColumnType {
+  AGENT,
+  FAVORITE,
+  MOBILE,
+  NAME,
+  NUMBER,
+  OTHER,
+  STATUS_ICON
 };
 
-#endif /* __PEOPLE_ENTRY_VIEW_H__ */
+enum UserRoleCustom {
+    NUMBER_ROLE = Qt::UserRole,
+    INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
+    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2,
+    SORT_FILTER_ROLE = Qt::UserRole + 3
+};
+
+enum PeopleMode {
+    SEARCH_MODE = 0,
+    FAVORITE_MODE
+};
+
+#endif

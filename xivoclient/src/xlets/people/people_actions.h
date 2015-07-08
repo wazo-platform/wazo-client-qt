@@ -32,6 +32,7 @@
 #include <QObject>
 
 #include "people_entry.h"
+#include "people_entry_model.h"
 
 class PeopleActions: public QObject
 {

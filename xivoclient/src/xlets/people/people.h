@@ -40,15 +40,10 @@
 #include <xletlib/xlet.h>
 #include <ui_people_widget.h>
 
+#include "people_enum.h"
 
-#include "people_entry_sort_filter_proxy_model.h"
-
-
-enum PeopleMode {
-    SEARCH_MODE = 0,
-    FAVORITE_MODE
-};
-
+class PeopleEntryModel;
+class PeopleEntrySortFilterProxyModel;
 
 class People: public XLet, public IPBXListener
 {

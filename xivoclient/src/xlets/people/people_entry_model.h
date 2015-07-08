@@ -39,9 +39,8 @@
 #include <QVariant>
 #include <QWidget>
 
+#include "people_enum.h"
 #include "people_entry.h"
-
-class PeopleEntry;
 
 class PeopleEntryModel : public QAbstractTableModel
 {

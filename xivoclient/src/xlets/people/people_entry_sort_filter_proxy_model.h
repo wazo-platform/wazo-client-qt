@@ -30,11 +30,10 @@
 #ifndef __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 #define __PEOPLE_ENTRY_SORT_FILTER_PROXY_MODEL_H__
 
-#include <QStringList>
+#include <QModelIndex>
+#include <QString>
 
 #include <xletlib/abstract_sort_filter_proxy_model.h>
-
-#include "people_entry_model.h"
 
 class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
 {

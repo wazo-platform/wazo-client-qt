@@ -35,7 +35,6 @@
 #include <message_factory.h>
 
 #include "people_actions.h"
-#include "people_entry.h"
 #include "people_entry_model.h"
 
 PeopleEntryModel::PeopleEntryModel(QWidget *parent)
