@@ -51,10 +51,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
 void PeopleEntryModel::addField(const QString &name, const QString &type)
 {
     ColumnType t = this->m_type_map.value(type, OTHER);
-    int inserted_column = this->columnCount();
-    this->beginInsertColumns(QModelIndex(), inserted_column, inserted_column);
     m_fields.append(QPair<QString, enum ColumnType>(name.toUpper(), t));
-    this->endInsertColumns();
 }
 
 void PeopleEntryModel::refreshEntry(int row_id)
@@ -367,16 +364,22 @@ void PeopleEntryModel::parsePeopleHeadersResult(const QVariantMap &result)
 {
     const QVariantList &headers = result["column_headers"].toList();
     const QVariantList &types = result["column_types"].toList();
-    assert(headers.length() == types.length());
+    if (headers.length() != types.length() || headers.length() == 0){
+        return;
+    }
 
     this->clearFields();
 
+    int first_column = 0;
+    int last_column = headers.length() - 1;
+    this->beginInsertColumns(QModelIndex(), first_column, last_column);
     for (int i = 0; i < headers.length() ; i++) {
         const QString &name = headers[i].toString();
         const QString &type = types[i].toString();
 
         this->addField(name, type);
     }
+    this->endInsertColumns();
 }
 
 void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
