@@ -34,10 +34,9 @@
 #include <baseengine.h>
 #include <message_factory.h>
 
-#include <xletlib/people_entry.h>
-
-#include "people_entry_model.h"
 #include "people_actions.h"
+#include "people_entry.h"
+#include "people_entry_model.h"
 
 PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     : QAbstractTableModel(parent)

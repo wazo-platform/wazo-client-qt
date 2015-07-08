@@ -31,7 +31,7 @@
 #include <QAction>
 #include <QObject>
 
-#include <xletlib/people_entry.h>
+#include "people_entry.h"
 
 class PeopleActions: public QObject
 {

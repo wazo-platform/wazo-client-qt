@@ -39,7 +39,7 @@
 #include <QVariant>
 #include <QWidget>
 
-#include <xletlib/people_entry.h>
+#include "people_entry.h"
 
 class PeopleEntry;
 
