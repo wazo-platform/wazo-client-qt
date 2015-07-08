@@ -57,8 +57,6 @@ class PeopleEntryModel : public QAbstractTableModel
         int columnCount(const QModelIndex &) const;
         int columnCount() const;
 
-        bool removeRows(int, int, const QModelIndex &);
-
         QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
         QVariant headerData(int,
                             Qt::Orientation,
@@ -72,9 +70,6 @@ class PeopleEntryModel : public QAbstractTableModel
         void parsePeopleFavoriteUpdate(const QVariantMap &result);
         void parsePeopleHeadersResult(const QVariantMap &command);
         void parsePeopleSearchResult(const QVariantMap &result);
-
-    public slots:
-        void clearCache();
 
     private:
         void refreshEntry(int entry_index);

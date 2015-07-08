@@ -67,6 +67,7 @@ class XLETLIB_EXPORT PeopleEntry
         const QVariant data(int column) const;
         void setData(int column, const QVariant &status);
         PeopleEntry &operator=(const PeopleEntry &other);
+
         const QString &xivoUuid() const;
         bool isAgent() const;
         int agentId() const;
@@ -78,6 +79,7 @@ class XLETLIB_EXPORT PeopleEntry
         const QString &agentStatus() const;
         const QString &userStatus() const;
         int endpointStatus() const;
+
         void setAgentStatus(const QString &status);
         void setEndpointStatus(int status);
         void setUserStatus(const QString &status);

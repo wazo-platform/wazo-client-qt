@@ -48,10 +48,6 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
     this->m_type_map["status"] = STATUS_ICON;
-
-    connect(b_engine, SIGNAL(clearingCache()),
-            this, SLOT(clearCache()));
-
 }
 
 void PeopleEntryModel::addField(const QString &name, const QString &type)
@@ -65,19 +61,9 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
 
 void PeopleEntryModel::clearFields()
 {
-    if (m_fields.isEmpty()) {
-        return;
-    }
-
-    int last_column = m_fields.size() - 1;
-    this->beginRemoveColumns(QModelIndex(), 0, last_column);
+    this->beginResetModel();
     m_fields.clear();
-    this->endRemoveColumns();
-}
-
-void PeopleEntryModel::clearCache()
-{
-    this->removeRows(0, this->rowCount(), QModelIndex());
+    this->endResetModel();
 }
 
 void PeopleEntryModel::refreshEntry(int row_id)
@@ -233,31 +219,6 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int colu
     return QVariant();
 }
 
-bool PeopleEntryModel::removeRows(int row, int count, const QModelIndex & index)
-{
-    if (count > 0) {
-        beginRemoveRows(index, row, row + count - 1);
-        endRemoveRows();
-    }
-    return true;
-}
-
-void PeopleEntryModel::parsePeopleHeadersResult(const QVariantMap &result)
-{
-    const QVariantList &headers = result["column_headers"].toList();
-    const QVariantList &types = result["column_types"].toList();
-    assert(headers.length() == types.length());
-
-    this->clearFields();
-
-    for (int i = 0; i < headers.length() ; i++) {
-        const QString &name = headers[i].toString();
-        const QString &type = types[i].toString();
-
-        this->addField(name, type);
-    }
-}
-
 int PeopleEntryModel::getNameColumnIndex() const
 {
     for (int i = 0; i < m_fields.size(); ++i) {
@@ -376,6 +337,22 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
                 }
             }
         }
+    }
+}
+
+void PeopleEntryModel::parsePeopleHeadersResult(const QVariantMap &result)
+{
+    const QVariantList &headers = result["column_headers"].toList();
+    const QVariantList &types = result["column_types"].toList();
+    assert(headers.length() == types.length());
+
+    this->clearFields();
+
+    for (int i = 0; i < headers.length() ; i++) {
+        const QString &name = headers[i].toString();
+        const QString &type = types[i].toString();
+
+        this->addField(name, type);
     }
 }
 
