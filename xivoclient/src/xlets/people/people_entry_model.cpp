@@ -123,9 +123,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     return AbstractTableModel::data(index, role);
 }
 
-QVariant PeopleEntryModel::headerData(int column,
-                                      Qt::Orientation orientation,
-                                      int role) const
+QVariant PeopleEntryModel::headerData(int column, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal) {
         return QVariant();

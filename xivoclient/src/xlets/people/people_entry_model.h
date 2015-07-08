@@ -57,9 +57,7 @@ class PeopleEntryModel : public AbstractTableModel
         int columnCount(const QModelIndex &parent=QModelIndex()) const;
 
         QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
-        QVariant headerData(int,
-                            Qt::Orientation,
-                            int) const;
+        QVariant headerData(int, Qt::Orientation, int) const;
         int getNameColumnIndex() const;
         bool favoriteStatus(const QVariantMap &unique_source_entry_id) const;
         void clearEntries();
