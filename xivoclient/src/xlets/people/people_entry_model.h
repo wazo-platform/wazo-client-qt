@@ -30,7 +30,6 @@
 #ifndef __PEOPLE_ENTRY_MODEL_H__
 #define __PEOPLE_ENTRY_MODEL_H__
 
-#include <QAbstractTableModel>
 #include <QList>
 #include <QMap>
 #include <QModelIndex>
@@ -39,10 +38,12 @@
 #include <QVariant>
 #include <QWidget>
 
+#include <xletlib/abstract_table_model.h>
+
 #include "people_enum.h"
 #include "people_entry.h"
 
-class PeopleEntryModel : public QAbstractTableModel
+class PeopleEntryModel : public AbstractTableModel
 {
     Q_OBJECT
 

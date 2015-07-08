@@ -38,7 +38,7 @@
 #include "people_entry_model.h"
 
 PeopleEntryModel::PeopleEntryModel(QWidget *parent)
-    : QAbstractTableModel(parent)
+    : AbstractTableModel(parent)
 {
     this->m_type_map["agent"] = AGENT;
     this->m_type_map["favorite"] = FAVORITE;
@@ -123,7 +123,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     default:
         break;
     }
-    return QVariant();
+    return AbstractTableModel::data(index, role);
 }
 
 QVariant PeopleEntryModel::headerData(int column,
