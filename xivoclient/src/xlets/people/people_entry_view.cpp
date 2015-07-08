@@ -38,7 +38,6 @@
 PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    this->horizontalHeader()->setSortIndicatorShown(true);
     this->viewport()->setAttribute(Qt::WA_Hover);
 }
 
