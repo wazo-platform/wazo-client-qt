@@ -53,7 +53,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
 void PeopleEntryModel::addField(const QString &name, const QString &type)
 {
     ColumnType t = this->m_type_map.value(type, OTHER);
-    int inserted_column = m_fields.size();
+    int inserted_column = this->columnCount();
     this->beginInsertColumns(QModelIndex(), inserted_column, inserted_column);
     m_fields.append(QPair<QString, enum ColumnType>(name.toUpper(), t));
     this->endInsertColumns();
@@ -80,21 +80,16 @@ int PeopleEntryModel::rowCount(const QModelIndex&) const
     return m_people_entries.size();
 }
 
-int PeopleEntryModel::columnCount() const
-{
-    return m_fields.size();
-}
-
 int PeopleEntryModel::columnCount(const QModelIndex&) const
 {
-    return this->columnCount();
+    return m_fields.size();
 }
 
 QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
     const PeopleEntry &entry = m_people_entries[row];
-    ColumnType column_type = m_fields[column].second;
+    ColumnType column_type = this->headerType(column);
 
     switch(role) {
     case Qt::DecorationRole:
@@ -131,10 +126,9 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
         if (column_type == FAVORITE) {
-            QPair<QString, QString> source_entry_id = entry.uniqueSourceId();
             QVariantMap favorite_key;
-            favorite_key["source"] = source_entry_id.first;
-            favorite_key["source_entry_id"] = source_entry_id.second;
+            favorite_key["source"] = entry.sourceName();
+            favorite_key["source_entry_id"] = entry.sourceEntryId();
             return favorite_key;
         }
     case SORT_FILTER_ROLE:
@@ -185,7 +179,7 @@ enum ColumnType PeopleEntryModel::headerType(int column) const
 
 QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int column) const
 {
-    ColumnType column_type = m_fields[column].second;
+    ColumnType column_type = this->headerType(column);
 
     switch (column_type) {
     case NAME: // user
@@ -221,10 +215,9 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int colu
 
 int PeopleEntryModel::getNameColumnIndex() const
 {
-    for (int i = 0; i < m_fields.size(); ++i) {
-        const QPair<QString, enum ColumnType> &field = m_fields[i];
-        if (field.second == NAME) {
-            return i;
+    for (int column = 0; column < this->columnCount(); ++column) {
+        if (this->headerType(column) == NAME) {
+            return column;
         }
     }
     return -1;
@@ -238,8 +231,8 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
     for (int i = 0; i < m_people_entries.size(); ++i) {
         const PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            for (int column = 0 ; column < m_fields.size(); ++column) {
-                if (m_fields[column].second == FAVORITE) {
+            for (int column = 0 ; column < this->columnCount(); ++column) {
+                if (this->headerType(column) == FAVORITE) {
                     return entry.data(column).toBool();
                 }
             }
@@ -329,8 +322,8 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            for (int column = 0 ; column < m_fields.size(); ++column) {
-                if (m_fields[column].second == FAVORITE) {
+            for (int column = 0 ; column < this->columnCount(); ++column) {
+                if (this->headerType(column) == FAVORITE) {
                     entry.setData(column, status);
                     this->refreshEntry(i);
                     return;
