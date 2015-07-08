@@ -116,7 +116,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             return favorite_key;
         }
     case SORT_FILTER_ROLE:
-        this->dataSortFilter(entry, column);
+        return this->dataSortFilter(entry, column);
     default:
         break;
     }
