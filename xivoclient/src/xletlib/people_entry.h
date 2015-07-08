@@ -54,7 +54,6 @@ enum UserRoleCustom {
 class XLETLIB_EXPORT PeopleEntry
 {
     public:
-        PeopleEntry(const QVariantList &data, const QVariantMap &relations, const QString &source_name);
         PeopleEntry(const QVariantList &data,
                     const QString &xivo_uuid,
                     const QString &source_name,
@@ -62,11 +61,9 @@ class XLETLIB_EXPORT PeopleEntry
                     int agent_id,
                     int endpoint_id,
                     int user_id);
-        PeopleEntry(const PeopleEntry &other);
         ~PeopleEntry();
         const QVariant data(int column) const;
         void setData(int column, const QVariant &status);
-        PeopleEntry &operator=(const PeopleEntry &other);
 
         const QString &xivoUuid() const;
         bool isAgent() const;
