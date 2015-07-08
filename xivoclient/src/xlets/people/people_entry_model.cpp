@@ -59,13 +59,6 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
     this->endInsertColumns();
 }
 
-void PeopleEntryModel::clearFields()
-{
-    this->beginResetModel();
-    m_fields.clear();
-    this->endResetModel();
-}
-
 void PeopleEntryModel::refreshEntry(int row_id)
 {
     unsigned first_column_index = 0;
@@ -73,6 +66,20 @@ void PeopleEntryModel::refreshEntry(int row_id)
     QModelIndex cell_changed_start = createIndex(row_id, first_column_index);
     QModelIndex cell_changed_end = createIndex(row_id, last_column_index);
     emit dataChanged(cell_changed_start, cell_changed_end);
+}
+
+void PeopleEntryModel::clearFields()
+{
+    this->beginResetModel();
+    m_fields.clear();
+    this->endResetModel();
+}
+
+void PeopleEntryModel::clearEntries()
+{
+    this->beginResetModel();
+    m_people_entries.clear();
+    this->endResetModel();
 }
 
 int PeopleEntryModel::rowCount(const QModelIndex&) const
@@ -93,25 +100,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
 
     switch(role) {
     case Qt::DecorationRole:
-        if (column_type == AGENT) {
-            const QString &agent_status = entry.agentStatus();
-            if (agent_status == "logged_in") {
-                return QIcon(":/images/agent-on.svg").pixmap(QSize(20, 20));
-            } else if (agent_status == "logged_out") {
-                return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
-            }
-        } else if (column_type == FAVORITE) {
-            const QString &source_entry_id = entry.sourceEntryId();
-            if (source_entry_id.isEmpty()) {
-                break;
-            }
-            if (entry.data(column).toBool()) {
-                return QIcon(":/images/star-filled.svg").pixmap(QSize(12, 12));
-            } else {
-                return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
-            }
-        }
-        break;
+        return this->dataDecoration(entry, column);
     case Qt::DisplayRole:
         if (column_type != AGENT && column_type != FAVORITE) {
             return entry.data(column);
@@ -132,17 +121,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             return favorite_key;
         }
     case SORT_FILTER_ROLE:
-        if (column_type == AGENT) {
-            return entry.agentStatus();
-        }
-        if (column_type == FAVORITE) {
-            const QString &source_entry_id = entry.sourceEntryId();
-            if (source_entry_id.isEmpty()) {
-                break;
-            }
-            return entry.data(column);
-        }
-        break;
+        this->dataSortFilter(entry, column);
     default:
         break;
     }
@@ -175,6 +154,39 @@ QString PeopleEntryModel::headerText(int column) const
 enum ColumnType PeopleEntryModel::headerType(int column) const
 {
     return this->m_fields[column].second;
+}
+
+QVariant PeopleEntryModel::dataDecoration(const PeopleEntry &entry, int column) const
+{
+    ColumnType column_type = this->headerType(column);
+
+    switch (column_type) {
+    case AGENT:
+    {
+        const QString &agent_status = entry.agentStatus();
+        if (agent_status == "logged_in") {
+            return QIcon(":/images/agent-on.svg").pixmap(QSize(20, 20));
+        } else if (agent_status == "logged_out") {
+            return QIcon(":/images/agent-off.svg").pixmap(QSize(20, 20));
+        }
+    }
+    break;
+    case FAVORITE:
+    {
+        if (entry.sourceEntryId().isEmpty()) {
+            break;
+        }
+        if (entry.data(column).toBool()) {
+            return QIcon(":/images/star-filled.svg").pixmap(QSize(12, 12));
+        } else {
+            return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
+        }
+    }
+    break;
+    default:
+        break;
+    }
+    return QVariant();
 }
 
 QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int column) const
@@ -213,10 +225,40 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int colu
     return QVariant();
 }
 
+QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) const
+{
+    ColumnType column_type = this->headerType(column);
+
+    switch (column_type) {
+    case AGENT:
+        return entry.agentStatus();
+    case FAVORITE:
+    {
+        if (entry.sourceEntryId().isEmpty()) {
+            break;
+        }
+        return entry.data(column);
+    }
+    default:
+        break;
+    }
+    return QVariant();
+}
+
 int PeopleEntryModel::getNameColumnIndex() const
 {
     for (int column = 0; column < this->columnCount(); ++column) {
         if (this->headerType(column) == NAME) {
+            return column;
+        }
+    }
+    return -1;
+}
+
+int PeopleEntryModel::getFavoriteColumnIndex() const
+{
+    for (int column = 0; column < this->columnCount(); ++column) {
+        if (this->headerType(column) == FAVORITE) {
             return column;
         }
     }
@@ -231,57 +273,13 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
     for (int i = 0; i < m_people_entries.size(); ++i) {
         const PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            for (int column = 0 ; column < this->columnCount(); ++column) {
-                if (this->headerType(column) == FAVORITE) {
-                    return entry.data(column).toBool();
-                }
+            int column = this->getFavoriteColumnIndex();
+            if (column != -1) {
+                return entry.data(column).toBool();
             }
         }
     }
     return false;
-}
-
-void PeopleEntryModel::clearEntries()
-{
-    this->beginResetModel();
-    m_people_entries.clear();
-    this->endResetModel();
-}
-
-void PeopleEntryModel::parseAgentStatusUpdate(const QVariantMap &result)
-{
-    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
-                  result["data"].toMap()["agent_id"].toInt());
-    QString new_status = result["data"].toMap()["status"].toString();
-
-    this->setAgentStatusFromAgentId(id, new_status);
-}
-
-void PeopleEntryModel::parseEndpointStatusUpdate(const QVariantMap &result)
-{
-    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
-                  result["data"].toMap()["endpoint_id"].toInt());
-    int new_status = result["data"].toMap()["status"].toInt();
-
-    this->setEndpointStatusFromEndpointId(id, new_status);
-}
-
-void PeopleEntryModel::parseUserStatusUpdate(const QVariantMap &result)
-{
-    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
-                  result["data"].toMap()["user_id"].toInt());
-    const QString &new_status = result["data"].toMap()["status"].toString();
-
-    this->setUserStatusFromUserId(id, new_status);
-}
-
-void PeopleEntryModel::parsePeopleFavoriteUpdate(const QVariantMap &result)
-{
-    QVariantMap data = result["data"].toMap();
-    RelationSourceID id(data["source"].toString(), data["source_entry_id"].toString());
-    bool new_status = data["favorite"].toBool();
-
-    this->setFavoriteStatusFromSourceId(id, new_status);
 }
 
 void PeopleEntryModel::setAgentStatusFromAgentId(const RelationID &id, const QString &status)
@@ -322,15 +320,49 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            for (int column = 0 ; column < this->columnCount(); ++column) {
-                if (this->headerType(column) == FAVORITE) {
-                    entry.setData(column, status);
-                    this->refreshEntry(i);
-                    return;
-                }
+            int column = this->getFavoriteColumnIndex();
+            if (column != -1) {
+                entry.setData(column, status);
+                this->refreshEntry(i);
             }
         }
     }
+}
+
+void PeopleEntryModel::parseAgentStatusUpdate(const QVariantMap &result)
+{
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["agent_id"].toInt());
+    QString new_status = result["data"].toMap()["status"].toString();
+
+    this->setAgentStatusFromAgentId(id, new_status);
+}
+
+void PeopleEntryModel::parseEndpointStatusUpdate(const QVariantMap &result)
+{
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["endpoint_id"].toInt());
+    int new_status = result["data"].toMap()["status"].toInt();
+
+    this->setEndpointStatusFromEndpointId(id, new_status);
+}
+
+void PeopleEntryModel::parseUserStatusUpdate(const QVariantMap &result)
+{
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["user_id"].toInt());
+    const QString &new_status = result["data"].toMap()["status"].toString();
+
+    this->setUserStatusFromUserId(id, new_status);
+}
+
+void PeopleEntryModel::parsePeopleFavoriteUpdate(const QVariantMap &result)
+{
+    QVariantMap data = result["data"].toMap();
+    RelationSourceID id(data["source"].toString(), data["source_entry_id"].toString());
+    bool new_status = data["favorite"].toBool();
+
+    this->setFavoriteStatusFromSourceId(id, new_status);
 }
 
 void PeopleEntryModel::parsePeopleHeadersResult(const QVariantMap &result)
@@ -404,5 +436,3 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
         b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
     }
 }
-
-
