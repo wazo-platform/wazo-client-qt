@@ -68,10 +68,13 @@ class People: public XLet, public IPBXListener
 
     private slots:
         void setFavoriteStatus(const QVariantMap &unique_source_entry_id);
-        void searchMode();
+        void automaticSearchPeople();
+        void forceSearchPeople();
         void favoriteMode();
 
     private:
+        void searchMode();
+
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;
