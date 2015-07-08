@@ -66,7 +66,7 @@ People::People(QWidget *parent)
             ui.entry_table, SLOT(updateColumnsDelegates(const QModelIndex &, int, int)));
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             ui.entry_table, SLOT(updateColumnsVisibility(const QModelIndex &, int, int)));
-    connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+    connect(m_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             this, SLOT(defaultColumnSort(const QModelIndex &, int, int)));
 
     connect(ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
