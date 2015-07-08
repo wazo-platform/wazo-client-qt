@@ -43,8 +43,6 @@ class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
         PeopleEntrySortFilterProxyModel(QObject *parent);
     protected:
         virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-    private:
-        QString m_filter;
 };
 
 #endif
