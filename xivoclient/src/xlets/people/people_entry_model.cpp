@@ -84,6 +84,11 @@ void PeopleEntryModel::clearEntries()
     this->endResetModel();
 }
 
+QList<int> PeopleEntryModel::columnDisplayBold() const
+{
+    return QList<int>() << m_indexes_by_type[NAME];
+}
+
 int PeopleEntryModel::rowCount(const QModelIndex&) const
 {
     return m_people_entries.size();

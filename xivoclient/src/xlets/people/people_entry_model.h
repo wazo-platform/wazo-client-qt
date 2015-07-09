@@ -68,6 +68,9 @@ class PeopleEntryModel : public AbstractTableModel
         void parsePeopleHeadersResult(const QVariantMap &command);
         void parsePeopleSearchResult(const QVariantMap &result);
 
+    protected:
+        virtual QList<int> columnDisplayBold() const;
+
     private:
         void refreshEntry(int entry_index);
         QVariant dataDecoration(const PeopleEntry & entry, int column) const;
