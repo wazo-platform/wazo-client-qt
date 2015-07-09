@@ -75,13 +75,13 @@ People::People(QWidget *parent)
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
-            this, SLOT(forceSearchPeople()));
+            this, SLOT(searchPeople()));
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),
             this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
     connect(&m_remote_lookup_timer, SIGNAL(timeout()),
-            this, SLOT(automaticSearchPeople()));
+            this, SLOT(searchPeople()));
     this->m_remote_lookup_timer.setSingleShot(true);
     this->m_remote_lookup_timer.setInterval(delay_before_lookup);
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
@@ -143,29 +143,20 @@ void People::schedulePeopleLookup(const QString &lookup_pattern)
     m_remote_lookup_timer.start();
 }
 
-void People::automaticSearchPeople()
+void People::searchPeople()
 {
+    m_remote_lookup_timer.stop();
+
     if (m_searched_pattern.length() < min_lookup_length) {
         qDebug() << Q_FUNC_INFO << "ignoring pattern too short" << this->m_searched_pattern;
     } else {
-        this->searchPeople();
+        if (m_mode == FAVORITE_MODE) {
+            this->ui.menu->setSelectedAction(0);
+        }
+        m_search_history.append(m_searched_pattern);
+        b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
+        qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
     }
-}
-
-void People::forceSearchPeople()
-{
-    m_remote_lookup_timer.stop();
-    this->searchPeople();
-}
-
-void People::searchPeople()
-{
-    if (m_mode == FAVORITE_MODE) {
-        this->ui.menu->setSelectedAction(0);
-    }
-    m_search_history.append(m_searched_pattern);
-    b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
-    qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
 }
 
 void People::defaultColumnSort(const QModelIndex &, int, int)

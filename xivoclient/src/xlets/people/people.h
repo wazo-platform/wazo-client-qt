@@ -62,19 +62,16 @@ class People: public XLet, public IPBXListener
         void numberSelectionRequested();
         void focusEntryTable();
         void schedulePeopleLookup(const QString &lookup_pattern);
-        void searchPeople();
         void defaultColumnSort(const QModelIndex &, int, int);
         void parseCommand(const QVariantMap &command);
 
     private slots:
         void setFavoriteStatus(const QVariantMap &unique_source_entry_id);
-        void automaticSearchPeople();
-        void forceSearchPeople();
+        void searchMode();
+        void searchPeople();
         void favoriteMode();
 
     private:
-        void searchMode();
-
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;
