@@ -57,7 +57,7 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
 void PeopleEntryModel::addIndexByType(const QString &type, int column)
 {
     ColumnType enum_type = this->m_type_map.value(type, OTHER);
-    m_indexes_by_type[enum_type].append(column);
+    m_type_to_indices[enum_type].append(column);
 }
 
 void PeopleEntryModel::refreshEntry(int row_id)
@@ -71,7 +71,7 @@ void PeopleEntryModel::refreshEntry(int row_id)
 
 void PeopleEntryModel::clearFields()
 {
-    m_indexes_by_type.clear();
+    m_type_to_indices.clear();
     this->beginResetModel();
     m_fields.clear();
     this->endResetModel();
@@ -86,7 +86,7 @@ void PeopleEntryModel::clearEntries()
 
 QList<int> PeopleEntryModel::columnDisplayBold() const
 {
-    return QList<int>() << m_indexes_by_type[NAME];
+    return QList<int>() << m_type_to_indices[NAME];
 }
 
 int PeopleEntryModel::rowCount(const QModelIndex&) const
@@ -234,7 +234,7 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
     switch (column_type) {
         case NUMBER: {
             QVariantList number_items;
-            const QList<int> &number_indexes = m_indexes_by_type[NUMBER];
+            const QList<int> &number_indexes = m_type_to_indices[NUMBER];
             for (int i = 0; i < number_indexes.size(); i++)
             {
                 QVariantMap item;
@@ -243,7 +243,7 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
                 item["action"] = CALL;
                 number_items.append(item);
             }
-            const QList<int> &mobile_indexes = m_indexes_by_type[MOBILE];
+            const QList<int> &mobile_indexes = m_type_to_indices[MOBILE];
             for (int i = 0; i < mobile_indexes.size(); i++)
             {
                 QVariantMap item;
@@ -282,7 +282,7 @@ QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) 
 
 int PeopleEntryModel::getNameColumnIndex() const
 {
-    return m_indexes_by_type.value(NAME).value(0,-1);
+    return m_type_to_indices.value(NAME).value(0,-1);
 }
 
 bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id) const
@@ -293,7 +293,7 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
     for (int i = 0; i < m_people_entries.size(); ++i) {
         const PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            const QList<int> &columns = m_indexes_by_type[FAVORITE];
+            const QList<int> &columns = m_type_to_indices[FAVORITE];
             int column;
             foreach(column, columns) {
                 return entry.data(column).toBool();
@@ -341,7 +341,7 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            const QList<int> &columns = m_indexes_by_type[FAVORITE];
+            const QList<int> &columns = m_type_to_indices[FAVORITE];
             int column;
             foreach(column, columns) {
                 entry.setData(column, status);

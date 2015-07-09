@@ -88,7 +88,7 @@ class PeopleEntryModel : public AbstractTableModel
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
 
-        QMap< enum ColumnType, QList<int> > m_indexes_by_type;
+        QMap< enum ColumnType, QList<int> > m_type_to_indices;
         QList< QPair<QString, enum ColumnType> >  m_fields;
         QList<PeopleEntry> m_people_entries;
         QMap<QString, ColumnType> m_type_map;
