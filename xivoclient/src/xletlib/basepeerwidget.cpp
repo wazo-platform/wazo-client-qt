@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -373,16 +373,14 @@ void BasePeerWidget::addEditMenu(QMenu * menu)
 void BasePeerWidget::addHangupMenu(QMenu * menu)
 {
     static QStringList can_hangup = QStringList()
-        << CHAN_STATUS_LINKED_CALLER
-        << CHAN_STATUS_LINKED_CALLED
+        << CHAN_STATUS_LINKED
         << CHAN_STATUS_RINGING;
     QStringList channels = m_ui_local->xchannels();
     qSort(channels.begin(), channels.end(), channelTimestampLessThan);
     int callorder = 1;
     foreach (const QString & channelxid, channels) {
         if (const ChannelInfo * c = b_engine->channel(channelxid)) {
-            if (can_hangup.contains(c->commstatus())
-                || c->talkingto_kind().contains("meetme")) {
+            if (can_hangup.contains(c->commstatus())) {
                 QAction * action = new QAction(tr("&Hangup call") + " " + QString::number(callorder), this);
                 action->setProperty("xchannel", c->xid());
                 menu->addAction(action);

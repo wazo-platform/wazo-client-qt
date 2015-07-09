@@ -727,7 +727,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     }
 
     QVariantMap datamap = data.toMap();
-    QString direction = datamap.value("direction").toString();
     QString function = datamap.value("function").toString();
     QString thisclass = datamap.value("class").toString();
 
