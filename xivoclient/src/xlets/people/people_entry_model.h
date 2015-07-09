@@ -75,8 +75,8 @@ class PeopleEntryModel : public AbstractTableModel
         QVariant dataNumber(const PeopleEntry & entry, int column) const;
         QVariant dataSortFilter(const PeopleEntry & entry, int column) const;
         void addField(const QString &name, const QString &type);
+        void addIndexByType(const QString &type, int column);
         void clearFields();
-        QList<int> getFavoriteColumnIndex() const;
         void setAgentStatusFromAgentId(const RelationID &id, const QString &status);
         void setEndpointStatusFromEndpointId(const RelationID &id, int status);
         void setUserStatusFromUserId(const RelationID &id, const QString &status);
@@ -85,6 +85,7 @@ class PeopleEntryModel : public AbstractTableModel
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
 
+        QMap< enum ColumnType, QList<int> > m_indexes_by_type;
         QList< QPair<QString, enum ColumnType> >  m_fields;
         QList<PeopleEntry> m_people_entries;
         QMap<QString, ColumnType> m_type_map;

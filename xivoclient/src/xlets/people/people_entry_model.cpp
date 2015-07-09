@@ -54,6 +54,12 @@ void PeopleEntryModel::addField(const QString &name, const QString &type)
     m_fields.append(QPair<QString, enum ColumnType>(name.toUpper(), t));
 }
 
+void PeopleEntryModel::addIndexByType(const QString &type, int column)
+{
+    ColumnType enum_type = this->m_type_map.value(type, OTHER);
+    m_indexes_by_type[enum_type].append(column);
+}
+
 void PeopleEntryModel::refreshEntry(int row_id)
 {
     unsigned first_column_index = 0;
@@ -65,6 +71,7 @@ void PeopleEntryModel::refreshEntry(int row_id)
 
 void PeopleEntryModel::clearFields()
 {
+    m_indexes_by_type.clear();
     this->beginResetModel();
     m_fields.clear();
     this->endResetModel();
@@ -222,20 +229,23 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
     switch (column_type) {
         case NUMBER: {
             QVariantList number_items;
-            for (int i = 0; i < this->columnCount(); i++)
+            const QList<int> &number_indexes = m_indexes_by_type[NUMBER];
+            for (int i = 0; i < number_indexes.size(); i++)
             {
-                ColumnType type = this->headerType(i);
-                if (type == MOBILE || type == NUMBER) {
-                    QVariantMap item;
-                    item["label"] = this->headerText(i);
-                    item["value"] = entry.data(i);
-                    if (type == NUMBER) {
-                        item["action"] = CALL;
-                    } else {
-                        item["action"] = MOBILECALL;
-                    }
-                    number_items.append(item);
-                }
+                QVariantMap item;
+                item["label"] = this->headerText(number_indexes[i]);
+                item["value"] = entry.data(number_indexes[i]);
+                item["action"] = CALL;
+                number_items.append(item);
+            }
+            const QList<int> &mobile_indexes = m_indexes_by_type[MOBILE];
+            for (int i = 0; i < mobile_indexes.size(); i++)
+            {
+                QVariantMap item;
+                item["label"] = this->headerText(mobile_indexes[i]);
+                item["value"] = entry.data(mobile_indexes[i]);
+                item["action"] = MOBILECALL;
+                number_items.append(item);
             }
             return number_items;
         }
@@ -267,23 +277,7 @@ QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) 
 
 int PeopleEntryModel::getNameColumnIndex() const
 {
-    for (int column = 0; column < this->columnCount(); ++column) {
-        if (this->headerType(column) == NAME) {
-            return column;
-        }
-    }
-    return -1;
-}
-
-QList<int> PeopleEntryModel::getFavoriteColumnIndex() const
-{
-    QList<int> column_indexes;
-    for (int column = 0; column < this->columnCount(); ++column) {
-        if (this->headerType(column) == FAVORITE) {
-            column_indexes.append(column);
-        }
-    }
-    return column_indexes;
+    return m_indexes_by_type.value(NAME).value(0,-1);
 }
 
 bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id) const
@@ -294,7 +288,7 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
     for (int i = 0; i < m_people_entries.size(); ++i) {
         const PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            QList<int> columns = this->getFavoriteColumnIndex();
+            const QList<int> &columns = m_indexes_by_type[FAVORITE];
             int column;
             foreach(column, columns) {
                 return entry.data(column).toBool();
@@ -342,7 +336,7 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            QList<int> columns = this->getFavoriteColumnIndex();
+            const QList<int> &columns = m_indexes_by_type[FAVORITE];
             int column;
             foreach(column, columns) {
                 entry.setData(column, status);
@@ -406,6 +400,7 @@ void PeopleEntryModel::parsePeopleHeadersResult(const QVariantMap &result)
         const QString &type = types[i].toString();
 
         this->addField(name, type);
+        this->addIndexByType(type, i);
     }
     this->endInsertColumns();
 }
