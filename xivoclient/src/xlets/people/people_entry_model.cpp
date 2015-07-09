@@ -102,10 +102,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         }
         break;
     case NUMBER_ROLE:
-        if (column_type == NUMBER) {
-            return QVariant::fromValue(new PeopleActions(m_fields, entry, column));
-        }
-        break;
+        return this->dataNumber(entry, column);
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
@@ -214,6 +211,36 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int colu
     break;
     default:
         break;
+    }
+    return QVariant();
+}
+
+QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) const
+{
+    ColumnType column_type = this->headerType(column);
+
+    switch (column_type) {
+        case NUMBER: {
+            QVariantList number_items;
+            for (int i = 0; i < this->columnCount(); i++)
+            {
+                ColumnType type = this->headerType(i);
+                if (type == MOBILE || type == NUMBER) {
+                    QVariantMap item;
+                    item["label"] = this->headerText(i);
+                    item["value"] = entry.data(i);
+                    if (type == NUMBER) {
+                        item["action"] = CALL;
+                    } else {
+                        item["action"] = MOBILECALL;
+                    }
+                    number_items.append(item);
+                }
+            }
+            return number_items;
+        }
+        default:
+            break;
     }
     return QVariant();
 }

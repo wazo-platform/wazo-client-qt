@@ -29,7 +29,10 @@
 #define __PEOPLE_ACTIONS_H__
 
 #include <QAction>
+#include <QList>
 #include <QObject>
+#include <QString>
+#include <QVariant>
 
 #include "people_entry.h"
 #include "people_entry_model.h"
@@ -39,7 +42,7 @@ class PeopleActions: public QObject
     Q_OBJECT
 
     public:
-        PeopleActions(QList< QPair<QString, ColumnType> > fields, const PeopleEntry &entry, int current_column);
+        PeopleActions(const QList<QVariant> &action_items);
         QAction *callAction();
         QAction *callMobileAction();
 
@@ -48,10 +51,8 @@ class PeopleActions: public QObject
         void callMobile();
 
     private:
-        const PeopleEntry &m_entry;
-
-        int m_mobile_column;
-        int m_number_column;
+        QString m_mobile_extension;
+        QString m_number_extension;
 
         QAction *m_call_action;
         QAction *m_call_mobile_action;

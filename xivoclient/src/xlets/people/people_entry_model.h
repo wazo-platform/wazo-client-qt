@@ -72,6 +72,7 @@ class PeopleEntryModel : public AbstractTableModel
         void refreshEntry(int entry_index);
         QVariant dataDecoration(const PeopleEntry & entry, int column) const;
         QVariant dataIndicatorColor(const PeopleEntry & entry, int column) const;
+        QVariant dataNumber(const PeopleEntry & entry, int column) const;
         QVariant dataSortFilter(const PeopleEntry & entry, int column) const;
         void addField(const QString &name, const QString &type);
         void clearFields();

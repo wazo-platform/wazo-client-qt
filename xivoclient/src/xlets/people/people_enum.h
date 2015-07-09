@@ -52,4 +52,10 @@ enum PeopleMode {
     FAVORITE_MODE
 };
 
+enum PeopleAction {
+    CALL,
+    MOBILECALL
+
+};
+
 #endif
