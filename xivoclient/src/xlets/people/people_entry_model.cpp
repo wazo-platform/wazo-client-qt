@@ -275,14 +275,15 @@ int PeopleEntryModel::getNameColumnIndex() const
     return -1;
 }
 
-int PeopleEntryModel::getFavoriteColumnIndex() const
+QList<int> PeopleEntryModel::getFavoriteColumnIndex() const
 {
+    QList<int> column_indexes;
     for (int column = 0; column < this->columnCount(); ++column) {
         if (this->headerType(column) == FAVORITE) {
-            return column;
+            column_indexes.append(column);
         }
     }
-    return -1;
+    return column_indexes;
 }
 
 bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id) const
@@ -293,8 +294,9 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
     for (int i = 0; i < m_people_entries.size(); ++i) {
         const PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            int column = this->getFavoriteColumnIndex();
-            if (column != -1) {
+            QList<int> columns = this->getFavoriteColumnIndex();
+            int column;
+            foreach(column, columns) {
                 return entry.data(column).toBool();
             }
         }
@@ -340,8 +342,9 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            int column = this->getFavoriteColumnIndex();
-            if (column != -1) {
+            QList<int> columns = this->getFavoriteColumnIndex();
+            int column;
+            foreach(column, columns) {
                 entry.setData(column, status);
                 this->refreshEntry(i);
             }

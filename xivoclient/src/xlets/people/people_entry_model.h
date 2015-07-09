@@ -76,7 +76,7 @@ class PeopleEntryModel : public AbstractTableModel
         QVariant dataSortFilter(const PeopleEntry & entry, int column) const;
         void addField(const QString &name, const QString &type);
         void clearFields();
-        int getFavoriteColumnIndex() const;
+        QList<int> getFavoriteColumnIndex() const;
         void setAgentStatusFromAgentId(const RelationID &id, const QString &status);
         void setEndpointStatusFromEndpointId(const RelationID &id, int status);
         void setUserStatusFromUserId(const RelationID &id, const QString &status);
