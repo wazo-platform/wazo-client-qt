@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -41,6 +41,8 @@ class XLETLIB_EXPORT AbstractSortFilterProxyModel : public QSortFilterProxyModel
     public:
         AbstractSortFilterProxyModel(QObject *parent = NULL);
         virtual ~AbstractSortFilterProxyModel() = 0;
+        virtual bool lessThan(const QModelIndex &left,
+                              const QModelIndex &right) const;
 };
 
 #endif
