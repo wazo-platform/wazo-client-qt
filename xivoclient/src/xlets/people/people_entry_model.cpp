@@ -235,8 +235,7 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
         case NUMBER: {
             QVariantList number_items;
             const QList<int> &number_indexes = m_type_to_indices[NUMBER];
-            for (int i = 0; i < number_indexes.size(); i++)
-            {
+            foreach(int i, number_indexes) {
                 QVariantMap item;
                 item["label"] = this->headerText(number_indexes[i]);
                 item["value"] = entry.data(number_indexes[i]);
@@ -244,8 +243,7 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
                 number_items.append(item);
             }
             const QList<int> &mobile_indexes = m_type_to_indices[MOBILE];
-            for (int i = 0; i < mobile_indexes.size(); i++)
-            {
+            foreach(int i, mobile_indexes) {
                 QVariantMap item;
                 item["label"] = this->headerText(mobile_indexes[i]);
                 item["value"] = entry.data(mobile_indexes[i]);
@@ -290,8 +288,7 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
     QPair<QString, QString> id(unique_source_entry_id["source"].toString(),
                                unique_source_entry_id["source_entry_id"].toString());
 
-    for (int i = 0; i < m_people_entries.size(); ++i) {
-        const PeopleEntry &entry = m_people_entries[i];
+    foreach(const PeopleEntry &entry, m_people_entries) {
         if (entry.uniqueSourceId() == id) {
             const QList<int> &columns = m_type_to_indices[FAVORITE];
             int column;
@@ -342,8 +339,7 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
             const QList<int> &columns = m_type_to_indices[FAVORITE];
-            int column;
-            foreach(column, columns) {
+            foreach(int column, columns) {
                 entry.setData(column, status);
                 this->refreshEntry(i);
             }
@@ -419,7 +415,7 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
 
     this->beginResetModel();
     m_people_entries.clear();
-    foreach (const QVariant &result, entries) {
+    foreach(const QVariant &result, entries) {
         QVariantMap entry_map = result.toMap();
         const QVariantMap &relations = entry_map["relations"].toMap();
 
