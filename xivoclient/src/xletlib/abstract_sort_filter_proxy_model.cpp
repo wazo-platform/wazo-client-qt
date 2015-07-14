@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -39,4 +39,34 @@ AbstractSortFilterProxyModel::AbstractSortFilterProxyModel(QObject *parent)
 
 AbstractSortFilterProxyModel::~AbstractSortFilterProxyModel()
 {
+}
+
+bool AbstractSortFilterProxyModel::lessThan(const QModelIndex &left,
+                                            const QModelIndex &right) const
+{
+    const QString &left_data = sourceModel()->data(left).toString();
+    const QString &right_data = sourceModel()->data(right).toString();
+
+    if (left_data != right_data) {
+        return QSortFilterProxyModel::lessThan(left, right);
+    }
+
+    int left_row = left.row();
+    int right_row = right.row();
+    //For an unknown reason, People segfault when we use this->columnCount()
+    //so  we limit this with 10 and isValid()
+    for (int i = 0; i < 10; i++) {
+        const QModelIndex &next_left = left.sibling(left_row, i);
+        const QModelIndex &next_right = right.sibling(right_row, i);
+        if (!next_left.isValid() || !next_right.isValid()) {
+            break;
+        }
+        const QString &next_left_data = sourceModel()->data(next_left).toString();
+        const QString &next_right_data = sourceModel()->data(next_right).toString();
+        if (next_left_data != next_right_data) {
+            return QSortFilterProxyModel::lessThan(next_left, next_right);
+        }
+    }
+
+    return QSortFilterProxyModel::lessThan(left, right);
 }
