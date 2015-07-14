@@ -34,38 +34,35 @@
 
 #include <xletlib/xletlib_export.h>
 
-enum ColumnType {
-  AGENT,
-  FAVORITE,
-  MOBILE,
-  NAME,
-  NUMBER,
-  OTHER,
-  STATUS_ICON
-};
-
-enum UserRoleCustom {
-    NUMBER_ROLE = Qt::UserRole,
-    INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
-    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2,
-    SORT_FILTER_ROLE = Qt::UserRole + 3
-};
-
 class XLETLIB_EXPORT PeopleEntry
 {
     public:
-        PeopleEntry(const QVariantList &data, const QVariantMap &relations, const QString &source_name);
-        PeopleEntry(const PeopleEntry &other);
+        PeopleEntry(const QVariantList &data,
+                    const QString &xivo_uuid,
+                    const QString &source_name,
+                    const QString &source_entry_id,
+                    int agent_id,
+                    int endpoint_id,
+                    int user_id);
         ~PeopleEntry();
         const QVariant data(int column) const;
         void setData(int column, const QVariant &status);
-        PeopleEntry &operator=(const PeopleEntry &other);
+
         const QString &xivoUuid() const;
         int agentId() const;
         int endpointId() const;
         int userId() const;
-        QString sourceName() const;
-        QString sourceEntryId() const;
+        const QString &sourceName() const;
+        const QString &sourceEntryId() const;
+
+        const QString &agentStatus() const;
+        const QString &userStatus() const;
+        int endpointStatus() const;
+
+        void setAgentStatus(const QString &status);
+        void setEndpointStatus(int status);
+        void setUserStatus(const QString &status);
+
         QPair<QString, int> uniqueAgentId() const;
         QPair<QString, int> uniqueEndpointId() const;
         QPair<QString, QString> uniqueSourceId() const;
@@ -75,6 +72,11 @@ class XLETLIB_EXPORT PeopleEntry
         QVariantList m_data;
         QString m_xivo_uuid;
         QString m_source_name;
+
+        QString m_agent_status;
+        QString m_user_status;
+        int m_endpoint_status;
+
         QString m_source_entry_id;
         int m_agent_id;
         int m_user_id;

@@ -29,9 +29,11 @@
 
 #include <QAbstractScrollArea>
 #include <QEvent>
+#include <QList>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QVariant>
 
 #include <xletlib/menu.h>
 
@@ -169,14 +171,14 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         this->pressed = false;
 
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        PeopleActions *people_actions = model->data(index, NUMBER_ROLE).value<PeopleActions*>();
+        const QList<QVariant> &action_items = model->data(index, NUMBER_ROLE).toList();
+        PeopleActions people_actions(action_items);
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
-            people_actions->call();
+            people_actions.call();
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
-            this->showContextMenu(option, people_actions);
+            this->showContextMenu(option, &people_actions);
         }
-        delete people_actions;
     }
     return true;
 }

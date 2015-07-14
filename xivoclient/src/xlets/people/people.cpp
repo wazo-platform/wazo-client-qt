@@ -43,12 +43,12 @@
 People::People(QWidget *parent)
     : XLet(parent, tr("People"), ":/images/tab-people.svg"),
       m_proxy_model(NULL),
-      m_people_entry_manager(this)
+      m_model(NULL)
 {
     this->ui.setupUi(this);
 
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
-    m_model = new PeopleEntryModel(m_people_entry_manager, this);
+    m_model = new PeopleEntryModel(this);
     m_proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(m_proxy_model);
 
@@ -66,7 +66,7 @@ People::People(QWidget *parent)
             ui.entry_table, SLOT(updateColumnsDelegates(const QModelIndex &, int, int)));
     connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             ui.entry_table, SLOT(updateColumnsVisibility(const QModelIndex &, int, int)));
-    connect(m_proxy_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+    connect(m_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             this, SLOT(defaultColumnSort(const QModelIndex &, int, int)));
 
     connect(ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
@@ -74,19 +74,51 @@ People::People(QWidget *parent)
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
+    connect(this->ui.entry_filter, SIGNAL(returnPressed()),
+            this, SLOT(searchPeople()));
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),
             this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
-    connect(&m_remote_lookup_timer, SIGNAL(timeout()),
+    connect(&m_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
-    this->m_remote_lookup_timer.setSingleShot(true);
-    this->m_remote_lookup_timer.setInterval(delay_before_lookup);
+    this->m_lookup_timer.setSingleShot(true);
+    this->m_lookup_timer.setInterval(delay_before_lookup);
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
+
+    this->registerListener("agent_status_update");
+    this->registerListener("endpoint_status_update");
+    this->registerListener("people_favorite_update");
+    this->registerListener("people_favorites_result");
+    this->registerListener("people_headers_result");
+    this->registerListener("people_search_result");
+    this->registerListener("user_status_update");
 }
 
 People::~People()
 {
+}
+
+void People::parseCommand(const QVariantMap &command)
+{
+    const QString &event = command["class"].toString();
+
+    if (event == "agent_status_update") {
+        m_model->parseAgentStatusUpdate(command);
+    } else if (event == "endpoint_status_update") {
+        m_model->parseEndpointStatusUpdate(command);
+    } else if (event == "user_status_update") {
+        m_model->parseUserStatusUpdate(command);
+    } else if (event == "people_headers_result") {
+        m_model->parsePeopleHeadersResult(command);
+    } else if (event == "people_search_result") {
+        m_model->parsePeopleSearchResult(command);
+    } else if (event == "people_favorites_result") {
+        m_model->parsePeopleSearchResult(command);
+    } else if (event == "people_favorite_update") {
+        m_model->parsePeopleFavoriteUpdate(command);
+    }
+
 }
 
 void People::numberSelectionRequested()
@@ -108,18 +140,19 @@ void People::focusEntryTable()
 void People::schedulePeopleLookup(const QString &lookup_pattern)
 {
     m_searched_pattern = lookup_pattern;
-    m_remote_lookup_timer.start();
+    m_lookup_timer.start();
 }
 
 void People::searchPeople()
 {
+    m_lookup_timer.stop();
+
     if (m_searched_pattern.length() < min_lookup_length) {
         qDebug() << Q_FUNC_INFO << "ignoring pattern too short" << this->m_searched_pattern;
     } else {
         if (m_mode == FAVORITE_MODE) {
             this->ui.menu->setSelectedAction(0);
         }
-        m_search_history.append(m_searched_pattern);
         b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
         qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
     }

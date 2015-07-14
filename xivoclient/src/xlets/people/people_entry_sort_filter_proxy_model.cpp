@@ -27,8 +27,10 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "people_entry_model.h"
+#include <QVariant>
+
 #include "people_entry_sort_filter_proxy_model.h"
+#include "people_enum.h"
 
 
 PeopleEntrySortFilterProxyModel::PeopleEntrySortFilterProxyModel(QObject *parent)

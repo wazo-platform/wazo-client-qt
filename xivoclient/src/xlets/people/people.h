@@ -35,21 +35,17 @@
 
 #include <dao/phonedaoimpl.h>
 #include <dao/userdaoimpl.h>
+#include <ipbxlistener.h>
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
-#include <xletlib/people_entry_manager.h>
 #include <ui_people_widget.h>
 
-#include "people_entry_sort_filter_proxy_model.h"
+#include "people_enum.h"
 
+class PeopleEntryModel;
+class PeopleEntrySortFilterProxyModel;
 
-enum PeopleMode {
-    SEARCH_MODE = 0,
-    FAVORITE_MODE
-};
-
-
-class People: public XLet
+class People: public XLet, public IPBXListener
 {
     Q_OBJECT
     FUNCTESTED
@@ -66,22 +62,21 @@ class People: public XLet
         void numberSelectionRequested();
         void focusEntryTable();
         void schedulePeopleLookup(const QString &lookup_pattern);
-        void searchPeople();
         void defaultColumnSort(const QModelIndex &, int, int);
+        void parseCommand(const QVariantMap &command);
 
     private slots:
         void setFavoriteStatus(const QVariantMap &unique_source_entry_id);
         void searchMode();
+        void searchPeople();
         void favoriteMode();
 
     private:
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;
-        PeopleEntryManager m_people_entry_manager;
-        QTimer m_remote_lookup_timer;
+        QTimer m_lookup_timer;
         QString m_searched_pattern;
-        QStringList m_search_history;
         PeopleMode m_mode;
 };
 

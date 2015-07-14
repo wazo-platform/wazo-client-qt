@@ -28,38 +28,32 @@
 #include <message_factory.h>
 
 #include "people_actions.h"
+#include "people_enum.h"
 
-PeopleActions::PeopleActions(QList< QPair<QString, ColumnType> > fields, const PeopleEntry &entry, int current_column)
-    : m_entry(entry),
-      m_call_action(NULL),
+PeopleActions::PeopleActions(const QList<QVariant> &action_items)
+    : m_call_action(NULL),
       m_call_mobile_action(NULL)
 {
-    this->m_mobile_column = this->m_number_column = -1;
-    for (int i = 0; i < fields.size(); ++i) {
-        const QPair<QString, enum ColumnType> &field = fields[i];
-        switch(field.second) {
-            case MOBILE: {
-                this->m_mobile_column = i;
-                break;
-            }
-            default: {
-                break;
-            }
+    for (int i = 0; i < action_items.size(); i++)
+    {
+        QVariantMap item = action_items[i].toMap();
+        QString label = item["label"].toString();
+        QString value = item["value"].toString();
+        PeopleAction action = (PeopleAction)item["action"].toInt();
+
+        if (value.isEmpty()) {
+            continue;
         }
-    }
 
-    if (fields[current_column].second == NUMBER) {
-        m_number_column = current_column;
-        m_call_action = new QAction(tr("Call"), this);
-        connect(m_call_action, SIGNAL(triggered()),
-                this, SLOT(call()));
-    }
+        if (action == CALL) {
+            m_number_extension = value;
+            m_call_action = new QAction(tr("Call"), this);
+            connect(m_call_action, SIGNAL(triggered()),
+                    this, SLOT(call()));
 
-    if (this->m_mobile_column != -1) {
-        QString mobile_label = fields.at(this->m_mobile_column).first;
-        QVariant mobile_number = this->m_entry.data(this->m_mobile_column);
-        if (! mobile_number.isNull()) {
-            QString action_name = tr("%1 - %2").arg(mobile_label).arg(mobile_number.toString());
+        } else if (action == MOBILECALL) {
+            m_mobile_extension = value;
+            QString action_name = tr("%1 - %2").arg(label).arg(value);
             m_call_mobile_action = new QAction(action_name, this);
             connect(m_call_mobile_action, SIGNAL(triggered()),
                     this, SLOT(callMobile()));
@@ -74,8 +68,7 @@ QAction *PeopleActions::callAction()
 
 void PeopleActions::call()
 {
-    QString extension = this->m_entry.data(this->m_number_column).toString();
-    b_engine->sendJsonCommand(MessageFactory::dial(extension));
+    b_engine->sendJsonCommand(MessageFactory::dial(m_number_extension));
 }
 
 QAction *PeopleActions::callMobileAction()
@@ -85,6 +78,5 @@ QAction *PeopleActions::callMobileAction()
 
 void PeopleActions::callMobile()
 {
-    QString extension = this->m_entry.data(this->m_mobile_column).toString();
-    b_engine->sendJsonCommand(MessageFactory::dial(extension));
+    b_engine->sendJsonCommand(MessageFactory::dial(m_mobile_extension));
 }

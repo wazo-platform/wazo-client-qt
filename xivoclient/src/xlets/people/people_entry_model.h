@@ -30,54 +30,67 @@
 #ifndef __PEOPLE_ENTRY_MODEL_H__
 #define __PEOPLE_ENTRY_MODEL_H__
 
-#include <QAbstractTableModel>
+#include <QList>
+#include <QMap>
+#include <QModelIndex>
 #include <QPair>
-#include <QStringList>
-#include <ipbxlistener.h>
-#include <xletlib/people_entry.h>
+#include <QString>
+#include <QVariant>
+#include <QWidget>
 
-class PeopleEntryManager;
-class PeopleEntry;
+#include <xletlib/abstract_table_model.h>
 
-class PeopleEntryModel : public QAbstractTableModel, IPBXListener
+#include "people_enum.h"
+#include "people_entry.h"
+
+class PeopleEntryModel : public AbstractTableModel
 {
     Q_OBJECT
 
+    typedef QPair<QString, int> RelationID;
+    typedef QPair<QString, QString> RelationSourceID;
+
     public:
-        PeopleEntryModel(PeopleEntryManager & people_entry_manager,
-                         QObject *parent = NULL);
+        PeopleEntryModel(QWidget *parent = NULL);
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const;
-        int columnCount(const QModelIndex &) const;
-        int columnCount() const;
-
-        bool removeRows(int, int, const QModelIndex &);
+        int columnCount(const QModelIndex &parent=QModelIndex()) const;
 
         QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
-        QVariant headerData(int,
-                            Qt::Orientation,
-                            int) const;
+        QVariant headerData(int, Qt::Orientation, int) const;
         int getNameColumnIndex() const;
         bool favoriteStatus(const QVariantMap &unique_source_entry_id) const;
         void clearEntries();
+        void parseAgentStatusUpdate(const QVariantMap &result);
+        void parseEndpointStatusUpdate(const QVariantMap &result);
+        void parseUserStatusUpdate(const QVariantMap &result);
+        void parsePeopleFavoriteUpdate(const QVariantMap &result);
+        void parsePeopleHeadersResult(const QVariantMap &command);
+        void parsePeopleSearchResult(const QVariantMap &result);
 
-    public slots:
-        void addPeopleEntry(int entry_index);
-        void updatePeopleEntry(int entry_index);
-        void deletePeopleEntry(int entry_index);
-        void clearCache();
-        void parseCommand(const QVariantMap &command);
+    protected:
+        virtual QList<int> columnDisplayBold() const;
 
     private:
         void refreshEntry(int entry_index);
+        QVariant dataDecoration(const PeopleEntry & entry, int column) const;
         QVariant dataIndicatorColor(const PeopleEntry & entry, int column) const;
+        QVariant dataNumber(const PeopleEntry & entry, int column) const;
+        QVariant dataSortFilter(const PeopleEntry & entry, int column) const;
         void addField(const QString &name, const QString &type);
+        void addIndexByType(const QString &type, int column);
         void clearFields();
+        void setAgentStatusFromAgentId(const RelationID &id, const QString &status);
+        void setEndpointStatusFromEndpointId(const RelationID &id, int status);
+        void setUserStatusFromUserId(const RelationID &id, const QString &status);
+        void setFavoriteStatusFromSourceId(const RelationSourceID &id, bool status);
+
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
 
+        QMap< enum ColumnType, QList<int> > m_type_to_indices;
         QList< QPair<QString, enum ColumnType> >  m_fields;
-        PeopleEntryManager & m_people_entry_manager;
+        QList<PeopleEntry> m_people_entries;
         QMap<QString, ColumnType> m_type_map;
 };
 

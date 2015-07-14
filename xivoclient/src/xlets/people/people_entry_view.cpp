@@ -29,17 +29,15 @@
 
 #include <QHeaderView>
 #include <QItemSelectionModel>
-#include <QKeyEvent>
 
-#include "people_entry_view.h"
 #include "people_entry_delegate.h"
-#include "people_entry_model.h"
+#include "people_entry_view.h"
+#include "people_enum.h"
 
 
 PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
-    this->horizontalHeader()->setSortIndicatorShown(true);
     this->viewport()->setAttribute(Qt::WA_Hover);
 }
 
