@@ -99,24 +99,24 @@ People::~People()
 {
 }
 
-void People::parseCommand(const QVariantMap &result)
+void People::parseCommand(const QVariantMap &command)
 {
-    const QString &event = result["class"].toString();
+    const QString &event = command["class"].toString();
 
     if (event == "agent_status_update") {
-        m_model->parseAgentStatusUpdate(result);
+        m_model->parseAgentStatusUpdate(command);
     } else if (event == "endpoint_status_update") {
-        m_model->parseEndpointStatusUpdate(result);
+        m_model->parseEndpointStatusUpdate(command);
     } else if (event == "user_status_update") {
-        m_model->parseUserStatusUpdate(result);
+        m_model->parseUserStatusUpdate(command);
     } else if (event == "people_headers_result") {
-        m_model->parsePeopleHeadersResult(result);
+        m_model->parsePeopleHeadersResult(command);
     } else if (event == "people_search_result") {
-        m_model->parsePeopleSearchResult(result);
+        m_model->parsePeopleSearchResult(command);
     } else if (event == "people_favorites_result") {
-        m_model->parsePeopleSearchResult(result);
+        m_model->parsePeopleSearchResult(command);
     } else if (event == "people_favorite_update") {
-        m_model->parsePeopleFavoriteUpdate(result);
+        m_model->parsePeopleFavoriteUpdate(command);
     }
 
 }
