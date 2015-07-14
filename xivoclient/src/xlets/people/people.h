@@ -77,7 +77,6 @@ class People: public XLet, public IPBXListener
         PeopleEntryModel *m_model;
         QTimer m_remote_lookup_timer;
         QString m_searched_pattern;
-        QStringList m_search_history;
         PeopleMode m_mode;
 };
 

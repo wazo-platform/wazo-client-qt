@@ -153,7 +153,6 @@ void People::searchPeople()
         if (m_mode == FAVORITE_MODE) {
             this->ui.menu->setSelectedAction(0);
         }
-        m_search_history.append(m_searched_pattern);
         b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
         qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
     }
