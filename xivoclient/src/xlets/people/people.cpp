@@ -80,10 +80,10 @@ People::People(QWidget *parent)
             this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
-    connect(&m_remote_lookup_timer, SIGNAL(timeout()),
+    connect(&m_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
-    this->m_remote_lookup_timer.setSingleShot(true);
-    this->m_remote_lookup_timer.setInterval(delay_before_lookup);
+    this->m_lookup_timer.setSingleShot(true);
+    this->m_lookup_timer.setInterval(delay_before_lookup);
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
 
     this->registerListener("agent_status_update");
@@ -140,12 +140,12 @@ void People::focusEntryTable()
 void People::schedulePeopleLookup(const QString &lookup_pattern)
 {
     m_searched_pattern = lookup_pattern;
-    m_remote_lookup_timer.start();
+    m_lookup_timer.start();
 }
 
 void People::searchPeople()
 {
-    m_remote_lookup_timer.stop();
+    m_lookup_timer.stop();
 
     if (m_searched_pattern.length() < min_lookup_length) {
         qDebug() << Q_FUNC_INFO << "ignoring pattern too short" << this->m_searched_pattern;

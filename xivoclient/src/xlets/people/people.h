@@ -75,7 +75,7 @@ class People: public XLet, public IPBXListener
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;
-        QTimer m_remote_lookup_timer;
+        QTimer m_lookup_timer;
         QString m_searched_pattern;
         PeopleMode m_mode;
 };
