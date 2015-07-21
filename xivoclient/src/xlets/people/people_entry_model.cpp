@@ -235,18 +235,18 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
         case NUMBER: {
             QVariantList number_items;
             const QList<int> &number_indexes = m_type_to_indices[NUMBER];
-            foreach(int i, number_indexes) {
+            foreach(int column, number_indexes) {
                 QVariantMap item;
-                item["label"] = this->headerText(number_indexes[i]);
-                item["value"] = entry.data(number_indexes[i]);
+                item["label"] = this->headerText(column);
+                item["value"] = entry.data(column);
                 item["action"] = CALL;
                 number_items.append(item);
             }
             const QList<int> &mobile_indexes = m_type_to_indices[MOBILE];
-            foreach(int i, mobile_indexes) {
+            foreach(int column, mobile_indexes) {
                 QVariantMap item;
-                item["label"] = this->headerText(mobile_indexes[i]);
-                item["value"] = entry.data(mobile_indexes[i]);
+                item["label"] = this->headerText(column);
+                item["value"] = entry.data(column);
                 item["action"] = MOBILECALL;
                 number_items.append(item);
             }
@@ -291,8 +291,7 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
     foreach(const PeopleEntry &entry, m_people_entries) {
         if (entry.uniqueSourceId() == id) {
             const QList<int> &columns = m_type_to_indices[FAVORITE];
-            int column;
-            foreach(column, columns) {
+            foreach(int column, columns) {
                 return entry.data(column).toBool();
             }
         }
