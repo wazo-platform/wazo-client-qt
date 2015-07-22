@@ -77,7 +77,7 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
                         this, SLOT(onViewClick(const QModelIndex &)), Qt::UniqueConnection);
                 break;
             }
-            case PERSONAL: {
+            case PERSONAL_CONTACT: {
                 connect(this, SIGNAL(clicked(const QModelIndex &)),
                         this, SLOT(onViewClick(const QModelIndex &)), Qt::UniqueConnection);
                 break;
@@ -105,8 +105,10 @@ void PeopleEntryView::onViewClick(const QModelIndex &index)
     if (column_type == FAVORITE) {
         const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
         emit favoriteToggled(unique_source_entry_id);
-    } else if (column_type == PERSONAL) {
-        const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
-        emit deleteEntry(unique_source_entry_id);
+    } else if (column_type == PERSONAL_CONTACT) {
+        if (this->model()->data(index, SORT_FILTER_ROLE).toBool()) {
+            const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
+            emit deleteEntry(unique_source_entry_id);
+        }
     }
 }

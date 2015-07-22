@@ -45,7 +45,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     this->m_type_map["mobile"] = MOBILE;
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
-    this->m_type_map["personal"] = PERSONAL;
+    this->m_type_map["private"] = PERSONAL_CONTACT;
     this->m_type_map["status"] = STATUS_ICON;
 }
 
@@ -110,7 +110,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         return this->dataDecoration(entry, column);
     case Qt::DisplayRole:
-        if (column_type != AGENT && column_type != FAVORITE && column_type != PERSONAL) {
+        if (column_type != AGENT && column_type != FAVORITE && column_type != PERSONAL_CONTACT) {
             return entry.data(column);
         }
         break;
@@ -119,7 +119,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
-        if (column_type == FAVORITE || column_type == PERSONAL) {
+        if (column_type == FAVORITE || column_type == PERSONAL_CONTACT) {
             QVariantMap favorite_key;
             favorite_key["source"] = entry.sourceName();
             favorite_key["source_entry_id"] = entry.sourceEntryId();
@@ -185,7 +185,7 @@ QVariant PeopleEntryModel::dataDecoration(const PeopleEntry &entry, int column) 
             return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
         }
     }
-    case PERSONAL:
+    case PERSONAL_CONTACT:
     {
         if(entry.data(column).toBool()) {
             return QIcon(":images/trash.svg").pixmap(QSize(12, 12));
@@ -279,7 +279,7 @@ QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) 
         }
         return entry.data(column);
     }
-    case PERSONAL:
+    case PERSONAL_CONTACT:
         return entry.data(column);
     default:
         break;

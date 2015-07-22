@@ -36,7 +36,7 @@ enum ColumnType {
   MOBILE,
   NAME,
   NUMBER,
-  PERSONAL,
+  PERSONAL_CONTACT,
   OTHER,
   STATUS_ICON
 };
