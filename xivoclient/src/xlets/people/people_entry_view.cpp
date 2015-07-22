@@ -62,22 +62,26 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
     for (int column_index = first ; column_index <= last ; column_index ++) {
         int column_type = this->model()->headerData(column_index, Qt::Horizontal, Qt::UserRole).toInt();
         switch (column_type) {
-        case NAME:
-            {
+            case NAME: {
                 PeopleEntryDotDelegate *delegate = new PeopleEntryDotDelegate(this);
                 this->setItemDelegateForColumn(column_index, delegate);
                 break;
             }
-        case NUMBER:
-            {
+            case NUMBER: {
                 PeopleEntryNumberDelegate *delegate = new PeopleEntryNumberDelegate(this);
                 this->setItemDelegateForColumn(column_index, delegate);
                 break;
             }
-        case FAVORITE:
-            connect(this, SIGNAL(clicked(const QModelIndex &)),
-                    this, SLOT(onViewClick(const QModelIndex &)));
-            break;
+            case FAVORITE: {
+                connect(this, SIGNAL(clicked(const QModelIndex &)),
+                        this, SLOT(onViewClick(const QModelIndex &)), Qt::UniqueConnection);
+                break;
+            }
+            case PERSONAL: {
+                connect(this, SIGNAL(clicked(const QModelIndex &)),
+                        this, SLOT(onViewClick(const QModelIndex &)), Qt::UniqueConnection);
+                break;
+            }
         }
     }
 }
@@ -98,9 +102,11 @@ void PeopleEntryView::updateColumnsVisibility(const QModelIndex &, int first, in
 void PeopleEntryView::onViewClick(const QModelIndex &index)
 {
     int column_type = this->model()->headerData(index.column(), Qt::Horizontal, Qt::UserRole).toInt();
-    if (column_type != FAVORITE) {
-        return;
+    if (column_type == FAVORITE) {
+        const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
+        emit favoriteToggled(unique_source_entry_id);
+    } else if (column_type == PERSONAL) {
+        const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
+        emit deleteEntry(unique_source_entry_id);
     }
-    const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
-    emit favoriteToggled(unique_source_entry_id);
 }

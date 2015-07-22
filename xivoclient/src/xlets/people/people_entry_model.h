@@ -30,12 +30,12 @@
 #ifndef __PEOPLE_ENTRY_MODEL_H__
 #define __PEOPLE_ENTRY_MODEL_H__
 
-#include <QList>
 #include <QMap>
 #include <QModelIndex>
 #include <QPair>
 #include <QString>
 #include <QVariant>
+#include <QVector>
 #include <QWidget>
 
 #include <xletlib/abstract_table_model.h>
@@ -67,9 +67,11 @@ class PeopleEntryModel : public AbstractTableModel
         void parsePeopleFavoriteUpdate(const QVariantMap &result);
         void parsePeopleHeadersResult(const QVariantMap &command);
         void parsePeopleSearchResult(const QVariantMap &result);
+        void removeRowFromSourceEntryId(const QString &source, const QString &source_entry_id);
 
     protected:
         virtual QList<int> columnDisplayBold() const;
+        virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
     private:
         void refreshEntry(int entry_index);
@@ -90,7 +92,7 @@ class PeopleEntryModel : public AbstractTableModel
 
         QMap< enum ColumnType, QList<int> > m_type_to_indices;
         QList< QPair<QString, enum ColumnType> >  m_fields;
-        QList<PeopleEntry> m_people_entries;
+        QVector<PeopleEntry> m_people_entries;
         QMap<QString, ColumnType> m_type_map;
 };
 

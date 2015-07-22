@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ContactDialogWidget</class>
+ <widget class="QWidget" name="ContactDialogWidget">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Personal Contact</string>
+  </property>
+  <property name="qss_tags" stdset="0">
+   <stringlist notr="true">
+    <string>dialog_frame</string>
+   </stringlist>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="0">
+    <widget class="QLabel" name="email_label">
+     <property name="text">
+      <string>Email Address</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lastname_label">
+     <property name="text">
+      <string>Last Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="firstname_label">
+     <property name="text">
+      <string>First Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="firstname_input">
+     <property name="qss_tags" stdset="0">
+      <stringlist>
+       <string>styled</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLineEdit" name="email_input">
+     <property name="qss_tags" stdset="0">
+      <stringlist>
+       <string>styled</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QLineEdit" name="lastname_input">
+     <property name="qss_tags" stdset="0">
+      <stringlist>
+       <string>styled</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLineEdit" name="phone_number_input">
+     <property name="qss_tags" stdset="0">
+      <stringlist>
+       <string>styled</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="phone_number_label">
+     <property name="text">
+      <string>Phone Number</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="mobile_number_label">
+     <property name="text">
+      <string>Mobile Number</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2">
+    <widget class="QDialogButtonBox" name="confirm_button_box">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="qss_tags" stdset="0">
+      <stringlist notr="true">
+       <string>orange</string>
+       <string>styled</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLineEdit" name="mobile_number_input">
+     <property name="qss_tags" stdset="0">
+      <stringlist>
+       <string>styled</string>
+      </stringlist>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>firstname_input</tabstop>
+  <tabstop>lastname_input</tabstop>
+  <tabstop>phone_number_input</tabstop>
+  <tabstop>mobile_number_input</tabstop>
+  <tabstop>email_input</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

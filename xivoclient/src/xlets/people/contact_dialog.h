@@ -27,37 +27,28 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PEOPLE_ENUM_H__
-#define __PEOPLE_ENUM_H__
+#ifndef __CONTACT_DIALOG_H__
+#define __CONTACT_DIALOG_H__
 
-enum ColumnType {
-  AGENT,
-  FAVORITE,
-  MOBILE,
-  NAME,
-  NUMBER,
-  PERSONAL,
-  OTHER,
-  STATUS_ICON
-};
+#include <QDialog>
+#include <QWidget>
 
-enum UserRoleCustom {
-    NUMBER_ROLE = Qt::UserRole,
-    INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
-    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2,
-    SORT_FILTER_ROLE = Qt::UserRole + 3
-};
+#include <ui_contact_dialog_widget.h>
 
-enum PeopleMode {
-    SEARCH_MODE = 0,
-    FAVORITE_MODE,
-    PERSONAL_CONTACT_MODE
-};
+class ContactDialog: public QDialog
+{
+    Q_OBJECT
 
-enum PeopleAction {
-    CALL,
-    MOBILECALL
+    public:
+        ContactDialog(QWidget *parent, QVariantMap *contact_infos);
+        ~ContactDialog();
 
+    private slots:
+        virtual void accept();
+
+    private:
+        Ui::ContactDialogWidget ui;
+        QVariantMap *m_contact_infos;
 };
 
 #endif

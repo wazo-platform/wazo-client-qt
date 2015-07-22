@@ -44,6 +44,7 @@ class XLETLIB_EXPORT PeopleEntry
                     int agent_id,
                     int endpoint_id,
                     int user_id);
+        PeopleEntry();
         ~PeopleEntry();
         const QVariant data(int column) const;
         void setData(int column, const QVariant &status);

@@ -4,7 +4,8 @@ QT += svg
 
 HEADERS     = *.h
 SOURCES     = *.cpp
-FORMS       = people_widget.ui
+FORMS       += people_widget.ui
+FORMS       += contact_dialog_widget.ui
 
 TARGET      = peopleplugin
 

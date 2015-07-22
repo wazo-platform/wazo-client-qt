@@ -45,6 +45,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     this->m_type_map["mobile"] = MOBILE;
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
+    this->m_type_map["personal"] = PERSONAL;
     this->m_type_map["status"] = STATUS_ICON;
 }
 
@@ -109,7 +110,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         return this->dataDecoration(entry, column);
     case Qt::DisplayRole:
-        if (column_type != AGENT && column_type != FAVORITE) {
+        if (column_type != AGENT && column_type != FAVORITE && column_type != PERSONAL) {
             return entry.data(column);
         }
         break;
@@ -118,7 +119,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
-        if (column_type == FAVORITE) {
+        if (column_type == FAVORITE || column_type == PERSONAL) {
             QVariantMap favorite_key;
             favorite_key["source"] = entry.sourceName();
             favorite_key["source_entry_id"] = entry.sourceEntryId();
@@ -182,6 +183,12 @@ QVariant PeopleEntryModel::dataDecoration(const PeopleEntry &entry, int column) 
             return QIcon(":/images/star-filled.svg").pixmap(QSize(12, 12));
         } else {
             return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
+        }
+    }
+    case PERSONAL:
+    {
+        if(entry.data(column).toBool()) {
+            return QIcon(":images/trash.svg").pixmap(QSize(12, 12));
         }
     }
     break;
@@ -272,6 +279,8 @@ QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) 
         }
         return entry.data(column);
     }
+    case PERSONAL:
+        return entry.data(column);
     default:
         break;
     }
@@ -297,6 +306,28 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
         }
     }
     return false;
+}
+
+void PeopleEntryModel::removeRowFromSourceEntryId(const QString &source, const QString &source_entry_id)
+{
+    RelationSourceID id(source, source_entry_id);
+    for (int i = 0; i < this->rowCount(); ++i) {
+        PeopleEntry &entry = m_people_entries[i];
+        if (entry.uniqueSourceId() == id) {
+            this->removeRow(i);
+        }
+    }
+}
+
+bool PeopleEntryModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if (row < 0 || count < 1 || row + count > m_people_entries.count() ){
+        return false;
+    }
+    this->beginRemoveRows(parent, row, row + count - 1);
+    m_people_entries.remove(row, count);
+    this->endRemoveRows();
+    return true;
 }
 
 void PeopleEntryModel::setAgentStatusFromAgentId(const RelationID &id, const QString &status)

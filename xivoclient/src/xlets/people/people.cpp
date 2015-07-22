@@ -28,17 +28,18 @@
  */
 
 #include <QDebug>
+#include <QMessageBox>
 #include <QTimer>
 
 #include <xletlib/signal_relayer.h>
 #include <baseengine.h>
 #include <message_factory.h>
 
+#include "contact_dialog.h"
 #include "people.h"
 #include "people_entry_model.h"
 #include "people_entry_sort_filter_proxy_model.h"
 
-#include "ui_people_widget.h"
 
 People::People(QWidget *parent)
     : XLet(parent, tr("People"), ":/images/tab-people.svg"),
@@ -54,11 +55,14 @@ People::People(QWidget *parent)
 
     QAction *search_action = ui.menu->addAction(tr("all"));
     QAction *favorite_action = ui.menu->addAction(tr("favorites"));
+    QAction *my_contacts_action = ui.menu->addAction(tr("my contacts"));
 
     connect(search_action, SIGNAL(triggered()),
             this, SLOT(searchMode()));
     connect(favorite_action, SIGNAL(triggered()),
             this, SLOT(favoriteMode()));
+    connect(my_contacts_action, SIGNAL(triggered()),
+            this, SLOT(personalContactsMode()));
 
     this->ui.menu->setSelectedAction(1);
 
@@ -69,13 +73,19 @@ People::People(QWidget *parent)
     connect(m_model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
             this, SLOT(defaultColumnSort(const QModelIndex &, int, int)));
 
-    connect(ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
+    connect(this->ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
             this, SLOT(setFavoriteStatus(const QVariantMap &)));
+    connect(this->ui.entry_table, SIGNAL(deleteEntry(const QVariantMap &)),
+            this, SLOT(deletePersonalContact(const QVariantMap &)));
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(searchPeople()));
+
+    connect(this->ui.new_contact_button, SIGNAL(clicked()),
+            this, SLOT(openNewContactDialog()));
+
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),
             this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
@@ -91,6 +101,9 @@ People::People(QWidget *parent)
     this->registerListener("people_favorite_update");
     this->registerListener("people_favorites_result");
     this->registerListener("people_headers_result");
+    this->registerListener("people_personal_contacts_result");
+    this->registerListener("people_personal_contact_added");
+    this->registerListener("people_personal_contact_deleted");
     this->registerListener("people_search_result");
     this->registerListener("user_status_update");
 }
@@ -115,10 +128,31 @@ void People::parseCommand(const QVariantMap &command)
         m_model->parsePeopleSearchResult(command);
     } else if (event == "people_favorites_result") {
         m_model->parsePeopleSearchResult(command);
+    } else if (event == "people_personal_contacts_result") {
+        m_model->parsePeopleSearchResult(command);
+    } else if (event == "people_personal_contact_added") {
+        this->parsePeoplePersonalContactAdded(command);
+    } else if (event == "people_personal_contact_deleted") {
+        this->parsePeoplePersonalContactDeleted(command);
     } else if (event == "people_favorite_update") {
         m_model->parsePeopleFavoriteUpdate(command);
     }
 
+}
+
+void People::parsePeoplePersonalContactAdded(const QVariantMap &/*result*/)
+{
+    if (m_mode == PERSONAL_CONTACT_MODE) {
+        b_engine->sendJsonCommand(MessageFactory::personalContacts());
+    }
+}
+
+void People::parsePeoplePersonalContactDeleted(const QVariantMap &result)
+{
+    const QVariantMap &data = result["data"].toMap();
+    const QString &source = data["source"].toString();
+    const QString &source_entry_id = data["source_entry_id"].toString();
+    m_model->removeRowFromSourceEntryId(source, source_entry_id);
 }
 
 void People::numberSelectionRequested()
@@ -150,7 +184,7 @@ void People::searchPeople()
     if (m_searched_pattern.length() < min_lookup_length) {
         qDebug() << Q_FUNC_INFO << "ignoring pattern too short" << this->m_searched_pattern;
     } else {
-        if (m_mode == FAVORITE_MODE) {
+        if (m_mode != SEARCH_MODE) {
             this->ui.menu->setSelectedAction(0);
         }
         b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
@@ -166,6 +200,20 @@ void People::defaultColumnSort(const QModelIndex &, int, int)
     this->ui.entry_table->horizontalHeader()->setSortIndicator(name_column_index, Qt::AscendingOrder);
 }
 
+void People::deletePersonalContact(const QVariantMap &unique_source_entry_id)
+{
+    const QString &source_name = unique_source_entry_id["source"].toString();
+    const QString &source_entry_id = unique_source_entry_id["source_entry_id"].toString();
+    int decision = QMessageBox::warning(this, tr("Removing this contact"),
+                                        tr("Removing this contact.\n"
+                                           "Are you sure ?"),
+                                        QMessageBox::Yes|QMessageBox::No);
+    if (source_entry_id.isEmpty() || decision != QMessageBox::Yes) {
+        return;
+    }
+    b_engine->sendJsonCommand(MessageFactory::deletePersonalContact(source_name, source_entry_id));
+}
+
 void People::setFavoriteStatus(const QVariantMap &unique_source_entry_id)
 {
     bool enabled = m_model->favoriteStatus(unique_source_entry_id);
@@ -176,7 +224,6 @@ void People::setFavoriteStatus(const QVariantMap &unique_source_entry_id)
     }
     b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_name, source_entry_id, !enabled));
 }
-
 
 void People::searchMode()
 {
@@ -190,4 +237,21 @@ void People::favoriteMode()
     ui.entry_filter->clear();
     m_model->clearEntries();
     b_engine->sendJsonCommand(MessageFactory::favorites());
+}
+
+void People::personalContactsMode()
+{
+    m_mode = PERSONAL_CONTACT_MODE;
+    ui.entry_filter->clear();
+    m_model->clearEntries();
+    b_engine->sendJsonCommand(MessageFactory::personalContacts());
+}
+
+void People::openNewContactDialog()
+{
+    QVariantMap contact_infos;
+    ContactDialog contact_dialog(this, &contact_infos);
+    if (contact_dialog.exec() && !contact_infos.isEmpty()) {
+        b_engine->sendJsonCommand(MessageFactory::createPersonalContact(contact_infos));
+    }
 }

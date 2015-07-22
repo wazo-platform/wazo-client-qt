@@ -48,6 +48,10 @@ PeopleEntry::PeopleEntry(const QVariantList &data,
 {
 }
 
+PeopleEntry::PeopleEntry()
+{
+}
+
 PeopleEntry::~PeopleEntry()
 {
 }

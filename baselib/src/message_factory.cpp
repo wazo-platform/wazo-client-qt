@@ -287,6 +287,29 @@ QVariantMap MessageFactory::favorites()
     return command;
 }
 
+QVariantMap MessageFactory::personalContacts()
+{
+    QVariantMap command = MessageFactory::baseMessage("people_personal_contacts");
+    return command;
+}
+
+QVariantMap MessageFactory::createPersonalContact(const QVariantMap &contact_infos)
+{
+    QVariantMap command = MessageFactory::baseMessage("people_create_personal_contact");
+    command["contact_infos"] = contact_infos;
+
+    return command;
+}
+
+QVariantMap MessageFactory::deletePersonalContact(const QString &source_name, const QString &source_entry_id)
+{
+    QVariantMap command = MessageFactory::baseMessage("people_delete_personal_contact");
+    command["source"] = source_name;
+    command["source_entry_id"] = source_entry_id;
+
+    return command;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

@@ -66,12 +66,18 @@ class People: public XLet, public IPBXListener
         void parseCommand(const QVariantMap &command);
 
     private slots:
+        void deletePersonalContact(const QVariantMap &unique_source_entry_id);
         void setFavoriteStatus(const QVariantMap &unique_source_entry_id);
         void searchMode();
         void searchPeople();
         void favoriteMode();
+        void personalContactsMode();
+        void openNewContactDialog();
 
     private:
+        void parsePeoplePersonalContactAdded(const QVariantMap &result);
+        void parsePeoplePersonalContactDeleted(const QVariantMap &result);
+
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;

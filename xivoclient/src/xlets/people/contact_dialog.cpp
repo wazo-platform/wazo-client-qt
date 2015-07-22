@@ -27,37 +27,31 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PEOPLE_ENUM_H__
-#define __PEOPLE_ENUM_H__
+#include "contact_dialog.h"
 
-enum ColumnType {
-  AGENT,
-  FAVORITE,
-  MOBILE,
-  NAME,
-  NUMBER,
-  PERSONAL,
-  OTHER,
-  STATUS_ICON
-};
 
-enum UserRoleCustom {
-    NUMBER_ROLE = Qt::UserRole,
-    INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
-    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2,
-    SORT_FILTER_ROLE = Qt::UserRole + 3
-};
+ContactDialog::ContactDialog(QWidget *parent, QVariantMap *contact_infos)
+    : QDialog(parent),
+      m_contact_infos(contact_infos)
+{
+    this->ui.setupUi(this);
+    this->setSizeGripEnabled(true);
+    connect(this->ui.confirm_button_box, SIGNAL(accepted()),
+            this, SLOT(accept()));
+    connect(this->ui.confirm_button_box, SIGNAL(rejected()),
+           this, SLOT(reject()));
+}
 
-enum PeopleMode {
-    SEARCH_MODE = 0,
-    FAVORITE_MODE,
-    PERSONAL_CONTACT_MODE
-};
+ContactDialog::~ContactDialog()
+{
+}
 
-enum PeopleAction {
-    CALL,
-    MOBILECALL
-
-};
-
-#endif
+void ContactDialog::accept()
+{
+    m_contact_infos->insert("firstname", this->ui.firstname_input->text());
+    m_contact_infos->insert("lastname",  this->ui.lastname_input->text());
+    m_contact_infos->insert("number", this->ui.phone_number_input->text());
+    m_contact_infos->insert("mobile", this->ui.mobile_number_input->text());
+    m_contact_infos->insert("email", this->ui.email_input->text());
+    QDialog::accept();
+}

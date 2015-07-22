@@ -49,6 +49,7 @@ class PeopleEntryView : public AbstractTableView
 
     signals:
         void favoriteToggled(const QVariantMap &unique_source_entry_id);
+        void deleteEntry(const QVariantMap &unique_source_entry_id);
 
     public slots:
         void updateColumnsDelegates(const QModelIndex &parent, int first, int last);

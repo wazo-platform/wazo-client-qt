@@ -32,14 +32,16 @@ QLabel[qss_tags~="xlet_p"] {
 /*
  * XLET FRAME STYLE
  */
-QWidget[qss_tags~="xlet_frame"], QWidget[qss_tags~="login_frame"] {
+QWidget[qss_tags~="xlet_frame"],
+QWidget[qss_tags~="login_frame"],
+QWidget[qss_tags~="dialog_frame"] {
     background-color: #FFFFFF;
 }
 
 /*
  * QPUSHBUTTON
  */
-QPushButton[qss_tags~="styled"]{
+QPushButton[qss_tags~="styled"] {
     border-radius: 8px;
     min-height: 30px;
     max-height: 30px;
@@ -47,7 +49,7 @@ QPushButton[qss_tags~="styled"]{
     padding-right: 18px;
 }
 
-QPushButton[qss_tags~="orange"]{
+QPushButton[qss_tags~="orange"] {
     background-color: #E77D39;
     color: #FFFFFF;
     font: 12px "Dyno";
