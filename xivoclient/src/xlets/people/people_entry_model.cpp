@@ -45,7 +45,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     this->m_type_map["mobile"] = MOBILE;
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
-    this->m_type_map["private"] = PERSONAL_CONTACT;
+    this->m_type_map["personal"] = PERSONAL_CONTACT;
     this->m_type_map["status"] = STATUS_ICON;
 }
 
