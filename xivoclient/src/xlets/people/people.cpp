@@ -102,7 +102,7 @@ People::People(QWidget *parent)
     this->registerListener("people_favorites_result");
     this->registerListener("people_headers_result");
     this->registerListener("people_personal_contacts_result");
-    this->registerListener("people_personal_contact_added");
+    this->registerListener("people_personal_contact_created");
     this->registerListener("people_personal_contact_deleted");
     this->registerListener("people_search_result");
     this->registerListener("user_status_update");
@@ -130,8 +130,8 @@ void People::parseCommand(const QVariantMap &command)
         m_model->parsePeopleSearchResult(command);
     } else if (event == "people_personal_contacts_result") {
         m_model->parsePeopleSearchResult(command);
-    } else if (event == "people_personal_contact_added") {
-        this->parsePeoplePersonalContactAdded(command);
+    } else if (event == "people_personal_contact_created") {
+        this->parsePeoplePersonalContactCreated(command);
     } else if (event == "people_personal_contact_deleted") {
         this->parsePeoplePersonalContactDeleted(command);
     } else if (event == "people_favorite_update") {
@@ -140,7 +140,7 @@ void People::parseCommand(const QVariantMap &command)
 
 }
 
-void People::parsePeoplePersonalContactAdded(const QVariantMap &/*result*/)
+void People::parsePeoplePersonalContactCreated(const QVariantMap &/*result*/)
 {
     if (m_mode == PERSONAL_CONTACT_MODE) {
         b_engine->sendJsonCommand(MessageFactory::personalContacts());

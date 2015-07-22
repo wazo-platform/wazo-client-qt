@@ -75,7 +75,7 @@ class People: public XLet, public IPBXListener
         void openNewContactDialog();
 
     private:
-        void parsePeoplePersonalContactAdded(const QVariantMap &result);
+        void parsePeoplePersonalContactCreated(const QVariantMap &result);
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);
 
         Ui::PeopleWidget ui;
