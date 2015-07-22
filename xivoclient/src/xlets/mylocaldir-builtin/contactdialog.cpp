@@ -31,7 +31,7 @@
 #include <QDialogButtonBox>
 #include "contactdialog.h"
 
-ContactDialog::ContactDialog(QWidget *parent)
+ContactDialogOld::ContactDialogOld(QWidget *parent)
     : QDialog(parent)
 {
     setWindowTitle(tr("Contact"));
