@@ -116,16 +116,16 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="fax_number_label">
+    <widget class="QLabel" name="fax_label">
      <property name="text">
-      <string>Fax Number</string>
+      <string>Fax</string>
      </property>
     </widget>
    </item>
    <item row="5" column="0">
     <widget class="QLabel" name="email_label">
      <property name="text">
-      <string>Email Address</string>
+      <string>Email</string>
      </property>
     </widget>
    </item>
@@ -139,7 +139,7 @@
     </widget>
    </item>
    <item row="4" column="2">
-    <widget class="QLineEdit" name="fax_number_input">
+    <widget class="QLineEdit" name="fax_input">
      <property name="qss_tags" stdset="0">
       <stringlist notr="true">
        <string>styled</string>
@@ -154,7 +154,7 @@
   <tabstop>lastname_input</tabstop>
   <tabstop>phone_number_input</tabstop>
   <tabstop>mobile_number_input</tabstop>
-  <tabstop>fax_number_input</tabstop>
+  <tabstop>fax_input</tabstop>
   <tabstop>email_input</tabstop>
   <tabstop>company_input</tabstop>
  </tabstops>
