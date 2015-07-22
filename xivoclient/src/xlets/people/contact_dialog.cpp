@@ -52,6 +52,8 @@ void ContactDialog::accept()
     m_contact_infos->insert("lastname",  this->ui.lastname_input->text());
     m_contact_infos->insert("number", this->ui.phone_number_input->text());
     m_contact_infos->insert("mobile", this->ui.mobile_number_input->text());
+    m_contact_infos->insert("fax", this->ui.fax_number_input->text());
     m_contact_infos->insert("email", this->ui.email_input->text());
+    m_contact_infos->insert("company", this->ui.company_input->text());
     QDialog::accept();
 }
