@@ -148,7 +148,7 @@ QString MyLocalDirPanel::getBackupFile() const
  */
 void MyLocalDirPanel::openNewContactDialog()
 {
-    ContactDialog dialog;
+    ContactDialogOld dialog;
     int r = dialog.exec();
     // qDebug() << r;
     if(r) {

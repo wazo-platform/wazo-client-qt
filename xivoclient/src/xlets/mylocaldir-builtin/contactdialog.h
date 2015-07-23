@@ -36,12 +36,12 @@
 /*! \brief dialog for creating/editing a new personnal contact
  *
  */
-class ContactDialog : public QDialog
+class ContactDialogOld : public QDialog
 {
     Q_OBJECT
 
     public:
-        ContactDialog(QWidget *parent=0);
+        ContactDialogOld(QWidget *parent=0);
         QString firstname() const { return m_firstname?m_firstname->text():QString(); };
         QString lastname() const { return m_lastname?m_lastname->text():QString(); };
         QString phonenumber() const { return m_phonenumber?m_phonenumber->text():QString(); };
@@ -60,4 +60,3 @@ class ContactDialog : public QDialog
         QLineEdit *m_mobilenumber;
 };
 #endif
-
