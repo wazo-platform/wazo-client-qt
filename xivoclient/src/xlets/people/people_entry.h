@@ -32,9 +32,7 @@
 
 #include <QVariant>
 
-#include <xletlib/xletlib_export.h>
-
-class XLETLIB_EXPORT PeopleEntry
+class PeopleEntry
 {
     public:
         PeopleEntry(const QVariantList &data,
