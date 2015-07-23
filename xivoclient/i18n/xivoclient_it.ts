@@ -293,46 +293,46 @@
     </message>
 </context>
 <context>
-    <name>ContactDialog</name>
+    <name>ContactDialogOld</name>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="37"/>
         <source>Contact</source>
-        <translation>Contatto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="40"/>
         <source>First Name</source>
-        <translation>Nome</translation>
+        <translation type="unfinished">Nome</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="42"/>
         <source>Last Name</source>
-        <translation>Cognome</translation>
+        <translation type="unfinished">Cognome</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="44"/>
         <source>Phone Number</source>
-        <translation>Numero di telefono</translation>
+        <translation type="unfinished">Numero di telefono</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="46"/>
         <source>Email Address</source>
-        <translation>Indirizzo e-mail</translation>
+        <translation type="unfinished">Indirizzo e-mail</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
         <source>Company</source>
-        <translation>Società</translation>
+        <translation type="unfinished">Società</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
         <source>Fax Number</source>
-        <translation>Numero di fax</translation>
+        <translation type="unfinished">Numero di fax</translation>
     </message>
     <message>
         <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="52"/>
         <source>Mobile Number</source>
-        <translation>Numero di cellulare</translation>
+        <translation type="unfinished">Numero di cellulare</translation>
     </message>
 </context>
 <context>

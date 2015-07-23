@@ -148,7 +148,7 @@ Warteschlangen</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="75"/>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="399"/>
         <source>&amp;Intercept</source>
         <translation type="unfinished"></translation>
     </message>
@@ -174,42 +174,42 @@ Warteschlangen</translation>
         <translation>B&amp;earbeiten</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="386"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="384"/>
         <source>&amp;Hangup call</source>
         <translation>Anruf auf&amp;legen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="401"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="399"/>
         <source>Cancel transfer</source>
         <translation>Verbindung abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="417"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="415"/>
         <source>Invite in conference room</source>
         <translation>In Konferenzraum einladen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
         <source>Blind &amp;Transfer</source>
         <translation>Blindüber&amp;tragung</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="445"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
         <source>&amp;Attended Transfer</source>
         <translation>Verbindungsübergabe nach Rückfr&amp;age</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="521"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="519"/>
         <source>Blind transfer &lt;%0&gt;</source>
         <translation>Blindverbindung &lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="538"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="536"/>
         <source>Attended transfer &lt;%0&gt;</source>
         <translation>Verbindungsübergabe nach Rückfrage &lt;%0&gt;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/basepeerwidget.cpp" line="564"/>
+        <location filename="../src/xletlib/basepeerwidget.cpp" line="562"/>
         <source>Transfer to &amp;voice mail</source>
         <translation>Zum &amp;Anrufbeantworter verbinden</translation>
     </message>
