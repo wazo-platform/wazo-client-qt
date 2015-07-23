@@ -241,14 +241,11 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
     switch (column_type) {
         case NUMBER: {
             QVariantList number_items;
-            const QList<int> &number_indexes = m_type_to_indices[NUMBER];
-            foreach(int column, number_indexes) {
-                QVariantMap item;
-                item["label"] = this->headerText(column);
-                item["value"] = entry.data(column);
-                item["action"] = CALL;
-                number_items.append(item);
-            }
+            QVariantMap item;
+            item["label"] = this->headerText(column);
+            item["value"] = entry.data(column);
+            item["action"] = CALL;
+            number_items.append(item);
             const QList<int> &mobile_indexes = m_type_to_indices[MOBILE];
             foreach(int column, mobile_indexes) {
                 QVariantMap item;
