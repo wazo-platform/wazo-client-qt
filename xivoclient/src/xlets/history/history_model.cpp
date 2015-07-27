@@ -48,9 +48,9 @@ HistoryModel::HistoryModel(QWidget * parent)
 void HistoryModel::initializeHistory(const QVariantMap &p)
 {
     const QVariantList &history_items = p.value("history").toList();
-    m_history_item.clear();
 
     beginResetModel();
+    m_history_item.clear();
     foreach (const QVariant &item, history_items) {
         QVariantMap history_item = item.toMap();
         if (history_item.value("fullname").toString().isEmpty()) {
