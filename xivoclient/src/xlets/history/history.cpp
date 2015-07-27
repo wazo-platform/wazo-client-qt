@@ -43,7 +43,6 @@ History::History(QWidget *parent)
     this->ui.setupUi(this);
 
     m_model = new HistoryModel(this);
-    this->ui.history_table->setModel(m_model);
 
     m_proxy_model = new HistorySortFilterProxyModel(this);
     m_proxy_model->setSourceModel(m_model);
