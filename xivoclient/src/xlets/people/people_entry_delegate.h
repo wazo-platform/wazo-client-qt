@@ -30,10 +30,12 @@
 #ifndef __PEOPLE_ENTRY_DELEGATE_H__
 #define __PEOPLE_ENTRY_DELEGATE_H__
 
+#include <QPointer>
 #include <xletlib/item_delegate.h>
+#include <xletlib/menu.h>
+
 
 class PeopleActions;
-class QMenu;
 
 class PeopleEntryDotDelegate : public AbstractItemDelegate
 {
@@ -76,7 +78,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
         QRect buttonRect(const QRect &option_rect) const;
         QRect contentsRect(const QRect &option_rect) const;
         QRect actionSelectorRect(const QRect &option_rect) const;
-        void fillContextMenu(QMenu *menu,
+        void fillContextMenu(QPointer<Menu> menu,
                              PeopleActions *people_actions);
         void showContextMenu(const QStyleOptionViewItem &option,
                              PeopleActions *people_actions);

@@ -26,9 +26,11 @@
  * You should have received a copy of the GNU General Public License
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include <QByteArray>
+#include <QDir>
+#include <QFileDialog>
 #include <QMovie>
+#include <QPointer>
 
 #include <baseengine.h>
 
@@ -37,7 +39,6 @@
 
 Fax::Fax(QWidget *parent)
     : XLet(parent, tr("Fax"), ":/images/tab-fax.svg"),
-      m_mainwindow(parent),
       m_waiting_status(NULL)
 {
     this->ui.setupUi(this);
@@ -61,6 +62,10 @@ Fax::Fax(QWidget *parent)
              this, SLOT(unreachableNumber()) );
 
     registerListener("fax_progress");
+}
+
+Fax::~Fax()
+{
 }
 
 void Fax::parseCommand(const QVariantMap &map)
@@ -94,12 +99,17 @@ void Fax::setOpenFileName()
     if (open_path.isEmpty()) {
         open_path = QDir::toNativeSeparators(QDir::homePath());
     }
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Fax File"),
-                                                    open_path,
-                                                    tr("PDF Files (*.pdf);;All Files (*)"));
-    if (!fileName.isEmpty())
-        this->ui.file_name_input->setText(fileName);
+    QPointer<QFileDialog> file_dialog = new QFileDialog(this,
+                                                        tr("Open Fax File"),
+                                                        open_path,
+                                                        tr("PDF Files (*.pdf);;All Files (*)"));
+    file_dialog->setFileMode(QFileDialog::ExistingFile);
+
+    if(file_dialog->exec()) {
+        QStringList file_names = file_dialog->selectedFiles();
+        this->ui.file_name_input->setText(file_names.join(QString()));
+    }
+    delete file_dialog;
 }
 
 void Fax::setFailureMessage(const QString &error)
@@ -176,11 +186,14 @@ void Fax::setEnabledFaxWidget(bool enabled)
 
 void Fax::dirLookup()
 {
-    DirDialog dirdialog(m_mainwindow);
-    connect(dirdialog.dirpanel(), SIGNAL(selectedText(const QString &)),
+    QPointer<DirDialog> dirdialog = new DirDialog(this);
+    connect(dirdialog->dirpanel(), SIGNAL(selectedText(const QString &)),
             this->ui.fax_number_input, SLOT(setText(const QString &)));
     QString old_destination = this->ui.fax_number_input->text();
-    int ret = dirdialog.exec();
-    if (ret == QDialog::Rejected)
-        this->ui.fax_number_input->setText(old_destination);
+    if (dirdialog->exec() == QDialog::Rejected) {
+        if (dirdialog) { //dirdialog may have been deleted during exec
+            this->ui.fax_number_input->setText(old_destination);
+        }
+    }
+    delete dirdialog;
 }

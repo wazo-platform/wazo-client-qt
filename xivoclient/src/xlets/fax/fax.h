@@ -50,6 +50,7 @@ class Fax : public XLet, public IPBXListener
 
     public:
         Fax(QWidget *parent=0);
+        ~Fax();
         void parseCommand(const QVariantMap &map);
 
     private slots:
@@ -64,7 +65,6 @@ class Fax : public XLet, public IPBXListener
         void setFailureMessage(const QString &error);
 
         Ui::FaxWidget ui;
-        QWidget *m_mainwindow;  //!< MainWidget where some parameters are commited to
         QMovie *m_waiting_status;
         QTimer *m_failure_timer;
 };

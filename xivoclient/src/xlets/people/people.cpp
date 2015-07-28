@@ -29,6 +29,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QPointer>
 #include <QTimer>
 
 #include <xletlib/signal_relayer.h>
@@ -204,13 +205,17 @@ void People::deletePersonalContact(const QVariantMap &unique_source_entry_id)
 {
     const QString &source_name = unique_source_entry_id["source"].toString();
     const QString &source_entry_id = unique_source_entry_id["source_entry_id"].toString();
-    int decision = QMessageBox::warning(this, tr("Removing this contact"),
-                                        tr("Removing this contact.\n"
-                                           "Are you sure ?"),
-                                        QMessageBox::Yes|QMessageBox::No);
-    if (source_entry_id.isEmpty() || decision != QMessageBox::Yes) {
+    QPointer<QMessageBox> message = new QMessageBox(QMessageBox::Warning,
+                                                    tr("Removing this contact"),
+                                                    tr("Removing this contact.\n"
+                                                       "Are you sure ?"),
+                                                    QMessageBox::Yes|QMessageBox::No,
+                                                    this);
+
+    if (message->exec() != QMessageBox::Yes || source_entry_id.isEmpty()) {
         return;
     }
+    delete message;
     b_engine->sendJsonCommand(MessageFactory::deletePersonalContact(source_name, source_entry_id));
 }
 
@@ -250,8 +255,9 @@ void People::personalContactsMode()
 void People::openNewContactDialog()
 {
     QVariantMap contact_infos;
-    ContactDialog contact_dialog(this, &contact_infos);
-    if (contact_dialog.exec() && !contact_infos.isEmpty()) {
+    QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
+    if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
         b_engine->sendJsonCommand(MessageFactory::createPersonalContact(contact_infos));
     }
+    delete contact_dialog;
 }

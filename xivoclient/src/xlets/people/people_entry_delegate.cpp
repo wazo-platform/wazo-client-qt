@@ -35,8 +35,6 @@
 #include <QPainter>
 #include <QVariant>
 
-#include <xletlib/menu.h>
-
 #include "people_entry_delegate.h"
 #include "people_actions.h"
 
@@ -216,14 +214,15 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
     QPoint position = this->contentsRect(option.rect).bottomLeft();
     QPoint globalPosition = view->viewport()->mapToGlobal(position);
 
-    Menu menu(view);
-    this->fillContextMenu(&menu, people_actions);
-    if (! menu.isEmpty()) {
-        menu.exec(globalPosition);
+    QPointer<Menu> menu = new Menu(view);
+    this->fillContextMenu(menu, people_actions);
+    if (! menu->isEmpty()) {
+        menu->exec(globalPosition);
     }
+    delete menu;
 }
 
-void PeopleEntryNumberDelegate::fillContextMenu(QMenu *menu,
+void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                                                 PeopleActions *people_actions)
 {
     if (QAction *mobile_action = people_actions->callMobileAction()) {
