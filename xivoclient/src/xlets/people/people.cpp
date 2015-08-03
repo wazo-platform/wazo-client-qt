@@ -212,11 +212,10 @@ void People::deletePersonalContact(const QVariantMap &unique_source_entry_id)
                                                     QMessageBox::Yes|QMessageBox::No,
                                                     this);
 
-    if (message->exec() != QMessageBox::Yes || source_entry_id.isEmpty()) {
-        return;
+    if (message->exec() == QMessageBox::Yes && ! source_entry_id.isEmpty()) {
+        b_engine->sendJsonCommand(MessageFactory::deletePersonalContact(source_name, source_entry_id));
     }
     delete message;
-    b_engine->sendJsonCommand(MessageFactory::deletePersonalContact(source_name, source_entry_id));
 }
 
 void People::setFavoriteStatus(const QVariantMap &unique_source_entry_id)
