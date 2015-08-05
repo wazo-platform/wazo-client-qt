@@ -264,12 +264,12 @@ void PeopleEntryPersonalContactDelegate::paint(QPainter *painter,
         return;
     }
 
-    QPixmap edit_image = QIcon(":/images/pen.svg").pixmap(icon_size);
+    QPixmap edit_image = QIcon(":/images/edit-contact.svg").pixmap(icon_size);
 
     int icon_edit_left = opt.rect.left();
     int icon_edit_top = opt.rect.center().y() - edit_image.height() / 2;
 
-    QPixmap trash_image = QIcon(":/images/trash.svg").pixmap(icon_size);
+    QPixmap trash_image = QIcon(":/images/delete-contact.svg").pixmap(icon_size);
 
     int icon_trash_left = opt.rect.left() + icon_size.width() + icons_spacing;
     int icon_trash_top = opt.rect.center().y() - trash_image.height() / 2;

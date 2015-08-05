@@ -32,16 +32,17 @@
         <file>images/checkbox_unchecked.png</file>
         <file>images/checkbox_unchecked_hover.png</file>
         <file>images/checkbox_unchecked_pressed.png</file>
+        <file>images/delete-contact.svg</file>
         <file>images/dot-green.svg</file>
         <file>images/dot-red.svg</file>
         <file>images/dot.svg</file>
         <file>images/down-arrow-grey.svg</file>
         <file>images/down-arrow-white.svg</file>
+        <file>images/edit-contact.svg</file>
         <file>images/hide.svg</file>
         <file>images/magnifying_glass.png</file>
         <file>images/mobile-grey.png</file>
         <file>images/padlock.png</file>
-        <file>images/pen.svg</file>
         <file>images/personal-trans.png</file>
         <file>images/phone-trans.png</file>
         <file>images/phonebook.png</file>
@@ -65,7 +66,6 @@
         <file>images/tab-people.svg</file>
         <file>images/tab-remotedir.svg</file>
         <file>images/tab-services.svg</file>
-        <file>images/trash.svg</file>
         <file>images/up-arrow-grey.svg</file>
         <file>images/waiting-status.gif</file>
         <file>images/warning.png</file>
