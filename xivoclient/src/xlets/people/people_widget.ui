@@ -154,6 +154,13 @@
         </spacer>
        </item>
        <item>
+        <widget class="QLabel" name="status_icon">
+         <property name="text">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

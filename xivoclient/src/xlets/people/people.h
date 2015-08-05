@@ -30,8 +30,12 @@
 #ifndef __PEOPLE_H__
 #define __PEOPLE_H__
 
+#include <QMovie>
 #include <QObject>
+#include <QString>
 #include <QTimer>
+#include <QVariantMap>
+#include <QWidget>
 
 #include <dao/phonedaoimpl.h>
 #include <dao/userdaoimpl.h>
@@ -51,6 +55,8 @@ class People: public XLet, public IPBXListener
     FUNCTESTED
 
     private:
+        static const int delay_before_waiting = 1*1000;
+        static const int delay_before_failure = 30*1000;
         static const int delay_before_lookup = 1000;
         static const int min_lookup_length = 3;
 
@@ -73,6 +79,8 @@ class People: public XLet, public IPBXListener
         void searchPeople();
         void favoriteMode();
         void personalContactsMode();
+        void setFailureStatus();
+        void setWaitingStatus();
         void openNewContactDialog();
         void openEditContactDialog(const QString &source_name,
                                    const QString &source_entry_id,
@@ -82,13 +90,19 @@ class People: public XLet, public IPBXListener
         void parsePeoplePersonalContactCreated(const QVariantMap &result);
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);
         void parsePeoplePersonalContactRawResult(const QVariantMap &result);
+        void setSuccessStatus();
+        void waitingStatusAboutToBeStarted();
 
         Ui::PeopleWidget ui;
         PeopleEntrySortFilterProxyModel *m_proxy_model;
         PeopleEntryModel *m_model;
+        QMovie *m_waiting_status;
+        QTimer m_before_waiting_timer;
+        QTimer m_failure_timer;
         QTimer m_lookup_timer;
         QString m_searched_pattern;
         PeopleMode m_mode;
+
 };
 
 #endif /* __PEOPLE_H__ */
