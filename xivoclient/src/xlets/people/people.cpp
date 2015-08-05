@@ -147,6 +147,7 @@ void People::parseCommand(const QVariantMap &command)
         m_model->parsePeopleFavoriteUpdate(command);
     }
 
+    m_proxy_model->setFilterMode(m_mode);
 }
 
 void People::parsePeoplePersonalContactCreated(const QVariantMap &/*result*/)

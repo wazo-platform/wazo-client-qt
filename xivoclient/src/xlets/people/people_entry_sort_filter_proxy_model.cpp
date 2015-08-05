@@ -38,6 +38,28 @@ PeopleEntrySortFilterProxyModel::PeopleEntrySortFilterProxyModel(QObject *parent
 {
 }
 
+void PeopleEntrySortFilterProxyModel::setFilterMode(PeopleMode mode)
+{
+    if (m_mode != mode) {
+        m_mode = mode;
+        invalidateFilter();
+    }
+}
+
+bool PeopleEntrySortFilterProxyModel::filterAcceptsColumn(int source_column,
+                                                          const QModelIndex &/*source_parent*/) const
+{
+    if (m_mode == PERSONAL_CONTACT_MODE) {
+        return true;
+    }
+
+    const QVariant &column_type = sourceModel()->headerData(source_column, Qt::Horizontal, Qt::UserRole);
+    if (column_type == PERSONAL_CONTACT) {
+        return false;
+    }
+    return true;
+}
+
 bool PeopleEntrySortFilterProxyModel::lessThan(const QModelIndex &left,
                                                const QModelIndex &right) const
 {

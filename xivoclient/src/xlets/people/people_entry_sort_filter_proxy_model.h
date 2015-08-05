@@ -34,6 +34,7 @@
 #include <QString>
 
 #include <xletlib/abstract_sort_filter_proxy_model.h>
+#include "people_enum.h"
 
 class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
 {
@@ -41,8 +42,14 @@ class PeopleEntrySortFilterProxyModel : public AbstractSortFilterProxyModel
 
     public:
         PeopleEntrySortFilterProxyModel(QObject *parent);
+        void setFilterMode(PeopleMode mode);
+
     protected:
         virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+        virtual bool filterAcceptsColumn(int source_column, const QModelIndex &source_parent) const;
+
+    private:
+        PeopleMode m_mode;
 };
 
 #endif
