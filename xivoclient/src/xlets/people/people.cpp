@@ -76,8 +76,10 @@ People::People(QWidget *parent)
 
     connect(this->ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
             this, SLOT(setFavoriteStatus(const QVariantMap &)));
-    connect(this->ui.entry_table, SIGNAL(deleteEntry(const QVariantMap &)),
+    connect(this->ui.entry_table, SIGNAL(deletePersonalContactClicked(const QVariantMap &)),
             this, SLOT(deletePersonalContact(const QVariantMap &)));
+    connect(this->ui.entry_table, SIGNAL(editPersonalContactClicked(const QVariantMap &)),
+            this, SLOT(requestEditPersonalContact(const QVariantMap &)));
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
@@ -105,6 +107,8 @@ People::People(QWidget *parent)
     this->registerListener("people_personal_contacts_result");
     this->registerListener("people_personal_contact_created");
     this->registerListener("people_personal_contact_deleted");
+    this->registerListener("people_personal_contact_raw_result");
+    this->registerListener("people_personal_contact_raw_update");
     this->registerListener("people_search_result");
     this->registerListener("user_status_update");
 }
@@ -135,6 +139,10 @@ void People::parseCommand(const QVariantMap &command)
         this->parsePeoplePersonalContactCreated(command);
     } else if (event == "people_personal_contact_deleted") {
         this->parsePeoplePersonalContactDeleted(command);
+    } else if (event == "people_personal_contact_raw_result") {
+        this->parsePeoplePersonalContactRawResult(command);
+    } else if (event == "people_personal_contact_raw_update") {
+        this->parsePeoplePersonalContactCreated(command);
     } else if (event == "people_favorite_update") {
         m_model->parsePeopleFavoriteUpdate(command);
     }
@@ -154,6 +162,14 @@ void People::parsePeoplePersonalContactDeleted(const QVariantMap &result)
     const QString &source = data["source"].toString();
     const QString &source_entry_id = data["source_entry_id"].toString();
     m_model->removeRowFromSourceEntryId(source, source_entry_id);
+}
+
+void People::parsePeoplePersonalContactRawResult(const QVariantMap &result)
+{
+    QVariantMap data = result["data"].toMap();
+    const QString &source = data.take("source").toString();
+    const QString &source_entry_id = data.take("source_entry_id").toString();
+    this->openEditContactDialog(source, source_entry_id, data);
 }
 
 void People::numberSelectionRequested()
@@ -251,12 +267,32 @@ void People::personalContactsMode()
     b_engine->sendJsonCommand(MessageFactory::personalContacts());
 }
 
+void People::requestEditPersonalContact(const QVariantMap &unique_source_entry_id)
+{
+    const QString &source_name = unique_source_entry_id["source"].toString();
+    const QString &source_entry_id = unique_source_entry_id["source_entry_id"].toString();
+    b_engine->sendJsonCommand(MessageFactory::personalContactRaw(source_name, source_entry_id));
+}
+
 void People::openNewContactDialog()
 {
     QVariantMap contact_infos;
     QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
     if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
         b_engine->sendJsonCommand(MessageFactory::createPersonalContact(contact_infos));
+    }
+    delete contact_dialog;
+}
+
+void People::openEditContactDialog(const QString &source_name,
+                                  const QString &source_entry_id,
+                                  QVariantMap &contact_infos)
+{
+    QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
+    if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
+        b_engine->sendJsonCommand(MessageFactory::editPersonalContact(source_name,
+                                                                      source_entry_id,
+                                                                      contact_infos));
     }
     delete contact_dialog;
 }

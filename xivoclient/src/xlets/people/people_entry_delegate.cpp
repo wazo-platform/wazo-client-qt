@@ -45,6 +45,8 @@ int PeopleEntryNumberDelegate::action_selector_width = 40;
 int PeopleEntryNumberDelegate::button_height = 30;
 QMargins PeopleEntryNumberDelegate::button_margins = QMargins(10, 0, 10, 0);
 
+QSize PeopleEntryPersonalContactDelegate::icon_size = QSize(12,12);
+int PeopleEntryPersonalContactDelegate::icons_spacing = 7;
 
 PeopleEntryDotDelegate::PeopleEntryDotDelegate(QWidget *parent)
     : AbstractItemDelegate(parent)
@@ -228,4 +230,86 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
     if (QAction *mobile_action = people_actions->callMobileAction()) {
         menu->addAction(mobile_action);
     }
+}
+
+
+PeopleEntryPersonalContactDelegate::PeopleEntryPersonalContactDelegate(QWidget *parent)
+    : AbstractItemDelegate(parent)
+{
+}
+
+QSize PeopleEntryPersonalContactDelegate::sizeHint(const QStyleOptionViewItem &option,
+                                       const QModelIndex &index) const
+{
+    if (index.data(SORT_FILTER_ROLE).toBool()) {
+        return AbstractItemDelegate::sizeHint(option, index);
+    }
+
+    const QSize &original_size = AbstractItemDelegate::sizeHint(option, index);
+    int new_width = icon_size.width() + icons_spacing + icon_size.width();
+    return QSize(new_width, original_size.height());
+}
+
+void PeopleEntryPersonalContactDelegate::paint(QPainter *painter,
+                                   const QStyleOptionViewItem &option,
+                                   const QModelIndex &index) const
+{
+    AbstractItemDelegate::drawBorder(painter, option);
+
+    QStyleOptionViewItem opt = option;
+    opt.rect = AbstractItemDelegate::marginsRemovedByColumn(option.rect, index.column());
+
+    if (! index.data(SORT_FILTER_ROLE).toBool()) {
+        AbstractItemDelegate::paint(painter, opt, index);
+        return;
+    }
+
+    QPixmap edit_image = QIcon(":/images/pen.svg").pixmap(icon_size);
+
+    int icon_edit_left = opt.rect.left();
+    int icon_edit_top = opt.rect.center().y() - edit_image.height() / 2;
+
+    QPixmap trash_image = QIcon(":/images/trash.svg").pixmap(icon_size);
+
+    int icon_trash_left = opt.rect.left() + icon_size.width() + icons_spacing;
+    int icon_trash_top = opt.rect.center().y() - trash_image.height() / 2;
+
+    painter->save();
+    painter->drawPixmap(icon_edit_left, icon_edit_top, edit_image);
+    painter->drawPixmap(icon_trash_left, icon_trash_top, trash_image);
+    painter->restore();
+}
+
+bool PeopleEntryPersonalContactDelegate::editorEvent(QEvent *event,
+                                                     QAbstractItemModel *model,
+                                                     const QStyleOptionViewItem &option,
+                                                     const QModelIndex &index)
+{
+    if (! index.data(SORT_FILTER_ROLE).toBool()) {
+        return AbstractItemDelegate::editorEvent(event, model, option, index);
+    }
+
+    if(event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
+        QStyleOptionViewItem opt = option;
+        opt.rect = AbstractItemDelegate::marginsRemovedByColumn(option.rect, index.column());
+
+        int right_edit_margin = opt.rect.width() - icon_size.width();
+        QRect edit_zone = opt.rect.marginsRemoved(QMargins(0, 0, right_edit_margin, 0));
+
+        if (edit_zone.contains(mouse_event->pos())) {
+            const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
+            emit editPersonalContactClicked(unique_source_entry_id);
+        }
+
+        int right_delete_margin = opt.rect.width() - (icon_size.width() + icons_spacing + icon_size.width());
+        int left_delete_margin = icon_size.width() + icons_spacing;
+        QRect delete_zone = opt.rect.marginsRemoved(QMargins(left_delete_margin, 0, right_delete_margin, 0));
+
+        if (delete_zone.contains(mouse_event->pos())) {
+            const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
+            emit deletePersonalContactClicked(unique_source_entry_id);
+        }
+    }
+    return true;
 }

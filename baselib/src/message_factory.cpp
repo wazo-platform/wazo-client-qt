@@ -293,6 +293,15 @@ QVariantMap MessageFactory::personalContacts()
     return command;
 }
 
+QVariantMap MessageFactory::personalContactRaw(const QString &source_name, const QString &source_entry_id)
+{
+    QVariantMap command = MessageFactory::baseMessage("people_personal_contact_raw");
+    command["source"] = source_name;
+    command["source_entry_id"] = source_entry_id;
+
+    return command;
+}
+
 QVariantMap MessageFactory::createPersonalContact(const QVariantMap &contact_infos)
 {
     QVariantMap command = MessageFactory::baseMessage("people_create_personal_contact");
@@ -306,6 +315,18 @@ QVariantMap MessageFactory::deletePersonalContact(const QString &source_name, co
     QVariantMap command = MessageFactory::baseMessage("people_delete_personal_contact");
     command["source"] = source_name;
     command["source_entry_id"] = source_entry_id;
+
+    return command;
+}
+
+QVariantMap MessageFactory::editPersonalContact(const QString &source_name,
+                                                const QString &source_entry_id,
+                                                const QVariantMap &contact_infos)
+{
+    QVariantMap command = MessageFactory::baseMessage("people_edit_personal_contact");
+    command["source"] = source_name;
+    command["source_entry_id"] = source_entry_id;
+    command["contact_infos"] = contact_infos;
 
     return command;
 }

@@ -84,4 +84,29 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
                              PeopleActions *people_actions);
 };
 
+class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate
+{
+    Q_OBJECT
+
+    public:
+        PeopleEntryPersonalContactDelegate(QWidget *parent = NULL);
+        QSize sizeHint(const QStyleOptionViewItem &option,
+                       const QModelIndex &index) const;
+        bool editorEvent(QEvent *event,
+                         QAbstractItemModel *model,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index);
+        void paint(QPainter *painter,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
+
+    signals:
+        void editPersonalContactClicked(const QVariantMap &unique_source_entry_id);
+        void deletePersonalContactClicked(const QVariantMap &unique_source_entry_id);
+
+    protected:
+        static QSize icon_size;
+        static int icons_spacing;
+};
+
 #endif

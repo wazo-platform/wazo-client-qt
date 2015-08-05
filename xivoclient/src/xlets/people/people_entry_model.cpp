@@ -185,13 +185,6 @@ QVariant PeopleEntryModel::dataDecoration(const PeopleEntry &entry, int column) 
             return QIcon(":/images/star-empty.svg").pixmap(QSize(12, 12));
         }
     }
-    case PERSONAL_CONTACT:
-    {
-        if(entry.data(column).toBool()) {
-            return QIcon(":images/trash.svg").pixmap(QSize(12, 12));
-        }
-    }
-    break;
     default:
         break;
     }
