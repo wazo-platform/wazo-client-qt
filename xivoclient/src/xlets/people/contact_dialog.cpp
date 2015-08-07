@@ -40,6 +40,14 @@ ContactDialog::ContactDialog(QWidget *parent, QVariantMap *contact_infos)
             this, SLOT(accept()));
     connect(this->ui.confirm_button_box, SIGNAL(rejected()),
            this, SLOT(reject()));
+
+    this->ui.firstname_input->setText(m_contact_infos->value("firstname").toString());
+    this->ui.lastname_input->setText(m_contact_infos->value("lastname").toString());
+    this->ui.phone_number_input->setText(m_contact_infos->value("number").toString());
+    this->ui.mobile_number_input->setText(m_contact_infos->value("mobile").toString());
+    this->ui.fax_input->setText(m_contact_infos->value("fax").toString());
+    this->ui.email_input->setText(m_contact_infos->value("email").toString());
+    this->ui.company_input->setText(m_contact_infos->value("company").toString());
 }
 
 ContactDialog::~ContactDialog()

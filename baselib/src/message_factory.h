@@ -73,8 +73,12 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap favorites();
 
         static QVariantMap personalContacts();
+        static QVariantMap personalContactRaw(const QString &source_name, const QString &source_entry_id);
         static QVariantMap createPersonalContact(const QVariantMap &contact_infos);
         static QVariantMap deletePersonalContact(const QString &source_name, const QString &source_entry_id);
+        static QVariantMap editPersonalContact(const QString &source_name,
+                                               const QString &source_entry_id,
+                                               const QVariantMap &contact_infos);
     private:
         static QVariantMap baseMessage(const QString &class_name);
         static QVariantMap ipbxcommand(const QString &action_name);

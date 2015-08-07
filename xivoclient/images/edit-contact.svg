@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="3.3865962mm"
+   height="3.3863845mm"
+   viewBox="0 0 11.99975 11.999"
+   id="svg4552"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="pen.svg">
+  <defs
+     id="defs4554" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="44.8"
+     inkscape:cx="10.815246"
+     inkscape:cy="7.0912094"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1863"
+     inkscape:window-height="1059"
+     inkscape:window-x="57"
+     inkscape:window-y="21"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4557">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(948.857,-100.64842)">
+    <g
+       transform="translate(-1285.57,-179.97858)"
+       id="g4481"
+       style="fill:#6c6763;fill-opacity:1">
+      <g
+         id="g4483"
+         style="fill:#6c6763;fill-opacity:1">
+        <path
+           inkscape:connector-curvature="0"
+           d="m 348.205,283.582 c 0.677,-0.676 0.677,-1.772 0,-2.448 -0.676,-0.676 -1.771,-0.676 -2.447,0 l -0.271,0.272 2.448,2.448 0.27,-0.272 z"
+           id="path4485"
+           style="fill:#6c6763;fill-opacity:1" />
+        <rect
+           x="338.34399"
+           y="284.84201"
+           transform="matrix(-0.7072,0.7071,-0.7071,-0.7072,787.7822,246.8724)"
+           width="8.8479996"
+           height="3.4619999"
+           id="rect4487"
+           style="fill:#6c6763;fill-opacity:1" />
+      </g>
+      <polygon
+         points="336.713,292.626 337.597,289.293 340.045,291.742 "
+         id="polygon4489"
+         style="fill:#6c6763;fill-opacity:1" />
+    </g>
+  </g>
+</svg>

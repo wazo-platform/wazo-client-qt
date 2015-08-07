@@ -45,9 +45,12 @@
 People::People(QWidget *parent)
     : XLet(parent, tr("People"), ":/images/tab-people.svg"),
       m_proxy_model(NULL),
-      m_model(NULL)
+      m_model(NULL),
+      m_waiting_status(NULL)
 {
     this->ui.setupUi(this);
+
+    m_waiting_status = new QMovie(":/images/waiting-status.gif", QByteArray(), this);
 
     m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
     m_model = new PeopleEntryModel(this);
@@ -76,8 +79,10 @@ People::People(QWidget *parent)
 
     connect(this->ui.entry_table, SIGNAL(favoriteToggled(const QVariantMap &)),
             this, SLOT(setFavoriteStatus(const QVariantMap &)));
-    connect(this->ui.entry_table, SIGNAL(deleteEntry(const QVariantMap &)),
+    connect(this->ui.entry_table, SIGNAL(deletePersonalContactClicked(const QVariantMap &)),
             this, SLOT(deletePersonalContact(const QVariantMap &)));
+    connect(this->ui.entry_table, SIGNAL(editPersonalContactClicked(const QVariantMap &)),
+            this, SLOT(requestEditPersonalContact(const QVariantMap &)));
 
     connect(this->ui.entry_filter, SIGNAL(textChanged(const QString &)),
             this, SLOT(schedulePeopleLookup(const QString &)));
@@ -93,8 +98,19 @@ People::People(QWidget *parent)
             this, SLOT(focusEntryTable()));
     connect(&m_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
-    this->m_lookup_timer.setSingleShot(true);
-    this->m_lookup_timer.setInterval(delay_before_lookup);
+    m_lookup_timer.setSingleShot(true);
+    m_lookup_timer.setInterval(delay_before_lookup);
+
+    connect(&m_failure_timer, SIGNAL(timeout()),
+            this, SLOT(setFailureStatus()));
+    m_failure_timer.setSingleShot(true);
+    m_failure_timer.setInterval(delay_before_failure);
+
+    connect(&m_before_waiting_timer, SIGNAL(timeout()),
+            this, SLOT(setWaitingStatus()));
+    m_before_waiting_timer.setSingleShot(true);
+    m_before_waiting_timer.setInterval(delay_before_waiting);
+
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
 
     this->registerListener("agent_status_update");
@@ -105,6 +121,8 @@ People::People(QWidget *parent)
     this->registerListener("people_personal_contacts_result");
     this->registerListener("people_personal_contact_created");
     this->registerListener("people_personal_contact_deleted");
+    this->registerListener("people_personal_contact_raw_result");
+    this->registerListener("people_personal_contact_raw_update");
     this->registerListener("people_search_result");
     this->registerListener("user_status_update");
 }
@@ -116,6 +134,13 @@ People::~People()
 void People::parseCommand(const QVariantMap &command)
 {
     const QString &event = command["class"].toString();
+
+    if (event != "agent_status_update" &&
+        event != "endpoint_status_update" &&
+        event != "user_status_update")
+    {
+        this->setSuccessStatus();
+    }
 
     if (event == "agent_status_update") {
         m_model->parseAgentStatusUpdate(command);
@@ -135,15 +160,19 @@ void People::parseCommand(const QVariantMap &command)
         this->parsePeoplePersonalContactCreated(command);
     } else if (event == "people_personal_contact_deleted") {
         this->parsePeoplePersonalContactDeleted(command);
+    } else if (event == "people_personal_contact_raw_result") {
+        this->parsePeoplePersonalContactRawResult(command);
+    } else if (event == "people_personal_contact_raw_update") {
+        this->parsePeoplePersonalContactCreated(command);
     } else if (event == "people_favorite_update") {
         m_model->parsePeopleFavoriteUpdate(command);
     }
-
 }
 
 void People::parsePeoplePersonalContactCreated(const QVariantMap &/*result*/)
 {
     if (m_mode == PERSONAL_CONTACT_MODE) {
+        this->waitingStatusAboutToBeStarted();
         b_engine->sendJsonCommand(MessageFactory::personalContacts());
     }
 }
@@ -154,6 +183,14 @@ void People::parsePeoplePersonalContactDeleted(const QVariantMap &result)
     const QString &source = data["source"].toString();
     const QString &source_entry_id = data["source_entry_id"].toString();
     m_model->removeRowFromSourceEntryId(source, source_entry_id);
+}
+
+void People::parsePeoplePersonalContactRawResult(const QVariantMap &result)
+{
+    QVariantMap data = result["data"].toMap();
+    const QString &source = data.take("source").toString();
+    const QString &source_entry_id = data.take("source_entry_id").toString();
+    this->openEditContactDialog(source, source_entry_id, data);
 }
 
 void People::numberSelectionRequested()
@@ -188,6 +225,7 @@ void People::searchPeople()
         if (m_mode != SEARCH_MODE) {
             this->ui.menu->setSelectedAction(0);
         }
+        this->waitingStatusAboutToBeStarted();
         b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
         qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
     }
@@ -213,6 +251,7 @@ void People::deletePersonalContact(const QVariantMap &unique_source_entry_id)
                                                     this);
 
     if (message->exec() == QMessageBox::Yes && ! source_entry_id.isEmpty()) {
+        this->waitingStatusAboutToBeStarted();
         b_engine->sendJsonCommand(MessageFactory::deletePersonalContact(source_name, source_entry_id));
     }
     delete message;
@@ -226,6 +265,7 @@ void People::setFavoriteStatus(const QVariantMap &unique_source_entry_id)
     if (source_entry_id.isEmpty()) {
         return;
     }
+    this->waitingStatusAboutToBeStarted();
     b_engine->sendJsonCommand(MessageFactory::setFavoriteStatus(source_name, source_entry_id, !enabled));
 }
 
@@ -233,6 +273,7 @@ void People::searchMode()
 {
     m_mode = SEARCH_MODE;
     m_model->clearEntries();
+    m_proxy_model->setFilterMode(m_mode);
 }
 
 void People::favoriteMode()
@@ -240,6 +281,8 @@ void People::favoriteMode()
     m_mode = FAVORITE_MODE;
     ui.entry_filter->clear();
     m_model->clearEntries();
+    m_proxy_model->setFilterMode(m_mode);
+    this->waitingStatusAboutToBeStarted();
     b_engine->sendJsonCommand(MessageFactory::favorites());
 }
 
@@ -248,7 +291,17 @@ void People::personalContactsMode()
     m_mode = PERSONAL_CONTACT_MODE;
     ui.entry_filter->clear();
     m_model->clearEntries();
+    m_proxy_model->setFilterMode(m_mode);
+    this->waitingStatusAboutToBeStarted();
     b_engine->sendJsonCommand(MessageFactory::personalContacts());
+}
+
+void People::requestEditPersonalContact(const QVariantMap &unique_source_entry_id)
+{
+    const QString &source_name = unique_source_entry_id["source"].toString();
+    const QString &source_entry_id = unique_source_entry_id["source_entry_id"].toString();
+    this->waitingStatusAboutToBeStarted();
+    b_engine->sendJsonCommand(MessageFactory::personalContactRaw(source_name, source_entry_id));
 }
 
 void People::openNewContactDialog()
@@ -256,7 +309,50 @@ void People::openNewContactDialog()
     QVariantMap contact_infos;
     QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
     if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
+        this->waitingStatusAboutToBeStarted();
         b_engine->sendJsonCommand(MessageFactory::createPersonalContact(contact_infos));
     }
     delete contact_dialog;
+}
+
+void People::openEditContactDialog(const QString &source_name,
+                                  const QString &source_entry_id,
+                                  QVariantMap &contact_infos)
+{
+    QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
+    if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
+        this->waitingStatusAboutToBeStarted();
+        b_engine->sendJsonCommand(MessageFactory::editPersonalContact(source_name,
+                                                                      source_entry_id,
+                                                                      contact_infos));
+    }
+    delete contact_dialog;
+}
+
+void People::setFailureStatus()
+{
+    this->ui.status_icon->setPixmap(QPixmap(":/images/dot-red.svg"));
+    this->ui.status_icon->setToolTip("Failed");
+}
+
+void People::setSuccessStatus()
+{
+    m_failure_timer.stop();
+    m_before_waiting_timer.stop();
+    this->ui.status_icon->clear();
+}
+
+void People::waitingStatusAboutToBeStarted()
+{
+    this->ui.status_icon->clear();
+    m_before_waiting_timer.start();
+    m_failure_timer.start();
+}
+
+void People::setWaitingStatus()
+{
+    this->ui.status_icon->clear();
+    this->ui.status_icon->setMovie(m_waiting_status);
+    this->ui.status_icon->movie()->start();
+    this->ui.status_icon->setToolTip("Waiting");
 }
