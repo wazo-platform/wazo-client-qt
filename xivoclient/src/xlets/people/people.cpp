@@ -167,8 +167,6 @@ void People::parseCommand(const QVariantMap &command)
     } else if (event == "people_favorite_update") {
         m_model->parsePeopleFavoriteUpdate(command);
     }
-
-    m_proxy_model->setFilterMode(m_mode);
 }
 
 void People::parsePeoplePersonalContactCreated(const QVariantMap &/*result*/)
@@ -275,6 +273,7 @@ void People::searchMode()
 {
     m_mode = SEARCH_MODE;
     m_model->clearEntries();
+    m_proxy_model->setFilterMode(m_mode);
 }
 
 void People::favoriteMode()
@@ -282,6 +281,7 @@ void People::favoriteMode()
     m_mode = FAVORITE_MODE;
     ui.entry_filter->clear();
     m_model->clearEntries();
+    m_proxy_model->setFilterMode(m_mode);
     this->waitingStatusAboutToBeStarted();
     b_engine->sendJsonCommand(MessageFactory::favorites());
 }
@@ -291,6 +291,7 @@ void People::personalContactsMode()
     m_mode = PERSONAL_CONTACT_MODE;
     ui.entry_filter->clear();
     m_model->clearEntries();
+    m_proxy_model->setFilterMode(m_mode);
     this->waitingStatusAboutToBeStarted();
     b_engine->sendJsonCommand(MessageFactory::personalContacts());
 }
