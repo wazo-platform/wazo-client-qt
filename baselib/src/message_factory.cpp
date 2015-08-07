@@ -331,6 +331,19 @@ QVariantMap MessageFactory::editPersonalContact(const QString &source_name,
     return command;
 }
 
+QVariantMap MessageFactory::exportPersonalContactsCSV()
+{
+    QVariantMap command = MessageFactory::baseMessage("people_export_personal_contacts_csv");
+    return command;
+}
+
+QVariantMap MessageFactory::importPersonalContactsCSV(const QByteArray &csv_contacts)
+{
+    QVariantMap command = MessageFactory::baseMessage("people_import_personal_contacts_csv");
+    command["csv_contacts"] = csv_contacts;
+    return command;
+}
+
 QVariantMap MessageFactory::baseMessage(const QString &class_name)
 {
     QVariantMap message;

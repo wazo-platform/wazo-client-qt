@@ -28,8 +28,11 @@
  */
 
 #include <QDebug>
+#include <QFile>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QPointer>
+#include <QTextStream>
 #include <QTimer>
 
 #include <xletlib/signal_relayer.h>
@@ -91,11 +94,16 @@ People::People(QWidget *parent)
 
     connect(this->ui.new_contact_button, SIGNAL(clicked()),
             this, SLOT(openNewContactDialog()));
+    connect(this->ui.import_button, SIGNAL(clicked()),
+            this, SLOT(openImportDialog()));
+    connect(this->ui.export_button, SIGNAL(clicked()),
+            this, SLOT(requestExportPersonalContacts()));
 
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),
             this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
+
     connect(&m_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
     m_lookup_timer.setSingleShot(true);
@@ -113,18 +121,24 @@ People::People(QWidget *parent)
 
     b_engine->sendJsonCommand(MessageFactory::getPeopleHeaders());
 
+    this->registerListener("people_headers_result");
+
+    this->registerListener("people_search_result");
+
     this->registerListener("agent_status_update");
     this->registerListener("endpoint_status_update");
+    this->registerListener("user_status_update");
+
     this->registerListener("people_favorite_update");
     this->registerListener("people_favorites_result");
-    this->registerListener("people_headers_result");
-    this->registerListener("people_personal_contacts_result");
+
+    this->registerListener("people_export_personal_contacts_csv_result");
+    this->registerListener("people_import_personal_contacts_csv_result");
     this->registerListener("people_personal_contact_created");
     this->registerListener("people_personal_contact_deleted");
     this->registerListener("people_personal_contact_raw_result");
     this->registerListener("people_personal_contact_raw_update");
-    this->registerListener("people_search_result");
-    this->registerListener("user_status_update");
+    this->registerListener("people_personal_contacts_result");
 }
 
 People::~People()
@@ -166,6 +180,10 @@ void People::parseCommand(const QVariantMap &command)
         this->parsePeoplePersonalContactCreated(command);
     } else if (event == "people_favorite_update") {
         m_model->parsePeopleFavoriteUpdate(command);
+    } else if (event == "people_export_personal_contacts_csv_result") {
+        this->parsePeopleExportPersonalContactsCSVResult(command);
+    } else if (event == "people_import_personal_contacts_csv_result") {
+        this->parsePeopleImportPersonalContactsCSVResult(command);
     }
 
     m_proxy_model->setFilterMode(m_mode);
@@ -193,6 +211,39 @@ void People::parsePeoplePersonalContactRawResult(const QVariantMap &result)
     const QString &source = data.take("source").toString();
     const QString &source_entry_id = data.take("source_entry_id").toString();
     this->openEditContactDialog(source, source_entry_id, data);
+}
+
+void People::parsePeopleExportPersonalContactsCSVResult(const QVariantMap &result)
+{
+    m_csv_contacts = result["csv_contacts"].toByteArray();
+    this->openExportDialog();
+}
+
+void People::parsePeopleImportPersonalContactsCSVResult(const QVariantMap &result)
+{
+    const QVariantList &failed_contacts = result["failed"].toList();
+    int created_count = result["created_count"].toInt();
+    int failed_count = failed_contacts.size();
+
+    QMessageBox *message = new QMessageBox(QMessageBox::Information,
+                                           tr("Import Status"),
+                                           tr("%1 contacts created\n"
+                                              "%2 contacts failed").arg(created_count)
+                                                                   .arg(failed_count),
+                                           QMessageBox::NoButton,
+                                           this);
+
+    if (failed_count > 0) {
+        QString failed_formatted = tr("Following lines are errors");
+        foreach(const QVariant &failed_contact, failed_contacts) {
+            const QVariantMap &entry = failed_contact.toMap();
+            failed_formatted.append(tr("\nline %2: ").arg(entry.value("line").toInt()));
+            failed_formatted.append(entry.value("errors").toStringList().join(", "));
+        }
+        message->setDetailedText(failed_formatted);
+    }
+    message->setAttribute(Qt::WA_DeleteOnClose);
+    message->show();
 }
 
 void People::numberSelectionRequested()
@@ -303,6 +354,12 @@ void People::requestEditPersonalContact(const QVariantMap &unique_source_entry_i
     b_engine->sendJsonCommand(MessageFactory::personalContactRaw(source_name, source_entry_id));
 }
 
+void People::requestExportPersonalContacts()
+{
+    this->waitingStatusAboutToBeStarted();
+    b_engine->sendJsonCommand(MessageFactory::exportPersonalContactsCSV());
+}
+
 void People::openNewContactDialog()
 {
     QVariantMap contact_infos;
@@ -312,6 +369,54 @@ void People::openNewContactDialog()
         b_engine->sendJsonCommand(MessageFactory::createPersonalContact(contact_infos));
     }
     delete contact_dialog;
+}
+
+void People::openExportDialog()
+{
+    QString open_path = QDir::toNativeSeparators(QDir::homePath());
+    QFileDialog *file_dialog = new QFileDialog(this,
+                                               tr("Save Personal Contacts"),
+                                               open_path,
+                                               tr("CSV Files (*.csv);;All Files (*)"));
+    connect(file_dialog, SIGNAL(fileSelected(const QString &)),
+            this, SLOT(savePersonalContactsToFile(const QString &)));
+
+    file_dialog->setAcceptMode(QFileDialog::AcceptSave);
+    file_dialog->setAttribute(Qt::WA_DeleteOnClose);
+    file_dialog->show();
+}
+
+void People::savePersonalContactsToFile(const QString &file_name)
+{
+    QFile file(file_name);
+    if (file.open(QIODevice::ReadWrite | QIODevice::Text) && !m_csv_contacts.isEmpty()) {
+        QTextStream stream (&file);
+        stream << m_csv_contacts;
+    }
+}
+
+void People::openImportDialog()
+{
+    QString open_path = QDir::toNativeSeparators(QDir::homePath());
+    QFileDialog *file_dialog = new QFileDialog(this,
+                                               tr("Import Personal Contacts"),
+                                               open_path,
+                                               tr("CSV Files (*.csv);;All Files (*)"));
+    connect(file_dialog, SIGNAL(fileSelected(const QString &)),
+            this, SLOT(sendPersonalContactsFromFile(const QString &)));
+
+    file_dialog->setFileMode(QFileDialog::ExistingFile);
+    file_dialog->setAttribute(Qt::WA_DeleteOnClose);
+    file_dialog->show();
+}
+
+void People::sendPersonalContactsFromFile(const QString &file_name)
+{
+    QFile file(file_name);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        this->waitingStatusAboutToBeStarted();
+        b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(file.readAll()));
+    }
 }
 
 void People::openEditContactDialog(const QString &source_name,
