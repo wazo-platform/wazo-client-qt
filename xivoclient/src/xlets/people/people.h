@@ -92,13 +92,13 @@ class People: public XLet, public IPBXListener
                                    QVariantMap &contact_infos);
 
     private:
-        void parsePeoplePersonalContactCreated(const QVariantMap &result);
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);
         void parsePeoplePersonalContactRawResult(const QVariantMap &result);
         void parsePeopleExportPersonalContactsCSVResult(const QVariantMap &result);
         void parsePeopleImportPersonalContactsCSVResult(const QVariantMap &result);
         void openExportDialog();
         void setSuccessStatus();
+        void updatePersonalContacts();
         void waitingStatusAboutToBeStarted();
 
         Ui::PeopleWidget ui;

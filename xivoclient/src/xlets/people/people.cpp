@@ -171,13 +171,13 @@ void People::parseCommand(const QVariantMap &command)
     } else if (event == "people_personal_contacts_result") {
         m_model->parsePeopleSearchResult(command);
     } else if (event == "people_personal_contact_created") {
-        this->parsePeoplePersonalContactCreated(command);
+        this->updatePersonalContacts();
     } else if (event == "people_personal_contact_deleted") {
         this->parsePeoplePersonalContactDeleted(command);
     } else if (event == "people_personal_contact_raw_result") {
         this->parsePeoplePersonalContactRawResult(command);
     } else if (event == "people_personal_contact_raw_update") {
-        this->parsePeoplePersonalContactCreated(command);
+        this->updatePersonalContacts();
     } else if (event == "people_favorite_update") {
         m_model->parsePeopleFavoriteUpdate(command);
     } else if (event == "people_export_personal_contacts_csv_result") {
@@ -187,14 +187,6 @@ void People::parseCommand(const QVariantMap &command)
     }
 
     m_proxy_model->setFilterMode(m_mode);
-}
-
-void People::parsePeoplePersonalContactCreated(const QVariantMap &/*result*/)
-{
-    if (m_mode == PERSONAL_CONTACT_MODE) {
-        this->waitingStatusAboutToBeStarted();
-        b_engine->sendJsonCommand(MessageFactory::personalContacts());
-    }
 }
 
 void People::parsePeoplePersonalContactDeleted(const QVariantMap &result)
@@ -242,8 +234,20 @@ void People::parsePeopleImportPersonalContactsCSVResult(const QVariantMap &resul
         }
         message->setDetailedText(failed_formatted);
     }
+    if (created_count > 0) {
+        this->updatePersonalContacts();
+    }
+
     message->setAttribute(Qt::WA_DeleteOnClose);
     message->show();
+}
+
+void People::updatePersonalContacts()
+{
+    if (m_mode == PERSONAL_CONTACT_MODE) {
+        this->waitingStatusAboutToBeStarted();
+        b_engine->sendJsonCommand(MessageFactory::personalContacts());
+    }
 }
 
 void People::numberSelectionRequested()
