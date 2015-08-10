@@ -399,9 +399,8 @@ void PeopleEntryModel::parseUserStatusUpdate(const QVariantMap &result)
 
 void PeopleEntryModel::parsePeopleFavoriteUpdate(const QVariantMap &result)
 {
-    QVariantMap data = result["data"].toMap();
-    RelationSourceID id(data["source"].toString(), data["source_entry_id"].toString());
-    bool new_status = data["favorite"].toBool();
+    RelationSourceID id(result["source"].toString(), result["source_entry_id"].toString());
+    bool new_status = result["favorite"].toBool();
 
     this->setFavoriteStatusFromSourceId(id, new_status);
 }
