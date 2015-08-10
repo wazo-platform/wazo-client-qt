@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -37,7 +37,6 @@
 
 #include <xlets/customerinfo-builtin/customerinfopanel.h>
 #include <xlets/remotedirectory-builtin/remote_directory.h>
-#include <xlets/mylocaldir-builtin/mylocaldirpanel.h>
 #include <xlets/search-builtin/searchpanel.h>
 
 #include "xletfactory.h"
@@ -58,8 +57,7 @@ static const struct {
 } xlets[] = {
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
     { "search"            ,newXLet<SearchPanel>            },
-    { "remotedirectory"   ,newXLet<RemoteDirectory>        },
-    { "mylocaldir"        ,newXLet<MyLocalDirPanel>        },
+    { "remotedirectory"   ,newXLet<RemoteDirectory>        }
 };
 
 /*! xlet creator function prototype */
