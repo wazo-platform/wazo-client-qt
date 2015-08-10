@@ -36,6 +36,7 @@ namespace PeoplePersonalMigration {
     bool needMigration();
     QByteArray getOldContacts();
     void finishMigration();
+    QString contactsFileName();
 };
 
 #endif

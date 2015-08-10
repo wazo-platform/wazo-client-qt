@@ -90,6 +90,8 @@ class People: public XLet, public IPBXListener
         void openEditContactDialog(const QString &source_name,
                                    const QString &source_entry_id,
                                    QVariantMap &contact_infos);
+        void migrateContacts();
+        void noticeContactMigration();
 
     private:
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);

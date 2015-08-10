@@ -142,8 +142,7 @@ People::People(QWidget *parent)
     this->registerListener("people_personal_contacts_result");
 
     if (PeoplePersonalMigration::needMigration()) {
-        this->sendPersonalContactsFromCSVText(PeoplePersonalMigration::getOldContacts());
-        PeoplePersonalMigration::finishMigration();
+        this->noticeContactMigration();
     }
 }
 
@@ -479,4 +478,29 @@ void People::setWaitingStatus()
     this->ui.status_icon->setMovie(m_waiting_status);
     this->ui.status_icon->movie()->start();
     this->ui.status_icon->setToolTip("Waiting");
+}
+
+void People::noticeContactMigration()
+{
+    QMessageBox *message = new QMessageBox(QMessageBox::Information,
+                                           tr("Contact migration"),
+                                           tr("Your local contacts will be migratedin the"
+                                              "People xlet <img src=\":/images/tab-people.svg\"/>."),
+                                           QMessageBox::NoButton,
+                                           this);
+    message->setDetailedText(QString(tr("Your local contacts are currently stored on your machine in:\n"
+                                        "%1\n"
+                                        "They will be migrated to the XiVO server in your personal database."))
+                             .arg(PeoplePersonalMigration::contactsFileName()));
+    message->setTextFormat(Qt::RichText);
+    message->setAttribute(Qt::WA_DeleteOnClose);
+    connect(message, SIGNAL(buttonClicked(QAbstractButton *)),
+            this, SLOT(migrateContacts()));
+    message->show();
+}
+
+void People::migrateContacts()
+{
+    this->sendPersonalContactsFromCSVText(PeoplePersonalMigration::getOldContacts());
+    PeoplePersonalMigration::finishMigration();
 }

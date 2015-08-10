@@ -35,44 +35,42 @@
 
 #include "people_personal_migration.h"
 
-QDir contacts_dir();
-QString contacts_file_name();
-QByteArray replace_headers(const QByteArray &headers);
-
+QDir contactsDir();
+QByteArray replaceHeaders(const QByteArray &headers);
 
 bool PeoplePersonalMigration::needMigration() {
-    return QFileInfo::exists(contacts_file_name());
+    return QFileInfo::exists(contactsFileName());
 }
 
 QByteArray PeoplePersonalMigration::getOldContacts() {
     QByteArray result;
-    QFile file(contacts_file_name());
+    QFile file(contactsFileName());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return result;
     }
 
-    QByteArray headers = replace_headers(file.readLine());
+    QByteArray headers = replaceHeaders(file.readLine());
     result = headers + file.readAll();
     return result;
 }
 
 void PeoplePersonalMigration::finishMigration() {
-    QDir _contacts_dir = contacts_dir();
+    QDir _contacts_dir = contactsDir();
     foreach(QString old_contacts_file_name, _contacts_dir.entryList(QStringList("localdir*.csv"))) {
         _contacts_dir.remove(old_contacts_file_name);
     }
 }
 
-QDir contacts_dir() {
+QString PeoplePersonalMigration::contactsFileName() {
+    return contactsDir().absoluteFilePath("localdir.csv");
+}
+
+QDir contactsDir() {
     QFileInfo config_file(b_engine->getSettings()->fileName());
     return QDir(config_file.canonicalPath());
 }
 
-QString contacts_file_name() {
-    return contacts_dir().absoluteFilePath("localdir.csv");
-}
-
-QByteArray replace_headers(const QByteArray &headers) {
+QByteArray replaceHeaders(const QByteArray &headers) {
     QByteArray result(headers);
     result.replace("phonenumber", "number");
     result.replace("emailaddress", "email");
