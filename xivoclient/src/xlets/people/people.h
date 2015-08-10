@@ -97,6 +97,7 @@ class People: public XLet, public IPBXListener
         void parsePeopleExportPersonalContactsCSVResult(const QVariantMap &result);
         void parsePeopleImportPersonalContactsCSVResult(const QVariantMap &result);
         void openExportDialog();
+        void sendPersonalContactsFromCSVText(const QByteArray &csv_text);
         void setSuccessStatus();
         void updatePersonalContacts();
         void waitingStatusAboutToBeStarted();

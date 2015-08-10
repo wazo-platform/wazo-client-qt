@@ -43,6 +43,7 @@
 #include "people.h"
 #include "people_entry_model.h"
 #include "people_entry_sort_filter_proxy_model.h"
+#include "people_personal_migration.h"
 
 
 People::People(QWidget *parent)
@@ -139,6 +140,11 @@ People::People(QWidget *parent)
     this->registerListener("people_personal_contact_raw_result");
     this->registerListener("people_personal_contact_raw_update");
     this->registerListener("people_personal_contacts_result");
+
+    if (PeoplePersonalMigration::needMigration()) {
+        this->sendPersonalContactsFromCSVText(PeoplePersonalMigration::getOldContacts());
+        PeoplePersonalMigration::finishMigration();
+    }
 }
 
 People::~People()
@@ -425,6 +431,12 @@ void People::sendPersonalContactsFromFile(const QString &file_name)
     }
     this->waitingStatusAboutToBeStarted();
     b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(file.readAll()));
+}
+
+void People::sendPersonalContactsFromCSVText(const QByteArray &csv_text)
+{
+    this->waitingStatusAboutToBeStarted();
+    b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(csv_text));
 }
 
 void People::openEditContactDialog(const QString &source_name,
