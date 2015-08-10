@@ -390,10 +390,11 @@ void People::openExportDialog()
 void People::savePersonalContactsToFile(const QString &file_name)
 {
     QFile file(file_name);
-    if (file.open(QIODevice::ReadWrite | QIODevice::Text) && !m_csv_contacts.isEmpty()) {
-        QTextStream stream (&file);
-        stream << m_csv_contacts;
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text) || m_csv_contacts.isEmpty()) {
+        return;
     }
+    QTextStream stream (&file);
+    stream << m_csv_contacts;
 }
 
 void People::openImportDialog()
@@ -415,10 +416,11 @@ void People::openImportDialog()
 void People::sendPersonalContactsFromFile(const QString &file_name)
 {
     QFile file(file_name);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        this->waitingStatusAboutToBeStarted();
-        b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(file.readAll()));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
     }
+    this->waitingStatusAboutToBeStarted();
+    b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(file.readAll()));
 }
 
 void People::openEditContactDialog(const QString &source_name,
