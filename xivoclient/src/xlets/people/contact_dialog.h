@@ -31,6 +31,7 @@
 #define __CONTACT_DIALOG_H__
 
 #include <QDialog>
+#include <QVariantMap>
 #include <QWidget>
 
 #include <ui_contact_dialog_widget.h>
@@ -40,15 +41,26 @@ class ContactDialog: public QDialog
     Q_OBJECT
 
     public:
-        ContactDialog(QWidget *parent, QVariantMap *contact_infos);
+        ContactDialog(QWidget *parent,
+                      const QVariantMap &contact_infos,
+                      const QString &source_name = QString(),
+                      const QString &source_entry_id = QString());
         ~ContactDialog();
+
+    signals:
+        void acceptedWithInfos(const QString &source_name,
+                               const QString &source_entry_id,
+                               const QVariantMap &contact_infos);
 
     private slots:
         virtual void accept();
 
     private:
         Ui::ContactDialogWidget ui;
-        QVariantMap *m_contact_infos;
+
+        const QString m_source_entry_id;
+        const QString m_source_name;
+        QVariantMap m_contact_infos;
 };
 
 #endif

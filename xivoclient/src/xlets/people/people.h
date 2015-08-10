@@ -85,11 +85,17 @@ class People: public XLet, public IPBXListener
         void setWaitingStatus();
         void savePersonalContactsToFile(const QString &file_name);
         void sendPersonalContactsFromFile(const QString &file_name);
+        void sendEditPersonalContact(const QString &source_name,
+                                     const QString &source_entry_id,
+                                     const QVariantMap &contact_infos);
+        void sendCreatePersonalContact(const QString &source_name,
+                                       const QString &source_entry_id,
+                                       const QVariantMap &contact_infos);
         void openNewContactDialog();
         void openImportDialog();
         void openEditContactDialog(const QString &source_name,
                                    const QString &source_entry_id,
-                                   const QVariantMap &infos);
+                                   const QVariantMap &contact_infos);
 
     private:
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);

@@ -30,8 +30,13 @@
 #include "contact_dialog.h"
 
 
-ContactDialog::ContactDialog(QWidget *parent, QVariantMap *contact_infos)
+ContactDialog::ContactDialog(QWidget *parent,
+                             const QVariantMap &contact_infos,
+                             const QString &source_name,
+                             const QString &source_entry_id)
     : QDialog(parent),
+      m_source_entry_id(source_entry_id),
+      m_source_name(source_name),
       m_contact_infos(contact_infos)
 {
     this->ui.setupUi(this);
@@ -41,13 +46,13 @@ ContactDialog::ContactDialog(QWidget *parent, QVariantMap *contact_infos)
     connect(this->ui.confirm_button_box, SIGNAL(rejected()),
            this, SLOT(reject()));
 
-    this->ui.firstname_input->setText(m_contact_infos->value("firstname").toString());
-    this->ui.lastname_input->setText(m_contact_infos->value("lastname").toString());
-    this->ui.phone_number_input->setText(m_contact_infos->value("number").toString());
-    this->ui.mobile_number_input->setText(m_contact_infos->value("mobile").toString());
-    this->ui.fax_input->setText(m_contact_infos->value("fax").toString());
-    this->ui.email_input->setText(m_contact_infos->value("email").toString());
-    this->ui.company_input->setText(m_contact_infos->value("company").toString());
+    this->ui.firstname_input->setText(m_contact_infos.value("firstname").toString());
+    this->ui.lastname_input->setText(m_contact_infos.value("lastname").toString());
+    this->ui.phone_number_input->setText(m_contact_infos.value("number").toString());
+    this->ui.mobile_number_input->setText(m_contact_infos.value("mobile").toString());
+    this->ui.fax_input->setText(m_contact_infos.value("fax").toString());
+    this->ui.email_input->setText(m_contact_infos.value("email").toString());
+    this->ui.company_input->setText(m_contact_infos.value("company").toString());
 }
 
 ContactDialog::~ContactDialog()
@@ -56,12 +61,13 @@ ContactDialog::~ContactDialog()
 
 void ContactDialog::accept()
 {
-    m_contact_infos->insert("firstname", this->ui.firstname_input->text());
-    m_contact_infos->insert("lastname",  this->ui.lastname_input->text());
-    m_contact_infos->insert("number", this->ui.phone_number_input->text());
-    m_contact_infos->insert("mobile", this->ui.mobile_number_input->text());
-    m_contact_infos->insert("fax", this->ui.fax_input->text());
-    m_contact_infos->insert("email", this->ui.email_input->text());
-    m_contact_infos->insert("company", this->ui.company_input->text());
+    m_contact_infos.insert("firstname", this->ui.firstname_input->text());
+    m_contact_infos.insert("lastname",  this->ui.lastname_input->text());
+    m_contact_infos.insert("number", this->ui.phone_number_input->text());
+    m_contact_infos.insert("mobile", this->ui.mobile_number_input->text());
+    m_contact_infos.insert("fax", this->ui.fax_input->text());
+    m_contact_infos.insert("email", this->ui.email_input->text());
+    m_contact_infos.insert("company", this->ui.company_input->text());
+    emit acceptedWithInfos(m_source_name, m_source_entry_id, m_contact_infos);
     QDialog::accept();
 }

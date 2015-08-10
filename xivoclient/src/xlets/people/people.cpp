@@ -365,12 +365,23 @@ void People::requestExportPersonalContacts()
 void People::openNewContactDialog()
 {
     QVariantMap contact_infos;
-    QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
-    if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
-        this->waitingStatusAboutToBeStarted();
-        b_engine->sendJsonCommand(MessageFactory::createPersonalContact(contact_infos));
+    ContactDialog *contact_dialog = new ContactDialog(this, contact_infos);
+    connect(contact_dialog, SIGNAL(acceptedWithInfos(const QString &, const QString &, const QVariantMap &)),
+            this, SLOT(sendCreatePersonalContact(const QString &, const QString &, const QVariantMap &)));
+
+    contact_dialog->setAttribute(Qt::WA_DeleteOnClose);
+    contact_dialog->show();
+}
+
+void People::sendCreatePersonalContact(const QString &/*source_name*/,
+                                       const QString &/*source_entry_id*/,
+                                       const QVariantMap &contact_infos)
+{
+    if (contact_infos.isEmpty()) {
+        return;
     }
-    delete contact_dialog;
+    this->waitingStatusAboutToBeStarted();
+    b_engine->sendJsonCommand(MessageFactory::createPersonalContact(contact_infos));
 }
 
 void People::openExportDialog()
@@ -427,17 +438,27 @@ void People::sendPersonalContactsFromFile(const QString &file_name)
 
 void People::openEditContactDialog(const QString &source_name,
                                    const QString &source_entry_id,
-                                   const QVariantMap &infos)
+                                   const QVariantMap &contact_infos)
 {
-    QVariantMap contact_infos = infos;
-    QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
-    if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
-        this->waitingStatusAboutToBeStarted();
-        b_engine->sendJsonCommand(MessageFactory::editPersonalContact(source_name,
-                                                                      source_entry_id,
-                                                                      contact_infos));
+    ContactDialog *contact_dialog = new ContactDialog(this, contact_infos, source_name, source_entry_id);
+    connect(contact_dialog, SIGNAL(acceptedWithInfos(const QString &, const QString &, const QVariantMap &)),
+            this, SLOT(sendEditPersonalContact(const QString &, const QString &, const QVariantMap &)));
+
+    contact_dialog->setAttribute(Qt::WA_DeleteOnClose);
+    contact_dialog->show();
+}
+
+void People::sendEditPersonalContact(const QString &source_name,
+                                     const QString &source_entry_id,
+                                     const QVariantMap &contact_infos)
+{
+    if (contact_infos.isEmpty()) {
+        return;
     }
-    delete contact_dialog;
+    this->waitingStatusAboutToBeStarted();
+    b_engine->sendJsonCommand(MessageFactory::editPersonalContact(source_name,
+                                                                  source_entry_id,
+                                                                  contact_infos));
 }
 
 void People::setFailureStatus()
