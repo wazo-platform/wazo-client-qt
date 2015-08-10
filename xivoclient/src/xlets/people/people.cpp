@@ -407,7 +407,7 @@ void People::openImportDialog()
     QFileDialog *file_dialog = new QFileDialog(this,
                                                tr("Import Personal Contacts"),
                                                open_path,
-                                               tr("CSV Files (*.csv);;All Files (*)"));
+                                               tr("CSV Files (UTF-8)(*.csv);;All Files (*)"));
     connect(file_dialog, SIGNAL(fileSelected(const QString &)),
             this, SLOT(sendPersonalContactsFromFile(const QString &)));
 
