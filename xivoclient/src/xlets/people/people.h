@@ -89,7 +89,7 @@ class People: public XLet, public IPBXListener
         void openImportDialog();
         void openEditContactDialog(const QString &source_name,
                                    const QString &source_entry_id,
-                                   QVariantMap &contact_infos);
+                                   const QVariantMap &infos);
 
     private:
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);

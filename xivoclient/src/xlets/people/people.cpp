@@ -189,18 +189,16 @@ void People::parseCommand(const QVariantMap &command)
 
 void People::parsePeoplePersonalContactDeleted(const QVariantMap &result)
 {
-    const QVariantMap &data = result["data"].toMap();
-    const QString &source = data["source"].toString();
-    const QString &source_entry_id = data["source_entry_id"].toString();
+    const QString &source = result["source"].toString();
+    const QString &source_entry_id = result["source_entry_id"].toString();
     m_model->removeRowFromSourceEntryId(source, source_entry_id);
 }
 
 void People::parsePeoplePersonalContactRawResult(const QVariantMap &result)
 {
-    QVariantMap data = result["data"].toMap();
-    const QString &source = data.take("source").toString();
-    const QString &source_entry_id = data.take("source_entry_id").toString();
-    this->openEditContactDialog(source, source_entry_id, data);
+    const QString &source = result["source"].toString();
+    const QString &source_entry_id = result["source_entry_id"].toString();
+    this->openEditContactDialog(source, source_entry_id, result["contact_infos"].toMap());
 }
 
 void People::parsePeopleExportPersonalContactsCSVResult(const QVariantMap &result)
@@ -429,9 +427,10 @@ void People::sendPersonalContactsFromFile(const QString &file_name)
 }
 
 void People::openEditContactDialog(const QString &source_name,
-                                  const QString &source_entry_id,
-                                  QVariantMap &contact_infos)
+                                   const QString &source_entry_id,
+                                   const QVariantMap &infos)
 {
+    QVariantMap contact_infos = infos;
     QPointer<ContactDialog> contact_dialog = new ContactDialog(this, &contact_infos);
     if (contact_dialog->exec() == QDialog::Accepted && !contact_infos.isEmpty()) {
         this->waitingStatusAboutToBeStarted();
