@@ -99,17 +99,16 @@ void Fax::setOpenFileName()
     if (open_path.isEmpty()) {
         open_path = QDir::toNativeSeparators(QDir::homePath());
     }
-    QPointer<QFileDialog> file_dialog = new QFileDialog(this,
-                                                        tr("Open Fax File"),
-                                                        open_path,
-                                                        tr("PDF Files (*.pdf);;All Files (*)"));
-    file_dialog->setFileMode(QFileDialog::ExistingFile);
+    QFileDialog *file_dialog = new QFileDialog(this,
+                                               tr("Open Fax File"),
+                                               open_path,
+                                               tr("PDF Files (*.pdf);;All Files (*)"));
+    connect(file_dialog, SIGNAL(fileSelected(const QString &)),
+            this->ui.file_name_input, SLOT(setText(const QString &)));
 
-    if(file_dialog->exec()) {
-        QStringList file_names = file_dialog->selectedFiles();
-        this->ui.file_name_input->setText(file_names.join(QString()));
-    }
-    delete file_dialog;
+    file_dialog->setFileMode(QFileDialog::ExistingFile);
+    file_dialog->setAttribute(Qt::WA_DeleteOnClose);
+    file_dialog->show();
 }
 
 void Fax::setFailureMessage(const QString &error)
