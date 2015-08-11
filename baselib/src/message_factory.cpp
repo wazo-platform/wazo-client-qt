@@ -293,6 +293,12 @@ QVariantMap MessageFactory::personalContacts()
     return command;
 }
 
+QVariantMap MessageFactory::purgePersonalContacts()
+{
+    QVariantMap command = MessageFactory::baseMessage("people_purge_personal_contacts");
+    return command;
+}
+
 QVariantMap MessageFactory::personalContactRaw(const QString &source_name, const QString &source_entry_id)
 {
     QVariantMap command = MessageFactory::baseMessage("people_personal_contact_raw");

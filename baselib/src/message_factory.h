@@ -76,6 +76,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap favorites();
 
         static QVariantMap personalContacts();
+        static QVariantMap purgePersonalContacts();
         static QVariantMap personalContactRaw(const QString &source_name, const QString &source_entry_id);
         static QVariantMap createPersonalContact(const QVariantMap &contact_infos);
         static QVariantMap deletePersonalContact(const QString &source_name, const QString &source_entry_id);

@@ -74,6 +74,7 @@ class People: public XLet, public IPBXListener
 
     private slots:
         void deletePersonalContact(const QVariantMap &unique_source_entry_id);
+        void purgePersonalContacts();
         void requestEditPersonalContact(const QVariantMap &unique_source_entry_id);
         void requestExportPersonalContacts();
         void setFavoriteStatus(const QVariantMap &unique_source_entry_id);

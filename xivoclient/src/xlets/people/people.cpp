@@ -98,6 +98,8 @@ People::People(QWidget *parent)
             this, SLOT(openImportDialog()));
     connect(this->ui.export_button, SIGNAL(clicked()),
             this, SLOT(requestExportPersonalContacts()));
+    connect(this->ui.purge_contacts_button, SIGNAL(clicked()),
+            this, SLOT(purgePersonalContacts()));
 
     connect(signal_relayer, SIGNAL(numberSelectionRequested()),
             this, SLOT(numberSelectionRequested()));
@@ -138,6 +140,7 @@ People::People(QWidget *parent)
     this->registerListener("people_personal_contact_deleted");
     this->registerListener("people_personal_contact_raw_result");
     this->registerListener("people_personal_contact_raw_update");
+    this->registerListener("people_personal_contacts_purged");
     this->registerListener("people_personal_contacts_result");
 }
 
@@ -170,6 +173,8 @@ void People::parseCommand(const QVariantMap &command)
         m_model->parsePeopleSearchResult(command);
     } else if (event == "people_personal_contacts_result") {
         m_model->parsePeopleSearchResult(command);
+    } else if (event == "people_personal_contacts_purged") {
+        this->updatePersonalContacts();
     } else if (event == "people_personal_contact_created") {
         this->updatePersonalContacts();
     } else if (event == "people_personal_contact_deleted") {
@@ -306,6 +311,22 @@ void People::deletePersonalContact(const QVariantMap &unique_source_entry_id)
     if (message->exec() == QMessageBox::Yes && ! source_entry_id.isEmpty()) {
         this->waitingStatusAboutToBeStarted();
         b_engine->sendJsonCommand(MessageFactory::deletePersonalContact(source_name, source_entry_id));
+    }
+    delete message;
+}
+
+void People::purgePersonalContacts()
+{
+    QPointer<QMessageBox> message = new QMessageBox(QMessageBox::Warning,
+                                                    tr("Deleting all personal contacts"),
+                                                    tr("Deleting all personal contacts.\n"
+                                                       "Are you sure ?"),
+                                                    QMessageBox::Yes|QMessageBox::No,
+                                                    this);
+
+    if (message->exec() == QMessageBox::Yes) {
+        this->waitingStatusAboutToBeStarted();
+        b_engine->sendJsonCommand(MessageFactory::purgePersonalContacts());
     }
     delete message;
 }
