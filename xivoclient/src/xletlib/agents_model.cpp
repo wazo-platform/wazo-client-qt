@@ -387,9 +387,9 @@ QVariant AgentsModel::dataBackgroundAvailability(const AgentInfo * agent) const
 QString AgentsModel::dataDisplayLogged(bool logged_status) const
 {
     if (logged_status) {
-        return tr("Logged");
+        return tr("Logged in");
     } else {
-        return tr("Unlogged");
+        return tr("Logged out");
     }
 }
 
