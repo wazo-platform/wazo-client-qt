@@ -32,6 +32,9 @@
 
 #include "baselib_export.h"
 
+#include <QByteArray>
+#include <QString>
+#include <QVariant>
 #include <QVariantMap>
 
 class BASELIB_EXPORT MessageFactory
@@ -79,6 +82,8 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap editPersonalContact(const QString &source_name,
                                                const QString &source_entry_id,
                                                const QVariantMap &contact_infos);
+        static QVariantMap exportPersonalContactsCSV();
+        static QVariantMap importPersonalContactsCSV(const QByteArray &csv_contacts);
     private:
         static QVariantMap baseMessage(const QString &class_name);
         static QVariantMap ipbxcommand(const QString &action_name);

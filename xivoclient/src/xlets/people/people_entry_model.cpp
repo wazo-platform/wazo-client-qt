@@ -72,8 +72,8 @@ void PeopleEntryModel::refreshEntry(int row_id)
 
 void PeopleEntryModel::clearFields()
 {
-    m_type_to_indices.clear();
     this->beginResetModel();
+    m_type_to_indices.clear();
     m_fields.clear();
     this->endResetModel();
 }
@@ -103,6 +103,9 @@ int PeopleEntryModel::columnCount(const QModelIndex&) const
 QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), column = index.column();
+    if (row < 0 || row >= this->rowCount() || column < 0 || column >= this->columnCount()) {
+        return QVariant();
+    }
     const PeopleEntry &entry = m_people_entries[row];
     ColumnType column_type = this->headerType(column);
 
@@ -135,7 +138,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
 
 QVariant PeopleEntryModel::headerData(int column, Qt::Orientation orientation, int role) const
 {
-    if (orientation != Qt::Horizontal) {
+    if (orientation != Qt::Horizontal || column < 0 || column >= this->columnCount()) {
         return QVariant();
     }
 

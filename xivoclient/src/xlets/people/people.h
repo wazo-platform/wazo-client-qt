@@ -30,6 +30,7 @@
 #ifndef __PEOPLE_H__
 #define __PEOPLE_H__
 
+#include <QByteArray>
 #include <QMovie>
 #include <QObject>
 #include <QString>
@@ -74,6 +75,7 @@ class People: public XLet, public IPBXListener
     private slots:
         void deletePersonalContact(const QVariantMap &unique_source_entry_id);
         void requestEditPersonalContact(const QVariantMap &unique_source_entry_id);
+        void requestExportPersonalContacts();
         void setFavoriteStatus(const QVariantMap &unique_source_entry_id);
         void searchMode();
         void searchPeople();
@@ -81,16 +83,22 @@ class People: public XLet, public IPBXListener
         void personalContactsMode();
         void setFailureStatus();
         void setWaitingStatus();
+        void savePersonalContactsToFile(const QString &file_name);
+        void sendPersonalContactsFromFile(const QString &file_name);
         void openNewContactDialog();
+        void openImportDialog();
         void openEditContactDialog(const QString &source_name,
                                    const QString &source_entry_id,
                                    QVariantMap &contact_infos);
 
     private:
-        void parsePeoplePersonalContactCreated(const QVariantMap &result);
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);
         void parsePeoplePersonalContactRawResult(const QVariantMap &result);
+        void parsePeopleExportPersonalContactsCSVResult(const QVariantMap &result);
+        void parsePeopleImportPersonalContactsCSVResult(const QVariantMap &result);
+        void openExportDialog();
         void setSuccessStatus();
+        void updatePersonalContacts();
         void waitingStatusAboutToBeStarted();
 
         Ui::PeopleWidget ui;
@@ -102,6 +110,7 @@ class People: public XLet, public IPBXListener
         QTimer m_lookup_timer;
         QString m_searched_pattern;
         PeopleMode m_mode;
+        QByteArray m_csv_contacts;
 
 };
 
