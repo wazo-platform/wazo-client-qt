@@ -225,7 +225,7 @@ void People::parsePeopleImportPersonalContactsCSVResult(const QVariantMap &resul
         QString failed_formatted = tr("Following lines are errors");
         foreach(const QVariant &failed_contact, failed_contacts) {
             const QVariantMap &entry = failed_contact.toMap();
-            failed_formatted.append(tr("\nline %2: ").arg(entry.value("line").toInt()));
+            failed_formatted.append(tr("\nline %1: ").arg(entry.value("line").toInt()));
             failed_formatted.append(entry.value("errors").toStringList().join(", "));
         }
         message->setDetailedText(failed_formatted);
