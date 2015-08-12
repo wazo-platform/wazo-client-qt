@@ -422,7 +422,9 @@ void People::openExportDialog()
             this, SLOT(savePersonalContactsToFile(const QString &)));
 
     file_dialog->setAcceptMode(QFileDialog::AcceptSave);
+#ifdef Q_OS_UNIX
     file_dialog->setOptions(QFileDialog::DontUseNativeDialog); //QTBUG-38985
+#endif
     file_dialog->setAttribute(Qt::WA_DeleteOnClose);
     file_dialog->show();
 }
@@ -448,7 +450,9 @@ void People::openImportDialog()
             this, SLOT(sendPersonalContactsFromFile(const QString &)));
 
     file_dialog->setFileMode(QFileDialog::ExistingFile);
+#ifdef Q_OS_UNIX
     file_dialog->setOptions(QFileDialog::DontUseNativeDialog); //QTBUG-38985
+#endif
     file_dialog->setAttribute(Qt::WA_DeleteOnClose);
     file_dialog->show();
 }
