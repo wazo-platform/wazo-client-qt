@@ -491,7 +491,7 @@ void People::sendEditPersonalContact(const QString &source_name,
 void People::setFailureStatus()
 {
     this->ui.status_icon->setPixmap(QPixmap(":/images/dot-red.svg"));
-    this->ui.status_icon->setToolTip("Failed");
+    this->ui.status_icon->setToolTip(tr("Failed"));
 }
 
 void People::setSuccessStatus()
@@ -513,5 +513,5 @@ void People::setWaitingStatus()
     this->ui.status_icon->clear();
     this->ui.status_icon->setMovie(m_waiting_status);
     this->ui.status_icon->movie()->start();
-    this->ui.status_icon->setToolTip("Waiting");
+    this->ui.status_icon->setToolTip(tr("Waiting"));
 }
