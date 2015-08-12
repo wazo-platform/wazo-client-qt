@@ -109,7 +109,6 @@ void ConfigWidget::load_values()
     this->ui.startup_connect->setChecked(this->m_config["autoconnect"].toBool());
     this->ui.start_systrayed->setChecked(this->m_config["systrayed"].toBool());
     this->ui.show_window_on_call->setChecked(this->m_config["activate_on_tel"].toBool());
-    this->ui.enable_clipboard->setChecked(this->m_config["enableclipboard"].toBool());
 
     // Features
     /// Presence
@@ -166,7 +165,6 @@ void ConfigWidget::accept()
     this->m_config["autoconnect"] = this->ui.startup_connect->isChecked();
     this->m_config["systrayed"] = this->ui.start_systrayed->isChecked();
     this->m_config["activate_on_tel"] = this->ui.show_window_on_call->isChecked();
-    this->m_config["enableclipboard"] = this->ui.enable_clipboard->isChecked();
 
 
     // Features

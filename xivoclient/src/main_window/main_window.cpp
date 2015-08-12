@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       m_config_widget(NULL),
-      m_clipboard(NULL),
       m_default_state(NULL),
       m_launch_date_time(QDateTime::currentDateTime()),
       m_folded(false)
@@ -61,8 +60,6 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(setStatusLogged()));
     connect(b_engine, SIGNAL(delogged()),
             this, SLOT(setStatusNotLogged()));
-    connect(b_engine, SIGNAL(settingsChanged()),
-            this, SLOT(confUpdated()));
     connect(b_engine, SIGNAL(emitMessageBox(const QString &)),
             this, SLOT(showMessageBox(const QString &)), Qt::QueuedConnection);
     connect(this->ui->action_configure, SIGNAL(triggered()),
@@ -102,7 +99,6 @@ void MainWindow::initialize()
     this->m_config_widget = assembler->configWidget();
     QMainWindow::restoreGeometry(b_engine->getSettings()->value("display/mainwingeometry").toByteArray());
     this->setAppIcon("default");
-    this->confUpdated();
     this->setTitle(tr("Client %1").arg(XC_VERSION));
     if (! start_minimized) {
         this->show();
@@ -166,16 +162,6 @@ void MainWindow::minimizeWindow()
     this->showMinimized();
 }
 
-void MainWindow::clipselection()
-{
-    b_engine->pasteToDial(this->m_clipboard->text(QClipboard::Selection));
-}
-
-void MainWindow::clipdata()
-{
-    b_engine->pasteToDial(this->m_clipboard->text(QClipboard::Clipboard));
-}
-
 void MainWindow::showMessageBox(const QString & message)
 {
     QMessageBox::critical(NULL, tr("XiVO CTI Error"), message);
@@ -192,18 +178,6 @@ void MainWindow::cleanConfDialog()
 {
     this->disconnect(this->m_config_widget, SIGNAL(finished(int)));
     this->m_config_widget->hide();
-}
-
-void MainWindow::confUpdated()
-{
-    if (b_engine->getConfig("enableclipboard").toBool()) {
-        this->m_clipboard = QApplication::clipboard();
-        connect(this->m_clipboard, SIGNAL(selectionChanged()),
-                this, SLOT(clipselection()));
-        connect(this->m_clipboard, SIGNAL(dataChanged()),
-                this, SLOT(clipdata()));
-        this->m_clipboard->setText("", QClipboard::Selection);
-    }
 }
 
 void MainWindow::setStatusLogged()

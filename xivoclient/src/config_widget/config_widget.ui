@@ -160,23 +160,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="enable_clipboard">
-           <property name="toolTip">
-            <string>You must restart the program for this setting to apply.</string>
-           </property>
-           <property name="text">
-            <string>Enable clipboard (GNU/Linux only)</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../xivoclient.qrc">
-             <normaloff>:/images/warning.png</normaloff>:/images/warning.png</iconset>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -259,8 +242,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>181</width>
-            <height>38</height>
+            <width>650</width>
+            <height>362</height>
            </rect>
           </property>
           <attribute name="label">
@@ -284,8 +267,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>295</width>
-            <height>101</height>
+            <width>260</width>
+            <height>93</height>
            </rect>
           </property>
           <attribute name="label">
@@ -342,8 +325,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>147</width>
-            <height>43</height>
+            <width>129</width>
+            <height>38</height>
            </rect>
           </property>
           <attribute name="label">
@@ -377,8 +360,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>309</width>
-            <height>49</height>
+            <width>269</width>
+            <height>43</height>
            </rect>
           </property>
           <attribute name="label">
@@ -412,8 +395,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>432</width>
-            <height>133</height>
+            <width>379</width>
+            <height>122</height>
            </rect>
           </property>
           <attribute name="label">
@@ -546,8 +529,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>200</width>
-            <height>38</height>
+            <width>174</width>
+            <height>34</height>
            </rect>
           </property>
           <attribute name="label">
@@ -568,8 +551,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>337</width>
-            <height>78</height>
+            <width>291</width>
+            <height>71</height>
            </rect>
           </property>
           <attribute name="label">
