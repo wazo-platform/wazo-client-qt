@@ -83,14 +83,14 @@ QByteArray PeoplePersonalMigration::replaceHeaders(const QByteArray &headers) {
 void PeoplePersonalMigration::noticeAndMigratePersonalContacts(QWidget *parent)
 {
     QMessageBox *message = new QMessageBox(QMessageBox::Information,
-                                           tr("Contact migration"),
-                                           tr("Your local contacts will be migrated in the "
-                                              "People Xlet. <img src=\":/images/tab-people.svg\"/>"),
+                                           tr("Contacts Migration"),
+                                           tr("Your local contacts will be migrated to the "
+                                              "People Xlet. %1").arg("<img src=\":/images/tab-people.svg\"/>"),
                                            QMessageBox::NoButton,
                                            parent);
-    message->setDetailedText(QString(tr("Your local contacts are currently stored on your machine in:\n"
-                                        "%1\n"
-                                        "They will be migrated to the XiVO server in your personal database."))
+    message->setDetailedText(tr("Your local contacts are currently stored on your machine in:\n"
+                                "%1\n"
+                                "They will be migrated to the XiVO server in your personal database.")
                              .arg(PeoplePersonalMigration::contactsFileName()));
     message->setTextFormat(Qt::RichText);
     message->setAttribute(Qt::WA_DeleteOnClose);
