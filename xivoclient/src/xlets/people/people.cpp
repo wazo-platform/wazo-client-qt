@@ -224,7 +224,7 @@ void People::parsePeopleImportPersonalContactsCSVResult(const QVariantMap &resul
     int failed_count = failed_contacts.size();
 
     QMessageBox *message = new QMessageBox(QMessageBox::Information,
-                                           tr("Import Status"),
+                                           tr("Import Results"),
                                            tr("%1 contacts created\n"
                                               "%2 contacts failed").arg(created_count)
                                                                    .arg(failed_count),
