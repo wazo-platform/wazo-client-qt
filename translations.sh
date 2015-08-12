@@ -19,7 +19,7 @@ TRANSIFEX_URL=https://www.transifex.com
 TRANSIFEX_PROJECT_URL=https://www.transifex.com/projects/p/xivo/resource/xivo-client
 TRANSIFEX_I18N_DIR="$XIVO_CLIENT_ROOT/translations/xivo.xivo-client"
 XIVO_CLIENT_I18N_DIR="$XIVO_CLIENT_ROOT/xivoclient/i18n"
-: ${QT_PATH:=/opt/qt5/5.4.1/5.4/gcc/bin}
+: ${QT_PATH:=/opt/qt5/5.5.0/5.5/gcc/bin}
 PATH="$PATH:$QT_PATH"
 
 function main {
