@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
         <source>Enter</source>
-        <translation>Entrer</translation>
+        <translation>Entrée</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>

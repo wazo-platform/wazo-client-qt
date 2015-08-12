@@ -9,22 +9,22 @@
         <translation>Chronik</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="53"/>
+        <location filename="../src/xlets/history/history.cpp" line="52"/>
         <source>All calls</source>
         <translation>Alle Anrufe</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="54"/>
+        <location filename="../src/xlets/history/history.cpp" line="53"/>
         <source>Sent calls</source>
         <translation>Gesendete Anrufe</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="55"/>
+        <location filename="../src/xlets/history/history.cpp" line="54"/>
         <source>Received calls</source>
         <translation>Angenommene Anrufe</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="56"/>
+        <location filename="../src/xlets/history/history.cpp" line="55"/>
         <source>Missed calls</source>
         <translation>Anrufe in Abwesenheit</translation>
     </message>

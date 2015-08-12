@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="97"/>
         <source>Spanish (Chile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Spanisch (Chile)</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="98"/>
@@ -85,8 +85,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="80"/>
         <location filename="../src/config_widget/config_widget.ui" line="152"/>
-        <location filename="../src/config_widget/config_widget.ui" line="166"/>
-        <location filename="../src/config_widget/config_widget.ui" line="774"/>
+        <location filename="../src/config_widget/config_widget.ui" line="757"/>
         <source>You must restart the program for this setting to apply.</source>
         <translation>Sie müssen das Programm zum Anwenden dieser Einstellung neu starten.</translation>
     </message>
@@ -116,223 +115,175 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="169"/>
-        <source>Enable clipboard (GNU/Linux only)</source>
-        <translation>Zwischenablage aktivieren (nur GNU/Linux)</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="207"/>
+        <location filename="../src/config_widget/config_widget.ui" line="190"/>
         <source>Reset dock positions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="243"/>
+        <location filename="../src/config_widget/config_widget.ui" line="226"/>
         <source>Features</source>
         <translation>Funktionen</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="267"/>
+        <location filename="../src/config_widget/config_widget.ui" line="250"/>
         <source>Presence</source>
         <translation>Anwesenheit</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="273"/>
+        <location filename="../src/config_widget/config_widget.ui" line="256"/>
         <source>Presence reporting</source>
         <translation>Anwesenheitsmeldung</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="292"/>
+        <location filename="../src/config_widget/config_widget.ui" line="275"/>
         <source>Screen popup</source>
         <translation>Bildschirmdialog</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="301"/>
+        <location filename="../src/config_widget/config_widget.ui" line="284"/>
         <source>Max screen popups</source>
         <translation>Maximale Anzahl an Bildschirmdialogen</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="321"/>
+        <location filename="../src/config_widget/config_widget.ui" line="304"/>
         <source>Screen Popup</source>
         <translation>Bildschirmdialog</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="331"/>
+        <location filename="../src/config_widget/config_widget.ui" line="314"/>
         <source>Allow automatic URL opening</source>
         <translation>Automatische URL-Öffnung erlauben</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="350"/>
+        <location filename="../src/config_widget/config_widget.ui" line="333"/>
         <source>History</source>
         <translation>Chronik</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="359"/>
+        <location filename="../src/config_widget/config_widget.ui" line="342"/>
         <source>History size</source>
         <translation>Chronikgröße</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="385"/>
+        <location filename="../src/config_widget/config_widget.ui" line="368"/>
         <source>Contacts</source>
         <translation>Kontakte</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="391"/>
+        <location filename="../src/config_widget/config_widget.ui" line="374"/>
         <source>Maximum of contacts displayed</source>
         <translation>Maximale Anzahl der angezeigten Kontakte</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="420"/>
+        <location filename="../src/config_widget/config_widget.ui" line="403"/>
         <source>Queue list</source>
         <translation>Warteschlangenliste</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="428"/>
+        <location filename="../src/config_widget/config_widget.ui" line="411"/>
         <source>Show longest wait time</source>
         <translation>Längste Wartezeit anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="442"/>
+        <location filename="../src/config_widget/config_widget.ui" line="425"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="452"/>
+        <location filename="../src/config_widget/config_widget.ui" line="435"/>
         <source>Red</source>
         <translation>Rot</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="462"/>
+        <location filename="../src/config_widget/config_widget.ui" line="445"/>
         <source>Longest wait time thresholds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="489"/>
+        <location filename="../src/config_widget/config_widget.ui" line="472"/>
         <source>Waiting calls thresholds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="516"/>
+        <location filename="../src/config_widget/config_widget.ui" line="499"/>
         <source>calls</source>
         <translation>Anrufe</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="523"/>
+        <location filename="../src/config_widget/config_widget.ui" line="506"/>
         <source>seconds</source>
         <translation>Sekunden</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="554"/>
+        <location filename="../src/config_widget/config_widget.ui" line="537"/>
         <source>Queue Members</source>
         <translation>Warteschlangenmitglieder</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="560"/>
+        <location filename="../src/config_widget/config_widget.ui" line="543"/>
         <source>Hide unlogged agents</source>
         <translation>Nicht angemeldete Agenten ausblenden</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="576"/>
+        <location filename="../src/config_widget/config_widget.ui" line="559"/>
         <source>Switchboard</source>
         <translation>Telefonzentrale</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="585"/>
+        <location filename="../src/config_widget/config_widget.ui" line="568"/>
         <source>Switchboard call on hold queue name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="595"/>
+        <location filename="../src/config_widget/config_widget.ui" line="578"/>
         <source>Switchboard queue name</source>
         <translation>Telefonzentralwarteschlangenname</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="617"/>
+        <location filename="../src/config_widget/config_widget.ui" line="600"/>
         <source>Administration</source>
         <translation>Administration</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="625"/>
+        <location filename="../src/config_widget/config_widget.ui" line="608"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="639"/>
-        <location filename="../src/config_widget/config_widget.ui" line="686"/>
+        <location filename="../src/config_widget/config_widget.ui" line="622"/>
+        <location filename="../src/config_widget/config_widget.ui" line="669"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="672"/>
+        <location filename="../src/config_widget/config_widget.ui" line="655"/>
         <source>Backup server</source>
         <translation>Datensicherungsserver</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="761"/>
+        <location filename="../src/config_widget/config_widget.ui" line="744"/>
         <source>Advanced</source>
         <translation>Erweitert</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="767"/>
+        <location filename="../src/config_widget/config_widget.ui" line="750"/>
         <source>Display the configuration profile</source>
         <translation>Konfigurationsprofil anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="777"/>
+        <location filename="../src/config_widget/config_widget.ui" line="760"/>
         <source>Allow multiple instances</source>
         <translation>Mehrere Instanzen erlauben</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="788"/>
+        <location filename="../src/config_widget/config_widget.ui" line="771"/>
         <source>Auto-reconnect interval</source>
         <translation>Intervall der automatischen Wiederverbindung</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="827"/>
+        <location filename="../src/config_widget/config_widget.ui" line="810"/>
         <source>Keepalive interval</source>
         <translation>Aufrechterhaltungsintervall</translation>
-    </message>
-</context>
-<context>
-    <name>ContactDialogOld</name>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="37"/>
-        <source>Contact</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="40"/>
-        <source>First Name</source>
-        <translation type="unfinished">Vorname</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="42"/>
-        <source>Last Name</source>
-        <translation type="unfinished">Nachname</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="44"/>
-        <source>Phone Number</source>
-        <translation type="unfinished">Telefonnummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="46"/>
-        <source>Email Address</source>
-        <translation type="unfinished">E-Mail-Adresse</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="48"/>
-        <source>Company</source>
-        <translation type="unfinished">Firma</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="50"/>
-        <source>Fax Number</source>
-        <translation type="unfinished">Faxnummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/contactdialog.cpp" line="52"/>
-        <source>Mobile Number</source>
-        <translation type="unfinished">Mobiltelefonnummer</translation>
     </message>
 </context>
 <context>
@@ -499,229 +450,101 @@
         <translation>&amp;Danksagungen</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="106"/>
-        <location filename="../src/main_window/main_window.cpp" line="229"/>
-        <location filename="../src/main_window/main_window.cpp" line="376"/>
+        <location filename="../src/main_window/main_window.cpp" line="102"/>
+        <location filename="../src/main_window/main_window.cpp" line="203"/>
+        <location filename="../src/main_window/main_window.cpp" line="350"/>
         <source>Client %1</source>
         <translation>Client %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="181"/>
+        <location filename="../src/main_window/main_window.cpp" line="167"/>
         <source>XiVO CTI Error</source>
         <translation>XiVO CTI-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="211"/>
+        <location filename="../src/main_window/main_window.cpp" line="185"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (%2 Profil)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="368"/>
+        <location filename="../src/main_window/main_window.cpp" line="342"/>
         <source>Fetch the last one</source>
         <translation>Letzte abrufen</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="375"/>
+        <location filename="../src/main_window/main_window.cpp" line="349"/>
         <source>About XiVO Client</source>
         <translation>Über XiVO-Client</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="377"/>
+        <location filename="../src/main_window/main_window.cpp" line="351"/>
         <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="382"/>
+        <location filename="../src/main_window/main_window.cpp" line="356"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Versionsinformation&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="383"/>
+        <location filename="../src/main_window/main_window.cpp" line="357"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
         <translation>Haupt : &lt;b&gt;%1&lt;/b&gt; (XiVO-Zweig)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="384"/>
+        <location filename="../src/main_window/main_window.cpp" line="358"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Neben : git-Hash &lt;b&gt;%1&lt;/b&gt; von : %2</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="387"/>
+        <location filename="../src/main_window/main_window.cpp" line="361"/>
         <source>(Application Built on : %1)</source>
         <translation>(Anwendung gebaut auf : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="388"/>
+        <location filename="../src/main_window/main_window.cpp" line="362"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Anwendung gestartet auf : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="389"/>
+        <location filename="../src/main_window/main_window.cpp" line="363"/>
         <source>(Config File Location : %1)</source>
         <translation>(Konfigurationsdateiort : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="392"/>
+        <location filename="../src/main_window/main_window.cpp" line="366"/>
         <source>E-mail : </source>
         <translation>E-Mail-Adresse : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="393"/>
+        <location filename="../src/main_window/main_window.cpp" line="367"/>
         <source>Phone : </source>
         <translation>Telefon : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="394"/>
+        <location filename="../src/main_window/main_window.cpp" line="368"/>
         <source>Authors : </source>
         <translation>Autoren : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="394"/>
+        <location filename="../src/main_window/main_window.cpp" line="368"/>
         <source>Avencall Development Team</source>
         <translation>Avencall Entwicklungsteam</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="396"/>
+        <location filename="../src/main_window/main_window.cpp" line="370"/>
         <source>License : </source>
         <translation>Lizenz : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="398"/>
+        <location filename="../src/main_window/main_window.cpp" line="372"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="404"/>
+        <location filename="../src/main_window/main_window.cpp" line="378"/>
         <source>Credits</source>
         <translation>Danksagungen</translation>
-    </message>
-</context>
-<context>
-    <name>MyLocalDirPanel</name>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="54"/>
-        <source>Personal Directory</source>
-        <translation>Persönliches Verzeichnis</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="70"/>
-        <source>&amp;New Contact</source>
-        <translation>&amp;Neuer Kontakt</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="74"/>
-        <source>&amp;Export Contacts</source>
-        <translation>Kontakte &amp;exportieren</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="78"/>
-        <source>&amp;Import Contacts</source>
-        <translation>Kontakte &amp;importieren</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="82"/>
-        <source>&amp;Search</source>
-        <translation>&amp;Suche</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="86"/>
-        <source>&amp;Remove all Contacts</source>
-        <translation>Alle Kontakte entfe&amp;rnen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="96"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="261"/>
-        <source>First Name</source>
-        <translation>Vorname</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="97"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="265"/>
-        <source>Last Name</source>
-        <translation>Nachname</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="98"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="270"/>
-        <source>Phone Number</source>
-        <translation>Telefonnummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="99"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="277"/>
-        <source>Email Address</source>
-        <translation>E-Mail-Adresse</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="100"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="287"/>
-        <source>Company</source>
-        <translation>Firma</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="101"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="292"/>
-        <source>Fax Number</source>
-        <translation>Faxnummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="102"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="299"/>
-        <source>Mobile Number</source>
-        <translation>Mobiltelefonnummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="188"/>
-        <source>Open Contacts File</source>
-        <translation>Kontaktedatei öffnen</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="190"/>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="206"/>
-        <source>CSV file (*.csv)</source>
-        <translation>CSV-Datei (*.csv)</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="204"/>
-        <source>Save Contacts File</source>
-        <translation>Kontaktedatei speichern</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="272"/>
-        <source>Number</source>
-        <translation>Nummer</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="278"/>
-        <source>E-mail Address</source>
-        <translation>E-Mail-Adresse</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="279"/>
-        <source>Email</source>
-        <translation>E-Mail</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="293"/>
-        <source>Fax</source>
-        <translation>Fax</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="300"/>
-        <source>Mobile</source>
-        <translation>Mobil</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="388"/>
-        <source>Removing all contacts</source>
-        <translation>Alle Kontakte werden entfernt</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/mylocaldir-builtin/mylocaldirpanel.cpp" line="389"/>
-        <source>Removing all contacts.
-Are you sure ?</source>
-        <translation>Alle Kontakte werden entfernt.
-Sind Sie sicher?</translation>
     </message>
 </context>
 <context>

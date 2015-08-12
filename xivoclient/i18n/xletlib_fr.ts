@@ -31,6 +31,7 @@
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="48"/>
+        <location filename="../src/xletlib/agents_model.cpp" line="390"/>
         <source>Logged in</source>
         <translation>Logué</translation>
     </message>
@@ -115,13 +116,8 @@ en retrait</translation>
         <translation>Externe émis</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/agents_model.cpp" line="390"/>
-        <source>Logged</source>
-        <translation>Logué</translation>
-    </message>
-    <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
-        <source>Unlogged</source>
+        <source>Logged out</source>
         <translation>Délogué</translation>
     </message>
     <message>
@@ -323,16 +319,6 @@ Etes-vous sûr(e) ?</translation>
         <location filename="../src/xletlib/externalphonedialog.cpp" line="51"/>
         <source>Phone number</source>
         <translation>Numéro de téléphone</translation>
-    </message>
-</context>
-<context>
-    <name>ExternalPhonePeerWidget</name>
-    <message>
-        <location filename="../src/xletlib/externalphonepeerwidget.cpp" line="45"/>
-        <source>Label : %1
-Phone Number : %2</source>
-        <translation>Label : %1
-Extension : %2</translation>
     </message>
 </context>
 <context>
