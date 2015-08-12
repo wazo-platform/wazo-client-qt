@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -29,6 +29,8 @@
 
 #ifndef __QUEUE_AGENT_STATUS_H__
 #define __QUEUE_AGENT_STATUS_H__
+
+#include <QObject>
 
 #include "baselib_export.h"
 #include <QColor>
