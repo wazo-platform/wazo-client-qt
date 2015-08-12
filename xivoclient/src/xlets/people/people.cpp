@@ -43,6 +43,7 @@
 #include "people.h"
 #include "people_entry_model.h"
 #include "people_entry_sort_filter_proxy_model.h"
+#include "people_personal_migration.h"
 
 
 People::People(QWidget *parent)
@@ -142,6 +143,10 @@ People::People(QWidget *parent)
     this->registerListener("people_personal_contact_raw_update");
     this->registerListener("people_personal_contacts_purged");
     this->registerListener("people_personal_contacts_result");
+
+    if (PeoplePersonalMigration::needMigration()) {
+        PeoplePersonalMigration::noticeAndMigratePersonalContacts(this);
+    }
 }
 
 People::~People()

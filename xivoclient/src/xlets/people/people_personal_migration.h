@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,27 +27,30 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CSVSTREAM_H__
-#define __CSVSTREAM_H__
+#ifndef __PEOPLE_PERSONAL_MIGRATION_H__
+#define __PEOPLE_PERSONAL_MIGRATION_H__
 
-#include <QTextStream>
-#include <QStringList>
+#include <QByteArray>
+#include <QDir>
+#include <QObject>
+#include <QString>
+#include <QWidget>
 
-/*! \brief Stream used to read and write CSV files
- */
-class CsvStream : public QTextStream
+class PeoplePersonalMigration: public QObject
 {
+    Q_OBJECT
+
     public:
-        CsvStream(QIODevice *device);
-        bool atEnd();
-        QStringList readRecords();
-        CsvStream& operator<< (const QStringList);
+        static bool needMigration();
+        static QByteArray getOldContacts();
+        static void finishMigration();
+        static QString contactsFileName();
+        static void noticeAndMigratePersonalContacts(QWidget *parent);
 
     private:
-        QChar fieldSeparator;   //!< separator between fields (coma by default)
-        QChar textDelimiter;    //!< string delimiter (double quote by default)
-        unsigned m_line_num;
-        static const unsigned max_line_num = 10000;
+        static QDir contactsDir();
+        static void migrateContacts();
+        static QByteArray replaceHeaders(const QByteArray &headers);
 };
 
 #endif
