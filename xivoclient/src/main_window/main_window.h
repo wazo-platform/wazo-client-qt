@@ -71,12 +71,9 @@ class MainWindow : public QMainWindow
         void prepareState();
 
     private slots:
-        void clipselection();
-        void clipdata();
         void showMessageBox(const QString &);
         void showConfDialog();
         void cleanConfDialog();
-        void confUpdated();
         void setStatusNotLogged();
         void setStatusLogged();
         void minimizeWindow();
@@ -96,7 +93,6 @@ class MainWindow : public QMainWindow
         void setTitle(const QString &);
 
         ConfigWidget *m_config_widget;
-        QClipboard * m_clipboard;
 
         QByteArray m_default_state;
         QDateTime m_launch_date_time;

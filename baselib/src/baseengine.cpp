@@ -186,15 +186,6 @@ void BaseEngine::loadSettings()
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
 
-    // this part had been commented for Win32, see svn 5882 or git 70eb1793
-    // to allow a bit more flexibility, we leave it as a configurable setting,
-    // whose default mode will be 'disabled'
-#ifdef Q_OS_WIN
-    m_config["enableclipboard"] = m_settings->value("display/enableclipboard", false).toBool();
-#else
-    m_config["enableclipboard"] = m_settings->value("display/enableclipboard", true).toBool();
-#endif /* Q_OS_WIN */
-
     m_config["logfilename"] = "XiVO_Client.log";
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
     openLogFile ();
@@ -305,7 +296,6 @@ void BaseEngine::saveSettings()
     m_settings->setValue("version/git_date", __git_date__);
     m_settings->setValue("display/systrayed", m_config["systrayed"].toBool());
     m_settings->setValue("display/unique", m_config["uniqueinstance"].toBool());
-    m_settings->setValue("display/enableclipboard", m_config["enableclipboard"].toBool());
     m_settings->setValue("display/activate_on_tel", m_config["activate_on_tel"].toBool());
 
     m_settings->beginGroup(m_profilename_write);
