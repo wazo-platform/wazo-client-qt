@@ -27,35 +27,36 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDir>
+#include <QAbstractButton>
 #include <QFileInfo>
+#include <QMessageBox>
 #include <QSettings>
+#include <QStringList>
 
 #include <baseengine.h>
+#include <message_factory.h>
 
 #include "people_personal_migration.h"
 
-QDir contactsDir();
-QByteArray replaceHeaders(const QByteArray &headers);
 
 bool PeoplePersonalMigration::needMigration() {
-    return QFileInfo::exists(contactsFileName());
+    return QFileInfo::exists(PeoplePersonalMigration::contactsFileName());
 }
 
 QByteArray PeoplePersonalMigration::getOldContacts() {
     QByteArray result;
-    QFile file(contactsFileName());
+    QFile file(PeoplePersonalMigration::contactsFileName());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return result;
     }
 
-    QByteArray headers = replaceHeaders(file.readLine());
+    QByteArray headers = PeoplePersonalMigration::replaceHeaders(file.readLine());
     result = headers + file.readAll();
     return result;
 }
 
 void PeoplePersonalMigration::finishMigration() {
-    QDir _contacts_dir = contactsDir();
+    QDir _contacts_dir = PeoplePersonalMigration::contactsDir();
     foreach(QString old_contacts_file_name, _contacts_dir.entryList(QStringList("localdir*.csv"))) {
         _contacts_dir.remove(old_contacts_file_name);
     }
@@ -65,16 +66,41 @@ QString PeoplePersonalMigration::contactsFileName() {
     return contactsDir().absoluteFilePath("localdir.csv");
 }
 
-QDir contactsDir() {
+QDir PeoplePersonalMigration::contactsDir() {
     QFileInfo config_file(b_engine->getSettings()->fileName());
     return QDir(config_file.canonicalPath());
 }
 
-QByteArray replaceHeaders(const QByteArray &headers) {
+QByteArray PeoplePersonalMigration::replaceHeaders(const QByteArray &headers) {
     QByteArray result(headers);
     result.replace("phonenumber", "number");
     result.replace("emailaddress", "email");
     result.replace("faxnumber", "fax");
     result.replace("mobilenumber", "mobile");
     return result;
+}
+
+void PeoplePersonalMigration::noticeAndMigratePersonalContacts(QWidget *parent)
+{
+    QMessageBox *message = new QMessageBox(QMessageBox::Information,
+                                           tr("Contact migration"),
+                                           tr("Your local contacts will be migrated in the "
+                                              "People Xlet. <img src=\":/images/tab-people.svg\"/>"),
+                                           QMessageBox::NoButton,
+                                           parent);
+    message->setDetailedText(QString(tr("Your local contacts are currently stored on your machine in:\n"
+                                        "%1\n"
+                                        "They will be migrated to the XiVO server in your personal database."))
+                             .arg(PeoplePersonalMigration::contactsFileName()));
+    message->setTextFormat(Qt::RichText);
+    message->setAttribute(Qt::WA_DeleteOnClose);
+    QObject::connect(message, &QMessageBox::buttonClicked,
+                     PeoplePersonalMigration::migrateContacts);
+    message->show();
+}
+
+void PeoplePersonalMigration::migrateContacts()
+{
+    b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(PeoplePersonalMigration::getOldContacts()));
+    PeoplePersonalMigration::finishMigration();
 }

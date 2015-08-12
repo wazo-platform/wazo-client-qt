@@ -30,13 +30,27 @@
 #ifndef __PEOPLE_PERSONAL_MIGRATION_H__
 #define __PEOPLE_PERSONAL_MIGRATION_H__
 
+#include <QByteArray>
+#include <QDir>
+#include <QObject>
 #include <QString>
+#include <QWidget>
 
-namespace PeoplePersonalMigration {
-    bool needMigration();
-    QByteArray getOldContacts();
-    void finishMigration();
-    QString contactsFileName();
+class PeoplePersonalMigration: public QObject
+{
+    Q_OBJECT
+
+    public:
+        static bool needMigration();
+        static QByteArray getOldContacts();
+        static void finishMigration();
+        static QString contactsFileName();
+        static void noticeAndMigratePersonalContacts(QWidget *parent);
+
+    private:
+        static QDir contactsDir();
+        static void migrateContacts();
+        static QByteArray replaceHeaders(const QByteArray &headers);
 };
 
 #endif
