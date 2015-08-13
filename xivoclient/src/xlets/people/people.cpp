@@ -245,6 +245,11 @@ void People::parsePeopleImportPersonalContactsCSVResult(const QVariantMap &resul
     }
 
     message->setAttribute(Qt::WA_DeleteOnClose);
+
+    if (PeoplePersonalMigration::needMigration()) {
+        QObject::connect(message, &QMessageBox::buttonClicked,
+                         PeoplePersonalMigration::finishMigration);
+    }
     message->show();
 }
 
