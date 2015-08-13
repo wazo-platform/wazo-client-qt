@@ -42,15 +42,15 @@ class PeoplePersonalMigration: public QObject
 
     public:
         static bool needMigration();
-        static QByteArray getOldContacts();
         static void finishMigration();
-        static QString contactsFileName();
         static void noticeAndMigratePersonalContacts(QWidget *parent);
 
     private:
-        static QDir contactsDir();
-        static void migrateContacts();
+        static QByteArray getOldContacts();
         static QByteArray replaceHeaders(const QByteArray &headers);
+        static QDir contactsDir();
+        static QString contactsFileName();
+        static void migrateContacts();
 };
 
 #endif

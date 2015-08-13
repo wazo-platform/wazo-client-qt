@@ -102,5 +102,4 @@ void PeoplePersonalMigration::noticeAndMigratePersonalContacts(QWidget *parent)
 void PeoplePersonalMigration::migrateContacts()
 {
     b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(PeoplePersonalMigration::getOldContacts()));
-    PeoplePersonalMigration::finishMigration();
 }
