@@ -287,16 +287,15 @@ void People::searchPeople()
 {
     m_lookup_timer.stop();
 
-    if (m_searched_pattern.length() < min_lookup_length) {
-        qDebug() << Q_FUNC_INFO << "ignoring pattern too short" << this->m_searched_pattern;
-    } else {
-        if (m_mode != SEARCH_MODE) {
-            this->ui.menu->setSelectedAction(0);
-        }
-        this->waitingStatusAboutToBeStarted();
-        b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
-        qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
+    if (m_searched_pattern.isEmpty()) {
+        return;
     }
+    if (m_mode != SEARCH_MODE) {
+        this->ui.menu->setSelectedAction(0);
+    }
+    this->waitingStatusAboutToBeStarted();
+    b_engine->sendJsonCommand(MessageFactory::peopleSearch(m_searched_pattern));
+    qDebug() << Q_FUNC_INFO << "searching" << m_searched_pattern << "...";
 }
 
 void People::defaultColumnSort(const QModelIndex &, int, int)

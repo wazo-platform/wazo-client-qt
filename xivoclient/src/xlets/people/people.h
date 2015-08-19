@@ -59,7 +59,6 @@ class People: public XLet, public IPBXListener
         static const int delay_before_waiting = 1*1000;
         static const int delay_before_failure = 30*1000;
         static const int delay_before_lookup = 1000;
-        static const int min_lookup_length = 3;
 
     public:
         People(QWidget *parent=0);
