@@ -36,7 +36,6 @@
 #include <xletlib/xletinterface.h>
 
 #include <xlets/customerinfo-builtin/customerinfopanel.h>
-#include <xlets/remotedirectory-builtin/remote_directory.h>
 #include <xlets/search-builtin/searchpanel.h>
 
 #include "xletfactory.h"
@@ -56,8 +55,7 @@ static const struct {
     const newXLetProto construct;
 } xlets[] = {
     { "customerinfo"      ,newXLet<CustomerInfoPanel>      },
-    { "search"            ,newXLet<SearchPanel>            },
-    { "remotedirectory"   ,newXLet<RemoteDirectory>        }
+    { "search"            ,newXLet<SearchPanel>            }
 };
 
 /*! xlet creator function prototype */
