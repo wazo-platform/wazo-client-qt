@@ -33,6 +33,7 @@
 #define __FORM_WIDGET_SETTER__
 
 #include <QStringList>
+#include <QObject>
 
 class FormWidgetSetter : public QObject
 {
