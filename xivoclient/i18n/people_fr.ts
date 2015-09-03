@@ -91,56 +91,56 @@ line %1: </source>
 ligne %1: </translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="310"/>
+        <location filename="../src/xlets/people/people.cpp" line="314"/>
         <source>Removing this contact</source>
         <translation>Suppression du contact</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="311"/>
+        <location filename="../src/xlets/people/people.cpp" line="315"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Suppression du contact.
 Êtes-vous sûr(e) ?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="326"/>
+        <location filename="../src/xlets/people/people.cpp" line="330"/>
         <source>Deleting all personal contacts</source>
         <translation>Suppression de tous les contacts personnels</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="327"/>
+        <location filename="../src/xlets/people/people.cpp" line="331"/>
         <source>Deleting all personal contacts.
 Are you sure ?</source>
         <translation>Suppression de tous les contacts personnels.
 Êtes-vous certain?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="418"/>
+        <location filename="../src/xlets/people/people.cpp" line="422"/>
         <source>Save Personal Contacts</source>
         <translation>Enregistrer le fichier de contacts</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="420"/>
+        <location filename="../src/xlets/people/people.cpp" line="424"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
         <translation>Fichiers CSV (*.csv);;Tous les Fichiers (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="446"/>
+        <location filename="../src/xlets/people/people.cpp" line="450"/>
         <source>Import Personal Contacts</source>
         <translation>Import de contacts personnels</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="448"/>
+        <location filename="../src/xlets/people/people.cpp" line="452"/>
         <source>CSV Files (UTF-8)(*.csv);;All Files (*)</source>
         <translation>Fichiers CSV (UTF-8) (*.csv);;Tous les Fichiers (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="498"/>
+        <location filename="../src/xlets/people/people.cpp" line="502"/>
         <source>Failed</source>
         <translation>Échec</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="520"/>
+        <location filename="../src/xlets/people/people.cpp" line="524"/>
         <source>Waiting</source>
         <translation>En attente</translation>
     </message>
@@ -169,17 +169,17 @@ Are you sure ?</source>
 <context>
     <name>PeoplePersonalMigration</name>
     <message>
-        <location filename="../src/xlets/people/people_personal_migration.cpp" line="86"/>
+        <location filename="../src/xlets/people/people_personal_migration.cpp" line="89"/>
         <source>Contacts Migration</source>
         <translation>Migration des contacts</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_personal_migration.cpp" line="87"/>
+        <location filename="../src/xlets/people/people_personal_migration.cpp" line="90"/>
         <source>Your local contacts will be migrated to the People Xlet. %1</source>
         <translation>Vos contacts locaux vont être migrés vers la Xlet Social. %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_personal_migration.cpp" line="91"/>
+        <location filename="../src/xlets/people/people_personal_migration.cpp" line="94"/>
         <source>Your local contacts are currently stored on your machine in:
 %1
 They will be migrated to the XiVO server in your personal database.</source>

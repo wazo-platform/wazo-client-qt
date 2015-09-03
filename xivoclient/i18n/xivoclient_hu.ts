@@ -548,14 +548,6 @@
     </message>
 </context>
 <context>
-    <name>RemoteDirectory</name>
-    <message>
-        <location filename="../src/xlets/remotedirectory-builtin/remote_directory.cpp" line="35"/>
-        <source>Remote Directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SearchPanel</name>
     <message>
         <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="45"/>

@@ -57,7 +57,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
-        <translation type="unfinished"></translation>
+        <translation>Existe um conflito com o IP %1, o servidor CTI não está sendo executado ou a porta %2 não está correta.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
@@ -65,12 +65,15 @@
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
 - a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).</source>
-        <translation type="unfinished"></translation>
+        <translation>Um erro ocorreu na rede ao tentar utilizar o endereço %1:
+- Não existe rota definida parar acessar este endereço IP(~ no timeout)
+- O endereço IP está sendo roteado mas não existe máquina (˜5s timeout)
+- O cabo está desconectado na LAN (~30s timetout)</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1236"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
-        <translation type="unfinished"></translation>
+        <translation>O servidor com o endereço %1 não aceita criptografia na porta %2. Modifique a porta ou a configuração de criptografia.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1240"/>

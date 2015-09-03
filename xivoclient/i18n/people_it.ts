@@ -89,54 +89,54 @@ line %1: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="310"/>
+        <location filename="../src/xlets/people/people.cpp" line="314"/>
         <source>Removing this contact</source>
         <translation type="unfinished">Rimuovi questo contatto</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="311"/>
+        <location filename="../src/xlets/people/people.cpp" line="315"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation type="unfinished">Rimozione del contatto. Sei sicuro ?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="326"/>
+        <location filename="../src/xlets/people/people.cpp" line="330"/>
         <source>Deleting all personal contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="327"/>
+        <location filename="../src/xlets/people/people.cpp" line="331"/>
         <source>Deleting all personal contacts.
 Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="418"/>
+        <location filename="../src/xlets/people/people.cpp" line="422"/>
         <source>Save Personal Contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="420"/>
+        <location filename="../src/xlets/people/people.cpp" line="424"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="446"/>
+        <location filename="../src/xlets/people/people.cpp" line="450"/>
         <source>Import Personal Contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="448"/>
+        <location filename="../src/xlets/people/people.cpp" line="452"/>
         <source>CSV Files (UTF-8)(*.csv);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="498"/>
+        <location filename="../src/xlets/people/people.cpp" line="502"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="520"/>
+        <location filename="../src/xlets/people/people.cpp" line="524"/>
         <source>Waiting</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,17 +165,17 @@ Are you sure ?</source>
 <context>
     <name>PeoplePersonalMigration</name>
     <message>
-        <location filename="../src/xlets/people/people_personal_migration.cpp" line="86"/>
+        <location filename="../src/xlets/people/people_personal_migration.cpp" line="89"/>
         <source>Contacts Migration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_personal_migration.cpp" line="87"/>
+        <location filename="../src/xlets/people/people_personal_migration.cpp" line="90"/>
         <source>Your local contacts will be migrated to the People Xlet. %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_personal_migration.cpp" line="91"/>
+        <location filename="../src/xlets/people/people_personal_migration.cpp" line="94"/>
         <source>Your local contacts are currently stored on your machine in:
 %1
 They will be migrated to the XiVO server in your personal database.</source>
