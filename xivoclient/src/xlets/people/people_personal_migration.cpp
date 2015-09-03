@@ -51,7 +51,10 @@ QByteArray PeoplePersonalMigration::getOldContacts() {
     }
 
     QByteArray headers = PeoplePersonalMigration::replaceHeaders(file.readLine());
-    result = headers + file.readAll();
+    QByteArray contacts = file.readAll();
+    if (! contacts.trimmed().isEmpty()) {
+        result = headers + contacts;
+    }
     return result;
 }
 
@@ -101,5 +104,10 @@ void PeoplePersonalMigration::noticeAndMigratePersonalContacts(QWidget *parent)
 
 void PeoplePersonalMigration::migrateContacts()
 {
-    b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(PeoplePersonalMigration::getOldContacts()));
+    QByteArray old_contacts = PeoplePersonalMigration::getOldContacts();
+    if (! old_contacts.isEmpty()) {
+        b_engine->sendJsonCommand(MessageFactory::importPersonalContactsCSV(old_contacts));
+    } else {
+        PeoplePersonalMigration::finishMigration();
+    }
 }
