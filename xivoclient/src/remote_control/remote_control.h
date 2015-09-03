@@ -133,6 +133,7 @@ class RemoteControl : public QObject
         void set_infos_in_custom_sheet(const QVariantList &);
         QVariantMap get_conference_room_infos();
         QVariantMap get_switchboard_infos();
+        void set_search_for_directory(const QVariantList &);
         QVariantMap get_agent_list_infos();
         QVariantMap get_menu_availability_infos();
         void set_menu_availability(const QVariantList &);

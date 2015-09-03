@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -143,13 +143,9 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_sheet_infos);
             RC_EXECUTE_WITH_RETURN(get_infos_in_custom_sheet);
             RC_EXECUTE_ARG(set_infos_in_custom_sheet);
+            RC_EXECUTE_ARG(set_search_for_directory);
             RC_EXECUTE_WITH_RETURN(get_conference_room_infos);
             RC_EXECUTE_WITH_RETURN(get_switchboard_infos);
-            RC_EXECUTE_ARG(set_search_for_directory);
-            RC_EXECUTE_WITH_RETURN(get_remote_directory_infos);
-            RC_EXECUTE_ARG(set_search_for_remote_directory);
-            RC_EXECUTE_ARG(exec_double_click_on_number_for_name);
-            RC_EXECUTE_ARG(sort_list_for_remote_directory);
             RC_EXECUTE_ARG(switchboard_answer_incoming_call);
             RC_EXECUTE(switchboard_hang_up);
             RC_EXECUTE_WITH_RETURN(get_switchboard_current_call_infos);
