@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -37,7 +37,7 @@ SystemTrayIcon::SystemTrayIcon(MainWindow *parent)
     : QSystemTrayIcon(parent)
 {
     this->m_availability = new QMenu(parent);
-    this->m_availability->setTitle("&Availability");
+    this->m_availability->setTitle(tr("&Availability"));
     this->m_menu_availability = new MenuAvailability(this->m_availability);
 
     this->connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
