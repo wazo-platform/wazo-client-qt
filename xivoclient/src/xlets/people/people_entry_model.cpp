@@ -42,7 +42,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
 {
     this->m_type_map["agent"] = AGENT;
     this->m_type_map["favorite"] = FAVORITE;
-    this->m_type_map["mobile"] = MOBILE;
+    this->m_type_map["callable"] = CALLABLE;
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
     this->m_type_map["personal"] = PERSONAL_CONTACT;
@@ -242,12 +242,12 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
             item["value"] = entry.data(column);
             item["action"] = CALL;
             number_items.append(item);
-            const QList<int> &mobile_indexes = m_type_to_indices[MOBILE];
-            foreach(int column, mobile_indexes) {
+            const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
+            foreach(int column, callable_indexes) {
                 QVariantMap item;
                 item["label"] = this->headerText(column);
                 item["value"] = entry.data(column);
-                item["action"] = MOBILECALL;
+                item["action"] = CALLABLECALL;
                 number_items.append(item);
             }
             return number_items;

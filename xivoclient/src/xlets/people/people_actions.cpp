@@ -31,13 +31,12 @@
 #include "people_enum.h"
 
 PeopleActions::PeopleActions(const QList<QVariant> &action_items)
-    : m_call_action(NULL),
-      m_call_mobile_action(NULL)
+    : m_call_action(NULL)
 {
     for (int i = 0; i < action_items.size(); i++)
     {
         QVariantMap item = action_items[i].toMap();
-        QString label = item["label"].toString();
+        QString title = item["label"].toString();
         QString value = item["value"].toString();
         PeopleAction action = (PeopleAction)item["action"].toInt();
 
@@ -45,38 +44,39 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
             continue;
         }
 
-        if (action == CALL) {
-            m_number_extension = value;
-            m_call_action = new QAction(tr("Call"), this);
-            connect(m_call_action, SIGNAL(triggered()),
-                    this, SLOT(call()));
-
-        } else if (action == MOBILECALL) {
-            m_mobile_extension = value;
-            QString action_name = tr("%1 - %2").arg(label).arg(value);
-            m_call_mobile_action = new QAction(action_name, this);
-            connect(m_call_mobile_action, SIGNAL(triggered()),
-                    this, SLOT(callMobile()));
+        switch(action) {
+        case CALL:
+            m_call_action = newCallAction(tr("Call"), value);
+            break;
+        case CALLABLECALL:
+            const QString &label = QString("%1 - %2").arg(title).arg(value);
+            QAction *click = newCallAction(label, value);
+            m_call_callable_actions.append(click);
+            break;
         }
     }
 }
 
-QAction *PeopleActions::callAction()
+QAction *PeopleActions::newCallAction(const QString &label, const QString &number)
 {
-    return this->m_call_action;
+        QAction *click = new QAction(label, this);
+        click->setData(number);
+        connect(click, SIGNAL(triggered()), this, SLOT(call()));
+        return click;
 }
 
 void PeopleActions::call()
 {
-    b_engine->sendJsonCommand(MessageFactory::dial(m_number_extension));
+    const QString &number = static_cast<QAction*>(sender())->data().toString();
+    b_engine->sendJsonCommand(MessageFactory::dial(number));
 }
 
-QAction *PeopleActions::callMobileAction()
+QAction *PeopleActions::getCallAction() const
 {
-    return this->m_call_mobile_action;
+    return this->m_call_action;
 }
 
-void PeopleActions::callMobile()
+const QList<QAction *> &PeopleActions::getCallCallableActions() const
 {
-    b_engine->sendJsonCommand(MessageFactory::dial(m_mobile_extension));
+    return this->m_call_callable_actions;
 }

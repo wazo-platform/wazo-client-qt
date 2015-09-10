@@ -33,7 +33,7 @@
 enum ColumnType {
   AGENT,
   FAVORITE,
-  MOBILE,
+  CALLABLE,
   NAME,
   NUMBER,
   PERSONAL_CONTACT,
@@ -56,8 +56,7 @@ enum PeopleMode {
 
 enum PeopleAction {
     CALL,
-    MOBILECALL
-
+    CALLABLECALL
 };
 
 #endif
