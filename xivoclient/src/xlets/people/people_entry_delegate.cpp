@@ -175,7 +175,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         PeopleActions people_actions(action_items);
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
-            people_actions.call();
+            people_actions.getCallAction()->trigger();
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
             this->showContextMenu(option, &people_actions);
         }
@@ -227,8 +227,8 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
 void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                                                 PeopleActions *people_actions)
 {
-    if (QAction *mobile_action = people_actions->callMobileAction()) {
-        menu->addAction(mobile_action);
+    foreach (QAction *callable_action, people_actions->getCallCallableActions()) {
+        menu->addAction(callable_action);
     }
 }
 

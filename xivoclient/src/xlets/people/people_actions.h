@@ -43,19 +43,16 @@ class PeopleActions: public QObject
 
     public:
         PeopleActions(const QList<QVariant> &action_items);
-        QAction *callAction();
-        QAction *callMobileAction();
+        QAction *getCallAction() const;
+        const QList<QAction *> &getCallCallableActions() const;
 
     public slots:
         void call();
-        void callMobile();
 
     private:
-        QString m_mobile_extension;
-        QString m_number_extension;
-
+        QAction *newCallAction(const QString &label, const QString &number);
+        QList<QAction *> m_call_callable_actions;
         QAction *m_call_action;
-        QAction *m_call_mobile_action;
 };
 
 #endif
