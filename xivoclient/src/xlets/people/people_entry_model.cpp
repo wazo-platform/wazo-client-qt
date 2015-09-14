@@ -235,31 +235,33 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
     ColumnType column_type = this->headerType(column);
 
     switch (column_type) {
-        case NUMBER: {
-            QVariantList number_items;
-            QVariantMap item;
-            item["label"] = this->headerText(column);
-            item["value"] = entry.data(column);
-            item["action"] = CALL;
-            number_items.append(item);
-            item["action"] = BLINDTRANSFER;
-            number_items.append(item);
-            const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
-            foreach(int column, callable_indexes) {
-                QVariantMap item;
-                item["label"] = this->headerText(column);
-                item["value"] = entry.data(column);
-                item["action"] = CALLABLECALL;
-                number_items.append(item);
-                item["action"] = BLINDTRANSFER;
-                number_items.append(item);
-            }
-            return number_items;
-        }
-        default:
-            break;
+    case NUMBER:
+        return this->getAvailableActions(entry, column);
+    default:
+        return QVariant();
     }
-    return QVariant();
+}
+
+QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int column) const
+{
+    QVariantList number_items;
+    number_items.append(newAction(this->headerText(column), entry.data(column), CALL));
+    number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+    const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
+    foreach(int column, callable_indexes) {
+        number_items.append(newAction(this->headerText(column), entry.data(column), CALLABLECALL));
+        number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+    }
+    return number_items;
+}
+
+QVariant PeopleEntryModel::newAction(const QString &label, const QVariant &value, PeopleAction action) const
+{
+    QVariantMap item;
+    item["label"] = label;
+    item["value"] = value;
+    item["action"] = action;
+    return item;
 }
 
 QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) const

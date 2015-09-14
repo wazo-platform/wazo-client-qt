@@ -86,6 +86,8 @@ class PeopleEntryModel : public AbstractTableModel
         void setEndpointStatusFromEndpointId(const RelationID &id, int status);
         void setUserStatusFromUserId(const RelationID &id, const QString &status);
         void setFavoriteStatusFromSourceId(const RelationSourceID &id, bool status);
+        QVariant getAvailableActions(const PeopleEntry &entry, int column) const;
+        QVariant newAction(const QString &label, const QVariant &value, PeopleAction action) const;
 
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
