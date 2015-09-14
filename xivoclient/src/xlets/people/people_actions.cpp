@@ -46,23 +46,47 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
 
         switch(action) {
         case CALL:
+        {
             m_call_action = newCallAction(tr("Call"), value);
             break;
+        }
         case CALLABLECALL:
+        {
             const QString &label = QString("%1 - %2").arg(title).arg(value);
             QAction *click = newCallAction(label, value);
             m_call_callable_actions.append(click);
             break;
         }
-    }
+        case BLINDTRANSFER:
+        {
+            const QString &label = QString("%1 %2 - %3").arg(tr("Blind transfer")).arg(title).arg(value);
+            QAction *click = newBlindTransferAction(label, value);
+            m_blind_transfer_actions.append(click);
+            break;
+        }
+     }}
+}
+
+QAction *PeopleActions::newBlindTransferAction(const QString &label, const QString &number)
+{
+    QAction *click = new QAction(label, this);
+    click->setData(number);
+    connect(click, SIGNAL(triggered()), this, SLOT(blindTransfer()));
+    return click;
 }
 
 QAction *PeopleActions::newCallAction(const QString &label, const QString &number)
 {
-        QAction *click = new QAction(label, this);
-        click->setData(number);
-        connect(click, SIGNAL(triggered()), this, SLOT(call()));
-        return click;
+    QAction *click = new QAction(label, this);
+    click->setData(number);
+    connect(click, SIGNAL(triggered()), this, SLOT(call()));
+    return click;
+}
+
+void PeopleActions::blindTransfer()
+{
+    const QString &number = static_cast<QAction*>(sender())->data().toString();
+    b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
 }
 
 void PeopleActions::call()
@@ -74,6 +98,11 @@ void PeopleActions::call()
 QAction *PeopleActions::getCallAction() const
 {
     return this->m_call_action;
+}
+
+const QList<QAction *> &PeopleActions::getBlindTransferActions() const
+{
+    return this->m_blind_transfer_actions;
 }
 
 const QList<QAction *> &PeopleActions::getCallCallableActions() const

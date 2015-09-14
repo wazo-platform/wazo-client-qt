@@ -56,7 +56,8 @@ enum PeopleMode {
 
 enum PeopleAction {
     CALL,
-    CALLABLECALL
+    CALLABLECALL,
+    BLINDTRANSFER,
 };
 
 #endif

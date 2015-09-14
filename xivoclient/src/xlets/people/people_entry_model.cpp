@@ -242,12 +242,16 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
             item["value"] = entry.data(column);
             item["action"] = CALL;
             number_items.append(item);
+            item["action"] = BLINDTRANSFER;
+            number_items.append(item);
             const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
             foreach(int column, callable_indexes) {
                 QVariantMap item;
                 item["label"] = this->headerText(column);
                 item["value"] = entry.data(column);
                 item["action"] = CALLABLECALL;
+                number_items.append(item);
+                item["action"] = BLINDTRANSFER;
                 number_items.append(item);
             }
             return number_items;
