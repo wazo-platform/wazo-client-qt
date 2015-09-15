@@ -82,6 +82,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
                              PeopleActions *people_actions);
         void showContextMenu(const QStyleOptionViewItem &option,
                              PeopleActions *people_actions);
+        bool shouldShowActionSelectorRect(const PeopleActions &people_actions) const;
 };
 
 class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate
