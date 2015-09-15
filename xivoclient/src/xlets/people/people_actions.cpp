@@ -59,7 +59,7 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
         }
         case BLINDTRANSFER:
         {
-            const QString &label = QString("%1 %2 - %3").arg(tr("Blind transfer")).arg(title).arg(value);
+            const QString &label = QString("%1 - %2").arg(title).arg(value);
             QAction *click = newBlindTransferAction(label, value);
             m_blind_transfer_actions.append(click);
             break;
