@@ -246,11 +246,15 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
 {
     QVariantList number_items;
     number_items.append(newAction(this->headerText(column), entry.data(column), CALL));
-    number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+    if (m_endpoint_status == 1) {
+        number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+    }
     const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
     foreach(int column, callable_indexes) {
         number_items.append(newAction(this->headerText(column), entry.data(column), CALLABLECALL));
-        number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+        if (m_endpoint_status == 1) {
+            number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+        }
     }
     return number_items;
 }
