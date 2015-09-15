@@ -98,6 +98,7 @@ class People: public XLet, public IPBXListener
                                    const QVariantMap &contact_infos);
 
     private:
+        void parseRelations(const QVariantMap &result) const;
         void parsePeoplePersonalContactDeleted(const QVariantMap &result);
         void parsePeoplePersonalContactRawResult(const QVariantMap &result);
         void parsePeopleExportPersonalContactsCSVResult(const QVariantMap &result);
