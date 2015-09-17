@@ -236,9 +236,7 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
 void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                                                 PeopleActions *people_actions)
 {
-    foreach (QAction *callable_action, people_actions->getCallCallableActions()) {
-        menu->addAction(callable_action);
-    }
+    menu->addActions(people_actions->getCallCallableActions());
     this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
                              people_actions->getBlindTransferActions());
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
@@ -251,9 +249,7 @@ void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
 {
     if (!transfer_actions.empty()) {
         QPointer<Menu> transfer_menu = new Menu(title, menu);
-        foreach (QAction *transfer_action, transfer_actions) {
-            transfer_menu->addAction(transfer_action);
-        }
+        transfer_menu->addActions(transfer_actions);
         menu->addMenu(transfer_menu);
     }
 }

@@ -36,6 +36,7 @@ class XLETLIB_EXPORT Menu : public QMenu
     public:
         Menu(const QString &title, QWidget *parent);
         Menu(QWidget *parent);
+        void addActions(const QList<QAction *> &actions);
     private:
         void setStyle();
 };

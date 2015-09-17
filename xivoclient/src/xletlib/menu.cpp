@@ -38,6 +38,13 @@ Menu::Menu(QWidget *parent)
     this->setStyle();
 }
 
+void Menu::addActions(const QList<QAction *> &actions)
+{
+    foreach (QAction *action, actions) {
+        this->addAction(action);
+    }
+}
+
 void Menu::setStyle()
 {
     // These disable the corners around QMenu, so that rounded corners are visible
