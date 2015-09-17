@@ -239,23 +239,22 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
     foreach (QAction *callable_action, people_actions->getCallCallableActions()) {
         menu->addAction(callable_action);
     }
+    this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
+                             people_actions->getBlindTransferActions());
+    this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
+                             people_actions->getAttendedTransferActions());
+}
 
-    QList<QAction *> blind_transfer_actions = people_actions->getBlindTransferActions();
-    if (!blind_transfer_actions.empty()) {
-        QPointer<Menu> blind_transfer_menu = new Menu(tr("BLIND TRANSFER"), menu);
-        foreach (QAction *blind_transfer_action, blind_transfer_actions) {
-            blind_transfer_menu->addAction(blind_transfer_action);
+void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
+                                                   const QString &title,
+                                                   QList<QAction *> transfer_actions)
+{
+    if (!transfer_actions.empty()) {
+        QPointer<Menu> transfer_menu = new Menu(title, menu);
+        foreach (QAction *transfer_action, transfer_actions) {
+            transfer_menu->addAction(transfer_action);
         }
-        menu->addMenu(blind_transfer_menu);
-    }
-
-    QList<QAction *> attended_transfer_actions = people_actions->getAttendedTransferActions();
-    if (!attended_transfer_actions.empty()) {
-        QPointer<Menu> attended_transfer_menu = new Menu(tr("ATTENDED TRANSFER"), menu);
-        foreach (QAction *attended_transfer_action, attended_transfer_actions) {
-            attended_transfer_menu->addAction(attended_transfer_action);
-        }
-        menu->addMenu(attended_transfer_menu);
+        menu->addMenu(transfer_menu);
     }
 }
 
