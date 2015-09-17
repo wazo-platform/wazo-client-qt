@@ -53,34 +53,35 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
         case CALLABLECALL:
         {
             const QString &label = QString("%1 - %2").arg(title).arg(value);
-            QAction *click = newCallAction(label, value);
-            m_call_callable_actions.append(click);
+            QAction *action = newCallAction(label, value);
+            m_call_callable_actions.append(action);
             break;
         }
         case BLINDTRANSFER:
         {
             const QString &label = QString("%1 - %2").arg(title).arg(value);
-            QAction *click = newBlindTransferAction(label, value);
-            m_blind_transfer_actions.append(click);
+            QAction *action = newBlindTransferAction(label, value);
+            m_blind_transfer_actions.append(action);
             break;
         }
-     }}
+        }
+    }
 }
 
 QAction *PeopleActions::newBlindTransferAction(const QString &label, const QString &number)
 {
-    QAction *click = new QAction(label, this);
-    click->setData(number);
-    connect(click, SIGNAL(triggered()), this, SLOT(blindTransfer()));
-    return click;
+    QAction *action = new QAction(label, this);
+    action->setData(number);
+    connect(action, SIGNAL(triggered()), this, SLOT(blindTransfer()));
+    return action;
 }
 
 QAction *PeopleActions::newCallAction(const QString &label, const QString &number)
 {
-    QAction *click = new QAction(label, this);
-    click->setData(number);
-    connect(click, SIGNAL(triggered()), this, SLOT(call()));
-    return click;
+    QAction *action = new QAction(label, this);
+    action->setData(number);
+    connect(action, SIGNAL(triggered()), this, SLOT(call()));
+    return action;
 }
 
 void PeopleActions::blindTransfer()

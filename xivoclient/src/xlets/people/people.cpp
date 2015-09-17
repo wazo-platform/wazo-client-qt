@@ -197,7 +197,7 @@ void People::parseCommand(const QVariantMap &command)
     } else if (event == "people_import_personal_contacts_csv_result") {
         this->parsePeopleImportPersonalContactsCSVResult(command);
     } else if (event == "relations") {
-      this->parseRelations(command);
+        this->parseRelations(command);
     }
 }
 
