@@ -58,6 +58,7 @@ enum PeopleAction {
     CALL,
     CALLABLECALL,
     BLINDTRANSFER,
+    ATTENDED_TRANSFER,
 };
 
 #endif
