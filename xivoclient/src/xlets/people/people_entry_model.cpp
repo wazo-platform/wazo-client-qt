@@ -37,6 +37,8 @@
 #include "people_actions.h"
 #include "people_entry_model.h"
 
+#define IN_USE 1
+
 PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     : AbstractTableModel(parent)
 {
@@ -235,27 +237,42 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
     ColumnType column_type = this->headerType(column);
 
     switch (column_type) {
-        case NUMBER: {
-            QVariantList number_items;
-            QVariantMap item;
-            item["label"] = this->headerText(column);
-            item["value"] = entry.data(column);
-            item["action"] = CALL;
-            number_items.append(item);
-            const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
-            foreach(int column, callable_indexes) {
-                QVariantMap item;
-                item["label"] = this->headerText(column);
-                item["value"] = entry.data(column);
-                item["action"] = CALLABLECALL;
-                number_items.append(item);
-            }
-            return number_items;
-        }
-        default:
-            break;
+    case NUMBER:
+        return this->getAvailableActions(entry, column);
+    default:
+        return QVariant();
     }
-    return QVariant();
+}
+
+QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int column) const
+{
+    QVariantList number_items;
+    number_items.append(newAction(this->headerText(column), entry.data(column), CALL));
+    if (m_endpoint_status == IN_USE) {
+        number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+    }
+    const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
+    foreach(int column, callable_indexes) {
+        number_items.append(newAction(this->headerText(column), entry.data(column), CALLABLECALL));
+        if (m_endpoint_status == IN_USE) {
+            number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+        }
+    }
+    return number_items;
+}
+
+QVariant PeopleEntryModel::newAction(const QString &label, const QVariant &value, PeopleAction action) const
+{
+    QVariantMap item;
+    item["label"] = label;
+    item["value"] = value;
+    item["action"] = action;
+    return item;
+}
+
+QVariantList PeopleEntryModel::newIdAsList(const QString &xivo_uuid, int id) const
+{
+    return QVariantList() << xivo_uuid << id;
 }
 
 QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) const
@@ -336,6 +353,10 @@ void PeopleEntryModel::setAgentStatusFromAgentId(const RelationID &id, const QSt
 
 void PeopleEntryModel::setEndpointStatusFromEndpointId(const RelationID &id, int status)
 {
+    if (id == m_endpoint) {
+        m_endpoint_status = status;
+    }
+
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueEndpointId() == id) {
@@ -451,22 +472,13 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
                          );
         const QString &xivo_id = entry.xivoUuid();
         if (entry.agentId() != 0) {
-            QVariantList agent;
-            agent.append(xivo_id);
-            agent.append(entry.agentId());
-            agent_ids.push_back(agent);
+            agent_ids.push_back(newIdAsList(xivo_id, entry.agentId()));
         }
         if (entry.endpointId() != 0) {
-            QVariantList endpoint;
-            endpoint.append(xivo_id);
-            endpoint.append(entry.endpointId());
-            endpoint_ids.push_back(endpoint);
+            endpoint_ids.push_back(newIdAsList(xivo_id, entry.endpointId()));
         }
         if (entry.userId() != 0) {
-            QVariantList user;
-            user.append(xivo_id);
-            user.append(entry.userId());
-            user_ids.push_back(user);
+            user_ids.push_back(newIdAsList(xivo_id, entry.userId()));
         }
 
         m_people_entries.append(entry);
@@ -482,4 +494,12 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
     if (!user_ids.empty()) {
         b_engine->sendJsonCommand(MessageFactory::registerUserStatus(user_ids));
     }
+}
+
+void PeopleEntryModel::setEndpoint(const QString &xivo_id, int endpoint_id)
+{
+    m_endpoint = RelationID(xivo_id, endpoint_id);
+    QVariantList endpoints_to_register;
+    endpoints_to_register.push_back(newIdAsList(xivo_id, endpoint_id));
+    b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoints_to_register));
 }

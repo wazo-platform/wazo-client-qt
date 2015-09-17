@@ -158,6 +158,11 @@ QVariantMap MessageFactory::registerUserStatus(const QVariantList &ids)
     return message;
 }
 
+QVariantMap MessageFactory::getRelations()
+{
+    return MessageFactory::baseMessage("get_relations");
+}
+
 QVariantMap MessageFactory::getSwitchboardDirectoryHeaders()
 {
     QVariantMap message = MessageFactory::baseMessage("get_switchboard_directory_headers");

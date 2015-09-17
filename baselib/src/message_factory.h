@@ -59,6 +59,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap registerAgentStatus(const QVariantList &ids);
         static QVariantMap registerEndpointStatus(const QVariantList &ids);
         static QVariantMap registerUserStatus(const QVariantList &ids);
+        static QVariantMap getRelations();
         static QVariantMap getSwitchboardDirectoryHeaders();
         static QVariantMap getPeopleHeaders();
         static QVariantMap pauseAgentInQueue(const QString &agent_id, const QString &queue_id);

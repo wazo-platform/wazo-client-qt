@@ -68,6 +68,7 @@ class PeopleEntryModel : public AbstractTableModel
         void parsePeopleHeadersResult(const QVariantMap &command);
         void parsePeopleSearchResult(const QVariantMap &result);
         void removeRowFromSourceEntryId(const QString &source, const QString &source_entry_id);
+        void setEndpoint(const QString &xivo_uuid, int endpoint_id);
 
     protected:
         virtual QList<int> columnDisplayBold() const;
@@ -86,6 +87,9 @@ class PeopleEntryModel : public AbstractTableModel
         void setEndpointStatusFromEndpointId(const RelationID &id, int status);
         void setUserStatusFromUserId(const RelationID &id, const QString &status);
         void setFavoriteStatusFromSourceId(const RelationSourceID &id, bool status);
+        QVariant getAvailableActions(const PeopleEntry &entry, int column) const;
+        QVariant newAction(const QString &label, const QVariant &value, PeopleAction action) const;
+	QVariantList newIdAsList(const QString &xivo_uuid, int id) const;
 
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
@@ -94,6 +98,8 @@ class PeopleEntryModel : public AbstractTableModel
         QList< QPair<QString, enum ColumnType> >  m_fields;
         QVector<PeopleEntry> m_people_entries;
         QMap<QString, ColumnType> m_type_map;
+        RelationID m_endpoint;
+        int m_endpoint_status;
 };
 
 #endif

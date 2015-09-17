@@ -230,6 +230,15 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
     foreach (QAction *callable_action, people_actions->getCallCallableActions()) {
         menu->addAction(callable_action);
     }
+    QList<QAction *> blind_transfer_actions = people_actions->getBlindTransferActions();
+    if (blind_transfer_actions.empty()) {
+        return;
+    }
+    QPointer<Menu> blind_transfer_menu = new Menu(tr("Blind transfer"), menu);
+    foreach (QAction *blind_transfer_action, blind_transfer_actions) {
+        blind_transfer_menu->addAction(blind_transfer_action);
+    }
+    menu->addMenu(blind_transfer_menu);
 }
 
 
