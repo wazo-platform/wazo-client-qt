@@ -249,14 +249,14 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
     QVariantList number_items;
     number_items.append(newAction(this->headerText(column), entry.data(column), CALL));
     if (m_endpoint_status == IN_USE) {
-        number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+        number_items.append(newAction(this->headerText(column), entry.data(column), BLIND_TRANSFER));
         number_items.append(newAction(this->headerText(column), entry.data(column), ATTENDED_TRANSFER));
     }
     const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
     foreach(int column, callable_indexes) {
-        number_items.append(newAction(this->headerText(column), entry.data(column), CALLABLECALL));
+        number_items.append(newAction(this->headerText(column), entry.data(column), CALLABLE_CALL));
         if (m_endpoint_status == IN_USE) {
-            number_items.append(newAction(this->headerText(column), entry.data(column), BLINDTRANSFER));
+            number_items.append(newAction(this->headerText(column), entry.data(column), BLIND_TRANSFER));
             number_items.append(newAction(this->headerText(column), entry.data(column), ATTENDED_TRANSFER));
         }
     }

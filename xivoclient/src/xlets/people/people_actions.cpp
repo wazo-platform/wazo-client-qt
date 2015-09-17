@@ -50,14 +50,14 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
             m_call_action = newCallAction(tr("Call"), value);
             break;
         }
-        case CALLABLECALL:
+        case CALLABLE_CALL:
         {
             const QString &label = QString("%1 - %2").arg(title).arg(value);
             QAction *action = newCallAction(label, value);
             m_call_callable_actions.append(action);
             break;
         }
-        case BLINDTRANSFER:
+        case BLIND_TRANSFER:
         {
             const QString &label = QString("%1 - %2").arg(title).arg(value);
             QAction *action = newBlindTransferAction(label, value);
