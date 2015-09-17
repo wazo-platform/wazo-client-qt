@@ -155,7 +155,10 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
 
 bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const PeopleActions &people_actions) const
 {
-    return !people_actions.getCallCallableActions().empty();
+    bool has_callable_actions = !people_actions.getCallCallableActions().empty();
+    bool has_blind_transfer_actions = !people_actions.getBlindTransferActions().empty();
+
+    return has_callable_actions || has_blind_transfer_actions;
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
