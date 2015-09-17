@@ -26,8 +26,19 @@
 
 #include "menu.h"
 
+Menu::Menu(const QString &title, QWidget *parent)
+  : QMenu(title, parent)
+{
+    this->setStyle();
+}
+
 Menu::Menu(QWidget *parent)
     : QMenu(parent)
+{
+    this->setStyle();
+}
+
+void Menu::setStyle()
 {
     // These disable the corners around QMenu, so that rounded corners are visible
     this->setAttribute(Qt::WA_TranslucentBackground);
