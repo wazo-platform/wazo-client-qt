@@ -130,26 +130,35 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
+        PeopleActions people_actions(index.data(NUMBER_ROLE).toList());
+        if (this->shouldShowActionSelectorRect(people_actions)) {
+            QRect selector_rect = this->actionSelectorRect(option.rect);
 
-        QRect selector_rect = this->actionSelectorRect(option.rect);
+            QRect separator_rect(selector_rect);
+            separator_rect.setWidth(1);
 
-        QRect separator_rect(selector_rect);
-        separator_rect.setWidth(1);
+            painter->fillRect(separator_rect, "grey");
 
-        painter->fillRect(separator_rect, "grey");
-
-        QRect arrow_image_rect;
-        QSize arrow_image_size = QSize(9, 6);
-        arrow_image_rect.setSize(arrow_image_size);
-        arrow_image_rect.moveCenter(selector_rect.center());
-        painter->drawPixmap(arrow_image_rect, QIcon(":/images/down-arrow-white.svg").pixmap(arrow_image_size));
+            QRect arrow_image_rect;
+            QSize arrow_image_size = QSize(9, 6);
+            arrow_image_rect.setSize(arrow_image_size);
+            arrow_image_rect.moveCenter(selector_rect.center());
+            painter->drawPixmap(arrow_image_rect, QIcon(":/images/down-arrow-white.svg").pixmap(arrow_image_size));
+        }
         painter->restore();
-
         PeopleEntryDotDelegate::drawBorder(painter, option);
         return;
     }
 
     PeopleEntryDotDelegate::paint(painter, option, index);
+}
+
+bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const PeopleActions &people_actions) const
+{
+    bool has_callable_actions = !people_actions.getCallCallableActions().empty();
+    bool has_blind_transfer_actions = !people_actions.getBlindTransferActions().empty();
+
+    return has_callable_actions || has_blind_transfer_actions;
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
