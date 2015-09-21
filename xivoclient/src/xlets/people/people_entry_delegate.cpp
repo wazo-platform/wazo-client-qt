@@ -156,9 +156,10 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
 bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const PeopleActions &people_actions) const
 {
     bool has_callable_actions = !people_actions.getCallCallableActions().empty();
+    bool has_attended_transfer_action = !people_actions.getAttendedTransferActions().empty();
     bool has_blind_transfer_actions = !people_actions.getBlindTransferActions().empty();
 
-    return has_callable_actions || has_blind_transfer_actions;
+    return has_callable_actions || has_attended_transfer_action || has_blind_transfer_actions;
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
@@ -236,18 +237,24 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
 void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                                                 PeopleActions *people_actions)
 {
-    foreach (QAction *callable_action, people_actions->getCallCallableActions()) {
-        menu->addAction(callable_action);
-    }
-    QList<QAction *> blind_transfer_actions = people_actions->getBlindTransferActions();
-    if (blind_transfer_actions.empty()) {
+    menu->addActions(people_actions->getCallCallableActions());
+    this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
+                             people_actions->getBlindTransferActions());
+    this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
+                             people_actions->getAttendedTransferActions());
+}
+
+void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
+                                                   const QString &title,
+                                                   QList<QAction *> transfer_actions)
+{
+    if (transfer_actions.empty()) {
         return;
     }
-    QPointer<Menu> blind_transfer_menu = new Menu(tr("BLIND TRANSFER"), menu);
-    foreach (QAction *blind_transfer_action, blind_transfer_actions) {
-        blind_transfer_menu->addAction(blind_transfer_action);
-    }
-    menu->addMenu(blind_transfer_menu);
+
+    QPointer<Menu> transfer_menu = new Menu(title, menu);
+    transfer_menu->addActions(transfer_actions);
+    menu->addMenu(transfer_menu);
 }
 
 

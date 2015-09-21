@@ -50,22 +50,37 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
             m_call_action = newCallAction(tr("Call"), value);
             break;
         }
-        case CALLABLECALL:
+        case CALLABLE_CALL:
         {
             const QString &label = QString("%1 - %2").arg(title).arg(value);
             QAction *action = newCallAction(label, value);
             m_call_callable_actions.append(action);
             break;
         }
-        case BLINDTRANSFER:
+        case BLIND_TRANSFER:
         {
             const QString &label = QString("%1 - %2").arg(title).arg(value);
             QAction *action = newBlindTransferAction(label, value);
             m_blind_transfer_actions.append(action);
             break;
         }
+        case ATTENDED_TRANSFER:
+        {
+            const QString &label = QString("%1 - %2").arg(title).arg(value);
+            QAction *action = newAttendedTransferAction(label, value);
+            m_attended_transfer_actions.append(action);
+            break;
+        }
         }
     }
+}
+
+QAction *PeopleActions::newAttendedTransferAction(const QString &label, const QString &number)
+{
+    QAction *action = new QAction(label, this);
+    action->setData(number);
+    connect(action, SIGNAL(triggered()), this, SLOT(attendedTransfer()));
+    return action;
 }
 
 QAction *PeopleActions::newBlindTransferAction(const QString &label, const QString &number)
@@ -84,6 +99,12 @@ QAction *PeopleActions::newCallAction(const QString &label, const QString &numbe
     return action;
 }
 
+void PeopleActions::attendedTransfer()
+{
+    const QString &number = static_cast<QAction*>(sender())->data().toString();
+    b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
+}
+
 void PeopleActions::blindTransfer()
 {
     const QString &number = static_cast<QAction*>(sender())->data().toString();
@@ -99,6 +120,11 @@ void PeopleActions::call()
 QAction *PeopleActions::getCallAction() const
 {
     return this->m_call_action;
+}
+
+const QList<QAction *> &PeopleActions::getAttendedTransferActions() const
+{
+    return this->m_attended_transfer_actions;
 }
 
 const QList<QAction *> &PeopleActions::getBlindTransferActions() const
