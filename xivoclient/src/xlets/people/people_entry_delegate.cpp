@@ -248,11 +248,13 @@ void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
                                                    const QString &title,
                                                    QList<QAction *> transfer_actions)
 {
-    if (!transfer_actions.empty()) {
-        QPointer<Menu> transfer_menu = new Menu(title, menu);
-        transfer_menu->addActions(transfer_actions);
-        menu->addMenu(transfer_menu);
+    if (transfer_actions.empty()) {
+        return;
     }
+
+    QPointer<Menu> transfer_menu = new Menu(title, menu);
+    transfer_menu->addActions(transfer_actions);
+    menu->addMenu(transfer_menu);
 }
 
 
