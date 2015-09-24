@@ -574,6 +574,14 @@
     </message>
 </context>
 <context>
+    <name>SystemTrayIcon</name>
+    <message>
+        <location filename="../src/main_window/system_tray_icon.cpp" line="40"/>
+        <source>&amp;Availability</source>
+        <translation>&amp;Availability</translation>
+    </message>
+</context>
+<context>
     <name>loading_dialog</name>
     <message>
         <location filename="../src/main_window/loading_dialog.ui" line="17"/>

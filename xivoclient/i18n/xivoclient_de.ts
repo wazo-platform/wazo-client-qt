@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="155"/>
         <source>Show window when calling from external application</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenster beim Anruf aus einer externen Anwendung anzeigen</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="190"/>
@@ -197,12 +197,12 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="445"/>
         <source>Longest wait time thresholds</source>
-        <translation type="unfinished"></translation>
+        <translation>Längste Wartezeitschwellenwerte</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="472"/>
         <source>Waiting calls thresholds</source>
-        <translation type="unfinished"></translation>
+        <translation>Schwellenwerte wartender Anrufe</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="499"/>
@@ -237,7 +237,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="578"/>
         <source>Switchboard queue name</source>
-        <translation>Telefonzentralwarteschlangenname</translation>
+        <translation>Telefonzentralenwarteschlangenname</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="600"/>
@@ -571,6 +571,14 @@
         <location filename="../src/main_window/statusbar.cpp" line="84"/>
         <source>Disconnected</source>
         <translation>Getrennt</translation>
+    </message>
+</context>
+<context>
+    <name>SystemTrayIcon</name>
+    <message>
+        <location filename="../src/main_window/system_tray_icon.cpp" line="40"/>
+        <source>&amp;Availability</source>
+        <translation>Verfügb&amp;arkeit</translation>
     </message>
 </context>
 <context>

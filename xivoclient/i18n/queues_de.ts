@@ -213,7 +213,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="189"/>
         <source>The window is the period of time used to compute the statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Fenster ist die zum Berechnen von Statistiken verwendete Zeitdauer</translation>
     </message>
 </context>
 </TS>

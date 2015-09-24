@@ -67,82 +67,82 @@
         <translation>Meine Kontakte</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="227"/>
+        <location filename="../src/xlets/people/people.cpp" line="242"/>
         <source>Import Results</source>
-        <translation type="unfinished"></translation>
+        <translation>Importergebnisse</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="228"/>
+        <location filename="../src/xlets/people/people.cpp" line="243"/>
         <source>%1 contacts created
 %2 contacts failed</source>
         <translation>%1 Kontakte erstellt
 %2 Kontakte fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="235"/>
+        <location filename="../src/xlets/people/people.cpp" line="250"/>
         <source>Following lines are errors</source>
         <translation>Folgende Zeilen sind Fehler</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="238"/>
+        <location filename="../src/xlets/people/people.cpp" line="253"/>
         <source>
 line %1: </source>
         <translation>
 Zeile %2:  {1:?}</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="314"/>
+        <location filename="../src/xlets/people/people.cpp" line="329"/>
         <source>Removing this contact</source>
         <translation>Dieser Kontakt wird entfernt</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="315"/>
+        <location filename="../src/xlets/people/people.cpp" line="330"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Dieser Kontakt wird entfernt.
 Sind Sie sicher?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="330"/>
+        <location filename="../src/xlets/people/people.cpp" line="345"/>
         <source>Deleting all personal contacts</source>
         <translation>Alle persönlichen Kontakte werden gelöscht</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="331"/>
+        <location filename="../src/xlets/people/people.cpp" line="346"/>
         <source>Deleting all personal contacts.
 Are you sure ?</source>
         <translation>Alle persönlichen Kontakte werden gelöscht.
 Sind Sie sicher ?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="422"/>
+        <location filename="../src/xlets/people/people.cpp" line="437"/>
         <source>Save Personal Contacts</source>
         <translation>Persönliche Kontakte speichern</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="424"/>
+        <location filename="../src/xlets/people/people.cpp" line="439"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
         <translation>CSV-Dateien (*.csv);;Alle Dateien (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="450"/>
+        <location filename="../src/xlets/people/people.cpp" line="465"/>
         <source>Import Personal Contacts</source>
         <translation>Persönliche Kontakte importieren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="452"/>
+        <location filename="../src/xlets/people/people.cpp" line="467"/>
         <source>CSV Files (UTF-8)(*.csv);;All Files (*)</source>
         <translation>CSV-Dateien (UTF-8)(*.csv);;Alle Dateien (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="502"/>
+        <location filename="../src/xlets/people/people.cpp" line="517"/>
         <source>Failed</source>
         <translation>Fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="524"/>
+        <location filename="../src/xlets/people/people.cpp" line="539"/>
         <source>Waiting</source>
-        <translation type="unfinished"></translation>
+        <translation>Wartevorgang</translation>
     </message>
 </context>
 <context>
@@ -152,11 +152,6 @@ Sind Sie sicher ?</translation>
         <source>Call</source>
         <translation>Anruf</translation>
     </message>
-    <message>
-        <location filename="../src/xlets/people/people_actions.cpp" line="56"/>
-        <source>%1 - %2</source>
-        <translation>%1 - %2</translation>
-    </message>
 </context>
 <context>
     <name>PeopleEntryNumberDelegate</name>
@@ -164,6 +159,16 @@ Sind Sie sicher ?</translation>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="128"/>
         <source>CALL</source>
         <translation>ANRUF</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="241"/>
+        <source>BLIND TRANSFER</source>
+        <translation>BLINDE VERBINDUNGSÜBERGABE</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="243"/>
+        <source>ATTENDED TRANSFER</source>
+        <translation>VERBINDUNGSÜBERGABE NACH RÜCKFRAGE</translation>
     </message>
 </context>
 <context>

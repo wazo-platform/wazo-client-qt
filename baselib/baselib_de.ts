@@ -57,7 +57,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es scheint, dass eine Maschine auf der IP-Adresse %1 läuft und entweder kein CTI-Server läuft oder Ihr Port %2 falsch ist.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
@@ -161,7 +161,7 @@ Bitte aktualisieren Sie sie.</translation>
     <message>
         <location filename="src/baseengine.cpp" line="1301"/>
         <source>You were forced to disconnect by the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie wurden vom Server zur Trennung gezwungen.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1303"/>
@@ -187,7 +187,7 @@ Bitte aktualisieren Sie sie.</translation>
     <message>
         <location filename="src/baseengine.cpp" line="1527"/>
         <source>Attempting to reconnect to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Versuch der Wiederverbindung mit dem Server</translation>
     </message>
 </context>
 <context>

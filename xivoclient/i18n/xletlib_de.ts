@@ -72,17 +72,17 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="274"/>
         <source>Agent receiving an external call out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent empfängt einen externen Anruf aus der Warteschlange</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="276"/>
         <source>Agent emitting an internal call</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent führt einen internen Anruf</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="278"/>
         <source>Agent emitting an external call</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent führt einen externen Anruf</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
@@ -117,7 +117,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
         <source>Logged out</source>
-        <translation type="unfinished"></translation>
+        <translation>Abgemeldet</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="409"/>
@@ -187,7 +187,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
         <source>Blind &amp;Transfer</source>
-        <translation>Blindüber&amp;tragung</translation>
+        <translation>Blinde &amp;Verbindungsübergabe</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="443"/>
@@ -197,7 +197,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="519"/>
         <source>Blind transfer &lt;%0&gt;</source>
-        <translation>Blindverbindung &lt;%0&gt;</translation>
+        <translation>Blinde Verbindungsübergabe &lt;%0&gt;</translation>
     </message>
     <message>
         <location filename="../src/xletlib/basepeerwidget.cpp" line="536"/>
