@@ -1,4 +1,4 @@
-CONFIG += qtestlib
+QT+=testlib
 TEMPLATE = app
 #QT -= gui
 
