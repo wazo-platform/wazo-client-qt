@@ -38,7 +38,6 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
       m_enablerna(false),
       m_enableunc(false),
       m_enablebusy(false),
-      m_enableautomon(false),
       m_enablednd(false),
       m_enablevoicemail(false),
       m_enablexfer(false),
@@ -71,7 +70,6 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
 
-    haschanged |= setIfChangeBool(prop, "enableautomon", & m_enableautomon);
     haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
     haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
     haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);

@@ -79,7 +79,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         QString m_destunc;
         QString m_destbusy;
 
-        bool m_enableautomon;
         bool m_enablednd;
         bool m_enablevoicemail;
         bool m_enablexfer;
