@@ -27,9 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QHeaderView>
-#include <QItemSelectionModel>
-
 #include "people_entry_delegate.h"
 #include "people_entry_view.h"
 #include "people_enum.h"
@@ -39,22 +36,6 @@ PeopleEntryView::PeopleEntryView(QWidget *parent)
     : AbstractTableView(parent)
 {
     this->viewport()->setAttribute(Qt::WA_Hover);
-}
-
-void PeopleEntryView::selectFirstRow()
-{
-    this->selectRow(0);
-    this->setFocus();
-}
-
-void PeopleEntryView::keyPressEvent(QKeyEvent * event)
-{
-    if (event && (event->key() == Qt::Key_F5
-                  || event->key() == Qt::Key_F4)) {
-        emit activated(this->currentIndex());
-    } else {
-        AbstractTableView::keyPressEvent(event);
-    }
 }
 
 void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int last)
