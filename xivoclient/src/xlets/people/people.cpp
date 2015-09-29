@@ -102,9 +102,6 @@ People::People(QWidget *parent)
     connect(this->ui.purge_contacts_button, SIGNAL(clicked()),
             this, SLOT(purgePersonalContacts()));
 
-    connect(this->ui.entry_filter, SIGNAL(returnPressed()),
-            this, SLOT(focusEntryTable()));
-
     connect(&m_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
     m_lookup_timer.setSingleShot(true);
