@@ -31,15 +31,12 @@
 #define __PEOPLE_H__
 
 #include <QByteArray>
-#include <QMovie>
 #include <QObject>
 #include <QString>
 #include <QTimer>
 #include <QVariantMap>
 #include <QWidget>
 
-#include <dao/phonedaoimpl.h>
-#include <dao/userdaoimpl.h>
 #include <ipbxlistener.h>
 #include <xletlib/functests.h>
 #include <xletlib/xlet.h>
@@ -49,6 +46,7 @@
 
 class PeopleEntryModel;
 class PeopleEntrySortFilterProxyModel;
+class QMovie;
 
 class People: public XLet, public IPBXListener
 {
@@ -65,8 +63,6 @@ class People: public XLet, public IPBXListener
         ~People();
 
     public slots:
-        void numberSelectionRequested();
-        void focusEntryTable();
         void schedulePeopleLookup(const QString &lookup_pattern);
         void defaultColumnSort(const QModelIndex &, int, int);
         void parseCommand(const QVariantMap &command);

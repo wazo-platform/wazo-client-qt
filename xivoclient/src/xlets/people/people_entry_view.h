@@ -30,13 +30,8 @@
 #ifndef __PEOPLE_ENTRY_VIEW_H__
 #define __PEOPLE_ENTRY_VIEW_H__
 
-#include <QKeyEvent>
-#include <QModelIndex>
-#include <QVariant>
-
 #include <xletlib/abstract_table_view.h>
 
-class QKeyEvent;
 
 class PeopleEntryView : public AbstractTableView
 {
@@ -44,8 +39,6 @@ class PeopleEntryView : public AbstractTableView
 
     public:
         PeopleEntryView(QWidget *parent = NULL);
-        void selectFirstRow();
-        void keyPressEvent(QKeyEvent * event);
 
     signals:
         void favoriteToggled(const QVariantMap &unique_source_entry_id);

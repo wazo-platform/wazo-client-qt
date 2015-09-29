@@ -31,11 +31,11 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QMovie>
 #include <QPointer>
 #include <QTextStream>
 #include <QTimer>
 
-#include <xletlib/signal_relayer.h>
 #include <baseengine.h>
 #include <message_factory.h>
 
@@ -102,8 +102,6 @@ People::People(QWidget *parent)
     connect(this->ui.purge_contacts_button, SIGNAL(clicked()),
             this, SLOT(purgePersonalContacts()));
 
-    connect(signal_relayer, SIGNAL(numberSelectionRequested()),
-            this, SLOT(numberSelectionRequested()));
     connect(this->ui.entry_filter, SIGNAL(returnPressed()),
             this, SLOT(focusEntryTable()));
 
@@ -273,22 +271,6 @@ void People::updatePersonalContacts()
     if (m_mode == PERSONAL_CONTACT_MODE) {
         this->waitingStatusAboutToBeStarted();
         b_engine->sendJsonCommand(MessageFactory::personalContacts());
-    }
-}
-
-void People::numberSelectionRequested()
-{
-    this->ui.entry_filter->setFocus();
-    int selection_length = this->ui.entry_filter->text().length();
-    this->ui.entry_filter->setSelection(0, selection_length);
-}
-
-void People::focusEntryTable()
-{
-    if (this->m_proxy_model->rowCount() > 0) {
-        this->ui.entry_table->selectFirstRow();
-    } else {
-        signal_relayer->relayNoNumberSelected();
     }
 }
 
