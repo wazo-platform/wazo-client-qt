@@ -42,6 +42,7 @@
 #include <login_widget/login_widget.h>
 #include <config_widget/config_widget.h>
 #include <main_window/main_widget.h>
+#include <main_window/menu_availability.h>
 #include <main_window/central_widget.h>
 #include <main_window/statusbar.h>
 #include <xletlib/extendedtablewidget.h>
@@ -166,7 +167,6 @@ class RemoteControl : public QObject
         MainWidget *m_main_widget;
         Statusbar *m_statusbar;
         XletDispatcher *m_xlet_dispatcher;
-        SystemTrayIcon *m_system_tray_icon;
 };
 
 template <class T>

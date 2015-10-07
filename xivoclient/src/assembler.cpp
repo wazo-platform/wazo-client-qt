@@ -32,7 +32,6 @@
 #include "main_window/central_widget.h"
 #include "main_window/main_widget.h"
 #include "main_window/statusbar.h"
-#include "main_window/system_tray_icon.h"
 #include "login_widget/login_widget.h"
 #include <stdlib.h>
 
@@ -45,7 +44,6 @@ Assembler::Assembler()
     this->m_login_widget = new LoginWidget(this->m_main_window, this->m_central_widget);
     this->m_main_widget = new MainWidget(this->m_central_widget);
     this->m_statusbar = new Statusbar(this->m_main_window);
-    this->m_system_tray_icon = new SystemTrayIcon(this->m_main_window);
     this->m_xlet_dispatcher = new XletDispatcher(this->m_main_window, this->m_main_widget, qApp);
     this->m_config_widget = new ConfigWidget(this->m_main_window);
 
@@ -54,7 +52,6 @@ Assembler::Assembler()
         || this->m_login_widget == NULL
         || this->m_main_widget == NULL
         || this->m_statusbar == NULL
-        || this->m_system_tray_icon == NULL
         || this->m_xlet_dispatcher == NULL
         || this->m_config_widget == NULL) {
         qDebug() << Q_FUNC_INFO << "Failed to instanciate the GUI";
@@ -88,11 +85,6 @@ MainWidget *Assembler::mainWidget()
 Statusbar *Assembler::statusbar()
 {
     return m_statusbar;
-}
-
-SystemTrayIcon *Assembler::systemTrayIcon()
-{
-    return m_system_tray_icon;
 }
 
 LoginWidget *Assembler::loginWidget()

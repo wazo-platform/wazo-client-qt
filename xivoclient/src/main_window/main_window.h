@@ -32,7 +32,9 @@
 
 #include <QList>
 #include <QMainWindow>
+#include <QMenu>
 #include <QSize>
+#include <QSystemTrayIcon>
 #include <QtWidgets>
 
 #include <ui_main_window.h>
@@ -43,6 +45,7 @@
 class ConfigWidget;
 class QCloseEvent;
 class QResizeEvent;
+class MenuAvailability;
 
 class MainWindow : public QMainWindow
 {
@@ -79,6 +82,7 @@ class MainWindow : public QMainWindow
         void minimizeWindow();
         void about();
         void showCredits();
+        void systrayActivated(QSystemTrayIcon::ActivationReason reason);
 
     protected:
         virtual void closeEvent(QCloseEvent *);
@@ -86,11 +90,10 @@ class MainWindow : public QMainWindow
 
     signals:
         void initialized();
-        void titleUpdated(const QString & title);
-        void iconUpdated(const QIcon & icon);
 
     private:
         void setTitle(const QString &);
+        void createTrayIcon();
 
         ConfigWidget *m_config_widget;
 
@@ -100,6 +103,10 @@ class MainWindow : public QMainWindow
         bool m_folded;
         int m_minimum_height;
         QSize m_unfolded_size;
+        QSystemTrayIcon *m_tray_icon;
+        QMenu *m_tray_menu;
+        MenuAvailability *m_menu_availability;
+
 };
 
 #endif

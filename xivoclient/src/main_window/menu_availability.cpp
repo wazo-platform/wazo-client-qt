@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -35,9 +35,8 @@
 #include <storage/userinfo.h>
 
 
-MenuAvailability::MenuAvailability(QMenu *parent)
-    : QMenu(parent),
-      m_menu_availability(parent),
+MenuAvailability::MenuAvailability(const QString &title, QWidget *parent)
+    : QMenu(title, parent),
       m_availability_action_group(new QActionGroup(parent))
 {
     this->m_availability_action_group->setExclusive(true);
@@ -86,7 +85,7 @@ void MenuAvailability::updatePresence()
         this->addNewPresence(presencestate, longname);
     }
 
-    this->m_menu_availability->addActions(this->m_availability_action_group->actions());
+    this->addActions(this->m_availability_action_group->actions());
     this->syncPresence();
 }
 
@@ -128,7 +127,7 @@ void MenuAvailability::clearPresence()
         delete action;
     }
     this->m_availabilities.clear();
-    this->m_menu_availability->clear();
+    this->clear();
 }
 
 /*!
@@ -189,9 +188,9 @@ void MenuAvailability::setMenuAvailabilityEnabled(bool enabled)
 {
     if (enabled) {
         bool presence_enabled = b_engine->getConfig("checked_function.presence").toBool();
-        this->m_menu_availability->setEnabled(presence_enabled);
+        this->setEnabled(presence_enabled);
     } else {
-        this->m_menu_availability->setEnabled(false);
+        this->setEnabled(false);
     }
 }
 

@@ -33,6 +33,7 @@
 #include <assembler.h>
 
 #include "main_window.h"
+#include "menu_availability.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -54,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
         this->setStyleSheet(qssFile.readAll());
     }
 
+    this->createTrayIcon();
     m_unfolded_size = this->size();
 
     connect(b_engine, SIGNAL(logged()),
@@ -82,6 +84,12 @@ MainWindow::MainWindow(QWidget *parent)
             b_engine, SLOT(start()));
     connect(this->ui->action_disconnect, SIGNAL(triggered()),
             b_engine, SLOT(stop()));
+
+    connect(m_tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
+    connect(m_tray_icon, SIGNAL(messageClicked()),
+            this, SLOT(showWindow()));
+
 }
 
 MainWindow::~MainWindow()
@@ -104,6 +112,7 @@ void MainWindow::initialize()
         this->show();
     }
     this->setFocusPolicy(Qt::StrongFocus);
+    m_tray_icon->show();
     emit this->initialized();
 }
 
@@ -120,14 +129,14 @@ void MainWindow::setAppIcon(const QString & def)
         icon = QIcon(":/images/xivoicon-black.png");
     }
     this->setWindowIcon(icon);
-    emit this->iconUpdated(icon);
+    m_tray_icon->setIcon(icon);
 }
 
 void MainWindow::setTitle(const QString & app_title)
 {
     QString title = QString("XiVO %1").arg(app_title);
     this->setWindowTitle(title);
-    emit this->titleUpdated(title);
+    m_tray_icon->setToolTip(title);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -301,6 +310,42 @@ void MainWindow::restoreFolded()
     m_folded = false;
 }
 
+void MainWindow::createTrayIcon()
+{
+
+    m_tray_menu = new QMenu(QString("SystrayMenu"), this);
+    m_menu_availability = new MenuAvailability(tr("&Availability"), m_tray_menu);
+
+    m_tray_menu->addAction(this->ui->action_configure);
+    m_tray_menu->addSeparator();
+    m_tray_menu->addMenu(m_menu_availability);
+    m_tray_menu->addSeparator();
+    m_tray_menu->addAction(this->ui->action_connect);
+    m_tray_menu->addAction(this->ui->action_disconnect);
+    m_tray_menu->addSeparator();
+    m_tray_menu->addAction(this->ui->action_show_window);
+    m_tray_menu->addSeparator();
+    m_tray_menu->addAction(this->ui->action_to_systray);
+    m_tray_menu->addSeparator();
+    m_tray_menu->addAction(this->ui->action_quit);
+
+    m_tray_icon = new QSystemTrayIcon(this);
+    m_tray_icon->setContextMenu(m_tray_menu);
+}
+
+void MainWindow::systrayActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger) {
+        #ifndef Q_OS_MAC
+        if(this->isVisible()) {
+            this->hideWindow();
+        } else {
+            this->showWindow();
+        }
+        #endif
+    }
+}
+
 void MainWindow::customerInfoPopup(const QString & msgtitle,
                                    const QHash<QString, QString> & msgs,
                                    const QString & options)
@@ -317,10 +362,10 @@ void MainWindow::customerInfoPopup(const QString & msgtitle,
             if (! linetodisp.isEmpty())
                 todisp.append(linetodisp);
         }
-        assembler->systemTrayIcon()->showMessage(msgtitle,
-                                                 todisp.join("\n"),
-                                                 QSystemTrayIcon::Information,
-                                                 5000);
+        m_tray_icon->showMessage(msgtitle,
+                                 todisp.join("\n"),
+                                 QSystemTrayIcon::Information,
+                                 5000);
     }
 
     // to be customisable, if the user wants the window to popup
