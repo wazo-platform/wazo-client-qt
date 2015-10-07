@@ -318,7 +318,9 @@ void MainWindow::createTrayIcon()
 
     m_tray_menu->addAction(this->ui->action_configure);
     m_tray_menu->addSeparator();
+    #ifndef Q_OS_LINUX
     m_tray_menu->addMenu(m_menu_availability);
+    #endif
     m_tray_menu->addSeparator();
     m_tray_menu->addAction(this->ui->action_connect);
     m_tray_menu->addAction(this->ui->action_disconnect);
