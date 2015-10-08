@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -34,7 +34,6 @@
 #include "main_window/central_widget.h"
 #include "main_window/main_widget.h"
 #include "main_window/statusbar.h"
-#include "main_window/system_tray_icon.h"
 #include "main_window/xlet_dispatcher.h"
 #include "login_widget/login_widget.h"
 #include "config_widget/config_widget.h"
@@ -44,7 +43,6 @@ class CentralWidget;
 class MainWidget;
 class ConfigWidget;
 class Statusbar;
-class SystemTrayIcon;
 class LoginWidget;
 class XletDispatcher;
 
@@ -60,7 +58,6 @@ class Assembler
         LoginWidget *loginWidget();
         MainWidget *mainWidget();
         Statusbar *statusbar();
-        SystemTrayIcon *systemTrayIcon();
         XletDispatcher *xletDispatcher();
 
     private:
@@ -70,7 +67,6 @@ class Assembler
         LoginWidget *m_login_widget;
         MainWidget *m_main_widget;
         Statusbar *m_statusbar;
-        SystemTrayIcon *m_system_tray_icon;
         XletDispatcher *m_xlet_dispatcher;
 };
 

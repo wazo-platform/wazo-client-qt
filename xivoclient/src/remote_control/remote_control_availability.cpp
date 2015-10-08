@@ -1,6 +1,6 @@
 
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -38,7 +38,7 @@ QVariantMap RemoteControl::get_menu_availability_infos()
 {
     QVariantMap args;
 
-    args["enable"] = this->m_menu_availability->m_menu_availability->isEnabled();
+    args["enable"] = this->m_menu_availability->isEnabled();
 
     QVariantList content;
     foreach (QString status, this->m_menu_availability->m_availabilities.keys()) {

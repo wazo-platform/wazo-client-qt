@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -42,7 +42,7 @@ class MenuAvailability : public QMenu
     FUNCTESTED
 
     public:
-        MenuAvailability(QMenu *parent);
+        MenuAvailability(const QString &title, QWidget *parent);
         ~MenuAvailability();
 
     private slots:
@@ -63,7 +63,6 @@ class MenuAvailability : public QMenu
         void addNewPresence(const QString &state, const QString &name);
         QString getCurrentState() const;
 
-        QMenu *m_menu_availability;
         QHash<QString, QAction *>m_availabilities;
         QActionGroup *m_availability_action_group;
 };

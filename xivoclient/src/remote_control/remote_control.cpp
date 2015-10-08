@@ -61,11 +61,10 @@ RemoteControl::RemoteControl(ExecObjects exec_obj, QString &socket)
       m_central_widget(assembler->centralWidget()),
       m_main_widget(assembler->mainWidget()),
       m_statusbar(assembler->statusbar()),
-      m_xlet_dispatcher(assembler->xletDispatcher()),
-      m_system_tray_icon(assembler->systemTrayIcon())
+      m_xlet_dispatcher(assembler->xletDispatcher())
 {
     this->connect(this->m_server, SIGNAL(newConnection()), SLOT(newConnection()));
-    this->m_menu_availability = this->m_system_tray_icon->m_menu_availability;
+    this->m_menu_availability = this->m_main_window->m_menu_availability;
 
     QFile::remove(m_socket_name);
     this->m_server->listen(m_socket_name);
