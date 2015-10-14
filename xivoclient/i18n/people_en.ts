@@ -67,80 +67,80 @@
         <translation>my contacts</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="242"/>
+        <location filename="../src/xlets/people/people.cpp" line="237"/>
         <source>Import Results</source>
         <translation>Import Results</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="243"/>
+        <location filename="../src/xlets/people/people.cpp" line="238"/>
         <source>%1 contacts created
 %2 contacts failed</source>
         <translation>%1 contacts created
 %2 contacts failed</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="250"/>
+        <location filename="../src/xlets/people/people.cpp" line="245"/>
         <source>Following lines are errors</source>
         <translation>Following lines are errors</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="253"/>
+        <location filename="../src/xlets/people/people.cpp" line="248"/>
         <source>
 line %1: </source>
         <translation>
 line %2:  {1:?}</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="329"/>
+        <location filename="../src/xlets/people/people.cpp" line="308"/>
         <source>Removing this contact</source>
         <translation>Removing this contact</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="330"/>
+        <location filename="../src/xlets/people/people.cpp" line="309"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Removing this contact.
 Are you sure ?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="345"/>
+        <location filename="../src/xlets/people/people.cpp" line="324"/>
         <source>Deleting all personal contacts</source>
         <translation>Deleting all personal contacts</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="346"/>
+        <location filename="../src/xlets/people/people.cpp" line="325"/>
         <source>Deleting all personal contacts.
 Are you sure ?</source>
         <translation>Deleting all personal contacts.
 Are you sure ?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="437"/>
+        <location filename="../src/xlets/people/people.cpp" line="416"/>
         <source>Save Personal Contacts</source>
         <translation>Save Personal Contacts</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="439"/>
+        <location filename="../src/xlets/people/people.cpp" line="418"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
         <translation>CSV Files (*.csv);;All Files (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="465"/>
+        <location filename="../src/xlets/people/people.cpp" line="444"/>
         <source>Import Personal Contacts</source>
         <translation>Import Personal Contacts</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="467"/>
+        <location filename="../src/xlets/people/people.cpp" line="446"/>
         <source>CSV Files (UTF-8)(*.csv);;All Files (*)</source>
         <translation>CSV Files (UTF-8)(*.csv);;All Files (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="517"/>
+        <location filename="../src/xlets/people/people.cpp" line="496"/>
         <source>Failed</source>
         <translation>Failed</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="539"/>
+        <location filename="../src/xlets/people/people.cpp" line="518"/>
         <source>Waiting</source>
         <translation>Waiting</translation>
     </message>

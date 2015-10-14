@@ -39,7 +39,8 @@
         <location filename="../src/xletlib/agents_model.cpp" line="49"/>
         <source>Joined
 queues</source>
-        <translation type="unfinished"></translation>
+        <translation>Angegliederte
+Warteschlangen</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="50"/>
@@ -62,12 +63,12 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="270"/>
         <source>Agent processing a call or paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent bearbeitet einen Anruf oder pausiert</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="272"/>
         <source>Agent receiving an internal call out of queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Agent empfängt einen internen Anruf aus der Warteschlange</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="274"/>

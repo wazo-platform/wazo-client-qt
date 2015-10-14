@@ -67,80 +67,80 @@
         <translation>Meine Kontakte</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="242"/>
+        <location filename="../src/xlets/people/people.cpp" line="237"/>
         <source>Import Results</source>
         <translation>Importergebnisse</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="243"/>
+        <location filename="../src/xlets/people/people.cpp" line="238"/>
         <source>%1 contacts created
 %2 contacts failed</source>
         <translation>%1 Kontakte erstellt
 %2 Kontakte fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="250"/>
+        <location filename="../src/xlets/people/people.cpp" line="245"/>
         <source>Following lines are errors</source>
         <translation>Folgende Zeilen sind Fehler</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="253"/>
+        <location filename="../src/xlets/people/people.cpp" line="248"/>
         <source>
 line %1: </source>
         <translation>
 Zeile %2:  {1:?}</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="329"/>
+        <location filename="../src/xlets/people/people.cpp" line="308"/>
         <source>Removing this contact</source>
         <translation>Dieser Kontakt wird entfernt</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="330"/>
+        <location filename="../src/xlets/people/people.cpp" line="309"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation>Dieser Kontakt wird entfernt.
 Sind Sie sicher?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="345"/>
+        <location filename="../src/xlets/people/people.cpp" line="324"/>
         <source>Deleting all personal contacts</source>
         <translation>Alle persönlichen Kontakte werden gelöscht</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="346"/>
+        <location filename="../src/xlets/people/people.cpp" line="325"/>
         <source>Deleting all personal contacts.
 Are you sure ?</source>
         <translation>Alle persönlichen Kontakte werden gelöscht.
 Sind Sie sicher ?</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="437"/>
+        <location filename="../src/xlets/people/people.cpp" line="416"/>
         <source>Save Personal Contacts</source>
         <translation>Persönliche Kontakte speichern</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="439"/>
+        <location filename="../src/xlets/people/people.cpp" line="418"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
         <translation>CSV-Dateien (*.csv);;Alle Dateien (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="465"/>
+        <location filename="../src/xlets/people/people.cpp" line="444"/>
         <source>Import Personal Contacts</source>
         <translation>Persönliche Kontakte importieren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="467"/>
+        <location filename="../src/xlets/people/people.cpp" line="446"/>
         <source>CSV Files (UTF-8)(*.csv);;All Files (*)</source>
         <translation>CSV-Dateien (UTF-8)(*.csv);;Alle Dateien (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="517"/>
+        <location filename="../src/xlets/people/people.cpp" line="496"/>
         <source>Failed</source>
         <translation>Fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="539"/>
+        <location filename="../src/xlets/people/people.cpp" line="518"/>
         <source>Waiting</source>
         <translation>Wartevorgang</translation>
     </message>
