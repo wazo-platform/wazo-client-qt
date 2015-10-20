@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -35,9 +35,11 @@
 QueuesView::QueuesView(QWidget *parent)
     : AbstractTableView(parent)
 {
+    this->setSelectionMode(QAbstractItemView::SingleSelection);
+    this->setSelectionBehavior(QAbstractItemView::SelectRows);
+
     connect(this, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(changeWatchedQueue(const QModelIndex &)));
-
     connect(b_engine, SIGNAL(settingsChanged()),
             this, SLOT(updateColumnHidden()));
 }

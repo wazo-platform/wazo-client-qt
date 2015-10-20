@@ -338,3 +338,13 @@ void QueuesModel::refreshQueueDisplay(const QString &queue_xid)
     emit dataChanged(cellChanged1, cellChanged2);
 
 }
+
+Qt::ItemFlags QueuesModel::flags(const QModelIndex &index) const
+{
+    int column = index.column();
+    if (column == CURRENT_MAX_WAIT || column == WAITING_CALLS) {
+        return QAbstractItemModel::flags(index) & ~Qt::ItemIsSelectable;
+    }
+
+    return QAbstractItemModel::flags(index);
+}

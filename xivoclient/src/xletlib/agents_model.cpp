@@ -462,3 +462,13 @@ QVariant AgentsModel::dataUser(int row, int column) const
         return QVariant();
     }
 }
+
+Qt::ItemFlags AgentsModel::flags(const QModelIndex &index) const
+{
+    int column = index.column();
+    if (column == AVAILABILITY || column == LOGGED_STATUS || column == PAUSED_STATUS) {
+        return QAbstractItemModel::flags(index) & ~Qt::ItemIsSelectable;
+    }
+
+    return QAbstractItemModel::flags(index);
+}

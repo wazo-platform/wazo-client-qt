@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -62,6 +62,9 @@ class XLETLIB_EXPORT AgentsModel : public QAbstractTableModel
         void refreshColumn(int column_index);
         void updateAgentListenStatus(const QString &, const QString &, const QString &);
         void increaseAvailability();
+
+    protected:
+        virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
     public:
         enum Columns {

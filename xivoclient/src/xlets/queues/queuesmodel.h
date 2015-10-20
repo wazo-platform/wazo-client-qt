@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -71,6 +71,9 @@ class QueuesModel : public QAbstractTableModel
         void removeQueueConfig(const QString &);
         void increaseWaitTime();
         void updateQueueNames();
+
+    protected:
+        virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
     private:
         QVariant formatTime(const QVariant &) const;
