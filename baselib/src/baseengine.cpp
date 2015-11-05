@@ -763,12 +763,9 @@ void BaseEngine::parseCommand(const QByteArray &raw)
             popupError(datamap.value("error_string").toString());
         } else {
             m_sessionid = datamap.value("sessionid").toString();
-            QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_config["password"].toString());
-            QCryptographicHash hidepass(QCryptographicHash::Sha1);
-            QByteArray res = hidepass.hash(tohash.toLatin1(), QCryptographicHash::Sha1).toHex();
             QVariantMap command;
             command["class"] = "login_pass";
-            command["hashedpassword"] = QString(res);
+            command["password"] = m_config["password"].toString();
             sendJsonCommand(command);
         }
     } else if (thisclass == "login_pass") {
@@ -1223,6 +1220,8 @@ void BaseEngine::popupError(const QString & errorid,
     } else if (errorid.startsWith("unreachable_extension:")) {
         QString extension = errorid.split(":")[1];
         errormsg = tr("Unreachable number: %1").arg(extension);
+    } else if (errorid == "xivo_auth_error") {
+        errormsg = tr("The authentification server could not fulfil your request.");
     }
 
     // logs a message before sending any popup that would block
