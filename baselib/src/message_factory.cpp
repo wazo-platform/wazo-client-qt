@@ -372,7 +372,6 @@ QVariantMap MessageFactory::ipbxcommand(const QString &action)
 QVariantMap MessageFactory::faxSend(const QString &filename, const QString &number, const QByteArray &content)
 {
     QVariantMap message = MessageFactory::baseMessage("faxsend");
-    message["hide"] = "0";
     message["filename"] = filename;
     message["destination"] = number;
     message["size"] = content.size();
