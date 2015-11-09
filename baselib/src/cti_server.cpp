@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -90,14 +90,12 @@ void CTIServer::connectToServer(ConnectionConfig config)
     }
 
     this->connectSocket(config.main_address,
-                        config.main_port,
-                        config.main_encrypt);
+                        config.main_port);
     if (config.backup_address.isEmpty() == false &&
         m_socket->waitForConnected(3000) == false) {
         catchSocketError();
         this->connectSocket(config.backup_address,
-                            config.backup_port,
-                            config.backup_encrypt);
+                            config.backup_port);
     }
 }
 
@@ -125,20 +123,22 @@ void CTIServer::ignoreSocketError()
 }
 
 void CTIServer::connectSocket(const QString & address,
-                              unsigned port,
-                              bool encrypted)
+                              unsigned port)
 {
     m_last_address = address;
     m_last_port = port;
     m_socket->abort();
-    if (encrypted) {
-        m_socket->connectToHostEncrypted(address, port);
-    } else {
-        m_socket->connectToHost(address, port);
-    }
+    m_socket->connectToHost(address, port);
 }
 
 bool CTIServer::connected()
 {
     return m_socket->state() == QAbstractSocket::ConnectedState;
+}
+
+
+void CTIServer::startTls()
+{
+    qDebug() << Q_FUNC_INFO;
+    m_socket->startClientEncryption();
 }

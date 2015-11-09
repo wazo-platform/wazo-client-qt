@@ -121,7 +121,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
             this, SLOT(sslErrors(const QList<QSslError> & )));
     connect(m_ctiserversocket, SIGNAL(connected()),
-            this, SLOT(authenticate()));
+            this, SLOT(connected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
     connect(m_cti_server, SIGNAL(disconnected()),
@@ -395,6 +395,11 @@ void BaseEngine::emitLogged()
     }
 }
 
+void BaseEngine::connected()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
 void BaseEngine::authenticate()
 {
     stopTryAgainTimer();
@@ -663,6 +668,22 @@ void BaseEngine::parseCommand(const QByteArray &raw)
 
     if ((thisclass == "keepalive") || (thisclass == "availstate")) {
         // ack from the keepalive and availstate commands previously sent
+        return;
+    }
+    if (thisclass == "starttls") {
+        if (datamap.contains("starttls")) {
+            bool starttls = datamap["starttls"].toBool();
+            if (starttls) {
+                m_cti_server->startTls();
+            }
+            this->authenticate();
+        } else {
+            QVariantMap starttls_msg;
+            starttls_msg["class"] = "starttls";
+            starttls_msg["status"] = true;
+            qDebug() << Q_FUNC_INFO << "sending starttls true";
+            this->sendJsonCommand(starttls_msg);
+        }
         return;
     }
     if (thisclass == "sheet") {
