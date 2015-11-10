@@ -206,8 +206,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void inviteConfRoom(const QString &);
 
-        void sendFaxCommand(const QString &, const QString &, const QByteArray &);
-
         void meetmeAction(const QString &, const QString &);
 
         void monitorPeerRequest(const QString &);
@@ -235,8 +233,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void authenticated();
         void ctiSocketReadyRead();
         void onCTIServerDisconnected();
-
-        void filetransferSocketConnected();
 
         void sheetSocketConnected();
 
@@ -308,7 +304,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void queueEntryUpdate(const QString &, const QVariantList &);
         void clearingCache();
 
-        void faxUploaded();
     protected:
         void timerEvent(QTimerEvent *);  //!< receive timer events
 
@@ -381,7 +376,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // Internal management
         QSslSocket * m_ctiserversocket;     //!< Connection to the CTI server
-        QTcpSocket * m_filetransfersocket;  //!< TCP connection for File transfer.
         QTcpSocket * m_tcpsheetsocket;  //!< TCP connection for Sheet sockets
         QUdpSocket * m_udpsheetsocket;  //!< UDP connection for Sheet sockets
         int m_timerid_keepalive;        //!< timer id for keep alive
@@ -393,11 +387,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_numbertodial;         //!< Number dialed in
         QString m_osname;               //!< OS informations
 
-        QString m_fileid;
-        QString m_filename;
-        QString m_filedir;
         QByteArray m_filedata;
-        int m_faxsize;
 
         QString m_monitored_xuserid;  //!< UserId of the Monitored user
         QSettings * m_settings;  //!< Settings (stored in .ini file)

@@ -140,12 +140,6 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     connect(this, SIGNAL(initialized()),
             this, SIGNAL(doneConnecting()));
 
-    // TCP connection for file transfer
-    // (this could be moved to some other class)
-    m_filetransfersocket = new QTcpSocket(this);
-    connect(m_filetransfersocket, SIGNAL(connected()),
-            this, SLOT(filetransferSocketConnected()));
-
     if (m_config["autoconnect"].toBool())
         start();
     setupTranslation();
@@ -628,24 +622,6 @@ void BaseEngine::monitorPeerRequest(const QString & xuserid)
 }
 
 
-/*! \brief send filetransfer command
- */
-void BaseEngine::filetransferSocketConnected()
-{
-    QVariantMap command;
-    command["class"] = "filetransfer";
-    command["command"] = "put_announce";
-    command["format"] = "base64";
-    command["socketref"] = QString("%1:%2")
-        .arg(m_filetransfersocket->localAddress().toString())
-        .arg(m_filetransfersocket->localPort());
-    command["filename"] = m_filename;
-    command["fileid"] = m_fileid;
-    command["formatted_size"] = m_filedata.size();
-    command["file_size"] = m_faxsize;
-    sendJsonCommand(command);
-}
-
 double BaseEngine::timeDeltaServerClient() const
 {
     double delta = m_timeclt.toTime_t() - m_timesrv;
@@ -763,19 +739,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "faxsend") {
         if (datamap.contains("step"))
             qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
-        else {
-            m_fileid = datamap.value("fileid").toString();
-            m_filetransfersocket->connectToHost(m_config["cti_address"].toString(), port_to_use());
-        }
-
-    } else if (thisclass == "filetransfer") {
-        qint64 written = m_filetransfersocket->write(m_filedata + "\n");
-        qDebug() << Q_FUNC_INFO << written << datamap;
-        m_filetransfersocket->flush();
-        m_filetransfersocket->disconnectFromHost();
-        m_filedata.clear();
-        emit faxUploaded();
-
     } else if (thisclass == "presence") {
         QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
         if (m_anylist.value("users").contains(id)) {
@@ -1171,23 +1134,6 @@ void BaseEngine::registerMeetmeUpdate()
     sendJsonCommand(command);
 }
 
-
-/*! \brief Send fax to CTI Server */
-void BaseEngine::sendFaxCommand(const QString & filename,
-                                const QString & number,
-                                const QByteArray &truefiledata)
-{
-    m_filename = filename;
-    m_faxsize = truefiledata.size();
-    m_filedata = truefiledata.toBase64();
-
-    QVariantMap command;
-    command["class"] = "faxsend";
-    command["hide"] = "0";
-    command["filename"] = filename;
-    command["destination"] = number;
-    sendJsonCommand(command);
-}
 
 /*! \brief select message and then display a messagebox
  *

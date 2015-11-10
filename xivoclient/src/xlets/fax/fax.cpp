@@ -35,6 +35,7 @@
 #include <baseengine.h>
 
 #include "fax.h"
+#include "message_factory.h"
 #include "phonenumber.h"
 
 Fax::Fax(QWidget *parent)
@@ -56,8 +57,6 @@ Fax::Fax(QWidget *parent)
     m_failure_timer->setInterval(25*1000);
     m_failure_timer->setSingleShot(true);
 
-    connect( b_engine, SIGNAL(faxUploaded()),
-             m_failure_timer, SLOT(start()) );
     connect( m_failure_timer, SIGNAL(timeout()),
              this, SLOT(unreachableNumber()) );
 
@@ -138,9 +137,9 @@ void Fax::sendFax()
         QByteArray truefiledata = QByteArray();
         truefiledata.append(qf->readAll());
         if (truefiledata.size() > 0) {
-            b_engine->sendFaxCommand(filename,
-                                     extension,
-                                     truefiledata);
+            QVariantMap cmd = MessageFactory::faxSend(filename, extension, truefiledata);
+            b_engine->sendJsonCommand(cmd);
+            this->m_failure_timer->start();
             this->setWaitingStatus();
         } else {
             this->setFailureMessage(tr("File empty"));
