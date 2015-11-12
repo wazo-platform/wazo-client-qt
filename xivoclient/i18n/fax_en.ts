@@ -12,12 +12,12 @@
 <context>
     <name>Fax</name>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="41"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="42"/>
         <source>Fax</source>
         <translation>Fax</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/fax/fax.cpp" line="83"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="82"/>
         <source>%n page(s) sent</source>
         <translation>
             <numerusform>%n page(s) sent</numerusform>
@@ -25,52 +25,52 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="87"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="86"/>
         <source>Failed to send</source>
         <translation>Failed to send</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="99"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="98"/>
         <source>Open Fax File</source>
         <translation>Open Fax File</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="101"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="100"/>
         <source>PDF Files (*.pdf);;All Files (*)</source>
         <translation>PDF Files (*.pdf);;All Files (*)</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="124"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="123"/>
         <source>Missing file and fax number</source>
         <translation>Missing file and fax number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="127"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="126"/>
         <source>Missing file</source>
         <translation>Missing file</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="130"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="129"/>
         <source>Missing fax number</source>
         <translation>Missing fax number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="146"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="145"/>
         <source>File empty</source>
         <translation>File empty</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="149"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="148"/>
         <source>File not found</source>
         <translation>File not found</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="158"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="157"/>
         <source>Unreachable number</source>
         <translation>Unreachable number</translation>
     </message>
     <message>
-        <location filename="../src/xlets/fax/fax.cpp" line="167"/>
+        <location filename="../src/xlets/fax/fax.cpp" line="166"/>
         <source>Sending...</source>
         <translation>Sending...</translation>
     </message>
