@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,6 +32,7 @@
 #include <login_widget/login_widget.h>
 #include <stdlib.h>
 
+#include <xletlib/chitchat.h>
 #include "central_widget.h"
 #include "xlet_dispatcher.h"
 
@@ -44,6 +45,7 @@ CentralWidget::CentralWidget(MainWindow *parent)
       ui_loading_dialog(new Ui::loading_dialog),
       m_loading_dialog(NULL)
 {
+    ChitChatWindow::chitchat_instance = new ChitChatWindow();
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(initializing()), SLOT(initializing()));
@@ -53,6 +55,7 @@ CentralWidget::CentralWidget(MainWindow *parent)
 
 CentralWidget::~CentralWidget()
 {
+    delete ChitChatWindow::chitchat_instance;
     delete this->ui_loading_dialog;
     this->ui_loading_dialog = NULL;
 }
