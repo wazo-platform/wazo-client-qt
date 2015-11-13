@@ -47,20 +47,24 @@ class PeopleActions: public QObject
         const QList<QAction *> &getCallCallableActions() const;
         const QList<QAction *> &getAttendedTransferActions() const;
         const QList<QAction *> &getBlindTransferActions() const;
+        const QList<QAction *> &getMailtoActions() const;
 
     public slots:
         void call();
         void attendedTransfer();
         void blindTransfer();
+        void mailto();
 
     private:
         QAction *newCallAction(const QString &label, const QString &number);
         QAction *newBlindTransferAction(const QString &label, const QString &number);
         QAction *newAttendedTransferAction(const QString &label, const QString &number);
+        QAction *newMailtoAction(const QString &label, const QString &number);
 
         QList<QAction *> m_call_callable_actions;
         QList<QAction *> m_blind_transfer_actions;
         QList<QAction *> m_attended_transfer_actions;
+        QList<QAction *> m_mailto_actions;
         QAction *m_call_action;
 };
 

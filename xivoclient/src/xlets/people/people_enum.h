@@ -34,6 +34,7 @@ enum ColumnType {
   AGENT,
   FAVORITE,
   CALLABLE,
+  EMAIL,
   NAME,
   NUMBER,
   PERSONAL_CONTACT,
@@ -59,6 +60,7 @@ enum PeopleAction {
     CALLABLE_CALL,
     BLIND_TRANSFER,
     ATTENDED_TRANSFER,
+    MAILTO,
 };
 
 #endif

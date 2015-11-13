@@ -45,6 +45,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     this->m_type_map["agent"] = AGENT;
     this->m_type_map["favorite"] = FAVORITE;
     this->m_type_map["callable"] = CALLABLE;
+    this->m_type_map["email"] = EMAIL;
     this->m_type_map["name"] = NAME;
     this->m_type_map["number"] = NUMBER;
     this->m_type_map["personal"] = PERSONAL_CONTACT;
@@ -255,8 +256,8 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
         number_items.append(newAction(title, number, ATTENDED_TRANSFER));
     }
 
-    const QList<int> &callable_indexes = m_type_to_indices[CALLABLE];
-    foreach(int column, callable_indexes) {
+    const QList<int> &callable_indices = m_type_to_indices[CALLABLE];
+    foreach(int column, callable_indices) {
         const QString &title = this->headerText(column);
         const QString &number = entry.data(column).toString();
         number_items.append(newAction(title, number, CALLABLE_CALL));
@@ -265,6 +266,14 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
             number_items.append(newAction(title, number, ATTENDED_TRANSFER));
         }
     }
+
+    const QList<int> &mailto_indices = m_type_to_indices[EMAIL];
+    foreach(int column, mailto_indices) {
+        const QString &title = this->headerText(column);
+        const QString &email = entry.data(column).toString();
+        number_items.append(newAction(title, email, MAILTO));
+    }
+
     return number_items;
 }
 

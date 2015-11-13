@@ -158,8 +158,12 @@ bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const PeopleActions
     bool has_callable_actions = !people_actions.getCallCallableActions().empty();
     bool has_attended_transfer_action = !people_actions.getAttendedTransferActions().empty();
     bool has_blind_transfer_actions = !people_actions.getBlindTransferActions().empty();
+    bool has_mailto_actions = !people_actions.getMailtoActions().empty();
 
-    return has_callable_actions || has_attended_transfer_action || has_blind_transfer_actions;
+    return has_callable_actions ||
+           has_attended_transfer_action ||
+           has_blind_transfer_actions ||
+           has_mailto_actions;
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
@@ -238,6 +242,7 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                                                 PeopleActions *people_actions)
 {
     menu->addActions(people_actions->getCallCallableActions());
+    menu->addActions(people_actions->getMailtoActions());
     this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
                              people_actions->getBlindTransferActions());
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
