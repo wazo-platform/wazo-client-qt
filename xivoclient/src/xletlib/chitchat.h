@@ -59,7 +59,7 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
         void sendMessage(const QString &message);
         void addMessage(const QString &, const QString &, const QString &, const QString &);
         void addMessage(const QString &, const QString &, const QString &);
-        void receiveMessage(const QVariantMap &message);
+        void receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg);
         void writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id);
 
     public slots:
@@ -67,6 +67,7 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
         void clearMessageHistory();
 
     private:
+        ChitChatWindow *findOrNew(const QString &name, const QString &xivo_uuid, int user_id) const;
         QString m_name;
         QString m_xivo_uuid;
         int m_user_id;

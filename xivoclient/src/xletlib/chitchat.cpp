@@ -56,6 +56,10 @@ void ChitChatWindow::addMessage(
     lastCursor = m_message_history->textCursor();
     m_message_history->setTextCursor(recentCursor);
     sb->setValue(sb->maximum());
+    if (isVisible() == false) {
+        show();
+    }
+    raise();
 }
 
 void ChitChatWindow::addMessage(
@@ -113,6 +117,7 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     v_layout->addLayout(h_layout);
 
     setWindowTitle(tr("chitchat - %1").arg(m_name));
+    addMessage("purple", tr("chat window opened with \"%1\"").arg(m_name), "gray", "system: ");
 
     show();
 }
@@ -138,39 +143,39 @@ ChitChatWindow::~ChitChatWindow()
     }
 }
 
-void ChitChatWindow::parseCommand(const QVariantMap & map) {
-    receiveMessage(map);
+ChitChatWindow *ChitChatWindow::findOrNew(const QString &name, const QString &xivo_uuid, int user_id) const
+{
+    const QString &chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
+    if (!m_chat_window_opened.contains(chat_key)) {
+        m_chat_window_opened[chat_key] = new ChitChatWindow(name, xivo_uuid, user_id);
+    }
+    return m_chat_window_opened[chat_key];
 }
 
-void ChitChatWindow::receiveMessage(const QVariantMap & p)
+void ChitChatWindow::parseCommand(const QVariantMap &map)
 {
-    if (! p.contains("from"))
+    QVariantList from = map.value("from").toList();
+    if (from.size() < 2) {
+        qDebug() << "Received an invalid chat message";
         return;
-
-    QVariantList from = p.value("from").toList();
-    QString text = p.value("text").toString();
+    }
     const QString &xivo_uuid = from[0].toString();
     int user_id = from[1].toInt();
-    const QString &xuserid = QString("xivo/%1").arg(user_id);
+    const QString &msg = map["text"].toString();
 
-    const UserInfo *user = b_engine->user(xuserid);
-    QString chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
-    int opened = 0;
+    receiveMessage(xivo_uuid, user_id, msg);
+}
 
-    if (m_chat_window_opened.contains(chat_key)) {
-        m_chat_window_opened[chat_key]->show();
-    } else {
-        m_chat_window_opened[chat_key]= new ChitChatWindow(user->fullname(), xivo_uuid, user_id);
-        opened = 1;
+void ChitChatWindow::receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg)
+{
+    const UserInfo *user = b_engine->user(QString("xivo/%1").arg(user_id));
+    if (!user) {
+        qDebug() << Q_FUNC_INFO << "received a message from an unknown user";
+        return;
     }
 
-    if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
-        QString msg = tr("chat window opened with \"%1\" (%2)")
-            .arg(user->fullname())
-            .arg(user->ipbxid());
-        m_chat_window_opened[chat_key]->addMessage("purple", msg, "gray", "system: ");
-    }
-    m_chat_window_opened[chat_key]->addMessage("black", text, "red");
+    ChitChatWindow *window = findOrNew(user->fullname(), xivo_uuid, user_id);
+    window->addMessage("black", msg, "red");
 }
 
 
@@ -196,22 +201,8 @@ void ChitChatWindow::sendMessage(const QString &message)
 
 void ChitChatWindow::writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id)
 {
-    QString chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
-    int opened = 0;
-
-    if (m_chat_window_opened.contains(chat_key)) {
-        m_chat_window_opened[chat_key]->show();
-    } else {
-        m_chat_window_opened[chat_key] = new ChitChatWindow(name, xivo_uuid, user_id);
-        opened = 1;
-    }
-
-    if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
-        QString msg = tr("chat window opened with \"%1\" (%2)")
-            .arg(name)
-            .arg(xivo_uuid);
-        m_chat_window_opened[chat_key]->addMessage("purple", msg, "gray", tr("system: "));
-    }
+    ChitChatWindow *window = findOrNew(name, xivo_uuid, user_id);
+    window->raise();
 }
 
 // to remove when the contact xlet is removed
