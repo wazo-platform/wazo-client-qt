@@ -61,6 +61,7 @@ enum PeopleAction {
     BLIND_TRANSFER,
     ATTENDED_TRANSFER,
     MAILTO,
+    CHAT,
 };
 
 #endif

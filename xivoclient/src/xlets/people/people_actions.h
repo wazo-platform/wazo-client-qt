@@ -44,6 +44,7 @@ class PeopleActions: public QObject
     public:
         PeopleActions(const QList<QVariant> &action_items);
         QAction *getCallAction() const;
+        QAction *getChatAction() const;
         const QList<QAction *> &getCallCallableActions() const;
         const QList<QAction *> &getAttendedTransferActions() const;
         const QList<QAction *> &getBlindTransferActions() const;
@@ -51,12 +52,14 @@ class PeopleActions: public QObject
 
     public slots:
         void call();
+        void chat();
         void attendedTransfer();
         void blindTransfer();
         void mailto();
 
     private:
         QAction *newCallAction(const QString &label, const QString &number);
+        QAction *newChatAction(const QVariantList &chat_params);
         QAction *newBlindTransferAction(const QString &label, const QString &number);
         QAction *newAttendedTransferAction(const QString &label, const QString &number);
         QAction *newMailtoAction(const QString &label, const QString &number);
@@ -66,6 +69,7 @@ class PeopleActions: public QObject
         QList<QAction *> m_attended_transfer_actions;
         QList<QAction *> m_mailto_actions;
         QAction *m_call_action;
+        QAction *m_chat_action;
 };
 
 #endif

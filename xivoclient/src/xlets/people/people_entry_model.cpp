@@ -28,6 +28,7 @@
  */
 
 #include <QAction>
+#include <QDebug>
 #include <QIcon>
 #include <cassert>
 
@@ -272,6 +273,22 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
         const QString &title = this->headerText(column);
         const QString &email = entry.data(column).toString();
         number_items.append(newAction(title, email, MAILTO));
+    }
+
+    const QString &status = entry.userStatus();
+    if (status != "" && status != "disconnected") {  // status disconnected can be changed in the webi
+        const QList<int> &name_indexes = m_type_to_indices[NAME];
+        foreach (int column, name_indexes) {
+            const QString &name = entry.data(column).toString();
+            const QString &xivo_uuid = entry.xivoUuid();
+            int user_id = entry.userId();
+            QVariantMap item;
+            item["label"] = name;
+            item["action"] = CHAT;
+            item["value"] = QVariantList() << name << xivo_uuid << user_id;
+            number_items.append(item);
+            break;
+        }
     }
 
     return number_items;

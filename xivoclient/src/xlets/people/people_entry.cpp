@@ -27,8 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QObject>
-
 #include "people_entry.h"
 
 PeopleEntry::PeopleEntry(const QVariantList &data,

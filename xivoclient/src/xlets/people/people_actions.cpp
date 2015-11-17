@@ -26,6 +26,7 @@
 
 #include <QDesktopServices>
 #include <QUrl>
+#include <QDebug>
 #include <baseengine.h>
 #include <message_factory.h>
 
@@ -33,18 +34,13 @@
 #include "people_enum.h"
 
 PeopleActions::PeopleActions(const QList<QVariant> &action_items)
-    : m_call_action(NULL)
 {
     for (int i = 0; i < action_items.size(); i++)
     {
         QVariantMap item = action_items[i].toMap();
         QString title = item["label"].toString();
         QString value = item["value"].toString();
-        PeopleAction action = (PeopleAction)item["action"].toInt();
-
-        if (value.isEmpty()) {
-            continue;
-        }
+        PeopleAction action = static_cast<PeopleAction>(item["action"].toInt());
 
         switch(action) {
             case CALL:
@@ -79,6 +75,11 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
                 const QString &label = QString("%1 - %2").arg(title).arg(value);
                 QAction *action = newMailtoAction(label, value);
                 m_mailto_actions.append(action);
+                break;
+            }
+            case CHAT:
+            {
+                m_chat_action = newChatAction(item["value"].toList());
                 break;
             }
         }
@@ -117,6 +118,14 @@ QAction *PeopleActions::newMailtoAction(const QString &label, const QString &ema
     return action;
 }
 
+QAction *PeopleActions::newChatAction(const QVariantList &params)
+{
+    QAction *action = new QAction(tr("Send a message"), this);
+    action->setData(params);
+    connect(action, SIGNAL(triggered()), this, SLOT(chat()));
+    return action;
+}
+
 void PeopleActions::attendedTransfer()
 {
     const QString &number = static_cast<QAction*>(sender())->data().toString();
@@ -141,9 +150,24 @@ void PeopleActions::mailto()
     QDesktopServices::openUrl(QUrl(QString("mailto:%1").arg(email)));
 }
 
+void PeopleActions::chat()
+{
+    const QVariantList &params = static_cast<QAction*>(sender())->data().toList();
+    const QString &name = params[0].toString();
+    const QString &xivo_uuid = params[1].toString();
+    int user_id = params[2].toInt();
+
+    qDebug() << Q_FUNC_INFO << name << xivo_uuid << user_id;
+}
+
 QAction *PeopleActions::getCallAction() const
 {
     return this->m_call_action;
+}
+
+QAction *PeopleActions::getChatAction() const
+{
+    return this->m_chat_action;
 }
 
 const QList<QAction *> &PeopleActions::getAttendedTransferActions() const

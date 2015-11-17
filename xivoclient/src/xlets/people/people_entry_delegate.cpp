@@ -159,10 +159,12 @@ bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const PeopleActions
     bool has_attended_transfer_action = !people_actions.getAttendedTransferActions().empty();
     bool has_blind_transfer_actions = !people_actions.getBlindTransferActions().empty();
     bool has_mailto_actions = !people_actions.getMailtoActions().empty();
+    bool has_chat_action = people_actions.getChatAction() != NULL;
 
     return has_callable_actions ||
            has_attended_transfer_action ||
            has_blind_transfer_actions ||
+           has_chat_action ||
            has_mailto_actions;
 }
 
@@ -247,6 +249,7 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                              people_actions->getBlindTransferActions());
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
                              people_actions->getAttendedTransferActions());
+    menu->addAction(people_actions->getChatAction());
 }
 
 void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
