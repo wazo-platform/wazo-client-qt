@@ -52,6 +52,7 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
 
         ChitChatWindow();
         ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
+        virtual ~ChitChatWindow();
 
         void parseCommand(const QVariantMap & map);
 
@@ -73,6 +74,7 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
         MessageEdit *m_message;
         QTextEdit *m_message_history;
         QTextCursor lastCursor;
+        bool m_main_instance;
 };
 
 

@@ -72,7 +72,8 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     : QWidget(NULL),
       m_name(name),
       m_xivo_uuid(xivo_uuid),
-      m_user_id(user_id)
+      m_user_id(user_id),
+      m_main_instance(false)
 {
     qDebug() << Q_FUNC_INFO << m_name << m_xivo_uuid << user_id;
 
@@ -117,9 +118,23 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
 
 
 ChitChatWindow::ChitChatWindow()
+    : m_main_instance(true)
 {
     // qDebug() << Q_FUNC_INFO << "registered";
     registerListener("chitchat");
+}
+
+ChitChatWindow::~ChitChatWindow()
+{
+    if (! m_main_instance) {
+        return;
+    }
+
+    foreach (const QString &key, m_chat_window_opened.keys()) {
+        ChitChatWindow *to_delete = m_chat_window_opened[key];
+        m_chat_window_opened.remove(key);
+        delete to_delete;
+    }
 }
 
 void ChitChatWindow::parseCommand(const QVariantMap & map) {

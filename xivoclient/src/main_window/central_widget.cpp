@@ -45,7 +45,6 @@ CentralWidget::CentralWidget(MainWindow *parent)
       ui_loading_dialog(new Ui::loading_dialog),
       m_loading_dialog(NULL)
 {
-    ChitChatWindow::chitchat_instance = new ChitChatWindow();
     this->connect(b_engine, SIGNAL(logged()), SLOT(setStatusLogged()));
     this->connect(b_engine, SIGNAL(delogged()), SLOT(setStatusNotLogged()));
     this->connect(b_engine, SIGNAL(initializing()), SLOT(initializing()));
@@ -55,7 +54,6 @@ CentralWidget::CentralWidget(MainWindow *parent)
 
 CentralWidget::~CentralWidget()
 {
-    delete ChitChatWindow::chitchat_instance;
     delete this->ui_loading_dialog;
     this->ui_loading_dialog = NULL;
 }
@@ -87,6 +85,7 @@ void CentralWidget::initialized()
 
 void CentralWidget::setStatusLogged()
 {
+    ChitChatWindow::chitchat_instance = new ChitChatWindow();
     this->m_login_widget->saveConfig();
     this->showMainWidget();
     this->hide();
@@ -94,6 +93,7 @@ void CentralWidget::setStatusLogged()
 
 void CentralWidget::setStatusNotLogged()
 {
+    delete ChitChatWindow::chitchat_instance;
     this->showLoginWidget();
     this->show();
 }
