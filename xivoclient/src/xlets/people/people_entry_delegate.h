@@ -42,7 +42,7 @@ class PeopleEntryDotDelegate : public AbstractItemDelegate
     Q_OBJECT
 
     public:
-        PeopleEntryDotDelegate(QWidget *parent = NULL);
+        PeopleEntryDotDelegate(QWidget *parent);
         QSize sizeHint(const QStyleOptionViewItem &option,
                        const QModelIndex &index) const;
         void paint(QPainter *painter,
@@ -59,7 +59,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
     Q_OBJECT
 
     public:
-        PeopleEntryNumberDelegate(QWidget *parent = NULL);
+        PeopleEntryNumberDelegate(QWidget *parent);
         bool editorEvent(QEvent *event,
                          QAbstractItemModel *model,
                          const QStyleOptionViewItem &option,
@@ -93,7 +93,7 @@ class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate
     Q_OBJECT
 
     public:
-        PeopleEntryPersonalContactDelegate(QWidget *parent = NULL);
+        PeopleEntryPersonalContactDelegate(QWidget *parent);
         QSize sizeHint(const QStyleOptionViewItem &option,
                        const QModelIndex &index) const;
         bool editorEvent(QEvent *event,
