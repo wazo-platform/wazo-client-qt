@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -49,6 +49,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
             const QString & xvoicemailid() const { return m_xvoicemailid; };
             const QString & agentid() const { return m_agentid; };
             const QString & xagentid() const { return m_xagentid; };
+            const QString & xivoUuid() const { return m_xivo_uuid; };
             bool enableclient() const { return m_enableclient; };
             bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
             bool enablevoicemail() const { return m_enablevoicemail; };
@@ -84,6 +85,7 @@ class BASELIB_EXPORT UserInfo : public XInfo
             const QStringList & identitylist() const;
     private:
 
+            QString m_xivo_uuid;
             QString m_fullname;
             QString m_firstname;
             QString m_lastname;
