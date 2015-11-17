@@ -93,18 +93,18 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     m_message_history->setTextInteractionFlags(Qt::TextSelectableByMouse);
     lastCursor = m_message_history->textCursor();
 
-    QPushButton *button[2];
-    button[0]= new QPushButton(tr("&Clear history"));
-    button[1]= new QPushButton(tr("&Send"));
+    QPushButton *clear_btn = new QPushButton(tr("&Clear history"), this);
+    QPushButton *send_btn = new QPushButton(tr("&Send"), this);
 
-    connect(button[1], SIGNAL(pressed()), m_message, SLOT(sendMessage()));
-    connect(button[0], SIGNAL(pressed()), this, SLOT(clearMessageHistory()));
+    connect(send_btn, SIGNAL(pressed()), m_message, SLOT(sendMessage()));
+    connect(clear_btn, SIGNAL(pressed()), this, SLOT(clearMessageHistory()));
 
     v_layout2->addStretch(1);
-    for(int i=0;i<2;i++) {
-        button[i]->setMaximumHeight(message_height/3);
-        v_layout2->addWidget(button[i]);
-    }
+
+    clear_btn->setMaximumHeight(message_height / 3);
+    v_layout2->addWidget(clear_btn);
+    send_btn->setMaximumHeight(message_height / 3);
+    v_layout2->addWidget(send_btn);
 
     h_layout->addWidget(m_message, 1);
     h_layout->addLayout(v_layout2);
@@ -113,6 +113,7 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     v_layout->addLayout(h_layout);
 
     setWindowTitle(tr("chitchat - %1").arg(m_name));
+
     show();
 }
 
