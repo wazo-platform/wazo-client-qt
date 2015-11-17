@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -51,20 +51,24 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
         static ChitChatWindow *chitchat_instance;
 
         ChitChatWindow();
-        ChitChatWindow(const QString &);
+        ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
 
         void parseCommand(const QVariantMap & map);
 
         void sendMessage(const QString &message);
         void addMessage(const QString &, const QString &, const QString &, const QString &);
+        void addMessage(const QString &, const QString &, const QString &);
         void receiveMessage(const QVariantMap &message);
+        void writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id);
 
     public slots:
         void writeMessageTo();
         void clearMessageHistory();
 
     private:
-        QString m_userid;
+        QString m_name;
+        QString m_xivo_uuid;
+        int m_user_id;
         static QHash<QString, ChitChatWindow*> m_chat_window_opened;
         MessageEdit *m_message;
         QTextEdit *m_message_history;

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -41,8 +41,8 @@ ChitChatWindow * ChitChatWindow::chitchat_instance = NULL;
 void ChitChatWindow::addMessage(
         const QString &mcolor,
         const QString &message,
-        const QString &ucolor="",
-        const QString &username="")
+        const QString &ucolor,
+        const QString &username)
 {
     QString time = QTime::currentTime().toString("[ HH:mm:ss ]  ");
     QTextCursor recentCursor = m_message_history->textCursor();
@@ -58,10 +58,23 @@ void ChitChatWindow::addMessage(
     sb->setValue(sb->maximum());
 }
 
-
-ChitChatWindow::ChitChatWindow(const QString & xuserid_with) : QWidget(NULL)
+void ChitChatWindow::addMessage(
+        const QString &mcolor,
+        const QString &message,
+        const QString &ucolor)
 {
-    qDebug() << Q_FUNC_INFO << xuserid_with;
+    QString full_desc = QString("%1: ").arg(m_name);
+    this->addMessage(mcolor, message, ucolor, full_desc);
+}
+
+
+ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id)
+    : QWidget(NULL),
+      m_name(name),
+      m_xivo_uuid(xivo_uuid),
+      m_user_id(user_id)
+{
+    qDebug() << Q_FUNC_INFO << m_name << m_xivo_uuid << user_id;
 
     QVBoxLayout * v_layout = new QVBoxLayout;
     QHBoxLayout * h_layout = new QHBoxLayout;
@@ -98,10 +111,7 @@ ChitChatWindow::ChitChatWindow(const QString & xuserid_with) : QWidget(NULL)
     v_layout->addWidget(m_message_history, 3);
     v_layout->addLayout(h_layout);
 
-    setWindowTitle(tr("chitchat - %1 (%2)")
-                   .arg(b_engine->user(xuserid_with)->fullname())
-                   .arg(b_engine->user(xuserid_with)->ipbxid()));
-    m_userid = xuserid_with;
+    setWindowTitle(tr("chitchat - %1").arg(m_name));
     show();
 }
 
@@ -120,30 +130,34 @@ void ChitChatWindow::receiveMessage(const QVariantMap & p)
 {
     if (! p.contains("from"))
         return;
-    QString from = p.value("from").toString();
+    QVariantList from = p.value("from").toList();
     QString text = p.value("text").toString();
+    const QString &xivo_uuid = from[0].toString();
+    int user_id = from[1].toInt();
+    const QString &xuserid = QString("xivo/%1").arg(user_id);
 
-    QString chat_key = from;
+    const UserInfo *user = b_engine->user(xuserid);
+    QString chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
     int opened = 0;
 
     if (m_chat_window_opened.contains(chat_key)) {
         m_chat_window_opened[chat_key]->show();
     } else {
-        m_chat_window_opened[chat_key]= new ChitChatWindow(from);
+        m_chat_window_opened[chat_key]= new ChitChatWindow(user->fullname(), xivo_uuid, user_id);
         opened = 1;
     }
 
     QString fulldesc = QString("%1 (%2): ")
-        .arg(b_engine->user(from)->fullname())
-        .arg(b_engine->user(from)->ipbxid());
+        .arg(user->fullname())
+        .arg(user->ipbxid());
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
         QString msg = tr("chat window opened with \"%1\" (%2)")
-            .arg(b_engine->user(from)->fullname())
-            .arg(b_engine->user(from)->ipbxid());
+            .arg(user->fullname())
+            .arg(user->ipbxid());
         m_chat_window_opened[chat_key]->addMessage("purple", msg, "gray", "system: ");
     }
-    m_chat_window_opened[chat_key]->addMessage("black", text, "red", fulldesc);
+    m_chat_window_opened[chat_key]->addMessage("black", text, "red");
 }
 
 
@@ -160,32 +174,42 @@ void ChitChatWindow::sendMessage(const QString &message)
     QVariantMap command;
 
     command["class"] = "chitchat";
-    command["to"] = m_userid;
+    command["to"] = QVariantList() << m_xivo_uuid << m_user_id;
     command["text"] = message;
 
     b_engine->sendJsonCommand(command);
 }
 
 
-void ChitChatWindow::writeMessageTo()
+void ChitChatWindow::writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id)
 {
-    QString xuserid = sender()->property("xuserid").toString();
-    QString chat_key = xuserid;
+    QString chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
     int opened = 0;
 
     if (m_chat_window_opened.contains(chat_key)) {
         m_chat_window_opened[chat_key]->show();
     } else {
-        m_chat_window_opened[chat_key] = new ChitChatWindow(xuserid);
+        m_chat_window_opened[chat_key] = new ChitChatWindow(name, xivo_uuid, user_id);
         opened = 1;
     }
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
         QString msg = tr("chat window opened with \"%1\" (%2)")
-            .arg(b_engine->user(xuserid)->fullname())
-            .arg(b_engine->user(xuserid)->ipbxid());
+            .arg(name)
+            .arg(xivo_uuid);
         m_chat_window_opened[chat_key]->addMessage("purple", msg, "gray", tr("system: "));
     }
+}
+
+void ChitChatWindow::writeMessageTo()
+{
+    const QString &xuserid = sender()->property("xuserid").toString();
+    const UserInfo *user = b_engine->user(xuserid);
+    const QString &name = user->fullname();
+    const QString &xivo_uuid = user->xivoUuid();
+    const QStringList &ipbxid_id = xuserid.split("/");
+    int user_id = ipbxid_id[1].toInt();
+    this->writeMessageTo(name, xivo_uuid, user_id);
 }
 
 void MessageEdit::sendMessage()

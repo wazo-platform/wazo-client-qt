@@ -30,6 +30,8 @@
 #include <baseengine.h>
 #include <message_factory.h>
 
+#include "xletlib/chitchat.h"
+
 #include "people_actions.h"
 #include "people_enum.h"
 
@@ -157,7 +159,7 @@ void PeopleActions::chat()
     const QString &xivo_uuid = params[1].toString();
     int user_id = params[2].toInt();
 
-    qDebug() << Q_FUNC_INFO << name << xivo_uuid << user_id;
+    ChitChatWindow::chitchat_instance->writeMessageTo(name, xivo_uuid, user_id);
 }
 
 QAction *PeopleActions::getCallAction() const
