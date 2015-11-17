@@ -145,6 +145,7 @@ void ChitChatWindow::receiveMessage(const QVariantMap & p)
 {
     if (! p.contains("from"))
         return;
+
     QVariantList from = p.value("from").toList();
     QString text = p.value("text").toString();
     const QString &xivo_uuid = from[0].toString();
@@ -161,10 +162,6 @@ void ChitChatWindow::receiveMessage(const QVariantMap & p)
         m_chat_window_opened[chat_key]= new ChitChatWindow(user->fullname(), xivo_uuid, user_id);
         opened = 1;
     }
-
-    QString fulldesc = QString("%1 (%2): ")
-        .arg(user->fullname())
-        .arg(user->ipbxid());
 
     if (opened || (!m_chat_window_opened[chat_key]->isVisible())) {
         QString msg = tr("chat window opened with \"%1\" (%2)")
@@ -216,6 +213,7 @@ void ChitChatWindow::writeMessageTo(const QString &name, const QString &xivo_uui
     }
 }
 
+// to remove when the contact xlet is removed
 void ChitChatWindow::writeMessageTo()
 {
     const QString &xuserid = sender()->property("xuserid").toString();
