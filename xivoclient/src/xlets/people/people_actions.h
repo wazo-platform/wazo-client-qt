@@ -45,7 +45,6 @@ class PeopleActions: public QObject
 
     public:
         PeopleActions();
-        PeopleActions(const QList<QVariant> &action_items);
         PeopleActions(const PeopleActions &other);
         QAction *newCallAction(QWidget *parent) const;
         QAction *newChatAction(QWidget *parent) const;
@@ -56,6 +55,10 @@ class PeopleActions: public QObject
         bool hasCallCallables() const;
         bool hasChat() const;
         bool hasTransfers() const;
+        void setCallNumber(const QString &title, const QString &number, bool can_transfer);
+        void setExtraNumber(const QString &title, const QString &number, bool can_transfer);
+        void setChatParams(const QString &name, const QString &xivo_uuid, int user_id);
+        void setEmail(const QString &title, const QString &email);
 
     public slots:
         void call();

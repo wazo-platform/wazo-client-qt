@@ -123,8 +123,7 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         break;
     case NUMBER_ROLE:
     {
-        PeopleActions pa(this->dataNumber(entry, column).toList());
-        return QVariant::fromValue(pa);
+        return this->dataNumber(entry, column);
     }
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
@@ -251,24 +250,18 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
 
 QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int column) const
 {
-    QVariantList number_items;
+    PeopleActions actions;
+
     const QString &title = this->headerText(column);
     const QString &number = entry.data(column).toString();
-    number_items.append(newAction(title, number, CALL));
-    if (m_endpoint_status == IN_USE) {
-        number_items.append(newAction(title, number, BLIND_TRANSFER));
-        number_items.append(newAction(title, number, ATTENDED_TRANSFER));
-    }
+    bool can_transfer = m_endpoint_status == IN_USE;
 
-    const QList<int> &callable_indices = m_type_to_indices[CALLABLE];
-    foreach(int column, callable_indices) {
+    actions.setCallNumber(title, number, can_transfer);
+
+    foreach (int column, indexesFromType(CALLABLE)) {
         const QString &title = this->headerText(column);
         const QString &number = entry.data(column).toString();
-        number_items.append(newAction(title, number, CALLABLE_CALL));
-        if (m_endpoint_status == IN_USE) {
-            number_items.append(newAction(title, number, BLIND_TRANSFER));
-            number_items.append(newAction(title, number, ATTENDED_TRANSFER));
-        }
+        actions.setExtraNumber(title, number, can_transfer);
     }
 
     const QList<int> &mailto_indices = m_type_to_indices[EMAIL];
@@ -280,33 +273,19 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
 
     const QString &status = entry.userStatus();
     if (status != "" && status != "disconnected") {
-        const QList<int> &name_indexes = m_type_to_indices[NAME];
-        foreach (int column, name_indexes) {
+        foreach (int column, indexesFromType(NAME)) {
             const QString &name = entry.data(column).toString();
             const QString &xivo_uuid = entry.xivoUuid();
             int user_id = entry.userId();
             if (xivo_uuid != m_xivo_uuid || user_id == m_user_id) {
                 continue;
             }
-            QVariantMap item;
-            item["label"] = name;
-            item["action"] = CHAT;
-            item["value"] = QVariantList() << name << xivo_uuid << user_id;
-            number_items.append(item);
+            actions.setChatParams(name, xivo_uuid, user_id);
             break;
         }
     }
 
-    return number_items;
-}
-
-QVariant PeopleEntryModel::newAction(const QString &label, const QVariant &value, PeopleAction action) const
-{
-    QVariantMap item;
-    item["label"] = label;
-    item["value"] = value;
-    item["action"] = action;
-    return item;
+    return QVariant::fromValue(actions);
 }
 
 QVariantList PeopleEntryModel::newIdAsList(const QString &xivo_uuid, int id) const
@@ -348,8 +327,7 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
 
     foreach(const PeopleEntry &entry, m_people_entries) {
         if (entry.uniqueSourceId() == id) {
-            const QList<int> &columns = m_type_to_indices[FAVORITE];
-            foreach(int column, columns) {
+            foreach(int column, indexesFromType(FAVORITE)) {
                 return entry.data(column).toBool();
             }
         }
@@ -421,8 +399,7 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            const QList<int> &columns = m_type_to_indices[FAVORITE];
-            foreach(int column, columns) {
+            foreach(int column, indexesFromType(FAVORITE)) {
                 entry.setData(column, status);
                 this->refreshEntry(i);
             }
@@ -551,4 +528,9 @@ void PeopleEntryModel::setXivoUUID(const QString &xivo_uuid)
 void PeopleEntryModel::setUserID(int user_id)
 {
     m_user_id = user_id;
+}
+
+QList<int> PeopleEntryModel::indexesFromType(ColumnType type) const
+{
+    return m_type_to_indices[type];
 }

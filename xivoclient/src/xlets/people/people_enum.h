@@ -55,13 +55,4 @@ enum PeopleMode {
     PERSONAL_CONTACT_MODE
 };
 
-enum PeopleAction {
-    CALL,
-    CALLABLE_CALL,
-    BLIND_TRANSFER,
-    ATTENDED_TRANSFER,
-    MAILTO,
-    CHAT,
-};
-
 #endif

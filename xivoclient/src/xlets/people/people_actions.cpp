@@ -33,68 +33,10 @@
 #include "xletlib/chitchat.h"
 
 #include "people_actions.h"
-#include "people_enum.h"
 
 PeopleActions::PeopleActions()
     : QObject(0)
 {}
-
-PeopleActions::PeopleActions(const QList<QVariant> &action_items)
-    : QObject(0)
-{
-    for (int i = 0; i < action_items.size(); i++)
-    {
-        QVariantMap item = action_items[i].toMap();
-        QString title = item["label"].toString();
-        QString value = item["value"].toString();
-        PeopleAction action = static_cast<PeopleAction>(item["action"].toInt());
-
-        switch(action) {
-            case CALL:
-            {
-                m_call_destination = value;
-                break;
-            }
-            case CALLABLE_CALL:
-            {
-                if (value.isEmpty()) {
-                    continue;
-                }
-                const QString &label = QString("%1 - %2").arg(title).arg(value);
-                m_call_callable_destinations.append(QStringPair(label, value));
-                break;
-            case CHAT:
-            {
-                m_chat_action = newChatAction(item["value"].toList());
-                break;
-            }
-            case BLIND_TRANSFER:
-            {
-                if (value.isEmpty()) {
-                    continue;
-                }
-                const QString &label = QString("%1 - %2").arg(title).arg(value);
-                m_blind_transfer_destinations.append(QStringPair(label, value));
-                break;
-            }
-            case ATTENDED_TRANSFER:
-            {
-                if (value.isEmpty()) {
-                    continue;
-                }
-                const QString &label = QString("%1 - %2").arg(title).arg(value);
-                m_attended_transfer_destinations.append(QStringPair(label, value));
-                break;
-            }
-            case MAILTO:
-            {
-                const QString &label = QString("%1 - %2").arg(title).arg(value);
-                m_mailto_destinations.append(QStringPair(label, value));
-                break;
-            }
-        }
-    }
-}
 
 PeopleActions::PeopleActions(const PeopleActions &other)
     : QObject(0),
@@ -233,4 +175,44 @@ bool PeopleActions::hasTransfers() const
 {
     return m_blind_transfer_destinations.isEmpty() == false
         || m_attended_transfer_destinations.isEmpty() == false;
+}
+
+void PeopleActions::setCallNumber(const QString &title, const QString &number, bool can_transfer)
+{
+    if (number.isEmpty()) {
+        return;
+    }
+    m_call_destination = number;
+    if (can_transfer) {
+        QString label = QString("%1 - %2").arg(title).arg(number);
+        QStringPair pair(label, number);
+        m_blind_transfer_destinations.append(pair);
+        m_attended_transfer_destinations.append(pair);
+    }
+}
+
+void PeopleActions::setExtraNumber(const QString &title, const QString &number, bool can_transfer)
+{
+    if (number.isEmpty()) {
+        return;
+    }
+    QString label = QString("%1 - %2").arg(title).arg(number);
+    QStringPair pair(label, number);
+    m_call_callable_destinations.append(pair);
+    if (can_transfer) {
+        m_blind_transfer_destinations.append(pair);
+        m_attended_transfer_destinations.append(pair);
+    }
+}
+
+void PeopleActions::setChatParams(const QString &name, const QString &xivo_uuid, int user_id)
+{
+    m_chat_destination = QVariantList() << name << xivo_uuid << user_id;
+}
+
+void PeopleActions::setEmail(const QString &title, const QString &email)
+{
+    QString label = QString("%1 - %2").arg(title).arg(email);
+    QStringPair pair(label, email);
+    m_mailto_destinations.append(pair);
 }

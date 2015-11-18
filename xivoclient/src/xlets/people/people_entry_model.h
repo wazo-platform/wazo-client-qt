@@ -90,8 +90,8 @@ class PeopleEntryModel : public AbstractTableModel
         void setUserStatusFromUserId(const RelationID &id, const QString &status);
         void setFavoriteStatusFromSourceId(const RelationSourceID &id, bool status);
         QVariant getAvailableActions(const PeopleEntry &entry, int column) const;
-        QVariant newAction(const QString &label, const QVariant &value, PeopleAction action) const;
         QVariantList newIdAsList(const QString &xivo_uuid, int id) const;
+        QList<int> indexesFromType(ColumnType type) const;
 
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
