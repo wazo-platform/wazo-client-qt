@@ -48,16 +48,12 @@
 
 People::People(QWidget *parent)
     : XLet(parent, tr("People"), ":/images/tab-people.svg"),
-      m_proxy_model(NULL),
-      m_model(NULL),
-      m_waiting_status(NULL)
+      m_proxy_model(new PeopleEntrySortFilterProxyModel(this)),
+      m_model(new PeopleEntryModel(this)),
+      m_waiting_status(new QMovie(":/images/waiting-status.gif", QByteArray(), this))
 {
     this->ui.setupUi(this);
 
-    m_waiting_status = new QMovie(":/images/waiting-status.gif", QByteArray(), this);
-
-    m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
-    m_model = new PeopleEntryModel(this);
     m_proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(m_proxy_model);
 
@@ -101,6 +97,8 @@ People::People(QWidget *parent)
             this, SLOT(requestExportPersonalContacts()));
     connect(this->ui.purge_contacts_button, SIGNAL(clicked()),
             this, SLOT(purgePersonalContacts()));
+    connect(b_engine, SIGNAL(initialized()),
+            this, SLOT(onInitialized()));
 
     connect(&m_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
@@ -475,6 +473,18 @@ void People::openEditContactDialog(const QString &source_name,
 
     contact_dialog->setAttribute(Qt::WA_DeleteOnClose);
     contact_dialog->show();
+}
+
+void People::onInitialized()
+{
+    const UserInfo *user = b_engine->getXivoClientUser();
+    if (!user) {
+        qDebug() << Q_FUNC_INFO << "failed to initialize the id and uuid of the current user";
+        return;
+    }
+
+    m_model->setXivoUUID(user->xivoUuid());
+    m_model->setUserID(user->id().toInt());
 }
 
 void People::sendEditPersonalContact(const QString &source_name,

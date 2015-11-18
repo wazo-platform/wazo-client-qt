@@ -51,7 +51,7 @@ class PeopleEntryModel : public AbstractTableModel
     typedef QPair<QString, QString> RelationSourceID;
 
     public:
-        PeopleEntryModel(QWidget *parent = NULL);
+        PeopleEntryModel(QWidget *parent);
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const;
         int columnCount(const QModelIndex &parent=QModelIndex()) const;
@@ -69,6 +69,8 @@ class PeopleEntryModel : public AbstractTableModel
         void parsePeopleSearchResult(const QVariantMap &result);
         void removeRowFromSourceEntryId(const QString &source, const QString &source_entry_id);
         void setEndpoint(const QString &xivo_uuid, int endpoint_id);
+        void setXivoUUID(const QString &xivo_uuid);
+        void setUserID(int user_id);
 
     protected:
         virtual QList<int> columnDisplayBold() const;
@@ -89,7 +91,7 @@ class PeopleEntryModel : public AbstractTableModel
         void setFavoriteStatusFromSourceId(const RelationSourceID &id, bool status);
         QVariant getAvailableActions(const PeopleEntry &entry, int column) const;
         QVariant newAction(const QString &label, const QVariant &value, PeopleAction action) const;
-	QVariantList newIdAsList(const QString &xivo_uuid, int id) const;
+        QVariantList newIdAsList(const QString &xivo_uuid, int id) const;
 
         QString headerText(int column) const;
         enum ColumnType headerType(int column) const;
@@ -98,8 +100,10 @@ class PeopleEntryModel : public AbstractTableModel
         QList< QPair<QString, enum ColumnType> >  m_fields;
         QVector<PeopleEntry> m_people_entries;
         QMap<QString, ColumnType> m_type_map;
+        QString m_xivo_uuid;
         RelationID m_endpoint;
         int m_endpoint_status;
+        int m_user_id;
 };
 
 #endif

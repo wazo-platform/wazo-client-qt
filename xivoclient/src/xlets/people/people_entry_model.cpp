@@ -276,12 +276,15 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
     }
 
     const QString &status = entry.userStatus();
-    if (status != "" && status != "disconnected") {  // status disconnected can be changed in the webi
+    if (status != "" && status != "disconnected") {  // XXX status disconnected can be changed in the webi
         const QList<int> &name_indexes = m_type_to_indices[NAME];
         foreach (int column, name_indexes) {
             const QString &name = entry.data(column).toString();
             const QString &xivo_uuid = entry.xivoUuid();
             int user_id = entry.userId();
+            if (xivo_uuid != m_xivo_uuid || user_id == m_user_id) {
+                continue;
+            }
             QVariantMap item;
             item["label"] = name;
             item["action"] = CHAT;
@@ -535,4 +538,14 @@ void PeopleEntryModel::setEndpoint(const QString &xivo_id, int endpoint_id)
     QVariantList endpoints_to_register;
     endpoints_to_register.push_back(newIdAsList(xivo_id, endpoint_id));
     b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoints_to_register));
+}
+
+void PeopleEntryModel::setXivoUUID(const QString &xivo_uuid)
+{
+    m_xivo_uuid = xivo_uuid;
+}
+
+void PeopleEntryModel::setUserID(int user_id)
+{
+    m_user_id = user_id;
 }

@@ -249,7 +249,9 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                              people_actions->getBlindTransferActions());
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
                              people_actions->getAttendedTransferActions());
-    menu->addAction(people_actions->getChatAction());
+    if (QAction *chat_action = people_actions->getChatAction()) {
+        menu->addAction(chat_action);
+    }
 }
 
 void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
