@@ -130,7 +130,8 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
-        PeopleActions people_actions(index.data(NUMBER_ROLE).toList());
+        QVariant qv = index.data(NUMBER_ROLE);
+        PeopleActions people_actions = qv.value<PeopleActions>();
         if (this->shouldShowActionSelectorRect(people_actions)) {
             QRect selector_rect = this->actionSelectorRect(option.rect);
 
@@ -153,7 +154,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
     PeopleEntryDotDelegate::paint(painter, option, index);
 }
 
-bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const PeopleActions &people_actions) const
+bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(PeopleActions &people_actions) const
 {
     bool has_callable_actions = !people_actions.getCallCallableActions().empty();
     bool has_attended_transfer_action = !people_actions.getAttendedTransferActions().empty();
@@ -187,8 +188,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         this->pressed = false;
 
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        const QList<QVariant> &action_items = model->data(index, NUMBER_ROLE).toList();
-        PeopleActions people_actions(action_items);
+        PeopleActions people_actions(model->data(index, NUMBER_ROLE).value<PeopleActions>());
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
             people_actions.getCallAction()->trigger();
@@ -274,7 +274,7 @@ PeopleEntryPersonalContactDelegate::PeopleEntryPersonalContactDelegate(QWidget *
 }
 
 QSize PeopleEntryPersonalContactDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                       const QModelIndex &index) const
+                                                   const QModelIndex &index) const
 {
     const QSize &original_size = AbstractItemDelegate::sizeHint(option, index);
     int new_width = icon_size.width() + icons_spacing + icon_size.width();

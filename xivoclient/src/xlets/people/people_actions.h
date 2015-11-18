@@ -41,14 +41,18 @@ class PeopleActions: public QObject
 {
     Q_OBJECT
 
+    typedef QPair<QString, QString> QStringPair;
+
     public:
+        PeopleActions();
         PeopleActions(const QList<QVariant> &action_items);
-        QAction *getCallAction() const;
-        QAction *getChatAction() const;
-        const QList<QAction *> &getCallCallableActions() const;
-        const QList<QAction *> &getAttendedTransferActions() const;
-        const QList<QAction *> &getBlindTransferActions() const;
-        const QList<QAction *> &getMailtoActions() const;
+        PeopleActions(const PeopleActions &other);
+        QAction *getCallAction();
+        QAction *getChatAction();
+        QList<QAction *> getCallCallableActions();
+        QList<QAction *> getAttendedTransferActions();
+        QList<QAction *> getBlindTransferActions();
+        QList<QAction *> getMailtoActions();
 
     public slots:
         void call();
@@ -58,18 +62,14 @@ class PeopleActions: public QObject
         void mailto();
 
     private:
-        QAction *newCallAction(const QString &label, const QString &number);
-        QAction *newChatAction(const QVariantList &chat_params);
-        QAction *newBlindTransferAction(const QString &label, const QString &number);
-        QAction *newAttendedTransferAction(const QString &label, const QString &number);
-        QAction *newMailtoAction(const QString &label, const QString &number);
-
-        QList<QAction *> m_call_callable_actions;
-        QList<QAction *> m_blind_transfer_actions;
-        QList<QAction *> m_attended_transfer_actions;
-        QList<QAction *> m_mailto_actions;
-        QAction *m_call_action;
-        QAction *m_chat_action;
+        QList<QStringPair> m_call_callable_destinations;
+        QList<QStringPair> m_blind_transfer_destinations;
+        QList<QStringPair> m_attended_transfer_destinations;
+        QList<QStringPair> m_mailto_destinations;
+        QString m_call_destination;
+        QVariantList m_chat_destination;
 };
+
+Q_DECLARE_METATYPE(PeopleActions);
 
 #endif

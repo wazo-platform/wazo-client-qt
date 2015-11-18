@@ -82,7 +82,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
                              PeopleActions *people_actions);
         void showContextMenu(const QStyleOptionViewItem &option,
                              PeopleActions *people_actions);
-        bool shouldShowActionSelectorRect(const PeopleActions &people_actions) const;
+        bool shouldShowActionSelectorRect(PeopleActions &people_actions) const;
         void addTransferSubmenu(QPointer<Menu> menu,
                                 const QString &title,
                                 QList<QAction *> transfer_actions);

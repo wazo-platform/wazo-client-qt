@@ -122,7 +122,10 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         }
         break;
     case NUMBER_ROLE:
-        return this->dataNumber(entry, column);
+    {
+        PeopleActions pa(this->dataNumber(entry, column).toList());
+        return QVariant::fromValue(pa);
+    }
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
