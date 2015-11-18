@@ -39,6 +39,7 @@
 #include "xletlib_export.h"
 
 class QTextEdit;
+class ChitChatWindow;
 
 class ChatEditBox: public QPlainTextEdit
 {
@@ -53,42 +54,52 @@ class ChatEditBox: public QPlainTextEdit
 };
 
 
-/*! \brief open a chat window with another xivo user
- */
-class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
+class XLETLIB_EXPORT ChitChatDispatcher: public QObject, IPBXListener
 {
     Q_OBJECT
 
     public:
-        static ChitChatWindow *chitchat_instance;
-
-        ChitChatWindow();
-        ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
-        virtual ~ChitChatWindow();
-
+        ChitChatDispatcher(QObject *parent);
+        virtual ~ChitChatDispatcher();
         void parseCommand(const QVariantMap & map);
-
-        void addMessage(const QString &, const QString &, const QString &, const QString &);
-        void addMessage(const QString &, const QString &, const QString &);
         void receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg);
         void writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id);
-        void sendMessage(const QString &msg);
 
     public slots:
         void writeMessageTo();
+
+    private:
+        ChitChatDispatcher();
+        ChitChatWindow *findOrNew(const QString &name, const QString &xivo_uuid, int user_id);
+        QHash<QString, ChitChatWindow*> m_chat_window_opened;
+};
+
+class XLETLIB_EXPORT ChitChatWindow : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
+        virtual ~ChitChatWindow();
+
+        void addMessage(const QString &, const QString &, const QString &, const QString &);
+        void addMessage(const QString &, const QString &, const QString &);
+        void sendMessage(const QString &msg);
+
+    public slots:
         void clearMessageHistory();
         void sendMessage();
 
     private:
-        ChitChatWindow *findOrNew(const QString &name, const QString &xivo_uuid, int user_id) const;
+        ChitChatWindow();
         QString m_name;
         QString m_xivo_uuid;
         int m_user_id;
-        static QHash<QString, ChitChatWindow*> m_chat_window_opened;
         ChatEditBox *m_msg_edit;
         QTextEdit *m_message_history;
         QTextCursor lastCursor;
-        bool m_main_instance;
 };
+
+extern XLETLIB_EXPORT ChitChatDispatcher *chit_chat;
 
 #endif

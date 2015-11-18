@@ -79,7 +79,7 @@ void PeopleActions::chat()
     const QString &xivo_uuid = params[1].toString();
     int user_id = params[2].toInt();
 
-    ChitChatWindow::chitchat_instance->writeMessageTo(name, xivo_uuid, user_id);
+    chit_chat->writeMessageTo(name, xivo_uuid, user_id);
 }
 
 QAction *PeopleActions::newCallAction(QWidget *parent) const

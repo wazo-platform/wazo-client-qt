@@ -85,7 +85,7 @@ void CentralWidget::initialized()
 
 void CentralWidget::setStatusLogged()
 {
-    ChitChatWindow::chitchat_instance = new ChitChatWindow();
+    chit_chat = new ChitChatDispatcher(this);
     this->m_login_widget->saveConfig();
     this->showMainWidget();
     this->hide();
@@ -93,9 +93,9 @@ void CentralWidget::setStatusLogged()
 
 void CentralWidget::setStatusNotLogged()
 {
-    delete ChitChatWindow::chitchat_instance;
     this->showLoginWidget();
     this->show();
+    delete chit_chat;
 }
 
 void CentralWidget::showMainWidget()

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -136,7 +136,7 @@ void PeerWidget::updateChitChatButton()
         m_user_status->setFocusPolicy(Qt::NoFocus);
 
         connect(m_user_status, SIGNAL(pressed()),
-                ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
+                chit_chat, SLOT(writeMessageTo()));
         // Delete spacing
         if (! m_hLayout->isEmpty()) {
             QLayoutItem * item = m_hLayout->itemAt(0);

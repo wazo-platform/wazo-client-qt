@@ -36,42 +36,78 @@
 #include <QTextEdit>
 
 
-QHash<QString, ChitChatWindow*> ChitChatWindow::m_chat_window_opened = QHash <QString, ChitChatWindow*>();
-ChitChatWindow * ChitChatWindow::chitchat_instance = NULL;
+XLETLIB_EXPORT ChitChatDispatcher* chit_chat;
 
-void ChitChatWindow::addMessage(
-        const QString &mcolor,
-        const QString &message,
-        const QString &ucolor,
-        const QString &username)
+ChitChatDispatcher::ChitChatDispatcher(QObject *parent)
+    : QObject(parent)
 {
-    QString time = QTime::currentTime().toString("[ HH:mm:ss ]  ");
-    QTextCursor recentCursor = m_message_history->textCursor();
-    m_message_history->setTextCursor(lastCursor);
-    m_message_history->insertHtml("<span style=\"color:black\">" + time + "</span>" +
-                                  "<span style=\"color:" + ucolor + "\">" + username + "</span>" +
-                                  "<pre style=\"padding:0;margin:0;color:" + mcolor + "\">" +
-                                  message + "\n\n</pre>");
+    registerListener("chitchat");
+}
 
-    QScrollBar *sb = m_message_history->verticalScrollBar();
-    lastCursor = m_message_history->textCursor();
-    m_message_history->setTextCursor(recentCursor);
-    sb->setValue(sb->maximum());
-    if (isVisible() == false) {
-        show();
+ChitChatDispatcher::~ChitChatDispatcher()
+{
+    foreach (const QString &key, m_chat_window_opened.keys()) {
+        ChitChatWindow *to_delete = m_chat_window_opened[key];
+        m_chat_window_opened.remove(key);
+        delete to_delete;
     }
-    raise();
 }
 
-void ChitChatWindow::addMessage(
-        const QString &mcolor,
-        const QString &message,
-        const QString &ucolor)
+ChitChatWindow *ChitChatDispatcher::findOrNew(const QString &name, const QString &xivo_uuid, int user_id)
 {
-    QString full_desc = QString("%1: ").arg(m_name);
-    this->addMessage(mcolor, message, ucolor, full_desc);
+    const QString &chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
+    if (!m_chat_window_opened.contains(chat_key)) {
+        m_chat_window_opened[chat_key] = new ChitChatWindow(name, xivo_uuid, user_id);
+    }
+    return m_chat_window_opened[chat_key];
 }
 
+void ChitChatDispatcher::parseCommand(const QVariantMap &map)
+{
+    QVariantList from = map.value("from").toList();
+    if (from.size() < 2) {
+        return;
+    }
+
+    const QString &xivo_uuid = from[0].toString();
+    int user_id = from[1].toInt();
+    const QString &msg = map["text"].toString();
+
+    receiveMessage(xivo_uuid, user_id, msg);
+}
+
+void ChitChatDispatcher::receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg)
+{
+    const UserInfo *user = b_engine->user(QString("xivo/%1").arg(user_id));
+    if (!user) {
+        qDebug() << Q_FUNC_INFO << "received a message from an unknown user";
+        return;
+    }
+
+    ChitChatWindow *window = findOrNew(user->fullname(), xivo_uuid, user_id);
+    window->addMessage("black", msg, "red");
+}
+
+void ChitChatDispatcher::writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id)
+{
+    ChitChatWindow *window = findOrNew(name, xivo_uuid, user_id);
+    if (window->isVisible() == false) {
+        window->show();
+    }
+    window->raise();
+}
+
+// to remove when the contact xlet is removed
+void ChitChatDispatcher::writeMessageTo()
+{
+    const QString &xuserid = sender()->property("xuserid").toString();
+    const UserInfo *user = b_engine->user(xuserid);
+    const QString &name = user->fullname();
+    const QString &xivo_uuid = user->xivoUuid();
+    const QStringList &ipbxid_id = xuserid.split("/");
+    int user_id = ipbxid_id[1].toInt();
+    this->writeMessageTo(name, xivo_uuid, user_id);
+}
 
 ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id)
     : QWidget(NULL),
@@ -79,8 +115,7 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
       m_xivo_uuid(xivo_uuid),
       m_user_id(user_id),
       m_msg_edit(new ChatEditBox(this)),
-      m_message_history(new QTextEdit(this)),
-      m_main_instance(false)
+      m_message_history(new QTextEdit(this))
 {
     qDebug() << Q_FUNC_INFO << m_name << m_xivo_uuid << user_id;
 
@@ -124,68 +159,39 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     show();
 }
 
-
-ChitChatWindow::ChitChatWindow()
-    : m_main_instance(true)
-{
-    // qDebug() << Q_FUNC_INFO << "registered";
-    registerListener("chitchat");
-}
-
 ChitChatWindow::~ChitChatWindow()
-{
-    if (! m_main_instance) {
-        return;
-    }
+{}
 
-    foreach (const QString &key, m_chat_window_opened.keys()) {
-        ChitChatWindow *to_delete = m_chat_window_opened[key];
-        m_chat_window_opened.remove(key);
-        delete to_delete;
+void ChitChatWindow::addMessage(const QString &mcolor, const QString &message, const QString &ucolor, const QString &username)
+{
+    QString time = QTime::currentTime().toString("[ HH:mm:ss ]  ");
+    QTextCursor recentCursor = m_message_history->textCursor();
+    m_message_history->setTextCursor(lastCursor);
+    m_message_history->insertHtml("<span style=\"color:black\">" + time + "</span>" +
+                                  "<span style=\"color:" + ucolor + "\">" + username + "</span>" +
+                                  "<pre style=\"padding:0;margin:0;color:" + mcolor + "\">" +
+                                  message + "\n\n</pre>");
+
+    QScrollBar *sb = m_message_history->verticalScrollBar();
+    lastCursor = m_message_history->textCursor();
+    m_message_history->setTextCursor(recentCursor);
+    sb->setValue(sb->maximum());
+    if (isVisible() == false) {
+        show();
     }
+    raise();
 }
 
-ChitChatWindow *ChitChatWindow::findOrNew(const QString &name, const QString &xivo_uuid, int user_id) const
+void ChitChatWindow::addMessage(const QString &mcolor, const QString &message, const QString &ucolor)
 {
-    const QString &chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
-    if (!m_chat_window_opened.contains(chat_key)) {
-        m_chat_window_opened[chat_key] = new ChitChatWindow(name, xivo_uuid, user_id);
-    }
-    return m_chat_window_opened[chat_key];
+    QString full_desc = QString("%1: ").arg(m_name);
+    this->addMessage(mcolor, message, ucolor, full_desc);
 }
-
-void ChitChatWindow::parseCommand(const QVariantMap &map)
-{
-    QVariantList from = map.value("from").toList();
-    if (from.size() < 2) {
-        return;
-    }
-
-    const QString &xivo_uuid = from[0].toString();
-    int user_id = from[1].toInt();
-    const QString &msg = map["text"].toString();
-
-    receiveMessage(xivo_uuid, user_id, msg);
-}
-
-void ChitChatWindow::receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg)
-{
-    const UserInfo *user = b_engine->user(QString("xivo/%1").arg(user_id));
-    if (!user) {
-        qDebug() << Q_FUNC_INFO << "received a message from an unknown user";
-        return;
-    }
-
-    ChitChatWindow *window = findOrNew(user->fullname(), xivo_uuid, user_id);
-    window->addMessage("black", msg, "red");
-}
-
 
 void ChitChatWindow::clearMessageHistory()
 {
     m_message_history->clear();
 }
-
 
 void ChitChatWindow::sendMessage(const QString &message)
 {
@@ -198,28 +204,6 @@ void ChitChatWindow::sendMessage(const QString &message)
     command["text"] = message;
 
     b_engine->sendJsonCommand(command);
-}
-
-
-void ChitChatWindow::writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id)
-{
-    ChitChatWindow *window = findOrNew(name, xivo_uuid, user_id);
-    if (window->isVisible() == false) {
-        window->show();
-    }
-    window->raise();
-}
-
-// to remove when the contact xlet is removed
-void ChitChatWindow::writeMessageTo()
-{
-    const QString &xuserid = sender()->property("xuserid").toString();
-    const UserInfo *user = b_engine->user(xuserid);
-    const QString &name = user->fullname();
-    const QString &xivo_uuid = user->xivoUuid();
-    const QStringList &ipbxid_id = xuserid.split("/");
-    int user_id = ipbxid_id[1].toInt();
-    this->writeMessageTo(name, xivo_uuid, user_id);
 }
 
 void ChitChatWindow::sendMessage()
