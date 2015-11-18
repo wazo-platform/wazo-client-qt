@@ -186,7 +186,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         PeopleActions people_actions(model->data(index, NUMBER_ROLE).value<PeopleActions>());
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
-            if (QAction *call_action = people_actions.newCallAction(reinterpret_cast<QWidget*>(parent()))) {
+            if (QAction *call_action = people_actions.newCallAction(parentWidget())) {
                 call_action->trigger();
             }
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
@@ -262,6 +262,13 @@ void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
     QPointer<Menu> transfer_menu = new Menu(title, menu);
     transfer_menu->addActions(transfer_actions);
     menu->addMenu(transfer_menu);
+}
+
+QWidget *PeopleEntryNumberDelegate::parentWidget() const
+{
+    // the reinterpret_cast cannot fail in this context since the constructor
+    // only accepts a QWidget *, no QObject *
+    return reinterpret_cast<QWidget *>(this->parent());
 }
 
 
