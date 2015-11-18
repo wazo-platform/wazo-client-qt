@@ -51,3 +51,10 @@ QRect AbstractItemDelegate::marginsRemovedByColumn(const QRect &rect, int column
         return rect.marginsRemoved(QMargins(10,0,0,1));
     }
 }
+
+QWidget *AbstractItemDelegate::parentWidget() const
+{
+    // the reinterpret_cast cannot fail in this context since the constructor
+    // only accepts a QWidget *, no QObject *
+    return reinterpret_cast<QWidget *>(this->parent());
+}

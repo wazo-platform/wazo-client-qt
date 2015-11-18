@@ -67,7 +67,6 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
         void paint(QPainter *painter,
                    const QStyleOptionViewItem &option,
                    const QModelIndex &index) const;
-        QWidget *parentWidget() const;
 
     protected:
         bool pressed;

@@ -264,14 +264,6 @@ void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
     menu->addMenu(transfer_menu);
 }
 
-QWidget *PeopleEntryNumberDelegate::parentWidget() const
-{
-    // the reinterpret_cast cannot fail in this context since the constructor
-    // only accepts a QWidget *, no QObject *
-    return reinterpret_cast<QWidget *>(this->parent());
-}
-
-
 PeopleEntryPersonalContactDelegate::PeopleEntryPersonalContactDelegate(QWidget *parent)
     : AbstractItemDelegate(parent)
 {
