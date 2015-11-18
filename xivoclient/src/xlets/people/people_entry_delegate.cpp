@@ -130,8 +130,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
-        QVariant qv = index.data(NUMBER_ROLE);
-        PeopleActions people_actions = qv.value<PeopleActions>();
+        PeopleActions people_actions = index.data(NUMBER_ROLE).value<PeopleActions>();
         if (this->shouldShowActionSelectorRect(people_actions)) {
             QRect selector_rect = this->actionSelectorRect(option.rect);
 
