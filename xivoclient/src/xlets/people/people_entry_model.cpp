@@ -276,7 +276,7 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
     }
 
     const QString &status = entry.userStatus();
-    if (status != "" && status != "disconnected") {  // XXX status disconnected can be changed in the webi
+    if (status != "" && status != "disconnected") {
         const QList<int> &name_indexes = m_type_to_indices[NAME];
         foreach (int column, name_indexes) {
             const QString &name = entry.data(column).toString();
