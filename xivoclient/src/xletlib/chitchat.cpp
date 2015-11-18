@@ -33,6 +33,7 @@
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QTextEdit>
 
 
 QHash<QString, ChitChatWindow*> ChitChatWindow::m_chat_window_opened = QHash <QString, ChitChatWindow*>();
@@ -77,6 +78,8 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
       m_name(name),
       m_xivo_uuid(xivo_uuid),
       m_user_id(user_id),
+      m_msg_edit(new ChatEditBox(this)),
+      m_message_history(new QTextEdit(this)),
       m_main_instance(false)
 {
     qDebug() << Q_FUNC_INFO << m_name << m_xivo_uuid << user_id;
@@ -90,9 +93,7 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     v_layout2->setSizeConstraint(QLayout::SetFixedSize);
 
     setLayout(v_layout);
-    m_message = new MessageEdit(this);
-    m_message->setMaximumHeight(message_height);
-    m_message_history = new QTextEdit(this);
+    m_msg_edit->setMaximumHeight(message_height);
     m_message_history->setReadOnly(true);
     m_message_history->setTextInteractionFlags(Qt::TextSelectableByMouse);
     lastCursor = m_message_history->textCursor();
@@ -100,8 +101,9 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     QPushButton *clear_btn = new QPushButton(tr("&Clear history"), this);
     QPushButton *send_btn = new QPushButton(tr("&Send"), this);
 
-    connect(send_btn, SIGNAL(pressed()), m_message, SLOT(sendMessage()));
-    connect(clear_btn, SIGNAL(pressed()), this, SLOT(clearMessageHistory()));
+    connect(send_btn, SIGNAL(pressed()), SLOT(sendMessage()));
+    connect(clear_btn, SIGNAL(pressed()), SLOT(clearMessageHistory()));
+    connect(m_msg_edit, SIGNAL(done()), SLOT(sendMessage()));
 
     v_layout2->addStretch(1);
 
@@ -110,7 +112,7 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     send_btn->setMaximumHeight(message_height / 3);
     v_layout2->addWidget(send_btn);
 
-    h_layout->addWidget(m_message, 1);
+    h_layout->addWidget(m_msg_edit, 1);
     h_layout->addLayout(v_layout2);
 
     v_layout->addWidget(m_message_history, 3);
@@ -156,9 +158,9 @@ void ChitChatWindow::parseCommand(const QVariantMap &map)
 {
     QVariantList from = map.value("from").toList();
     if (from.size() < 2) {
-        qDebug() << "Received an invalid chat message";
         return;
     }
+
     const QString &xivo_uuid = from[0].toString();
     int user_id = from[1].toInt();
     const QString &msg = map["text"].toString();
@@ -181,7 +183,7 @@ void ChitChatWindow::receiveMessage(const QString &xivo_uuid, int user_id, const
 
 void ChitChatWindow::clearMessageHistory()
 {
-    m_message_history->setPlainText("");
+    m_message_history->clear();
 }
 
 
@@ -202,6 +204,9 @@ void ChitChatWindow::sendMessage(const QString &message)
 void ChitChatWindow::writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id)
 {
     ChitChatWindow *window = findOrNew(name, xivo_uuid, user_id);
+    if (window->isVisible() == false) {
+        window->show();
+    }
     window->raise();
 }
 
@@ -217,27 +222,27 @@ void ChitChatWindow::writeMessageTo()
     this->writeMessageTo(name, xivo_uuid, user_id);
 }
 
-void MessageEdit::sendMessage()
+void ChitChatWindow::sendMessage()
 {
-    if (toPlainText().trimmed() == "") {
-        return ;
+    const QString &msg = m_msg_edit->toPlainText();
+    if (msg.trimmed() == "") {
+        return;
     }
 
-    m_dad->sendMessage(toPlainText());
-    setPlainText("");
-    setFocus(Qt::OtherFocusReason);
+    sendMessage(msg);
+    m_msg_edit->clear();
+    m_msg_edit->setFocus(Qt::OtherFocusReason);
 }
 
-
-void MessageEdit::keyPressEvent(QKeyEvent * event)
+void ChatEditBox::keyPressEvent(QKeyEvent *e)
 {
-    if (event->text() == "\r") {
-        if (event->modifiers() == Qt::ControlModifier) {
-            event = new QKeyEvent(event->type(), event->key(), Qt::NoModifier, "\r");
-        } else {
-            sendMessage();
-            return ;
-        }
+    if (e->text() != "\r") {
+        return QPlainTextEdit::keyPressEvent(e);
     }
-    QTextEdit::keyPressEvent(event);
-}
+
+    if (e->modifiers() == Qt::ControlModifier) {
+        insertPlainText(e->text());
+    } else {
+        emit done();
+    }
+};

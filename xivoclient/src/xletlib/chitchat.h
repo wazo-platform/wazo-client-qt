@@ -34,11 +34,23 @@
 #include <baseengine.h>
 #include <ipbxlistener.h>
 #include <QWidget>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 #include "xletlib_export.h"
 
-class MessageEdit;
+class QTextEdit;
+
+class ChatEditBox: public QPlainTextEdit
+{
+    Q_OBJECT
+
+    public:
+        ChatEditBox(QWidget *parent): QPlainTextEdit(parent) {}
+    protected:
+        virtual void keyPressEvent(QKeyEvent *e);
+    signals:
+         void done();
+};
 
 
 /*! \brief open a chat window with another xivo user
@@ -56,15 +68,16 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
 
         void parseCommand(const QVariantMap & map);
 
-        void sendMessage(const QString &message);
         void addMessage(const QString &, const QString &, const QString &, const QString &);
         void addMessage(const QString &, const QString &, const QString &);
         void receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg);
         void writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id);
+        void sendMessage(const QString &msg);
 
     public slots:
         void writeMessageTo();
         void clearMessageHistory();
+        void sendMessage();
 
     private:
         ChitChatWindow *findOrNew(const QString &name, const QString &xivo_uuid, int user_id) const;
@@ -72,28 +85,10 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
         QString m_xivo_uuid;
         int m_user_id;
         static QHash<QString, ChitChatWindow*> m_chat_window_opened;
-        MessageEdit *m_message;
+        ChatEditBox *m_msg_edit;
         QTextEdit *m_message_history;
         QTextCursor lastCursor;
         bool m_main_instance;
-};
-
-
-class MessageEdit : public QTextEdit
-{
-    Q_OBJECT
-
-    public:
-        MessageEdit(ChitChatWindow *parent) : QTextEdit((QWidget*) parent) { m_dad = parent; };
-
-    public slots:
-        void sendMessage();
-
-    private:
-        ChitChatWindow *m_dad;
-
-    protected:
-        virtual void keyPressEvent(QKeyEvent * event);
 };
 
 #endif

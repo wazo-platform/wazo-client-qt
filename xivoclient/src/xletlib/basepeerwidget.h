@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -40,6 +40,8 @@
 #include <xivoconsts.h>
 
 #include "chitchat.h"
+
+class QMenu;
 
 class XLETLIB_EXPORT BasePeerWidget : public QWidget
 {
