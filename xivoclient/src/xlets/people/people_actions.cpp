@@ -206,7 +206,7 @@ QList<QAction *> PeopleActions::getCallCallableActions()
     return actions;
 }
 
-const QList<QAction *> &PeopleActions::getMailtoActions() const
+const QList<QAction *> PeopleActions::getMailtoActions()
 {
     QList<QAction *> actions;
 
@@ -217,4 +217,20 @@ const QList<QAction *> &PeopleActions::getMailtoActions() const
     }
 
     return actions;
+}
+
+bool PeopleActions::hasCallCallables() const
+{
+    return m_call_callable_destinations.isEmpty() == false;
+};
+
+bool PeopleActions::hasChat() const
+{
+    return m_chat_destination.isEmpty() == false;
+}
+
+bool PeopleActions::hasTransfers() const
+{
+    return m_blind_transfer_destinations.isEmpty() == false
+        || m_attended_transfer_destinations.isEmpty() == false;
 }

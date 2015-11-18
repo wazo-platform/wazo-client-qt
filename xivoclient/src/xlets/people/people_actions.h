@@ -53,6 +53,9 @@ class PeopleActions: public QObject
         QList<QAction *> getAttendedTransferActions();
         QList<QAction *> getBlindTransferActions();
         QList<QAction *> getMailtoActions();
+        bool hasCallCallables() const;
+        bool hasChat() const;
+        bool hasTransfers() const;
 
     public slots:
         void call();

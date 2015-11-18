@@ -156,17 +156,13 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
 
 bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(PeopleActions &people_actions) const
 {
-    bool has_callable_actions = !people_actions.getCallCallableActions().empty();
-    bool has_attended_transfer_action = !people_actions.getAttendedTransferActions().empty();
-    bool has_blind_transfer_actions = !people_actions.getBlindTransferActions().empty();
     bool has_mailto_actions = !people_actions.getMailtoActions().empty();
-    bool has_chat_action = people_actions.getChatAction() != NULL;
 
-    return has_callable_actions ||
-           has_attended_transfer_action ||
-           has_blind_transfer_actions ||
-           has_chat_action ||
-           has_mailto_actions;
+    return people_actions.hasCallCallables()
+        || people_actions.hasChat()
+        || people_actions.hasTransfers()
+        || has_mailto_actions;
+
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
