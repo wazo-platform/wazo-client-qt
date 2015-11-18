@@ -140,36 +140,36 @@ void PeopleActions::chat()
     ChitChatWindow::chitchat_instance->writeMessageTo(name, xivo_uuid, user_id);
 }
 
-QAction *PeopleActions::getCallAction()
+QAction *PeopleActions::newCallAction(QWidget *parent) const
 {
     if (m_call_destination.isEmpty()) {
         return NULL;
     }
 
-    QAction *action = new QAction(tr("Call"), this);
+    QAction *action = new QAction(tr("Call"), parent);
     action->setData(m_call_destination);
     connect(action, SIGNAL(triggered()), this, SLOT(call()));
     return action;
 }
 
-QAction *PeopleActions::getChatAction()
+QAction *PeopleActions::newChatAction(QWidget *parent) const
 {
     if (m_chat_destination.isEmpty()) {
         return NULL;
     }
 
-    QAction *action = new QAction(tr("Send a message"), this);
+    QAction *action = new QAction(tr("Send a message"), parent);
     action->setData(m_chat_destination);
     connect(action, SIGNAL(triggered()), this, SLOT(chat()));
     return action;
 }
 
-QList<QAction *> PeopleActions::getAttendedTransferActions()
+QList<QAction *> PeopleActions::newAttendedTransferActions(QWidget *parent) const
 {
     QList<QAction*> actions;
 
     foreach (const QStringPair &label_number, m_attended_transfer_destinations) {
-        QAction *action = new QAction(label_number.first, this);
+        QAction *action = new QAction(label_number.first, parent);
         action->setData(label_number.second);
         connect(action, SIGNAL(triggered()), this, SLOT(attendedTransfer()));
         actions.append(action);
@@ -178,12 +178,12 @@ QList<QAction *> PeopleActions::getAttendedTransferActions()
     return actions;
 }
 
-QList<QAction *> PeopleActions::getBlindTransferActions()
+QList<QAction *> PeopleActions::newBlindTransferActions(QWidget *parent) const
 {
     QList<QAction*> actions;
 
     foreach (const QStringPair &label_number, m_blind_transfer_destinations) {
-        QAction *action = new QAction(label_number.first, this);
+        QAction *action = new QAction(label_number.first, parent);
         action->setData(label_number.second);
         connect(action, SIGNAL(triggered()), this, SLOT(blindTransfer()));
         actions.append(action);
@@ -192,12 +192,12 @@ QList<QAction *> PeopleActions::getBlindTransferActions()
     return actions;
 }
 
-QList<QAction *> PeopleActions::getCallCallableActions()
+QList<QAction *> PeopleActions::newCallCallableActions(QWidget *parent) const
 {
     QList<QAction*> actions;
 
     foreach (const QStringPair &label_number, m_call_callable_destinations) {
-        QAction *action = new QAction(label_number.first, this);
+        QAction *action = new QAction(label_number.first, parent);
         action->setData(label_number.second);
         connect(action, SIGNAL(triggered()), this, SLOT(call()));
         actions.append(action);
@@ -206,12 +206,12 @@ QList<QAction *> PeopleActions::getCallCallableActions()
     return actions;
 }
 
-const QList<QAction *> PeopleActions::getMailtoActions()
+const QList<QAction *> PeopleActions::getMailtoActions(QWidget *parent) const
 {
     QList<QAction *> actions;
 
     foreach (const QStringPair &label_email, m_mailto_destinations) {
-        QAction *action = new QAction(label_email.first, this);
+        QAction *action = new QAction(label_email.first, parent);
         action->setData(label_email.second);
         connect(action, SIGNAL(triggered()), this, SLOT(mailto()));
     }

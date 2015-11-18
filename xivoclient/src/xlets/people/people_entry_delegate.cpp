@@ -186,7 +186,9 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         PeopleActions people_actions(model->data(index, NUMBER_ROLE).value<PeopleActions>());
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
-            people_actions.getCallAction()->trigger();
+            if (QAction *call_action = people_actions.newCallAction(reinterpret_cast<QWidget*>(parent()))) {
+                call_action->trigger();
+            }
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
             this->showContextMenu(option, &people_actions);
         }
@@ -238,13 +240,13 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
 void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                                                 PeopleActions *people_actions)
 {
-    menu->addActions(people_actions->getCallCallableActions());
-    menu->addActions(people_actions->getMailtoActions());
+    menu->addActions(people_actions->newCallCallableActions(menu));
+    menu->addActions(people_actions->getMailtoActions(menu));
     this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
-                             people_actions->getBlindTransferActions());
+                             people_actions->newBlindTransferActions(menu));
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
-                             people_actions->getAttendedTransferActions());
-    if (QAction *chat_action = people_actions->getChatAction()) {
+                             people_actions->newAttendedTransferActions(menu));
+    if (QAction *chat_action = people_actions->newChatAction(menu)) {
         menu->addAction(chat_action);
     }
 }

@@ -47,12 +47,12 @@ class PeopleActions: public QObject
         PeopleActions();
         PeopleActions(const QList<QVariant> &action_items);
         PeopleActions(const PeopleActions &other);
-        QAction *getCallAction();
-        QAction *getChatAction();
-        QList<QAction *> getCallCallableActions();
-        QList<QAction *> getAttendedTransferActions();
-        QList<QAction *> getBlindTransferActions();
-        QList<QAction *> getMailtoActions();
+        QAction *newCallAction(QWidget *parent) const;
+        QAction *newChatAction(QWidget *parent) const;
+        QList<QAction *> newCallCallableActions(QWidget *parent) const;
+        QList<QAction *> newAttendedTransferActions(QWidget *parent) const;
+        QList<QAction *> newBlindTransferActions(QWidget *parent) const;
+        QList<QAction *> getMailtoActions(QWidget *parent) const;
         bool hasCallCallables() const;
         bool hasChat() const;
         bool hasTransfers() const;
