@@ -17,14 +17,25 @@
 #ifndef __PEOPLE_ACTION_GENERATOR_H__
 #define __PEOPLE_ACTION_GENERATOR_H__
 
+#include <QAction>
 #include <QObject>
 #include <QList>
 
 #include "people_enum.h"
 
-class QAction;
 class PeopleEntryModel;
 class PeopleEntryView;
+
+class CallAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        CallAction(const QString &text, const QString &number, QWidget *parent);
+        virtual ~CallAction() {};
+    public slots:
+        void call();
+};
 
 class PeopleActionGenerator: public QObject
 {
@@ -44,7 +55,6 @@ class PeopleActionGenerator: public QObject
         bool hasTransfers() const;
 
     public slots:
-        void call();
         void chat() {};
         void attendedTransfer() {};
         void blindTransfer() {};
@@ -58,6 +68,7 @@ class PeopleActionGenerator: public QObject
         QVariant dataAt(const QModelIndex &index, int column);
         QVariant headerAt(int column);
         QString formatColumnNumber(const QString &title, const QString &number) const;
+        QWidget *parent();
 
         PeopleEntryModel *m_people_entry_model;
 

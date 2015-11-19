@@ -14,7 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include <QAction>
 #include <QDebug>
 #include <baseengine.h>
 #include <message_factory.h>
@@ -35,6 +34,11 @@ PeopleActionGenerator::PeopleActionGenerator(PeopleEntryModel *model, PeopleEntr
 PeopleActionGenerator::~PeopleActionGenerator()
 {
     qDebug() << Q_FUNC_INFO;
+}
+
+QWidget *PeopleActionGenerator::parent()
+{
+    return reinterpret_cast<QWidget*>(QObject::parent());
 }
 
 PeopleEntryModel *PeopleActionGenerator::model() const
@@ -96,10 +100,7 @@ QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
         return NULL;
     }
 
-    QAction *action = new QAction(tr("Call"), parent());
-    action->setData(number);
-    connect(action, SIGNAL(triggered()), this, SLOT(call()));
-    return action;
+    return new CallAction(tr("Call"), number, parent());
 }
 
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
@@ -109,17 +110,20 @@ QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex
     foreach (int column, m_callable_column_indices) {
         const QString &number = dataAt(index, column).toString();
         const QString &header = headerAt(column).toString();
-
-        QAction *action = new QAction(formatColumnNumber(header, number), parent());
-        action->setData(number);
-        connect(action, SIGNAL(triggered()), this, SLOT(call()));
-        actions.append(action);
+        actions.append(new CallAction(formatColumnNumber(header, number), number, parent()));
     }
 
     return actions;
 }
 
-void PeopleActionGenerator::call()
+CallAction::CallAction(const QString &text, const QString &number, QWidget *parent)
+    : QAction(text, parent)
+{
+    setData(number);
+    connect(this, SIGNAL(triggered()), this, SLOT(call()));
+}
+
+void CallAction::call()
 {
     const QString &number = static_cast<QAction*>(sender())->data().toString();
 
