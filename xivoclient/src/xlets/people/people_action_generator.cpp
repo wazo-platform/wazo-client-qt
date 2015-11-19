@@ -110,6 +110,9 @@ QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex
     foreach (int column, m_callable_column_indices) {
         const QString &number = dataAt(index, column).toString();
         const QString &header = headerAt(column).toString();
+        if (number.isEmpty()) {
+            continue;
+        }
         actions.append(new CallAction(formatColumnNumber(header, number), number, parent()));
     }
 
