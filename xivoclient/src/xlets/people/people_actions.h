@@ -46,9 +46,7 @@ class PeopleActions: public QObject
     public:
         PeopleActions();
         PeopleActions(const PeopleActions &other);
-        QAction *newCallAction(QWidget *parent) const;
         QAction *newChatAction(QWidget *parent) const;
-        QList<QAction *> newCallCallableActions(QWidget *parent) const;
         QList<QAction *> newAttendedTransferActions(QWidget *parent) const;
         QList<QAction *> newBlindTransferActions(QWidget *parent) const;
         QList<QAction *> getMailtoActions(QWidget *parent) const;
@@ -61,7 +59,6 @@ class PeopleActions: public QObject
         void setEmail(const QString &title, const QString &email);
 
     public slots:
-        void call();
         void chat();
         void attendedTransfer();
         void blindTransfer();

@@ -192,7 +192,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
                 call_action->trigger();
             }
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
-            this->showContextMenu(option, &people_actions);
+            this->showContextMenu(option, &people_actions, index);
         }
     }
     return true;
@@ -221,7 +221,8 @@ QRect PeopleEntryNumberDelegate::actionSelectorRect(const QRect &option_rect) co
 }
 
 void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &option,
-                                                PeopleActions *people_actions)
+                                                PeopleActions *people_actions,
+                                                const QModelIndex &index)
 {
     QAbstractScrollArea *view = static_cast<QAbstractScrollArea*>(option.styleObject);
     if (! view) {
@@ -232,7 +233,7 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
     QPoint globalPosition = view->viewport()->mapToGlobal(position);
 
     QPointer<Menu> menu = new Menu(view);
-    this->fillContextMenu(menu, people_actions);
+    this->fillContextMenu(menu, people_actions, index);
     if (! menu->isEmpty()) {
         menu->exec(globalPosition);
     }
@@ -240,10 +241,11 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
 }
 
 void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
-                                                PeopleActions *people_actions)
+                                                PeopleActions *people_actions,
+                                                const QModelIndex &index)
 {
-    menu->addActions(people_actions->newCallCallableActions(menu));
     menu->addActions(people_actions->getMailtoActions(menu));
+    menu->addActions(m_people_action_generator->newCallCallableActions(index));
     this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
                              people_actions->newBlindTransferActions(menu));
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),

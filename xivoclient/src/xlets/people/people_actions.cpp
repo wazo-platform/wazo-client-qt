@@ -60,12 +60,6 @@ void PeopleActions::blindTransfer()
     b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
 }
 
-void PeopleActions::call()
-{
-    const QString &number = static_cast<QAction*>(sender())->data().toString();
-    b_engine->sendJsonCommand(MessageFactory::dial(number));
-}
-
 void PeopleActions::mailto()
 {
     const QString &email = static_cast<QAction*>(sender())->data().toString();
@@ -116,20 +110,6 @@ QList<QAction *> PeopleActions::newBlindTransferActions(QWidget *parent) const
         QAction *action = new QAction(label_number.first, parent);
         action->setData(label_number.second);
         connect(action, SIGNAL(triggered()), this, SLOT(blindTransfer()));
-        actions.append(action);
-    }
-
-    return actions;
-}
-
-QList<QAction *> PeopleActions::newCallCallableActions(QWidget *parent) const
-{
-    QList<QAction*> actions;
-
-    foreach (const QStringPair &label_number, m_call_callable_destinations) {
-        QAction *action = new QAction(label_number.first, parent);
-        action->setData(label_number.second);
-        connect(action, SIGNAL(triggered()), this, SLOT(call()));
         actions.append(action);
     }
 

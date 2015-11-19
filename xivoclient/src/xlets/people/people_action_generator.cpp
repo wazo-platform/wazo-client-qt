@@ -29,6 +29,7 @@ PeopleActionGenerator::PeopleActionGenerator(PeopleEntryModel *model, PeopleEntr
 {
     qDebug() << Q_FUNC_INFO;
     m_number_column_index = this->findColumnOfType(NUMBER);
+    m_callable_column_indices = this->findAllColumnOfType(CALLABLE);
 }
 
 PeopleActionGenerator::~PeopleActionGenerator()
@@ -41,20 +42,56 @@ PeopleEntryModel *PeopleActionGenerator::model() const
     return m_people_entry_model;
 }
 
+QList<int> PeopleActionGenerator::columnTypes()
+{
+    QList<int> types;
+    for (int i = 0; i < model()->columnCount(); ++i) {
+        types.append(model()->headerData(i, Qt::Horizontal, Qt::UserRole).toInt());
+    }
+    return types;
+}
+
 int PeopleActionGenerator::findColumnOfType(ColumnType type)
 {
-    for (int i = 0; i < model()->columnCount(); ++i) {
-        if (model()->headerData(i, Qt::Horizontal, Qt::UserRole).toInt() == type) {
-            return i;
+    return columnTypes().indexOf(type);
+}
+
+QList<int> PeopleActionGenerator::findAllColumnOfType(ColumnType type)
+{
+    QList<int> indices;
+    QList<int> types = columnTypes();
+
+    for (int i = 0; i < types.size(); ++i) {
+        if (types[i] == type) {
+            indices.append(i);
         }
     }
-    return -1;
+
+    return indices;
+}
+
+QVariant PeopleActionGenerator::headerAt(int column)
+{
+    return model()->headerData(column, Qt::Horizontal, Qt::DisplayRole);
+}
+
+QVariant PeopleActionGenerator::dataAt(const QModelIndex &index, int column)
+{
+    QModelIndex cell = index.child(index.row(), column);
+    return model()->data(cell, Qt::DisplayRole);
+}
+
+QString PeopleActionGenerator::formatColumnNumber(const QString &title, const QString &number) const
+{
+    return QString("%1 - %2").arg(title).arg(number);
 }
 
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
 {
-    QModelIndex cell = index.child(index.row(), m_number_column_index);
-    const QString &number = model()->data(cell, Qt::DisplayRole).toString();
+    if (m_number_column_index == -1) {
+        return NULL;
+    }
+    const QString &number = dataAt(index, m_number_column_index).toString();
     if (number.isEmpty()) {
         return NULL;
     }
@@ -63,6 +100,23 @@ QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
     action->setData(number);
     connect(action, SIGNAL(triggered()), this, SLOT(call()));
     return action;
+}
+
+QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
+{
+    QList<QAction*> actions;
+
+    foreach (int column, m_callable_column_indices) {
+        const QString &number = dataAt(index, column).toString();
+        const QString &header = headerAt(column).toString();
+
+        QAction *action = new QAction(formatColumnNumber(header, number), parent());
+        action->setData(number);
+        connect(action, SIGNAL(triggered()), this, SLOT(call()));
+        actions.append(action);
+    }
+
+    return actions;
 }
 
 void PeopleActionGenerator::call()

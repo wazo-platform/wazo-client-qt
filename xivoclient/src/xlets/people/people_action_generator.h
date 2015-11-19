@@ -35,7 +35,7 @@ class PeopleActionGenerator: public QObject
 
         QAction *newCallAction(const QModelIndex &index);
         QAction *newChatAction();
-        QList<QAction *> newCallCallableActions();
+        QList<QAction *> newCallCallableActions(const QModelIndex &index);
         QList<QAction *> newAttendedTransferActions();
         QList<QAction *> newBlindTransferActions();
 
@@ -53,9 +53,15 @@ class PeopleActionGenerator: public QObject
         PeopleActionGenerator() {};
         PeopleEntryModel *model() const;
         int findColumnOfType(ColumnType type);
+        QList<int> findAllColumnOfType(ColumnType type);
+        QList<int> columnTypes();
+        QVariant dataAt(const QModelIndex &index, int column);
+        QVariant headerAt(int column);
+        QString formatColumnNumber(const QString &title, const QString &number) const;
 
         PeopleEntryModel *m_people_entry_model;
 
+        QList<int> m_callable_column_indices;
         int m_number_column_index;
 };
 
