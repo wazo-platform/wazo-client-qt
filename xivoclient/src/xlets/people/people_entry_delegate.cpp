@@ -35,6 +35,7 @@
 #include <QPainter>
 #include <QVariant>
 
+#include "people_action_generator.h"
 #include "people_entry_delegate.h"
 #include "people_actions.h"
 
@@ -99,9 +100,10 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
     AbstractItemDelegate::paint(painter, opt, index);
 }
 
-PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)
+PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(PeopleActionGenerator *generator, QWidget *parent)
     : PeopleEntryDotDelegate(parent),
-      pressed(false)
+      pressed(false),
+      m_people_action_generator(generator)
 {
 }
 
@@ -186,7 +188,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
         PeopleActions people_actions(model->data(index, NUMBER_ROLE).value<PeopleActions>());
 
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
-            if (QAction *call_action = people_actions.newCallAction(parentWidget())) {
+            if (QAction *call_action = m_people_action_generator->newCallAction(index)) {
                 call_action->trigger();
             }
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {

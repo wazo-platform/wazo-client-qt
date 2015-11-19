@@ -27,13 +27,15 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "people_action_generator.h"
 #include "people_entry_delegate.h"
 #include "people_entry_view.h"
 #include "people_enum.h"
 
 
 PeopleEntryView::PeopleEntryView(QWidget *parent)
-    : AbstractTableView(parent)
+    : AbstractTableView(parent),
+      m_generator(NULL)
 {
     this->viewport()->setAttribute(Qt::WA_Hover);
 }
@@ -49,7 +51,7 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
                 break;
             }
             case NUMBER: {
-                PeopleEntryNumberDelegate *delegate = new PeopleEntryNumberDelegate(this);
+                PeopleEntryNumberDelegate *delegate = new PeopleEntryNumberDelegate(generator(), this);
                 this->setItemDelegateForColumn(column_index, delegate);
                 break;
             }
@@ -95,4 +97,14 @@ void PeopleEntryView::onViewClick(const QModelIndex &index)
         const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
         emit favoriteToggled(unique_source_entry_id);
     }
+}
+
+
+PeopleActionGenerator *PeopleEntryView::generator()
+{
+    if (m_generator == NULL) {
+        m_generator = new PeopleActionGenerator(reinterpret_cast<PeopleEntryModel*>(model()), this);
+    }
+
+    return m_generator;
 }

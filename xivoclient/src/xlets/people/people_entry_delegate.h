@@ -36,6 +36,7 @@
 
 
 class PeopleActions;
+class PeopleActionGenerator;
 
 class PeopleEntryDotDelegate : public AbstractItemDelegate
 {
@@ -59,7 +60,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
     Q_OBJECT
 
     public:
-        PeopleEntryNumberDelegate(QWidget *parent);
+        PeopleEntryNumberDelegate(PeopleActionGenerator *generator, QWidget *parent);
         bool editorEvent(QEvent *event,
                          QAbstractItemModel *model,
                          const QStyleOptionViewItem &option,
@@ -86,6 +87,8 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
         void addTransferSubmenu(QPointer<Menu> menu,
                                 const QString &title,
                                 QList<QAction *> transfer_actions);
+
+        PeopleActionGenerator *m_people_action_generator;
 };
 
 class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate

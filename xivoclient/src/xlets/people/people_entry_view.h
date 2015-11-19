@@ -32,6 +32,8 @@
 
 #include <xletlib/abstract_table_view.h>
 
+#include "people_action_generator.h"
+
 
 class PeopleEntryView : public AbstractTableView
 {
@@ -51,6 +53,11 @@ class PeopleEntryView : public AbstractTableView
 
     private slots:
         void onViewClick(const QModelIndex &index);
+
+    private:
+        PeopleActionGenerator *generator();
+
+        PeopleActionGenerator *m_generator;
 
 };
 

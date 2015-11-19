@@ -82,18 +82,6 @@ void PeopleActions::chat()
     chit_chat->writeMessageTo(name, xivo_uuid, user_id);
 }
 
-QAction *PeopleActions::newCallAction(QWidget *parent) const
-{
-    if (m_call_destination.isEmpty()) {
-        return NULL;
-    }
-
-    QAction *action = new QAction(tr("Call"), parent);
-    action->setData(m_call_destination);
-    connect(action, SIGNAL(triggered()), this, SLOT(call()));
-    return action;
-}
-
 QAction *PeopleActions::newChatAction(QWidget *parent) const
 {
     if (m_chat_destination.isEmpty()) {
