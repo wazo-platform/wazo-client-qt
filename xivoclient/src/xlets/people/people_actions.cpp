@@ -24,6 +24,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDesktopServices>
+#include <QUrl>
 #include <baseengine.h>
 #include <message_factory.h>
 
@@ -45,32 +47,40 @@ PeopleActions::PeopleActions(const QList<QVariant> &action_items)
         }
 
         switch(action) {
-        case CALL:
-        {
-            m_call_action = newCallAction(tr("Call"), value);
-            break;
-        }
-        case CALLABLE_CALL:
-        {
-            const QString &label = QString("%1 - %2").arg(title).arg(value);
-            QAction *action = newCallAction(label, value);
-            m_call_callable_actions.append(action);
-            break;
-        }
-        case BLIND_TRANSFER:
-        {
-            const QString &label = QString("%1 - %2").arg(title).arg(value);
-            QAction *action = newBlindTransferAction(label, value);
-            m_blind_transfer_actions.append(action);
-            break;
-        }
-        case ATTENDED_TRANSFER:
-        {
-            const QString &label = QString("%1 - %2").arg(title).arg(value);
-            QAction *action = newAttendedTransferAction(label, value);
-            m_attended_transfer_actions.append(action);
-            break;
-        }
+            case CALL:
+            {
+                m_call_action = newCallAction(tr("Call"), value);
+                break;
+            }
+            case CALLABLE_CALL:
+            {
+                const QString &label = QString("%1 - %2").arg(title).arg(value);
+                QAction *action = newCallAction(label, value);
+                m_call_callable_actions.append(action);
+                break;
+            }
+            case BLIND_TRANSFER:
+            {
+                const QString &label = QString("%1 - %2").arg(title).arg(value);
+                QAction *action = newBlindTransferAction(label, value);
+                m_blind_transfer_actions.append(action);
+                break;
+            }
+            case ATTENDED_TRANSFER:
+            {
+                const QString &label = QString("%1 - %2").arg(title).arg(value);
+                QAction *action = newAttendedTransferAction(label, value);
+                m_attended_transfer_actions.append(action);
+                break;
+            }
+
+            case MAILTO:
+            {
+                const QString &label = QString("%1 - %2").arg(title).arg(value);
+                QAction *action = newMailtoAction(label, value);
+                m_mailto_actions.append(action);
+                break;
+            }
         }
     }
 }
@@ -99,6 +109,14 @@ QAction *PeopleActions::newCallAction(const QString &label, const QString &numbe
     return action;
 }
 
+QAction *PeopleActions::newMailtoAction(const QString &label, const QString &email)
+{
+    QAction *action = new QAction(label, this);
+    action->setData(email);
+    connect(action, SIGNAL(triggered()), this, SLOT(mailto()));
+    return action;
+}
+
 void PeopleActions::attendedTransfer()
 {
     const QString &number = static_cast<QAction*>(sender())->data().toString();
@@ -115,6 +133,12 @@ void PeopleActions::call()
 {
     const QString &number = static_cast<QAction*>(sender())->data().toString();
     b_engine->sendJsonCommand(MessageFactory::dial(number));
+}
+
+void PeopleActions::mailto()
+{
+    const QString &email = static_cast<QAction*>(sender())->data().toString();
+    QDesktopServices::openUrl(QUrl(QString("mailto:%1").arg(email)));
 }
 
 QAction *PeopleActions::getCallAction() const
@@ -135,4 +159,9 @@ const QList<QAction *> &PeopleActions::getBlindTransferActions() const
 const QList<QAction *> &PeopleActions::getCallCallableActions() const
 {
     return this->m_call_callable_actions;
+}
+
+const QList<QAction *> &PeopleActions::getMailtoActions() const
+{
+    return this->m_mailto_actions;
 }

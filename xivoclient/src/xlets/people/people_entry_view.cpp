@@ -80,6 +80,10 @@ void PeopleEntryView::updateColumnsVisibility(const QModelIndex &, int first, in
                 this->hideColumn(column_index);
                 break;
             }
+            case EMAIL: {
+                this->hideColumn(column_index);
+                break;
+            }
         }
     }
 }
