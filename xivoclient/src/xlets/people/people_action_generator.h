@@ -26,6 +26,8 @@
 class PeopleEntryModel;
 class PeopleEntryView;
 
+typedef QPair<QString, QString> QStringPair;
+
 class CallAction: public QAction
 {
     Q_OBJECT
@@ -40,6 +42,7 @@ class CallAction: public QAction
 class PeopleActionGenerator: public QObject
 {
     Q_OBJECT
+
     public:
         PeopleActionGenerator(PeopleEntryModel *model, PeopleEntryView *parent);
         virtual ~PeopleActionGenerator();
@@ -50,7 +53,7 @@ class PeopleActionGenerator: public QObject
         QList<QAction *> newAttendedTransferActions();
         QList<QAction *> newBlindTransferActions();
 
-        bool hasCallCallables() const;
+        bool hasCallCallables(const QModelIndex &index);
         bool hasChat() const;
         bool hasTransfers() const;
 
@@ -68,6 +71,7 @@ class PeopleActionGenerator: public QObject
         QVariant dataAt(const QModelIndex &index, int column);
         QVariant headerAt(int column);
         QString formatColumnNumber(const QString &title, const QString &number) const;
+        QList<QStringPair> callableTitleNumber(const QModelIndex &index);
         QWidget *parent();
 
         PeopleEntryModel *m_people_entry_model;

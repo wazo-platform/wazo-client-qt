@@ -103,19 +103,31 @@ QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
     return new CallAction(tr("Call"), number, parent());
 }
 
-QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
+QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex &index)
 {
-    QList<QAction*> actions;
-
+    QList<QStringPair> pairs;
     foreach (int column, m_callable_column_indices) {
         const QString &number = dataAt(index, column).toString();
         const QString &header = headerAt(column).toString();
         if (number.isEmpty()) {
             continue;
         }
-        actions.append(new CallAction(formatColumnNumber(header, number), number, parent()));
+        pairs.append(QStringPair(header, number));
     }
+    return pairs;
+}
 
+bool PeopleActionGenerator::hasCallCallables(const QModelIndex &index)
+{
+    return !callableTitleNumber(index).isEmpty();
+}
+
+QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
+{
+    QList<QAction*> actions;
+    foreach (QStringPair pair, callableTitleNumber(index)) {
+        actions.append(new CallAction(formatColumnNumber(pair.first, pair.second), pair.second, parent()));
+    }
     return actions;
 }
 

@@ -50,7 +50,6 @@ class PeopleActions: public QObject
         QList<QAction *> newAttendedTransferActions(QWidget *parent) const;
         QList<QAction *> newBlindTransferActions(QWidget *parent) const;
         QList<QAction *> getMailtoActions(QWidget *parent) const;
-        bool hasCallCallables() const;
         bool hasChat() const;
         bool hasTransfers() const;
         void setCallNumber(const QString &title, const QString &number, bool can_transfer);

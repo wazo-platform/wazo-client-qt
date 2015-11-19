@@ -133,7 +133,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
         PeopleActions people_actions = index.data(NUMBER_ROLE).value<PeopleActions>();
-        if (this->shouldShowActionSelectorRect(people_actions)) {
+        if (this->shouldShowActionSelectorRect(people_actions, index)) {
             QRect selector_rect = this->actionSelectorRect(option.rect);
 
             QRect separator_rect(selector_rect);
@@ -155,11 +155,11 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
     PeopleEntryDotDelegate::paint(painter, option, index);
 }
 
-bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(PeopleActions &people_actions) const
+bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(PeopleActions &people_actions, const QModelIndex &index) const
 {
     bool has_mailto_actions = !people_actions.getMailtoActions().empty();
 
-    return people_actions.hasCallCallables()
+    return m_people_action_generator->hasCallCallables(index)
         || people_actions.hasChat()
         || people_actions.hasTransfers()
         || has_mailto_actions;

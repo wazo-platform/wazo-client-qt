@@ -81,11 +81,12 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
         QRect actionSelectorRect(const QRect &option_rect) const;
         void fillContextMenu(QPointer<Menu> menu,
                              PeopleActions *people_actions,
-			     const QModelIndex &index);
+                             const QModelIndex &index);
         void showContextMenu(const QStyleOptionViewItem &option,
                              PeopleActions *people_actions,
-			     const QModelIndex &index);
-        bool shouldShowActionSelectorRect(PeopleActions &people_actions) const;
+                             const QModelIndex &index);
+        bool shouldShowActionSelectorRect(PeopleActions &people_actions,
+                                          const QModelIndex &index) const;
         void addTransferSubmenu(QPointer<Menu> menu,
                                 const QString &title,
                                 QList<QAction *> transfer_actions);

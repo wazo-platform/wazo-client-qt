@@ -129,11 +129,6 @@ const QList<QAction *> PeopleActions::getMailtoActions(QWidget *parent) const
     return actions;
 }
 
-bool PeopleActions::hasCallCallables() const
-{
-    return m_call_callable_destinations.isEmpty() == false;
-};
-
 bool PeopleActions::hasChat() const
 {
     return m_chat_destination.isEmpty() == false;
