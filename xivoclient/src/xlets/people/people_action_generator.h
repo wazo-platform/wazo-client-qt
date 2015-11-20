@@ -28,6 +28,18 @@ class PeopleEntryView;
 
 typedef QPair<QString, QString> QStringPair;
 
+class BlindTransferAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        BlindTransferAction(const QString &title, const QString &number, QWidget *parent);
+    public slots:
+        void transfer();
+    private:
+        QString m_number;
+};
+
 class CallAction: public QAction
 {
     Q_OBJECT
@@ -54,11 +66,11 @@ class PeopleActionGenerator: public QObject
         QAction *newChatAction();
         QList<QAction *> newCallCallableActions(const QModelIndex &index);
         QList<QAction *> newAttendedTransferActions();
-        QList<QAction *> newBlindTransferActions();
+        QList<QAction *> newBlindTransferActions(const QModelIndex &index);
 
         bool hasCallCallables(const QModelIndex &index);
-        bool hasChat() const;
-        bool hasTransfers() const;
+        bool hasChat();
+        bool hasTransfers();
 
     public slots:
         void chat() {};
@@ -67,13 +79,13 @@ class PeopleActionGenerator: public QObject
 
     private:
         PeopleActionGenerator() {};
-        PeopleEntryModel *model() const;
+        PeopleEntryModel *model();
         int findColumnOfType(ColumnType type);
         QList<int> findAllColumnOfType(ColumnType type);
         QList<int> columnTypes();
         QVariant dataAt(const QModelIndex &index, int column);
         QVariant headerAt(int column);
-        QString formatColumnNumber(const QString &title, const QString &number) const;
+        QList<QStringPair> allTitleNumber(const QModelIndex &index);
         QList<QStringPair> callableTitleNumber(const QModelIndex &index);
         QWidget *parent();
 
@@ -82,5 +94,7 @@ class PeopleActionGenerator: public QObject
         QList<int> m_callable_column_indices;
         int m_number_column_index;
 };
+
+QString formatColumnNumber(const QString &title, const QString &number);
 
 #endif

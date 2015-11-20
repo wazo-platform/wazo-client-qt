@@ -48,7 +48,6 @@ class PeopleActions: public QObject
         PeopleActions(const PeopleActions &other);
         QAction *newChatAction(QWidget *parent) const;
         QList<QAction *> newAttendedTransferActions(QWidget *parent) const;
-        QList<QAction *> newBlindTransferActions(QWidget *parent) const;
         QList<QAction *> getMailtoActions(QWidget *parent) const;
         bool hasChat() const;
         bool hasTransfers() const;
@@ -60,12 +59,10 @@ class PeopleActions: public QObject
     public slots:
         void chat();
         void attendedTransfer();
-        void blindTransfer();
         void mailto();
 
     private:
         QList<QStringPair> m_call_callable_destinations;
-        QList<QStringPair> m_blind_transfer_destinations;
         QList<QStringPair> m_attended_transfer_destinations;
         QList<QStringPair> m_mailto_destinations;
         QString m_call_destination;

@@ -41,7 +41,7 @@ QWidget *PeopleActionGenerator::parent()
     return reinterpret_cast<QWidget*>(QObject::parent());
 }
 
-PeopleEntryModel *PeopleActionGenerator::model() const
+PeopleEntryModel *PeopleActionGenerator::model()
 {
     return m_people_entry_model;
 }
@@ -85,9 +85,15 @@ QVariant PeopleActionGenerator::dataAt(const QModelIndex &index, int column)
     return model()->data(cell, Qt::DisplayRole);
 }
 
-QString PeopleActionGenerator::formatColumnNumber(const QString &title, const QString &number) const
+QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex &index)
 {
-    return QString("%1 - %2").arg(title).arg(number);
+    QList<QAction*> actions;
+
+    foreach (const QStringPair &pair, allTitleNumber(index)) {
+        actions.append(new BlindTransferAction(pair.first, pair.second, parent()));
+    }
+
+    return actions;
 }
 
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
@@ -101,6 +107,26 @@ QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
     }
 
     return new CallAction(number, parent());
+}
+
+QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
+{
+    QList<QAction*> actions;
+    foreach (const QStringPair &pair, callableTitleNumber(index)) {
+        actions.append(new CallAction(formatColumnNumber(pair.first, pair.second), pair.second, parent()));
+    }
+    return actions;
+}
+
+QList<QStringPair> PeopleActionGenerator::allTitleNumber(const QModelIndex &index)
+{
+    const QString &main_number = dataAt(index, m_number_column_index).toString();
+    const QString &main_title = headerAt(m_number_column_index).toString();
+    QList<QStringPair> pairs = callableTitleNumber(index);
+    if (main_number.isEmpty() == false) {
+        pairs.prepend(QStringPair(main_title, main_number));
+    }
+    return pairs;
 }
 
 QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex &index)
@@ -122,15 +148,6 @@ bool PeopleActionGenerator::hasCallCallables(const QModelIndex &index)
     return !callableTitleNumber(index).isEmpty();
 }
 
-QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
-{
-    QList<QAction*> actions;
-    foreach (QStringPair pair, callableTitleNumber(index)) {
-        actions.append(new CallAction(formatColumnNumber(pair.first, pair.second), pair.second, parent()));
-    }
-    return actions;
-}
-
 CallAction::CallAction(const QString &number, QWidget *parent)
     : QAction(tr("Call"), parent),
       m_number(number)
@@ -148,4 +165,21 @@ CallAction::CallAction(const QString &text, const QString &number, QWidget *pare
 void CallAction::call()
 {
     b_engine->sendJsonCommand(MessageFactory::dial(m_number));
+}
+
+BlindTransferAction::BlindTransferAction(const QString &title, const QString &number, QWidget *parent)
+    : QAction(formatColumnNumber(title, number), parent),
+      m_number(number)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(transfer()));
+}
+
+void BlindTransferAction::transfer()
+{
+    b_engine->sendJsonCommand(MessageFactory::directTransfer(m_number));
+}
+
+QString formatColumnNumber(const QString &title, const QString &number)
+{
+    return QString("%1 - %2").arg(title).arg(number);
 }

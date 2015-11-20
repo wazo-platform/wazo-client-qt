@@ -41,7 +41,6 @@ PeopleActions::PeopleActions()
 PeopleActions::PeopleActions(const PeopleActions &other)
     : QObject(0),
       m_call_callable_destinations(other.m_call_callable_destinations),
-      m_blind_transfer_destinations(other.m_blind_transfer_destinations),
       m_attended_transfer_destinations(other.m_attended_transfer_destinations),
       m_mailto_destinations(other.m_mailto_destinations),
       m_call_destination(other.m_call_destination),
@@ -52,12 +51,6 @@ void PeopleActions::attendedTransfer()
 {
     const QString &number = static_cast<QAction*>(sender())->data().toString();
     b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
-}
-
-void PeopleActions::blindTransfer()
-{
-    const QString &number = static_cast<QAction*>(sender())->data().toString();
-    b_engine->sendJsonCommand(MessageFactory::directTransfer(number));
 }
 
 void PeopleActions::mailto()
@@ -102,20 +95,6 @@ QList<QAction *> PeopleActions::newAttendedTransferActions(QWidget *parent) cons
     return actions;
 }
 
-QList<QAction *> PeopleActions::newBlindTransferActions(QWidget *parent) const
-{
-    QList<QAction*> actions;
-
-    foreach (const QStringPair &label_number, m_blind_transfer_destinations) {
-        QAction *action = new QAction(label_number.first, parent);
-        action->setData(label_number.second);
-        connect(action, SIGNAL(triggered()), this, SLOT(blindTransfer()));
-        actions.append(action);
-    }
-
-    return actions;
-}
-
 const QList<QAction *> PeopleActions::getMailtoActions(QWidget *parent) const
 {
     QList<QAction *> actions;
@@ -136,8 +115,7 @@ bool PeopleActions::hasChat() const
 
 bool PeopleActions::hasTransfers() const
 {
-    return m_blind_transfer_destinations.isEmpty() == false
-        || m_attended_transfer_destinations.isEmpty() == false;
+    return m_attended_transfer_destinations.isEmpty() == false;
 }
 
 void PeopleActions::setCallNumber(const QString &title, const QString &number, bool can_transfer)
@@ -149,7 +127,6 @@ void PeopleActions::setCallNumber(const QString &title, const QString &number, b
     if (can_transfer) {
         QString label = QString("%1 - %2").arg(title).arg(number);
         QStringPair pair(label, number);
-        m_blind_transfer_destinations.append(pair);
         m_attended_transfer_destinations.append(pair);
     }
 }
@@ -163,7 +140,6 @@ void PeopleActions::setExtraNumber(const QString &title, const QString &number, 
     QStringPair pair(label, number);
     m_call_callable_destinations.append(pair);
     if (can_transfer) {
-        m_blind_transfer_destinations.append(pair);
         m_attended_transfer_destinations.append(pair);
     }
 }
