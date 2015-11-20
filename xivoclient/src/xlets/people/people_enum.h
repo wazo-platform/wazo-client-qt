@@ -46,7 +46,8 @@ enum UserRoleCustom {
     NUMBER_ROLE = Qt::UserRole,
     INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
     UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2,
-    SORT_FILTER_ROLE = Qt::UserRole + 3
+    SORT_FILTER_ROLE = Qt::UserRole + 3,
+    USER_ID_ROLE = Qt::UserRole + 4,
 };
 
 enum PeopleMode {

@@ -182,16 +182,13 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
     }
     if (event->type() == QEvent::MouseButtonRelease) {
         this->pressed = false;
-
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        PeopleActions people_actions(model->data(index, NUMBER_ROLE).value<PeopleActions>());
-
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
             if (QAction *call_action = m_people_action_generator->newCallAction(index)) {
                 call_action->trigger();
             }
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
-            this->showContextMenu(option, &people_actions, index);
+            this->showContextMenu(option, index);
         }
     }
     return true;
@@ -220,7 +217,6 @@ QRect PeopleEntryNumberDelegate::actionSelectorRect(const QRect &option_rect) co
 }
 
 void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &option,
-                                                PeopleActions *people_actions,
                                                 const QModelIndex &index)
 {
     QAbstractScrollArea *view = static_cast<QAbstractScrollArea*>(option.styleObject);
@@ -232,16 +228,14 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
     QPoint globalPosition = view->viewport()->mapToGlobal(position);
 
     QPointer<Menu> menu = new Menu(view);
-    this->fillContextMenu(menu, people_actions, index);
+    this->fillContextMenu(menu, index);
     if (! menu->isEmpty()) {
         menu->exec(globalPosition);
     }
     delete menu;
 }
 
-void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
-                                                PeopleActions *people_actions,
-                                                const QModelIndex &index)
+void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QModelIndex &index)
 {
     menu->addActions(people_actions->getMailtoActions(menu));
     menu->addActions(m_people_action_generator->newCallCallableActions(index));
@@ -249,7 +243,7 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
                              m_people_action_generator->newBlindTransferActions(index));
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
                              m_people_action_generator->newAttendedTransferActions(index));
-    if (QAction *chat_action = people_actions->newChatAction(menu)) {
+    if (QAction *chat_action = m_people_action_generator->newChatAction(index)) {
         menu->addAction(chat_action);
     }
 }

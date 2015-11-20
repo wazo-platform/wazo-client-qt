@@ -61,11 +61,24 @@ class CallAction: public QAction
     public:
         CallAction(const QString &number, QWidget *parent);
         CallAction(const QString &text, const QString &number, QWidget *parent);
-        virtual ~CallAction() {};
     public slots:
         void call();
     private:
         QString m_number;
+};
+
+class ChatAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        ChatAction(const QString &name, const QString &xivo_uuid, int user_id, QWidget *parent);
+    public slots:
+        void chat();
+    private:
+        QString m_name;
+        QString m_xivo_uuid;
+        int m_user_id;
 };
 
 class PeopleActionGenerator: public QObject, IPBXListener
@@ -77,7 +90,7 @@ class PeopleActionGenerator: public QObject, IPBXListener
         virtual ~PeopleActionGenerator();
 
         QAction *newCallAction(const QModelIndex &index);
-        QAction *newChatAction();
+        QAction *newChatAction(const QModelIndex &index);
         QList<QAction *> newCallCallableActions(const QModelIndex &index);
         QList<QAction *> newAttendedTransferActions(const QModelIndex &index);
         QList<QAction *> newBlindTransferActions(const QModelIndex &index);

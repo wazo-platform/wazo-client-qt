@@ -18,6 +18,8 @@
 #include <baseengine.h>
 #include <message_factory.h>
 
+#include "xletlib/chitchat.h"
+
 #include "people_entry_view.h"
 #include "people_action_generator.h"
 
@@ -33,7 +35,6 @@ PeopleActionGenerator::PeopleActionGenerator(PeopleEntryModel *model, PeopleEntr
 
 PeopleActionGenerator::~PeopleActionGenerator()
 {
-    qDebug() << Q_FUNC_INFO;
 }
 
 QWidget *PeopleActionGenerator::parent()
@@ -144,6 +145,13 @@ QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
     return new CallAction(number, parent());
 }
 
+QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
+{
+    const QString &name = dataAt(index, findColumnOfType(NAME)).toString();
+    const QVariantList id = model()->data(index, USER_ID_ROLE).toList();
+    return new ChatAction(name, id[0].toString(), id[1].toInt(), parent());
+}
+
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
 {
     QList<QAction*> actions;
@@ -229,6 +237,20 @@ AttendedTransferAction::AttendedTransferAction(const QString &title, const QStri
 void AttendedTransferAction::transfer()
 {
     b_engine->sendJsonCommand(MessageFactory::attendedTransfer(m_number));
+}
+
+ChatAction::ChatAction(const QString &name, const QString &xivo_uuid, int user_id, QWidget *parent)
+    : QAction(tr("Send a message"), parent),
+      m_name(name),
+      m_xivo_uuid(xivo_uuid),
+      m_user_id(user_id)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(chat()));
+}
+
+void ChatAction::chat()
+{
+    chit_chat->writeMessageTo(m_name, m_xivo_uuid, m_user_id);
 }
 
 QString formatColumnNumber(const QString &title, const QString &number)
