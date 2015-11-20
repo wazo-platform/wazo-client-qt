@@ -180,43 +180,32 @@ QList<QAction *> PeopleActionGenerator::newMailtoActions(const QModelIndex &inde
     return actionsFromList<MailToAction>(allTitleEmail(index));
 }
 
-QList<QStringPair> PeopleActionGenerator::allTitleNumber(const QModelIndex &index)
+QList<QStringPair> PeopleActionGenerator::titleValues(ColumnType type, const QModelIndex &index)
 {
-    const QString &main_number = dataAt(index, findColumnOfType(NUMBER)).toString();
-    const QString &main_title = headerAt(findColumnOfType(NUMBER)).toString();
-    QList<QStringPair> pairs = callableTitleNumber(index);
-    if (main_number.isEmpty() == false) {
-        pairs.prepend(QStringPair(main_title, main_number));
+    QList<QStringPair> pairs;
+    foreach (int column, findAllColumnOfType(type)) {
+        const QString &title = headerAt(column).toString();
+        const QString &value = dataAt(index, column).toString();
+        if (!value.isEmpty()) {
+            pairs.append(QStringPair(title, value));
+        }
     }
     return pairs;
+}
+
+QList<QStringPair> PeopleActionGenerator::allTitleNumber(const QModelIndex &index)
+{
+    return QList<QStringPair>() << titleValues(NUMBER, index) << titleValues(CALLABLE, index);
 }
 
 QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex &index)
 {
-    QList<QStringPair> pairs;
-    foreach (int column, findAllColumnOfType(CALLABLE)) {
-        const QString &number = dataAt(index, column).toString();
-        const QString &header = headerAt(column).toString();
-        if (number.isEmpty()) {
-            continue;
-        }
-        pairs.append(QStringPair(header, number));
-    }
-    return pairs;
+    return titleValues(CALLABLE, index);
 }
 
 QList<QStringPair> PeopleActionGenerator::allTitleEmail(const QModelIndex &index)
 {
-    QList<QStringPair> pairs;
-    foreach (int column, findAllColumnOfType(EMAIL)) {
-        const QString &email = dataAt(index, column).toString();
-        const QString &header = headerAt(column).toString();
-        if (email.isEmpty()) {
-            continue;
-        }
-        pairs.append(QStringPair(header, email));
-    }
-    return pairs;
+    return titleValues(EMAIL, index);
 }
 
 bool PeopleActionGenerator::hasCallCallables(const QModelIndex &index)

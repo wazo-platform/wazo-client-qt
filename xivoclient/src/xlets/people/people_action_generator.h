@@ -124,9 +124,12 @@ class PeopleActionGenerator: public QObject, IPBXListener
         QList<int> columnTypes();
         QVariant dataAt(const QModelIndex &index, int column);
         QVariant headerAt(int column);
+
+        QList<QStringPair> titleValues(ColumnType type, const QModelIndex &index);
         QList<QStringPair> allTitleNumber(const QModelIndex &index);
         QList<QStringPair> allTitleEmail(const QModelIndex &index);
         QList<QStringPair> callableTitleNumber(const QModelIndex &index);
+
         QWidget *parent();
         bool canTransfer() const;
         bool isConnected(const QModelIndex &index);
@@ -141,8 +144,6 @@ class PeopleActionGenerator: public QObject, IPBXListener
             }
             return actions;
         }
-
-
 
         PeopleEntryModel *m_people_entry_model;
 
