@@ -21,9 +21,11 @@
 #include <QObject>
 #include <QList>
 
+#include <ipbxlistener.h>
+
+#include "people_entry_model.h"
 #include "people_enum.h"
 
-class PeopleEntryModel;
 class PeopleEntryView;
 
 typedef QPair<QString, QString> QStringPair;
@@ -66,7 +68,7 @@ class CallAction: public QAction
         QString m_number;
 };
 
-class PeopleActionGenerator: public QObject
+class PeopleActionGenerator: public QObject, IPBXListener
 {
     Q_OBJECT
 
@@ -86,8 +88,7 @@ class PeopleActionGenerator: public QObject
 
     public slots:
         void chat() {};
-        void attendedTransfer() {};
-        void blindTransfer() {};
+        void parseCommand(const QVariantMap &command);
 
     private:
         PeopleActionGenerator() {};
@@ -103,8 +104,8 @@ class PeopleActionGenerator: public QObject
 
         PeopleEntryModel *m_people_entry_model;
 
-        QList<int> m_callable_column_indices;
-        int m_number_column_index;
+        RelationID m_endpoint_id;
+        int m_endpoint_status;
 };
 
 QString formatColumnNumber(const QString &title, const QString &number);

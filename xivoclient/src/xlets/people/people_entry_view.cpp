@@ -40,6 +40,16 @@ PeopleEntryView::PeopleEntryView(QWidget *parent)
     this->viewport()->setAttribute(Qt::WA_Hover);
 }
 
+void PeopleEntryView::setModel(QAbstractItemModel *model)
+{
+    qDebug() << Q_FUNC_INFO;
+    AbstractTableView::setModel(model);
+    if (m_generator) {
+        delete m_generator;
+    }
+    m_generator = new PeopleActionGenerator(reinterpret_cast<PeopleEntryModel*>(model), this);
+}
+
 void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int last)
 {
     for (int column_index = first ; column_index <= last ; column_index ++) {
@@ -51,7 +61,7 @@ void PeopleEntryView::updateColumnsDelegates(const QModelIndex &, int first, int
                 break;
             }
             case NUMBER: {
-                PeopleEntryNumberDelegate *delegate = new PeopleEntryNumberDelegate(generator(), this);
+                PeopleEntryNumberDelegate *delegate = new PeopleEntryNumberDelegate(m_generator, this);
                 this->setItemDelegateForColumn(column_index, delegate);
                 break;
             }
@@ -97,14 +107,4 @@ void PeopleEntryView::onViewClick(const QModelIndex &index)
         const QVariantMap &unique_source_entry_id = index.data(UNIQUE_SOURCE_ID_ROLE).toMap();
         emit favoriteToggled(unique_source_entry_id);
     }
-}
-
-
-PeopleActionGenerator *PeopleEntryView::generator()
-{
-    if (m_generator == NULL) {
-        m_generator = new PeopleActionGenerator(reinterpret_cast<PeopleEntryModel*>(model()), this);
-    }
-
-    return m_generator;
 }

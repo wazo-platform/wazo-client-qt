@@ -43,11 +43,12 @@
 #include "people_enum.h"
 #include "people_entry.h"
 
+typedef QPair<QString, int> RelationID;
+
 class PeopleEntryModel : public AbstractTableModel
 {
     Q_OBJECT
 
-    typedef QPair<QString, int> RelationID;
     typedef QPair<QString, QString> RelationSourceID;
 
     public:

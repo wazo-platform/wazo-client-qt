@@ -41,6 +41,7 @@ class PeopleEntryView : public AbstractTableView
 
     public:
         PeopleEntryView(QWidget *parent = NULL);
+        virtual void setModel(QAbstractItemModel *model);
 
     signals:
         void favoriteToggled(const QVariantMap &unique_source_entry_id);

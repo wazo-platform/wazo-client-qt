@@ -18,17 +18,17 @@
 #include <baseengine.h>
 #include <message_factory.h>
 
-#include "people_entry_model.h"
 #include "people_entry_view.h"
 #include "people_action_generator.h"
+
+#define IN_USE 1
 
 PeopleActionGenerator::PeopleActionGenerator(PeopleEntryModel *model, PeopleEntryView *parent)
     : QObject(parent),
       m_people_entry_model(model)
 {
-    qDebug() << Q_FUNC_INFO;
-    m_number_column_index = this->findColumnOfType(NUMBER);
-    m_callable_column_indices = this->findAllColumnOfType(CALLABLE);
+    this->registerListener("relations");
+    this->registerListener("endpoint_status_update");
 }
 
 PeopleActionGenerator::~PeopleActionGenerator()
@@ -44,6 +44,19 @@ QWidget *PeopleActionGenerator::parent()
 PeopleEntryModel *PeopleActionGenerator::model()
 {
     return m_people_entry_model;
+}
+
+void PeopleActionGenerator::parseCommand(const QVariantMap &command)
+{
+    const QString &event = command["class"].toString();
+    const QVariantMap &data = command["data"].toMap();
+
+    RelationID id(data["xivo_uuid"].toString(), data["endpoint_id"].toInt());
+    if (event == "relations") {
+        m_endpoint_id = id;
+    } else if (id == m_endpoint_id) {
+        m_endpoint_status = data["status"].toInt();
+    }
 }
 
 QList<int> PeopleActionGenerator::columnTypes()
@@ -88,6 +101,9 @@ QVariant PeopleActionGenerator::dataAt(const QModelIndex &index, int column)
 QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex &index)
 {
     QList<QAction*> actions;
+    if (m_endpoint_status != IN_USE) {
+        return actions;
+    }
 
     foreach (const QStringPair &pair, allTitleNumber(index)) {
         actions.append(new BlindTransferAction(pair.first, pair.second, parent()));
@@ -99,6 +115,9 @@ QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex
 QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIndex &index)
 {
     QList<QAction*> actions;
+    if (m_endpoint_status != IN_USE) {
+        return actions;
+    }
 
     foreach (const QStringPair &pair, allTitleNumber(index)) {
         actions.append(new AttendedTransferAction(pair.first, pair.second, parent()));
@@ -109,10 +128,10 @@ QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIn
 
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
 {
-    if (m_number_column_index == -1) {
+    if (findColumnOfType(NUMBER) == -1) {
         return NULL;
     }
-    const QString &number = dataAt(index, m_number_column_index).toString();
+    const QString &number = dataAt(index, findColumnOfType(NUMBER)).toString();
     if (number.isEmpty()) {
         return NULL;
     }
@@ -131,8 +150,8 @@ QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex
 
 QList<QStringPair> PeopleActionGenerator::allTitleNumber(const QModelIndex &index)
 {
-    const QString &main_number = dataAt(index, m_number_column_index).toString();
-    const QString &main_title = headerAt(m_number_column_index).toString();
+    const QString &main_number = dataAt(index, findColumnOfType(NUMBER)).toString();
+    const QString &main_title = headerAt(findColumnOfType(NUMBER)).toString();
     QList<QStringPair> pairs = callableTitleNumber(index);
     if (main_number.isEmpty() == false) {
         pairs.prepend(QStringPair(main_title, main_number));
@@ -143,7 +162,7 @@ QList<QStringPair> PeopleActionGenerator::allTitleNumber(const QModelIndex &inde
 QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex &index)
 {
     QList<QStringPair> pairs;
-    foreach (int column, m_callable_column_indices) {
+    foreach (int column, findAllColumnOfType(CALLABLE)) {
         const QString &number = dataAt(index, column).toString();
         const QString &header = headerAt(column).toString();
         if (number.isEmpty()) {
