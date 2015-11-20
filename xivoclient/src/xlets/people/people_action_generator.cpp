@@ -96,6 +96,17 @@ QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex
     return actions;
 }
 
+QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIndex &index)
+{
+    QList<QAction*> actions;
+
+    foreach (const QStringPair &pair, allTitleNumber(index)) {
+        actions.append(new AttendedTransferAction(pair.first, pair.second, parent()));
+    }
+
+    return actions;
+}
+
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
 {
     if (m_number_column_index == -1) {
@@ -177,6 +188,18 @@ BlindTransferAction::BlindTransferAction(const QString &title, const QString &nu
 void BlindTransferAction::transfer()
 {
     b_engine->sendJsonCommand(MessageFactory::directTransfer(m_number));
+}
+
+AttendedTransferAction::AttendedTransferAction(const QString &title, const QString &number, QWidget *parent)
+    : QAction(formatColumnNumber(title, number), parent),
+      m_number(number)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(transfer()));
+}
+
+void AttendedTransferAction::transfer()
+{
+    b_engine->sendJsonCommand(MessageFactory::attendedTransfer(m_number));
 }
 
 QString formatColumnNumber(const QString &title, const QString &number)

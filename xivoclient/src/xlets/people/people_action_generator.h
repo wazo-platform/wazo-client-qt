@@ -28,6 +28,18 @@ class PeopleEntryView;
 
 typedef QPair<QString, QString> QStringPair;
 
+class AttendedTransferAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        AttendedTransferAction(const QString &title, const QString &number, QWidget *parent);
+    public slots:
+        void transfer();
+    private:
+        QString m_number;
+};
+
 class BlindTransferAction: public QAction
 {
     Q_OBJECT
@@ -65,7 +77,7 @@ class PeopleActionGenerator: public QObject
         QAction *newCallAction(const QModelIndex &index);
         QAction *newChatAction();
         QList<QAction *> newCallCallableActions(const QModelIndex &index);
-        QList<QAction *> newAttendedTransferActions();
+        QList<QAction *> newAttendedTransferActions(const QModelIndex &index);
         QList<QAction *> newBlindTransferActions(const QModelIndex &index);
 
         bool hasCallCallables(const QModelIndex &index);
