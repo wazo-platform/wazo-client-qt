@@ -92,7 +92,6 @@ class People: public XLet, public IPBXListener
         void openEditContactDialog(const QString &source_name,
                                    const QString &source_entry_id,
                                    const QVariantMap &contact_infos);
-        void onInitialized();
 
     private:
         void parseRelations(const QVariantMap &result) const;

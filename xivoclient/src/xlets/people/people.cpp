@@ -97,8 +97,6 @@ People::People(QWidget *parent)
             this, SLOT(requestExportPersonalContacts()));
     connect(this->ui.purge_contacts_button, SIGNAL(clicked()),
             this, SLOT(purgePersonalContacts()));
-    connect(b_engine, SIGNAL(initialized()),
-            this, SLOT(onInitialized()));
 
     connect(&m_lookup_timer, SIGNAL(timeout()),
             this, SLOT(searchPeople()));
@@ -473,18 +471,6 @@ void People::openEditContactDialog(const QString &source_name,
 
     contact_dialog->setAttribute(Qt::WA_DeleteOnClose);
     contact_dialog->show();
-}
-
-void People::onInitialized()
-{
-    const UserInfo *user = b_engine->getXivoClientUser();
-    if (!user) {
-        qDebug() << Q_FUNC_INFO << "failed to initialize the id and uuid of the current user";
-        return;
-    }
-
-    m_model->setXivoUUID(user->xivoUuid());
-    m_model->setUserID(user->id().toInt());
 }
 
 void People::sendEditPersonalContact(const QString &source_name,

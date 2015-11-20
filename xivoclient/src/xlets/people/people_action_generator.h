@@ -81,6 +81,18 @@ class ChatAction: public QAction
         int m_user_id;
 };
 
+class MailToAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        MailToAction(const QString &title, const QString &email, QWidget *parent);
+    public slots:
+        void mailto();
+    private:
+        QString m_email;
+};
+
 class PeopleActionGenerator: public QObject, IPBXListener
 {
     Q_OBJECT
@@ -94,13 +106,14 @@ class PeopleActionGenerator: public QObject, IPBXListener
         QList<QAction *> newCallCallableActions(const QModelIndex &index);
         QList<QAction *> newAttendedTransferActions(const QModelIndex &index);
         QList<QAction *> newBlindTransferActions(const QModelIndex &index);
+        QList<QAction *> newMailtoActions(const QModelIndex &index);
 
         bool hasCallCallables(const QModelIndex &index);
-        bool hasChat();
+        bool hasChat(const QModelIndex &index);
         bool hasTransfers(const QModelIndex &index);
+        bool hasMail(const QModelIndex &index);
 
     public slots:
-        void chat() {};
         void parseCommand(const QVariantMap &command);
 
     private:
@@ -112,12 +125,17 @@ class PeopleActionGenerator: public QObject, IPBXListener
         QVariant dataAt(const QModelIndex &index, int column);
         QVariant headerAt(int column);
         QList<QStringPair> allTitleNumber(const QModelIndex &index);
+        QList<QStringPair> allTitleEmail(const QModelIndex &index);
         QList<QStringPair> callableTitleNumber(const QModelIndex &index);
         QWidget *parent();
         bool canTransfer() const;
+        bool isConnected(const QModelIndex &index);
+        bool isSelf(const QModelIndex &index);
+        bool sameXivo(const QModelIndex &index);
 
         PeopleEntryModel *m_people_entry_model;
 
+        RelationID m_user_id;
         RelationID m_endpoint_id;
         int m_endpoint_status;
 };

@@ -56,10 +56,12 @@ void PeopleActionGenerator::parseCommand(const QVariantMap &command)
 {
     const QString &event = command["class"].toString();
     const QVariantMap &data = command["data"].toMap();
+    const QString &xivo_uuid = data["xivo_uuid"].toString();
+    RelationID id(xivo_uuid, data["endpoint_id"].toInt());
 
-    RelationID id(data["xivo_uuid"].toString(), data["endpoint_id"].toInt());
     if (event == "relations") {
         m_endpoint_id = id;
+        m_user_id = RelationID(xivo_uuid, data["user_id"].toInt());
     } else if (id == m_endpoint_id) {
         m_endpoint_status = data["status"].toInt();
     }
@@ -145,10 +147,33 @@ QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
     return new CallAction(number, parent());
 }
 
+bool PeopleActionGenerator::isConnected(const QModelIndex &index)
+{
+    const QString &status = model()->data(index, USER_STATUS_ROLE).toString();
+    return status != "" && status != "disconnected";
+}
+
+bool PeopleActionGenerator::isSelf(const QModelIndex &index)
+{
+    const QVariantList &id = model()->data(index, USER_ID_ROLE).toList();
+    return RelationID(id[0].toString(), id[1].toInt()) == m_user_id;
+}
+
+bool PeopleActionGenerator::sameXivo(const QModelIndex &index)
+{
+    const QVariantList &id = model()->data(index, USER_ID_ROLE).toList();
+    return id[0].toString() == m_user_id.first;
+}
+
 QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
 {
+    if (!hasChat(index)) {
+        return NULL;
+    }
+
+    const QVariantList &id = model()->data(index, USER_ID_ROLE).toList();
     const QString &name = dataAt(index, findColumnOfType(NAME)).toString();
-    const QVariantList id = model()->data(index, USER_ID_ROLE).toList();
+
     return new ChatAction(name, id[0].toString(), id[1].toInt(), parent());
 }
 
@@ -157,6 +182,15 @@ QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex
     QList<QAction*> actions;
     foreach (const QStringPair &pair, callableTitleNumber(index)) {
         actions.append(new CallAction(formatColumnNumber(pair.first, pair.second), pair.second, parent()));
+    }
+    return actions;
+}
+
+QList<QAction *> PeopleActionGenerator::newMailtoActions(const QModelIndex &index)
+{
+    QList<QAction*> actions;
+    foreach (const QStringPair &pair, allTitleEmail(index)) {
+        actions.append(new MailToAction(pair.first, pair.second, parent()));
     }
     return actions;
 }
@@ -186,9 +220,33 @@ QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex 
     return pairs;
 }
 
+QList<QStringPair> PeopleActionGenerator::allTitleEmail(const QModelIndex &index)
+{
+    QList<QStringPair> pairs;
+    foreach (int column, findAllColumnOfType(EMAIL)) {
+        const QString &email = dataAt(index, column).toString();
+        const QString &header = headerAt(column).toString();
+        if (email.isEmpty()) {
+            continue;
+        }
+        pairs.append(QStringPair(header, email));
+    }
+    return pairs;
+}
+
 bool PeopleActionGenerator::hasCallCallables(const QModelIndex &index)
 {
     return !callableTitleNumber(index).isEmpty();
+}
+
+bool PeopleActionGenerator::hasChat(const QModelIndex &index)
+{
+    return isConnected(index) && !isSelf(index) && sameXivo(index);
+}
+
+bool PeopleActionGenerator::hasMail(const QModelIndex &index)
+{
+    return !allTitleEmail(index).isEmpty();
 }
 
 bool PeopleActionGenerator::hasTransfers(const QModelIndex &index)
@@ -251,6 +309,18 @@ ChatAction::ChatAction(const QString &name, const QString &xivo_uuid, int user_i
 void ChatAction::chat()
 {
     chit_chat->writeMessageTo(m_name, m_xivo_uuid, m_user_id);
+}
+
+MailToAction::MailToAction(const QString &title, const QString &email, QWidget *parent)
+    : QAction(formatColumnNumber(title, email), parent),
+      m_email(email)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(mailto()));
+}
+
+void MailToAction::mailto()
+{
+    QDesktopServices::openUrl(QUrl(QString("mailto:%1").arg(m_email)));
 }
 
 QString formatColumnNumber(const QString &title, const QString &number)

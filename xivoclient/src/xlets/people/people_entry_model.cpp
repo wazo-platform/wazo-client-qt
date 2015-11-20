@@ -35,7 +35,6 @@
 #include <baseengine.h>
 #include <message_factory.h>
 
-#include "people_actions.h"
 #include "people_entry_model.h"
 
 
@@ -120,10 +119,6 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             return entry.data(column);
         }
         break;
-    case NUMBER_ROLE:
-    {
-        return this->dataNumber(entry, column);
-    }
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
@@ -137,6 +132,8 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return this->dataSortFilter(entry, column);
     case USER_ID_ROLE:
         return QVariantList() << entry.xivoUuid() << entry.userId();
+    case USER_STATUS_ROLE:
+        return entry.userStatus();
     default:
         break;
     }
@@ -235,45 +232,6 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int colu
         break;
     }
     return QVariant();
-}
-
-QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) const
-{
-    ColumnType column_type = this->headerType(column);
-
-    switch (column_type) {
-    case NUMBER:
-        return this->getAvailableActions(entry);
-    default:
-        return QVariant();
-    }
-}
-
-QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry) const
-{
-    PeopleActions actions;
-
-    const QList<int> &mailto_indices = m_type_to_indices[EMAIL];
-    foreach(int column, mailto_indices) {
-        const QString &title = this->headerText(column);
-        const QString &email = entry.data(column).toString();
-        actions.setEmail(title, email);
-    }
-
-    const QString &status = entry.userStatus();
-    if (status != "" && status != "disconnected") {
-        foreach (int column, indexesFromType(NAME)) {
-            const QString &name = entry.data(column).toString();
-            const QString &xivo_uuid = entry.xivoUuid();
-            int user_id = entry.userId();
-            if (xivo_uuid != m_xivo_uuid || user_id == m_user_id) {
-                continue;
-            }
-            actions.setChatParams(name, xivo_uuid, user_id);
-            break;
-        }
-    }
-    return QVariant::fromValue(actions);
 }
 
 QVariantList PeopleEntryModel::newIdAsList(const QString &xivo_uuid, int id) const
@@ -501,16 +459,6 @@ void PeopleEntryModel::setEndpoint(const QString &xivo_id, int endpoint_id)
     QVariantList endpoints_to_register;
     endpoints_to_register.push_back(newIdAsList(xivo_id, endpoint_id));
     b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoints_to_register));
-}
-
-void PeopleEntryModel::setXivoUUID(const QString &xivo_uuid)
-{
-    m_xivo_uuid = xivo_uuid;
-}
-
-void PeopleEntryModel::setUserID(int user_id)
-{
-    m_user_id = user_id;
 }
 
 QList<int> PeopleEntryModel::indexesFromType(ColumnType type) const

@@ -35,7 +35,6 @@
 #include <xletlib/menu.h>
 
 
-class PeopleActions;
 class PeopleActionGenerator;
 
 class PeopleEntryDotDelegate : public AbstractItemDelegate
@@ -83,8 +82,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
                              const QModelIndex &index);
         void showContextMenu(const QStyleOptionViewItem &option,
                              const QModelIndex &index);
-        bool shouldShowActionSelectorRect(PeopleActions &people_actions,
-                                          const QModelIndex &index) const;
+        bool shouldShowActionSelectorRect(const QModelIndex &index) const;
         void addTransferSubmenu(QPointer<Menu> menu,
                                 const QString &title,
                                 QList<QAction *> transfer_actions);

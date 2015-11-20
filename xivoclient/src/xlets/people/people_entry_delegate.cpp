@@ -37,7 +37,6 @@
 
 #include "people_action_generator.h"
 #include "people_entry_delegate.h"
-#include "people_actions.h"
 
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
@@ -132,8 +131,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
-        PeopleActions people_actions = index.data(NUMBER_ROLE).value<PeopleActions>();
-        if (this->shouldShowActionSelectorRect(people_actions, index)) {
+        if (this->shouldShowActionSelectorRect(index)) {
             QRect selector_rect = this->actionSelectorRect(option.rect);
 
             QRect separator_rect(selector_rect);
@@ -155,14 +153,12 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
     PeopleEntryDotDelegate::paint(painter, option, index);
 }
 
-bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(PeopleActions &people_actions, const QModelIndex &index) const
+bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const QModelIndex &index) const
 {
-    bool has_mailto_actions = !people_actions.getMailtoActions().empty();
-
     return m_people_action_generator->hasCallCallables(index)
-        || people_actions.hasChat()
         || m_people_action_generator->hasTransfers(index)
-        || has_mailto_actions;
+        || m_people_action_generator->hasChat(index)
+        || m_people_action_generator->hasMail(index);
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
@@ -237,7 +233,7 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
 
 void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QModelIndex &index)
 {
-    menu->addActions(people_actions->getMailtoActions(menu));
+    menu->addActions(m_people_action_generator->newMailtoActions(index));
     menu->addActions(m_people_action_generator->newCallCallableActions(index));
     this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
                              m_people_action_generator->newBlindTransferActions(index));
