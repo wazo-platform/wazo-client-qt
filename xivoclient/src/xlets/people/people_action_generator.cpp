@@ -184,7 +184,7 @@ QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex
 {
     QList<QAction*> actions;
     foreach (const QStringPair &pair, callableTitleNumber(index)) {
-        actions.append(new CallAction(formatColumnNumber(pair.first, pair.second), pair.second, parent()));
+        actions.append(new CallAction(pair.first, pair.second, parent()));
     }
     return actions;
 }
@@ -264,8 +264,8 @@ CallAction::CallAction(const QString &number, QWidget *parent)
     connect(this, SIGNAL(triggered()), this, SLOT(call()));
 }
 
-CallAction::CallAction(const QString &text, const QString &number, QWidget *parent)
-    : QAction(text, parent),
+CallAction::CallAction(const QString &title, const QString &number, QWidget *parent)
+    : QAction(formatColumnNumber(title, number), parent),
       m_number(number)
 {
     connect(this, SIGNAL(triggered()), this, SLOT(call()));
