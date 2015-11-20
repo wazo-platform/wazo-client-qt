@@ -46,6 +46,11 @@ PeopleEntryModel *PeopleActionGenerator::model()
     return m_people_entry_model;
 }
 
+bool PeopleActionGenerator::canTransfer() const
+{
+    return m_endpoint_status == IN_USE;
+}
+
 void PeopleActionGenerator::parseCommand(const QVariantMap &command)
 {
     const QString &event = command["class"].toString();
@@ -101,7 +106,7 @@ QVariant PeopleActionGenerator::dataAt(const QModelIndex &index, int column)
 QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex &index)
 {
     QList<QAction*> actions;
-    if (m_endpoint_status != IN_USE) {
+    if (!canTransfer()) {
         return actions;
     }
 
@@ -115,7 +120,7 @@ QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex
 QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIndex &index)
 {
     QList<QAction*> actions;
-    if (m_endpoint_status != IN_USE) {
+    if (!canTransfer()) {
         return actions;
     }
 
@@ -176,6 +181,11 @@ QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex 
 bool PeopleActionGenerator::hasCallCallables(const QModelIndex &index)
 {
     return !callableTitleNumber(index).isEmpty();
+}
+
+bool PeopleActionGenerator::hasTransfers(const QModelIndex &index)
+{
+    return canTransfer() && !allTitleNumber(index).isEmpty();
 }
 
 CallAction::CallAction(const QString &number, QWidget *parent)

@@ -90,7 +90,7 @@ class PeopleEntryModel : public AbstractTableModel
         void setEndpointStatusFromEndpointId(const RelationID &id, int status);
         void setUserStatusFromUserId(const RelationID &id, const QString &status);
         void setFavoriteStatusFromSourceId(const RelationSourceID &id, bool status);
-        QVariant getAvailableActions(const PeopleEntry &entry, int column) const;
+        QVariant getAvailableActions(const PeopleEntry &entry) const;
         QVariantList newIdAsList(const QString &xivo_uuid, int id) const;
         QList<int> indexesFromType(ColumnType type) const;
 
@@ -102,8 +102,6 @@ class PeopleEntryModel : public AbstractTableModel
         QVector<PeopleEntry> m_people_entries;
         QMap<QString, ColumnType> m_type_map;
         QString m_xivo_uuid;
-        RelationID m_endpoint;
-        int m_endpoint_status;
         int m_user_id;
 };
 

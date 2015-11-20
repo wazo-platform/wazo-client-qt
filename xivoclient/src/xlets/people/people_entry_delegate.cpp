@@ -161,9 +161,8 @@ bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(PeopleActions &peop
 
     return m_people_action_generator->hasCallCallables(index)
         || people_actions.hasChat()
-        || people_actions.hasTransfers()
+        || m_people_action_generator->hasTransfers(index)
         || has_mailto_actions;
-
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,

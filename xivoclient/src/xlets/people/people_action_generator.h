@@ -84,7 +84,7 @@ class PeopleActionGenerator: public QObject, IPBXListener
 
         bool hasCallCallables(const QModelIndex &index);
         bool hasChat();
-        bool hasTransfers();
+        bool hasTransfers(const QModelIndex &index);
 
     public slots:
         void chat() {};
@@ -101,6 +101,7 @@ class PeopleActionGenerator: public QObject, IPBXListener
         QList<QStringPair> allTitleNumber(const QModelIndex &index);
         QList<QStringPair> callableTitleNumber(const QModelIndex &index);
         QWidget *parent();
+        bool canTransfer() const;
 
         PeopleEntryModel *m_people_entry_model;
 

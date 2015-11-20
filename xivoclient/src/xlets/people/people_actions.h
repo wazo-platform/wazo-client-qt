@@ -47,25 +47,17 @@ class PeopleActions: public QObject
         PeopleActions();
         PeopleActions(const PeopleActions &other);
         QAction *newChatAction(QWidget *parent) const;
-        QList<QAction *> newAttendedTransferActions(QWidget *parent) const;
         QList<QAction *> getMailtoActions(QWidget *parent) const;
         bool hasChat() const;
-        bool hasTransfers() const;
-        void setCallNumber(const QString &title, const QString &number, bool can_transfer);
-        void setExtraNumber(const QString &title, const QString &number, bool can_transfer);
         void setChatParams(const QString &name, const QString &xivo_uuid, int user_id);
         void setEmail(const QString &title, const QString &email);
 
     public slots:
         void chat();
-        void attendedTransfer();
         void mailto();
 
     private:
-        QList<QStringPair> m_call_callable_destinations;
-        QList<QStringPair> m_attended_transfer_destinations;
         QList<QStringPair> m_mailto_destinations;
-        QString m_call_destination;
         QVariantList m_chat_destination;
 };
 

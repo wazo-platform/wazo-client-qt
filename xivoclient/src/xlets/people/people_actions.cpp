@@ -40,18 +40,9 @@ PeopleActions::PeopleActions()
 
 PeopleActions::PeopleActions(const PeopleActions &other)
     : QObject(0),
-      m_call_callable_destinations(other.m_call_callable_destinations),
-      m_attended_transfer_destinations(other.m_attended_transfer_destinations),
       m_mailto_destinations(other.m_mailto_destinations),
-      m_call_destination(other.m_call_destination),
       m_chat_destination(other.m_chat_destination)
 {}
-
-void PeopleActions::attendedTransfer()
-{
-    const QString &number = static_cast<QAction*>(sender())->data().toString();
-    b_engine->sendJsonCommand(MessageFactory::attendedTransfer(number));
-}
 
 void PeopleActions::mailto()
 {
@@ -81,20 +72,6 @@ QAction *PeopleActions::newChatAction(QWidget *parent) const
     return action;
 }
 
-QList<QAction *> PeopleActions::newAttendedTransferActions(QWidget *parent) const
-{
-    QList<QAction*> actions;
-
-    foreach (const QStringPair &label_number, m_attended_transfer_destinations) {
-        QAction *action = new QAction(label_number.first, parent);
-        action->setData(label_number.second);
-        connect(action, SIGNAL(triggered()), this, SLOT(attendedTransfer()));
-        actions.append(action);
-    }
-
-    return actions;
-}
-
 const QList<QAction *> PeopleActions::getMailtoActions(QWidget *parent) const
 {
     QList<QAction *> actions;
@@ -111,37 +88,6 @@ const QList<QAction *> PeopleActions::getMailtoActions(QWidget *parent) const
 bool PeopleActions::hasChat() const
 {
     return m_chat_destination.isEmpty() == false;
-}
-
-bool PeopleActions::hasTransfers() const
-{
-    return m_attended_transfer_destinations.isEmpty() == false;
-}
-
-void PeopleActions::setCallNumber(const QString &title, const QString &number, bool can_transfer)
-{
-    if (number.isEmpty()) {
-        return;
-    }
-    m_call_destination = number;
-    if (can_transfer) {
-        QString label = QString("%1 - %2").arg(title).arg(number);
-        QStringPair pair(label, number);
-        m_attended_transfer_destinations.append(pair);
-    }
-}
-
-void PeopleActions::setExtraNumber(const QString &title, const QString &number, bool can_transfer)
-{
-    if (number.isEmpty()) {
-        return;
-    }
-    QString label = QString("%1 - %2").arg(title).arg(number);
-    QStringPair pair(label, number);
-    m_call_callable_destinations.append(pair);
-    if (can_transfer) {
-        m_attended_transfer_destinations.append(pair);
-    }
 }
 
 void PeopleActions::setChatParams(const QString &name, const QString &xivo_uuid, int user_id)

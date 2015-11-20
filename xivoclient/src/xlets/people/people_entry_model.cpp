@@ -38,7 +38,6 @@
 #include "people_actions.h"
 #include "people_entry_model.h"
 
-#define IN_USE 1
 
 PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     : AbstractTableModel(parent)
@@ -242,33 +241,21 @@ QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) cons
 
     switch (column_type) {
     case NUMBER:
-        return this->getAvailableActions(entry, column);
+        return this->getAvailableActions(entry);
     default:
         return QVariant();
     }
 }
 
-QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int column) const
+QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry) const
 {
     PeopleActions actions;
-
-    const QString &title = this->headerText(column);
-    const QString &number = entry.data(column).toString();
-    bool can_transfer = m_endpoint_status == IN_USE;
-
-    actions.setCallNumber(title, number, can_transfer);
-
-    foreach (int column, indexesFromType(CALLABLE)) {
-        const QString &title = this->headerText(column);
-        const QString &number = entry.data(column).toString();
-        actions.setExtraNumber(title, number, can_transfer);
-    }
 
     const QList<int> &mailto_indices = m_type_to_indices[EMAIL];
     foreach(int column, mailto_indices) {
         const QString &title = this->headerText(column);
         const QString &email = entry.data(column).toString();
-        number_items.append(newAction(title, email, MAILTO));
+        actions.setEmail(title, email);
     }
 
     const QString &status = entry.userStatus();
@@ -284,7 +271,6 @@ QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int col
             break;
         }
     }
-
     return QVariant::fromValue(actions);
 }
 
@@ -370,10 +356,6 @@ void PeopleEntryModel::setAgentStatusFromAgentId(const RelationID &id, const QSt
 
 void PeopleEntryModel::setEndpointStatusFromEndpointId(const RelationID &id, int status)
 {
-    if (id == m_endpoint) {
-        m_endpoint_status = status;
-    }
-
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueEndpointId() == id) {
@@ -514,7 +496,6 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
 
 void PeopleEntryModel::setEndpoint(const QString &xivo_id, int endpoint_id)
 {
-    m_endpoint = RelationID(xivo_id, endpoint_id);
     QVariantList endpoints_to_register;
     endpoints_to_register.push_back(newIdAsList(xivo_id, endpoint_id));
     b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoints_to_register));
