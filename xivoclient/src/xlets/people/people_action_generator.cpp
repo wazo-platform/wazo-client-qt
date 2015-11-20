@@ -111,30 +111,20 @@ QVariant PeopleActionGenerator::dataAt(const QModelIndex &index, int column)
 
 QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex &index)
 {
-    QList<QAction*> actions;
     if (!canTransfer()) {
-        return actions;
+        return QList<QAction*>();
     }
 
-    foreach (const QStringPair &pair, allTitleNumber(index)) {
-        actions.append(new BlindTransferAction(pair.first, pair.second, parent()));
-    }
-
-    return actions;
+    return actionsFromList<BlindTransferAction>(allTitleNumber(index));
 }
 
 QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIndex &index)
 {
-    QList<QAction*> actions;
     if (!canTransfer()) {
-        return actions;
+        return QList<QAction*>();
     }
 
-    foreach (const QStringPair &pair, allTitleNumber(index)) {
-        actions.append(new AttendedTransferAction(pair.first, pair.second, parent()));
-    }
-
-    return actions;
+    return actionsFromList<AttendedTransferAction>(allTitleNumber(index));
 }
 
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
@@ -182,20 +172,12 @@ QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
 
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
 {
-    QList<QAction*> actions;
-    foreach (const QStringPair &pair, callableTitleNumber(index)) {
-        actions.append(new CallAction(pair.first, pair.second, parent()));
-    }
-    return actions;
+    return actionsFromList<CallAction>(callableTitleNumber(index));
 }
 
 QList<QAction *> PeopleActionGenerator::newMailtoActions(const QModelIndex &index)
 {
-    QList<QAction*> actions;
-    foreach (const QStringPair &pair, allTitleEmail(index)) {
-        actions.append(new MailToAction(pair.first, pair.second, parent()));
-    }
-    return actions;
+    return actionsFromList<MailToAction>(allTitleEmail(index));
 }
 
 QList<QStringPair> PeopleActionGenerator::allTitleNumber(const QModelIndex &index)

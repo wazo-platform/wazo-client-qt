@@ -133,6 +133,17 @@ class PeopleActionGenerator: public QObject, IPBXListener
         bool isSelf(const QModelIndex &index);
         bool sameXivo(const QModelIndex &index);
 
+        template<typename T>
+        QList<QAction*> actionsFromList(QList<QStringPair> pairs) {
+            QList<QAction*> actions;
+            foreach (const QStringPair pair, pairs) {
+                actions.append(new T(pair.first, pair.second, parent()));
+            }
+            return actions;
+        }
+
+
+
         PeopleEntryModel *m_people_entry_model;
 
         RelationID m_user_id;
