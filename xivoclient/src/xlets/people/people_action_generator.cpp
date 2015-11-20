@@ -129,15 +129,11 @@ QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIn
 
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
 {
-    if (findColumnOfType(NUMBER) == -1) {
-        return NULL;
-    }
-    const QString &number = dataAt(index, findColumnOfType(NUMBER)).toString();
-    if (number.isEmpty()) {
-        return NULL;
+    foreach (const QStringPair &pair, titleValues(NUMBER, index)) {
+        return new CallAction(pair.second, parent());
     }
 
-    return new CallAction(number, parent());
+    return NULL;
 }
 
 bool PeopleActionGenerator::isConnected(const QModelIndex &index)
