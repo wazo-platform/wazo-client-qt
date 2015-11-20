@@ -187,19 +187,6 @@ void People::parseCommand(const QVariantMap &command)
         this->parsePeopleExportPersonalContactsCSVResult(command);
     } else if (event == "people_import_personal_contacts_csv_result") {
         this->parsePeopleImportPersonalContactsCSVResult(command);
-    } else if (event == "relations") {
-        this->parseRelations(command);
-    }
-}
-
-void People::parseRelations(const QVariantMap &result) const
-{
-    const QVariantMap &relations = result["data"].toMap();
-    const QString &xivo_uuid = relations["xivo_uuid"].toString();
-    int endpoint_id = relations["endpoint_id"].toInt();
-
-    if (endpoint_id) {
-        m_model->setEndpoint(xivo_uuid, endpoint_id);
     }
 }
 

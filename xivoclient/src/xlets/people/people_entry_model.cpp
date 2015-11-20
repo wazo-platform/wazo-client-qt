@@ -454,13 +454,6 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
     }
 }
 
-void PeopleEntryModel::setEndpoint(const QString &xivo_id, int endpoint_id)
-{
-    QVariantList endpoints_to_register;
-    endpoints_to_register.push_back(newIdAsList(xivo_id, endpoint_id));
-    b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoints_to_register));
-}
-
 QList<int> PeopleEntryModel::indexesFromType(ColumnType type) const
 {
     return m_type_to_indices[type];

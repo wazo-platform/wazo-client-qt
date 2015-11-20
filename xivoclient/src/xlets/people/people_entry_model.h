@@ -69,7 +69,6 @@ class PeopleEntryModel : public AbstractTableModel
         void parsePeopleHeadersResult(const QVariantMap &command);
         void parsePeopleSearchResult(const QVariantMap &result);
         void removeRowFromSourceEntryId(const QString &source, const QString &source_entry_id);
-        void setEndpoint(const QString &xivo_uuid, int endpoint_id);
 
     protected:
         virtual QList<int> columnDisplayBold() const;
