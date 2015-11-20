@@ -33,10 +33,13 @@ class CallAction: public QAction
     Q_OBJECT
 
     public:
+        CallAction(const QString &number, QWidget *parent);
         CallAction(const QString &text, const QString &number, QWidget *parent);
         virtual ~CallAction() {};
     public slots:
         void call();
+    private:
+        QString m_number;
 };
 
 class PeopleActionGenerator: public QObject

@@ -100,7 +100,7 @@ QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
         return NULL;
     }
 
-    return new CallAction(tr("Call"), number, parent());
+    return new CallAction(number, parent());
 }
 
 QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex &index)
@@ -131,16 +131,21 @@ QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex
     return actions;
 }
 
-CallAction::CallAction(const QString &text, const QString &number, QWidget *parent)
-    : QAction(text, parent)
+CallAction::CallAction(const QString &number, QWidget *parent)
+    : QAction(tr("Call"), parent),
+      m_number(number)
 {
-    setData(number);
+    connect(this, SIGNAL(triggered()), this, SLOT(call()));
+}
+
+CallAction::CallAction(const QString &text, const QString &number, QWidget *parent)
+    : QAction(text, parent),
+      m_number(number)
+{
     connect(this, SIGNAL(triggered()), this, SLOT(call()));
 }
 
 void CallAction::call()
 {
-    const QString &number = static_cast<QAction*>(sender())->data().toString();
-
-    b_engine->sendJsonCommand(MessageFactory::dial(number));
+    b_engine->sendJsonCommand(MessageFactory::dial(m_number));
 }
