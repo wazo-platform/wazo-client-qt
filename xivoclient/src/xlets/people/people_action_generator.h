@@ -137,6 +137,11 @@ class PeopleActionGenerator: public QObject, IPBXListener
         bool sameXivo(const QModelIndex &index);
 
         template<typename T>
+        QList<QAction*> newTransferActions(const QModelIndex &index) {
+            return canTransfer() ? actionsFromList<T>(allTitleNumber(index)) : QList<QAction*>();
+        }
+
+        template<typename T>
         QList<QAction*> actionsFromList(QList<QStringPair> pairs) {
             QList<QAction*> actions;
             foreach (const QStringPair pair, pairs) {

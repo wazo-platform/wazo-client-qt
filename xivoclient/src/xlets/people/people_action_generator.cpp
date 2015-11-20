@@ -111,20 +111,12 @@ QVariant PeopleActionGenerator::dataAt(const QModelIndex &index, int column)
 
 QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex &index)
 {
-    if (!canTransfer()) {
-        return QList<QAction*>();
-    }
-
-    return actionsFromList<BlindTransferAction>(allTitleNumber(index));
+    return newTransferActions<BlindTransferAction>(index);
 }
 
 QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIndex &index)
 {
-    if (!canTransfer()) {
-        return QList<QAction*>();
-    }
-
-    return actionsFromList<AttendedTransferAction>(allTitleNumber(index));
+    return newTransferActions<AttendedTransferAction>(index);
 }
 
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
