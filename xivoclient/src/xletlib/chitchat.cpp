@@ -90,10 +90,7 @@ void ChitChatDispatcher::receiveMessage(const QString &xivo_uuid, int user_id, c
 void ChitChatDispatcher::showChatWindow(const QString &name, const QString &xivo_uuid, int user_id)
 {
     ChitChatWindow *window = findOrNew(name, xivo_uuid, user_id);
-    if (window->isVisible() == false) {
-        window->show();
-    }
-    window->raise();
+    window->popup();
 }
 
 // to remove when the contact xlet is removed
@@ -175,10 +172,13 @@ void ChitChatWindow::addMessage(const QString &mcolor, const QString &message, c
     lastCursor = m_message_history->textCursor();
     m_message_history->setTextCursor(recentCursor);
     sb->setValue(sb->maximum());
-    if (isVisible() == false) {
-        show();
-    }
-    raise();
+    this->popup();
+}
+
+void ChitChatWindow::popup()
+{
+    this->raise();
+    this->show();
 }
 
 void ChitChatWindow::addMessage(const QString &mcolor, const QString &message, const QString &ucolor)

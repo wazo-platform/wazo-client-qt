@@ -84,6 +84,7 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget
 
         void addMessage(const QString &, const QString &, const QString &, const QString &);
         void addMessage(const QString &, const QString &, const QString &);
+        void popup();
         void sendMessage(const QString &msg);
 
     public slots:
