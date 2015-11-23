@@ -270,7 +270,7 @@ ChatAction::ChatAction(const QString &name, const QString &xivo_uuid, int user_i
 
 void ChatAction::chat()
 {
-    chit_chat->writeMessageTo(m_name, m_xivo_uuid, m_user_id);
+    chit_chat->showChatWindow(m_name, m_xivo_uuid, m_user_id);
 }
 
 MailToAction::MailToAction(const QString &title, const QString &email, QWidget *parent)

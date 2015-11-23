@@ -87,7 +87,7 @@ void ChitChatDispatcher::receiveMessage(const QString &xivo_uuid, int user_id, c
     window->addMessage("black", msg, "red");
 }
 
-void ChitChatDispatcher::writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id)
+void ChitChatDispatcher::showChatWindow(const QString &name, const QString &xivo_uuid, int user_id)
 {
     ChitChatWindow *window = findOrNew(name, xivo_uuid, user_id);
     if (window->isVisible() == false) {
@@ -105,7 +105,7 @@ void ChitChatDispatcher::writeMessageTo()
     const QString &xivo_uuid = user->xivoUuid();
     const QStringList &ipbxid_id = xuserid.split("/");
     int user_id = ipbxid_id[1].toInt();
-    this->writeMessageTo(name, xivo_uuid, user_id);
+    this->showChatWindow(name, xivo_uuid, user_id);
 }
 
 ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id)

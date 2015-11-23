@@ -63,7 +63,7 @@ class XLETLIB_EXPORT ChitChatDispatcher: public QObject, IPBXListener
         virtual ~ChitChatDispatcher();
         void parseCommand(const QVariantMap & map);
         void receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg);
-        void writeMessageTo(const QString &name, const QString &xivo_uuid, int user_id);
+        void showChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
 
     public slots:
         void writeMessageTo();
