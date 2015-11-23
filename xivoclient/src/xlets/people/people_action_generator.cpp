@@ -275,7 +275,7 @@ BlindTransferVoicemailAction::BlindTransferVoicemailAction(const QString &title,
 
 void BlindTransferVoicemailAction::transfer()
 {
-    qDebug() << Q_FUNC_INFO << m_number;
+    b_engine->sendJsonCommand(MessageFactory::blindTransferVoicemail(m_number));
 }
 
 AttendedTransferVoicemailAction::AttendedTransferVoicemailAction(const QString &title, const QString &number, QWidget *parent)
@@ -287,7 +287,7 @@ AttendedTransferVoicemailAction::AttendedTransferVoicemailAction(const QString &
 
 void AttendedTransferVoicemailAction::transfer()
 {
-    qDebug() << Q_FUNC_INFO << m_number;
+    b_engine->sendJsonCommand(MessageFactory::attendedTransferVoicemail(m_number));
 }
 
 ChatAction::ChatAction(const QString &name, const QString &xivo_uuid, int user_id, QWidget *parent)

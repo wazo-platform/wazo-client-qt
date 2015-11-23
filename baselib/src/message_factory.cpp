@@ -96,6 +96,22 @@ QVariantMap MessageFactory::directTransfer(const QString &number)
     return message;
 }
 
+QVariantMap MessageFactory::attendedTransferVoicemail(const QString &voicemail_number)
+{
+    QVariantMap message = MessageFactory::baseMessage("attended_transfer_voicemail");
+    message["voicemail"] = voicemail_number;
+
+    return message;
+}
+
+QVariantMap MessageFactory::blindTransferVoicemail(const QString &voicemail_number)
+{
+    QVariantMap message = MessageFactory::baseMessage("blind_transfer_voicemail");
+    message["voicemail"] = voicemail_number;
+
+    return message;
+}
+
 QVariantMap MessageFactory::completeTransfer()
 {
     return MessageFactory::baseMessage("complete_transfer");

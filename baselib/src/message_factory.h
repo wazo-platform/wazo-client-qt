@@ -51,6 +51,8 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap resumeSwitchboard(const QString &unique_id);
         static QVariantMap attendedTransfer(const QString &number);
         static QVariantMap directTransfer(const QString &number);
+        static QVariantMap attendedTransferVoicemail(const QString &voicemail_number);
+        static QVariantMap blindTransferVoicemail(const QString &voicemail_number);
         static QVariantMap completeTransfer();
         static QVariantMap cancelTransfer();
         static QVariantMap directorySearch(const QString &pattern);
