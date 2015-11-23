@@ -62,9 +62,9 @@ void PeopleActionGenerator::parseCommand(const QVariantMap &command)
     if (event == "relations") {
         m_endpoint_id = id;
         m_user_id = RelationID(xivo_uuid, data["user_id"].toInt());
-        QVariantList l;
-        l.push_back(QVariantList() << xivo_uuid << m_endpoint_id.second);
-        b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(l));
+        QVariantList endpoint;
+        endpoint.push_back(QVariantList() << xivo_uuid << m_endpoint_id.second);
+        b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoint));
     } else if (id == m_endpoint_id) {
         m_endpoint_status = data["status"].toInt();
     }
