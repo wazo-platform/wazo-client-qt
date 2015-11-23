@@ -27,10 +27,8 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
 #include <QDebug>
 #include <QIcon>
-#include <cassert>
 
 #include <baseengine.h>
 #include <message_factory.h>
