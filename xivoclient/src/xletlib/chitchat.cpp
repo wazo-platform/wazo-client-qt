@@ -27,13 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <storage/userinfo.h>
-
-#include "chitchat.h"
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QTextEdit>
+
+#include <storage/userinfo.h>
+
+#include "chitchat.h"
 
 
 XLETLIB_EXPORT ChitChatDispatcher* chit_chat;
@@ -47,9 +48,7 @@ ChitChatDispatcher::ChitChatDispatcher(QObject *parent)
 ChitChatDispatcher::~ChitChatDispatcher()
 {
     foreach (const QString &key, m_chat_window_opened.keys()) {
-        ChitChatWindow *to_delete = m_chat_window_opened[key];
-        m_chat_window_opened.remove(key);
-        delete to_delete;
+        delete m_chat_window_opened.take(key);
     }
 }
 
