@@ -69,7 +69,7 @@ BasePeerWidget::BasePeerWidget(const UserInfo * ui)
         m_chitchatAction->setStatusTip(tr("Open a chat window with this user"));
         m_chitchatAction->setProperty("xuserid", m_ui_remote->xid());
         connect(m_chitchatAction, SIGNAL(triggered()),
-                ChitChatWindow::chitchat_instance, SLOT(writeMessageTo()));
+                chit_chat, SLOT(writeMessageTo()));
     }
 
     m_interceptAction = new QAction(tr("&Intercept"), this);

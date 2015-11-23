@@ -27,17 +27,14 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
+#include <QDebug>
 #include <QIcon>
-#include <cassert>
 
 #include <baseengine.h>
 #include <message_factory.h>
 
-#include "people_actions.h"
 #include "people_entry_model.h"
 
-#define IN_USE 1
 
 PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     : AbstractTableModel(parent)
@@ -120,8 +117,6 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
             return entry.data(column);
         }
         break;
-    case NUMBER_ROLE:
-        return this->dataNumber(entry, column);
     case INDICATOR_COLOR_ROLE:
         return this->dataIndicatorColor(entry, column);
     case UNIQUE_SOURCE_ID_ROLE:
@@ -133,6 +128,10 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         }
     case SORT_FILTER_ROLE:
         return this->dataSortFilter(entry, column);
+    case USER_ID_ROLE:
+        return QVariantList() << entry.xivoUuid() << entry.userId();
+    case USER_STATUS_ROLE:
+        return entry.userStatus();
     default:
         break;
     }
@@ -233,59 +232,6 @@ QVariant PeopleEntryModel::dataIndicatorColor(const PeopleEntry &entry, int colu
     return QVariant();
 }
 
-QVariant PeopleEntryModel::dataNumber(const PeopleEntry &entry, int column) const
-{
-    ColumnType column_type = this->headerType(column);
-
-    switch (column_type) {
-    case NUMBER:
-        return this->getAvailableActions(entry, column);
-    default:
-        return QVariant();
-    }
-}
-
-QVariant PeopleEntryModel::getAvailableActions(const PeopleEntry &entry, int column) const
-{
-    QVariantList number_items;
-    const QString &title = this->headerText(column);
-    const QString &number = entry.data(column).toString();
-    number_items.append(newAction(title, number, CALL));
-    if (m_endpoint_status == IN_USE) {
-        number_items.append(newAction(title, number, BLIND_TRANSFER));
-        number_items.append(newAction(title, number, ATTENDED_TRANSFER));
-    }
-
-    const QList<int> &callable_indices = m_type_to_indices[CALLABLE];
-    foreach(int column, callable_indices) {
-        const QString &title = this->headerText(column);
-        const QString &number = entry.data(column).toString();
-        number_items.append(newAction(title, number, CALLABLE_CALL));
-        if (m_endpoint_status == IN_USE) {
-            number_items.append(newAction(title, number, BLIND_TRANSFER));
-            number_items.append(newAction(title, number, ATTENDED_TRANSFER));
-        }
-    }
-
-    const QList<int> &mailto_indices = m_type_to_indices[EMAIL];
-    foreach(int column, mailto_indices) {
-        const QString &title = this->headerText(column);
-        const QString &email = entry.data(column).toString();
-        number_items.append(newAction(title, email, MAILTO));
-    }
-
-    return number_items;
-}
-
-QVariant PeopleEntryModel::newAction(const QString &label, const QVariant &value, PeopleAction action) const
-{
-    QVariantMap item;
-    item["label"] = label;
-    item["value"] = value;
-    item["action"] = action;
-    return item;
-}
-
 QVariantList PeopleEntryModel::newIdAsList(const QString &xivo_uuid, int id) const
 {
     return QVariantList() << xivo_uuid << id;
@@ -325,8 +271,7 @@ bool PeopleEntryModel::favoriteStatus(const QVariantMap &unique_source_entry_id)
 
     foreach(const PeopleEntry &entry, m_people_entries) {
         if (entry.uniqueSourceId() == id) {
-            const QList<int> &columns = m_type_to_indices[FAVORITE];
-            foreach(int column, columns) {
+            foreach(int column, indexesFromType(FAVORITE)) {
                 return entry.data(column).toBool();
             }
         }
@@ -369,10 +314,6 @@ void PeopleEntryModel::setAgentStatusFromAgentId(const RelationID &id, const QSt
 
 void PeopleEntryModel::setEndpointStatusFromEndpointId(const RelationID &id, int status)
 {
-    if (id == m_endpoint) {
-        m_endpoint_status = status;
-    }
-
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueEndpointId() == id) {
@@ -398,8 +339,7 @@ void PeopleEntryModel::setFavoriteStatusFromSourceId(const RelationSourceID &id,
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
         if (entry.uniqueSourceId() == id) {
-            const QList<int> &columns = m_type_to_indices[FAVORITE];
-            foreach(int column, columns) {
+            foreach(int column, indexesFromType(FAVORITE)) {
                 entry.setData(column, status);
                 this->refreshEntry(i);
             }
@@ -512,10 +452,7 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
     }
 }
 
-void PeopleEntryModel::setEndpoint(const QString &xivo_id, int endpoint_id)
+QList<int> PeopleEntryModel::indexesFromType(ColumnType type) const
 {
-    m_endpoint = RelationID(xivo_id, endpoint_id);
-    QVariantList endpoints_to_register;
-    endpoints_to_register.push_back(newIdAsList(xivo_id, endpoint_id));
-    b_engine->sendJsonCommand(MessageFactory::registerEndpointStatus(endpoints_to_register));
+    return m_type_to_indices[type];
 }

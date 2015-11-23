@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -42,71 +42,73 @@ class BASELIB_EXPORT UserInfo : public XInfo
         UserInfo(const QString &, const QString &);
         QString toString() const;
 
-            const QString & fullname() const { return m_fullname; };
-            const QString & firstname() const { return m_firstname; };
-            const QString & lastname() const { return m_lastname; };
-            const QString & voicemailid() const { return m_voicemailid; };
-            const QString & xvoicemailid() const { return m_xvoicemailid; };
-            const QString & agentid() const { return m_agentid; };
-            const QString & xagentid() const { return m_xagentid; };
-            bool enableclient() const { return m_enableclient; };
-            bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
-            bool enablevoicemail() const { return m_enablevoicemail; };
-            bool incallfilter() const { return m_incallfilter; };
-            bool enablednd() const { return m_enablednd; };
-            bool enableunc() const { return m_enableunc; };
-            const QString & destunc() const { return m_destunc; };
-            bool enablerna() const { return m_enablerna; };
-            const QString & destrna() const { return m_destrna; };
-            bool enablebusy() const { return m_enablebusy; };
-            bool enablexfer() const { return m_enablexfer; };
-            const QString & destbusy() const { return m_destbusy; };
-            const QString & mobileNumber() const { return m_mobilenumber; };
+        const QString & fullname() const { return m_fullname; };
+        const QString & firstname() const { return m_firstname; };
+        const QString & lastname() const { return m_lastname; };
+        const QString & voicemailid() const { return m_voicemailid; };
+        const QString & xvoicemailid() const { return m_xvoicemailid; };
+        const QString & agentid() const { return m_agentid; };
+        const QString & xagentid() const { return m_xagentid; };
+        const QString & xivoUuid() const { return m_xivo_uuid; };
+        bool enableclient() const { return m_enableclient; };
+        bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
+        bool enablevoicemail() const { return m_enablevoicemail; };
+        bool incallfilter() const { return m_incallfilter; };
+        bool enablednd() const { return m_enablednd; };
+        bool enableunc() const { return m_enableunc; };
+        const QString & destunc() const { return m_destunc; };
+        bool enablerna() const { return m_enablerna; };
+        const QString & destrna() const { return m_destrna; };
+        bool enablebusy() const { return m_enablebusy; };
+        bool enablexfer() const { return m_enablexfer; };
+        const QString & destbusy() const { return m_destbusy; };
+        const QString & mobileNumber() const { return m_mobilenumber; };
 
-            const QStringList & phonelist() const { return m_phoneidlist; };
+        const QStringList & phonelist() const { return m_phoneidlist; };
 
-            const QString & availstate() const;
-            bool connected() const { return m_availstate != __presence_off__; };
+        const QString & availstate() const;
+        bool connected() const { return m_availstate != __presence_off__; };
 
-            bool updateConfig(const QVariantMap &);
-            bool updateStatus(const QVariantMap &);
+        bool updateConfig(const QVariantMap &);
+        bool updateStatus(const QVariantMap &);
 
-            void setAvailState(const QString & availstate) {m_availstate = availstate;};
+        void setAvailState(const QString & availstate) {m_availstate = availstate;};
 
-            void setPhoneIdList(const QStringList &);
+        void setPhoneIdList(const QStringList &);
 
-            bool hasPhoneId(const QString &) const;
-            bool hasChannelId(const QString &) const;
-            bool hasMobile() const;
-            QString findNumberForXChannel(const QString &) const;
-            QStringList xchannels() const;
-            bool isTalkingTo(const QString &) const;
-            const QStringList & identitylist() const;
+        bool hasPhoneId(const QString &) const;
+        bool hasChannelId(const QString &) const;
+        bool hasMobile() const;
+        QString findNumberForXChannel(const QString &) const;
+        QStringList xchannels() const;
+        bool isTalkingTo(const QString &) const;
+        const QStringList & identitylist() const;
     private:
 
-            QString m_fullname;
-            QString m_firstname;
-            QString m_lastname;
-            QString m_voicemailid;              //!< voice mail box id
-            QString m_xvoicemailid;             //!< ipbxid + voice mail box id
-            QString m_agentid;                  //!< agent id
-            QString m_xagentid;                 //!< ipbxid + agent id
-            bool m_enableclient;
-            QString m_profileclient;
-            bool m_enablevoicemail;
-            bool m_incallfilter;
-            bool m_enablednd;
-            bool m_enableunc;
-            QString m_destunc;
-            bool m_enablerna;
-            QString m_destrna;
-            bool m_enablebusy;
-            bool m_enablexfer;
-            QString m_destbusy;
-            QString m_mobilenumber;             //!< mobile phone number
-            QStringList m_phoneidlist;          //!< map to phones
-            mutable QStringList m_identitylist; //!< Cached identities for this user
-            QString m_availstate; //!< availability state
+        QString m_xivo_uuid;
+        QString m_fullname;
+        QString m_firstname;
+        QString m_lastname;
+        QString m_voicemailid;              //!< voice mail box id
+        QString m_xvoicemailid;             //!< ipbxid + voice mail box id
+        QString m_agentid;                  //!< agent id
+        QString m_xagentid;                 //!< ipbxid + agent id
+        bool m_enableclient;
+        QString m_profileclient;
+        bool m_enablevoicemail;
+        bool m_incallfilter;
+        bool m_enablednd;
+        bool m_enableunc;
+        QString m_destunc;
+        bool m_enablerna;
+        QString m_destrna;
+        bool m_enablebusy;
+        bool m_enablexfer;
+        QString m_destbusy;
+        QString m_mobilenumber;             //!< mobile phone number
+        QStringList m_phoneidlist;          //!< map to phones
+        mutable QStringList m_identitylist; //!< Cached identities for this user
+        QString m_availstate;               //!< availability state
 };
 
 #endif

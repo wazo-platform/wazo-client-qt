@@ -43,7 +43,8 @@ class XLETLIB_EXPORT AbstractItemDelegate : public QStyledItemDelegate
     Q_OBJECT
 
     public:
-        AbstractItemDelegate(QWidget *parent = NULL);
+        AbstractItemDelegate(QWidget *parent);
+        QWidget *parentWidget() const;
 
     protected:
         virtual void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt) const;

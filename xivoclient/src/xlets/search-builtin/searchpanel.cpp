@@ -36,7 +36,6 @@
 #include <storage/userinfo.h>
 #include <xletlib/peerwidget.h>
 #include <xletlib/extendedlineedit.h>
-#include <xletlib/chitchat.h>
 #include <xletlib/peeritem.h>
 
 #include "searchpanel.h"
@@ -45,8 +44,6 @@ SearchPanel::SearchPanel(QWidget *parent) :
     XLet(parent, tr("Contacts"), ":/images/tab-people.svg"),
     m_live_reload_enabled(false)
 {
-    ChitChatWindow::chitchat_instance = new ChitChatWindow();
-
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setMargin(0);
     QLabel *lbl = new QLabel(tr("N&ame or number to search :"), this);

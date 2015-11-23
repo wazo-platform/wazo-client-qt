@@ -48,16 +48,12 @@
 
 People::People(QWidget *parent)
     : XLet(parent, tr("People"), ":/images/tab-people.svg"),
-      m_proxy_model(NULL),
-      m_model(NULL),
-      m_waiting_status(NULL)
+      m_proxy_model(new PeopleEntrySortFilterProxyModel(this)),
+      m_model(new PeopleEntryModel(this)),
+      m_waiting_status(new QMovie(":/images/waiting-status.gif", QByteArray(), this))
 {
     this->ui.setupUi(this);
 
-    m_waiting_status = new QMovie(":/images/waiting-status.gif", QByteArray(), this);
-
-    m_proxy_model = new PeopleEntrySortFilterProxyModel(this);
-    m_model = new PeopleEntryModel(this);
     m_proxy_model->setSourceModel(m_model);
     ui.entry_table->setModel(m_proxy_model);
 
@@ -191,19 +187,6 @@ void People::parseCommand(const QVariantMap &command)
         this->parsePeopleExportPersonalContactsCSVResult(command);
     } else if (event == "people_import_personal_contacts_csv_result") {
         this->parsePeopleImportPersonalContactsCSVResult(command);
-    } else if (event == "relations") {
-        this->parseRelations(command);
-    }
-}
-
-void People::parseRelations(const QVariantMap &result) const
-{
-    const QVariantMap &relations = result["data"].toMap();
-    const QString &xivo_uuid = relations["xivo_uuid"].toString();
-    int endpoint_id = relations["endpoint_id"].toInt();
-
-    if (endpoint_id) {
-        m_model->setEndpoint(xivo_uuid, endpoint_id);
     }
 }
 

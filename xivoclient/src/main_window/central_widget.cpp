@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,6 +32,7 @@
 #include <login_widget/login_widget.h>
 #include <stdlib.h>
 
+#include <xletlib/chitchat.h>
 #include "central_widget.h"
 #include "xlet_dispatcher.h"
 
@@ -84,6 +85,7 @@ void CentralWidget::initialized()
 
 void CentralWidget::setStatusLogged()
 {
+    chit_chat = new ChitChatDispatcher(this);
     this->m_login_widget->saveConfig();
     this->showMainWidget();
     this->hide();
@@ -93,6 +95,7 @@ void CentralWidget::setStatusNotLogged()
 {
     this->showLoginWidget();
     this->show();
+    delete chit_chat;
 }
 
 void CentralWidget::showMainWidget()

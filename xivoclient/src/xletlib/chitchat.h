@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -34,59 +34,72 @@
 #include <baseengine.h>
 #include <ipbxlistener.h>
 #include <QWidget>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 #include "xletlib_export.h"
 
-class MessageEdit;
+class QTextEdit;
+class ChitChatWindow;
 
-
-/*! \brief open a chat window with another xivo user
- */
-class XLETLIB_EXPORT ChitChatWindow : public QWidget, IPBXListener
+class ChatEditBox: public QPlainTextEdit
 {
     Q_OBJECT
 
     public:
-        static ChitChatWindow *chitchat_instance;
+        ChatEditBox(QWidget *parent): QPlainTextEdit(parent) {}
+    protected:
+        virtual void keyPressEvent(QKeyEvent *e);
+    signals:
+         void done();
+};
 
-        ChitChatWindow();
-        ChitChatWindow(const QString &);
 
+class XLETLIB_EXPORT ChitChatDispatcher: public QObject, IPBXListener
+{
+    Q_OBJECT
+
+    public:
+        ChitChatDispatcher(QObject *parent);
+        virtual ~ChitChatDispatcher();
         void parseCommand(const QVariantMap & map);
-
-        void sendMessage(const QString &message);
-        void addMessage(const QString &, const QString &, const QString &, const QString &);
-        void receiveMessage(const QVariantMap &message);
+        void receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg);
+        void showChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
 
     public slots:
         void writeMessageTo();
-        void clearMessageHistory();
 
     private:
-        QString m_userid;
-        static QHash<QString, ChitChatWindow*> m_chat_window_opened;
-        MessageEdit *m_message;
+        ChitChatDispatcher();
+        ChitChatWindow *findOrNew(const QString &name, const QString &xivo_uuid, int user_id);
+        QHash<QString, ChitChatWindow*> m_chat_window_opened;
+};
+
+class XLETLIB_EXPORT ChitChatWindow : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
+        virtual ~ChitChatWindow();
+
+        void addMessage(const QString &, const QString &, const QString &, const QString &);
+        void addMessage(const QString &, const QString &, const QString &);
+        void popup();
+        void sendMessage(const QString &msg);
+
+    public slots:
+        void clearMessageHistory();
+        void sendMessage();
+
+    private:
+        QString m_name;
+        QString m_xivo_uuid;
+        int m_user_id;
+        ChatEditBox *m_msg_edit;
         QTextEdit *m_message_history;
         QTextCursor lastCursor;
 };
 
-
-class MessageEdit : public QTextEdit
-{
-    Q_OBJECT
-
-    public:
-        MessageEdit(ChitChatWindow *parent) : QTextEdit((QWidget*) parent) { m_dad = parent; };
-
-    public slots:
-        void sendMessage();
-
-    private:
-        ChitChatWindow *m_dad;
-
-    protected:
-        virtual void keyPressEvent(QKeyEvent * event);
-};
+extern XLETLIB_EXPORT ChitChatDispatcher *chit_chat;
 
 #endif

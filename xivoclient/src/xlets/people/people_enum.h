@@ -43,24 +43,17 @@ enum ColumnType {
 };
 
 enum UserRoleCustom {
-    NUMBER_ROLE = Qt::UserRole,
-    INDICATOR_COLOR_ROLE = Qt::UserRole + 1,
-    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 2,
-    SORT_FILTER_ROLE = Qt::UserRole + 3
+    INDICATOR_COLOR_ROLE = Qt::UserRole,
+    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 1,
+    SORT_FILTER_ROLE = Qt::UserRole + 2,
+    USER_ID_ROLE = Qt::UserRole + 3,
+    USER_STATUS_ROLE = Qt::UserRole + 4,
 };
 
 enum PeopleMode {
     SEARCH_MODE = 0,
     FAVORITE_MODE,
     PERSONAL_CONTACT_MODE
-};
-
-enum PeopleAction {
-    CALL,
-    CALLABLE_CALL,
-    BLIND_TRANSFER,
-    ATTENDED_TRANSFER,
-    MAILTO,
 };
 
 #endif

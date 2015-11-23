@@ -35,8 +35,8 @@
 #include <QPainter>
 #include <QVariant>
 
+#include "people_action_generator.h"
 #include "people_entry_delegate.h"
-#include "people_actions.h"
 
 QSize PeopleEntryDotDelegate::icon_size = QSize(8, 8);
 int PeopleEntryDotDelegate::icon_text_spacing = 7;
@@ -99,9 +99,10 @@ void PeopleEntryDotDelegate::paint(QPainter *painter,
     AbstractItemDelegate::paint(painter, opt, index);
 }
 
-PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(QWidget *parent)
+PeopleEntryNumberDelegate::PeopleEntryNumberDelegate(PeopleActionGenerator *generator, QWidget *parent)
     : PeopleEntryDotDelegate(parent),
-      pressed(false)
+      pressed(false),
+      m_people_action_generator(generator)
 {
 }
 
@@ -130,8 +131,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
         painter->drawText(text_rect, Qt::AlignVCenter, text);
-        PeopleActions people_actions(index.data(NUMBER_ROLE).toList());
-        if (this->shouldShowActionSelectorRect(people_actions)) {
+        if (this->shouldShowActionSelectorRect(index)) {
             QRect selector_rect = this->actionSelectorRect(option.rect);
 
             QRect separator_rect(selector_rect);
@@ -153,17 +153,12 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
     PeopleEntryDotDelegate::paint(painter, option, index);
 }
 
-bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const PeopleActions &people_actions) const
+bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const QModelIndex &index) const
 {
-    bool has_callable_actions = !people_actions.getCallCallableActions().empty();
-    bool has_attended_transfer_action = !people_actions.getAttendedTransferActions().empty();
-    bool has_blind_transfer_actions = !people_actions.getBlindTransferActions().empty();
-    bool has_mailto_actions = !people_actions.getMailtoActions().empty();
-
-    return has_callable_actions ||
-           has_attended_transfer_action ||
-           has_blind_transfer_actions ||
-           has_mailto_actions;
+    return m_people_action_generator->hasCallCallables(index)
+        || m_people_action_generator->hasTransfers(index)
+        || m_people_action_generator->hasChat(index)
+        || m_people_action_generator->hasMail(index);
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
@@ -183,15 +178,13 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
     }
     if (event->type() == QEvent::MouseButtonRelease) {
         this->pressed = false;
-
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        const QList<QVariant> &action_items = model->data(index, NUMBER_ROLE).toList();
-        PeopleActions people_actions(action_items);
-
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
-            people_actions.getCallAction()->trigger();
+            if (QAction *call_action = m_people_action_generator->newCallAction(index)) {
+                call_action->trigger();
+            }
         } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
-            this->showContextMenu(option, &people_actions);
+            this->showContextMenu(option, index);
         }
     }
     return true;
@@ -220,7 +213,7 @@ QRect PeopleEntryNumberDelegate::actionSelectorRect(const QRect &option_rect) co
 }
 
 void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &option,
-                                                PeopleActions *people_actions)
+                                                const QModelIndex &index)
 {
     QAbstractScrollArea *view = static_cast<QAbstractScrollArea*>(option.styleObject);
     if (! view) {
@@ -231,22 +224,24 @@ void PeopleEntryNumberDelegate::showContextMenu(const QStyleOptionViewItem &opti
     QPoint globalPosition = view->viewport()->mapToGlobal(position);
 
     QPointer<Menu> menu = new Menu(view);
-    this->fillContextMenu(menu, people_actions);
+    this->fillContextMenu(menu, index);
     if (! menu->isEmpty()) {
         menu->exec(globalPosition);
     }
     delete menu;
 }
 
-void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu,
-                                                PeopleActions *people_actions)
+void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QModelIndex &index)
 {
-    menu->addActions(people_actions->getCallCallableActions());
-    menu->addActions(people_actions->getMailtoActions());
+    menu->addActions(m_people_action_generator->newMailtoActions(index));
+    menu->addActions(m_people_action_generator->newCallCallableActions(index));
     this->addTransferSubmenu(menu, tr("BLIND TRANSFER"),
-                             people_actions->getBlindTransferActions());
+                             m_people_action_generator->newBlindTransferActions(index));
     this->addTransferSubmenu(menu, tr("ATTENDED TRANSFER"),
-                             people_actions->getAttendedTransferActions());
+                             m_people_action_generator->newAttendedTransferActions(index));
+    if (QAction *chat_action = m_people_action_generator->newChatAction(index)) {
+        menu->addAction(chat_action);
+    }
 }
 
 void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
@@ -262,14 +257,13 @@ void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
     menu->addMenu(transfer_menu);
 }
 
-
 PeopleEntryPersonalContactDelegate::PeopleEntryPersonalContactDelegate(QWidget *parent)
     : AbstractItemDelegate(parent)
 {
 }
 
 QSize PeopleEntryPersonalContactDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                       const QModelIndex &index) const
+                                                   const QModelIndex &index) const
 {
     const QSize &original_size = AbstractItemDelegate::sizeHint(option, index);
     int new_width = icon_size.width() + icons_spacing + icon_size.width();

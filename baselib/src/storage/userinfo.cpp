@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -73,6 +73,7 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "profileclient", & m_profileclient);
     haschanged |= setIfChangeString(prop, "firstname", & m_firstname);
     haschanged |= setIfChangeString(prop, "lastname", & m_lastname);
+    haschanged |= setIfChangeString(prop, "xivo_uuid", & m_xivo_uuid);
 
     if (prop.contains("linelist")) {
         QStringList lid;

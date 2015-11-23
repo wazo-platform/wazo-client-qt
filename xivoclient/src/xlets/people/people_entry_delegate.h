@@ -35,14 +35,14 @@
 #include <xletlib/menu.h>
 
 
-class PeopleActions;
+class PeopleActionGenerator;
 
 class PeopleEntryDotDelegate : public AbstractItemDelegate
 {
     Q_OBJECT
 
     public:
-        PeopleEntryDotDelegate(QWidget *parent = NULL);
+        PeopleEntryDotDelegate(QWidget *parent);
         QSize sizeHint(const QStyleOptionViewItem &option,
                        const QModelIndex &index) const;
         void paint(QPainter *painter,
@@ -59,7 +59,7 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
     Q_OBJECT
 
     public:
-        PeopleEntryNumberDelegate(QWidget *parent = NULL);
+        PeopleEntryNumberDelegate(PeopleActionGenerator *generator, QWidget *parent);
         bool editorEvent(QEvent *event,
                          QAbstractItemModel *model,
                          const QStyleOptionViewItem &option,
@@ -79,13 +79,15 @@ class PeopleEntryNumberDelegate : public PeopleEntryDotDelegate
         QRect contentsRect(const QRect &option_rect) const;
         QRect actionSelectorRect(const QRect &option_rect) const;
         void fillContextMenu(QPointer<Menu> menu,
-                             PeopleActions *people_actions);
+                             const QModelIndex &index);
         void showContextMenu(const QStyleOptionViewItem &option,
-                             PeopleActions *people_actions);
-        bool shouldShowActionSelectorRect(const PeopleActions &people_actions) const;
+                             const QModelIndex &index);
+        bool shouldShowActionSelectorRect(const QModelIndex &index) const;
         void addTransferSubmenu(QPointer<Menu> menu,
                                 const QString &title,
                                 QList<QAction *> transfer_actions);
+
+        PeopleActionGenerator *m_people_action_generator;
 };
 
 class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate
@@ -93,7 +95,7 @@ class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate
     Q_OBJECT
 
     public:
-        PeopleEntryPersonalContactDelegate(QWidget *parent = NULL);
+        PeopleEntryPersonalContactDelegate(QWidget *parent);
         QSize sizeHint(const QStyleOptionViewItem &option,
                        const QModelIndex &index) const;
         bool editorEvent(QEvent *event,
