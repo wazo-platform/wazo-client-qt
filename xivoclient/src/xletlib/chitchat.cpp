@@ -177,6 +177,7 @@ void ChitChatWindow::addMessage(const QString &mcolor, const QString &message, c
 
 void ChitChatWindow::popup()
 {
+    this->setWindowState(this->windowState() & ~Qt::WindowMinimized);
     this->raise();
     this->show();
 }
