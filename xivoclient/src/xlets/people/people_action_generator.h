@@ -54,6 +54,30 @@ class BlindTransferAction: public QAction
         QString m_number;
 };
 
+class AttendedTransferVoicemailAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        AttendedTransferVoicemailAction(const QString &title, const QString &number, QWidget *parent);
+    public slots:
+        void transfer();
+    private:
+        QString m_number;
+};
+
+class BlindTransferVoicemailAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        BlindTransferVoicemailAction(const QString &title, const QString &number, QWidget *parent);
+    public slots:
+        void transfer();
+    private:
+        QString m_number;
+};
+
 class CallAction: public QAction
 {
     Q_OBJECT
@@ -127,6 +151,7 @@ class PeopleActionGenerator: public QObject, IPBXListener
 
         QList<QStringPair> titleValues(ColumnType type, const QModelIndex &index);
         QList<QStringPair> allTitleNumber(const QModelIndex &index);
+        QList<QStringPair> allTitleVoicemail(const QModelIndex &index);
         QList<QStringPair> allTitleEmail(const QModelIndex &index);
         QList<QStringPair> callableTitleNumber(const QModelIndex &index);
 
@@ -139,6 +164,11 @@ class PeopleActionGenerator: public QObject, IPBXListener
         template<typename T>
         QList<QAction*> newTransferActions(const QModelIndex &index) {
             return canTransfer() ? actionsFromList<T>(allTitleNumber(index)) : QList<QAction*>();
+        }
+
+        template<typename T>
+        QList<QAction*> newVMTransferActions(const QModelIndex &index) {
+            return canTransfer() ? actionsFromList<T>(allTitleVoicemail(index)) : QList<QAction*>();
         }
 
         template<typename T>
