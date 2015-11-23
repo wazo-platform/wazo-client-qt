@@ -92,7 +92,6 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget
         void sendMessage();
 
     private:
-        ChitChatWindow();
         QString m_name;
         QString m_xivo_uuid;
         int m_user_id;
