@@ -220,7 +220,7 @@ bool PeopleActionGenerator::hasMail(const QModelIndex &index)
 
 bool PeopleActionGenerator::hasTransfers(const QModelIndex &index)
 {
-    return canTransfer() && !allTitleNumber(index).isEmpty();
+    return canTransfer() && (!allTitleNumber(index).isEmpty() || !allTitleVoicemail(index).isEmpty());
 }
 
 CallAction::CallAction(const QString &number, QWidget *parent)
