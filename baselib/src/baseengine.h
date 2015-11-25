@@ -326,8 +326,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_locale;
         QList<QTranslator *> m_translators;   //!< Vector of translators
 
-        QHash<QString, bool> m_enabled_function;  //!< function enabled
-
         // Replies given by the server
         QVariantList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
         QVariantMap m_options_userstatus;    //!< Display Options for User statuses (presence)
