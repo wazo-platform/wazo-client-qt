@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -52,7 +52,6 @@ class BASELIB_EXPORT QueueMemberInfo : public XInfo
         QString agentNumber() const;
         QString lastcall() const { return m_lastcall; };
         bool is_agent() const;
-        bool isCallingOrBusy() const;
     private:
         QString m_status;
         QString m_paused;
