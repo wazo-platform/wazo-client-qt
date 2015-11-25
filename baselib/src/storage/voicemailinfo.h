@@ -47,14 +47,12 @@ class BASELIB_EXPORT VoiceMailInfo : public XInfo
         const QString & context() const { return m_context; };
         const QString & mailbox() const { return m_mailbox; };
 
-        int oldMessages() const { return m_old; };
         int newMessages() const { return m_new; };
 
     private:
         QString m_context;
         QString m_mailbox;
 
-        int m_old;
         int m_new;
 };
 
