@@ -104,22 +104,6 @@ const QString & UserInfo::availstate() const
     return m_availstate;
 }
 
-/*!
- * \brief Retrieves a list of channels for this user
- */
-QStringList UserInfo::xchannels() const
-{
-    QStringList channels;
-    foreach (const QString & phonexid, phonelist()) {
-        if (const PhoneInfo * p = b_engine->phone(phonexid)) {
-            foreach (const QString & channelxid, p->xchannels()) {
-                channels << channelxid;
-            }
-        }
-    }
-    return channels;
-}
-
 bool UserInfo::hasMobile() const
 {
     return ! m_mobilenumber.isEmpty();
