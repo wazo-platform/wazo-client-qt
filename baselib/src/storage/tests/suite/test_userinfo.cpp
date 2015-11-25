@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -50,7 +50,6 @@ void TestUserInfo::initTestCase()
     m_prop1["fullname"] = "testfullname";
     m_prop1["voicemailid"] = "2345";
     m_prop1["agentid"] = "1234";
-    m_prop1["enableclient"] = true;
     m_prop1["enablevoicemail"] = true;
     m_prop1["incallfilter"] = false;
     m_prop1["enablednd"] = false;
@@ -112,7 +111,6 @@ void TestUserInfo::constructor()
     QCOMPARE(u.xvoicemailid(), empty);
     QCOMPARE(u.agentid(), empty);
     QCOMPARE(u.xagentid(), empty);
-    QCOMPARE(u.enableclient(), false);
     QCOMPARE(u.enablevoicemail(), false);
     QCOMPARE(u.incallfilter(), false);
     QCOMPARE(u.enablednd(), false);
@@ -158,7 +156,6 @@ void TestUserInfo::updateConfig()
         QString axid = (QString("%0/%1").arg(m_ipbxid)
                         .arg(m_prop1["agentid"].toString()));
         QCOMPARE(u.xagentid(), axid);
-        QCOMPARE(u.enableclient(), m_prop1["enableclient"].toBool());
         QCOMPARE(u.enablevoicemail(), m_prop1["enablevoicemail"].toBool());
         QCOMPARE(u.incallfilter(), m_prop1["incallfilter"].toBool());
         QCOMPARE(u.enablednd(), m_prop1["enablednd"].toBool());

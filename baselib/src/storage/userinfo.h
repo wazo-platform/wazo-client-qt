@@ -50,7 +50,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QString & agentid() const { return m_agentid; };
         const QString & xagentid() const { return m_xagentid; };
         const QString & xivoUuid() const { return m_xivo_uuid; };
-        bool enableclient() const { return m_enableclient; };
         bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
         bool enablevoicemail() const { return m_enablevoicemail; };
         bool incallfilter() const { return m_incallfilter; };
@@ -93,7 +92,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         QString m_xvoicemailid;             //!< ipbxid + voice mail box id
         QString m_agentid;                  //!< agent id
         QString m_xagentid;                 //!< ipbxid + agent id
-        bool m_enableclient;
         QString m_profileclient;
         bool m_enablevoicemail;
         bool m_incallfilter;
