@@ -118,7 +118,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QHash<QString, XInfo *> iterover(const QString & listname) { return m_anylist.value(listname); };
 
-        const ChannelInfo * channel(const QString & id) const;
         const UserInfo * user(const QString & id) const;
         const PhoneInfo * phone(const QString & id) const;
         const AgentInfo * agent(const QString & id) const;

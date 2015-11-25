@@ -640,11 +640,6 @@ QString BaseEngine::timeElapsed(double timestamp) const
     }
 }
 
-const ChannelInfo * BaseEngine::channel(const QString & id) const
-{
-    return channels().value(id);
-}
-
 const UserInfo * BaseEngine::user(const QString & id) const
 {
     return static_cast<const UserInfo *> (m_anylist.value("users").value(id));
