@@ -50,7 +50,6 @@
 #include <QJsonDocument>
 
 #include <storage/agentinfo.h>
-#include <storage/channelinfo.h>
 #include <storage/phoneinfo.h>
 #include <storage/queueinfo.h>
 #include <storage/queuememberinfo.h>

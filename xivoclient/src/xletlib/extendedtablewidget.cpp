@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -34,7 +34,6 @@
 #include <QAction>
 
 #include <xivoconsts.h>
-#include <storage/channelinfo.h>
 #include <storage/userinfo.h>
 #include <storage/phoneinfo.h>
 #include <baseengine.h>
