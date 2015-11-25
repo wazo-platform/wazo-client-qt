@@ -106,7 +106,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         double timeDeltaServerClient() const;
         QString timeElapsed(double) const;
 
-        bool hasPhone(const QString & xid) { return m_anylist.value("phones").contains(xid); };
         bool hasAgent(const QString & xid) { return m_anylist.value("agents").contains(xid); };
         bool hasQueue(const QString & xid) { return m_anylist.value("queues").contains(xid); };
 
