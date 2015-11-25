@@ -50,7 +50,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         const QString & iduserfeatures() const { return m_iduserfeatures; };
         QString xid_user_features() const;
 
-        const QStringList & channels() const { return m_channels; };
         const QString & hintstatus() const { return m_hintstatus; };
 
         bool enableunc() const { return m_enableunc; };
@@ -62,7 +61,6 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         bool m_initialized;
         bool m_enable_hint;
         QString m_hintstatus;
-        QStringList m_channels;
 
         bool m_enablerna;
         bool m_enableunc;
