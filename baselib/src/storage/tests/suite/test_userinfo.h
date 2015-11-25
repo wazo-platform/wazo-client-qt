@@ -47,7 +47,6 @@ class TestUserInfo: public QObject
     void updateStatus();
     void setAvailState();
     void setPhoneIdList();
-    void hasChannelId();
     void findNumberForXChannel();
     void xchannels();
     void isTalkingTo();

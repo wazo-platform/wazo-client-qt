@@ -119,18 +119,6 @@ QString UserInfo::findNumberForXChannel(const QString & xcid) const
     return QString();
 }
 
-/*! \brief check if this user owns this channel */
-bool UserInfo::hasChannelId(const QString & xchannelid) const
-{
-    foreach (const QString & phoneid, m_phoneidlist) {
-        const PhoneInfo * p = b_engine->phone(phoneid);
-        if (p && xchannelid.contains(p->identity())) {
-            return true;
-        }
-    }
-    return false;
-}
-
 /*! \brief returns the list of phone's identities for this user */
 const QStringList & UserInfo::identitylist() const
 {
