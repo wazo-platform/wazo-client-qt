@@ -100,7 +100,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString osname() const { return m_osname; };
         const QString ipbxid() const { return m_ipbxid; };
 
-        const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
         UserInfo * getXivoClientUser();       //!< Return the user of the XiVO CTI Client
 
