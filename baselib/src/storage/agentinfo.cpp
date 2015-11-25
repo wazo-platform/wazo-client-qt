@@ -137,18 +137,6 @@ bool AgentInfo::logged() const
     return this->availability() != LOGGED_OUT;
 }
 
-bool AgentInfo::isCallingOrBusy() const
-{
-    QStringList queue_member_ids = QueueMemberDAO::queueMembersFromAgentId(this->xid());
-    foreach (const QString & queue_member_id, queue_member_ids) {
-        const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
-        if (queue_member && queue_member->isCallingOrBusy()) {
-            return true;
-        }
-    }
-    return false;
-}
-
 bool AgentInfo::paused() const
 {
     QStringList queue_members = QueueMemberDAO::queueMembersFromAgentId(this->xid());
