@@ -234,18 +234,6 @@ void TestUserInfo::xchannels()
     QCOMPARE(u.xchannels(), QStringList() << "SIP/sip1-01" << "SIP/sip2-02");
 }
 
-void TestUserInfo::isTalkingTo()
-{
-    UserInfo u(m_ipbxid, "1234");
-    u.setPhoneIdList(QStringList() << "asterisk/p1");
-    UserInfo *other = new UserInfo("asterisk", "u2");
-    other->setPhoneIdList(QStringList() << "asterisk/p2");
-
-    QCOMPARE(u.isTalkingTo("asterisk/u2"), false);
-    b_engine->setUser("asterisk/u2", other);
-    QCOMPARE(u.isTalkingTo("asterisk/u2"), true);
-}
-
 void TestUserInfo::identitylist()
 {
     UserInfo u(m_ipbxid, "1234");

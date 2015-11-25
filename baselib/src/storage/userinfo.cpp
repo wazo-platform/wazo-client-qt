@@ -134,26 +134,6 @@ QStringList UserInfo::xchannels() const
     return channels;
 }
 
-/*!
- * \brief Check if we are talking to another user
- * \param rhs Other user
- */
-bool UserInfo::isTalkingTo(const QString & rhs) const
-{
-    if (const UserInfo * u = b_engine->user(rhs)) {
-        const QStringList & peers_channel = u->xchannels();
-        foreach (const QString & channelxid, peers_channel) {
-            if (const ChannelInfo * c = b_engine->channel(channelxid)) {
-                QString identity = c->talkingto_id().split("-").value(0);
-                if (this->identitylist().contains(identity)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
 bool UserInfo::hasMobile() const
 {
     return ! m_mobilenumber.isEmpty();
