@@ -355,8 +355,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
         QString m_osname;               //!< OS informations
 
-        QByteArray m_filedata;
-
         QSettings * m_settings;  //!< Settings (stored in .ini file)
         QFile * m_eventdevice;
         QByteArray m_downloaded;    //!< downloaded data
