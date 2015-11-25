@@ -46,7 +46,6 @@ class BASELIB_EXPORT VoiceMailInfo : public XInfo
 
         const QString & context() const { return m_context; };
         const QString & mailbox() const { return m_mailbox; };
-        const QString & fullname() const { return m_fullname; };
 
         bool waiting() const { return m_waiting; };
         int oldMessages() const { return m_old; };
@@ -55,7 +54,6 @@ class BASELIB_EXPORT VoiceMailInfo : public XInfo
     private:
         QString m_context;
         QString m_mailbox;
-        QString m_fullname;
 
         bool m_waiting;
         int m_old;

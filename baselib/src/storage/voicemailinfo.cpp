@@ -43,7 +43,6 @@ bool VoiceMailInfo::updateConfig(const QVariantMap & prop)
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "mailbox", & m_mailbox);
-    haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
     return haschanged;
 }
 
