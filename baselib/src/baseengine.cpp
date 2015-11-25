@@ -336,13 +336,6 @@ void BaseEngine::saveSettings()
     m_settings->endGroup();
 }
 
-void BaseEngine::setProfileSetting(const QString & key, const QVariant & value)
-{
-    m_settings->beginGroup(m_profilename_write);
-        m_settings->setValue(key, value);
-    m_settings->endGroup();
-}
-
 void BaseEngine::pasteToDial(const QString & toPaste)
 {
     emit pasteToXlets(toPaste);

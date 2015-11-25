@@ -79,9 +79,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
 
         // public config and settings
-
         QSettings* getSettings();
-        void setProfileSetting(const QString &, const QVariant &);  //!< set one setting in current profile
 
         QVariantMap getConfig() const;              //!< all BaseEngine settings.
         QVariant getConfig(const QString &) const;  //!< one BaseEngine setting. Use to read a setting.
