@@ -42,23 +42,14 @@
 #include "extendedtablewidget.h"
 
 ExtendedTableWidget::ExtendedTableWidget(QWidget * parent)
-    : QTableWidget(parent),
-      m_editable(false)
+    : QTableWidget(parent)
 {
-    setAcceptDrops(true);
     setAlternatingRowColors(true);
     horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 
     connect(horizontalHeader(),
             SIGNAL(sortIndicatorChanged(int, Qt::SortOrder)),
             SLOT(emitColumnSorted(int, Qt::SortOrder)));
-}
-
-ExtendedTableWidget::ExtendedTableWidget(int rows, int columns, QWidget * parent)
-    : QTableWidget(rows, columns, parent)
-{
-    setAcceptDrops(true);
-    setAlternatingRowColors(true);
 }
 
 void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
@@ -68,10 +59,6 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
     if (item) {
         event->accept();
         QMenu contextMenu( this );
-        if (m_editable) {
-            action = contextMenu.addAction(tr("&Remove"), this, SLOT(remove()));
-            action->setProperty("row", row(item));
-        }
         if (PhoneNumber::phone_re().exactMatch(item->text())) {
             action = contextMenu.addAction(tr("&Dial"), this, SLOT(dialNumber()));
             action->setProperty("number", item->text());
@@ -82,69 +69,6 @@ void ExtendedTableWidget::contextMenuEvent(QContextMenuEvent * event)
         }
         if(!contextMenu.isEmpty()) {
             contextMenu.exec(event->globalPos());
-        }
-    } else {
-        event->ignore();
-    }
-}
-
-void ExtendedTableWidget::mouseMoveEvent(QMouseEvent * event)
-{
-    QTableWidgetItem *item = itemAt(event->pos());
-    if (item) {
-        QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
-        mimeData->setText(item->text());
-        mimeData->setData(NUMBER_MIMETYPE, "");
-        drag->setMimeData(mimeData);
-        drag->start(Qt::CopyAction | Qt::MoveAction);
-    }
-}
-
-void ExtendedTableWidget::dragEnterEvent(QDragEnterEvent *event)
-{
-    if (event->mimeData()->hasFormat(XPHONEID_MIMETYPE) ||
-        event->mimeData()->hasFormat(NUMBER_MIMETYPE) ||
-        event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-        event->acceptProposedAction();
-    }
-}
-
-void ExtendedTableWidget::dragMoveEvent(QDragMoveEvent *event)
-{
-    if (event->proposedAction() & (Qt::CopyAction | Qt::MoveAction)) {
-        event->acceptProposedAction();
-    }
-    QTableWidgetItem *item = itemAt(event->pos());
-    if (item) {
-        if (PhoneNumber::phone_re().exactMatch(item->text())) {
-            event->accept(visualItemRect(item));
-        } else {
-            event->ignore(visualItemRect(item));
-        }
-    } else {
-        event->ignore();
-    }
-}
-
-void ExtendedTableWidget::dropEvent(QDropEvent *event)
-{
-    QTableWidgetItem *item = itemAt(event->pos());
-    if ((item) && (PhoneNumber::phone_re().exactMatch(item->text()))) {
-        QString userid_from = QString::fromLatin1(event->mimeData()->data(XUSERID_MIMETYPE));
-        QString channel_from = QString::fromLatin1(event->mimeData()->data(CHANNEL_MIMETYPE));
-        if (event->mimeData()->hasFormat(CHANNEL_MIMETYPE)) {
-            event->acceptProposedAction();
-            b_engine->actionCall("transfer",
-                                 "chan:" + userid_from + ":" + channel_from,
-                                 "ext:" + item->text());
-        } else if (event->mimeData()->hasFormat(XPHONEID_MIMETYPE)) {
-            event->acceptProposedAction();
-            b_engine->actionCall("originate",
-                                 "user:" + userid_from,
-                                 "ext:" + item->text());
-        } else {
-            event->ignore();
         }
     } else {
         event->ignore();
@@ -164,19 +88,6 @@ void ExtendedTableWidget::sendMail()
     QString email = sender()->property("email").toString();
     if (!email.isEmpty()) {
         QDesktopServices::openUrl(QUrl("mailto:" + email));
-    }
-}
-
-void ExtendedTableWidget::remove()
-{
-    int _row = sender()->property("row").toInt();
-    int ret = QMessageBox::warning(this, tr("Removing this contact"),
-                                   tr("Removing this contact.\n"
-                                      "Are you sure ?"),
-                                   QMessageBox::Yes|QMessageBox::No);
-
-    if (ret == QMessageBox::Yes) {
-        removeRow(_row);
     }
 }
 

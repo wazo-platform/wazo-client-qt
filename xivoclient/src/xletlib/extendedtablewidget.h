@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -43,28 +43,17 @@ class XLETLIB_EXPORT ExtendedTableWidget : public QTableWidget
 
     public:
         ExtendedTableWidget(QWidget *parent=0);
-        ExtendedTableWidget(int rows, int columns, QWidget *parent=0);
-        void setEditable(bool editable) { m_editable = editable; }
 
     signals:
         void columnSorted(int column, Qt::SortOrder order);
 
     protected:
         void contextMenuEvent(QContextMenuEvent *);
-        void dragEnterEvent(QDragEnterEvent *);
-        void dragMoveEvent(QDragMoveEvent *);
-        void dropEvent(QDropEvent *);
-        void mouseMoveEvent(QMouseEvent *);
 
     private slots:
         void dialNumber();
         void sendMail();
-        void remove();
         void emitColumnSorted(int column, Qt::SortOrder order);
-
-    private:
-
-        bool m_editable;
 };
 
 #endif

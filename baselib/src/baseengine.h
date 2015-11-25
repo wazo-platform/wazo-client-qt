@@ -164,7 +164,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     public slots:
 
-
         // public getters/setters slots
 
         void setAvailState(const QString &, bool); //!< set m_availstate
