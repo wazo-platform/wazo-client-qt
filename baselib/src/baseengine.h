@@ -125,8 +125,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const VoiceMailInfo * voicemail(const QString & id) const;
         const QueueMemberInfo * queuemember(const QString & id) const;
 
-        const QHash<QString, ChannelInfo *> & channels() const
-                { return m_channels; };      //!< Return the channels to any Xlet
         const QHash<QString, QueueMemberInfo *> & queuemembers() const
                 { return m_queuemembers; };  //!< Return the queue members to any Xlet
 
