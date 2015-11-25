@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,7 +32,6 @@
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)
     : XInfo(ipbxid, id),
-      m_simultcalls(0),
       m_initialized(false),
       m_enable_hint(false),
       m_enablerna(false),
@@ -49,8 +48,6 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
 bool PhoneInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "protocol", & m_protocol);
-    haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "number", & m_number);
     haschanged |= setIfChangeString(prop, "identity", & m_identity);
     //! \todo: fix somewhere else
@@ -59,7 +56,6 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
     }
     haschanged |= setIfChangeString(prop, "iduserfeatures", & m_iduserfeatures);
 
-    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
     haschanged |= setIfChangeBool(prop, "initialized", & m_initialized);
     haschanged |= setIfChangeBool(prop, "enable_hint", & m_enable_hint);
 
@@ -84,11 +80,6 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
     haschanged |= setIfChangeString(prop, "hintstatus", & m_hintstatus);
     if (prop.contains("channels")) {
         m_channels = prop.value("channels").toStringList();
-        m_xchannels.clear();
-        foreach (QString channel, m_channels) {
-            QString xchannel = QString("%1/%2").arg(m_ipbxid).arg(channel);
-            m_xchannels.append(xchannel);
-        }
         haschanged = true;
     }
     return haschanged;
