@@ -297,7 +297,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid);
         void requestStatus(const QString &listname, const QString &ipbxid, const QString &id);
         void addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid);
-        void updatePhone(const QString &, const QString &, const QVariantMap &);
 
         void clearLists();
         void clearChannelList();
