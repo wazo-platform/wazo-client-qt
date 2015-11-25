@@ -74,7 +74,7 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
         lid.sort();
         if (lid != m_phoneidlist) {
             haschanged = true;
-            setPhoneIdList(lid);
+            m_phoneidlist = lid;
         }
     }
 
@@ -86,11 +86,6 @@ bool UserInfo::updateStatus(const QVariantMap & prop)
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "availstate", & m_availstate);
     return haschanged;
-}
-
-void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
-{
-    m_phoneidlist = phoneidlist;
 }
 
 const QString & UserInfo::availstate() const

@@ -46,7 +46,6 @@ class TestUserInfo: public QObject
     void updateConfig();
     void updateStatus();
     void setAvailState();
-    void setPhoneIdList();
 
     // Special slot, automatically called before executing all tests
     void initTestCase();

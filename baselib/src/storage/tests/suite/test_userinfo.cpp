@@ -212,12 +212,3 @@ void TestUserInfo::setAvailState()
     u.setAvailState(teststate);
     QCOMPARE(u.availstate(), teststate);
 }
-
-void TestUserInfo::setPhoneIdList()
-{
-    UserInfo u(m_ipbxid, "1234");
-    QCOMPARE(u.phonelist(), QStringList());
-    QStringList testphonelist(QStringList() << "asterisk/p1" << "asterisk/p2");
-    u.setPhoneIdList(testphonelist);
-    QCOMPARE(u.phonelist(), testphonelist);
-}

@@ -68,8 +68,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         void setAvailState(const QString & availstate) {m_availstate = availstate;};
 
-        void setPhoneIdList(const QStringList &);
-
         bool hasMobile() const;
     private:
 
