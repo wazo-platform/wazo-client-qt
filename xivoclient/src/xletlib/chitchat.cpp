@@ -93,18 +93,6 @@ void ChitChatDispatcher::showChatWindow(const QString &name, const QString &xivo
     window->popup();
 }
 
-// to remove when the contact xlet is removed
-void ChitChatDispatcher::writeMessageTo()
-{
-    const QString &xuserid = sender()->property("xuserid").toString();
-    const UserInfo *user = b_engine->user(xuserid);
-    const QString &name = user->fullname();
-    const QString &xivo_uuid = user->xivoUuid();
-    const QStringList &ipbxid_id = xuserid.split("/");
-    int user_id = ipbxid_id[1].toInt();
-    this->showChatWindow(name, xivo_uuid, user_id);
-}
-
 ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id)
     : QWidget(NULL),
       m_name(name),

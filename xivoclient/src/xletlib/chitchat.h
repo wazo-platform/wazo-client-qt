@@ -65,9 +65,6 @@ class XLETLIB_EXPORT ChitChatDispatcher: public QObject, IPBXListener
         void receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg);
         void showChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
 
-    public slots:
-        void writeMessageTo();
-
     private:
         ChitChatDispatcher();
         ChitChatWindow *findOrNew(const QString &name, const QString &xivo_uuid, int user_id);
