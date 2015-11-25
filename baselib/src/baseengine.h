@@ -107,7 +107,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString timeElapsed(double) const;
 
         bool hasAgent(const QString & xid) { return m_anylist.value("agents").contains(xid); };
-        bool hasQueue(const QString & xid) { return m_anylist.value("queues").contains(xid); };
 
         QHash<QString, XInfo *> iterover(const QString & listname) { return m_anylist.value(listname); };
 
