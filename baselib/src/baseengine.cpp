@@ -1244,41 +1244,6 @@ void BaseEngine::textEdited(const QString & text)
     m_numbertodial = text;
 }
 
-/*! \brief send telephony command to the server
- *
- * \param action originate/transfer/atxfer/hangup/answer/refuse
- */
-void BaseEngine::actionCall(const QString & action,
-                            const QString & src,
-                            const QString & dst)
-{
-    QVariantMap ipbxcommand;
-    ipbxcommand["command"] = action;
-
-    if ((action == "originate") || (action == "transfer") || (action == "atxfer")) {
-        ipbxcommand["command"] = action;
-        ipbxcommand["source"] = src;
-        if ((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
-            ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(m_numbertodial);
-        else
-            ipbxcommand["destination"] = dst;
-    } else if ((action == "hangup") || (action == "transfercancel")) {
-        ipbxcommand["command"] = action;
-        ipbxcommand["channelids"] = src;
-    } else if (action == "answer") {
-        ipbxcommand["command"] = action;
-        ipbxcommand["phoneids"] = src;
-    } else if (action == "refuse") {
-        ipbxcommand["command"] = action;
-        ipbxcommand["channelids"] = src;
-    } else if (action == "intercept") {
-        ipbxcommand["tointercept"] = dst;
-        ipbxcommand["catcher"] = src;
-    }
-
-    ipbxCommand(ipbxcommand);
-}
-
 void BaseEngine::actionDial(const QString &destination)
 {
     this->sendJsonCommand(MessageFactory::dial(destination));
