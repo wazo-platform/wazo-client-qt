@@ -372,8 +372,6 @@ void BaseEngine::logAction(const QString & logstring)
  */
 void BaseEngine::startConnection()
 {
-    qDebug() << "Connecting to" << m_config["cti_address"].toString() << "port" << port_to_use();
-
     ConnectionConfig connection_config = m_config.getConnectionConfig();
     m_cti_server->connectToServer(connection_config);
 }
@@ -1376,15 +1374,6 @@ void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
     } else {
         m_config["userlogin"] = m_config["userloginsimple"].toString()
                                 + "%" + m_config["userloginopt"].toString();
-    }
-}
-
-uint BaseEngine::port_to_use() const
-{
-    if (! m_config["cti_encrypt"].toBool()) {
-        return m_config["cti_port"].toUInt();
-    } else {
-        return m_config["cti_port_encrypted"].toUInt();
     }
 }
 
