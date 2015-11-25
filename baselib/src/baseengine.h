@@ -126,7 +126,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString sendJsonCommand(const QVariantMap &);
 
         QStringList phonenumbers(const UserInfo *);
-        QStringList queueListFromAgentId(const QString & agent_xid);
 
         void registerTranslation(const QString &);
         void setupTranslation();
