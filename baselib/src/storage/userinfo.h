@@ -38,7 +38,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
 {
     public:
         UserInfo(const QString &, const QString &);
-        QString toString() const;
 
         const QString & fullname() const { return m_fullname; };
         const QString & firstname() const { return m_firstname; };

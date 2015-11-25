@@ -138,23 +138,6 @@ const QString & UserInfo::availstate() const
     return m_availstate;
 }
 
-/*! \brief return a String representation of the object
- *
- * useful for debug
- */
-QString UserInfo::toString() const
-{
-    QString str;
-
-    str  = "Userid=" + m_id + " fullname=" + m_fullname;
-    str += " mobile=" + m_mobilenumber;
-    str += " nphones=" + QString::number(m_phoneidlist.size());
-    str += " phonesids=" + m_phoneidlist.join(",");
-    str += " status=" + m_availstate;
-
-    return str;
-}
-
 /*!
  * \brief Retrieves a list of channels for this user
  */
