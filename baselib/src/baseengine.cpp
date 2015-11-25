@@ -336,14 +336,6 @@ void BaseEngine::saveSettings()
     m_settings->endGroup();
 }
 
-QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const
-{
-    m_settings->beginGroup(m_profilename_read);
-        QVariant ret = m_settings->value(key, bydefault);
-    m_settings->endGroup();
-    return ret;
-}
-
 void BaseEngine::setProfileSetting(const QString & key, const QVariant & value)
 {
     m_settings->beginGroup(m_profilename_write);
