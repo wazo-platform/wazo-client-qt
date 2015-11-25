@@ -176,8 +176,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void actionDial(const QString &);
 
-        void receiveNumberSelection(const QStringList &);  //!< relay the selection
-
         void textEdited(const QString &);
 
         void fetchIPBXList();
@@ -274,7 +272,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void displayFiche(const QString &, bool, const QString &);
 
-        void broadcastNumberSelection(const QStringList &);  //!< numbers for a selected peer
         void queueEntryUpdate(const QString &, const QVariantList &);
         void clearingCache();
 

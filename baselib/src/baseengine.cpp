@@ -1249,14 +1249,6 @@ void BaseEngine::actionDial(const QString &destination)
     this->sendJsonCommand(MessageFactory::dial(destination));
 }
 
-/*! \brief Receive a number list from xlets and signal this list
- *  to interested xlets
- */
-void BaseEngine::receiveNumberSelection(const QStringList & numbers)
-{
-    emit broadcastNumberSelection(numbers);
-}
-
 /*!
  * \return all settings
  */
