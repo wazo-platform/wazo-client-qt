@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -47,7 +47,6 @@ class TestUserInfo: public QObject
     void updateStatus();
     void setAvailState();
     void setPhoneIdList();
-    void hasPhoneId();
     void hasChannelId();
     void findNumberForXChannel();
     void xchannels();

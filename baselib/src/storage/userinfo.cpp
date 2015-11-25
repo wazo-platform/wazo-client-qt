@@ -99,12 +99,6 @@ void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
     m_phoneidlist = phoneidlist;
 }
 
-/*! \brief check if this user has this phone */
-bool UserInfo::hasPhoneId(const QString & xphoneid) const
-{
-    return m_phoneidlist.contains(xphoneid);
-}
-
 /*! \brief Returns a phone number for a channel
  *
  * If a channel is owned by one of the user's phone the phone number

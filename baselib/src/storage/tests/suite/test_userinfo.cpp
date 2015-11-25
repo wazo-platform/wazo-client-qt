@@ -222,16 +222,6 @@ void TestUserInfo::setPhoneIdList()
     QCOMPARE(u.phonelist(), testphonelist);
 }
 
-void TestUserInfo::hasPhoneId()
-{
-    UserInfo u(m_ipbxid, "1234");
-    QString pxid = QString("%0/%1").arg(m_ipbxid).arg("42");
-    QCOMPARE(u.hasPhoneId(pxid), false);
-    u.updateConfig(m_prop1);
-    QCOMPARE(u.hasPhoneId(pxid), true);
-    QCOMPARE(u.hasPhoneId(QString("%0/%1").arg(m_ipbxid).arg("133")), false);
-}
-
 void TestUserInfo::hasChannelId()
 {
     UserInfo u(m_ipbxid, "1234");
