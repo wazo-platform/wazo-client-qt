@@ -117,10 +117,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const VoiceMailInfo * voicemail(const QString & id) const;
         const QueueMemberInfo * queuemember(const QString & id) const;
 
-        const QHash<QString, QueueMemberInfo *> & queuemembers() const
-                { return m_queuemembers; };  //!< Return the queue members to any Xlet
-
-
         // public operations
 
         bool isInMeetme() const { return m_meetme_membership.size() > 0; }
