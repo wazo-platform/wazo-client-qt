@@ -111,12 +111,14 @@ QVariant PeopleActionGenerator::dataAt(const QModelIndex &index, int column)
 
 QList<QAction*> PeopleActionGenerator::newBlindTransferActions(const QModelIndex &index)
 {
-    return newTransferActions<BlindTransferAction>(index);
+    return QList<QAction*>() << newTransferActions<BlindTransferAction>(index)
+                             << newVMTransferActions<BlindTransferVoicemailAction>(index);
 }
 
 QList<QAction*> PeopleActionGenerator::newAttendedTransferActions(const QModelIndex &index)
 {
-    return newTransferActions<AttendedTransferAction>(index);
+    return QList<QAction*>() << newTransferActions<AttendedTransferAction>(index)
+                             << newVMTransferActions<AttendedTransferVoicemailAction>(index);
 }
 
 QAction *PeopleActionGenerator::newCallAction(const QModelIndex &index)
@@ -186,6 +188,11 @@ QList<QStringPair> PeopleActionGenerator::allTitleNumber(const QModelIndex &inde
     return QList<QStringPair>() << titleValues(NUMBER, index) << titleValues(CALLABLE, index);
 }
 
+QList<QStringPair> PeopleActionGenerator::allTitleVoicemail(const QModelIndex &index)
+{
+    return titleValues(VOICEMAIL, index);
+}
+
 QList<QStringPair> PeopleActionGenerator::callableTitleNumber(const QModelIndex &index)
 {
     return titleValues(CALLABLE, index);
@@ -213,7 +220,7 @@ bool PeopleActionGenerator::hasMail(const QModelIndex &index)
 
 bool PeopleActionGenerator::hasTransfers(const QModelIndex &index)
 {
-    return canTransfer() && !allTitleNumber(index).isEmpty();
+    return canTransfer() && (!allTitleNumber(index).isEmpty() || !allTitleVoicemail(index).isEmpty());
 }
 
 CallAction::CallAction(const QString &number, QWidget *parent)
@@ -257,6 +264,30 @@ AttendedTransferAction::AttendedTransferAction(const QString &title, const QStri
 void AttendedTransferAction::transfer()
 {
     b_engine->sendJsonCommand(MessageFactory::attendedTransfer(m_number));
+}
+
+BlindTransferVoicemailAction::BlindTransferVoicemailAction(const QString &title, const QString &number, QWidget *parent)
+    : QAction(formatColumnNumber(title, number), parent),
+      m_number(number)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(transfer()));
+}
+
+void BlindTransferVoicemailAction::transfer()
+{
+    b_engine->sendJsonCommand(MessageFactory::blindTransferVoicemail(m_number));
+}
+
+AttendedTransferVoicemailAction::AttendedTransferVoicemailAction(const QString &title, const QString &number, QWidget *parent)
+    : QAction(formatColumnNumber(title, number), parent),
+      m_number(number)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(transfer()));
+}
+
+void AttendedTransferVoicemailAction::transfer()
+{
+    b_engine->sendJsonCommand(MessageFactory::attendedTransferVoicemail(m_number));
 }
 
 ChatAction::ChatAction(const QString &name, const QString &xivo_uuid, int user_id, QWidget *parent)

@@ -88,14 +88,11 @@ void PeopleEntryView::updateColumnsVisibility(const QModelIndex &, int first, in
     for (int column_index = first ; column_index <= last ; column_index ++) {
         int column_type = this->model()->headerData(column_index, Qt::Horizontal, Qt::UserRole).toInt();
         switch (column_type) {
-            case CALLABLE: {
-                this->hideColumn(column_index);
-                break;
-            }
-            case EMAIL: {
-                this->hideColumn(column_index);
-                break;
-            }
+        case CALLABLE:
+        case EMAIL:
+        case VOICEMAIL:
+            this->hideColumn(column_index);
+            break;
         }
     }
 }

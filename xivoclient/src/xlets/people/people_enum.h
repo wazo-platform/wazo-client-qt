@@ -39,7 +39,8 @@ enum ColumnType {
   NUMBER,
   PERSONAL_CONTACT,
   OTHER,
-  STATUS_ICON
+  STATUS_ICON,
+  VOICEMAIL,
 };
 
 enum UserRoleCustom {

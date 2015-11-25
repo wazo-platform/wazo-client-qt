@@ -47,6 +47,7 @@ PeopleEntryModel::PeopleEntryModel(QWidget *parent)
     this->m_type_map["number"] = NUMBER;
     this->m_type_map["personal"] = PERSONAL_CONTACT;
     this->m_type_map["status"] = STATUS_ICON;
+    this->m_type_map["voicemail"] = VOICEMAIL;
 }
 
 void PeopleEntryModel::addField(const QString &name, const QString &type)
