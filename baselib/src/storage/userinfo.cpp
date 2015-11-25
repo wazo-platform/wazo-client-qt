@@ -99,20 +99,6 @@ void UserInfo::setPhoneIdList(const QStringList & phoneidlist)
     m_phoneidlist = phoneidlist;
 }
 
-/*! \brief returns the list of phone's identities for this user */
-const QStringList & UserInfo::identitylist() const
-{
-    if (m_identitylist.isEmpty()) {
-        foreach (const QString & phonexid, m_phoneidlist) {
-            const PhoneInfo * p = b_engine->phone(phonexid);
-            if (p) {
-                m_identitylist.append(p->identity());
-            }
-        }
-    }
-    return m_identitylist;
-}
-
 const QString & UserInfo::availstate() const
 {
     return m_availstate;

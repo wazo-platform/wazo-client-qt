@@ -72,7 +72,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
 
         bool hasMobile() const;
         QStringList xchannels() const;
-        const QStringList & identitylist() const;
     private:
 
         QString m_xivo_uuid;

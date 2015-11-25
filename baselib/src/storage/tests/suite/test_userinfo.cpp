@@ -233,13 +233,3 @@ void TestUserInfo::xchannels()
     u.setPhoneIdList(QStringList() << "asterisk/p1" << "asterisk/p2");
     QCOMPARE(u.xchannels(), QStringList() << "SIP/sip1-01" << "SIP/sip2-02");
 }
-
-void TestUserInfo::identitylist()
-{
-    UserInfo u(m_ipbxid, "1234");
-    QCOMPARE(u.identitylist(), QStringList());
-    u.setPhoneIdList(QStringList() << "asterisk/p0");
-    QCOMPARE(u.identitylist(), QStringList());
-    u.setPhoneIdList(QStringList() << "asterisk/p1" << "asterisk/p2");
-    QCOMPARE(u.identitylist(), QStringList() << "SIP/sip1" << "SIP/sip2");
-}
