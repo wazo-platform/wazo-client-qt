@@ -843,8 +843,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         const QVariantList &entry_list = state["entries"].toList();
 
         emit queueEntryUpdate(queue_id, entry_list);
-    } else if (thisclass == "meetme_user") {
-        m_meetme_membership = datamap["list"].toList();
     } else {
         command_processed = false;
     }

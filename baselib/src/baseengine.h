@@ -119,7 +119,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // public operations
 
-        bool isInMeetme() const { return m_meetme_membership.size() > 0; }
         void registerMeetmeUpdate();
 
         void registerListener(const QString &, IPBXListener *); //!< Register an XLet wanting to listen IPBX messages
@@ -383,7 +382,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QHash<QString, newXInfoProto> m_xinfoList;  //!< XInfo constructors
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
         QHash<QString, QueueMemberInfo *> m_queuemembers;
-        QVariantList m_meetme_membership;
 
         InitWatcher m_init_watcher;
 
