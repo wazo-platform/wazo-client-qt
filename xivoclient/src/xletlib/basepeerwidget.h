@@ -125,6 +125,4 @@ class XLETLIB_EXPORT BasePeerWidget : public QWidget
         QList<QMenu *> m_submenus;
 };
 
-#include "peerwidget.h"
-
 #endif
