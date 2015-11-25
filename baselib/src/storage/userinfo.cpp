@@ -27,13 +27,7 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
-
 #include "xivoconsts.h"
-#include "baseengine.h"
-#include "phoneinfo.h"
-#include "channelinfo.h"
-
 #include "userinfo.h"
 
 UserInfo::UserInfo(const QString & ipbxid,
