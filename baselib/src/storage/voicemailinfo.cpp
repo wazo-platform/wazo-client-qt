@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,7 +27,6 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
 #include "voicemailinfo.h"
 
 VoiceMailInfo::VoiceMailInfo(const QString & ipbxid,
@@ -43,7 +42,6 @@ bool VoiceMailInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "context", & m_context);
-    haschanged |= setIfChangeString(prop, "email", & m_email);
     haschanged |= setIfChangeString(prop, "mailbox", & m_mailbox);
     haschanged |= setIfChangeString(prop, "fullname", & m_fullname);
     return haschanged;

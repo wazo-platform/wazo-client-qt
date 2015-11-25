@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -37,8 +37,6 @@
 #include <QVariantMap>
 #include "xinfo.h"
 
-/*! \brief Store VoiceMail information
- */
 class BASELIB_EXPORT VoiceMailInfo : public XInfo
 {
     public:
@@ -47,7 +45,6 @@ class BASELIB_EXPORT VoiceMailInfo : public XInfo
         bool updateStatus(const QVariantMap &);  //! update status members
 
         const QString & context() const { return m_context; };
-        const QString & email() const { return m_email; };
         const QString & mailbox() const { return m_mailbox; };
         const QString & fullname() const { return m_fullname; };
 
@@ -57,7 +54,6 @@ class BASELIB_EXPORT VoiceMailInfo : public XInfo
 
     private:
         QString m_context;
-        QString m_email;
         QString m_mailbox;
         QString m_fullname;
 
