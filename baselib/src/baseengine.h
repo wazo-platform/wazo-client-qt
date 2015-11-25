@@ -176,8 +176,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void actionDial(const QString &);
 
-        void textEdited(const QString &);
-
         void fetchIPBXList();
         void fetchLists();
 
@@ -355,7 +353,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_changestate_oldstate; //!< old state when changing state automatically
         QString m_changestate_newstate; //!< new state when changing state automatically
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
-        QString m_numbertodial;         //!< Number dialed in
         QString m_osname;               //!< OS informations
 
         QByteArray m_filedata;

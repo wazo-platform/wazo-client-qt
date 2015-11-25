@@ -1237,13 +1237,6 @@ void BaseEngine::ctiSocketReadyRead()
     }
 }
 
-/*! \brief send an originate command to the server
- */
-void BaseEngine::textEdited(const QString & text)
-{
-    m_numbertodial = text;
-}
-
 void BaseEngine::actionDial(const QString &destination)
 {
     this->sendJsonCommand(MessageFactory::dial(destination));
