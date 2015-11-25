@@ -103,7 +103,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
         UserInfo * getXivoClientUser();       //!< Return the user of the XiVO CTI Client
-        UserInfo * getXivoClientMonitored();  //!< Return the monitored user
 
         double timeDeltaServerClient() const;
         QString timeElapsed(double) const;
@@ -201,8 +200,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void meetmeAction(const QString &, const QString &);
 
-        void monitorPeerRequest(const QString &);
-
         void pasteToDial(const QString &);
 
         void saveToFile(const QString &);
@@ -248,8 +245,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
 
-        void monitorPeerChanged();
-
         void updatePresence();
 
         void fileReceived();                       //!< needed by agentdetails
@@ -286,7 +281,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
 
         void localUserInfoDefined();
-        void monitoredUserInfoDefined();
 
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
@@ -382,7 +376,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QByteArray m_filedata;
 
-        QString m_monitored_xuserid;  //!< UserId of the Monitored user
         QSettings * m_settings;  //!< Settings (stored in .ini file)
         QFile * m_eventdevice;
         QByteArray m_downloaded;    //!< downloaded data

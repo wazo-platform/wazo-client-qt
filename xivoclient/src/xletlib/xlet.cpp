@@ -34,7 +34,6 @@
 XLet::XLet(QWidget *parent, const QString &title, const QString &icon_path)
     : QWidget(parent),
       m_ui(NULL),
-      m_monitored_ui(NULL),
       m_title(title),
       m_icon_path(icon_path)
 {
@@ -42,19 +41,12 @@ XLet::XLet(QWidget *parent, const QString &title, const QString &icon_path)
             b_engine, SLOT(ipbxCommand(const QVariantMap &)));
     connect(b_engine, SIGNAL(localUserInfoDefined()),
             this, SLOT(localUserInfoDefined()));
-    connect(b_engine, SIGNAL(monitoredUserInfoDefined()),
-            this, SLOT(monitoredUserInfoDefined()));
     m_xuserid = b_engine->getFullId();
 }
 
 void XLet::localUserInfoDefined()
 {
     m_ui = b_engine->getXivoClientUser();
-}
-
-void XLet::monitoredUserInfoDefined()
-{
-    m_monitored_ui = b_engine->getXivoClientMonitored();
 }
 
 const QString & XLet::title() const

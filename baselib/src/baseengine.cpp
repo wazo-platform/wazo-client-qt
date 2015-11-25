@@ -588,17 +588,6 @@ void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
     sendJsonCommand(cticommand);
 }
 
-/*! \brief set monitored peer id */
-void BaseEngine::monitorPeerRequest(const QString & xuserid)
-{
-    if (m_anylist.value("users").contains(xuserid)) {
-        m_monitored_xuserid = xuserid;
-        emit monitoredUserInfoDefined();
-        emit monitorPeerChanged();
-        m_settings->setValue("monitor/userid", xuserid);
-    }
-}
-
 
 double BaseEngine::timeDeltaServerClient() const
 {
@@ -1594,14 +1583,6 @@ UserInfo * BaseEngine::getXivoClientUser()
 {
     if (m_anylist.value("users").contains(m_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_xuserid);
-    }
-    return NULL;
-}
-
-UserInfo * BaseEngine::getXivoClientMonitored()
-{
-    if (m_anylist.value("users").contains(m_monitored_xuserid)) {
-        return (UserInfo *) m_anylist.value("users").value(m_monitored_xuserid);
     }
     return NULL;
 }

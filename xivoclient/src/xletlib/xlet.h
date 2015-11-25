@@ -77,11 +77,9 @@ class XLETLIB_EXPORT XLet : public QWidget
         void showOthersRequested();
     public slots:
         void localUserInfoDefined();
-        void monitoredUserInfoDefined();
     protected:
         QString m_xuserid;
         const UserInfo * m_ui;
-        const UserInfo * m_monitored_ui;
     private:
         QString m_title;
         QString m_icon_path;
