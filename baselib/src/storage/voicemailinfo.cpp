@@ -32,7 +32,6 @@
 VoiceMailInfo::VoiceMailInfo(const QString & ipbxid,
                              const QString & id)
     : XInfo(ipbxid, id),
-      m_waiting(false),
       m_old(0),
       m_new(0)
 {
@@ -49,7 +48,6 @@ bool VoiceMailInfo::updateConfig(const QVariantMap & prop)
 bool VoiceMailInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeBool(prop, "waiting", & m_waiting);
     haschanged |= setIfChangeInt(prop, "old", & m_old);
     haschanged |= setIfChangeInt(prop, "new", & m_new);
     return haschanged;
