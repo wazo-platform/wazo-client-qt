@@ -33,7 +33,6 @@
 
 #include "baselib_export.h"
 #include "xinfo.h"
-#include "xivoconsts.h"
 
 class BASELIB_EXPORT UserInfo : public XInfo
 {
@@ -64,7 +63,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QStringList & phonelist() const { return m_phoneidlist; };
 
         const QString & availstate() const;
-        bool connected() const { return m_availstate != __presence_off__; };
 
         bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);

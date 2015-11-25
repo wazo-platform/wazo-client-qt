@@ -29,6 +29,7 @@
 
 #include <QDebug>
 
+#include "xivoconsts.h"
 #include "baseengine.h"
 #include "phoneinfo.h"
 #include "channelinfo.h"
