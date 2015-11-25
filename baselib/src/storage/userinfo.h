@@ -30,7 +30,6 @@
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
-#define PROFILE_SWITCHBOARD "switchboard"
 
 #include "baselib_export.h"
 #include "xinfo.h"
@@ -50,7 +49,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QString & agentid() const { return m_agentid; };
         const QString & xagentid() const { return m_xagentid; };
         const QString & xivoUuid() const { return m_xivo_uuid; };
-        bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
         bool enablevoicemail() const { return m_enablevoicemail; };
         bool incallfilter() const { return m_incallfilter; };
         bool enablednd() const { return m_enablednd; };
@@ -92,7 +90,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         QString m_xvoicemailid;             //!< ipbxid + voice mail box id
         QString m_agentid;                  //!< agent id
         QString m_xagentid;                 //!< ipbxid + agent id
-        QString m_profileclient;
         bool m_enablevoicemail;
         bool m_incallfilter;
         bool m_enablednd;

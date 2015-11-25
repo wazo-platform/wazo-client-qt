@@ -68,7 +68,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
     haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
-    haschanged |= setIfChangeString(prop, "profileclient", & m_profileclient);
     haschanged |= setIfChangeString(prop, "firstname", & m_firstname);
     haschanged |= setIfChangeString(prop, "lastname", & m_lastname);
     haschanged |= setIfChangeString(prop, "xivo_uuid", & m_xivo_uuid);
