@@ -60,7 +60,6 @@ class IPBXListener;
 class XletDebug;
 
 class AgentInfo;
-class ChannelInfo;
 class PhoneInfo;
 class QueueInfo;
 class QueueMemberInfo;
@@ -400,8 +399,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // miscellaneous statuses to share between xlets
         QHash<QString, newXInfoProto> m_xinfoList;  //!< XInfo constructors
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
-        QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
-        QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
+        QHash<QString, QueueMemberInfo *> m_queuemembers;
         QVariantList m_meetme_membership;
 
         InitWatcher m_init_watcher;

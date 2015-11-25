@@ -520,12 +520,6 @@ void BaseEngine::clearLists()
 
 void BaseEngine::clearChannelList()
 {
-    QHashIterator<QString, ChannelInfo *> iterc = QHashIterator<QString, ChannelInfo *>(m_channels);
-    while (iterc.hasNext()) {
-        iterc.next();
-        delete iterc.value();
-    }
-    m_channels.clear();
     QHashIterator<QString, QueueMemberInfo *> iterq = QHashIterator<QString, QueueMemberInfo *>(m_queuemembers);
     while (iterq.hasNext()) {
         iterq.next();
@@ -941,11 +935,6 @@ void BaseEngine::handleGetlistDelConfig(const QString &listname, const QString &
                 delete m_anylist[listname][xid];
                 m_anylist[listname].remove(xid);
             }
-        } else if (listname == "channels") {
-            if (m_channels.contains(xid)) {
-                delete m_channels[xid];
-                m_channels.remove(xid);
-            }
         }
         if (listname == "queuemembers") {
             if (m_queuemembers.contains(xid)) {
@@ -1025,10 +1014,6 @@ void BaseEngine::handleGetlistUpdateStatus(
     if (GenLists.contains(listname)) {
         if (m_anylist.value(listname).contains(xid))
             m_anylist.value(listname).value(xid)->updateStatus(status);
-    } else if (listname == "channels") {
-        if (! m_channels.contains(xid))
-            m_channels[xid] = new ChannelInfo(ipbxid, id);
-        m_channels[xid]->updateStatus(status);
     }
     if (listname == "queuemembers") {
         if (! m_queuemembers.contains(xid))
@@ -1041,11 +1026,6 @@ void BaseEngine::handleGetlistUpdateStatus(
         emit updateUserStatus(xid);
     } else if (listname == "phones") {
         emit updatePhoneStatus(xid);
-        if (hasPhone(xid)) {
-            foreach (QString cid, phone(xid)->channels()) {
-                this->requestStatus("channels", ipbxid, cid);
-            }
-        }
     } else if (listname == "agents")
         emit updateAgentStatus(xid);
     else if (listname == "queues") {
