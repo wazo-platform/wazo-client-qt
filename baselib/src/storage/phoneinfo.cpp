@@ -31,16 +31,7 @@
 
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)
-    : XInfo(ipbxid, id),
-      m_initialized(false),
-      m_enable_hint(false),
-      m_enablerna(false),
-      m_enableunc(false),
-      m_enablebusy(false),
-      m_enablednd(false),
-      m_enablevoicemail(false),
-      m_enablexfer(false),
-      m_incallfilter(false)
+    : XInfo(ipbxid, id)
 {
 }
 
@@ -55,22 +46,6 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
         m_identity.replace("\\/", "/");
     }
     haschanged |= setIfChangeString(prop, "iduserfeatures", & m_iduserfeatures);
-
-    haschanged |= setIfChangeBool(prop, "initialized", & m_initialized);
-    haschanged |= setIfChangeBool(prop, "enable_hint", & m_enable_hint);
-
-    haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
-    haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
-    haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
-    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
-    haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
-    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
-
-    haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
-    haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
-    haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);
-    haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
-
     return haschanged;
 }
 

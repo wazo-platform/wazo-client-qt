@@ -51,30 +51,11 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         QString xid_user_features() const;
 
         const QString & hintstatus() const { return m_hintstatus; };
-
-        bool enableunc() const { return m_enableunc; };
     private:
         QString m_number;
         QString m_identity;
         QString m_iduserfeatures;
-
-        bool m_initialized;
-        bool m_enable_hint;
         QString m_hintstatus;
-
-        bool m_enablerna;
-        bool m_enableunc;
-        bool m_enablebusy;
-        QString m_destrna;
-        QString m_destunc;
-        QString m_destbusy;
-
-        bool m_enablednd;
-        bool m_enablevoicemail;
-        bool m_enablexfer;
-        bool m_incallfilter;
-
-    public:
 };
 
 namespace PhoneHint {
