@@ -185,7 +185,6 @@ void IdentityDisplay::updateVoiceMailConfig(const QString & xvoicemailid)
     if (voicemailinfo == NULL) {
         return;
     }
-    this->requestVoicemailMessageCount(voicemailinfo);
     this->ui.voicemail_number->setText(voicemailinfo->mailbox());
 }
 
@@ -495,17 +494,4 @@ void IdentityDisplay::dial()
     }
     b_engine->actionDial(extension);
     this->ui.dial_input->clear();
-}
-
-
-void IdentityDisplay::requestVoicemailMessageCount(const VoiceMailInfo *voicemail)
-{
-    if (voicemail == NULL) {
-        return;
-    }
-    QVariantMap command;
-    command["command"] = "mailboxcount";
-    command["mailbox"] = voicemail->mailbox();
-    command["context"] = voicemail->context();
-    b_engine->ipbxCommand(command);
 }
