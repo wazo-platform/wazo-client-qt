@@ -122,9 +122,6 @@ void ConfigWidget::load_values()
     /// History
     this->ui.history_size->setValue(this->m_config["historysize"].toUInt());
 
-    /// Contact
-    this->ui.max_contacts_displayed->setValue(this->m_config["guioptions.contacts-max"].toUInt());
-
     /// Queue list
     this->ui.show_longest_wait_time->setChecked(this->m_config["guioptions.queue_longestwait"].toBool());
     this->ui.longest_wait_time_green->setValue(this->m_config["guioptions.queuelevels_wait"].toMap().value("green").toUInt());
@@ -178,9 +175,6 @@ void ConfigWidget::accept()
 
     /// History
     this->m_config["historysize"] = this->ui.history_size->value();
-
-    /// Contact
-    this->m_config["guioptions.contacts-max"] = this->ui.max_contacts_displayed->value();
 
     /// Queue list
     this->m_config["guioptions.queue_longestwait"] = this->ui.show_longest_wait_time->isChecked();
