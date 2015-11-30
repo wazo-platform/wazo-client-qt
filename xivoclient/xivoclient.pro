@@ -56,7 +56,6 @@ SOURCES += $${ROOT_DIR}/src/main_window/*.cpp
 HEADERS += $${ROOT_DIR}/src/remote_control/*.h
 SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 
-# necessary to make lupdate process these source files
 HEADERS += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.h
 SOURCES += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.cpp
 
