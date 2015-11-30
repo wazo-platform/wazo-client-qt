@@ -56,16 +56,8 @@ SOURCES += $${ROOT_DIR}/src/main_window/*.cpp
 HEADERS += $${ROOT_DIR}/src/remote_control/*.h
 SOURCES += $${ROOT_DIR}/src/remote_control/*.cpp
 
-BUILTIN_DIRS += customerinfo-builtin
-BUILTIN_DIRS += search-builtin
-for(BUILTIN_DIR, BUILTIN_DIRS){
-    HEADERS     += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}/*.h
-    # SOURCES     += $${ROOT_DIR}/src/xlets/$${BUILTIN_DIR}/*.cpp
-}
-
-# necessary to make lupdate process these source files
+HEADERS += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.h
 SOURCES += $${ROOT_DIR}/src/xlets/customerinfo-builtin/*.cpp
-SOURCES += $${ROOT_DIR}/src/xlets/search-builtin/*.cpp
 
 DESTDIR  = $$BIN_DIR
 

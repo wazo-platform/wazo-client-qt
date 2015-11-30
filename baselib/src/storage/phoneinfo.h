@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -45,46 +45,17 @@ class BASELIB_EXPORT PhoneInfo : public XInfo
         virtual ~PhoneInfo() {}
         bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);
-        const QString & context() const { return m_context; };
         virtual const QString &number() const { return m_number; };
         const QString & identity() const { return m_identity; };
-        const QString & protocol() const { return m_protocol; };
         const QString & iduserfeatures() const { return m_iduserfeatures; };
         QString xid_user_features() const;
-        int simultcalls() const { return m_simultcalls; };
 
-        const QStringList & channels() const { return m_channels; };
-        const QStringList & xchannels() const { return m_xchannels; };
         const QString & hintstatus() const { return m_hintstatus; };
-
-        bool enableunc() const { return m_enableunc; };
     private:
-        QString m_protocol;
-        QString m_context;
         QString m_number;
         QString m_identity;
         QString m_iduserfeatures;
-        int m_simultcalls;
-
-        bool m_initialized;
-        bool m_enable_hint;
         QString m_hintstatus;
-        QStringList m_channels;
-        QStringList m_xchannels;
-
-        bool m_enablerna;
-        bool m_enableunc;
-        bool m_enablebusy;
-        QString m_destrna;
-        QString m_destunc;
-        QString m_destbusy;
-
-        bool m_enablednd;
-        bool m_enablevoicemail;
-        bool m_enablexfer;
-        bool m_incallfilter;
-
-    public:
 };
 
 namespace PhoneHint {

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -68,7 +68,6 @@ class BASELIB_EXPORT AgentInfo : public XInfo
         bool logged() const;
         enum AgentAvailability availability() const;
         QString availabilitySince() const;
-        const QString & phonenumber() const;
         const QVariantMap & properties() const;
 
         const QStringList & queue_ids() const;
@@ -78,7 +77,6 @@ class BASELIB_EXPORT AgentInfo : public XInfo
 
         bool paused() const;
         enum AgentPauseStatus pausedStatus() const;
-        bool isCallingOrBusy() const;
         QStringList pausedQueueNames() const;
         QStringList joinedQueueNames() const;
     private:
@@ -91,7 +89,6 @@ class BASELIB_EXPORT AgentInfo : public XInfo
 
         QString m_availability;
         double m_availability_since;
-        QString m_phonenumber;
         QVariantMap m_properties;
 
         QStringList m_queue_ids;

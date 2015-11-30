@@ -355,41 +355,6 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="contacts">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>269</width>
-            <height>43</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Contacts</string>
-          </attribute>
-          <layout class="QFormLayout" name="formLayout_3">
-           <item row="1" column="0">
-            <widget class="QLabel" name="max_contacts_displayed_label">
-             <property name="text">
-              <string>Maximum of contacts displayed</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="max_contacts_displayed">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>99999</number>
-             </property>
-             <property name="value">
-              <number>30</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
          <widget class="QWidget" name="queue_list">
           <property name="geometry">
            <rect>

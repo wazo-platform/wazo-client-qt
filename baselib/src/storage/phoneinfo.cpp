@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -31,17 +31,7 @@
 
 PhoneInfo::PhoneInfo(const QString & ipbxid,
                      const QString & id)
-    : XInfo(ipbxid, id),
-      m_simultcalls(0),
-      m_initialized(false),
-      m_enable_hint(false),
-      m_enablerna(false),
-      m_enableunc(false),
-      m_enablebusy(false),
-      m_enablednd(false),
-      m_enablevoicemail(false),
-      m_enablexfer(false),
-      m_incallfilter(false)
+    : XInfo(ipbxid, id)
 {
 }
 
@@ -49,8 +39,6 @@ PhoneInfo::PhoneInfo(const QString & ipbxid,
 bool PhoneInfo::updateConfig(const QVariantMap & prop)
 {
     bool haschanged = false;
-    haschanged |= setIfChangeString(prop, "protocol", & m_protocol);
-    haschanged |= setIfChangeString(prop, "context", & m_context);
     haschanged |= setIfChangeString(prop, "number", & m_number);
     haschanged |= setIfChangeString(prop, "identity", & m_identity);
     //! \todo: fix somewhere else
@@ -58,23 +46,6 @@ bool PhoneInfo::updateConfig(const QVariantMap & prop)
         m_identity.replace("\\/", "/");
     }
     haschanged |= setIfChangeString(prop, "iduserfeatures", & m_iduserfeatures);
-
-    haschanged |= setIfChangeInt(prop, "simultcalls", & m_simultcalls);
-    haschanged |= setIfChangeBool(prop, "initialized", & m_initialized);
-    haschanged |= setIfChangeBool(prop, "enable_hint", & m_enable_hint);
-
-    haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
-    haschanged |= setIfChangeBool(prop, "enableunc", & m_enableunc);
-    haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
-    haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
-    haschanged |= setIfChangeString(prop, "destunc", & m_destunc);
-    haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
-
-    haschanged |= setIfChangeBool(prop, "enablednd", & m_enablednd);
-    haschanged |= setIfChangeBool(prop, "enablevoicemail", & m_enablevoicemail);
-    haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);
-    haschanged |= setIfChangeBool(prop, "incallfilter", & m_incallfilter);
-
     return haschanged;
 }
 
@@ -82,15 +53,6 @@ bool PhoneInfo::updateStatus(const QVariantMap & prop)
 {
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "hintstatus", & m_hintstatus);
-    if (prop.contains("channels")) {
-        m_channels = prop.value("channels").toStringList();
-        m_xchannels.clear();
-        foreach (QString channel, m_channels) {
-            QString xchannel = QString("%1/%2").arg(m_ipbxid).arg(channel);
-            m_xchannels.append(xchannel);
-        }
-        haschanged = true;
-    }
     return haschanged;
 }
 

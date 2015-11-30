@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -84,9 +84,4 @@ QString QueueMemberInfo::agentNumber() const
 QString QueueMemberInfo::agent_or_phone() const
 {
     return this->is_agent() ? QObject::tr("Agent") : QObject::tr("Phone");
-}
-
-bool QueueMemberInfo::isCallingOrBusy() const
-{
-    return m_status == "3";
 }

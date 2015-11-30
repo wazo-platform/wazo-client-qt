@@ -30,17 +30,14 @@
 #ifndef __USERINFO_H__
 #define __USERINFO_H__
 
-#define PROFILE_SWITCHBOARD "switchboard"
 
 #include "baselib_export.h"
 #include "xinfo.h"
-#include "xivoconsts.h"
 
 class BASELIB_EXPORT UserInfo : public XInfo
 {
     public:
         UserInfo(const QString &, const QString &);
-        QString toString() const;
 
         const QString & fullname() const { return m_fullname; };
         const QString & firstname() const { return m_firstname; };
@@ -50,8 +47,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QString & agentid() const { return m_agentid; };
         const QString & xagentid() const { return m_xagentid; };
         const QString & xivoUuid() const { return m_xivo_uuid; };
-        bool enableclient() const { return m_enableclient; };
-        bool isSwitchBoard() const { return m_profileclient == PROFILE_SWITCHBOARD; };
         bool enablevoicemail() const { return m_enablevoicemail; };
         bool incallfilter() const { return m_incallfilter; };
         bool enablednd() const { return m_enablednd; };
@@ -67,22 +62,13 @@ class BASELIB_EXPORT UserInfo : public XInfo
         const QStringList & phonelist() const { return m_phoneidlist; };
 
         const QString & availstate() const;
-        bool connected() const { return m_availstate != __presence_off__; };
 
         bool updateConfig(const QVariantMap &);
         bool updateStatus(const QVariantMap &);
 
         void setAvailState(const QString & availstate) {m_availstate = availstate;};
 
-        void setPhoneIdList(const QStringList &);
-
-        bool hasPhoneId(const QString &) const;
-        bool hasChannelId(const QString &) const;
         bool hasMobile() const;
-        QString findNumberForXChannel(const QString &) const;
-        QStringList xchannels() const;
-        bool isTalkingTo(const QString &) const;
-        const QStringList & identitylist() const;
     private:
 
         QString m_xivo_uuid;
@@ -93,8 +79,6 @@ class BASELIB_EXPORT UserInfo : public XInfo
         QString m_xvoicemailid;             //!< ipbxid + voice mail box id
         QString m_agentid;                  //!< agent id
         QString m_xagentid;                 //!< ipbxid + agent id
-        bool m_enableclient;
-        QString m_profileclient;
         bool m_enablevoicemail;
         bool m_incallfilter;
         bool m_enablednd;

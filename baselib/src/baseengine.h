@@ -60,7 +60,6 @@ class IPBXListener;
 class XletDebug;
 
 class AgentInfo;
-class ChannelInfo;
 class PhoneInfo;
 class QueueInfo;
 class QueueMemberInfo;
@@ -80,10 +79,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
 
         // public config and settings
-
         QSettings* getSettings();
-        QVariant getProfileSetting(const QString &, const QVariant & = QVariant()) const;  //!< get one setting in current profile
-        void setProfileSetting(const QString &, const QVariant &);  //!< set one setting in current profile
 
         QVariantMap getConfig() const;              //!< all BaseEngine settings.
         QVariant getConfig(const QString &) const;  //!< one BaseEngine setting. Use to read a setting.
@@ -104,21 +100,16 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString osname() const { return m_osname; };
         const QString ipbxid() const { return m_ipbxid; };
 
-        const QString & xivoUserId() const { return m_userid; };
         const QString & getFullId() const { return m_xuserid; };
         UserInfo * getXivoClientUser();       //!< Return the user of the XiVO CTI Client
-        UserInfo * getXivoClientMonitored();  //!< Return the monitored user
 
         double timeDeltaServerClient() const;
         QString timeElapsed(double) const;
 
-        bool hasPhone(const QString & xid) { return m_anylist.value("phones").contains(xid); };
         bool hasAgent(const QString & xid) { return m_anylist.value("agents").contains(xid); };
-        bool hasQueue(const QString & xid) { return m_anylist.value("queues").contains(xid); };
 
         QHash<QString, XInfo *> iterover(const QString & listname) { return m_anylist.value(listname); };
 
-        const ChannelInfo * channel(const QString & id) const;
         const UserInfo * user(const QString & id) const;
         const PhoneInfo * phone(const QString & id) const;
         const AgentInfo * agent(const QString & id) const;
@@ -126,15 +117,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const VoiceMailInfo * voicemail(const QString & id) const;
         const QueueMemberInfo * queuemember(const QString & id) const;
 
-        const QHash<QString, ChannelInfo *> & channels() const
-                { return m_channels; };      //!< Return the channels to any Xlet
-        const QHash<QString, QueueMemberInfo *> & queuemembers() const
-                { return m_queuemembers; };  //!< Return the queue members to any Xlet
-
-
         // public operations
 
-        bool isInMeetme() const { return m_meetme_membership.size() > 0; }
         void registerMeetmeUpdate();
 
         void registerListener(const QString &, IPBXListener *); //!< Register an XLet wanting to listen IPBX messages
@@ -142,7 +126,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString sendJsonCommand(const QVariantMap &);
 
         QStringList phonenumbers(const UserInfo *);
-        QStringList queueListFromAgentId(const QString & agent_xid);
 
         void registerTranslation(const QString &);
         void setupTranslation();
@@ -163,8 +146,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void setUserLogin(const QString &);                   //!< see userid()
         void setUserLogin(const QString &, const QString &);  //!< set userid and userid option
 
-        uint port_to_use() const;  //!< gives the right port, according to encryption setting
-
         void setOSInfos(const QString &);
 
         // private operations
@@ -183,7 +164,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     public slots:
 
-
         // public getters/setters slots
 
         void setAvailState(const QString &, bool); //!< set m_availstate
@@ -194,12 +174,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void start(); //!< start the connection process.
         void stop();  //!< stop the engine
 
-        void actionCall(const QString &, const QString &src = "", const QString &dst = "");
         void actionDial(const QString &);
-
-        void receiveNumberSelection(const QStringList &);  //!< relay the selection
-
-        void textEdited(const QString &);
 
         void fetchIPBXList();
         void fetchLists();
@@ -207,8 +182,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void inviteConfRoom(const QString &);
 
         void meetmeAction(const QString &, const QString &);
-
-        void monitorPeerRequest(const QString &);
 
         void pasteToDial(const QString &);
 
@@ -255,8 +228,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
 
-        void monitorPeerChanged();
-
         void updatePresence();
 
         void fileReceived();                       //!< needed by agentdetails
@@ -293,14 +264,12 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void directoryResponse(const QStringList &, const QStringList &);  //! the directory search response has been received.
 
         void localUserInfoDefined();
-        void monitoredUserInfoDefined();
 
         void changeWatchedAgentSignal(const QString &);
         void changeWatchedQueueSignal(const QString &);
 
         void displayFiche(const QString &, bool, const QString &);
 
-        void broadcastNumberSelection(const QStringList &);  //!< numbers for a selected peer
         void queueEntryUpdate(const QString &, const QVariantList &);
         void clearingCache();
 
@@ -328,7 +297,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void requestListConfig(const QString &listname, const QString &ipbxid, const QStringList &listid);
         void requestStatus(const QString &listname, const QString &ipbxid, const QString &id);
         void addConfigs(const QString &listname, const QString &ipbxid, const QStringList &listid);
-        void updatePhone(const QString &, const QString &, const QVariantMap &);
 
         void clearLists();
         void clearChannelList();
@@ -358,8 +326,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_locale;
         QList<QTranslator *> m_translators;   //!< Vector of translators
 
-        QHash<QString, bool> m_enabled_function;  //!< function enabled
-
         // Replies given by the server
         QVariantList m_capaxlets;        //!< List of xlet capabilities issued by the server after a successful login
         QVariantMap m_options_userstatus;    //!< Display Options for User statuses (presence)
@@ -384,12 +350,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QString m_changestate_oldstate; //!< old state when changing state automatically
         QString m_changestate_newstate; //!< new state when changing state automatically
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
-        QString m_numbertodial;         //!< Number dialed in
         QString m_osname;               //!< OS informations
 
-        QByteArray m_filedata;
-
-        QString m_monitored_xuserid;  //!< UserId of the Monitored user
         QSettings * m_settings;  //!< Settings (stored in .ini file)
         QFile * m_eventdevice;
         QByteArray m_downloaded;    //!< downloaded data
@@ -403,9 +365,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         // miscellaneous statuses to share between xlets
         QHash<QString, newXInfoProto> m_xinfoList;  //!< XInfo constructors
         QHash<QString, QHash<QString, XInfo *> > m_anylist;
-        QHash<QString, ChannelInfo *> m_channels;  //!< List of Channel informations
-        QHash<QString, QueueMemberInfo *> m_queuemembers;  //!< List of Channel informations
-        QVariantList m_meetme_membership;
+        QHash<QString, QueueMemberInfo *> m_queuemembers;
 
         InitWatcher m_init_watcher;
 

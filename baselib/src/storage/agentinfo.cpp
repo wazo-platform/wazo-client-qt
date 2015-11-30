@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2015 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -59,7 +59,6 @@ bool AgentInfo::updateStatus(const QVariantMap & prop)
     bool haschanged = false;
     haschanged |= setIfChangeString(prop, "availability", & m_availability);
     haschanged |= setIfChangeDouble(prop, "availability_since", & m_availability_since);
-    haschanged |= setIfChangeString(prop, "phonenumber", & m_phonenumber);
 
     if (prop.contains("queues")) {
         m_queue_ids.clear();
@@ -96,11 +95,6 @@ const QString & AgentInfo::firstname() const
 const QString & AgentInfo::lastname() const
 {
     return m_lastname;
-}
-
-const QString & AgentInfo::phonenumber() const
-{
-    return m_phonenumber;
 }
 
 const QVariantMap & AgentInfo::properties() const
@@ -141,18 +135,6 @@ QString AgentInfo::availabilitySince() const
 bool AgentInfo::logged() const
 {
     return this->availability() != LOGGED_OUT;
-}
-
-bool AgentInfo::isCallingOrBusy() const
-{
-    QStringList queue_member_ids = QueueMemberDAO::queueMembersFromAgentId(this->xid());
-    foreach (const QString & queue_member_id, queue_member_ids) {
-        const QueueMemberInfo * queue_member = b_engine->queuemember(queue_member_id);
-        if (queue_member && queue_member->isCallingOrBusy()) {
-            return true;
-        }
-    }
-    return false;
 }
 
 bool AgentInfo::paused() const

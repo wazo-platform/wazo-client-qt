@@ -50,7 +50,6 @@
 #include <QJsonDocument>
 
 #include <storage/agentinfo.h>
-#include <storage/channelinfo.h>
 #include <storage/phoneinfo.h>
 #include <storage/queueinfo.h>
 #include <storage/queuememberinfo.h>
@@ -337,21 +336,6 @@ void BaseEngine::saveSettings()
     m_settings->endGroup();
 }
 
-QVariant BaseEngine::getProfileSetting(const QString & key, const QVariant & bydefault) const
-{
-    m_settings->beginGroup(m_profilename_read);
-        QVariant ret = m_settings->value(key, bydefault);
-    m_settings->endGroup();
-    return ret;
-}
-
-void BaseEngine::setProfileSetting(const QString & key, const QVariant & value)
-{
-    m_settings->beginGroup(m_profilename_write);
-        m_settings->setValue(key, value);
-    m_settings->endGroup();
-}
-
 void BaseEngine::pasteToDial(const QString & toPaste)
 {
     emit pasteToXlets(toPaste);
@@ -388,8 +372,6 @@ void BaseEngine::logAction(const QString & logstring)
  */
 void BaseEngine::startConnection()
 {
-    qDebug() << "Connecting to" << m_config["cti_address"].toString() << "port" << port_to_use();
-
     ConnectionConfig connection_config = m_config.getConnectionConfig();
     m_cti_server->connectToServer(connection_config);
 }
@@ -520,12 +502,6 @@ void BaseEngine::clearLists()
 
 void BaseEngine::clearChannelList()
 {
-    QHashIterator<QString, ChannelInfo *> iterc = QHashIterator<QString, ChannelInfo *>(m_channels);
-    while (iterc.hasNext()) {
-        iterc.next();
-        delete iterc.value();
-    }
-    m_channels.clear();
     QHashIterator<QString, QueueMemberInfo *> iterq = QHashIterator<QString, QueueMemberInfo *>(m_queuemembers);
     while (iterq.hasNext()) {
         iterq.next();
@@ -610,17 +586,6 @@ void BaseEngine::ipbxCommand(const QVariantMap & ipbxcommand)
     sendJsonCommand(cticommand);
 }
 
-/*! \brief set monitored peer id */
-void BaseEngine::monitorPeerRequest(const QString & xuserid)
-{
-    if (m_anylist.value("users").contains(xuserid)) {
-        m_monitored_xuserid = xuserid;
-        emit monitoredUserInfoDefined();
-        emit monitorPeerChanged();
-        m_settings->setValue("monitor/userid", xuserid);
-    }
-}
-
 
 double BaseEngine::timeDeltaServerClient() const
 {
@@ -638,11 +603,6 @@ QString BaseEngine::timeElapsed(double timestamp) const
     } else {
         return time_elapsed.toString("hh:mm:ss");
     }
-}
-
-const ChannelInfo * BaseEngine::channel(const QString & id) const
-{
-    return channels().value(id);
 }
 
 const UserInfo * BaseEngine::user(const QString & id) const
@@ -881,8 +841,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         const QVariantList &entry_list = state["entries"].toList();
 
         emit queueEntryUpdate(queue_id, entry_list);
-    } else if (thisclass == "meetme_user") {
-        m_meetme_membership = datamap["list"].toList();
     } else {
         command_processed = false;
     }
@@ -945,11 +903,6 @@ void BaseEngine::handleGetlistDelConfig(const QString &listname, const QString &
             if (m_anylist.value(listname).contains(xid)) {
                 delete m_anylist[listname][xid];
                 m_anylist[listname].remove(xid);
-            }
-        } else if (listname == "channels") {
-            if (m_channels.contains(xid)) {
-                delete m_channels[xid];
-                m_channels.remove(xid);
             }
         }
         if (listname == "queuemembers") {
@@ -1030,10 +983,6 @@ void BaseEngine::handleGetlistUpdateStatus(
     if (GenLists.contains(listname)) {
         if (m_anylist.value(listname).contains(xid))
             m_anylist.value(listname).value(xid)->updateStatus(status);
-    } else if (listname == "channels") {
-        if (! m_channels.contains(xid))
-            m_channels[xid] = new ChannelInfo(ipbxid, id);
-        m_channels[xid]->updateStatus(status);
     }
     if (listname == "queuemembers") {
         if (! m_queuemembers.contains(xid))
@@ -1046,11 +995,6 @@ void BaseEngine::handleGetlistUpdateStatus(
         emit updateUserStatus(xid);
     } else if (listname == "phones") {
         emit updatePhoneStatus(xid);
-        if (hasPhone(xid)) {
-            foreach (QString cid, phone(xid)->channels()) {
-                this->requestStatus("channels", ipbxid, cid);
-            }
-        }
     } else if (listname == "agents")
         emit updateAgentStatus(xid);
     else if (listname == "queues") {
@@ -1293,59 +1237,9 @@ void BaseEngine::ctiSocketReadyRead()
     }
 }
 
-/*! \brief send an originate command to the server
- */
-void BaseEngine::textEdited(const QString & text)
-{
-    m_numbertodial = text;
-}
-
-/*! \brief send telephony command to the server
- *
- * \param action originate/transfer/atxfer/hangup/answer/refuse
- */
-void BaseEngine::actionCall(const QString & action,
-                            const QString & src,
-                            const QString & dst)
-{
-    QVariantMap ipbxcommand;
-    ipbxcommand["command"] = action;
-
-    if ((action == "originate") || (action == "transfer") || (action == "atxfer")) {
-        ipbxcommand["command"] = action;
-        ipbxcommand["source"] = src;
-        if ((dst == "ext:special:dialxlet") && (! m_numbertodial.isEmpty()))
-            ipbxcommand["destination"] = QString("exten:%1/%2").arg(m_ipbxid).arg(m_numbertodial);
-        else
-            ipbxcommand["destination"] = dst;
-    } else if ((action == "hangup") || (action == "transfercancel")) {
-        ipbxcommand["command"] = action;
-        ipbxcommand["channelids"] = src;
-    } else if (action == "answer") {
-        ipbxcommand["command"] = action;
-        ipbxcommand["phoneids"] = src;
-    } else if (action == "refuse") {
-        ipbxcommand["command"] = action;
-        ipbxcommand["channelids"] = src;
-    } else if (action == "intercept") {
-        ipbxcommand["tointercept"] = dst;
-        ipbxcommand["catcher"] = src;
-    }
-
-    ipbxCommand(ipbxcommand);
-}
-
 void BaseEngine::actionDial(const QString &destination)
 {
     this->sendJsonCommand(MessageFactory::dial(destination));
-}
-
-/*! \brief Receive a number list from xlets and signal this list
- *  to interested xlets
- */
-void BaseEngine::receiveNumberSelection(const QStringList & numbers)
-{
-    emit broadcastNumberSelection(numbers);
 }
 
 /*!
@@ -1430,15 +1324,6 @@ void BaseEngine::setUserLogin(const QString & userid, const QString & opt)
     } else {
         m_config["userlogin"] = m_config["userloginsimple"].toString()
                                 + "%" + m_config["userloginopt"].toString();
-    }
-}
-
-uint BaseEngine::port_to_use() const
-{
-    if (! m_config["cti_encrypt"].toBool()) {
-        return m_config["cti_port"].toUInt();
-    } else {
-        return m_config["cti_port_encrypted"].toUInt();
     }
 }
 
@@ -1635,14 +1520,6 @@ UserInfo * BaseEngine::getXivoClientUser()
 {
     if (m_anylist.value("users").contains(m_xuserid)) {
         return (UserInfo *) m_anylist.value("users").value(m_xuserid);
-    }
-    return NULL;
-}
-
-UserInfo * BaseEngine::getXivoClientMonitored()
-{
-    if (m_anylist.value("users").contains(m_monitored_xuserid)) {
-        return (UserInfo *) m_anylist.value("users").value(m_monitored_xuserid);
     }
     return NULL;
 }

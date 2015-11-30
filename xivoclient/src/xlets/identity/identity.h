@@ -78,7 +78,6 @@ class IdentityDisplay : public XLet
         void fillAgentMenu(QMenu *menu);
         QPixmap newMessagesIcon(int message_count);
         QPixmap presenceIcon(const QColor &color);
-        void requestVoicemailMessageCount(const VoiceMailInfo *voicemail);
         void updateAgentVisibility();
         void updateCurrentPresence();
         void updateNameTooltip();
