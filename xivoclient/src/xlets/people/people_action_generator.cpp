@@ -18,12 +18,15 @@
 #include <baseengine.h>
 #include <message_factory.h>
 
+#include <storage/userinfo.h>
+
 #include "xletlib/chitchat.h"
 
 #include "people_entry_view.h"
 #include "people_action_generator.h"
 
 #define IN_USE 1
+
 
 PeopleActionGenerator::PeopleActionGenerator(PeopleEntryModel *model, PeopleEntryView *parent)
     : QObject(parent),
@@ -49,7 +52,7 @@ PeopleEntryModel *PeopleActionGenerator::model()
 
 bool PeopleActionGenerator::canTransfer() const
 {
-    return m_endpoint_status == IN_USE;
+    return b_engine->getXivoClientUser()->enablexfer() && m_endpoint_status == IN_USE;
 }
 
 void PeopleActionGenerator::parseCommand(const QVariantMap &command)
