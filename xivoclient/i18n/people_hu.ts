@@ -2,6 +2,22 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu">
 <context>
+    <name>CallAction</name>
+    <message>
+        <location filename="../src/xlets/people/people_action_generator.cpp" line="227"/>
+        <source>Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatAction</name>
+    <message>
+        <location filename="../src/xlets/people/people_action_generator.cpp" line="294"/>
+        <source>Send a message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ContactDialogWidget</name>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="17"/>
@@ -52,117 +68,109 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="64"/>
+        <location filename="../src/xlets/people/people.cpp" line="60"/>
         <source>all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="65"/>
+        <location filename="../src/xlets/people/people.cpp" line="61"/>
         <source>favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="66"/>
+        <location filename="../src/xlets/people/people.cpp" line="62"/>
         <source>my contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="237"/>
+        <location filename="../src/xlets/people/people.cpp" line="220"/>
         <source>Import Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="238"/>
+        <location filename="../src/xlets/people/people.cpp" line="221"/>
         <source>%1 contacts created
 %2 contacts failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="245"/>
+        <location filename="../src/xlets/people/people.cpp" line="228"/>
         <source>Following lines are errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="248"/>
+        <location filename="../src/xlets/people/people.cpp" line="231"/>
         <source>
 line %1: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="308"/>
+        <location filename="../src/xlets/people/people.cpp" line="291"/>
         <source>Removing this contact</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="309"/>
+        <location filename="../src/xlets/people/people.cpp" line="292"/>
         <source>Removing this contact.
 Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="324"/>
+        <location filename="../src/xlets/people/people.cpp" line="307"/>
         <source>Deleting all personal contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="325"/>
+        <location filename="../src/xlets/people/people.cpp" line="308"/>
         <source>Deleting all personal contacts.
 Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="416"/>
+        <location filename="../src/xlets/people/people.cpp" line="399"/>
         <source>Save Personal Contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="418"/>
+        <location filename="../src/xlets/people/people.cpp" line="401"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="444"/>
+        <location filename="../src/xlets/people/people.cpp" line="427"/>
         <source>Import Personal Contacts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="446"/>
+        <location filename="../src/xlets/people/people.cpp" line="429"/>
         <source>CSV Files (UTF-8)(*.csv);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="496"/>
+        <location filename="../src/xlets/people/people.cpp" line="479"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people.cpp" line="518"/>
+        <location filename="../src/xlets/people/people.cpp" line="501"/>
         <source>Waiting</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PeopleActions</name>
-    <message>
-        <location filename="../src/xlets/people/people_actions.cpp" line="50"/>
-        <source>Call</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PeopleEntryNumberDelegate</name>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="128"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="129"/>
         <source>CALL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="241"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="238"/>
         <source>BLIND TRANSFER</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="243"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="240"/>
         <source>ATTENDED TRANSFER</source>
         <translation type="unfinished"></translation>
     </message>

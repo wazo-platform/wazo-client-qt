@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="80"/>
         <location filename="../src/config_widget/config_widget.ui" line="152"/>
-        <location filename="../src/config_widget/config_widget.ui" line="757"/>
+        <location filename="../src/config_widget/config_widget.ui" line="722"/>
         <source>You must restart the program for this setting to apply.</source>
         <translation>Vous devez redémarrer le programme pour appliquer ce paramètre.</translation>
     </message>
@@ -166,122 +166,112 @@
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="368"/>
-        <source>Contacts</source>
-        <translation>Contacts</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="374"/>
-        <source>Maximum of contacts displayed</source>
-        <translation>Nombre maximum de contact affichés</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.ui" line="403"/>
         <source>Queue list</source>
         <translation>Files d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="411"/>
+        <location filename="../src/config_widget/config_widget.ui" line="376"/>
         <source>Show longest wait time</source>
         <translation>Afficher la colonne &quot;plus longue attente&quot;</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="425"/>
+        <location filename="../src/config_widget/config_widget.ui" line="390"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="435"/>
+        <location filename="../src/config_widget/config_widget.ui" line="400"/>
         <source>Red</source>
         <translation>Rouge</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="445"/>
+        <location filename="../src/config_widget/config_widget.ui" line="410"/>
         <source>Longest wait time thresholds</source>
         <translation>Seuils d&apos;affichage des files pour la plus longue attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="472"/>
+        <location filename="../src/config_widget/config_widget.ui" line="437"/>
         <source>Waiting calls thresholds</source>
         <translation>Seuils d&apos;affichage des files pour les appels en attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="499"/>
+        <location filename="../src/config_widget/config_widget.ui" line="464"/>
         <source>calls</source>
         <translation>appels</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="506"/>
+        <location filename="../src/config_widget/config_widget.ui" line="471"/>
         <source>seconds</source>
         <translation>secondes</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="537"/>
+        <location filename="../src/config_widget/config_widget.ui" line="502"/>
         <source>Queue Members</source>
         <translation>Membres d&apos;une file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="543"/>
+        <location filename="../src/config_widget/config_widget.ui" line="508"/>
         <source>Hide unlogged agents</source>
         <translation>Masquer les agent délogués</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="559"/>
+        <location filename="../src/config_widget/config_widget.ui" line="524"/>
         <source>Switchboard</source>
         <translation>POPC</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="568"/>
+        <location filename="../src/config_widget/config_widget.ui" line="533"/>
         <source>Switchboard call on hold queue name</source>
         <translation>Nom de la file d&apos;attente des appels en attentes du POPC</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="578"/>
+        <location filename="../src/config_widget/config_widget.ui" line="543"/>
         <source>Switchboard queue name</source>
         <translation>Nom de la file d&apos;attente du POPC</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="600"/>
+        <location filename="../src/config_widget/config_widget.ui" line="565"/>
         <source>Administration</source>
         <translation>Administration</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="608"/>
+        <location filename="../src/config_widget/config_widget.ui" line="573"/>
         <source>Server</source>
         <translation>Serveur</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="622"/>
-        <location filename="../src/config_widget/config_widget.ui" line="669"/>
+        <location filename="../src/config_widget/config_widget.ui" line="587"/>
+        <location filename="../src/config_widget/config_widget.ui" line="634"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="655"/>
+        <location filename="../src/config_widget/config_widget.ui" line="620"/>
         <source>Backup server</source>
         <translation>Serveur de secours</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="744"/>
+        <location filename="../src/config_widget/config_widget.ui" line="709"/>
         <source>Advanced</source>
         <translation>Avancé</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="750"/>
+        <location filename="../src/config_widget/config_widget.ui" line="715"/>
         <source>Display the configuration profile</source>
         <translation>Afficher le profil de configuration</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="760"/>
+        <location filename="../src/config_widget/config_widget.ui" line="725"/>
         <source>Allow multiple instances</source>
         <translation>Autoriser plusieurs instances simultanées du client</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="771"/>
+        <location filename="../src/config_widget/config_widget.ui" line="736"/>
         <source>Auto-reconnect interval</source>
         <translation>Délai de reconnexion</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.ui" line="810"/>
+        <location filename="../src/config_widget/config_widget.ui" line="775"/>
         <source>Keepalive interval</source>
         <translation>Délai de maintien de la connexion</translation>
     </message>
@@ -550,19 +540,6 @@
         <location filename="../src/main_window/main_window.cpp" line="425"/>
         <source>Credits</source>
         <translation>Crédits</translation>
-    </message>
-</context>
-<context>
-    <name>SearchPanel</name>
-    <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="45"/>
-        <source>Contacts</source>
-        <translation>Contacts</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/search-builtin/searchpanel.cpp" line="52"/>
-        <source>N&amp;ame or number to search :</source>
-        <translation>N&amp;om ou numéro à rechercher :</translation>
     </message>
 </context>
 <context>

@@ -34,52 +34,52 @@
         <translation>Pause aufheben</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="378"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="377"/>
         <source>DND</source>
         <translation>BNS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="379"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="378"/>
         <source>Do Not Disturb</source>
         <translation>Bitte nicht stören</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="380"/>
         <source>UNC %1</source>
         <translation>UNC %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="382"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Bedingungslose Weiterleitung zu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="383"/>
         <source>BUSY %1</source>
         <translation>BESETZT %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="385"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
         <source>Busy Forward towards %1</source>
         <translation>Bei besetzt Weiterleitung zu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="386"/>
         <source>FNA %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="388"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Bei keiner Antwort Weiterleitung zu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="390"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="389"/>
         <source>CALL FILTER</source>
         <translation>ANRUFFILTER</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="393"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="392"/>
         <source>AVAILABLE</source>
         <translation>VERFÜGBAR</translation>
     </message>
