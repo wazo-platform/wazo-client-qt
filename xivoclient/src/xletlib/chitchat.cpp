@@ -52,13 +52,16 @@ ChitChatDispatcher::~ChitChatDispatcher()
     }
 }
 
-ChitChatWindow *ChitChatDispatcher::findOrNew(const QString &name, const QString &xivo_uuid, int user_id)
+ChitChatWindow *ChitChatDispatcher::findOrNew(const QString &alias, const QString &xivo_uuid, int user_id)
 {
     const QString &chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
+    ChitChatWindow *w = NULL;
     if (!m_chat_window_opened.contains(chat_key)) {
-        m_chat_window_opened[chat_key] = new ChitChatWindow(name, xivo_uuid, user_id);
+        m_chat_window_opened[chat_key] = new ChitChatWindow(alias, xivo_uuid, user_id);
     }
-    return m_chat_window_opened[chat_key];
+    w = m_chat_window_opened[chat_key];
+    w->setAlias(alias);
+    return w;
 }
 
 void ChitChatDispatcher::parseCommand(const QVariantMap &map)
@@ -70,39 +73,32 @@ void ChitChatDispatcher::parseCommand(const QVariantMap &map)
 
     const QString &xivo_uuid = from[0].toString();
     int user_id = from[1].toInt();
+    const QString &alias = map["alias"].toString();
     const QString &msg = map["text"].toString();
 
-    receiveMessage(xivo_uuid, user_id, msg);
+    receiveMessage(xivo_uuid, user_id, alias, msg);
 }
 
-void ChitChatDispatcher::receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg)
+void ChitChatDispatcher::receiveMessage(const QString &xivo_uuid, int user_id, const QString &alias, const QString &msg)
 {
-    const UserInfo *user = b_engine->user(QString("xivo/%1").arg(user_id));
-    if (!user) {
-        qDebug() << Q_FUNC_INFO << "received a message from an unknown user";
-        return;
-    }
-
-    ChitChatWindow *window = findOrNew(user->fullname(), xivo_uuid, user_id);
+    ChitChatWindow *window = findOrNew(alias, xivo_uuid, user_id);
     window->addMessage("black", msg, "red");
 }
 
-void ChitChatDispatcher::showChatWindow(const QString &name, const QString &xivo_uuid, int user_id)
+void ChitChatDispatcher::showChatWindow(const QString &alias, const QString &xivo_uuid, int user_id)
 {
-    ChitChatWindow *window = findOrNew(name, xivo_uuid, user_id);
+    ChitChatWindow *window = findOrNew(alias, xivo_uuid, user_id);
     window->popup();
 }
 
-ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id)
+ChitChatWindow::ChitChatWindow(const QString &alias, const QString &xivo_uuid, int user_id)
     : QWidget(NULL),
-      m_name(name),
+      m_remote_alias(alias),
       m_xivo_uuid(xivo_uuid),
       m_user_id(user_id),
       m_msg_edit(new ChatEditBox(this)),
       m_message_history(new QTextEdit(this))
 {
-    qDebug() << Q_FUNC_INFO << m_name << m_xivo_uuid << user_id;
-
     QVBoxLayout * v_layout = new QVBoxLayout;
     QHBoxLayout * h_layout = new QHBoxLayout;
     QVBoxLayout * v_layout2 = new QVBoxLayout;
@@ -137,9 +133,9 @@ ChitChatWindow::ChitChatWindow(const QString &name, const QString &xivo_uuid, in
     v_layout->addWidget(m_message_history, 3);
     v_layout->addLayout(h_layout);
 
-    setWindowTitle(tr("chitchat - %1").arg(m_name));
-    addMessage("purple", tr("chat window opened with \"%1\"").arg(m_name), "gray", "system: ");
-
+    m_local_alias = b_engine->getXivoClientUser()->fullname();
+    setAlias(m_remote_alias);
+    addMessage("purple", tr("chat window opened with \"%1\"").arg(m_remote_alias), "gray", "system: ");
     show();
 }
 
@@ -172,7 +168,7 @@ void ChitChatWindow::popup()
 
 void ChitChatWindow::addMessage(const QString &mcolor, const QString &message, const QString &ucolor)
 {
-    QString full_desc = QString("%1: ").arg(m_name);
+    QString full_desc = QString("%1: ").arg(m_remote_alias);
     this->addMessage(mcolor, message, ucolor, full_desc);
 }
 
@@ -186,10 +182,10 @@ void ChitChatWindow::sendMessage(const QString &message)
     addMessage("blue", message, "green", tr("you said: "));
 
     QVariantMap command;
-
     command["class"] = "chitchat";
     command["to"] = QVariantList() << m_xivo_uuid << m_user_id;
     command["text"] = message;
+    command["alias"] = m_local_alias;
 
     b_engine->sendJsonCommand(command);
 }
@@ -204,6 +200,12 @@ void ChitChatWindow::sendMessage()
     sendMessage(msg);
     m_msg_edit->clear();
     m_msg_edit->setFocus(Qt::OtherFocusReason);
+}
+
+void ChitChatWindow::setAlias(const QString &alias)
+{
+    m_remote_alias = alias;
+    setWindowTitle(tr("chitchat - %1").arg(m_remote_alias));
 }
 
 void ChatEditBox::keyPressEvent(QKeyEvent *e)
