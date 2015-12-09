@@ -159,7 +159,6 @@ class PeopleActionGenerator: public QObject, IPBXListener
         bool canTransfer() const;
         bool isConnected(const QModelIndex &index);
         bool isSelf(const QModelIndex &index);
-        bool sameXivo(const QModelIndex &index);
 
         template<typename T>
         QList<QAction*> newTransferActions(const QModelIndex &index) {

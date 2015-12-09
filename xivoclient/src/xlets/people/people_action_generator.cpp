@@ -145,12 +145,6 @@ bool PeopleActionGenerator::isSelf(const QModelIndex &index)
     return RelationID(id[0].toString(), id[1].toInt()) == m_user_id;
 }
 
-bool PeopleActionGenerator::sameXivo(const QModelIndex &index)
-{
-    const QVariantList &id = model()->data(index, USER_ID_ROLE).toList();
-    return id[0].toString() == m_user_id.first;
-}
-
 QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
 {
     if (!hasChat(index)) {
@@ -213,7 +207,7 @@ bool PeopleActionGenerator::hasCallCallables(const QModelIndex &index)
 
 bool PeopleActionGenerator::hasChat(const QModelIndex &index)
 {
-    return isConnected(index) && !isSelf(index) && sameXivo(index);
+    return isConnected(index) && !isSelf(index);
 }
 
 bool PeopleActionGenerator::hasMail(const QModelIndex &index)
