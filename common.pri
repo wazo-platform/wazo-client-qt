@@ -37,3 +37,9 @@ QMAKE_CXXFLAGS += -Wall \
                   -Wwrite-strings \
                   -Winit-self \
                   -Wstrict-aliasing
+
+# Fix missing LRELEASE path
+isEmpty(QMAKE_LRELEASE) {
+    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+    else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
