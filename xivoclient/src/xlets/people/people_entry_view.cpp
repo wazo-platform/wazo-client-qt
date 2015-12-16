@@ -42,7 +42,6 @@ PeopleEntryView::PeopleEntryView(QWidget *parent)
 
 void PeopleEntryView::setModel(QAbstractItemModel *model)
 {
-    qDebug() << Q_FUNC_INFO;
     AbstractTableView::setModel(model);
     if (m_generator) {
         delete m_generator;
