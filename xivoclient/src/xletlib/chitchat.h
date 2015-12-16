@@ -62,12 +62,12 @@ class XLETLIB_EXPORT ChitChatDispatcher: public QObject, IPBXListener
         ChitChatDispatcher(QObject *parent);
         virtual ~ChitChatDispatcher();
         void parseCommand(const QVariantMap & map);
-        void receiveMessage(const QString &xivo_uuid, int user_id, const QString &msg);
-        void showChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
+        void receiveMessage(const QString &xivo_uuid, int user_id, const QString &alias, const QString &msg);
+        void showChatWindow(const QString &alias, const QString &xivo_uuid, int user_id);
 
     private:
         ChitChatDispatcher();
-        ChitChatWindow *findOrNew(const QString &name, const QString &xivo_uuid, int user_id);
+        ChitChatWindow *findOrNew(const QString &alias, const QString &xivo_uuid, int user_id);
         QHash<QString, ChitChatWindow*> m_chat_window_opened;
 };
 
@@ -76,20 +76,22 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget
     Q_OBJECT
 
     public:
-        ChitChatWindow(const QString &name, const QString &xivo_uuid, int user_id);
+        ChitChatWindow(const QString &alias, const QString &xivo_uuid, int user_id);
         virtual ~ChitChatWindow();
 
         void addMessage(const QString &, const QString &, const QString &, const QString &);
         void addMessage(const QString &, const QString &, const QString &);
         void popup();
         void sendMessage(const QString &msg);
+        void setAlias(const QString &alias);
 
     public slots:
         void clearMessageHistory();
         void sendMessage();
 
     private:
-        QString m_name;
+        QString m_remote_alias;
+        QString m_local_alias;
         QString m_xivo_uuid;
         int m_user_id;
         ChatEditBox *m_msg_edit;
