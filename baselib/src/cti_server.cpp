@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -141,4 +141,10 @@ void CTIServer::startTls()
 {
     qDebug() << Q_FUNC_INFO;
     m_socket->startClientEncryption();
+}
+
+
+bool CTIServer::isConnectionEncrypted() const
+{
+    return m_socket->isEncrypted();
 }

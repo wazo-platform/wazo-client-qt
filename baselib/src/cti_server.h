@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -46,6 +46,7 @@ class CTIServer : public QObject
         void connectToServer(ConnectionConfig config);
         void disconnectFromServer();
         bool connected();
+        bool isConnectionEncrypted() const;
         void startTls();
 
     signals:

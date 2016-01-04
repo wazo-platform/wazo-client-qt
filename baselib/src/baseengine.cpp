@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -385,6 +385,11 @@ void BaseEngine::authenticated()
 {
     stopTryAgainTimer();
     emitLogged();
+}
+
+bool BaseEngine::isConnectionEncrypted() const
+{
+    return m_cti_server->isConnectionEncrypted();
 }
 
 void BaseEngine::emitLogged()

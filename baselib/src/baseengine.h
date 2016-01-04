@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -138,6 +138,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         QVariant parseJson(const QByteArray &) const;
         QByteArray toJson(const QVariantMap &map) const;
+
+        bool isConnectionEncrypted() const;
 
     private:
 
