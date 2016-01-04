@@ -30,7 +30,7 @@
 #include "cti_server.h"
 
 CTIServer::CTIServer(QSslSocket * socket)
-    : QObject(NULL), m_socket(socket), m_last_port(0)
+    : QObject(NULL), m_socket(socket), m_last_port(0), m_use_start_tls(false)
 {
 }
 
@@ -89,11 +89,13 @@ void CTIServer::connectToServer(ConnectionConfig config)
         catchSocketError();
     }
 
+    this->m_use_start_tls = config.main_encrypt;
     this->connectSocket(config.main_address,
                         config.main_port);
     if (config.backup_address.isEmpty() == false &&
         m_socket->waitForConnected(3000) == false) {
         catchSocketError();
+        this->m_use_start_tls = config.backup_encrypt;
         this->connectSocket(config.backup_address,
                             config.backup_port);
     }
@@ -139,8 +141,15 @@ bool CTIServer::connected()
 
 void CTIServer::startTls()
 {
-    qDebug() << Q_FUNC_INFO;
-    m_socket->startClientEncryption();
+    qDebug() << Q_FUNC_INFO << "received a start tls. starting encryption:" << m_use_start_tls;
+    if (this->m_use_start_tls) {
+        m_socket->startClientEncryption();
+    }
+}
+
+bool CTIServer::useStartTls() const
+{
+    return this->m_use_start_tls;
 }
 
 
