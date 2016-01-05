@@ -141,7 +141,7 @@ bool CTIServer::connected()
 
 void CTIServer::startTls()
 {
-    qDebug() << Q_FUNC_INFO << "received a start tls. starting encryption:" << m_use_start_tls;
+    qDebug() << "Received a STARTTLS. Starting encryption:" << m_use_start_tls;
     if (this->m_use_start_tls) {
         m_socket->startClientEncryption();
     }

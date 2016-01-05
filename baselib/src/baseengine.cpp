@@ -402,7 +402,6 @@ void BaseEngine::emitLogged()
 
 void BaseEngine::connected()
 {
-    qDebug() << Q_FUNC_INFO;
     if (!m_cti_server->useStartTls()) {
         this->authenticate();
     }
@@ -689,7 +688,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
             QVariantMap starttls_msg;
             starttls_msg["class"] = "starttls";
             starttls_msg["status"] = true;
-            qDebug() << Q_FUNC_INFO << "sending starttls true";
             this->sendJsonCommand(starttls_msg);
         }
         return;
