@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -46,6 +46,9 @@ class CTIServer : public QObject
         void connectToServer(ConnectionConfig config);
         void disconnectFromServer();
         bool connected();
+        bool isConnectionEncrypted() const;
+        void startTls();
+        bool useStartTls() const;
 
     signals:
         void failedToConnect(const QString &, const QString &, const QString &);
@@ -57,15 +60,15 @@ class CTIServer : public QObject
 
     private:
         void connectSocket(const QString & address,
-                           unsigned port,
-                           bool encrypt);
+                           unsigned port);
         void catchSocketError();
         void ignoreSocketError();
         void sendError(const QString & message);
 
     private:
-        QSslSocket * m_socket;
+        QSslSocket *m_socket;
         QString m_last_address;
         unsigned m_last_port;
+        bool m_use_start_tls;
 };
 #endif

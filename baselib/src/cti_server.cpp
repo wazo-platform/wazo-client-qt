@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -30,7 +30,7 @@
 #include "cti_server.h"
 
 CTIServer::CTIServer(QSslSocket * socket)
-    : QObject(NULL), m_socket(socket), m_last_port(0)
+    : QObject(NULL), m_socket(socket), m_last_port(0), m_use_start_tls(false)
 {
 }
 
@@ -89,15 +89,15 @@ void CTIServer::connectToServer(ConnectionConfig config)
         catchSocketError();
     }
 
+    this->m_use_start_tls = config.main_encrypt;
     this->connectSocket(config.main_address,
-                        config.main_port,
-                        config.main_encrypt);
+                        config.main_port);
     if (config.backup_address.isEmpty() == false &&
         m_socket->waitForConnected(3000) == false) {
         catchSocketError();
+        this->m_use_start_tls = config.backup_encrypt;
         this->connectSocket(config.backup_address,
-                            config.backup_port,
-                            config.backup_encrypt);
+                            config.backup_port);
     }
 }
 
@@ -125,20 +125,35 @@ void CTIServer::ignoreSocketError()
 }
 
 void CTIServer::connectSocket(const QString & address,
-                              unsigned port,
-                              bool encrypted)
+                              unsigned port)
 {
     m_last_address = address;
     m_last_port = port;
     m_socket->abort();
-    if (encrypted) {
-        m_socket->connectToHostEncrypted(address, port);
-    } else {
-        m_socket->connectToHost(address, port);
-    }
+    m_socket->connectToHost(address, port);
 }
 
 bool CTIServer::connected()
 {
     return m_socket->state() == QAbstractSocket::ConnectedState;
+}
+
+
+void CTIServer::startTls()
+{
+    qDebug() << "Received a STARTTLS. Starting encryption:" << m_use_start_tls;
+    if (this->m_use_start_tls) {
+        m_socket->startClientEncryption();
+    }
+}
+
+bool CTIServer::useStartTls() const
+{
+    return this->m_use_start_tls;
+}
+
+
+bool CTIServer::isConnectionEncrypted() const
+{
+    return m_socket->isEncrypted();
 }

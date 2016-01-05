@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -121,7 +121,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     connect(m_ctiserversocket, SIGNAL(sslErrors(const QList<QSslError> &)),
             this, SLOT(sslErrors(const QList<QSslError> & )));
     connect(m_ctiserversocket, SIGNAL(connected()),
-            this, SLOT(authenticate()));
+            this, SLOT(connected()));
     connect(m_ctiserversocket, SIGNAL(readyRead()),
             this, SLOT(ctiSocketReadyRead()));
     connect(m_cti_server, SIGNAL(disconnected()),
@@ -387,11 +387,23 @@ void BaseEngine::authenticated()
     emitLogged();
 }
 
+bool BaseEngine::isConnectionEncrypted() const
+{
+    return m_cti_server->isConnectionEncrypted();
+}
+
 void BaseEngine::emitLogged()
 {
     if(this->m_state != ELogged) {
         this->m_state = ELogged;
         emit logged();
+    }
+}
+
+void BaseEngine::connected()
+{
+    if (!m_cti_server->useStartTls()) {
+        this->authenticate();
     }
 }
 
@@ -663,6 +675,21 @@ void BaseEngine::parseCommand(const QByteArray &raw)
 
     if ((thisclass == "keepalive") || (thisclass == "availstate")) {
         // ack from the keepalive and availstate commands previously sent
+        return;
+    }
+    if (thisclass == "starttls") {
+        if (datamap.contains("starttls")) {
+            bool starttls = datamap["starttls"].toBool();
+            if (starttls) {
+                m_cti_server->startTls();
+            }
+            this->authenticate();
+        } if (m_cti_server->useStartTls()) {
+            QVariantMap starttls_msg;
+            starttls_msg["class"] = "starttls";
+            starttls_msg["status"] = true;
+            this->sendJsonCommand(starttls_msg);
+        }
         return;
     }
     if (thisclass == "sheet") {

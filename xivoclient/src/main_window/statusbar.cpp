@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2015 Avencall
+ * Copyright (C) 2013-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -76,7 +76,7 @@ bool Statusbar::shouldDisplayProfile() const
 void Statusbar::setStatusLogged()
 {
     this->m_statusbar->showMessage(tr("Connected"));
-    this->m_padlock->setVisible(b_engine->getConfig("cti_encrypt").toBool());
+    this->m_padlock->setVisible(b_engine->isConnectionEncrypted());
 }
 
 void Statusbar::setStatusNotLogged()
