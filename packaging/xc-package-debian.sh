@@ -67,7 +67,7 @@ Version: ${XC_VERSION}
 Architecture: ${ARCH}
 Maintainer: Avencall Maintainance Team <xivo-dev@lists.proformatique.com>
 Installed-Size: ${PKGSIZE}
-Depends: libc6 (>= 2.7-1), libgcc1 (>= 1:4.1.1-21), libstdc++6 (>= 4.1.1-21)
+Depends: libc6 (>= 2.14), libgcc1 (>= 1:4.1.1-21), libstdc++6 (>= 4.1.1-21)
 Section: graphics
 Priority: optional
 Homepage: http://www.xivo.io/
