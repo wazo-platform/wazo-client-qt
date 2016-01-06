@@ -134,29 +134,29 @@ wachtrijen</translation>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="120"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="116"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Historiek wissen/schrappen</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="121"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="117"/>
         <source>&amp;Send</source>
         <translation>&amp;Verzenden</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="140"/>
-        <source>chitchat - %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="141"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="138"/>
         <source>chat window opened with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="186"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="182"/>
         <source>you said: </source>
         <translation>U hebt gezegd: </translation>
+    </message>
+    <message>
+        <location filename="../src/xletlib/chitchat.cpp" line="208"/>
+        <source>chitchat - %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

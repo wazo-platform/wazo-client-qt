@@ -4,7 +4,7 @@
 <context>
     <name>CallAction</name>
     <message>
-        <location filename="../src/xlets/people/people_action_generator.cpp" line="227"/>
+        <location filename="../src/xlets/people/people_action_generator.cpp" line="224"/>
         <source>Call</source>
         <translation type="unfinished">Bel</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>ChatAction</name>
     <message>
-        <location filename="../src/xlets/people/people_action_generator.cpp" line="294"/>
+        <location filename="../src/xlets/people/people_action_generator.cpp" line="291"/>
         <source>Send a message</source>
         <translation type="unfinished"></translation>
     </message>
