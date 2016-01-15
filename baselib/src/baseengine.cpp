@@ -804,11 +804,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
 
             command["state"] = getInitialPresence();
 
-            /*!
-             * \todo To be deleted, when the server will accept it
-             */
-            command["lastconnwins"] = false;
-
             sendJsonCommand(command);
         }
 
