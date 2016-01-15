@@ -806,8 +806,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         QVariantMap capas = datamap.value("capas").toMap();
         m_options_userstatus = capas.value("userstatus").toMap();
         m_options_phonestatus = capas.value("phonestatus").toMap();
-
-        // ("ipbxcommands", "regcommands", "services", "functions")
         m_config.merge(capas.value("preferences").toMap());
         m_config["services"] = capas.value("services");
 
