@@ -790,18 +790,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
                     command["capaid"] = capas[0];
             }
 
-            switch(m_config["guioptions.loginkind"].toInt()) {
-            case 0:
-                command["loginkind"] = "user";
-                break;
-            case 2:
-                command["agentlogin"] = "now";
-            case 1:
-                command["loginkind"] = "agent";
-                command["agentphonenumber"] = m_config["agentphonenumber"].toString();
-                break;
-            }
-
             command["state"] = getInitialPresence();
 
             sendJsonCommand(command);
