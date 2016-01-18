@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2015 Avencall
+ * Copyright (C) 2013-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -27,13 +27,16 @@
  * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMovie>
+
 #include <baseengine.h>
 #include "login_widget.h"
 
 #include "main_window/main_window.h"
 
 LoginWidget::LoginWidget(MainWindow *main_window, QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      m_waiting_status(new QMovie(":/images/waiting-status.gif", QByteArray(), this))
 {
     QVBoxLayout * login_layout = new QVBoxLayout(this);
     login_layout->setContentsMargins(0, 0, 0, 0);
@@ -52,6 +55,8 @@ LoginWidget::LoginWidget(MainWindow *main_window, QWidget *parent)
     this->connect(this->ui.connect_button, SIGNAL(pressed()), SLOT(saveConfigAndStart()));
     this->connect(this->ui.agent_options, SIGNAL(currentIndexChanged(int)), SLOT(syncAgentLoginWidgets()));
     this->connect(b_engine, SIGNAL(settingsChanged()), SLOT(confUpdated()));
+    this->connect(b_engine, SIGNAL(connectionFailed()), SLOT(onConnectionFailed()));
+    this->connect(b_engine, SIGNAL(logged()), SLOT(onLogged()));
     this->connect(main_window, SIGNAL(initialized()), SLOT(initialize()));
 }
 
@@ -130,6 +135,21 @@ void LoginWidget::saveConfigAndStart()
 {
     this->saveConfig();
     b_engine->start();
+    this->ui.status_icon->clear();
+    this->ui.status_icon->setMovie(m_waiting_status);
+    this->ui.status_icon->movie()->start();
+    this->ui.status_icon->setToolTip(tr("Connecting"));
+}
+
+void LoginWidget::onLogged()
+{
+    this->ui.status_icon->clear();
+}
+
+void LoginWidget::onConnectionFailed()
+{
+    this->ui.status_icon->setPixmap(QPixmap(":/images/dot-red.svg"));
+    this->ui.status_icon->setToolTip(tr("Failed"));
 }
 
 void LoginWidget::confUpdated()

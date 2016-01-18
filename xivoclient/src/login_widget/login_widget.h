@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2014 Avencall
+ * Copyright (C) 2013-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -38,6 +38,7 @@
 
 class CentralWidget;
 class MainWindow;
+class QMovie;
 
 
 class LoginWidget: public QWidget
@@ -56,10 +57,13 @@ class LoginWidget: public QWidget
         void syncAgentLoginWidgets();
         void saveConfigAndStart();
         void confUpdated();
+        void onConnectionFailed();
+        void onLogged();
 
     private:
         void setConfig();
         void setAgentLoginWidgetsVisible();
+        QMovie *m_waiting_status;
 
         Ui::LoginWidget ui;
 };

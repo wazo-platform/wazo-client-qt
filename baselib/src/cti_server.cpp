@@ -45,7 +45,9 @@ void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
         // ~ once connected
         case QAbstractSocket::RemoteHostClosedError:
             if (this->m_waiting_for_start_tls) {
+                this->m_waiting_for_start_tls = false;
                 emit disconnectedBeforeStartTls();
+                break;
             }
             onSocketDisconnected();
             break;
