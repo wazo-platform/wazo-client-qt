@@ -30,7 +30,11 @@
 #include "cti_server.h"
 
 CTIServer::CTIServer(QSslSocket * socket)
-    : QObject(NULL), m_socket(socket), m_last_port(0), m_use_start_tls(false)
+    : QObject(NULL),
+      m_socket(socket),
+      m_last_port(0),
+      m_use_start_tls(false),
+      m_waiting_for_start_tls(false)
 {
 }
 
@@ -40,6 +44,9 @@ void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
     switch (socketError) {
         // ~ once connected
         case QAbstractSocket::RemoteHostClosedError:
+            if (this->m_waiting_for_start_tls) {
+                emit disconnectedBeforeStartTls();
+            }
             onSocketDisconnected();
             break;
 
@@ -131,6 +138,9 @@ void CTIServer::connectSocket(const QString & address,
     m_last_port = port;
     m_socket->abort();
     m_socket->connectToHost(address, port);
+    if (this->m_use_start_tls) {
+        m_waiting_for_start_tls = true;
+    }
 }
 
 bool CTIServer::connected()
@@ -142,6 +152,7 @@ bool CTIServer::connected()
 void CTIServer::startTls()
 {
     qDebug() << "Received a STARTTLS. Starting encryption:" << m_use_start_tls;
+    this->m_waiting_for_start_tls = false;
     if (this->m_use_start_tls) {
         m_socket->startClientEncryption();
     }

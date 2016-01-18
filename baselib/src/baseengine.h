@@ -196,6 +196,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void ipbxCommand(const QVariantMap &);
 
         void emitMessage(const QString &);
+        void onDisconnectedBeforeStartTls();
 
         // void sslSocketReadyRead();
         void sslErrors(const QList<QSslError> &);

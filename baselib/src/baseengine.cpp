@@ -128,6 +128,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
             this, SLOT(onCTIServerDisconnected()));
     connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
             this, SLOT(popupError(const QString &, const QString &, const QString &)));
+    connect(m_cti_server, SIGNAL(disconnectedBeforeStartTls()), this, SLOT(onDisconnectedBeforeStartTls()));
 
     connect(&m_init_watcher, SIGNAL(watching()),
             this, SIGNAL(initializing()));
@@ -1083,6 +1084,11 @@ void BaseEngine::registerMeetmeUpdate()
     sendJsonCommand(command);
 }
 
+
+void BaseEngine::onDisconnectedBeforeStartTls()
+{
+    qDebug() << Q_FUNC_INFO;
+}
 
 /*! \brief select message and then display a messagebox
  *

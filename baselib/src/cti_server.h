@@ -53,6 +53,7 @@ class CTIServer : public QObject
     signals:
         void failedToConnect(const QString &, const QString &, const QString &);
         void disconnected();
+        void disconnectedBeforeStartTls();
 
     private slots:
         void ctiSocketError(QAbstractSocket::SocketError);
@@ -70,5 +71,6 @@ class CTIServer : public QObject
         QString m_last_address;
         unsigned m_last_port;
         bool m_use_start_tls;
+        bool m_waiting_for_start_tls;
 };
 #endif
