@@ -46,6 +46,7 @@
 #include <QSslError>
 #include <QSslSocket>
 #include <QUdpSocket>
+#include <QMessageBox>
 
 #include <QJsonDocument>
 
@@ -1087,7 +1088,22 @@ void BaseEngine::registerMeetmeUpdate()
 
 void BaseEngine::onDisconnectedBeforeStartTls()
 {
-    qDebug() << Q_FUNC_INFO;
+    QMessageBox msgBox(QMessageBox::Information,
+                       tr("Failed to start a secure connection."),
+                       tr("Do you want to disable secure connections?"),
+                       QMessageBox::Yes | QMessageBox::No);
+    int result = msgBox.exec();
+    switch (result) {
+    case QMessageBox::Yes:
+        qDebug() << "disabling secure connections";
+        m_config["cti_encrypt"] = false;
+        m_config["backup_server_encryption"] = false;
+        this->saveSettings();
+        break;
+    case QMessageBox::No:
+    default:
+        break;
+    }
 }
 
 /*! \brief select message and then display a messagebox
