@@ -763,12 +763,9 @@ void BaseEngine::parseCommand(const QByteArray &raw)
             popupError(datamap.value("error_string").toString());
         } else {
             m_sessionid = datamap.value("sessionid").toString();
-            QString tohash = QString("%1:%2").arg(m_sessionid).arg(m_config["password"].toString());
-            QCryptographicHash hidepass(QCryptographicHash::Sha1);
-            QByteArray res = hidepass.hash(tohash.toLatin1(), QCryptographicHash::Sha1).toHex();
             QVariantMap command;
             command["class"] = "login_pass";
-            command["hashedpassword"] = QString(res);
+            command["password"] = m_config["password"].toString();
             sendJsonCommand(command);
         }
     } else if (thisclass == "login_pass") {
@@ -793,24 +790,7 @@ void BaseEngine::parseCommand(const QByteArray &raw)
                     command["capaid"] = capas[0];
             }
 
-            switch(m_config["guioptions.loginkind"].toInt()) {
-            case 0:
-                command["loginkind"] = "user";
-                break;
-            case 2:
-                command["agentlogin"] = "now";
-            case 1:
-                command["loginkind"] = "agent";
-                command["agentphonenumber"] = m_config["agentphonenumber"].toString();
-                break;
-            }
-
             command["state"] = getInitialPresence();
-
-            /*!
-             * \todo To be deleted, when the server will accept it
-             */
-            command["lastconnwins"] = false;
 
             sendJsonCommand(command);
         }
@@ -826,8 +806,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         QVariantMap capas = datamap.value("capas").toMap();
         m_options_userstatus = capas.value("userstatus").toMap();
         m_options_phonestatus = capas.value("phonestatus").toMap();
-
-        // ("ipbxcommands", "regcommands", "services", "functions")
         m_config.merge(capas.value("preferences").toMap());
         m_config["services"] = capas.value("services");
 
@@ -1223,6 +1201,8 @@ void BaseEngine::popupError(const QString & errorid,
     } else if (errorid.startsWith("unreachable_extension:")) {
         QString extension = errorid.split(":")[1];
         errormsg = tr("Unreachable number: %1").arg(extension);
+    } else if (errorid == "xivo_auth_error") {
+        errormsg = tr("The authentication server could not fulfill your request.");
     }
 
     // logs a message before sending any popup that would block
