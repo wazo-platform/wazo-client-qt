@@ -1202,7 +1202,7 @@ void BaseEngine::popupError(const QString & errorid,
         QString extension = errorid.split(":")[1];
         errormsg = tr("Unreachable number: %1").arg(extension);
     } else if (errorid == "xivo_auth_error") {
-        errormsg = tr("The authentification server could not fulfil your request.");
+        errormsg = tr("The authentication server could not fulfill your request.");
     }
 
     // logs a message before sending any popup that would block
