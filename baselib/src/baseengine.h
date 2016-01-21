@@ -196,6 +196,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void ipbxCommand(const QVariantMap &);
 
         void emitMessage(const QString &);
+        void onDisconnectedBeforeStartTls();
 
         // void sslSocketReadyRead();
         void sslErrors(const QList<QSslError> &);
@@ -218,6 +219,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
                         const QString & server_port = "");
 
     signals:
+        void connectionFailed();
         void settingsChanged();  //!< signal emitted when the setting are changed
 
         void logged();    //!< signal emitted when the state becomes ELogged

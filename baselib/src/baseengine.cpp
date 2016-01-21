@@ -46,6 +46,7 @@
 #include <QSslError>
 #include <QSslSocket>
 #include <QUdpSocket>
+#include <QMessageBox>
 
 #include <QJsonDocument>
 
@@ -128,6 +129,7 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
             this, SLOT(onCTIServerDisconnected()));
     connect(m_cti_server, SIGNAL(failedToConnect(const QString &, const QString &, const QString &)),
             this, SLOT(popupError(const QString &, const QString &, const QString &)));
+    connect(m_cti_server, SIGNAL(disconnectedBeforeStartTls()), this, SLOT(onDisconnectedBeforeStartTls()));
 
     connect(&m_init_watcher, SIGNAL(watching()),
             this, SIGNAL(initializing()));
@@ -1083,6 +1085,27 @@ void BaseEngine::registerMeetmeUpdate()
 }
 
 
+void BaseEngine::onDisconnectedBeforeStartTls()
+{
+    emit connectionFailed();
+    QMessageBox msgBox(QMessageBox::Information,
+                       tr("Failed to start a secure connection."),
+                       tr("Do you want to disable secure connections?"),
+                       QMessageBox::Yes | QMessageBox::No);
+    int result = msgBox.exec();
+    switch (result) {
+    case QMessageBox::Yes:
+        qDebug() << "disabling secure connections";
+        m_config["cti_encrypt"] = false;
+        m_config["cti_backup_encrypt"] = false;
+        this->saveSettings();
+        break;
+    case QMessageBox::No:
+    default:
+        break;
+    }
+}
+
 /*! \brief select message and then display a messagebox
  *
  * TODO : replace string errorids by an enum ?
@@ -1092,15 +1115,19 @@ void BaseEngine::popupError(const QString & errorid,
                             const QString & server_port)
 {
     QString errormsg = QString(tr("Server has sent an Error."));
+    bool login_error = false;
 
     // errors sent by the server (login phase)
     if (errorid.toLower() == "user_not_found") {
+        login_error = true;
         errormsg = tr("Your registration name <%1@%2> "
                       "is not known by the XiVO CTI server on %3:%4.")
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "login_password") {
+        login_error = true;
         errormsg = tr("You entered a wrong login / password.");
     } else if (errorid.startsWith("capaid_undefined")) {
+        login_error = true;
         errormsg = tr("You have no profile defined.");
 
     // keepalive (internal)
@@ -1110,30 +1137,37 @@ void BaseEngine::popupError(const QString & errorid,
 
     // socket errors - while attempting to connect
     } else if (errorid.toLower() == "socket_error_hostnotfound") {
+        login_error = true;
         errormsg = tr("You defined an IP address %1 that is probably an unresolved host name.")
             .arg(server_address);
     } else if (errorid.toLower() == "socket_error_timeout") {
+        login_error = true;
         errormsg = tr("Socket timeout (~ 60 s) : you probably attempted to reach, "
                       "via a gateway, an IP address %1 that does not exist.")
             .arg(server_address);
     } else if (errorid.toLower() == "socket_error_connectionrefused") {
+        login_error = true;
         errormsg = tr("There seems to be a machine running on this IP address %1, "
                       "and either no CTI server is running, or your port %2 is wrong.")
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "socket_error_network") {
+        login_error = true;
         errormsg = tr("An error occurred on the network while attempting to join the IP address %1 :\n"
                       "- no external route defined to access this IP address (~ no timeout)\n"
                       "- this IP address is routed but there is no machine (~ 5 s timeout)\n"
                       "- a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).")
             .arg(server_address);
     } else if (errorid.toLower() == "socket_error_sslhandshake") {
+        login_error = true;
         errormsg = tr("It seems that the server with IP address %1 does not accept encryption on "
                       "its port %2. Please change either your port or your encryption setting.")
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "socket_error_unknown") {
+        login_error = true;
         errormsg = tr("An unknown socket error has occured while attempting to join the IP address:port %1:%2.")
             .arg(server_address).arg(server_port);
     } else if (errorid.startsWith("socket_error_unmanagedyet:")) {
+        login_error = true;
         QStringList ipinfo = errorid.split(":");
         errormsg = tr("An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.")
             .arg(ipinfo[1]).arg(server_address).arg(server_port);
@@ -1160,12 +1194,25 @@ void BaseEngine::popupError(const QString & errorid,
     } else if (errorid.startsWith("missing:")) {
         errormsg = tr("Missing Argument(s)");
     } else if (errorid.startsWith("xivoversion_client:")) {
+        login_error = true;
         QStringList versionslist = errorid.split(":")[1].split(";");
         if (versionslist.size() >= 2)
             errormsg = tr("Your client's protocol version (%1)\n"
                           "is not the same as the server's (%2).")
                 .arg(__cti_protocol_version__)
                 .arg(versionslist[1]);
+    } else if (errorid.startsWith("version_server:")) {
+        login_error = true;
+        QStringList versionslist = errorid.split(":")[1].split(";");
+        if (versionslist.size() >= 2) {
+            errormsg = tr("Your server version (%1) is too old for this client.\n"
+                          "Please upgrade it to %2 at least.")
+                .arg(versionslist[0])
+                .arg(__git_hash__);
+        } else {
+            errormsg = tr("Your server version (%1) is too old for this client.\n"
+                          "Please upgrade it.").arg(versionslist[0]);
+        }
     } else if (errorid == "disconnected") {
         errormsg = tr("You were disconnected by the server.");
     } else if (errorid == "forcedisconnected") {
@@ -1179,6 +1226,11 @@ void BaseEngine::popupError(const QString & errorid,
         errormsg = tr("Unreachable number: %1").arg(extension);
     } else if (errorid == "xivo_auth_error") {
         errormsg = tr("The authentication server could not fulfill your request.");
+    }
+
+    if (login_error) {
+        qDebug() << "LOGIN ERROR";
+        emit connectionFailed();
     }
 
     // logs a message before sending any popup that would block
