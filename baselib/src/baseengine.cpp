@@ -1098,7 +1098,7 @@ void BaseEngine::onDisconnectedBeforeStartTls()
     case QMessageBox::Yes:
         qDebug() << "disabling secure connections";
         m_config["cti_encrypt"] = false;
-        m_config["backup_server_encryption"] = false;
+        m_config["cti_backup_encrypt"] = false;
         this->saveSettings();
         break;
     case QMessageBox::No:
