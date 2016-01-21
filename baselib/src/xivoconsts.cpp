@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -35,4 +35,4 @@ const char __git_hash__[] = GIT_HASH;
 const char __git_date__[] = GIT_DATE;
 const char __presence_on__[]  = "available";
 const char __presence_off__[] = "disconnected";
-const char __cti_protocol_version__[] = "1.2";
+const char __cti_protocol_version__[] = "2.0";
