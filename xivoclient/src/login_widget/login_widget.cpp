@@ -133,12 +133,12 @@ void LoginWidget::saveConfig()
 
 void LoginWidget::saveConfigAndStart()
 {
-    this->saveConfig();
-    b_engine->start();
     this->ui.status_icon->clear();
     this->ui.status_icon->setMovie(m_waiting_status);
     this->ui.status_icon->movie()->start();
     this->ui.status_icon->setToolTip(tr("Connecting"));
+    this->saveConfig();
+    b_engine->start();
 }
 
 void LoginWidget::onLogged()
