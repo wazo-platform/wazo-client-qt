@@ -43,7 +43,7 @@ class CTIServer : public QObject
 
     public:
         CTIServer(QSslSocket * socket);
-        void connectToServer(ConnectionConfig config);
+        void connectToServer(const ConnectionConfig &config);
         void disconnectFromServer();
         bool connected();
         bool isConnectionEncrypted() const;
@@ -60,17 +60,21 @@ class CTIServer : public QObject
         void onSocketDisconnected();
 
     private:
-        void connectSocket(const QString & address,
-                           unsigned port);
-        void catchSocketError();
-        void ignoreSocketError();
+        bool hasSlaveConfig() const;
+        void connectToMaster();
+        void connectToSlave();
+        void connectSocket(const QString & address, unsigned port);
         void sendError(const QString & message);
+        void onConnectionError(QAbstractSocket::SocketError error);
+        void onDisconnectError();
 
     private:
+        ConnectionConfig m_config;
         QSslSocket *m_socket;
         QString m_last_address;
         unsigned m_last_port;
         bool m_use_start_tls;
         bool m_waiting_for_start_tls;
+        bool m_connecting_to_master;
 };
 #endif

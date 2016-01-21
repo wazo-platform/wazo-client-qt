@@ -29,52 +29,69 @@
 
 #include "cti_server.h"
 
-CTIServer::CTIServer(QSslSocket * socket)
+CTIServer::CTIServer(QSslSocket *socket)
     : QObject(NULL),
+      m_config(),
       m_socket(socket),
       m_last_port(0),
       m_use_start_tls(false),
-      m_waiting_for_start_tls(false)
+      m_waiting_for_start_tls(false),
+      m_connecting_to_master(false)
 {
+    connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
 }
 
 void CTIServer::ctiSocketError(QAbstractSocket::SocketError socketError)
 {
     qDebug() << Q_FUNC_INFO << socketError;
+
+    if (socketError == QAbstractSocket::RemoteHostClosedError) {
+        this->onDisconnectError();
+    } else {
+        this->onConnectionError(socketError);
+    }
+}
+
+void CTIServer::onDisconnectError()
+{
+    if (this->m_waiting_for_start_tls) {
+        this->m_waiting_for_start_tls = false;
+        emit disconnectedBeforeStartTls();
+    } else {
+        onSocketDisconnected();
+    }
+}
+
+
+void CTIServer::onConnectionError(QAbstractSocket::SocketError socketError)
+{
+    if (m_connecting_to_master && this->hasSlaveConfig()) {
+        this->connectToSlave();
+    }
+
     switch (socketError) {
-        // ~ once connected
-        case QAbstractSocket::RemoteHostClosedError:
-            if (this->m_waiting_for_start_tls) {
-                this->m_waiting_for_start_tls = false;
-                emit disconnectedBeforeStartTls();
-                break;
-            }
-            onSocketDisconnected();
-            break;
-
-        // ~ when trying to connect
-        case QAbstractSocket::ConnectionRefusedError:
-            sendError("socket_error_connectionrefused");
-            break;
-        case QAbstractSocket::HostNotFoundError:
-            sendError("socket_error_hostnotfound");
-            break;
-        case QAbstractSocket::NetworkError:
-            sendError("socket_error_network");
-            break;
-        case QAbstractSocket::SocketTimeoutError:
-            sendError("socket_error_timeout");
-            break;
-        case QAbstractSocket::SslHandshakeFailedError:
-            sendError("socket_error_sslhandshake");
-            break;
-        case QAbstractSocket::UnknownSocketError:
-            sendError("socket_error_unknown");
-            break;
-
-        default:
-            sendError(QString("socket_error_unmanagedyet:%1").arg(socketError));
-            break;
+    case QAbstractSocket::ConnectionRefusedError:
+        sendError("socket_error_connectionrefused");
+        break;
+    case QAbstractSocket::HostNotFoundError:
+        sendError("socket_error_hostnotfound");
+        break;
+    case QAbstractSocket::NetworkError:
+        sendError("socket_error_network");
+        break;
+    case QAbstractSocket::SocketTimeoutError:
+        sendError("socket_error_timeout");
+        break;
+    case QAbstractSocket::SslHandshakeFailedError:
+        sendError("socket_error_sslhandshake");
+        break;
+    case QAbstractSocket::UnknownSocketError:
+        sendError("socket_error_unknown");
+        break;
+    default:
+        sendError(QString("socket_error_unmanagedyet:%1").arg(socketError));
+        break;
     }
 }
 
@@ -91,23 +108,31 @@ void CTIServer::onSocketDisconnected()
     this->sendError("socket_error_remotehostclosed");
 }
 
-void CTIServer::connectToServer(ConnectionConfig config)
+void CTIServer::connectToServer(const ConnectionConfig &config)
 {
-    ignoreSocketError();
-    if (config.backup_address.isEmpty()) {
-        catchSocketError();
-    }
+    m_config = config;
+    connectToMaster();
+}
 
-    this->m_use_start_tls = config.main_encrypt;
-    this->connectSocket(config.main_address,
-                        config.main_port);
-    if (config.backup_address.isEmpty() == false &&
-        m_socket->waitForConnected(3000) == false) {
-        catchSocketError();
-        this->m_use_start_tls = config.backup_encrypt;
-        this->connectSocket(config.backup_address,
-                            config.backup_port);
-    }
+void CTIServer::connectToMaster()
+{
+    this->m_use_start_tls = m_config.main_encrypt;
+    this->m_connecting_to_master = true;
+    this->connectSocket(m_config.main_address,
+                        m_config.main_port);
+}
+
+void CTIServer::connectToSlave()
+{
+    this->m_use_start_tls = m_config.backup_encrypt;
+    this->m_connecting_to_master = false;
+    this->connectSocket(m_config.backup_address,
+                        m_config.backup_port);
+}
+
+bool CTIServer::hasSlaveConfig() const
+{
+    return m_config.backup_address.isEmpty() == false;
 }
 
 void CTIServer::disconnectFromServer() {
@@ -121,20 +146,7 @@ void CTIServer::disconnectFromServer() {
             this, SLOT(onSocketDisconnected()));
 }
 
-void CTIServer::catchSocketError()
-{
-    connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)),
-            this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
-}
-
-void CTIServer::ignoreSocketError()
-{
-    disconnect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)),
-               this, SLOT(ctiSocketError(QAbstractSocket::SocketError)));
-}
-
-void CTIServer::connectSocket(const QString & address,
-                              unsigned port)
+void CTIServer::connectSocket(const QString & address, unsigned port)
 {
     m_last_address = address;
     m_last_port = port;
