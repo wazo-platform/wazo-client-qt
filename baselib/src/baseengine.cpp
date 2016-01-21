@@ -417,7 +417,6 @@ void BaseEngine::authenticate()
     command["userlogin"] = m_config["userloginsimple"].toString();
     command["company"] = "xivo";
     command["ident"] = m_osname;
-    command["version"] = "9999";
     command["xivoversion"] = __cti_protocol_version__;
 
     // for debuging purposes :
@@ -1160,36 +1159,13 @@ void BaseEngine::popupError(const QString & errorid,
         errormsg = tr("Max number (%1) of XiVO Clients already reached.").arg(userslist[0]);
     } else if (errorid.startsWith("missing:")) {
         errormsg = tr("Missing Argument(s)");
-    } else if (errorid.startsWith("version_client:")) {
-        QStringList versionslist = errorid.split(":")[1].split(";");
-        if (versionslist.size() >= 2) {
-            errormsg = tr("Your client version (%1) is too old for this server.\n"
-                          "Please upgrade it to %2 at least.")
-                .arg(__git_hash__)
-                .arg(versionslist[1]);
-        } else {
-            errormsg = tr("Your client version (%1) is too old for this server.\n"
-                          "Please upgrade it.").arg(__git_hash__);
-        }
     } else if (errorid.startsWith("xivoversion_client:")) {
         QStringList versionslist = errorid.split(":")[1].split(";");
-
         if (versionslist.size() >= 2)
-            errormsg = tr("Your client's major version (%1)\n"
+            errormsg = tr("Your client's protocol version (%1)\n"
                           "is not the same as the server's (%2).")
                 .arg(__cti_protocol_version__)
                 .arg(versionslist[1]);
-    } else if (errorid.startsWith("version_server:")) {
-        QStringList versionslist = errorid.split(":")[1].split(";");
-        if (versionslist.size() >= 2) {
-            errormsg = tr("Your server version (%1) is too old for this client.\n"
-                          "Please upgrade it to %2 at least.")
-                .arg(versionslist[0])
-                .arg(__git_hash__);
-        } else {
-            errormsg = tr("Your server version (%1) is too old for this client.\n"
-                          "Please upgrade it.").arg(versionslist[0]);
-        }
     } else if (errorid == "disconnected") {
         errormsg = tr("You were disconnected by the server.");
     } else if (errorid == "forcedisconnected") {
