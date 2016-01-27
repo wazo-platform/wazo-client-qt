@@ -4,19 +4,29 @@
 <context>
     <name>BaseEngine</name>
     <message>
-        <location filename="src/baseengine.cpp" line="493"/>
+        <location filename="src/baseengine.cpp" line="494"/>
         <source>Connection lost with XiVO CTI server</source>
         <translation>Connection lost with XiVO CTI server</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="754"/>
+        <location filename="src/baseengine.cpp" line="755"/>
         <source>Could not modify the Services data.</source>
         <translation>Could not modify the Services data.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="754"/>
+        <location filename="src/baseengine.cpp" line="755"/>
         <source>Maybe Asterisk is down.</source>
         <translation>Maybe Asterisk is down.</translation>
+    </message>
+    <message>
+        <location filename="src/baseengine.cpp" line="1092"/>
+        <source>Failed to start a secure connection.</source>
+        <translation>Failed to start a secure connection.</translation>
+    </message>
+    <message>
+        <location filename="src/baseengine.cpp" line="1093"/>
+        <source>Do you want to disable secure connections?</source>
+        <translation>Do you want to disable secure connections?</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1117"/>
@@ -24,43 +34,43 @@
         <translation>Server has sent an Error.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1121"/>
+        <location filename="src/baseengine.cpp" line="1123"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</source>
         <translation>Your registration name &lt;%1@%2&gt; is not known by the XiVO CTI server on %3:%4.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1125"/>
+        <location filename="src/baseengine.cpp" line="1128"/>
         <source>You entered a wrong login / password.</source>
         <translation>You entered a wrong login / password.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1127"/>
+        <location filename="src/baseengine.cpp" line="1131"/>
         <source>You have no profile defined.</source>
         <translation>You have no profile defined.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1131"/>
+        <location filename="src/baseengine.cpp" line="1135"/>
         <source>The server %1:%2 did not reply to the last keepalive packet.</source>
         <oldsource>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</oldsource>
         <translation>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1136"/>
+        <location filename="src/baseengine.cpp" line="1141"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
         <translation>You defined an IP address %1 that is probably an unresolved host name.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1139"/>
+        <location filename="src/baseengine.cpp" line="1145"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
         <translation>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1143"/>
+        <location filename="src/baseengine.cpp" line="1150"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
         <translation>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1147"/>
+        <location filename="src/baseengine.cpp" line="1155"/>
         <source>An error occurred on the network while attempting to join the IP address %1 :
 - no external route defined to access this IP address (~ no timeout)
 - this IP address is routed but there is no machine (~ 5 s timeout)
@@ -71,124 +81,115 @@
 - a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1153"/>
+        <location filename="src/baseengine.cpp" line="1162"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
         <translation>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1157"/>
+        <location filename="src/baseengine.cpp" line="1167"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1161"/>
+        <location filename="src/baseengine.cpp" line="1172"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
         <translation>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1166"/>
+        <location filename="src/baseengine.cpp" line="1177"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
         <translation>The XiVO CTI server on %1:%2 has just closed the connection.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1170"/>
+        <location filename="src/baseengine.cpp" line="1181"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
         <translation>The XiVO CTI server on %1:%2 has just been stopped.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1173"/>
+        <location filename="src/baseengine.cpp" line="1184"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
         <translation>The XiVO CTI server on %1:%2 has just been reloaded.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1177"/>
+        <location filename="src/baseengine.cpp" line="1188"/>
         <source>You are already connected to %1:%2.</source>
         <oldsource>You are already connected from %1:%2.</oldsource>
         <translation>You are already connected from %1:%2.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1179"/>
+        <location filename="src/baseengine.cpp" line="1190"/>
         <source>No capability allowed.</source>
         <translation>No capability allowed.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1182"/>
+        <location filename="src/baseengine.cpp" line="1193"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
         <translation>Max number (%1) of XiVO Clients already reached.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1184"/>
+        <location filename="src/baseengine.cpp" line="1195"/>
         <source>Missing Argument(s)</source>
         <translation>Missing Argument(s)</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1188"/>
-        <source>Your client version (%1) is too old for this server.
-Please upgrade it to %2 at least.</source>
-        <translation>Your client version (%1) is too old for this server.
-Please upgrade it to %2 at least.</translation>
-    </message>
-    <message>
-        <location filename="src/baseengine.cpp" line="1193"/>
-        <source>Your client version (%1) is too old for this server.
-Please upgrade it.</source>
-        <translation>Your client version (%1) is too old for this server.
-Please upgrade it.</translation>
-    </message>
-    <message>
         <location filename="src/baseengine.cpp" line="1200"/>
-        <source>Your client&apos;s major version (%1)
+        <source>Your client&apos;s protocol version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation>Your client&apos;s major version (%1)
+        <translation>Your client&apos;s protocol version (%1)
 is not the same as the server&apos;s (%2).</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1207"/>
+        <location filename="src/baseengine.cpp" line="1208"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
         <translation>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1212"/>
+        <location filename="src/baseengine.cpp" line="1213"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
         <translation>Your server version (%1) is too old for this client.
 Please upgrade it.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1216"/>
+        <location filename="src/baseengine.cpp" line="1217"/>
         <source>You were disconnected by the server.</source>
         <translation>You were disconnected by the server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1218"/>
+        <location filename="src/baseengine.cpp" line="1219"/>
         <source>You were forced to disconnect by the server.</source>
         <translation>You were forced to disconnect by the server.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1220"/>
+        <location filename="src/baseengine.cpp" line="1221"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
         <translation>Invalid extension number</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1222"/>
+        <location filename="src/baseengine.cpp" line="1223"/>
         <source>Could not log agent: extension already in use.</source>
         <translation>Could not log agent: extension already in use.</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1225"/>
+        <location filename="src/baseengine.cpp" line="1226"/>
         <source>Unreachable number: %1</source>
         <translation>Unreachable number: %1</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1229"/>
+        <location filename="src/baseengine.cpp" line="1228"/>
+        <source>The authentication server could not fulfill your request.</source>
+        <translation>The authentication server could not fulfill your request.</translation>
+    </message>
+    <message>
+        <location filename="src/baseengine.cpp" line="1237"/>
         <source>ERROR</source>
         <translation>ERROR</translation>
     </message>
     <message>
-        <location filename="src/baseengine.cpp" line="1385"/>
+        <location filename="src/baseengine.cpp" line="1393"/>
         <source>Attempting to reconnect to server</source>
         <translation>Attempting to reconnect to server</translation>
     </message>

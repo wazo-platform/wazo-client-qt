@@ -341,6 +341,16 @@
         <source>CONNECT</source>
         <translation>CONNECT</translation>
     </message>
+    <message>
+        <location filename="../src/login_widget/login_widget.cpp" line="139"/>
+        <source>Connecting</source>
+        <translation>Connecting</translation>
+    </message>
+    <message>
+        <location filename="../src/login_widget/login_widget.cpp" line="152"/>
+        <source>Failed</source>
+        <translation>Failed</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
