@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2015 Avencall
+ * Copyright (C) 2015-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -110,11 +110,6 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
                                       const QStyleOptionViewItem &option,
                                       const QModelIndex &index) const
 {
-    if (index.data().isNull()) {
-        PeopleEntryDotDelegate::paint(painter, option, index);
-        return;
-    }
-
     if(option.state & QStyle::State_MouseOver) {
         painter->save();
         QPainterPath path;
@@ -126,7 +121,7 @@ void PeopleEntryNumberDelegate::paint(QPainter *painter,
             painter->fillPath(path, QColor("#58524F"));
         }
 
-        QString text = tr("CALL");
+        QString text = index.data().isNull() ? tr("ACTIONS") : tr("CALL");
         QRect text_rect(button_rect);
         text_rect.translate(16, 0);
         painter->setPen(QColor("white"));
@@ -162,14 +157,10 @@ bool PeopleEntryNumberDelegate::shouldShowActionSelectorRect(const QModelIndex &
 }
 
 bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
-                                            QAbstractItemModel *model,
+                                            QAbstractItemModel *,
                                             const QStyleOptionViewItem &option,
                                             const QModelIndex &index)
 {
-    if (index.data().isNull()) {
-        return AbstractItemDelegate::editorEvent(event, model, option, index);
-    }
-
     if(event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
         if (this->contentsRect(option.rect).contains(mouse_event->pos())) {
