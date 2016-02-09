@@ -199,10 +199,10 @@ void BaseEngine::loadSettings()
     m_settings->beginGroup(m_profilename_read);
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.io").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
-        m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
+        m_config["cti_encrypt"] = m_settings->value("encryption", true).toBool();
         m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();
         m_config["cti_backup_port"]    = m_settings->value("backup_server_port", 5003).toUInt();
-        m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
+        m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", true).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
         m_config["password"] = m_settings->value("password").toString();
