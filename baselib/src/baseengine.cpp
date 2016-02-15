@@ -197,12 +197,20 @@ void BaseEngine::loadSettings()
         m_profilename_read = "engine-" + m_config["profilename"].toString();
 
     m_settings->beginGroup(m_profilename_read);
+    {
+        // In XiVO 16.02 starttls has been enabled by default
+        if (settingsversion < "16.02") {
+            qDebug() << "enabling starttls";
+            m_settings->setValue("encryption", true);
+            m_settings->setValue("backup_server_encryption", true);
+        }
+
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.io").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
-        m_config["cti_encrypt"] = m_settings->value("encryption", false).toBool();
+        m_config["cti_encrypt"] = m_settings->value("encryption", true).toBool();
         m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();
         m_config["cti_backup_port"]    = m_settings->value("backup_server_port", 5003).toUInt();
-        m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", false).toBool();
+        m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", true).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
         m_config["password"] = m_settings->value("password").toString();
@@ -228,8 +236,11 @@ void BaseEngine::loadSettings()
         m_config["remote_directory_sort_order"] = m_settings->value("remote_directory.sort_order", Qt::AscendingOrder).toInt();
 
         m_settings->beginGroup("user-gui");
+        {
             m_config["historysize"] = m_settings->value("historysize", 8).toUInt();
+        }
         m_settings->endGroup();
+    }
     m_settings->endGroup();
 
     QByteArray defaultguioptions;
