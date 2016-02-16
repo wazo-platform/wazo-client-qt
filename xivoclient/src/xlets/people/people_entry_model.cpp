@@ -131,6 +131,8 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return this->dataSortFilter(entry, column);
     case USER_ID_ROLE:
         return QVariantList() << entry.xivoUuid() << entry.userId();
+    case USER_UUID_ROLE:
+        return QVariantList() << entry.xivoUuid() << entry.userUuid();
     case USER_STATUS_ROLE:
         return entry.userStatus();
     default:

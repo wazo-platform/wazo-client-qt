@@ -86,6 +86,11 @@ int PeopleEntry::userId() const
     return m_user_id;
 }
 
+const QString &PeopleEntry::userUuid() const
+{
+    return m_user_uuid;
+}
+
 const QString &PeopleEntry::sourceName() const
 {
     return m_source_name;
