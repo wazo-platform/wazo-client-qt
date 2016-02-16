@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -52,14 +52,13 @@ ChitChatDispatcher::~ChitChatDispatcher()
     }
 }
 
-ChitChatWindow *ChitChatDispatcher::findOrNew(const QString &alias, const QString &xivo_uuid, int user_id)
+ChitChatWindow *ChitChatDispatcher::findOrNew(const QString &alias, const QString &xivo_uuid, const QString &user_uuid)
 {
-    const QString &chat_key = QString("%1/%2").arg(xivo_uuid).arg(user_id);
     ChitChatWindow *w = NULL;
-    if (!m_chat_window_opened.contains(chat_key)) {
-        m_chat_window_opened[chat_key] = new ChitChatWindow(alias, xivo_uuid, user_id);
+    if (!m_chat_window_opened.contains(user_uuid)) {
+        m_chat_window_opened[user_uuid] = new ChitChatWindow(alias, xivo_uuid, user_uuid);
     }
-    w = m_chat_window_opened[chat_key];
+    w = m_chat_window_opened[user_uuid];
     w->setAlias(alias);
     return w;
 }
@@ -72,30 +71,31 @@ void ChitChatDispatcher::parseCommand(const QVariantMap &map)
     }
 
     const QString &xivo_uuid = from[0].toString();
-    int user_id = from[1].toInt();
+    const QString &user_uuid = from[1].toString();
     const QString &alias = map["alias"].toString();
     const QString &msg = map["text"].toString();
 
-    receiveMessage(xivo_uuid, user_id, alias, msg);
+    receiveMessage(xivo_uuid, user_uuid, alias, msg);
 }
 
-void ChitChatDispatcher::receiveMessage(const QString &xivo_uuid, int user_id, const QString &alias, const QString &msg)
+void ChitChatDispatcher::receiveMessage(const QString &xivo_uuid, const QString &user_uuid,
+                                        const QString &alias, const QString &msg)
 {
-    ChitChatWindow *window = findOrNew(alias, xivo_uuid, user_id);
+    ChitChatWindow *window = findOrNew(alias, xivo_uuid, user_uuid);
     window->addMessage("black", msg, "red");
 }
 
-void ChitChatDispatcher::showChatWindow(const QString &alias, const QString &xivo_uuid, int user_id)
+void ChitChatDispatcher::showChatWindow(const QString &alias, const QString &xivo_uuid, const QString &user_uuid)
 {
-    ChitChatWindow *window = findOrNew(alias, xivo_uuid, user_id);
+    ChitChatWindow *window = findOrNew(alias, xivo_uuid, user_uuid);
     window->popup();
 }
 
-ChitChatWindow::ChitChatWindow(const QString &alias, const QString &xivo_uuid, int user_id)
+ChitChatWindow::ChitChatWindow(const QString &alias, const QString &xivo_uuid, const QString &user_uuid)
     : QWidget(NULL),
       m_remote_alias(alias),
       m_xivo_uuid(xivo_uuid),
-      m_user_id(user_id),
+      m_user_uuid(user_uuid),
       m_msg_edit(new ChatEditBox(this)),
       m_message_history(new QTextEdit(this))
 {
@@ -183,7 +183,7 @@ void ChitChatWindow::sendMessage(const QString &message)
 
     QVariantMap command;
     command["class"] = "chitchat";
-    command["to"] = QVariantList() << m_xivo_uuid << m_user_id;
+    command["to"] = QVariantList() << m_xivo_uuid << m_user_uuid;
     command["text"] = message;
     command["alias"] = m_local_alias;
 

@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Avencall
+/* Copyright (C) 2015-2016 Avencall
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -151,10 +151,10 @@ QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
         return NULL;
     }
 
-    const QVariantList &id = model()->data(index, USER_ID_ROLE).toList();
+    const QVariantList &uuid = model()->data(index, USER_UUID_ROLE).toList();
     const QString &name = dataAt(index, findColumnOfType(NAME)).toString();
 
-    return new ChatAction(name, id[0].toString(), id[1].toInt(), parent());
+    return new ChatAction(name, uuid[0].toString(), uuid[1].toString(), parent());
 }
 
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
@@ -287,18 +287,18 @@ void AttendedTransferVoicemailAction::transfer()
     b_engine->sendJsonCommand(MessageFactory::attendedTransferVoicemail(m_number));
 }
 
-ChatAction::ChatAction(const QString &name, const QString &xivo_uuid, int user_id, QWidget *parent)
+ChatAction::ChatAction(const QString &name, const QString &xivo_uuid, const QString &user_uuid, QWidget *parent)
     : QAction(tr("Send a message"), parent),
       m_name(name),
       m_xivo_uuid(xivo_uuid),
-      m_user_id(user_id)
+      m_user_uuid(user_uuid)
 {
     connect(this, SIGNAL(triggered()), this, SLOT(chat()));
 }
 
 void ChatAction::chat()
 {
-    chit_chat->showChatWindow(m_name, m_xivo_uuid, m_user_id);
+    chit_chat->showChatWindow(m_name, m_xivo_uuid, m_user_uuid);
 }
 
 MailToAction::MailToAction(const QString &title, const QString &email, QWidget *parent)
