@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -423,6 +423,7 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
                           relations["xivo_id"].toString(),
                           entry_map["source"].toString(),
                           relations["source_entry_id"].toString(),
+                          relations["user_uuid"].toString(),
                           relations["agent_id"].toInt(),
                           relations["endpoint_id"].toInt(),
                           relations["user_id"].toInt()
