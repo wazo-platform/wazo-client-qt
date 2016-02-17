@@ -164,17 +164,22 @@ Are you sure ?</translation>
 <context>
     <name>PeopleEntryNumberDelegate</name>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="129"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="124"/>
         <source>CALL</source>
         <translation>CALL</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="238"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="124"/>
+        <source>ACTIONS</source>
+        <translation>ACTIONS</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="229"/>
         <source>BLIND TRANSFER</source>
         <translation>BLIND TRANSFER</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="240"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="231"/>
         <source>ATTENDED TRANSFER</source>
         <translation>ATTENDED TRANSFER</translation>
     </message>
