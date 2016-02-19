@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -53,6 +53,19 @@ QWidget *RemoteControl::_get_current_sheet()
     }
 
     return current_tab;
+}
+
+void RemoteControl::close_all_sheets()
+{
+    CustomerInfoPanel *xlet = this->get_xlet<CustomerInfoPanel>("customerinfo");
+    if (xlet == NULL) {
+        throw TestFailedException(QString("xlet customerinfo is NULL"));
+    }
+
+    QTabWidget *tabber = xlet->m_tabs;
+    if (tabber) {
+        tabber->clear();
+    }
 }
 
 QVariantMap RemoteControl::get_sheet_infos()

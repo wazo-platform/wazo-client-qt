@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -129,6 +129,7 @@ void RemoteControl::processCommands()
             RC_EXECUTE(i_log_out_of_the_xivo_client);
             RC_EXECUTE(i_go_to_the_xivo_client_configuration);
             RC_EXECUTE(i_close_the_xivo_client_configuration);
+            RC_EXECUTE(close_all_sheets);
             RC_EXECUTE_ARG(configure);
             RC_EXECUTE_WITH_RETURN(get_configuration);
             RC_EXECUTE_WITH_RETURN(get_login_screen_infos);

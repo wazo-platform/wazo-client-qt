@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -116,6 +116,7 @@ class RemoteControl : public QObject
         void i_stop_the_xivo_client();
         void i_go_to_the_xivo_client_configuration();
         void i_close_the_xivo_client_configuration();
+        void close_all_sheets();
         void configure(const QVariantList &);
         void configureLoginWidget(const QVariantMap &args);
         void configureConfigDialog(const QVariantMap &args);
