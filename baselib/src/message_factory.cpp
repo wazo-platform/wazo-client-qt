@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -50,6 +50,17 @@ QVariantMap MessageFactory::callFormResult(const QVariant& info)
     command["infos"] = info;
     return command;
 }
+
+QVariantMap MessageFactory::chat(const QString &xivo_uuid, const QString &user_uuid,
+                                 const QString &msg, const QString &alias)
+{
+    QVariantMap command = MessageFactory::baseMessage("chitchat");
+    command["to"] = QVariantList() << xivo_uuid << user_uuid;
+    command["text"] = msg;
+    command["alias"] = alias;
+    return command;
+}
+
 
 QVariantMap MessageFactory::dial(const QString &destination)
 {

@@ -33,6 +33,7 @@
 #include <QTextEdit>
 
 #include <storage/userinfo.h>
+#include <message_factory.h>
 
 #include "chitchat.h"
 
@@ -181,11 +182,7 @@ void ChitChatWindow::sendMessage(const QString &message)
 {
     addMessage("blue", message, "green", tr("you said: "));
 
-    QVariantMap command;
-    command["class"] = "chitchat";
-    command["to"] = QVariantList() << m_xivo_uuid << m_user_uuid;
-    command["text"] = message;
-    command["alias"] = m_local_alias;
+    QVariantMap command = MessageFactory::chat(m_xivo_uuid, m_user_uuid, message, m_local_alias);
 
     b_engine->sendJsonCommand(command);
 }
