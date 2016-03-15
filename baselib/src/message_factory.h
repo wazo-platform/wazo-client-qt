@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -45,6 +45,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap subscribeCurrentCalls();
         static QVariantMap answer(const QString &unique_id);
         static QVariantMap callFormResult(const QVariant &info);
+        static QVariantMap chat(const QString &xivo_uuid, const QString &user_uuid, const QString &msg, const QString &alias);
         static QVariantMap dial(const QString &number);
         static QVariantMap hangup();
         static QVariantMap holdSwitchboard(const QString &queue_name);

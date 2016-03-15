@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2014-2015 Avencall
+ * Copyright (C) 2014-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -39,6 +39,7 @@ class PeopleEntry
                     const QString &xivo_uuid,
                     const QString &source_name,
                     const QString &source_entry_id,
+                    const QString &user_uuid,
                     int agent_id,
                     int endpoint_id,
                     int user_id);
@@ -48,6 +49,7 @@ class PeopleEntry
         void setData(int column, const QVariant &status);
 
         const QString &xivoUuid() const;
+        const QString &userUuid() const;
         int agentId() const;
         int endpointId() const;
         int userId() const;
@@ -77,6 +79,7 @@ class PeopleEntry
         int m_endpoint_status;
 
         QString m_source_entry_id;
+        QString m_user_uuid;
         int m_agent_id;
         int m_user_id;
         int m_endpoint_id;

@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -62,12 +62,12 @@ class XLETLIB_EXPORT ChitChatDispatcher: public QObject, IPBXListener
         ChitChatDispatcher(QObject *parent);
         virtual ~ChitChatDispatcher();
         void parseCommand(const QVariantMap & map);
-        void receiveMessage(const QString &xivo_uuid, int user_id, const QString &alias, const QString &msg);
-        void showChatWindow(const QString &alias, const QString &xivo_uuid, int user_id);
+        void receiveMessage(const QString &xivo_uuid, const QString &user_uuid, const QString &alias, const QString &msg);
+        void showChatWindow(const QString &alias, const QString &xivo_uuid, const QString &user_uuid);
 
     private:
         ChitChatDispatcher();
-        ChitChatWindow *findOrNew(const QString &alias, const QString &xivo_uuid, int user_id);
+        ChitChatWindow *findOrNew(const QString &alias, const QString &xivo_uuid, const QString &user_uuid);
         QHash<QString, ChitChatWindow*> m_chat_window_opened;
 };
 
@@ -76,7 +76,7 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget
     Q_OBJECT
 
     public:
-        ChitChatWindow(const QString &alias, const QString &xivo_uuid, int user_id);
+        ChitChatWindow(const QString &alias, const QString &xivo_uuid, const QString &user_uuid);
         virtual ~ChitChatWindow();
 
         void addMessage(const QString &, const QString &, const QString &, const QString &);
@@ -93,7 +93,7 @@ class XLETLIB_EXPORT ChitChatWindow : public QWidget
         QString m_remote_alias;
         QString m_local_alias;
         QString m_xivo_uuid;
-        int m_user_id;
+        QString m_user_uuid;
         ChatEditBox *m_msg_edit;
         QTextEdit *m_message_history;
         QTextCursor lastCursor;

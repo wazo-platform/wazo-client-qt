@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -131,6 +131,8 @@ QVariant PeopleEntryModel::data(const QModelIndex &index, int role) const
         return this->dataSortFilter(entry, column);
     case USER_ID_ROLE:
         return QVariantList() << entry.xivoUuid() << entry.userId();
+    case USER_UUID_ROLE:
+        return QVariantList() << entry.xivoUuid() << entry.userUuid();
     case USER_STATUS_ROLE:
         return entry.userStatus();
     default:
@@ -423,6 +425,7 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
                           relations["xivo_id"].toString(),
                           entry_map["source"].toString(),
                           relations["source_entry_id"].toString(),
+                          relations["user_uuid"].toString(),
                           relations["agent_id"].toInt(),
                           relations["endpoint_id"].toInt(),
                           relations["user_id"].toInt()

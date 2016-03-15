@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Avencall
+/* Copyright (C) 2015-2016 Avencall
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,13 +96,13 @@ class ChatAction: public QAction
     Q_OBJECT
 
     public:
-        ChatAction(const QString &name, const QString &xivo_uuid, int user_id, QWidget *parent);
+        ChatAction(const QString &name, const QString &xivo_uuid, const QString &user_uuid, QWidget *parent);
     public slots:
         void chat();
     private:
         QString m_name;
         QString m_xivo_uuid;
-        int m_user_id;
+        QString m_user_uuid;
 };
 
 class MailToAction: public QAction

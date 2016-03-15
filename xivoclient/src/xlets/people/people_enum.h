@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2015 Avencall
+ * Copyright (C) 2015-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -45,16 +45,17 @@ enum ColumnType {
 
 enum UserRoleCustom {
     INDICATOR_COLOR_ROLE = Qt::UserRole,
-    UNIQUE_SOURCE_ID_ROLE = Qt::UserRole + 1,
-    SORT_FILTER_ROLE = Qt::UserRole + 2,
-    USER_ID_ROLE = Qt::UserRole + 3,
-    USER_STATUS_ROLE = Qt::UserRole + 4,
+    UNIQUE_SOURCE_ID_ROLE,
+    SORT_FILTER_ROLE,
+    USER_ID_ROLE,
+    USER_UUID_ROLE,
+    USER_STATUS_ROLE,
 };
 
 enum PeopleMode {
     SEARCH_MODE = 0,
     FAVORITE_MODE,
-    PERSONAL_CONTACT_MODE
+    PERSONAL_CONTACT_MODE,
 };
 
 #endif

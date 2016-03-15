@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -33,6 +33,7 @@ PeopleEntry::PeopleEntry(const QVariantList &data,
                          const QString &xivo_uuid,
                          const QString &source_name,
                          const QString &source_entry_id,
+                         const QString &user_uuid,
                          int agent_id,
                          int endpoint_id,
                          int user_id)
@@ -40,6 +41,7 @@ PeopleEntry::PeopleEntry(const QVariantList &data,
     m_xivo_uuid(xivo_uuid),
     m_source_name(source_name),
     m_source_entry_id(source_entry_id),
+    m_user_uuid(user_uuid),
     m_agent_id(agent_id),
     m_user_id(user_id),
     m_endpoint_id(endpoint_id)
@@ -82,6 +84,11 @@ int PeopleEntry::endpointId() const
 int PeopleEntry::userId() const
 {
     return m_user_id;
+}
+
+const QString &PeopleEntry::userUuid() const
+{
+    return m_user_uuid;
 }
 
 const QString &PeopleEntry::sourceName() const
