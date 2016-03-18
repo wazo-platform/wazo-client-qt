@@ -167,7 +167,8 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
             this->pressed = true;
         }
     }
-    if (event->type() == QEvent::MouseButtonRelease) {
+
+    if (event->type() == QEvent::MouseButtonRelease && this->pressed) {
         this->pressed = false;
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
         if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
