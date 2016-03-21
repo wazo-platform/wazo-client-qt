@@ -159,7 +159,8 @@ QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
 
 QList<QAction *> PeopleActionGenerator::newCopyActions(const QModelIndex &index)
 {
-    return actionsFromList<CopyMailAction>(allTitleEmail(index));
+    return QList<QAction*>() << actionsFromList<CopyAction>(allTitleEmail(index))
+                             << actionsFromList<CopyAction>(callableTitleNumber(index));
 }
 
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
@@ -318,16 +319,16 @@ void MailToAction::mailto()
     QDesktopServices::openUrl(QUrl(QString("mailto:%1").arg(m_email)));
 }
 
-CopyMailAction::CopyMailAction(const QString &title, const QString &email, QWidget *parent)
-  : QAction(formatCopyTarget(title, email), parent),
-    m_email(email)
+CopyAction::CopyAction(const QString &title, const QString &target, QWidget *parent)
+  : QAction(formatCopyTarget(title, target), parent),
+    m_target(target)
 {
     connect(this, SIGNAL(triggered()), this, SLOT(copy()));
 }
 
-void CopyMailAction::copy()
+void CopyAction::copy()
 {
-    qDebug() << Q_FUNC_INFO << "Copying" << m_email;
+    qDebug() << Q_FUNC_INFO << "Copying" << m_target;
 }
 
 QString formatColumnNumber(const QString &title, const QString &number)

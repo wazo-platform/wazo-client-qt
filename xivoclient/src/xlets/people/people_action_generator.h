@@ -117,16 +117,16 @@ class MailToAction: public QAction
         QString m_email;
 };
 
-class CopyMailAction: public QAction
+class CopyAction: public QAction
 {
     Q_OBJECT
 
     public:
-        CopyMailAction(const QString &title, const QString &email, QWidget *parent);
+        CopyAction(const QString &title, const QString &target, QWidget *parent);
     public slots:
         void copy();
     private:
-        QString m_email;
+        QString m_target;
 };
 
 class PeopleActionGenerator: public QObject, IPBXListener
