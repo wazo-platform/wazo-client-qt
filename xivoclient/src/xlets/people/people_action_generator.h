@@ -122,7 +122,7 @@ class CopyAction: public QAction
     Q_OBJECT
 
     public:
-        CopyAction(const QString &title, const QString &target, QWidget *parent);
+        CopyAction(const QString &, const QString &target, QWidget *parent);
     public slots:
         void copy();
     private:
@@ -200,6 +200,6 @@ class PeopleActionGenerator: public QObject, IPBXListener
 };
 
 QString formatColumnNumber(const QString &title, const QString &number);
-QString formatCopyTarget(const QString &title, const QString &number);
+QString formatCopyTarget(const QString &number);
 
 #endif

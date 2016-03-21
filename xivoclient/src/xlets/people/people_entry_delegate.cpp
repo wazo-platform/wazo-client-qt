@@ -164,7 +164,22 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
     if(event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
         if (this->contentsRect(option.rect).contains(mouse_event->pos())) {
-            this->pressed = true;
+            if (mouse_event->button() == Qt::RightButton) {
+                QList<QAction *> copy_actions = m_people_action_generator->newCopyActions(index);
+                if (!copy_actions.isEmpty()) {
+                    QMenu menu;
+                    menu.addActions(copy_actions);
+                    QAbstractScrollArea *view = static_cast<QAbstractScrollArea*>(option.styleObject);
+                    if (! view) {
+                        return true;
+                    }
+
+                    QPoint global_position = view->viewport()->mapToGlobal(mouse_event->pos());
+                    menu.exec(global_position);
+                }
+            } else {
+                this->pressed = true;
+            }
         }
     }
 

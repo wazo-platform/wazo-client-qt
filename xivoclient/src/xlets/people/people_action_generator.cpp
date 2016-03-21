@@ -319,8 +319,8 @@ void MailToAction::mailto()
     QDesktopServices::openUrl(QUrl(QString("mailto:%1").arg(m_email)));
 }
 
-CopyAction::CopyAction(const QString &title, const QString &target, QWidget *parent)
-  : QAction(formatCopyTarget(title, target), parent),
+CopyAction::CopyAction(const QString &, const QString &target, QWidget *parent)
+  : QAction(formatCopyTarget(target), parent),
     m_target(target)
 {
     connect(this, SIGNAL(triggered()), this, SLOT(copy()));
@@ -336,7 +336,7 @@ QString formatColumnNumber(const QString &title, const QString &number)
     return QString("%1 - %2").arg(title).arg(number);
 }
 
-QString formatCopyTarget(const QString &title, const QString &number)
+QString formatCopyTarget(const QString &number)
 {
-    return QString("Copy: %1 - %2").arg(title).arg(number);
+    return QString("%1 %2").arg(QObject::tr("Copy")).arg(number);
 }

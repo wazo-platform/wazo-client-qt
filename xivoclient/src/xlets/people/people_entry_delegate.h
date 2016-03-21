@@ -43,7 +43,7 @@ class RightClickStuff : public QWidget
 Q_OBJECT
 
 public:
-  RightClickStuff(const QList<QAction *> &actions, QWidget *parent)
+  RightClickStuff(const QList<QAction *> &actions, QMenu *parent)
     : QWidget(parent),
       m_actions(actions)
   {}
@@ -51,14 +51,13 @@ public:
 public slots:
   void showContextMenu(const QPoint &pos)
   {
-    QPoint global_pos = parentWidget()->mapToGlobal(pos);
+    QMenu *parent = static_cast<QMenu*>(parentWidget());
+    QPoint global_pos = parent->mapToGlobal(pos);
     QMenu menu;
     menu.addActions(m_actions);
     QAction *selected = menu.exec(global_pos);
     if (selected) {
-      qDebug() << Q_FUNC_INFO << "Selected";
-    } else {
-      qDebug() << Q_FUNC_INFO << "Not selected";
+        parent->close();
     }
   }
 private:
