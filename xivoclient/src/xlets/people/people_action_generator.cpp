@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
+#include <QApplication>
 #include <QDebug>
 #include <baseengine.h>
 #include <message_factory.h>
@@ -328,7 +329,8 @@ CopyAction::CopyAction(const QString &, const QString &target, QWidget *parent)
 
 void CopyAction::copy()
 {
-    qDebug() << Q_FUNC_INFO << "Copying" << m_target;
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(m_target);
 }
 
 QString formatColumnNumber(const QString &title, const QString &number)
