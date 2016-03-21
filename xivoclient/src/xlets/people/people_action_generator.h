@@ -139,7 +139,7 @@ class PeopleActionGenerator: public QObject, IPBXListener
 
         QAction *newCallAction(const QModelIndex &index);
         QAction *newChatAction(const QModelIndex &index);
-        QAction *newCopyMailAction(const QModelIndex &index);
+        QList<QAction *> newCopyActions(const QModelIndex &index);
         QList<QAction *> newCallCallableActions(const QModelIndex &index);
         QList<QAction *> newAttendedTransferActions(const QModelIndex &index);
         QList<QAction *> newBlindTransferActions(const QModelIndex &index);

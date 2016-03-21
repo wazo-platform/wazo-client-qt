@@ -157,14 +157,9 @@ QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
     return new ChatAction(name, uuid[0].toString(), uuid[1].toString(), parent());
 }
 
-QAction * PeopleActionGenerator::newCopyMailAction(const QModelIndex &index)
+QList<QAction *> PeopleActionGenerator::newCopyActions(const QModelIndex &index)
 {
-    QList<QAction*> copy_actions = actionsFromList<CopyMailAction>(allTitleEmail(index));
-    if (copy_actions.isEmpty()) {
-        return NULL;
-    }
-
-    return copy_actions[0];
+    return actionsFromList<CopyMailAction>(allTitleEmail(index));
 }
 
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)

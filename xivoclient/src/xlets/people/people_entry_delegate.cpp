@@ -235,12 +235,12 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QMode
         menu->addAction(chat_action);
     }
 
-    QAction *copy_mail_action = m_people_action_generator->newCopyMailAction(index);
-    if (copy_mail_action) {
-      RightClickStuff *r1 = new RightClickStuff(copy_mail_action, menu);
+    QList<QAction *> copy_actions = m_people_action_generator->newCopyActions(index);
+    if (!copy_actions.isEmpty()) {
+      RightClickStuff *r = new RightClickStuff(copy_actions, menu);
       menu->setContextMenuPolicy(Qt::CustomContextMenu);
       connect(menu, SIGNAL(customContextMenuRequested(const QPoint &)),
-              r1, SLOT(showContextMenu(const QPoint &)));
+              r, SLOT(showContextMenu(const QPoint &)));
     }
 }
 

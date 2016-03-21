@@ -43,16 +43,17 @@ class RightClickStuff : public QWidget
 Q_OBJECT
 
 public:
-  RightClickStuff(QAction *action, QWidget *parent)
+  RightClickStuff(const QList<QAction *> &actions, QWidget *parent)
     : QWidget(parent),
-      m_action(action)
+      m_actions(actions)
   {}
+
 public slots:
   void showContextMenu(const QPoint &pos)
   {
     QPoint global_pos = parentWidget()->mapToGlobal(pos);
     QMenu menu;
-    menu.addAction(m_action);
+    menu.addActions(m_actions);
     QAction *selected = menu.exec(global_pos);
     if (selected) {
       qDebug() << Q_FUNC_INFO << "Selected";
@@ -61,7 +62,7 @@ public slots:
     }
   }
 private:
-  QAction *m_action;
+  QList<QAction *> m_actions;
 };
 
 class PeopleEntryDotDelegate : public AbstractItemDelegate
