@@ -117,6 +117,18 @@ class MailToAction: public QAction
         QString m_email;
 };
 
+class CopyMailAction: public QAction
+{
+    Q_OBJECT
+
+    public:
+        CopyMailAction(const QString &title, const QString &email, QWidget *parent);
+    public slots:
+        void copy();
+    private:
+        QString m_email;
+};
+
 class PeopleActionGenerator: public QObject, IPBXListener
 {
     Q_OBJECT
@@ -127,6 +139,7 @@ class PeopleActionGenerator: public QObject, IPBXListener
 
         QAction *newCallAction(const QModelIndex &index);
         QAction *newChatAction(const QModelIndex &index);
+        QAction *newCopyMailAction(const QModelIndex &index);
         QList<QAction *> newCallCallableActions(const QModelIndex &index);
         QList<QAction *> newAttendedTransferActions(const QModelIndex &index);
         QList<QAction *> newBlindTransferActions(const QModelIndex &index);
@@ -187,5 +200,6 @@ class PeopleActionGenerator: public QObject, IPBXListener
 };
 
 QString formatColumnNumber(const QString &title, const QString &number);
+QString formatCopyTarget(const QString &title, const QString &number);
 
 #endif

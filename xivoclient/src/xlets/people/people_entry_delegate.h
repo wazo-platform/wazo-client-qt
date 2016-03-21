@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2015 Avencall
+ * Copyright (C) 2015-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -30,12 +30,39 @@
 #ifndef __PEOPLE_ENTRY_DELEGATE_H__
 #define __PEOPLE_ENTRY_DELEGATE_H__
 
+#include <QDebug>
 #include <QPointer>
 #include <xletlib/item_delegate.h>
 #include <xletlib/menu.h>
 
 
 class PeopleActionGenerator;
+
+class RightClickStuff : public QWidget
+{
+Q_OBJECT
+
+public:
+  RightClickStuff(QAction *action, QWidget *parent)
+    : QWidget(parent),
+      m_action(action)
+  {}
+public slots:
+  void showContextMenu(const QPoint &pos)
+  {
+    QPoint global_pos = parentWidget()->mapToGlobal(pos);
+    QMenu menu;
+    menu.addAction(m_action);
+    QAction *selected = menu.exec(global_pos);
+    if (selected) {
+      qDebug() << Q_FUNC_INFO << "Selected";
+    } else {
+      qDebug() << Q_FUNC_INFO << "Not selected";
+    }
+  }
+private:
+  QAction *m_action;
+};
 
 class PeopleEntryDotDelegate : public AbstractItemDelegate
 {

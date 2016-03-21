@@ -157,6 +157,16 @@ QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
     return new ChatAction(name, uuid[0].toString(), uuid[1].toString(), parent());
 }
 
+QAction * PeopleActionGenerator::newCopyMailAction(const QModelIndex &index)
+{
+    QList<QAction*> copy_actions = actionsFromList<CopyMailAction>(allTitleEmail(index));
+    if (copy_actions.isEmpty()) {
+        return NULL;
+    }
+
+    return copy_actions[0];
+}
+
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
 {
     return actionsFromList<CallAction>(callableTitleNumber(index));
@@ -313,7 +323,24 @@ void MailToAction::mailto()
     QDesktopServices::openUrl(QUrl(QString("mailto:%1").arg(m_email)));
 }
 
+CopyMailAction::CopyMailAction(const QString &title, const QString &email, QWidget *parent)
+  : QAction(formatCopyTarget(title, email), parent),
+    m_email(email)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(copy()));
+}
+
+void CopyMailAction::copy()
+{
+    qDebug() << Q_FUNC_INFO << "Copying" << m_email;
+}
+
 QString formatColumnNumber(const QString &title, const QString &number)
 {
     return QString("%1 - %2").arg(title).arg(number);
+}
+
+QString formatCopyTarget(const QString &title, const QString &number)
+{
+    return QString("Copy: %1 - %2").arg(title).arg(number);
 }

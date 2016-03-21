@@ -234,6 +234,14 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QMode
     if (QAction *chat_action = m_people_action_generator->newChatAction(index)) {
         menu->addAction(chat_action);
     }
+
+    QAction *copy_mail_action = m_people_action_generator->newCopyMailAction(index);
+    if (copy_mail_action) {
+      RightClickStuff *r1 = new RightClickStuff(copy_mail_action, menu);
+      menu->setContextMenuPolicy(Qt::CustomContextMenu);
+      connect(menu, SIGNAL(customContextMenuRequested(const QPoint &)),
+              r1, SLOT(showContextMenu(const QPoint &)));
+    }
 }
 
 void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
