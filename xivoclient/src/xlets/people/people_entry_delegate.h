@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2015 Avencall
+ * Copyright (C) 2015-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -30,6 +30,7 @@
 #ifndef __PEOPLE_ENTRY_DELEGATE_H__
 #define __PEOPLE_ENTRY_DELEGATE_H__
 
+#include <QDebug>
 #include <QPointer>
 #include <xletlib/item_delegate.h>
 #include <xletlib/menu.h>
@@ -113,6 +114,19 @@ class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate
     protected:
         static QSize icon_size;
         static int icons_spacing;
+};
+
+class CopyContextMenu : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        CopyContextMenu(const QList<QAction *> &actions, QWidget *parent);
+
+    public slots:
+        void showContextMenu(const QPoint &pos);
+    private:
+        QList<QAction *> m_actions;
 };
 
 #endif

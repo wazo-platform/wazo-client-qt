@@ -161,23 +161,47 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
                                             const QStyleOptionViewItem &option,
                                             const QModelIndex &index)
 {
-    if(event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        if (this->contentsRect(option.rect).contains(mouse_event->pos())) {
-            this->pressed = true;
-        }
+    if (event->type() != QEvent::MouseButtonPress and event->type() != QEvent::MouseButtonRelease) {
+        return false;
     }
 
-    if (event->type() == QEvent::MouseButtonRelease && this->pressed) {
+    QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
+    QPoint pos = mouse_event->pos();
+    bool on_the_button = this->contentsRect(option.rect).contains(pos);
+    bool on_the_arrow = !this->buttonRect(option.rect).contains(pos);
+    bool right_click = event->type() == QEvent::MouseButtonPress && mouse_event->button() == Qt::RightButton;
+    bool left_click = event->type() == QEvent::MouseButtonRelease && mouse_event->button() == Qt::LeftButton && this->pressed;
+    bool double_click = event->type() == QEvent::MouseButtonPress && this->pressed;
+    bool button_down = event->type() == QEvent::MouseButtonPress && mouse_event->button() == Qt::LeftButton && !this->pressed;
+
+    if (double_click) {
+        return true;
+    } else if (right_click) {
+        QList<QAction *> copy_actions = m_people_action_generator->newCopyActions(index);
+        if (copy_actions.isEmpty()) {
+            return true;
+        }
+
+        QAbstractScrollArea *view = static_cast<QAbstractScrollArea*>(option.styleObject);
+        if (!view) {
+            return true;
+        }
+
+        QPoint global_position = view->viewport()->mapToGlobal(pos);
+        QMenu menu;
+        menu.addActions(copy_actions);
+        menu.exec(global_position);
+    } else if (left_click) {
         this->pressed = false;
-        QMouseEvent *mouse_event = static_cast<QMouseEvent*>(event);
-        if (this->buttonRect(option.rect).contains(mouse_event->pos())) {
+        if (on_the_arrow) {
+            this->showContextMenu(option, index);
+        } else if (on_the_button) {
             if (QAction *call_action = m_people_action_generator->newCallAction(index)) {
                 call_action->trigger();
             }
-        } else if (this->actionSelectorRect(option.rect).contains(mouse_event->pos())) {
-            this->showContextMenu(option, index);
         }
+    } else if (button_down) {
+        this->pressed = true;
     }
     return true;
 }
@@ -234,6 +258,7 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QMode
     if (QAction *chat_action = m_people_action_generator->newChatAction(index)) {
         menu->addAction(chat_action);
     }
+    new CopyContextMenu(m_people_action_generator->newCopyActions(index), menu);
 }
 
 void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
@@ -318,4 +343,31 @@ bool PeopleEntryPersonalContactDelegate::editorEvent(QEvent *event,
     }
 
     return true;
+}
+
+
+CopyContextMenu::CopyContextMenu(const QList<QAction *> &actions, QWidget *parent)
+    : QWidget(parent),
+      m_actions(actions)
+{
+    if (actions.isEmpty()) {
+        return;
+    }
+
+    parent->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(parent, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(showContextMenu(const QPoint &)));
+}
+
+
+void CopyContextMenu::showContextMenu(const QPoint &pos)
+{
+    QMenu *parent = static_cast<QMenu*>(parentWidget());
+    QPoint global_pos = parent->mapToGlobal(pos);
+    QMenu menu;
+    menu.addActions(m_actions);
+    QAction *selected = menu.exec(global_pos);
+    if (selected) {
+        parent->close();
+    }
 }

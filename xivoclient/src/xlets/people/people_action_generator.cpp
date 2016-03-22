@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
+#include <QApplication>
 #include <QDebug>
 #include <baseengine.h>
 #include <message_factory.h>
@@ -155,6 +156,12 @@ QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
     const QString &name = dataAt(index, findColumnOfType(NAME)).toString();
 
     return new ChatAction(name, uuid[0].toString(), uuid[1].toString(), parent());
+}
+
+QList<QAction *> PeopleActionGenerator::newCopyActions(const QModelIndex &index)
+{
+    return QList<QAction*>() << actionsFromList<CopyAction>(allTitleEmail(index))
+                             << actionsFromList<CopyAction>(allTitleNumber(index));
 }
 
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)
@@ -313,7 +320,25 @@ void MailToAction::mailto()
     QDesktopServices::openUrl(QUrl(QString("mailto:%1").arg(m_email)));
 }
 
+CopyAction::CopyAction(const QString &, const QString &target, QWidget *parent)
+  : QAction(formatCopyTarget(target), parent),
+    m_target(target)
+{
+    connect(this, SIGNAL(triggered()), this, SLOT(copy()));
+}
+
+void CopyAction::copy()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(m_target);
+}
+
 QString formatColumnNumber(const QString &title, const QString &number)
 {
     return QString("%1 - %2").arg(title).arg(number);
+}
+
+QString formatCopyTarget(const QString &number)
+{
+    return QString("%1 %2").arg(QObject::tr("Copy")).arg(number);
 }
