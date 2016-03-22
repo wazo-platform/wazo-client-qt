@@ -172,10 +172,11 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
     bool right_click = event->type() == QEvent::MouseButtonPress && mouse_event->button() == Qt::RightButton;
     bool left_click = event->type() == QEvent::MouseButtonRelease && mouse_event->button() == Qt::LeftButton && this->pressed;
     bool double_click = event->type() == QEvent::MouseButtonPress && this->pressed;
+    bool button_down = event->type() == QEvent::MouseButtonPress && mouse_event->button() == Qt::LeftButton && !this->pressed;
 
     if (double_click) {
         return true;
-    } else if (right_click && on_the_button) {
+    } else if (right_click) {
         QList<QAction *> copy_actions = m_people_action_generator->newCopyActions(index);
         if (copy_actions.isEmpty()) {
             return true;
@@ -199,7 +200,7 @@ bool PeopleEntryNumberDelegate::editorEvent(QEvent *event,
                 call_action->trigger();
             }
         }
-    } else {
+    } else if (button_down) {
         this->pressed = true;
     }
     return true;
@@ -257,14 +258,7 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QMode
     if (QAction *chat_action = m_people_action_generator->newChatAction(index)) {
         menu->addAction(chat_action);
     }
-
-    QList<QAction *> copy_actions = m_people_action_generator->newCopyActions(index);
-    if (!copy_actions.isEmpty()) {
-      RightClickStuff *r = new RightClickStuff(copy_actions, menu);
-      menu->setContextMenuPolicy(Qt::CustomContextMenu);
-      connect(menu, SIGNAL(customContextMenuRequested(const QPoint &)),
-              r, SLOT(showContextMenu(const QPoint &)));
-    }
+    new CopyContextMenu(m_people_action_generator->newCopyActions(index), menu);
 }
 
 void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,

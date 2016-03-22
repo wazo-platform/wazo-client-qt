@@ -161,7 +161,7 @@ QAction *PeopleActionGenerator::newChatAction(const QModelIndex &index)
 QList<QAction *> PeopleActionGenerator::newCopyActions(const QModelIndex &index)
 {
     return QList<QAction*>() << actionsFromList<CopyAction>(allTitleEmail(index))
-                             << actionsFromList<CopyAction>(callableTitleNumber(index));
+                             << actionsFromList<CopyAction>(allTitleNumber(index));
 }
 
 QList<QAction *> PeopleActionGenerator::newCallCallableActions(const QModelIndex &index)

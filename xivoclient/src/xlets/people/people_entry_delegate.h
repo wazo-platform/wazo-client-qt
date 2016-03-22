@@ -38,27 +38,35 @@
 
 class PeopleActionGenerator;
 
-class RightClickStuff : public QWidget
+class CopyContextMenu : public QWidget
 {
 Q_OBJECT
 
 public:
-  RightClickStuff(const QList<QAction *> &actions, QMenu *parent)
+  CopyContextMenu(const QList<QAction *> &actions, QWidget *parent)
     : QWidget(parent),
       m_actions(actions)
-  {}
+  {
+      if (actions.isEmpty()) {
+          return;
+      }
+
+      parent->setContextMenuPolicy(Qt::CustomContextMenu);
+      connect(parent, SIGNAL(customContextMenuRequested(const QPoint &)),
+              this, SLOT(showContextMenu(const QPoint &)));
+  }
 
 public slots:
   void showContextMenu(const QPoint &pos)
   {
-    QMenu *parent = static_cast<QMenu*>(parentWidget());
-    QPoint global_pos = parent->mapToGlobal(pos);
-    QMenu menu;
-    menu.addActions(m_actions);
-    QAction *selected = menu.exec(global_pos);
-    if (selected) {
-        parent->close();
-    }
+      QMenu *parent = static_cast<QMenu*>(parentWidget());
+      QPoint global_pos = parent->mapToGlobal(pos);
+      QMenu menu;
+      menu.addActions(m_actions);
+      QAction *selected = menu.exec(global_pos);
+      if (selected) {
+          parent->close();
+      }
   }
 private:
   QList<QAction *> m_actions;
