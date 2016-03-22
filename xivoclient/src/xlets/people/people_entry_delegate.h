@@ -38,40 +38,6 @@
 
 class PeopleActionGenerator;
 
-class CopyContextMenu : public QWidget
-{
-Q_OBJECT
-
-public:
-  CopyContextMenu(const QList<QAction *> &actions, QWidget *parent)
-    : QWidget(parent),
-      m_actions(actions)
-  {
-      if (actions.isEmpty()) {
-          return;
-      }
-
-      parent->setContextMenuPolicy(Qt::CustomContextMenu);
-      connect(parent, SIGNAL(customContextMenuRequested(const QPoint &)),
-              this, SLOT(showContextMenu(const QPoint &)));
-  }
-
-public slots:
-  void showContextMenu(const QPoint &pos)
-  {
-      QMenu *parent = static_cast<QMenu*>(parentWidget());
-      QPoint global_pos = parent->mapToGlobal(pos);
-      QMenu menu;
-      menu.addActions(m_actions);
-      QAction *selected = menu.exec(global_pos);
-      if (selected) {
-          parent->close();
-      }
-  }
-private:
-  QList<QAction *> m_actions;
-};
-
 class PeopleEntryDotDelegate : public AbstractItemDelegate
 {
     Q_OBJECT
@@ -148,6 +114,19 @@ class PeopleEntryPersonalContactDelegate : public AbstractItemDelegate
     protected:
         static QSize icon_size;
         static int icons_spacing;
+};
+
+class CopyContextMenu : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        CopyContextMenu(const QList<QAction *> &actions, QWidget *parent);
+
+    public slots:
+        void showContextMenu(const QPoint &pos);
+    private:
+        QList<QAction *> m_actions;
 };
 
 #endif
