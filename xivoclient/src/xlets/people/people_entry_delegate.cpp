@@ -258,7 +258,9 @@ void PeopleEntryNumberDelegate::fillContextMenu(QPointer<Menu> menu, const QMode
     if (QAction *chat_action = m_people_action_generator->newChatAction(index)) {
         menu->addAction(chat_action);
     }
+#ifndef Q_OS_WIN
     new CopyContextMenu(m_people_action_generator->newCopyActions(index), menu);
+#endif
 }
 
 void PeopleEntryNumberDelegate::addTransferSubmenu(QPointer<Menu> menu,
