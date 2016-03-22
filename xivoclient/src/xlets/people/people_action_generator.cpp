@@ -15,7 +15,6 @@
  */
 
 #include <QApplication>
-#include <QDebug>
 #include <baseengine.h>
 #include <message_factory.h>
 
