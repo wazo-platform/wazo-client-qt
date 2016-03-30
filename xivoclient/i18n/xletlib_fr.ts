@@ -134,27 +134,27 @@ en retrait</translation>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="116"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="117"/>
         <source>&amp;Clear history</source>
         <translation>E&amp;ffacer le dialogue</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="117"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="118"/>
         <source>&amp;Send</source>
         <translation>&amp;Envoyer</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="138"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <source>chat window opened with &quot;%1&quot;</source>
         <translation>fenêtre de discussion ouverte avec &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="182"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="183"/>
         <source>you said: </source>
         <translation>Vous avez dit:</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="208"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="205"/>
         <source>chitchat - %1</source>
         <translation>chitchat - %1</translation>
     </message>

@@ -134,27 +134,27 @@ colas</translation>
 <context>
     <name>ChitChatWindow</name>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="116"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="117"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Limpiar historial</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="117"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="118"/>
         <source>&amp;Send</source>
         <translation>&amp;Enviar</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="138"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <source>chat window opened with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="182"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="183"/>
         <source>you said: </source>
         <translation>usted dijo:</translation>
     </message>
     <message>
-        <location filename="../src/xletlib/chitchat.cpp" line="208"/>
+        <location filename="../src/xletlib/chitchat.cpp" line="205"/>
         <source>chitchat - %1</source>
         <translation type="unfinished"></translation>
     </message>

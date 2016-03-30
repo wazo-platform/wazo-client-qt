@@ -4,7 +4,7 @@
 <context>
     <name>CallAction</name>
     <message>
-        <location filename="../src/xlets/people/people_action_generator.cpp" line="224"/>
+        <location filename="../src/xlets/people/people_action_generator.cpp" line="230"/>
         <source>Call</source>
         <translation type="unfinished">Anruf</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>ChatAction</name>
     <message>
-        <location filename="../src/xlets/people/people_action_generator.cpp" line="291"/>
+        <location filename="../src/xlets/people/people_action_generator.cpp" line="297"/>
         <source>Send a message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -174,12 +174,12 @@ Sind Sie sicher ?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="229"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="254"/>
         <source>BLIND TRANSFER</source>
         <translation>BLINDE VERBINDUNGSÜBERGABE</translation>
     </message>
     <message>
-        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="231"/>
+        <location filename="../src/xlets/people/people_entry_delegate.cpp" line="256"/>
         <source>ATTENDED TRANSFER</source>
         <translation>VERBINDUNGSÜBERGABE NACH RÜCKFRAGE</translation>
     </message>
@@ -235,6 +235,14 @@ They will be migrated to the XiVO server in your personal database.</source>
         <location filename="../src/xlets/people/people_widget.ui" line="181"/>
         <source>DELETE ALL CONTACTS</source>
         <translation>ALLE KONTAKTE LÖSCHEN</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../src/xlets/people/people_action_generator.cpp" line="342"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
