@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2014 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -32,6 +32,7 @@
 
 #include <QObject>
 
+#include <xletlib/functests.h>
 #include <xletlib/xletinterface.h>
 #include <xletlib/xlet.h>
 #include <ui_services_widget.h>
@@ -45,6 +46,7 @@ struct CallForwardStruct {
 class ServicesPanel : public XLet
 {
     Q_OBJECT
+    FUNCTESTED
 
     public:
         ServicesPanel(QWidget *parent=0);

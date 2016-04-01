@@ -146,6 +146,12 @@ class RemoteControl : public QObject
         QVariantMap get_switchboard_current_call_infos();
         QVariantMap get_switchboard_incoming_calls_infos();
         void dial(const QVariantList &);
+        void set_dnd(const QVariantList &);
+        void set_incallfilter(const QVariantList &);
+        void set_noanswer(const QVariantList &);
+        void set_busy(const QVariantList &);
+        void set_unconditional(const QVariantList &);
+        void disable_all_forwards();
         QWidget *_get_current_sheet();
 
         //Xlets
