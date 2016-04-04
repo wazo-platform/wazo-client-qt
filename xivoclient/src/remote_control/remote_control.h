@@ -152,6 +152,12 @@ class RemoteControl : public QObject
         void set_busy(const QVariantList &);
         void set_unconditional(const QVariantList &);
         void disable_all_forwards();
+        QVariantMap get_dnd();
+        QVariantMap get_incallfilter();
+        QVariantMap get_noanswer();
+        QVariantMap get_busy();
+        QVariantMap get_unconditional();
+        QVariantMap get_disable_all_forwards();
         QWidget *_get_current_sheet();
 
         //Xlets

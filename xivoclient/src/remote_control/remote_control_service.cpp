@@ -40,12 +40,28 @@ void RemoteControl::set_dnd(const QVariantList & args)
     xlet->findChild<QCheckBox*>(QString("dnd_checkbox"))->setChecked(enabled);
 }
 
+QVariantMap RemoteControl::get_dnd()
+{
+    QVariantMap args;
+    ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
+    args["enabled"] = xlet->findChild<QCheckBox*>(QString("dnd_checkbox"))->isChecked();
+    return args;
+}
+
 void RemoteControl::set_incallfilter(const QVariantList & args)
 {
     bool enabled = args[0].toBool();
 
     ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
     xlet->findChild<QCheckBox*>(QString("call_filtering_checkbox"))->setChecked(enabled);
+}
+
+QVariantMap RemoteControl::get_incallfilter()
+{
+    QVariantMap args;
+    ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
+    args["enabled"] = xlet->findChild<QCheckBox*>(QString("call_filtering_checkbox"))->isChecked();
+    return args;
 }
 
 void RemoteControl::set_noanswer(const QVariantList & args)
@@ -61,6 +77,15 @@ void RemoteControl::set_noanswer(const QVariantList & args)
     xlet->findChild<QCheckBox*>(QString("fwdna_checkbox"))->setChecked(enabled);
 }
 
+QVariantMap RemoteControl::get_noanswer()
+{
+    QVariantMap args;
+    ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
+    args["enabled"] = xlet->findChild<QCheckBox*>(QString("fwdna_checkbox"))->isChecked();
+    args["destination"] = xlet->findChild<QLineEdit*>(QString("fwdna_input"))->text();
+    return args;
+}
+
 void RemoteControl::set_busy(const QVariantList & args)
 {
     bool enabled = args[0].toBool();
@@ -72,6 +97,15 @@ void RemoteControl::set_busy(const QVariantList & args)
     }
     xlet->findChild<QRadioButton*>(QString("fwdsimple_radiobutton"))->setChecked(enabled);
     xlet->findChild<QCheckBox*>(QString("fwdbusy_checkbox"))->setChecked(enabled);
+}
+
+QVariantMap RemoteControl::get_busy()
+{
+    QVariantMap args;
+    ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
+    args["enabled"] = xlet->findChild<QCheckBox*>(QString("fwdbusy_checkbox"))->isChecked();
+    args["destination"] = xlet->findChild<QLineEdit*>(QString("fwdbusy_input"))->text();
+    return args;
 }
 
 void RemoteControl::set_unconditional(const QVariantList & args)
@@ -86,10 +120,27 @@ void RemoteControl::set_unconditional(const QVariantList & args)
     xlet->findChild<QRadioButton*>(QString("fwdunc_radiobutton"))->setChecked(enabled);
 }
 
+QVariantMap RemoteControl::get_unconditional()
+{
+    QVariantMap args;
+    ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
+    args["enabled"] = xlet->findChild<QRadioButton*>(QString("fwdunc_radiobutton"))->isChecked();
+    args["destination"] = xlet->findChild<QLineEdit*>(QString("fwdunc_input"))->text();
+    return args;
+}
+
 void RemoteControl::disable_all_forwards()
 {
     ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
     xlet->findChild<QRadioButton*>(QString("nofwd_radiobutton"))->setChecked(true);
+}
+
+QVariantMap RemoteControl::get_disable_all_forwards()
+{
+    QVariantMap args;
+    ServicesPanel *xlet = this->get_xlet<ServicesPanel>("features");
+    args["enabled"] = xlet->findChild<QRadioButton*>(QString("nofwd_radiobutton"))->isChecked();
+    return args;
 }
 
 #endif
