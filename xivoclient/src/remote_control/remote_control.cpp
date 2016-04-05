@@ -154,6 +154,18 @@ void RemoteControl::processCommands()
             RC_EXECUTE_WITH_RETURN(get_main_window_infos);
             RC_EXECUTE_WITH_RETURN(is_logged);
             RC_EXECUTE_ARG(dial);
+            RC_EXECUTE_ARG(set_dnd);
+            RC_EXECUTE_ARG(set_incallfilter);
+            RC_EXECUTE_ARG(set_noanswer);
+            RC_EXECUTE_ARG(set_busy);
+            RC_EXECUTE_ARG(set_unconditional);
+            RC_EXECUTE(disable_all_forwards);
+            RC_EXECUTE_WITH_RETURN(get_dnd);
+            RC_EXECUTE_WITH_RETURN(get_incallfilter);
+            RC_EXECUTE_WITH_RETURN(get_noanswer);
+            RC_EXECUTE_WITH_RETURN(get_busy);
+            RC_EXECUTE_WITH_RETURN(get_unconditional);
+            RC_EXECUTE_WITH_RETURN(get_disable_all_forwards);
 
             if (this->m_no_error == false) {
                 this->sendResponse(TEST_FAILED, command.action, "", return_value);
