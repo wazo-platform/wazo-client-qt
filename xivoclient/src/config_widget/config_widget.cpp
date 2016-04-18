@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -94,11 +94,11 @@ void ConfigWidget::load_values()
     this->ui.language->addItem(tr("English"), QString("en_US"));
     this->ui.language->addItem(tr("French"), QString("fr_FR"));
     this->ui.language->addItem(tr("Italian"), QString("it_IT"));
+    this->ui.language->addItem(tr("Portuguese"), QString("pt_BR"));
     this->ui.language->addItem(tr("Spanish (Chile)"), QString("es_CL"));
     this->ui.language->addItem(tr("German") + QString(" (%1)").arg(tr("incomplete")), QString("de_DE"));
     this->ui.language->addItem(tr("Hungarian") + QString(" (%1)").arg(tr("incomplete")), QString("hu_HU"));
     this->ui.language->addItem(tr("Japanese") + QString(" (%1)").arg(tr("incomplete")), QString("ja_JP"));
-    this->ui.language->addItem(tr("Portuguese") + QString(" (%1)").arg(tr("incomplete")), QString("pt_BR"));
     this->ui.language->addItem(tr("Spanish") + QString(" (%1)").arg(tr("incomplete")), QString("es_ES"));
     for (int i = 0; i < this->ui.language->count(); i++) {
         if (this->m_config["forcelocale"].toString() == this->ui.language->itemData(i))
