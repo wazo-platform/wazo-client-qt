@@ -6,17 +6,17 @@
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="42"/>
         <source>Conference</source>
-        <translation type="unfinished">Conferencia</translation>
+        <translation>Conferência</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="50"/>
         <source>Room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de salas</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference.cpp" line="145"/>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="40"/>
         <source>Member count</source>
-        <translation>Membro numero</translation>
+        <translation>Contagem de membro</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="41"/>
@@ -54,12 +54,12 @@
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="109"/>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Não</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="137"/>
         <source>Not started</source>
-        <translation type="unfinished"></translation>
+        <translation>Não iniciado</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference_list_model.cpp" line="139"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../src/xlets/conference/conference_room_model.cpp" line="43"/>
         <source>Number</source>
-        <translation>Numero</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference_room_model.cpp" line="44"/>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../src/xlets/conference/conference_room_model.cpp" line="158"/>
         <source>Mute/UnMute</source>
-        <translation type="unfinished"></translation>
+        <translation>Silêncio/Falar</translation>
     </message>
     <message>
         <location filename="../src/xlets/conference/conference_room_model.cpp" line="174"/>
@@ -100,7 +100,7 @@
     <message>
         <location filename="../src/xlets/conference/conference_widget.ui" line="54"/>
         <source>Conference</source>
-        <translation>Conferencia</translation>
+        <translation>Conferência</translation>
     </message>
 </context>
 </TS>

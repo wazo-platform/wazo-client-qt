@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="43"/>
         <source>N/A</source>
-        <translation type="unfinished">N/A</translation>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -30,12 +30,12 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="111"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 and %5</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; (%2@%3) : %4 e %5</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_header.cpp" line="123"/>
         <source>No selected queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Fila não selecionada</translation>
     </message>
 </context>
 <context>
@@ -44,97 +44,97 @@
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="59"/>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="60"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="61"/>
         <source>Number</source>
-        <translation>Numero</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="62"/>
         <source>Phone number of the queue</source>
-        <translation type="unfinished">Numero telefônico da fila</translation>
+        <translation>Número de telefone da fila</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="63"/>
         <source>Firstname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="64"/>
         <source>Queue member&apos;s firstname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome dos membros da fila</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="65"/>
         <source>Lastname</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobrenome</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="66"/>
         <source>Queue member&apos;s lastname</source>
-        <translation type="unfinished"></translation>
+        <translation>sobrenome dos membros da fila</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="67"/>
         <source>Logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectado</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="68"/>
         <source>Queue member&apos;s login status</source>
-        <translation type="unfinished"></translation>
+        <translation>Estado de conexão dos membros da fila</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="69"/>
         <source>Paused</source>
-        <translation type="unfinished">Pausado</translation>
+        <translation>Pausado</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="70"/>
         <source>Queue member&apos;s pause status</source>
-        <translation type="unfinished"></translation>
+        <translation>Estado de pausa dos membros da fila</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="71"/>
         <source>Answered calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamadas atendidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="72"/>
         <source>Number of answered calls</source>
-        <translation type="unfinished">Numero de ligações atendidas</translation>
+        <translation>Núm de chamadas atendidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="73"/>
         <source>Last call</source>
-        <translation type="unfinished"></translation>
+        <translation>Última chamada</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="74"/>
         <source>Hangup date of the last answered call</source>
-        <translation type="unfinished"></translation>
+        <translation>Data de desligamento da última chamda</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="75"/>
         <source>Penalty</source>
-        <translation type="unfinished"></translation>
+        <translation>Penalidade</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="76"/>
         <source>Queue member&apos;s penalty</source>
-        <translation type="unfinished"></translation>
+        <translation>Penalidade dos membro da fila</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="196"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Sempre</translation>
     </message>
     <message>
         <location filename="../src/xlets/queue_members/queue_members_model.cpp" line="198"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Nunca</translation>
     </message>
 </context>
 <context>
@@ -142,7 +142,7 @@
     <message>
         <location filename="../src/xlets/queue_members/queue_members.cpp" line="47"/>
         <source>Queue Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Membros da Fila</translation>
     </message>
 </context>
 </TS>

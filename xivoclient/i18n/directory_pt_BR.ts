@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/directory/directory.cpp" line="44"/>
         <source>Directory</source>
-        <translation type="unfinished">Diretório</translation>
+        <translation>Diretório</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulário</translation>
     </message>
 </context>
 </TS>

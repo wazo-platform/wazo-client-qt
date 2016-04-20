@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="49"/>
         <source>Agent Details</source>
-        <translation>Detalhes do Agente</translation>
+        <translation>Detalhes do Atendente</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="56"/>
@@ -27,12 +27,12 @@
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="62"/>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="207"/>
         <source>Login</source>
-        <translation>Login</translation>
+        <translation>Conectar</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="197"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>ligado &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>no &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="203"/>
@@ -42,42 +42,42 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="227"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem uso</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation>Em uso</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>Int. Incoming </source>
-        <translation type="unfinished"></translation>
+        <translation>Int. entrando</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. entrando</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. Saindo</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. Saindo</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
         <source>Unlogged</source>
-        <translation type="unfinished"></translation>
+        <translation>Não conectado</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="255"/>
         <source>%1 since %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 desde %2</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="346"/>

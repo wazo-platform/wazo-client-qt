@@ -16,72 +16,72 @@
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="98"/>
         <source>Login</source>
-        <translation type="unfinished">Login</translation>
+        <translation>Entrar</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="102"/>
         <source>Logout</source>
-        <translation type="unfinished">Desconectar</translation>
+        <translation>Sair</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="110"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pausa</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="114"/>
         <source>Unpause</source>
-        <translation type="unfinished"></translation>
+        <translation>Tirar da pausa</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="377"/>
         <source>DND</source>
-        <translation type="unfinished"></translation>
+        <translation>DND</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="378"/>
         <source>Do Not Disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>Não Pertube</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="380"/>
         <source>UNC %1</source>
-        <translation type="unfinished"></translation>
+        <translation>UNC %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="381"/>
         <source>Unconditional Forward towards %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Encaminhamento incondicional para</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="383"/>
         <source>BUSY %1</source>
-        <translation type="unfinished"></translation>
+        <translation>OCUPADO %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="384"/>
         <source>Busy Forward towards %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Encaminhar ocupado em direção a %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="386"/>
         <source>FNA %1</source>
-        <translation type="unfinished"></translation>
+        <translation>FNA %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="387"/>
         <source>Non-Answer Forward towards %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Encaminhar não-Respondidas em direção a %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="389"/>
         <source>CALL FILTER</source>
-        <translation type="unfinished"></translation>
+        <translation>FILTRAR CHAMADAS</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.cpp" line="392"/>
         <source>AVAILABLE</source>
-        <translation type="unfinished"></translation>
+        <translation>DISPONÍVEL</translation>
     </message>
 </context>
 <context>
@@ -89,17 +89,17 @@
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="167"/>
         <source>VOICEMAIL</source>
-        <translation type="unfinished"></translation>
+        <translation>VOICEMAIL</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="205"/>
         <source>Call your voicemail</source>
-        <translation type="unfinished"></translation>
+        <translation>chamar seu voicemail</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="364"/>
         <source>call</source>
-        <translation type="unfinished"></translation>
+        <translation>chamada</translation>
     </message>
 </context>
 </TS>

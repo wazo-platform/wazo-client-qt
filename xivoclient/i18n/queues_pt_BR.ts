@@ -36,12 +36,12 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="48"/>
         <source>EWT</source>
-        <translation type="unfinished"></translation>
+        <translation>TEE</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="49"/>
         <source>Estimated Waiting Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo Estimado de Espera</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="50"/>
@@ -56,32 +56,32 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="52"/>
         <source>Logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectado</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="53"/>
         <source>Number of agents logged in</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de atendentes conectados</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="54"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponível</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="55"/>
         <source>Number of agents ready to take a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de atendentes prontos para atender uma chamada</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="56"/>
         <source>Talking</source>
-        <translation type="unfinished"></translation>
+        <translation>Falando</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="57"/>
         <source>Number of agents talking</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de atendentes falando</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="58"/>
@@ -116,12 +116,12 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="64"/>
         <source>Mean Waiting Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo médio de espera</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>Mean waiting time before getting an agent</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo médio de espera antes de ter um atendente</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="67"/>
         <source>Maximum waiting time before getting an agent</source>
-        <translation>Tempo máximo de espera até o agente atender</translation>
+        <translation>Tempo máximo de espera até ter um atendente</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="68"/>
@@ -164,7 +164,7 @@
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="54"/>
         <source>Queues</source>
-        <translation type="unfinished">Filas</translation>
+        <translation>Filas</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="120"/>
@@ -183,7 +183,8 @@
         <location filename="../src/xlets/queues/queues.cpp" line="158"/>
         <source>Choose which queue should be displayed, and the
 queues parameters for the Stats on slice:</source>
-        <translation type="unfinished"></translation>
+        <translation>Escolher que fila deve ser mostrada, e os
+parâmetros para a estatística no corte:</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="169"/>
@@ -203,7 +204,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="184"/>
         <source>This is the threshold in seconds to consider that the answer to a call was too late to be accounted as an answer of quality.</source>
-        <translation type="unfinished"></translation>
+        <translation>Este é o limite em segundos para considerar que a resposta a uma chamada seja tardia demais para ser contabilizado como um atendimento de qualidade.</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="188"/>
@@ -213,7 +214,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/queues/queues.cpp" line="189"/>
         <source>The window is the period of time used to compute the statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>A janela é o período de tempo utilizado para calcular as estatísticas</translation>
     </message>
 </context>
 </TS>

@@ -11,22 +11,22 @@
     <message>
         <location filename="../src/xlets/history/history.cpp" line="52"/>
         <source>All calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Todas as chamadas</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="53"/>
         <source>Sent calls</source>
-        <translation type="unfinished"></translation>
+        <translation>chamadas feitas</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="54"/>
         <source>Received calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamadas recebidas</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history.cpp" line="55"/>
         <source>Missed calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamadas perdidas</translation>
     </message>
 </context>
 <context>
@@ -54,17 +54,17 @@
     <message>
         <location filename="../src/xlets/history/history_model.cpp" line="160"/>
         <source>%1 hr %2 min %3 s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hr %2 min %3 s</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history_model.cpp" line="162"/>
         <source>%1 min %2 s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 min %2 s</translation>
     </message>
     <message>
         <location filename="../src/xlets/history/history_model.cpp" line="164"/>
         <source>%1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 s</translation>
     </message>
 </context>
 <context>

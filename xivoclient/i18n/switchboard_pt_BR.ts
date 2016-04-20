@@ -6,22 +6,22 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="50"/>
         <source>Attended T</source>
-        <translation type="unfinished"></translation>
+        <translation>T Atendida</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="51"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="52"/>
         <source>Complete T</source>
-        <translation type="unfinished"></translation>
+        <translation>Completado T</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="53"/>
         <source>Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>Desligado</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
@@ -34,77 +34,77 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>
         <source>Current Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada atual</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="82"/>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="98"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation>Responda</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="147"/>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamar</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="183"/>
         <source>Blind Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Transferência cega</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="186"/>
         <source>Blind T</source>
-        <translation type="unfinished"></translation>
+        <translation>T Cega</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="189"/>
         <source>F4</source>
-        <translation type="unfinished"></translation>
+        <translation>F4</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="222"/>
         <source>Attended Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Transferência Atendida</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="225"/>
         <source>Attended T</source>
-        <translation type="unfinished"></translation>
+        <translation>T Atendida</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="228"/>
         <source>F5</source>
-        <translation type="unfinished"></translation>
+        <translation>F5</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="261"/>
         <source>Hold</source>
-        <translation type="unfinished"></translation>
+        <translation>Suspensa</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="264"/>
         <source>F7</source>
-        <translation type="unfinished"></translation>
+        <translation>F7</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="301"/>
         <source>Hangup</source>
-        <translation type="unfinished"></translation>
+        <translation>Desligar</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="304"/>
         <source>F8</source>
-        <translation type="unfinished"></translation>
+        <translation>F8</translation>
     </message>
 </context>
 <context>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="51"/>
         <source>Switchboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Distribuição</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/xlets/switchboard/switchboard.cpp" line="323"/>
@@ -129,18 +129,18 @@
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="35"/>
         <source>Incoming Calls (F6)</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamadas entrantes (F6)</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="62"/>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="132"/>
         <source>0 call</source>
-        <translation type="unfinished"></translation>
+        <translation>0 chamadas</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/switchboard.ui" line="105"/>
         <source>Waiting Calls (F9)</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamadas em espera (F9)</translation>
     </message>
 </context>
 </TS>

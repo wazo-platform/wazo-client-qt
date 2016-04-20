@@ -16,22 +16,22 @@
     <message>
         <location filename="src/baseengine.cpp" line="766"/>
         <source>Maybe Asterisk is down.</source>
-        <translation>Talvez o servidor Asterisk esteja indisponível</translation>
+        <translation>Talvez o Asterisk esteja indisponível</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1103"/>
         <source>Failed to start a secure connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falhou ao iniciar uma conexão segura.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1104"/>
         <source>Do you want to disable secure connections?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deseja desabilitar as conexões seguras?</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1128"/>
         <source>Server has sent an Error.</source>
-        <translation>O servidor respondeu com um erro.</translation>
+        <translation>O servidor enviou um erro.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1134"/>
@@ -46,7 +46,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1142"/>
         <source>You have no profile defined.</source>
-        <translation>Você não possui uma conta definida.</translation>
+        <translation>Você não possui um perfil definido.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1146"/>
@@ -62,12 +62,12 @@
     <message>
         <location filename="src/baseengine.cpp" line="1156"/>
         <source>Socket timeout (~ 60 s) : you probably attempted to reach, via a gateway, an IP address %1 that does not exist.</source>
-        <translation>Tempo de conexão excedido (~60s): provavelmente o endereço IP %1 não existe.</translation>
+        <translation>Tempo de conexão excedido (~60s): provavelmente tentou alcançar, cia um gateway, um endereço IP %1 que não existe.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1161"/>
         <source>There seems to be a machine running on this IP address %1, and either no CTI server is running, or your port %2 is wrong.</source>
-        <translation>Existe um conflito com o IP %1, o servidor CTI não está sendo executado ou a porta %2 não está correta.</translation>
+        <translation>Parece existir uma máquina rodando com o IP %1, o servidor CTI não está sendo executado ou a porta %2 não está correta.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1166"/>
@@ -76,119 +76,122 @@
 - this IP address is routed but there is no machine (~ 5 s timeout)
 - a cable has been unplugged on your LAN on the way to this IP address (~ 30 s timeout).</source>
         <translation>Um erro ocorreu na rede ao tentar utilizar o endereço %1:
-- Não existe rota definida parar acessar este endereço IP(~ no timeout)
+- Não existe rota definida parar acessar este endereço IP (~ no timeout)
 - O endereço IP está sendo roteado mas não existe máquina (˜5s timeout)
 - O cabo está desconectado na LAN (~30s timetout)</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1173"/>
         <source>It seems that the server with IP address %1 does not accept encryption on its port %2. Please change either your port or your encryption setting.</source>
-        <translation>O servidor com o endereço %1 não aceita criptografia na porta %2. Modifique a porta ou a configuração de criptografia.</translation>
+        <translation>Parece que o servidor com o endereço %1 não aceita criptografia na porta %2. Modifique a porta ou a configuração de criptografia.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1178"/>
         <source>An unknown socket error has occured while attempting to join the IP address:port %1:%2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Um erro de socket desconhecido ocorreu enquanto tentava juntar-se ao endereço IP:porta %1:%2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1183"/>
         <source>An unmanaged (number %1) socket error has occured while attempting to join the IP address:port %1:%2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Um erro de socket não manipulável (número %1) ocorreu enquanto tentava se juntar ao IP:porta %1:%2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1188"/>
         <source>The XiVO CTI server on %1:%2 has just closed the connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>O servidor XiVO CTI em %1:%2 fechou a conexão.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1192"/>
         <source>The XiVO CTI server on %1:%2 has just been stopped.</source>
-        <translation type="unfinished"></translation>
+        <translation>O servidor XiVO CTI em %1:%2 parou.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1195"/>
         <source>The XiVO CTI server on %1:%2 has just been reloaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>O servidor XiVO CTI em %1:%2 foi recarregado.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1199"/>
         <source>You are already connected to %1:%2.</source>
         <oldsource>You are already connected from %1:%2.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Você já está conectado em %1:%2</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1201"/>
         <source>No capability allowed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem capacidade permitida.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1204"/>
         <source>Max number (%1) of XiVO Clients already reached.</source>
-        <translation type="unfinished"></translation>
+        <translation>O número máximo (%1) de clientes XIVO foi alcançado.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1206"/>
         <source>Missing Argument(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Falta(m) argumento(s)</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1211"/>
         <source>Your client&apos;s protocol version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>A versão do protocolo de seu cliente (%1)
+não é a mesma do servidor (%2).</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1219"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
-        <translation type="unfinished"></translation>
+        <translation>A versão de seu servidor (%1) é muito antiga para este cliente.
+Favor fazer upgrade para %2 pelo menos.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1224"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
-        <translation type="unfinished"></translation>
+        <translation>A versão de seu servidor (%1) é muito antiga para este cliente.
+Favor fazer upgrade.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1228"/>
         <source>You were disconnected by the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Você foi desconectado pelo servidor.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
         <source>You were forced to disconnect by the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Você foi forçado a desconectar pelo servidor.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1232"/>
         <source>Could not log agent: invalid extension.</source>
         <oldsource>Invalid extension number</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Número de ramal inválido</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1234"/>
         <source>Could not log agent: extension already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível iniciar sessão do atendente: ramal já em uso.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1237"/>
         <source>Unreachable number: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Número inalcançável: %1</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1239"/>
         <source>The authentication server could not fulfill your request.</source>
-        <translation type="unfinished"></translation>
+        <translation>O servidor de autenticação não pôde satisfazer o seu pedido.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1248"/>
         <source>ERROR</source>
-        <translation type="unfinished"></translation>
+        <translation>ERRO</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1404"/>
         <source>Attempting to reconnect to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Tentando reconectar ao servidor</translation>
     </message>
 </context>
 <context>
@@ -196,12 +199,12 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="86"/>
         <source>Agent</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendente</translation>
     </message>
     <message>
         <location filename="src/storage/queuememberinfo.cpp" line="86"/>
         <source>Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefone</translation>
     </message>
 </context>
 <context>
@@ -209,62 +212,62 @@ Please upgrade it.</source>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="51"/>
         <source>Dynamic membership</source>
-        <translation type="unfinished"></translation>
+        <translation>Associação dinâmica</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="55"/>
         <source>Static/RT membership</source>
-        <translation type="unfinished"></translation>
+        <translation>Associação Estática/RT</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="67"/>
         <source>Agent not in Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendente não está na fila</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="71"/>
         <location filename="src/storage/queue_agent_status.cpp" line="83"/>
         <source>Agent in Queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendente na fila</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="72"/>
         <location filename="src/storage/queue_agent_status.cpp" line="76"/>
         <source>Logged</source>
         <oldsource>Logged in</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Conectado</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="75"/>
         <source>Agent Called or Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendente Chamado ou Ocupado</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="79"/>
         <source>Agent in Queue but Invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendente na fila, mas inválido</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="84"/>
         <source>Unlogged</source>
         <oldsource>Logged out</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Desconectado</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="92"/>
         <source>Unpaused</source>
         <oldsource>Not paused</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>não pausado</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="96"/>
         <source>Paused</source>
-        <translation type="unfinished">Pausado</translation>
+        <translation>Pausado</translation>
     </message>
     <message>
         <location filename="src/storage/queue_agent_status.cpp" line="100"/>
         <source>Not relevant</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é relevante</translation>
     </message>
 </context>
 </TS>

@@ -30,11 +30,15 @@
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="97"/>
-        <source>Spanish (Chile)</source>
+        <source>Portuguese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <source>Spanish (Chile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/config_widget/config_widget.cpp" line="99"/>
         <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <location filename="../src/config_widget/config_widget.cpp" line="101"/>
@@ -43,24 +47,19 @@
         <translation>Incompleto</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
         <source>German</source>
         <translation>Alemán</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <source>Hungarian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
         <source>Japanese</source>
         <translation>Japones</translation>
-    </message>
-    <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
-        <source>Portuguese</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.cpp" line="102"/>
