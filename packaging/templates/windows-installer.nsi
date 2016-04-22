@@ -9,6 +9,7 @@ SetCompressor /FINAL /SOLID lzma
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP xivo.bmp
 !define MUI_HEADERIMAGE_UNBITMAP xivo.bmp
+!include nsProcess.nsh
 
 Name "XiVO Client ${XC_VERSION}"
 OutFile "xivoclient-${XC_VERSION}-x86.exe"
@@ -73,6 +74,7 @@ Function .onInit
   !insertmacro MULTIUSER_INIT
   !insertmacro MUI_LANGDLL_DISPLAY
 
+  ${nsProcess::KillProcess} "xivoclient.exe" $R0
 FunctionEnd
 
 !macro RegisterProtocolSection EXT
@@ -228,4 +230,4 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Computer Telephony Integration
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Avencall"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "XiVO client installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${XC_VERSION}-${GIT_HASH}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2007-2015 Avencall"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright (C) 2007-2016 Avencall
