@@ -205,6 +205,10 @@ void BaseEngine::loadSettings()
             m_settings->setValue("backup_server_encryption", true);
         }
 
+        if (settingsversion < "16.06") {
+            m_settings->setValue("password", this->encodePassword(m_settings->value("password").toString()));
+        }
+
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.io").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", true).toBool();
@@ -213,7 +217,7 @@ void BaseEngine::loadSettings()
         m_config["cti_backup_encrypt"] = m_settings->value("backup_server_encryption", true).toBool();
 
         setUserLogin (m_settings->value("userid").toString(), m_settings->value("useridopt").toString());
-        m_config["password"] = m_settings->value("password").toString();
+        m_config["password"] = this->decodePassword(m_settings->value("password").toByteArray());
         // keeppass and showagselect are booleans in memory, integers (Qt::checkState) in qsettings/config file (due to compatibility)
         m_config["keeppass"] = (m_settings->value("keeppass", Qt::Unchecked).toUInt() == Qt::Checked);
         m_config["showagselect"] = (m_settings->value("showagselect", Qt::Checked).toUInt() == Qt::Checked);
@@ -333,7 +337,7 @@ void BaseEngine::saveSettings()
         m_settings->setValue("remote_directory.sort_order", m_config["remote_directory_sort_order"]);
 
         if (m_config["keeppass"].toBool())
-            m_settings->setValue("password", m_config["password"].toString());
+            m_settings->setValue("password", this->encodePassword(m_config["password"].toString()));
         else
             m_settings->remove("password");
 
@@ -1701,4 +1705,14 @@ void BaseEngine::urlAuto(const QString & value)
         QDesktopServices::openUrl(url);
 #endif
     }
+}
+
+QByteArray BaseEngine::encodePassword(const QString &password)
+{
+    return password.toUtf8().toBase64(QByteArray::OmitTrailingEquals);
+}
+
+QString BaseEngine::decodePassword(const QByteArray &password)
+{
+    return QString::fromUtf8(QByteArray::fromBase64(password));
 }
