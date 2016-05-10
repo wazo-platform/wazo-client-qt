@@ -308,11 +308,10 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void clearChannelList();
         void deleteTranslators();
 
-        /*! \brief Retrieve the initial presence
-         *
-         * Returns the state for a new connection to the cti server
-         */
         QString getInitialPresence() const;
+
+        QByteArray encodePassword(const QString &password);
+        QString decodePassword(const QByteArray &password);
 
         // Class Members
         // Parameters given by the User at Login time
