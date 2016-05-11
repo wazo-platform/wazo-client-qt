@@ -196,6 +196,16 @@ void BaseEngine::loadSettings()
     else
         m_profilename_read = "engine-" + m_config["profilename"].toString();
 
+    // passwords in XiVO <= 16.05 were stored in clear text in the config file
+    if (settingsversion <= "16.05") {
+        foreach (const QString &key, m_settings->allKeys()) {
+            if (key.endsWith("/password")) {
+                QString password = m_settings->value(key).toString();
+                m_settings->setValue(key, encodePassword(password));
+            }
+        }
+    }
+
     m_settings->beginGroup(m_profilename_read);
     {
         // In XiVO 16.02 starttls has been enabled by default
@@ -203,10 +213,6 @@ void BaseEngine::loadSettings()
             qDebug() << "enabling starttls";
             m_settings->setValue("encryption", true);
             m_settings->setValue("backup_server_encryption", true);
-        }
-
-        if (settingsversion < "16.06") {
-            m_settings->setValue("password", this->encodePassword(m_settings->value("password").toString()));
         }
 
         m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.io").toString();
