@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2015 Avencall
+ * Copyright (C) 2013-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -408,7 +408,7 @@ void MainWindow::about()
                        tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
                        tr("(Application Launched on : %1)").arg(this->m_launch_date_time.toString()) + "<br>" +
                        tr("(Config File Location : %1)").arg(b_engine->getSettings()->fileName()) + "<hr>" +
-                       "Copyright (C) 2007-2015 <a href=http://www.avencall.com><b>Avencall</b></a>"
+                       "Copyright (C) 2007-2016 <a href=http://www.avencall.com><b>Avencall</b></a>"
                        "<br>"
                        "<b>" + tr("E-mail : ") + "</b><a href=mailto:contact@avencall.com>contact@avencall.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
