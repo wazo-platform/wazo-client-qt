@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -84,9 +84,10 @@ class PeopleEntryModel : public AbstractTableModel
         void clearFields();
         void setAgentStatusFromAgentId(const RelationID &id, const QString &status);
         void setEndpointStatusFromEndpointId(const RelationID &id, int status);
-        void setUserStatusFromUserId(const RelationID &id, const QString &status);
+        void setUserStatusFromUserId(const QPair<QString, QString> &id, const QString &status);
         void setFavoriteStatusFromSourceId(const RelationSourceID &id, bool status);
         QVariantList newIdAsList(const QString &xivo_uuid, int id) const;
+        QVariantList newIdAsList(const QString &xivo_uuid, const QString &user_uuid) const;
         QList<int> indexesFromType(ColumnType type) const;
 
         QString headerText(int column) const;
