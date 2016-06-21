@@ -240,11 +240,6 @@ QVariantList PeopleEntryModel::newIdAsList(const QString &xivo_uuid, int id) con
     return QVariantList() << xivo_uuid << id;
 }
 
-QVariantList PeopleEntryModel::newIdAsList(const QString &xivo_uuid, const QString &uuid) const
-{
-    return QVariantList() << xivo_uuid << uuid;
-}
-
 QVariant PeopleEntryModel::dataSortFilter(const PeopleEntry &entry, int column) const
 {
     ColumnType column_type = this->headerType(column);
@@ -331,12 +326,11 @@ void PeopleEntryModel::setEndpointStatusFromEndpointId(const RelationID &id, int
     }
 }
 
-void PeopleEntryModel::setUserStatusFromUserId(const QPair<QString, QString> &id, const QString &status)
+void PeopleEntryModel::setUserStatusFromUserId(const RelationID &id, const QString &status)
 {
     for (int i = 0; i < m_people_entries.size(); ++i) {
         PeopleEntry &entry = m_people_entries[i];
-        QPair<QString, QString> current(entry.xivoUuid(), entry.userUuid());
-        if (current == id) {
+        if (entry.uniqueUserId() == id) {
             entry.setUserStatus(status);
             this->refreshEntry(i);
         }
@@ -376,8 +370,8 @@ void PeopleEntryModel::parseEndpointStatusUpdate(const QVariantMap &result)
 
 void PeopleEntryModel::parseUserStatusUpdate(const QVariantMap &result)
 {
-    QPair<QString, QString> id(result["data"].toMap()["xivo_uuid"].toString(),
-                               result["data"].toMap()["user_uuid"].toString());
+    RelationID id(result["data"].toMap()["xivo_uuid"].toString(),
+                  result["data"].toMap()["user_id"].toInt());
     const QString &new_status = result["data"].toMap()["status"].toString();
 
     this->setUserStatusFromUserId(id, new_status);
@@ -443,8 +437,8 @@ void PeopleEntryModel::parsePeopleSearchResult(const QVariantMap &result)
         if (entry.endpointId() != 0) {
             endpoint_ids.push_back(newIdAsList(xivo_id, entry.endpointId()));
         }
-        if (entry.userUuid() != "") {
-            user_ids.push_back(newIdAsList(xivo_id, entry.userUuid()));
+        if (entry.userId() != 0) {
+            user_ids.push_back(newIdAsList(xivo_id, entry.userId()));
         }
 
         m_people_entries.append(entry);
