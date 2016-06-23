@@ -578,8 +578,8 @@ const QString & BaseEngine::getCapaApplication() const
  */
 void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
 {
-    if (m_availstate != newstate && !comesFromServer) {
-        m_availstate = newstate;
+    m_availstate = newstate;
+    if (!comesFromServer) {
         changeState();
     }
 }
