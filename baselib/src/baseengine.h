@@ -351,9 +351,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         QUdpSocket * m_udpsheetsocket;  //!< UDP connection for Sheet sockets
         int m_timerid_keepalive;        //!< timer id for keep alive
         int m_timerid_tryreconnect;     //!< timer id for try to reconnect
-        int m_timerid_changestate;      //!< timer id for changing state automatically
-        QString m_changestate_oldstate; //!< old state when changing state automatically
-        QString m_changestate_newstate; //!< new state when changing state automatically
         int m_pendingkeepalivemsg;      //!< number of keepalivemsg sent without response
         QString m_osname;               //!< OS informations
 

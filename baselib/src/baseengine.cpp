@@ -101,7 +101,6 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
 {
     settings->setParent(this);
     m_timerid_keepalive = 0;
-    m_timerid_changestate = 0;
     m_timerid_tryreconnect = 0;
     setOSInfos(osInfo);
     m_settings = settings;
@@ -753,15 +752,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
         if (m_anylist.value("users").contains(id)) {
             QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
             QString stateid = state.value("stateid").toString();
-            QVariantMap changeme = m_config["guioptions.presence.autochangestate"].toMap();
-            if (changeme.count() && (id == m_xuserid)) {
-                if (changeme.contains(stateid)) {
-                    QVariantMap changemeconf = changeme[stateid].toMap();
-                    m_timerid_changestate = startTimer(changemeconf.value("delaymsec").toInt());
-                    m_changestate_newstate = changemeconf.value("newstate").toString();
-                    m_changestate_oldstate = stateid;
-                }
-            }
             UserInfo * ui = (UserInfo *) m_anylist.value("users").value(id);
             ui->setAvailState(stateid);
             if (id == m_xuserid) {
@@ -1415,11 +1405,6 @@ void BaseEngine::timerEvent(QTimerEvent *event)
         connect(m_ctiserversocket, SIGNAL(connected()),
                 this, SLOT(restoreAvailState()));
         start();
-    } else if (timerId == m_timerid_changestate) {
-        if (m_availstate == m_changestate_oldstate)
-            setAvailState(m_changestate_newstate, false);
-        killTimer(timerId);
-        m_timerid_changestate = 0;
     } else {
         qDebug() << "Removing unused timer:" << timerId;
         killTimer(timerId);
