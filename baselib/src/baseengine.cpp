@@ -140,6 +140,9 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     connect(this, SIGNAL(initialized()),
             this, SIGNAL(doneConnecting()));
 
+    connect(this, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updatePresence(const QString &)));
+
     if (m_config["autoconnect"].toBool())
         start();
     setupTranslation();
@@ -572,22 +575,21 @@ const QString & BaseEngine::getCapaApplication() const
     return m_appliname;
 }
 
-/*!
- * sets the availability state and call keepLoginAlive() if needed
- */
-void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
-{
-    m_availstate = newstate;
-    if (!comesFromServer) {
-        changeState();
-    }
-}
-
 void BaseEngine::restoreAvailState()
 {
-    changeState();
+    setPresence(m_availstate);
     disconnect(m_ctiserversocket, SIGNAL(connected()),
                this, SLOT(restoreAvailState()));
+}
+
+void BaseEngine::updatePresence(const QString &user_xid)
+{
+    if (m_xuserid == user_xid) {
+        const UserInfo *user = this->user(m_xuserid);
+        if (user) {
+            m_availstate = user->availstate();
+        }
+    }
 }
 
 /*! \brief send command to XiVO CTI server */
@@ -747,19 +749,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "faxsend") {
         if (datamap.contains("step"))
             qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
-    } else if (thisclass == "presence") {
-        QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
-        if (m_anylist.value("users").contains(id)) {
-            QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
-            QString stateid = state.value("stateid").toString();
-            UserInfo * ui = (UserInfo *) m_anylist.value("users").value(id);
-            ui->setAvailState(stateid);
-            if (id == m_xuserid) {
-                setAvailState(stateid, true);
-                emit updatePresence();
-            }
-        }
-
     } else if (thisclass == "featuresput") {
         QString featuresput_status = datamap.value("status").toString();
         if (featuresput_status != "OK") {
@@ -1008,16 +997,14 @@ void BaseEngine::handleGetlistUpdateStatus(
     }
 
     if (listname == "users") {
-        setAvailState(status["availstate"].toString(), true);
         emit updateUserStatus(xid);
     } else if (listname == "phones") {
         emit updatePhoneStatus(xid);
-    } else if (listname == "agents")
+    } else if (listname == "agents") {
         emit updateAgentStatus(xid);
-    else if (listname == "queues") {
+    } else if (listname == "queues") {
         emit updateQueueStatus(xid);
-    }
-    else if (listname == "voicemails")
+    } else if (listname == "voicemails")
         emit updateVoiceMailStatus(xid);
 }
 
@@ -1337,9 +1324,9 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
 
     if (toggle_presence_enabled) {
         if (m_config["checked_function.presence"].toBool()) {
-            setAvailState(__presence_on__, false);
+            setPresence(__presence_on__);
         } else {
-            setAvailState(__presence_off__, false);
+            setPresence(__presence_off__);
         }
     }
 
@@ -1525,14 +1512,9 @@ void BaseEngine::sendKeepAliveMsg()
 }
 
 /*! \brief send m_availstate to CTI server */
-void BaseEngine::changeState()
+void BaseEngine::setPresence(const QString &presence)
 {
-    QVariantMap command;
-    command["class"] = "availstate";
-    command["availstate"] = m_availstate;
-    command["ipbxid"] = m_ipbxid;
-    command["userid"] = m_userid;
-    sendJsonCommand(command);
+    sendJsonCommand(MessageFactory::setPresence(presence, m_ipbxid, m_userid));
 }
 
 QString BaseEngine::getInitialPresence() const

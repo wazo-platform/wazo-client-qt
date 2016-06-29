@@ -141,6 +141,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         bool isConnectionEncrypted() const;
 
+        void setPresence(const QString &new_presence);
+
     private:
 
         // private getters/setters
@@ -170,7 +172,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // public getters/setters slots
 
-        void setAvailState(const QString &, bool); //!< set m_availstate
         void restoreAvailState();
 
         // public operations slots
@@ -202,9 +203,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
     private slots:
         void keepLoginAlive();  //!< Keep session alive
 
-        void changeState();  //!< Change the presence status
-
-
         void authenticate();
         void authenticated();
         void ctiSocketReadyRead();
@@ -215,6 +213,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void popupError(const QString & message,
                         const QString & server_address = "",
                         const QString & server_port = "");
+
+        void updatePresence(const QString & user_xid);
 
     signals:
         void connectionFailed();
@@ -231,8 +231,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void emitTextMessage(const QString &);  //!< message to be displayed to the user.
 
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
-
-        void updatePresence();
 
         void fileReceived();                       //!< needed by agentdetails
 
