@@ -234,8 +234,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         void pasteToXlets(const QString &);  //!< Xlets intercept this signal from paste to dial
 
-        void updatePresence();
-
         void fileReceived();                       //!< needed by agentdetails
 
         void statusListen(const QString &, const QString &, const QString &);

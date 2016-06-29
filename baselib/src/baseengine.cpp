@@ -747,19 +747,6 @@ void BaseEngine::parseCommand(const QByteArray &raw)
     } else if (thisclass == "faxsend") {
         if (datamap.contains("step"))
             qDebug() << Q_FUNC_INFO << "step" << datamap.value("step").toString();
-    } else if (thisclass == "presence") {
-        QString id = datamap.value("astid").toString() + "/" + datamap.value("xivo_userid").toString();
-        if (m_anylist.value("users").contains(id)) {
-            QVariantMap state = datamap.value("capapresence").toMap().value("state").toMap();
-            QString stateid = state.value("stateid").toString();
-            UserInfo * ui = (UserInfo *) m_anylist.value("users").value(id);
-            ui->setAvailState(stateid);
-            if (id == m_xuserid) {
-                setAvailState(stateid, true);
-                emit updatePresence();
-            }
-        }
-
     } else if (thisclass == "featuresput") {
         QString featuresput_status = datamap.value("status").toString();
         if (featuresput_status != "OK") {
