@@ -183,8 +183,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
         void fetchIPBXList();
         void fetchLists();
 
-        void inviteConfRoom(const QString &);
-
         void meetmeAction(const QString &, const QString &);
 
         void pasteToDial(const QString &);

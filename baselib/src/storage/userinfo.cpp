@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -39,7 +39,6 @@ UserInfo::UserInfo(const QString & ipbxid,
     m_enableunc(false),
     m_enablerna(false),
     m_enablebusy(false),
-    m_enablexfer(false),
     m_availstate(__presence_off__)
 {
 }
@@ -61,7 +60,6 @@ bool UserInfo::updateConfig(const QVariantMap & prop)
     haschanged |= setIfChangeBool(prop, "enablerna", & m_enablerna);
     haschanged |= setIfChangeString(prop, "destrna", & m_destrna);
     haschanged |= setIfChangeBool(prop, "enablebusy", & m_enablebusy);
-    haschanged |= setIfChangeBool(prop, "enablexfer", & m_enablexfer);
     haschanged |= setIfChangeString(prop, "destbusy", & m_destbusy);
     haschanged |= setIfChangeString(prop, "firstname", & m_firstname);
     haschanged |= setIfChangeString(prop, "lastname", & m_lastname);

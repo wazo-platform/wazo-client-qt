@@ -1456,14 +1456,6 @@ void BaseEngine::fetchLists()
     }
 }
 
-void BaseEngine::inviteConfRoom(const QString &invitee)
-{
-    QVariantMap command;
-    command["class"] = "invite_confroom";
-    command["invitee"] = invitee;
-    sendJsonCommand(command);
-}
-
 BaseEngine::EngineState BaseEngine::state()
 {
     return m_state;

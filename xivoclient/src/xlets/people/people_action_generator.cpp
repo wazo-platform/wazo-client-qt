@@ -52,7 +52,7 @@ PeopleEntryModel *PeopleActionGenerator::model()
 
 bool PeopleActionGenerator::canTransfer() const
 {
-    return b_engine->getXivoClientUser()->enablexfer() && m_endpoint_status == IN_USE;
+    return m_endpoint_status == IN_USE;
 }
 
 void PeopleActionGenerator::parseCommand(const QVariantMap &command)
