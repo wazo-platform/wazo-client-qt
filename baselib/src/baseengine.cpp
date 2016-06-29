@@ -140,6 +140,9 @@ BaseEngine::BaseEngine(QSettings *settings, const QString &osInfo)
     connect(this, SIGNAL(initialized()),
             this, SIGNAL(doneConnecting()));
 
+    connect(this, SIGNAL(updateUserStatus(const QString &)),
+            this, SLOT(updatePresence(const QString &)));
+
     if (m_config["autoconnect"].toBool())
         start();
     setupTranslation();
@@ -590,6 +593,16 @@ void BaseEngine::restoreAvailState()
                this, SLOT(restoreAvailState()));
 }
 
+void BaseEngine::updatePresence(const QString &user_xid)
+{
+    if (m_xuserid == user_xid) {
+        const UserInfo *user = this->user(m_xuserid);
+        if (user) {
+            m_availstate = user->availstate();
+        }
+    }
+}
+
 /*! \brief send command to XiVO CTI server */
 void BaseEngine::sendCommand(const QByteArray &command)
 {
@@ -995,7 +1008,6 @@ void BaseEngine::handleGetlistUpdateStatus(
     }
 
     if (listname == "users") {
-        setAvailState(status["availstate"].toString(), true);
         emit updateUserStatus(xid);
     } else if (listname == "phones") {
         emit updatePhoneStatus(xid);

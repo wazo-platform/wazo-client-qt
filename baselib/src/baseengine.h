@@ -218,6 +218,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
                         const QString & server_address = "",
                         const QString & server_port = "");
 
+        void updatePresence(const QString & user_xid);
+
     signals:
         void connectionFailed();
         void settingsChanged();  //!< signal emitted when the setting are changed
