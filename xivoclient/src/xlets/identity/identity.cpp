@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -409,7 +409,7 @@ void IdentityDisplay::updateNameTooltip()
 
 void IdentityDisplay::setPresence(const QString &new_presence)
 {
-    b_engine->setAvailState(new_presence, false);
+    b_engine->setPresence(new_presence);
 }
 
 void IdentityDisplay::login()

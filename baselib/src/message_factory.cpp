@@ -405,3 +405,12 @@ QVariantMap MessageFactory::faxSend(const QString &filename, const QString &numb
     message["data"] = content.toBase64();
     return message;
 }
+
+QVariantMap MessageFactory::setPresence(const QString &new_presence, const QString &xivo_id, const QString &user_id)
+{
+    QVariantMap message = MessageFactory::baseMessage("availstate");
+    message["availstate"] = new_presence;
+    message["ipbxid"] = xivo_id;
+    message["userid"] = user_id;
+    return message;
+}

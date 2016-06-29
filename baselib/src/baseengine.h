@@ -141,6 +141,8 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         bool isConnectionEncrypted() const;
 
+        void setPresence(const QString &new_presence);
+
     private:
 
         // private getters/setters
@@ -170,7 +172,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
         // public getters/setters slots
 
-        void setAvailState(const QString &, bool); //!< set m_availstate
         void restoreAvailState();
 
         // public operations slots
@@ -203,9 +204,6 @@ class BASELIB_EXPORT BaseEngine: public QObject
 
     private slots:
         void keepLoginAlive();  //!< Keep session alive
-
-        void changeState();  //!< Change the presence status
-
 
         void authenticate();
         void authenticated();

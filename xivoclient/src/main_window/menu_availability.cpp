@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2013-2015 Avencall
+ * Copyright (C) 2013-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -178,7 +178,7 @@ void MenuAvailability::setEnabledMenus(const QString & state)
 void MenuAvailability::setAvailability()
 {
     QString availstate = sender()->property("availstate").toString();
-    b_engine->setAvailState(availstate, false);
+    b_engine->setPresence(availstate);
 }
 
 /*!

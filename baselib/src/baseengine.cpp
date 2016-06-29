@@ -575,20 +575,9 @@ const QString & BaseEngine::getCapaApplication() const
     return m_appliname;
 }
 
-/*!
- * sets the availability state and call keepLoginAlive() if needed
- */
-void BaseEngine::setAvailState(const QString & newstate, bool comesFromServer)
-{
-    m_availstate = newstate;
-    if (!comesFromServer) {
-        changeState();
-    }
-}
-
 void BaseEngine::restoreAvailState()
 {
-    changeState();
+    setPresence(m_availstate);
     disconnect(m_ctiserversocket, SIGNAL(connected()),
                this, SLOT(restoreAvailState()));
 }
@@ -1335,9 +1324,9 @@ void BaseEngine::setConfig(const QVariantMap & qvm)
 
     if (toggle_presence_enabled) {
         if (m_config["checked_function.presence"].toBool()) {
-            setAvailState(__presence_on__, false);
+            setPresence(__presence_on__);
         } else {
-            setAvailState(__presence_off__, false);
+            setPresence(__presence_off__);
         }
     }
 
@@ -1531,14 +1520,9 @@ void BaseEngine::sendKeepAliveMsg()
 }
 
 /*! \brief send m_availstate to CTI server */
-void BaseEngine::changeState()
+void BaseEngine::setPresence(const QString &presence)
 {
-    QVariantMap command;
-    command["class"] = "availstate";
-    command["availstate"] = m_availstate;
-    command["ipbxid"] = m_ipbxid;
-    command["userid"] = m_userid;
-    sendJsonCommand(command);
+    sendJsonCommand(MessageFactory::setPresence(presence, m_ipbxid, m_userid));
 }
 
 QString BaseEngine::getInitialPresence() const

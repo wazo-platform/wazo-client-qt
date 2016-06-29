@@ -90,6 +90,7 @@ class BASELIB_EXPORT MessageFactory
         static QVariantMap exportPersonalContactsCSV();
         static QVariantMap importPersonalContactsCSV(const QByteArray &csv_contacts);
         static QVariantMap faxSend(const QString &filename, const QString &number, const QByteArray &content);
+        static QVariantMap setPresence(const QString &presence, const QString &xivo_id, const QString &user_id);
     private:
         static QVariantMap baseMessage(const QString &class_name);
         static QVariantMap ipbxcommand(const QString &action_name);
