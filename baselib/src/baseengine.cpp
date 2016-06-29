@@ -999,12 +999,11 @@ void BaseEngine::handleGetlistUpdateStatus(
         emit updateUserStatus(xid);
     } else if (listname == "phones") {
         emit updatePhoneStatus(xid);
-    } else if (listname == "agents")
+    } else if (listname == "agents") {
         emit updateAgentStatus(xid);
-    else if (listname == "queues") {
+    } else if (listname == "queues") {
         emit updateQueueStatus(xid);
-    }
-    else if (listname == "voicemails")
+    } else if (listname == "voicemails")
         emit updateVoiceMailStatus(xid);
 }
 
