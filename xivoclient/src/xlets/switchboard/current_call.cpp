@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2012-2014 Avencall
+ * Copyright (C) 2012-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -54,6 +54,7 @@ CurrentCall::CurrentCall(QObject *parent)
       m_cancel_label(tr("Cancel"))
 {
     this->registerListener("current_call_attended_transfer_answered");
+    this->registerListener("current_call_attended_transfer_cancelled");
 
     QTimer * timer_display = new QTimer(this);
     connect(timer_display, SIGNAL(timeout()),
@@ -103,12 +104,19 @@ void CurrentCall::parseCommand(const QVariantMap &message)
     QString message_class = message["class"].toString();
     if (message_class == "current_call_attended_transfer_answered") {
         this->parseAttendedTransferAnswered(message);
+    } else if (message_class == "current_call_attended_transfer_cancelled") {
+        this->parseAttendedTransferCancelled(message);
     }
 }
 
 void CurrentCall::parseAttendedTransferAnswered(const QVariantMap & /*message*/)
 {
     this->transferAnsweredMode();
+}
+
+void CurrentCall::parseAttendedTransferCancelled(const QVariantMap & /*message*/)
+{
+    this->answeringMode();
 }
 
 void CurrentCall::updateCurrentCall(const QVariantList &calls)
