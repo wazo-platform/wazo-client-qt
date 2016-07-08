@@ -1224,6 +1224,14 @@ void BaseEngine::popupError(const QString & errorid,
         errormsg = tr("Unreachable number: %1").arg(extension);
     } else if (errorid == "xivo_auth_error") {
         errormsg = tr("The authentication server could not fulfill your request.");
+    } else if (errorid.startsWith("call_unauthorized")) {
+        errormsg = tr("You are not authorized to make calls");
+    } else if (errorid.startsWith("hangup_unauthorized")) {
+        errormsg = tr("You are not authorized to hangup calls");
+    } else if (errorid.startsWith("transfer_unauthorized")) {
+        errormsg = tr("You are not authorized to transfer calls");
+    } else if (errorid.startsWith("service_unavailable")) {
+        errormsg = tr("Service unavailable");
     }
 
     if (login_error) {
