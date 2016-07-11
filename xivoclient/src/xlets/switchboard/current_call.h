@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2012-2014 Avencall
+ * Copyright (C) 2012-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -83,6 +83,7 @@ class CurrentCall: public QObject, public IPBXListener
         void updateCallerID(const QString &name, const QString &number);
         void updateCall(const QVariantList &calls);
         void parseAttendedTransferAnswered(const QVariantMap &message);
+        void parseAttendedTransferCancelled(const QVariantMap &message);
         bool hasCurrentCall() const;
 
         void noCallsMode();
