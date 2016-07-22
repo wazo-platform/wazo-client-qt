@@ -37,7 +37,10 @@ QToolButton::menu-indicator {
     image: none;
 }</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -50,16 +53,150 @@ QToolButton::menu-indicator {
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <item row="0" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QWidget" name="profile" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>92</height>
+      </size>
+     </property>
+     <widget class="QLabel" name="avatar">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>15</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="identity.qrc">:/identity/images/john-doe.svg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="fold_button">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>30</y>
+        <width>30</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
+    top: 0px;
+    left: 0px;
+	border: 0px;
+    padding: 0px;
+    background-color: transparent;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="identity.qrc">
+        <normaloff>:/identity/images/hide.svg</normaloff>:/identity/images/hide.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="presence_button">
+      <property name="geometry">
+       <rect>
+        <x>87</x>
+        <y>54</y>
+        <width>24</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
+    top: 0px;
+    left: 0px;
+    background-color: transparent;
+	border: 0px;
+    padding: 0px;
+    selection-color: transparent;
+    color: transparent;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="popupMode">
+       <enum>QToolButton::InstantPopup</enum>
+      </property>
+      <property name="autoRaise">
+       <bool>true</bool>
+      </property>
+      <property name="arrowType">
+       <enum>Qt::NoArrow</enum>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
       <number>0</number>
      </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinimumSize</enum>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
      <item>
-      <widget class="QWidget" name="profil" native="true">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>22</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="name">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -68,78 +205,75 @@ QToolButton::menu-indicator {
        </property>
        <property name="minimumSize">
         <size>
-         <width>150</width>
-         <height>92</height>
+         <width>161</width>
+         <height>18</height>
         </size>
        </property>
-       <widget class="QLabel" name="avatar">
+       <property name="font">
+        <font>
+         <family>Dyno</family>
+         <pointsize>13</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: white;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="status_agent" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>161</width>
+         <height>55</height>
+        </size>
+       </property>
+       <widget class="QLabel" name="options">
         <property name="geometry">
          <rect>
-          <x>90</x>
-          <y>15</y>
-          <width>60</width>
-          <height>60</height>
+          <x>0</x>
+          <y>0</y>
+          <width>161</width>
+          <height>15</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Liberation Sans</family>
+          <pointsize>8</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #A09790</string>
         </property>
         <property name="text">
          <string/>
         </property>
-        <property name="pixmap">
-         <pixmap resource="identity.qrc">:/identity/images/john-doe.svg</pixmap>
-        </property>
-        <property name="scaledContents">
-         <bool>false</bool>
-        </property>
        </widget>
-       <widget class="QPushButton" name="fold_button">
+       <widget class="QToolButton" name="agent_button">
         <property name="geometry">
          <rect>
-          <x>15</x>
-          <y>30</y>
-          <width>30</width>
-          <height>30</height>
+          <x>0</x>
+          <y>18</y>
+          <width>20</width>
+          <height>20</height>
          </rect>
         </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    top: 0px;
-    left: 0px;
-	border: 0px;
-    padding: 0px;
-    background-color: transparent;
-}</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="identity.qrc">
-          <normaloff>:/identity/images/hide.svg</normaloff>:/identity/images/hide.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QToolButton" name="presence_button">
-        <property name="geometry">
-         <rect>
-          <x>87</x>
-          <y>54</y>
-          <width>24</width>
-          <height>24</height>
-         </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
@@ -155,10 +289,14 @@ QToolButton::menu-indicator {
         <property name="text">
          <string/>
         </property>
+        <property name="icon">
+         <iconset resource="../../../xivoclient.qrc">
+          <normaloff>:/images/agent-on.svg</normaloff>:/images/agent-on.svg</iconset>
+        </property>
         <property name="iconSize">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>20</width>
+          <height>20</height>
          </size>
         </property>
         <property name="popupMode">
@@ -167,179 +305,36 @@ QToolButton::menu-indicator {
         <property name="autoRaise">
          <bool>true</bool>
         </property>
-        <property name="arrowType">
-         <enum>Qt::NoArrow</enum>
-        </property>
        </widget>
       </widget>
      </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="spacing">
-        <number>6</number>
-       </property>
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
-       </property>
-       <property name="leftMargin">
-        <number>10</number>
-       </property>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>17</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="name">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>161</width>
-           <height>18</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-            <family>Dyno</family>
-            <pointsize>13</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: white;</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="status_agent" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>161</width>
-           <height>54</height>
-          </size>
-         </property>
-         <widget class="QLabel" name="options">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>3</y>
-            <width>161</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Liberation Sans</family>
-            <pointsize>8</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: #A09790</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="agent_button">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>22</y>
-            <width>20</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
-    top: 0px;
-    left: 0px;
-    background-color: transparent;
-	border: 0px;
-    padding: 0px;
-    selection-color: transparent;
-    color: transparent;
-}</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
-            <normaloff>:/images/agent-on.svg</normaloff>:/images/agent-on.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="popupMode">
-           <enum>QToolButton::InstantPopup</enum>
-          </property>
-          <property name="autoRaise">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QWidget" name="voicemail_and_search" native="true">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>381</width>
-         <height>92</height>
-        </size>
-       </property>
-       <widget class="QToolButton" name="dial_search_button">
-        <property name="geometry">
-         <rect>
-          <x>324</x>
-          <y>35</y>
-          <width>16</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="voicemail_and_search" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>381</width>
+       <height>92</height>
+      </size>
+     </property>
+     <widget class="QToolButton" name="dial_search_button">
+      <property name="geometry">
+       <rect>
+        <x>324</x>
+        <y>35</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
     top: 0px;
     left: 0px;
 	border: 0px;
@@ -347,173 +342,168 @@ QToolButton::menu-indicator {
     background-color: transparent;
     color: transparent;
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="identity.qrc">
-          <normaloff>:/identity/images/search-bold.svg</normaloff>:/identity/images/search-bold.svg</iconset>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="voicemail_button">
-        <property name="geometry">
-         <rect>
-          <x>1</x>
-          <y>15</y>
-          <width>50</width>
-          <height>60</height>
-         </rect>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="toolTip">
-         <string>Call your voicemail</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="identity.qrc">
+        <normaloff>:/identity/images/search-bold.svg</normaloff>:/identity/images/search-bold.svg</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="voicemail_button">
+      <property name="geometry">
+       <rect>
+        <x>1</x>
+        <y>15</y>
+        <width>50</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>Call your voicemail</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
     top: 0px;
     left: 0px;
 	border: 0px;
     padding: 0px;
     background-color: transparent;
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="identity.qrc">
-          <normaloff>:/identity/images/voicemail.svg</normaloff>:/identity/images/voicemail.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="dial_input">
-        <property name="geometry">
-         <rect>
-          <x>181</x>
-          <y>30</y>
-          <width>170</width>
-          <height>28</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Liberation Sans</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLineEdit {
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="identity.qrc">
+        <normaloff>:/identity/images/voicemail.svg</normaloff>:/identity/images/voicemail.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="dial_input">
+      <property name="geometry">
+       <rect>
+        <x>181</x>
+        <y>30</y>
+        <width>170</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
     background-color: #e8e4e2;
     border-radius: 14px;
     padding-left: 14px;
     padding-right: 28px;
     color: #2c2927;
 }</string>
-        </property>
-        <property name="placeholderText">
-         <string>call</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="voicemail_messages">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>51</y>
-          <width>24</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Dyno</family>
-          <pointsize>9</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #A09790;</string>
-        </property>
-        <property name="text">
-         <string extracomment="default for unread voicemail messages"/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="voicemail_number">
-        <property name="geometry">
-         <rect>
-          <x>51</x>
-          <y>40</y>
-          <width>91</width>
-          <height>18</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Liberation Sans</family>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #a09790;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="voicemail_label">
-        <property name="geometry">
-         <rect>
-          <x>51</x>
-          <y>25</y>
-          <width>91</width>
-          <height>18</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Dyno</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: white;</string>
-        </property>
-        <property name="text">
-         <string>VOICEMAIL</string>
-        </property>
-       </widget>
-       <zorder>voicemail_button</zorder>
-       <zorder>dial_input</zorder>
-       <zorder>voicemail_label</zorder>
-       <zorder>voicemail_button</zorder>
-       <zorder>dial_input</zorder>
-       <zorder>voicemail_messages</zorder>
-       <zorder>voicemail_number</zorder>
-       <zorder>voicemail_label</zorder>
-       <zorder>dial_search_button</zorder>
-      </widget>
-     </item>
-    </layout>
+      </property>
+      <property name="placeholderText">
+       <string>call</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="voicemail_messages">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>51</y>
+        <width>24</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Dyno</family>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #A09790;</string>
+      </property>
+      <property name="text">
+       <string extracomment="default for unread voicemail messages"/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="voicemail_number">
+      <property name="geometry">
+       <rect>
+        <x>51</x>
+        <y>40</y>
+        <width>91</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #a09790;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="voicemail_label">
+      <property name="geometry">
+       <rect>
+        <x>51</x>
+        <y>25</y>
+        <width>91</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Dyno</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: white;</string>
+      </property>
+      <property name="text">
+       <string>VOICEMAIL</string>
+      </property>
+     </widget>
+     <zorder>voicemail_button</zorder>
+     <zorder>dial_input</zorder>
+     <zorder>voicemail_messages</zorder>
+     <zorder>voicemail_number</zorder>
+     <zorder>voicemail_label</zorder>
+     <zorder>dial_search_button</zorder>
+    </widget>
    </item>
   </layout>
  </widget>
