@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -232,7 +232,7 @@ void XletAgentDetails::updateAvailability()
         style = "QLabel { background-color : red; }";
         break;
     case AgentInfo::ON_CALL_NONACD_INCOMING_INTERNAL:
-        availability_status = tr("Int. Incoming ");
+        availability_status = tr("Int. Incoming");
         style = "QLabel { background-color : red; }";
         break;
     case AgentInfo::ON_CALL_NONACD_INCOMING_EXTERNAL:
