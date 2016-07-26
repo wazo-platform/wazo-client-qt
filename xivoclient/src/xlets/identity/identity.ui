@@ -475,34 +475,92 @@ QToolButton::menu-indicator {
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="voicemail_label">
+     <widget class="QPushButton" name="cancel_transfer">
       <property name="geometry">
        <rect>
-        <x>51</x>
-        <y>25</y>
-        <width>91</width>
-        <height>18</height>
+        <x>140</x>
+        <y>30</y>
+        <width>30</width>
+        <height>30</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>Dyno</family>
-        <pointsize>9</pointsize>
-       </font>
+      <property name="toolTip">
+       <string>Cancel transfer</string>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white;</string>
+       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
+    top: 0px;
+    left: 0px;
+	border: 0px;
+    padding: 0px;
+    background-color: transparent;
+}</string>
       </property>
       <property name="text">
-       <string>VOICEMAIL</string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="identity.qrc">
+        <normaloff>:/identity/images/cancel-transfer.svg</normaloff>:/identity/images/cancel-transfer.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="complete_transfer">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>30</y>
+        <width>30</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Complete transfer</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
+    top: 0px;
+    left: 0px;
+	border: 0px;
+    padding: 0px;
+    background-color: transparent;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="identity.qrc">
+        <normaloff>:/identity/images/complete-transfer.svg</normaloff>:/identity/images/complete-transfer.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
       </property>
      </widget>
      <zorder>voicemail_button</zorder>
      <zorder>dial_input</zorder>
      <zorder>voicemail_messages</zorder>
      <zorder>voicemail_number</zorder>
-     <zorder>voicemail_label</zorder>
      <zorder>dial_search_button</zorder>
+     <zorder>cancel_transfer</zorder>
+     <zorder>complete_transfer</zorder>
     </widget>
    </item>
   </layout>
