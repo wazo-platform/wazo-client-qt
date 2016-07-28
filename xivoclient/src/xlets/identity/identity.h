@@ -1,5 +1,5 @@
 /* XiVO Client
- * Copyright (C) 2007-2015 Avencall
+ * Copyright (C) 2007-2016 Avencall
  *
  * This file is part of XiVO Client.
  *
@@ -68,6 +68,11 @@ class IdentityDisplay : public XLet
         void logout();
         void pause();
         void unpause();
+
+    private slots:
+        void hangup();
+        void completeTransfer();
+        void cancelTransfer();
 
     signals:
         void setAppIcon(const QString &);

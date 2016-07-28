@@ -70,6 +70,11 @@ IdentityDisplay::IdentityDisplay(QWidget *parent)
         this->ui.agent_button->setMenu(m_agent_menu);
     }
 
+    connect(this->ui.complete_transfer, SIGNAL(clicked()),
+            this, SLOT(completeTransfer()));
+    connect(this->ui.cancel_transfer, SIGNAL(clicked()),
+            this, SLOT(cancelTransfer()));
+
     connect(b_engine, SIGNAL(updateUserConfig(const QString &)),
             this, SLOT(updateUserConfig(const QString &)));
     connect(b_engine, SIGNAL(updatePhoneConfig(const QString &)),
@@ -168,7 +173,6 @@ void IdentityDisplay::updateVoiceMailVisibility()
     }
     bool has_voicemail = (! m_ui->voicemailid().isEmpty());
     this->ui.voicemail_button->setVisible(has_voicemail);
-    this->ui.voicemail_label->setVisible(has_voicemail);
     this->ui.voicemail_number->setVisible(has_voicemail);
     this->ui.voicemail_messages->setVisible(has_voicemail);
 }
@@ -494,4 +498,19 @@ void IdentityDisplay::dial()
     }
     b_engine->actionDial(extension);
     this->ui.dial_input->clear();
+}
+
+void IdentityDisplay::hangup()
+{
+    b_engine->sendJsonCommand(MessageFactory::hangup());
+}
+
+void IdentityDisplay::completeTransfer()
+{
+    b_engine->sendJsonCommand(MessageFactory::completeTransfer());
+}
+
+void IdentityDisplay::cancelTransfer()
+{
+    b_engine->sendJsonCommand(MessageFactory::cancelTransfer());
 }
