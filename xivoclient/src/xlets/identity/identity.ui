@@ -484,6 +484,9 @@ QToolButton::menu-indicator {
         <height>30</height>
        </rect>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="toolTip">
        <string>Cancel transfer</string>
       </property>
@@ -524,6 +527,9 @@ QToolButton::menu-indicator {
         <width>30</width>
         <height>30</height>
        </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
        <string>Complete transfer</string>
