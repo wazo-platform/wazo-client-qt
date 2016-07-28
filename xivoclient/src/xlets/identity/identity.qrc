@@ -21,6 +21,5 @@
         <file>images/search-bold.svg</file>
         <file>images/complete-transfer.svg</file>
         <file>images/cancel-transfer.svg</file>
-        <file>images/hang-up.svg</file>
     </qresource>
 </RCC>
