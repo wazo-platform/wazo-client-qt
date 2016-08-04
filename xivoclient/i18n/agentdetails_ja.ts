@@ -51,7 +51,7 @@
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>Int. Incoming </source>
+        <source>Int. Incoming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

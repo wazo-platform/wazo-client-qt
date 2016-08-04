@@ -322,72 +322,72 @@ Please upgrade it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="98"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="103"/>
         <source>Login</source>
         <translation type="unfinished">Iniciar sesión</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="102"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="107"/>
         <source>Logout</source>
         <translation type="unfinished">Cierre de sesión</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="110"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="115"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="114"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="119"/>
         <source>Unpause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="377"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
         <source>DND</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="378"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="382"/>
         <source>Do Not Disturb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="380"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
         <source>UNC %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="385"/>
         <source>Unconditional Forward towards %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="383"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
         <source>BUSY %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="388"/>
         <source>Busy Forward towards %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="386"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="390"/>
         <source>FNA %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="391"/>
         <source>Non-Answer Forward towards %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="389"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="393"/>
         <source>CALL FILTER</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="392"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="396"/>
         <source>AVAILABLE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -395,18 +395,23 @@ Please upgrade it.</source>
 <context>
     <name>IdentityWidget</name>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="167"/>
-        <source>VOICEMAIL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identity.ui" line="205"/>
+        <location filename="../src/xlets/identity/identity.ui" line="367"/>
         <source>Call your voicemail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="364"/>
+        <location filename="../src/xlets/identity/identity.ui" line="429"/>
         <source>call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.ui" line="491"/>
+        <source>Cancel transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.ui" line="535"/>
+        <source>Complete transfer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1349,7 +1354,7 @@ queues parameters for the Stats on slice:</source>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>Int. Incoming </source>
+        <source>Int. Incoming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

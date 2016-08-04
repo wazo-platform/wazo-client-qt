@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
 </context>
 </TS>

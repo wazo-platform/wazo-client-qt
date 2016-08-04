@@ -21,12 +21,12 @@
     <message>
         <location filename="src/baseengine.cpp" line="1090"/>
         <source>Failed to start a secure connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Starten einer sicheren Verbindung.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1091"/>
         <source>Do you want to disable secure connections?</source>
-        <translation type="unfinished"></translation>
+        <translation>Möchten Sie sichere Verbindungen deaktivieren?</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1115"/>
@@ -52,7 +52,7 @@
         <location filename="src/baseengine.cpp" line="1133"/>
         <source>The server %1:%2 did not reply to the last keepalive packet.</source>
         <oldsource>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Der XiVO CTI-Server auf %1:%2 hat auf die letzte Aufrechterhaltung nicht geantwortet.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1139"/>
@@ -132,19 +132,22 @@
         <location filename="src/baseengine.cpp" line="1198"/>
         <source>Your client&apos;s protocol version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Protokollversion Ihres Clients (%1)
+ist nicht die gleiche wie die des Servers (%2).</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1206"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Serverversion (%1) ist zu alt für diesen Client.
+Bitte aktualisieren Sie sie auf mindestens %2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1211"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Serverversion (%1) ist zu alt für diesen Client.
+Bitte aktualisieren Sie sie.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1215"/>
@@ -175,27 +178,27 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
         <source>The authentication server could not fulfill your request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Authentifizierungsserver konnte Ihre Anfrage nicht erfüllen.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1228"/>
         <source>You are not authorized to make calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind nicht dazu berechtigt, Anrufe zu machen</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
         <source>You are not authorized to hangup calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind nicht dazu berechtigt, Anrufe aufzulegen</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1232"/>
         <source>You are not authorized to transfer calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind nicht dazu berechtigt, Anrufe zu übergeben</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1234"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Dienst nicht erreichbar</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1243"/>

@@ -34,7 +34,7 @@
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>

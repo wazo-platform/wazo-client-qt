@@ -98,22 +98,22 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="338"/>
         <source>Int. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. eingehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="340"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. eingehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="342"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. ausgehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="344"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. ausgehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
@@ -146,7 +146,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <source>chat window opened with &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Chatfenster mit &quot;%1&quot; geöffnet</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="183"/>
@@ -164,7 +164,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/directorypanel.cpp" line="37"/>
         <source>Remote Directory Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferntes Verzeichnisfenster</translation>
     </message>
     <message>
         <location filename="../src/xletlib/directorypanel.cpp" line="40"/>

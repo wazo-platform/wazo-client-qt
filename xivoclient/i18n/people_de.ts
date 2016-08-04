@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="230"/>
         <source>Call</source>
-        <translation type="unfinished">Anruf</translation>
+        <translation>Anruf</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="297"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht senden</translation>
     </message>
 </context>
 <context>
@@ -171,7 +171,7 @@ Sind Sie sicher ?</translation>
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="124"/>
         <source>ACTIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>AKTIONEN</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="254"/>
@@ -242,7 +242,7 @@ They will be migrated to the XiVO server in your personal database.</source>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="342"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
 </context>
 </TS>

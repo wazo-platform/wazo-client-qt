@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="190"/>
         <source>Reset dock positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Dockpositionen zurücksetzen</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="226"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="533"/>
         <source>Switchboard call on hold queue name</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefonzentralenanruf auf Haltewarteschlangenname</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="543"/>
@@ -343,12 +343,12 @@
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="139"/>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsaufbau</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="152"/>
         <source>Failed</source>
-        <translation type="unfinished">Fehlgeschlagen</translation>
+        <translation>Fehlgeschlagen</translation>
     </message>
 </context>
 <context>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../src/main_window/main_window.ui" line="102"/>
         <source>Enter the system tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Infobereich eintragen</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="107"/>
@@ -431,7 +431,7 @@
     <message>
         <location filename="../src/main_window/main_window.ui" line="146"/>
         <source>Leave the system tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Infobereich verlassen</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="154"/>

@@ -21,12 +21,12 @@
     <message>
         <location filename="src/baseengine.cpp" line="1090"/>
         <source>Failed to start a secure connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Starten einer sicheren Verbindung.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1091"/>
         <source>Do you want to disable secure connections?</source>
-        <translation type="unfinished"></translation>
+        <translation>Möchten Sie sichere Verbindungen deaktivieren?</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1115"/>
@@ -52,7 +52,7 @@
         <location filename="src/baseengine.cpp" line="1133"/>
         <source>The server %1:%2 did not reply to the last keepalive packet.</source>
         <oldsource>The XiVO CTI server on %1:%2 did not reply to the last keepalive.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Der XiVO CTI-Server auf %1:%2 hat auf die letzte Aufrechterhaltung nicht geantwortet.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1139"/>
@@ -132,19 +132,22 @@
         <location filename="src/baseengine.cpp" line="1198"/>
         <source>Your client&apos;s protocol version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Protokollversion Ihres Clients (%1)
+ist nicht die gleiche wie die des Servers (%2).</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1206"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Serverversion (%1) ist zu alt für diesen Client.
+Bitte aktualisieren Sie sie auf mindestens %2.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1211"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Serverversion (%1) ist zu alt für diesen Client.
+Bitte aktualisieren Sie sie.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1215"/>
@@ -175,27 +178,27 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
         <source>The authentication server could not fulfill your request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Authentifizierungsserver konnte Ihre Anfrage nicht erfüllen.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1228"/>
         <source>You are not authorized to make calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind nicht dazu berechtigt, Anrufe zu machen</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
         <source>You are not authorized to hangup calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind nicht dazu berechtigt, Anrufe aufzulegen</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1232"/>
         <source>You are not authorized to transfer calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind nicht dazu berechtigt, Anrufe zu übergeben</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1234"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Dienst nicht erreichbar</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1243"/>
@@ -243,7 +246,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="342"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
 </context>
 <context>
@@ -322,7 +325,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/directory/directory_widget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -460,7 +463,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/xlets/switchboard/current_call.ui" line="66"/>
@@ -666,22 +669,22 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="338"/>
         <source>Int. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. eingehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="340"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. eingehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="342"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. ausgehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="344"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. ausgehend</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
@@ -714,7 +717,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <source>chat window opened with &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Chatfenster mit &quot;%1&quot; geöffnet</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="183"/>
@@ -732,7 +735,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/directorypanel.cpp" line="37"/>
         <source>Remote Directory Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferntes Verzeichnisfenster</translation>
     </message>
     <message>
         <location filename="../src/xletlib/directorypanel.cpp" line="40"/>
@@ -835,7 +838,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="230"/>
         <source>Call</source>
-        <translation type="unfinished">Anruf</translation>
+        <translation>Anruf</translation>
     </message>
 </context>
 <context>
@@ -843,7 +846,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="297"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht senden</translation>
     </message>
 </context>
 <context>
@@ -1000,7 +1003,7 @@ Sind Sie sicher ?</translation>
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="124"/>
         <source>ACTIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>AKTIONEN</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="254"/>
@@ -1661,7 +1664,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="190"/>
         <source>Reset dock positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Dockpositionen zurücksetzen</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="226"/>
@@ -1766,7 +1769,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="533"/>
         <source>Switchboard call on hold queue name</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefonzentralenanruf auf Haltewarteschlangenname</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="543"/>
@@ -1888,12 +1891,12 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="139"/>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsaufbau</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="152"/>
         <source>Failed</source>
-        <translation type="unfinished">Fehlgeschlagen</translation>
+        <translation>Fehlgeschlagen</translation>
     </message>
 </context>
 <context>
@@ -1931,7 +1934,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/main_window/main_window.ui" line="102"/>
         <source>Enter the system tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Infobereich eintragen</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="107"/>
@@ -1976,7 +1979,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/main_window/main_window.ui" line="146"/>
         <source>Leave the system tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Infobereich verlassen</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="154"/>
@@ -2308,23 +2311,23 @@ queues parameters for the Stats on slice:</source>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
-        <source>Int. Incoming </source>
-        <translation type="unfinished"></translation>
+        <source>Int. Incoming</source>
+        <translation>Int. eingehend</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Ext. Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. eingehend</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Int. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Int. ausgehend</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>Ext. Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ext. ausgehend</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
@@ -2361,72 +2364,72 @@ queues parameters for the Stats on slice:</source>
         <translation>Aktueller Benutzer-Panel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="98"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="103"/>
         <source>Login</source>
         <translation>Anmelden</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="102"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="107"/>
         <source>Logout</source>
         <translation>Abmelden</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="110"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="115"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="114"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="119"/>
         <source>Unpause</source>
         <translation>Pause aufheben</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="377"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
         <source>DND</source>
         <translation>BNS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="378"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="382"/>
         <source>Do Not Disturb</source>
         <translation>Bitte nicht stören</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="380"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
         <source>UNC %1</source>
         <translation>UNC %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="385"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Bedingungslose Weiterleitung zu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="383"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
         <source>BUSY %1</source>
         <translation>BESETZT %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="388"/>
         <source>Busy Forward towards %1</source>
         <translation>Bei besetzt Weiterleitung zu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="386"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="390"/>
         <source>FNA %1</source>
-        <translation type="unfinished"></translation>
+        <translation>FNA %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="391"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Bei keiner Antwort Weiterleitung zu %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="389"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="393"/>
         <source>CALL FILTER</source>
         <translation>ANRUFFILTER</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="392"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="396"/>
         <source>AVAILABLE</source>
         <translation>VERFÜGBAR</translation>
     </message>
@@ -2434,19 +2437,24 @@ queues parameters for the Stats on slice:</source>
 <context>
     <name>IdentityWidget</name>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="167"/>
-        <source>VOICEMAIL</source>
-        <translation>ANRUFBEANTWORTER</translation>
-    </message>
-    <message>
-        <location filename="../src/xlets/identity/identity.ui" line="205"/>
+        <location filename="../src/xlets/identity/identity.ui" line="367"/>
         <source>Call your voicemail</source>
         <translation>Rufen Sie Ihren Anrufbeantworter an</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="364"/>
+        <location filename="../src/xlets/identity/identity.ui" line="429"/>
         <source>call</source>
         <translation>Anruf</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.ui" line="491"/>
+        <source>Cancel transfer</source>
+        <translation>Verbindung abbrechen</translation>
+    </message>
+    <message>
+        <location filename="../src/xlets/identity/identity.ui" line="535"/>
+        <source>Complete transfer</source>
+        <translation>Verbindung beenden</translation>
     </message>
 </context>
 <context>
@@ -2454,7 +2462,7 @@ queues parameters for the Stats on slice:</source>
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="21"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/xlets/agent_status_dashboard/agent_status.ui" line="49"/>
