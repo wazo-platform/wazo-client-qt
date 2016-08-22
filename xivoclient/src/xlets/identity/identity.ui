@@ -91,21 +91,12 @@ QToolButton::menu-indicator {
        <rect>
         <x>15</x>
         <y>30</y>
-        <width>30</width>
-        <height>30</height>
+        <width>36</width>
+        <height>36</height>
        </rect>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    top: 0px;
-    left: 0px;
-	border: 0px;
-    padding: 0px;
-    background-color: transparent;
-}</string>
       </property>
       <property name="text">
        <string/>
@@ -126,6 +117,11 @@ QToolButton::menu-indicator {
       <property name="flat">
        <bool>true</bool>
       </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
+      </property>
      </widget>
      <widget class="QToolButton" name="presence_button">
       <property name="geometry">
@@ -135,17 +131,6 @@ QToolButton::menu-indicator {
         <width>24</width>
         <height>24</height>
        </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
-    top: 0px;
-    left: 0px;
-    background-color: transparent;
-	border: 0px;
-    padding: 0px;
-    selection-color: transparent;
-    color: transparent;
-}</string>
       </property>
       <property name="text">
        <string/>
@@ -164,6 +149,11 @@ QToolButton::menu-indicator {
       </property>
       <property name="arrowType">
        <enum>Qt::NoArrow</enum>
+      </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
       </property>
      </widget>
     </widget>
@@ -268,23 +258,12 @@ QToolButton::menu-indicator {
          <rect>
           <x>0</x>
           <y>18</y>
-          <width>20</width>
-          <height>20</height>
+          <width>24</width>
+          <height>24</height>
          </rect>
         </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
-    top: 0px;
-    left: 0px;
-    background-color: transparent;
-	border: 0px;
-    padding: 0px;
-    selection-color: transparent;
-    color: transparent;
-}</string>
         </property>
         <property name="text">
          <string/>
@@ -304,6 +283,11 @@ QToolButton::menu-indicator {
         </property>
         <property name="autoRaise">
          <bool>true</bool>
+        </property>
+        <property name="qss_tags" stdset="0">
+         <stringlist>
+          <string>highlight_button</string>
+         </stringlist>
         </property>
        </widget>
       </widget>
@@ -354,10 +338,10 @@ QToolButton::menu-indicator {
      <widget class="QPushButton" name="voicemail_button">
       <property name="geometry">
        <rect>
-        <x>1</x>
-        <y>15</y>
-        <width>50</width>
-        <height>60</height>
+        <x>10</x>
+        <y>30</y>
+        <width>36</width>
+        <height>36</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -365,15 +349,6 @@ QToolButton::menu-indicator {
       </property>
       <property name="toolTip">
        <string>Call your voicemail</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    top: 0px;
-    left: 0px;
-	border: 0px;
-    padding: 0px;
-    background-color: transparent;
-}</string>
       </property>
       <property name="text">
        <string/>
@@ -390,6 +365,11 @@ QToolButton::menu-indicator {
       </property>
       <property name="flat">
        <bool>true</bool>
+      </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
       </property>
      </widget>
      <widget class="QLineEdit" name="dial_input">
@@ -480,8 +460,8 @@ QToolButton::menu-indicator {
        <rect>
         <x>140</x>
         <y>30</y>
-        <width>30</width>
-        <height>30</height>
+        <width>36</width>
+        <height>36</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -489,15 +469,6 @@ QToolButton::menu-indicator {
       </property>
       <property name="toolTip">
        <string>Cancel transfer</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    top: 0px;
-    left: 0px;
-	border: 0px;
-    padding: 0px;
-    background-color: transparent;
-}</string>
       </property>
       <property name="text">
        <string/>
@@ -515,6 +486,11 @@ QToolButton::menu-indicator {
       <property name="flat">
        <bool>true</bool>
       </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
+      </property>
      </widget>
      <widget class="QPushButton" name="complete_transfer">
       <property name="enabled">
@@ -524,8 +500,8 @@ QToolButton::menu-indicator {
        <rect>
         <x>100</x>
         <y>30</y>
-        <width>30</width>
-        <height>30</height>
+        <width>36</width>
+        <height>36</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -533,15 +509,6 @@ QToolButton::menu-indicator {
       </property>
       <property name="toolTip">
        <string>Complete transfer</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    top: 0px;
-    left: 0px;
-	border: 0px;
-    padding: 0px;
-    background-color: transparent;
-}</string>
       </property>
       <property name="text">
        <string/>
@@ -559,10 +526,15 @@ QToolButton::menu-indicator {
       <property name="flat">
        <bool>true</bool>
       </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
+      </property>
      </widget>
      <zorder>voicemail_button</zorder>
-     <zorder>dial_input</zorder>
      <zorder>voicemail_messages</zorder>
+     <zorder>dial_input</zorder>
      <zorder>voicemail_number</zorder>
      <zorder>dial_search_button</zorder>
      <zorder>cancel_transfer</zorder>

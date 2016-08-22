@@ -81,7 +81,7 @@ QCheckBox{
 
 QFrame[qss_tags~="input_button"]{
     background-color: #D7D2D0;
-    border-radius: 15px; 
+    border-radius: 15px;
     margin-bottom: 10px;
     margin-top: 10px;
 }
@@ -198,10 +198,29 @@ QComboBox#agent_options QAbstractItemView {
     background-color: #D7D2D0;
 }
 
-/* 
-  * FAX XLET 
-  */
+/*
+ * FAX XLET
+ */
 QLabel[qss_tags~="step_number"] {
     color: #D7D2D0;
     font: bold 36px "Dyno";
+}
+
+/*
+ * IDENTITY XLET
+ */
+QPushButton[qss_tags~="highlight_button"] {
+    background-color: transparent;
+}
+
+QPushButton:hover[qss_tags~="highlight_button"] {
+    border-radius: 5px;
+    background-color: #4c4947;
+}
+
+QToolButton[qss_tags~="highlight_button"] {
+    background-color: transparent;
+}
+QToolButton:hover[qss_tags~="highlight_button"] {
+    background-color: #4c4947;
 }
