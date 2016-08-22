@@ -118,7 +118,7 @@ QToolButton::menu-indicator {
        <bool>true</bool>
       </property>
       <property name="qss_tags" stdset="0">
-       <stringlist>
+       <stringlist notr="true">
         <string>highlight_button</string>
        </stringlist>
       </property>
@@ -151,7 +151,7 @@ QToolButton::menu-indicator {
        <enum>Qt::NoArrow</enum>
       </property>
       <property name="qss_tags" stdset="0">
-       <stringlist>
+       <stringlist notr="true">
         <string>highlight_button</string>
        </stringlist>
       </property>
@@ -285,7 +285,7 @@ QToolButton::menu-indicator {
          <bool>true</bool>
         </property>
         <property name="qss_tags" stdset="0">
-         <stringlist>
+         <stringlist notr="true">
           <string>highlight_button</string>
          </stringlist>
         </property>
@@ -367,7 +367,7 @@ QToolButton::menu-indicator {
        <bool>true</bool>
       </property>
       <property name="qss_tags" stdset="0">
-       <stringlist>
+       <stringlist notr="true">
         <string>highlight_button</string>
        </stringlist>
       </property>
@@ -487,7 +487,7 @@ QToolButton::menu-indicator {
        <bool>true</bool>
       </property>
       <property name="qss_tags" stdset="0">
-       <stringlist>
+       <stringlist notr="true">
         <string>highlight_button</string>
        </stringlist>
       </property>
@@ -527,7 +527,7 @@ QToolButton::menu-indicator {
        <bool>true</bool>
       </property>
       <property name="qss_tags" stdset="0">
-       <stringlist>
+       <stringlist notr="true">
         <string>highlight_button</string>
        </stringlist>
       </property>
