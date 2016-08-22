@@ -98,16 +98,6 @@ QToolButton::menu-indicator {
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    background-color: transparent;
-}
-
-QPushButton:hover{
-    border-radius: 5px;
-    background-color: #4c4947;
-}</string>
-      </property>
       <property name="text">
        <string/>
       </property>
@@ -127,6 +117,11 @@ QPushButton:hover{
       <property name="flat">
        <bool>true</bool>
       </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
+      </property>
      </widget>
      <widget class="QToolButton" name="presence_button">
       <property name="geometry">
@@ -136,14 +131,6 @@ QPushButton:hover{
         <width>24</width>
         <height>24</height>
        </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
-    background-color: transparent;
-}
-QToolButton:hover{
-    background-color: #4c4947;
-}</string>
       </property>
       <property name="text">
        <string/>
@@ -162,6 +149,11 @@ QToolButton:hover{
       </property>
       <property name="arrowType">
        <enum>Qt::NoArrow</enum>
+      </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
       </property>
      </widget>
     </widget>
@@ -273,14 +265,6 @@ QToolButton:hover{
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QToolButton, QToolButton:checked, QToolButton:pressed{
-    background-color: transparent;
-}
-QToolButton:hover{
-    background-color: #4c4947;
-}</string>
-        </property>
         <property name="text">
          <string/>
         </property>
@@ -299,6 +283,11 @@ QToolButton:hover{
         </property>
         <property name="autoRaise">
          <bool>true</bool>
+        </property>
+        <property name="qss_tags" stdset="0">
+         <stringlist>
+          <string>highlight_button</string>
+         </stringlist>
         </property>
        </widget>
       </widget>
@@ -361,16 +350,6 @@ QToolButton:hover{
       <property name="toolTip">
        <string>Call your voicemail</string>
       </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    background-color: transparent;
-}
-
-QPushButton:hover{
-    border-radius: 5px;
-    background-color: #4c4947;
-}</string>
-      </property>
       <property name="text">
        <string/>
       </property>
@@ -386,6 +365,11 @@ QPushButton:hover{
       </property>
       <property name="flat">
        <bool>true</bool>
+      </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
       </property>
      </widget>
      <widget class="QLineEdit" name="dial_input">
@@ -486,16 +470,6 @@ QPushButton:hover{
       <property name="toolTip">
        <string>Cancel transfer</string>
       </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    background-color: transparent;
-}
-
-QPushButton:hover{
-    border-radius: 5px;
-    background-color: #4c4947;
-}</string>
-      </property>
       <property name="text">
        <string/>
       </property>
@@ -511,6 +485,11 @@ QPushButton:hover{
       </property>
       <property name="flat">
        <bool>true</bool>
+      </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
       </property>
      </widget>
      <widget class="QPushButton" name="complete_transfer">
@@ -531,16 +510,6 @@ QPushButton:hover{
       <property name="toolTip">
        <string>Complete transfer</string>
       </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton, QPushButton:checked, QPushButton:pressed{
-    background-color: transparent;
-}
-
-QPushButton:hover{
-    border-radius: 5px;
-    background-color: #4c4947;
-}</string>
-      </property>
       <property name="text">
        <string/>
       </property>
@@ -556,6 +525,11 @@ QPushButton:hover{
       </property>
       <property name="flat">
        <bool>true</bool>
+      </property>
+      <property name="qss_tags" stdset="0">
+       <stringlist>
+        <string>highlight_button</string>
+       </stringlist>
       </property>
      </widget>
      <zorder>voicemail_button</zorder>
