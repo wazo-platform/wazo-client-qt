@@ -156,7 +156,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="205"/>
         <source>chitchat - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Plaudern - %1</translation>
     </message>
 </context>
 <context>

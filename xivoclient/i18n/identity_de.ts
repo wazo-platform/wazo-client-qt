@@ -87,22 +87,22 @@
 <context>
     <name>IdentityWidget</name>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="367"/>
+        <location filename="../src/xlets/identity/identity.ui" line="351"/>
         <source>Call your voicemail</source>
         <translation>Rufen Sie Ihren Anrufbeantworter an</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="429"/>
+        <location filename="../src/xlets/identity/identity.ui" line="409"/>
         <source>call</source>
         <translation>Anruf</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="491"/>
+        <location filename="../src/xlets/identity/identity.ui" line="471"/>
         <source>Cancel transfer</source>
         <translation>Verbindung abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.ui" line="535"/>
+        <location filename="../src/xlets/identity/identity.ui" line="511"/>
         <source>Complete transfer</source>
         <translation>Verbindung beenden</translation>
     </message>
