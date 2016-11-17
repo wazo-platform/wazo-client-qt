@@ -118,7 +118,7 @@ colas</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
         <source>Logged out</source>
-        <translation type="unfinished"></translation>
+        <translation>Deslogueado</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="409"/>
@@ -146,7 +146,7 @@ colas</translation>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <source>chat window opened with &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>ventana de chat abierta con &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="183"/>
@@ -156,7 +156,7 @@ colas</translation>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="205"/>
         <source>chitchat - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>chitchat - %1</translation>
     </message>
 </context>
 <context>

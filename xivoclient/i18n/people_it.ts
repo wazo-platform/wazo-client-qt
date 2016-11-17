@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="297"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Invia un messaggio</translation>
     </message>
 </context>
 <context>
@@ -27,17 +27,17 @@
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="37"/>
         <source>Last Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Cognome</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="44"/>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="78"/>
         <source>Phone Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero di Telefono</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="85"/>

@@ -6,7 +6,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="517"/>
         <source>Connection lost with XiVO CTI server</source>
-        <translation>Persa la connessione con il server CTI XiVO</translation>
+        <translation>Connessione persa con il server CTI XiVO</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="755"/>
@@ -16,7 +16,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="755"/>
         <source>Maybe Asterisk is down.</source>
-        <translation>Forse asterisk è chiuso.</translation>
+        <translation>Probabilmente Asterisk è disattivo.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1090"/>
@@ -173,7 +173,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1224"/>
         <source>Unreachable number: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero non raggiungibile: %1</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
@@ -183,7 +183,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1228"/>
         <source>You are not authorized to make calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Non sei autorizzato a fare chiamate</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>

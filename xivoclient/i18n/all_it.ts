@@ -6,7 +6,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="517"/>
         <source>Connection lost with XiVO CTI server</source>
-        <translation>Persa la connessione con il server CTI XiVO</translation>
+        <translation>Connessione persa con il server CTI XiVO</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="755"/>
@@ -16,7 +16,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="755"/>
         <source>Maybe Asterisk is down.</source>
-        <translation>Forse asterisk è chiuso.</translation>
+        <translation>Probabilmente Asterisk è disattivo.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1090"/>
@@ -173,7 +173,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1224"/>
         <source>Unreachable number: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero non raggiungibile: %1</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
@@ -183,7 +183,7 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1228"/>
         <source>You are not authorized to make calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Non sei autorizzato a fare chiamate</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
@@ -943,12 +943,12 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="227"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Non in uso</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">In uso</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
@@ -1086,12 +1086,12 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Non in uso</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="336"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation>In uso</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="338"/>
@@ -1249,7 +1249,7 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo</translation>
     </message>
 </context>
 <context>
@@ -1762,7 +1762,7 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="297"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Invia un messaggio</translation>
     </message>
 </context>
 <context>
@@ -1775,17 +1775,17 @@ parametri per le statistiche sulla torta:</translation>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="37"/>
         <source>Last Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Cognome</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="44"/>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="78"/>
         <source>Phone Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero di Telefono</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/contact_dialog_widget.ui" line="85"/>

@@ -52,22 +52,22 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>Int. Incoming</source>
-        <translation type="unfinished">Interna entrando</translation>
+        <translation>Int. Entrando</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Ext. Incoming</source>
-        <translation>Externa entrando</translation>
+        <translation>Ext. Entrando</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Int. Outgoing</source>
-        <translation>Interna saliendo</translation>
+        <translation>Int. Saliendo</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>Ext. Outgoing</source>
-        <translation>Externa saliendo</translation>
+        <translation>Ext. Saliendo</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>

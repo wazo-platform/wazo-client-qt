@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="471"/>
         <source>Cancel transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar transferencia</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="511"/>
         <source>Complete transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Completar transferencia</translation>
     </message>
 </context>
 </TS>

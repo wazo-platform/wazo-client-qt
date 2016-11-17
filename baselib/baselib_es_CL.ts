@@ -21,12 +21,12 @@
     <message>
         <location filename="src/baseengine.cpp" line="1090"/>
         <source>Failed to start a secure connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falló al iniciar una conexión segura</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1091"/>
         <source>Do you want to disable secure connections?</source>
-        <translation type="unfinished"></translation>
+        <translation>Desea deshabilitar conexiones seguras?</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1115"/>
@@ -57,7 +57,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1139"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
-        <translation>Ha definido una dirección IP %1 que probablemente no tiene una resolución para el nombre de equipo.</translation>
+        <translation>Ha definido una dirección IP %1 que probablemente no tiene un nombre de equipo sin resolver.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1143"/>
@@ -78,9 +78,7 @@
         <translation>Un error ha ocurrido en la red mientras se intentaba unir la dirección IP %1:
 - no se definió una ruta externa para acceder ésta dirección IP (~ sin tiempo exedido)
 - ésta dirección IP se encuentra enrutada pero no existe una máquina (~5 s tiempo exedido)
-- un cable de encuentra desconectado en la red camino a ésta dirección IP (~ 30 s tiempo exedido)
-
-</translation>
+- un cable se encuentra desconectado en la red camino a ésta dirección IP (~ 30 s tiempo exedido)</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1160"/>
@@ -137,19 +135,22 @@
         <location filename="src/baseengine.cpp" line="1198"/>
         <source>Your client&apos;s protocol version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>La versión del protocolo de su cliente (%1)
+no es la misma que la del servidor (%2).</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1206"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
-        <translation type="unfinished"></translation>
+        <translation>La versión de su servidor (%1) es demasiado antigua para este cliente.
+Por favor actualícelo a %2 como mínimo.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1211"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
-        <translation type="unfinished"></translation>
+        <translation>La versión de su servidor (%1) es demasiado antigua para este cliente.
+Por favor actualícelo </translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1215"/>
@@ -180,27 +181,27 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
         <source>The authentication server could not fulfill your request.</source>
-        <translation type="unfinished"></translation>
+        <translation>El servidor de autentificación no puede completar su solicitud.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1228"/>
         <source>You are not authorized to make calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Usted no está autorizado a realizar llamadas.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
         <source>You are not authorized to hangup calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Usted no está autorizado a terminar llamadas.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1232"/>
         <source>You are not authorized to transfer calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Usted no está autorizado a transferir llamadas.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1234"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Servicio no disponible.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1243"/>

@@ -88,12 +88,12 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="334"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Non in uso</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="336"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation>In uso</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="338"/>
@@ -274,7 +274,7 @@ in pausa</translation>
     <message>
         <location filename="../src/xletlib/queue_entries/queue_entries_model.cpp" line="58"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo</translation>
     </message>
 </context>
 <context>

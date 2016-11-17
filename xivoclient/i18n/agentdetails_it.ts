@@ -42,12 +42,12 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="227"/>
         <source>Not in use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Non in uso</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="231"/>
         <source>In use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">In uso</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>

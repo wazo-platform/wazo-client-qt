@@ -21,12 +21,12 @@
     <message>
         <location filename="src/baseengine.cpp" line="1090"/>
         <source>Failed to start a secure connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falló al iniciar una conexión segura</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1091"/>
         <source>Do you want to disable secure connections?</source>
-        <translation type="unfinished"></translation>
+        <translation>Desea deshabilitar conexiones seguras?</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1115"/>
@@ -57,7 +57,7 @@
     <message>
         <location filename="src/baseengine.cpp" line="1139"/>
         <source>You defined an IP address %1 that is probably an unresolved host name.</source>
-        <translation>Ha definido una dirección IP %1 que probablemente no tiene una resolución para el nombre de equipo.</translation>
+        <translation>Ha definido una dirección IP %1 que probablemente no tiene un nombre de equipo sin resolver.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1143"/>
@@ -78,9 +78,7 @@
         <translation>Un error ha ocurrido en la red mientras se intentaba unir la dirección IP %1:
 - no se definió una ruta externa para acceder ésta dirección IP (~ sin tiempo exedido)
 - ésta dirección IP se encuentra enrutada pero no existe una máquina (~5 s tiempo exedido)
-- un cable de encuentra desconectado en la red camino a ésta dirección IP (~ 30 s tiempo exedido)
-
-</translation>
+- un cable se encuentra desconectado en la red camino a ésta dirección IP (~ 30 s tiempo exedido)</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1160"/>
@@ -137,19 +135,22 @@
         <location filename="src/baseengine.cpp" line="1198"/>
         <source>Your client&apos;s protocol version (%1)
 is not the same as the server&apos;s (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>La versión del protocolo de su cliente (%1)
+no es la misma que la del servidor (%2).</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1206"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it to %2 at least.</source>
-        <translation type="unfinished"></translation>
+        <translation>La versión de su servidor (%1) es demasiado antigua para este cliente.
+Por favor actualícelo a %2 como mínimo.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1211"/>
         <source>Your server version (%1) is too old for this client.
 Please upgrade it.</source>
-        <translation type="unfinished"></translation>
+        <translation>La versión de su servidor (%1) es demasiado antigua para este cliente.
+Por favor actualícelo </translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1215"/>
@@ -180,27 +181,27 @@ Please upgrade it.</source>
     <message>
         <location filename="src/baseengine.cpp" line="1226"/>
         <source>The authentication server could not fulfill your request.</source>
-        <translation type="unfinished"></translation>
+        <translation>El servidor de autentificación no puede completar su solicitud.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1228"/>
         <source>You are not authorized to make calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Usted no está autorizado a realizar llamadas.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1230"/>
         <source>You are not authorized to hangup calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Usted no está autorizado a terminar llamadas.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1232"/>
         <source>You are not authorized to transfer calls</source>
-        <translation type="unfinished"></translation>
+        <translation>Usted no está autorizado a transferir llamadas.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1234"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Servicio no disponible.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1243"/>
@@ -248,7 +249,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="342"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar</translation>
     </message>
 </context>
 <context>
@@ -672,12 +673,12 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="139"/>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectando</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="152"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falló</translation>
     </message>
 </context>
 <context>
@@ -797,7 +798,7 @@ Please upgrade it.</source>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="317"/>
         <source>&amp;Availability</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Disponibilidad</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="389"/>
@@ -1237,22 +1238,22 @@ parámetros de cola para los estados en el panel deslizante</translation>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="235"/>
         <source>Int. Incoming</source>
-        <translation type="unfinished">Interna entrando</translation>
+        <translation>Int. Entrando</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="239"/>
         <source>Ext. Incoming</source>
-        <translation>Externa entrando</translation>
+        <translation>Ext. Entrando</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="243"/>
         <source>Int. Outgoing</source>
-        <translation>Interna saliendo</translation>
+        <translation>Int. Saliendo</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="247"/>
         <source>Ext. Outgoing</source>
-        <translation>Externa saliendo</translation>
+        <translation>Ext. Saliendo</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="251"/>
@@ -1670,7 +1671,7 @@ colas</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="392"/>
         <source>Logged out</source>
-        <translation type="unfinished"></translation>
+        <translation>Deslogueado</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="409"/>
@@ -1698,7 +1699,7 @@ colas</translation>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="139"/>
         <source>chat window opened with &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>ventana de chat abierta con &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="183"/>
@@ -1708,7 +1709,7 @@ colas</translation>
     <message>
         <location filename="../src/xletlib/chitchat.cpp" line="205"/>
         <source>chitchat - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>chitchat - %1</translation>
     </message>
 </context>
 <context>
@@ -2159,7 +2160,7 @@ colas</translation>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="230"/>
         <source>Call</source>
-        <translation type="unfinished">Llamada</translation>
+        <translation>Llamada</translation>
     </message>
 </context>
 <context>
@@ -2167,7 +2168,7 @@ colas</translation>
     <message>
         <location filename="../src/xlets/people/people_action_generator.cpp" line="297"/>
         <source>Send a message</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un mensaje</translation>
     </message>
 </context>
 <context>
@@ -2238,24 +2239,26 @@ colas</translation>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="220"/>
         <source>Import Results</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar resultados</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="221"/>
         <source>%1 contacts created
 %2 contacts failed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 contactos creados
+%2 contactos en error</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="228"/>
         <source>Following lines are errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Las siguientes lineas contienen errores</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="231"/>
         <source>
 line %1: </source>
-        <translation type="unfinished"></translation>
+        <translation>
+linea %2: {1:?}</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="291"/>
@@ -2272,43 +2275,44 @@ está seguro ?</translation>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="307"/>
         <source>Deleting all personal contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminando todos los contactos personales</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="308"/>
         <source>Deleting all personal contacts.
 Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminando todos los contactos personales.
+Está seguro?</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="399"/>
         <source>Save Personal Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar contactos personales</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="401"/>
         <source>CSV Files (*.csv);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos CSV (*.csv);; Todos los archivos (*)</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="427"/>
         <source>Import Personal Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar contactos personales</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="429"/>
         <source>CSV Files (UTF-8)(*.csv);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos CSV (UTF-8)(*.csv);; Todos los archivos (*)</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="479"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falló</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="501"/>
         <source>Waiting</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperando</translation>
     </message>
 </context>
 <context>
@@ -2321,17 +2325,17 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="124"/>
         <source>ACTIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>ACCIONES</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="254"/>
         <source>BLIND TRANSFER</source>
-        <translation type="unfinished"></translation>
+        <translation>TRANSFERENCIA CIEGA</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_entry_delegate.cpp" line="256"/>
         <source>ATTENDED TRANSFER</source>
-        <translation type="unfinished"></translation>
+        <translation>TRANSFERENCIA ATENDIDA</translation>
     </message>
 </context>
 <context>
@@ -2339,19 +2343,22 @@ Are you sure ?</source>
     <message>
         <location filename="../src/xlets/people/people_personal_migration.cpp" line="89"/>
         <source>Contacts Migration</source>
-        <translation type="unfinished"></translation>
+        <translation>Migración de contactos</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_personal_migration.cpp" line="90"/>
         <source>Your local contacts will be migrated to the People Xlet. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sus contactos locales serán migrados al People Xlet. %1</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_personal_migration.cpp" line="94"/>
         <source>Your local contacts are currently stored on your machine in:
 %1
 They will be migrated to the XiVO server in your personal database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sus contactos locales están almacenados en su equipo en:
+%1
+Éstos serán migrados al servidor XiVO en su base de datos personal.
+</translation>
     </message>
 </context>
 <context>
@@ -2374,17 +2381,17 @@ They will be migrated to the XiVO server in your personal database.</source>
     <message>
         <location filename="../src/xlets/people/people_widget.ui" line="149"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTAR</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_widget.ui" line="165"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTAR</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people_widget.ui" line="181"/>
         <source>DELETE ALL CONTACTS</source>
-        <translation type="unfinished"></translation>
+        <translation>BORRAR TODOS LOS CONTACTOS</translation>
     </message>
 </context>
 <context>
@@ -2485,12 +2492,12 @@ They will be migrated to the XiVO server in your personal database.</source>
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="471"/>
         <source>Cancel transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar transferencia</translation>
     </message>
     <message>
         <location filename="../src/xlets/identity/identity.ui" line="511"/>
         <source>Complete transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Completar transferencia</translation>
     </message>
 </context>
 </TS>

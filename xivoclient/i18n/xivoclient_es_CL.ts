@@ -343,12 +343,12 @@
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="139"/>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectando</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.cpp" line="152"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falló</translation>
     </message>
 </context>
 <context>
@@ -468,7 +468,7 @@
     <message>
         <location filename="../src/main_window/main_window.cpp" line="317"/>
         <source>&amp;Availability</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Disponibilidad</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="389"/>
