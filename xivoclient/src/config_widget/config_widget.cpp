@@ -100,6 +100,7 @@ void ConfigWidget::load_values()
     this->ui.language->addItem(tr("Hungarian") + QString(" (%1)").arg(tr("incomplete")), QString("hu_HU"));
     this->ui.language->addItem(tr("Japanese") + QString(" (%1)").arg(tr("incomplete")), QString("ja_JP"));
     this->ui.language->addItem(tr("Spanish") + QString(" (%1)").arg(tr("incomplete")), QString("es_ES"));
+    this->ui.language->addItem(tr("Polish") + QString(" (%1)").arg(tr("incomplete")), QString("pl_PL"));
     for (int i = 0; i < this->ui.language->count(); i++) {
         if (this->m_config["forcelocale"].toString() == this->ui.language->itemData(i))
             this->ui.language->setCurrentIndex(i);

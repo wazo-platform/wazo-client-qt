@@ -35,6 +35,7 @@ TRANSLATIONS += $${ROOT_DIR}/baselib_de.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_it.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_fr.ts
 TRANSLATIONS += $${ROOT_DIR}/baselib_nl.ts
+TRANSLATIONS += $${ROOT_DIR}/baselib_pl.ts
 
 QMAKE_EXTRA_COMPILERS += updateqm
 updateqm.input = TRANSLATIONS

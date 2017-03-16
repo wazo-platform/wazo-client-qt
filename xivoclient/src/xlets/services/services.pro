@@ -14,6 +14,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/services_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/services_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/services_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/services_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/services_pl.ts
 
 TARGET      = featuresplugin
 

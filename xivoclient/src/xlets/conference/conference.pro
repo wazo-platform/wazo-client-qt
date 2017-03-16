@@ -16,6 +16,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/conference_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/conference_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/conference_pl.ts
 
 TARGET      = conferenceplugin
 

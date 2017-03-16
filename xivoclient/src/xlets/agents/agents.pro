@@ -14,6 +14,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/agents_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/agents_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/agents_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/agents_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/agents_pl.ts
 
 TARGET      = agentsplugin
 

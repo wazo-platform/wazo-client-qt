@@ -12,7 +12,7 @@
 THIS_SCRIPT_DIRECTORY="$(dirname $0)"
 XIVO_CLIENT_ROOT="$THIS_SCRIPT_DIRECTORY"
 
-LOCALES_LIST="en fr it de nl ja hu pt_BR es_ES es_CL"
+LOCALES_LIST="en fr it de nl ja hu pl pt_BR es_ES es_CL"
 
 XIVO_CLIENT_RESOURCE=xivo.xivo-client
 TRANSIFEX_URL=https://www.transifex.com

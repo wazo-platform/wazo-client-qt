@@ -12,6 +12,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/datetime_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/datetime_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/datetime_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/datetime_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/datetime_pl.ts
 
 TARGET      = datetimeplugin
 

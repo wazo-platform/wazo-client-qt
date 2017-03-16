@@ -12,6 +12,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/queue_entries_pl.ts
 
 TARGET      = queueentrydetailsplugin
 

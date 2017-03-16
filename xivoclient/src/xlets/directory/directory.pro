@@ -16,5 +16,6 @@ TRANSLATIONS += $$ROOT_DIR/i18n/directory_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/directory_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/directory_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/directory_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/directory_pl.ts
 
 RESOURCES = directory.qrc

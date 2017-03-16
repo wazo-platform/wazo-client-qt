@@ -19,5 +19,6 @@ TRANSLATIONS += $$ROOT_DIR/i18n/people_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/people_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/people_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/people_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/people_pl.ts
 
 RESOURCES = people.qrc

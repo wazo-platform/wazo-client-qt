@@ -12,6 +12,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/queue_members_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_members_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_members_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/queue_members_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/queue_members_pl.ts
 
 TARGET = queuemembersplugin
 

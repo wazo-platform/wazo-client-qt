@@ -16,5 +16,6 @@ TRANSLATIONS += $$ROOT_DIR/i18n/history_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/history_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/history_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/history_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/history_pl.ts
 
 RESOURCES = history.qrc

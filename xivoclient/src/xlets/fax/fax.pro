@@ -18,5 +18,6 @@ TRANSLATIONS += $$ROOT_DIR/i18n/fax_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/fax_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/fax_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/fax_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/fax_pl.ts
 
 RESOURCES = fax.qrc

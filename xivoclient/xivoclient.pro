@@ -40,6 +40,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_es_ES.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_pt_BR.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_hu.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_it.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_pl.ts
 
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src

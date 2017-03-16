@@ -15,6 +15,7 @@ TRANSLATIONS += $$ROOT_DIR/i18n/agent_status_dashboard_ja.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/agent_status_dashboard_it.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/agent_status_dashboard_fr.ts
 TRANSLATIONS += $$ROOT_DIR/i18n/agent_status_dashboard_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/agent_status_dashboard_pl.ts
 
 TARGET      = agentstatusdashboardplugin
 
