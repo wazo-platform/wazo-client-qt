@@ -14,9 +14,9 @@ XIVO_CLIENT_ROOT="$THIS_SCRIPT_DIRECTORY"
 
 LOCALES_LIST="en fr it de nl ja hu pt_BR es_ES es_CL"
 
-XIVO_CLIENT_RESOURCE=xivo.xivo-client
+XIVO_CLIENT_RESOURCE=wazo.wazo-client-qt
 TRANSIFEX_URL=https://www.transifex.com
-TRANSIFEX_PROJECT_URL=https://www.transifex.com/projects/p/xivo/resource/xivo-client
+TRANSIFEX_PROJECT_URL=https://www.transifex.com/projects/p/wazo/resource/wazo-client-qt
 TRANSIFEX_I18N_DIR="$XIVO_CLIENT_ROOT/translations/xivo.xivo-client"
 XIVO_CLIENT_I18N_DIR="$XIVO_CLIENT_ROOT/xivoclient/i18n"
 if [ -n "$QT_PATH" ]; then
