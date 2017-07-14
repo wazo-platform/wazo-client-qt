@@ -132,7 +132,7 @@ void MainWindow::setAppIcon(const QString & def)
 
 void MainWindow::setTitle(const QString & app_title)
 {
-    QString title = QString("XiVO %1").arg(app_title);
+    QString title = QString("Wazo %1").arg(app_title);
     this->setWindowTitle(title);
     m_tray_icon->setToolTip(title);
 }
@@ -383,7 +383,7 @@ void MainWindow::about()
 {
     QString applicationVersion(XC_VERSION);
     QString fetchlastone = (QString("<a href=%1>%2</a>")
-                            .arg("http://mirror.xivo.io/iso/xivo-current")
+                            .arg("http://mirror.wazo.community/iso/xivo-current")
                             .arg(tr("Fetch the last one")));
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     QString gitdate_qs(__git_date__);
@@ -391,25 +391,24 @@ void MainWindow::about()
 
     // might be useful to display whether QSystemTrayIcon::isSystemTrayAvailable() is true
     QMessageBox::about(this,
-                       tr("About XiVO Client"),
-                       "<h3>XiVO " + tr("Client %1").arg(XC_VERSION) + "</h3>" +
-                       tr("The XiVO CTI applications, once connected to the proper server, "
-                          "complete the XiVO telephony system, by providing computer tools, "
+                       tr("About Wazo Client"),
+                       "<h3>Wazo " + tr("Client %1").arg(XC_VERSION) + "</h3>" +
+                       tr("The Wazo CTI applications, once connected to the proper server, "
+                          "complete the Wazo telephony system, by providing computer tools, "
                           "such as customer information display, directory searches, or various "
                           "supervision 'X-lets' for call centers.") +
                        "<p>" +
                        tr("<u>Version Information</u>") + "<br>" +
-                       tr("Major : <b>%1</b> (XiVO branch)").arg(applicationVersion) + "<br>" +
+                       tr("Major : <b>%1</b> (Wazo branch)").arg(applicationVersion) + "<br>" +
                        tr("Minor : git hash <b>%1</b> from : %2").arg(__git_hash__).arg(gitdate) + "<br>" +
                        fetchlastone + "<br>" +
                        "<br>" +
                        tr("(Application Built on : %1)").arg(datebuild) + "<br>" +
                        tr("(Application Launched on : %1)").arg(this->m_launch_date_time.toString()) + "<br>" +
                        tr("(Config File Location : %1)").arg(b_engine->getSettings()->fileName()) + "<hr>" +
-                       "Copyright (C) 2007-2016 <a href=http://www.avencall.com><b>Avencall</b></a>"
-                       "<b>" + tr("E-mail : ") + "</b><a href=mailto:contact@avencall.com>contact@avencall.com</a><br>"
-                       "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
-                       "<b>" + tr("Authors : ") + "</b>" + tr("Avencall Development Team") +
+                       "Copyright (C) 2007-2017 <a href=http://wazo.community><b>Wazo Community</b></a><br>"
+                       "<b>" + tr("E-mail : ") + "</b><a href=mailto:dev@wazo.community>dev@wazo.community</a><br>"
+                       "<b>" + tr("Authors : ") + "</b>" + tr("The Wazo authors") +
                        "<hr>"
                        "<b>" + tr("License : ") + "</b>" +
                        "<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GNU General Public License v3</a><br>"
