@@ -10,3 +10,20 @@ Building and Running
 
 Complete documentation on building the Wazo Client can be found on the
 [Wazo documentation web site](http://documentation.wazo.community/en/stable/contributors/xivo_client/build.html).
+
+
+Doxygen documentation
+---
+
+Developers may be interested in the source code documentation. Use the following command to
+generate the documentation using Doxygen.
+
+```
+doxygen Doxyfile
+```
+
+You can then open the generated documentation with you browser.
+
+```
+firefox doc/html/index.html
+```
