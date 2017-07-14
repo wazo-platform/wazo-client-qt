@@ -14,7 +14,7 @@
    <enum>Qt::StrongFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>XiVO Client</string>
+   <string>Wazo Client</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../xivoclient.qrc">
@@ -50,7 +50,7 @@
    </property>
    <widget class="QMenu" name="menu_client">
     <property name="title">
-     <string>&amp;XiVO Client</string>
+     <string>&amp;Wazo Client</string>
     </property>
     <addaction name="action_configure"/>
     <addaction name="action_to_systray"/>
@@ -151,7 +151,7 @@
   </action>
   <action name="action_about_client">
    <property name="text">
-    <string>&amp;About XiVO Client</string>
+    <string>&amp;About Wazo Client</string>
    </property>
   </action>
   <action name="action_about_qt">
