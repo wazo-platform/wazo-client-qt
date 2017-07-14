@@ -49,13 +49,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>170</height>
+       <height>180</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>170</height>
+       <height>180</height>
       </size>
      </property>
      <property name="autoFillBackground">
@@ -98,7 +98,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../xivoclient.qrc">:/images/xivo-logo.png</pixmap>
+         <pixmap resource="../../xivoclient.qrc">:/images/wazo-logo-white.svg</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -138,7 +138,7 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color:#E77D39;</string>
+         <string notr="true">color:#FFFFFF;</string>
         </property>
         <property name="text">
          <string>LOGIN</string>
@@ -268,7 +268,7 @@
             <string notr="true">color: #2c2927;</string>
            </property>
            <property name="text">
-            <string>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</string>
+            <string>Wazo, a next generation unified communication solution for your business.</string>
            </property>
            <property name="textFormat">
             <enum>Qt::AutoText</enum>
