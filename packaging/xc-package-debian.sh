@@ -43,8 +43,8 @@ function package-content {
     cp -r $DEBIAN_QT_PATH/translations $PKGROOT/opt/xivoclient
     cp $RESOURCES_DIR/qt.conf $PKGROOT/opt/xivoclient
 
-    mkdir -p $PKGROOT/usr/share/icons/hicolor/128x128/apps
-    cp $RESOURCES_DIR/xivoclient.png $PKGROOT/usr/share/icons/hicolor/128x128/apps
+    mkdir -p $PKGROOT/usr/share/icons/hicolor/256x256/apps
+    cp $RESOURCES_DIR/wazoclient.png $PKGROOT/usr/share/icons/hicolor/256x256/apps
 
     mkdir -p $PKGROOT/usr/share/applications/
     cp $RESOURCES_DIR/xivoclient.desktop $PKGROOT/usr/share/applications/

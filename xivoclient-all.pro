@@ -42,14 +42,14 @@ tests {
                      packaging/resources/ssleay32.dll \
                      packaging/resources/qt.conf \
                      packaging/resources/xivo.bmp \
-                     packaging/resources/xivoclient.png \
+                     packaging/resources/wazoclient.png \
                      packaging/resources/xivoicon.ico \
                      packaging/xc-packaging-windows.sh
         pack.commands = packaging/xc-package-windows.sh
     }
     linux-g++ {
         pack.target = pack
-        pack.input = packaging/resources/xivoclient.png \
+        pack.input = packaging/resources/wazoclient.png \
                      packaging/resources/xivoclient.desktop
         pack.commands = packaging/xc-package-debian.sh
     }
