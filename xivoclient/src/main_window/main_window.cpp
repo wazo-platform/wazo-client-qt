@@ -1,9 +1,7 @@
-/* XiVO Client
- * Copyright (C) 2013-2016 Avencall
+/*
+ * Copyright 2013-2017 The Wazo Authors  (see the AUTHORS file)
  *
- * This file is part of XiVO Client.
- *
- * XiVO Client is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version, with a Section 7 Additional
@@ -18,13 +16,13 @@
  *   licensed under a dual license: the OpenSSL License and the original
  *   SSLeay license.
  *
- * XiVO Client is distributed in the hope that it will be useful,
+ * This programm is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <baseengine.h>
@@ -409,7 +407,6 @@ void MainWindow::about()
                        tr("(Application Launched on : %1)").arg(this->m_launch_date_time.toString()) + "<br>" +
                        tr("(Config File Location : %1)").arg(b_engine->getSettings()->fileName()) + "<hr>" +
                        "Copyright (C) 2007-2016 <a href=http://www.avencall.com><b>Avencall</b></a>"
-                       "<br>"
                        "<b>" + tr("E-mail : ") + "</b><a href=mailto:contact@avencall.com>contact@avencall.com</a><br>"
                        "<b>" + tr("Phone : ") + "</b>(+33 / 0) 1.41.38.99.60<br>" +
                        "<b>" + tr("Authors : ") + "</b>" + tr("Avencall Development Team") +
