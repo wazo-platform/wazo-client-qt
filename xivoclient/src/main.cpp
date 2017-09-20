@@ -48,22 +48,51 @@
 
 const QString &str_socket_arg_prefix = "socket:";
 
+bool renameConfigFile(const QString &old_org, const QString &old_app, const QString &new_org, const QString &new_app)
+{
+    QSettings old_settings(QSettings::IniFormat, QSettings::UserScope, old_org, old_app);
+    QSettings new_settings(QSettings::IniFormat, QSettings::UserScope, new_org, new_app);
+    const QString &old_filename = old_settings.fileName();
+    const QString &new_filename = new_settings.fileName();
+
+    if (QFile::exists(old_filename) == false) {
+        return false;
+    }
+
+    const QString &config_dir_name = QFileInfo(new_filename).absolutePath();
+    QDir config_dir(config_dir_name);
+    config_dir.mkpath(config_dir_name);
+
+    if (QFile::exists(new_filename)) {
+        QFile::remove(new_filename);
+    }
+
+    return QFile::rename(old_filename, new_filename);
+}
+
 // argc has to be a reference, or QCoreApplication will segfault
 ExecObjects init_xivoclient(int & argc, char **argv)
 {
     ExecObjects ret;
-    QCoreApplication::setOrganizationName("XIVO");
-    QCoreApplication::setOrganizationDomain("xivo.io");
-    QCoreApplication::setApplicationName("XIVO_Client");
+    QCoreApplication::setOrganizationName("Wazo");
+    QCoreApplication::setOrganizationDomain("wazo.community");
+    QCoreApplication::setApplicationName("Wazo_Client");
     EventAwareApplication  *app = new EventAwareApplication(argc, argv);
 
     PowerEventHandler * power_event_handler = new PowerEventHandler();
     app->installNativeEventFilter(power_event_handler);
 
+    bool renamed = renameConfigFile("XIVO", "XIVO_Client",
+                                    QCoreApplication::organizationName(), QCoreApplication::applicationName());
     QSettings * settings = new QSettings(QSettings::IniFormat,
                                          QSettings::UserScope,
                                          QCoreApplication::organizationName(),
                                          QCoreApplication::applicationName());
+
+    if (renamed) {
+        qDebug() << "Old migration file migrated to" << settings->fileName();
+    }
+
     qDebug() << "Reading configuration file" << settings->fileName();
 
     QString profile = "default-user";
