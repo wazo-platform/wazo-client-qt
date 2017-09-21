@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../../xivoclient.qrc">
-    <normaloff>:/images/xivoicon-orange.png</normaloff>:/images/xivoicon-orange.png</iconset>
+    <normaloff>:/images/wazoicon-color.png</normaloff>:/images/wazoicon-color.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>

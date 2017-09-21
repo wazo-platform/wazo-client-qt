@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../../xivoclient.qrc">
-    <normaloff>:/images/xivoicon-orange.png</normaloff>:/images/xivoicon-orange.png</iconset>
+    <normaloff>:/images/wazoicon-color.png</normaloff>:/images/wazoicon-color.png</iconset>
   </property>
   <property name="animated">
    <bool>false</bool>

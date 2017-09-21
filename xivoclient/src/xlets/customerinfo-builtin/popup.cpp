@@ -162,7 +162,7 @@ void Popup::feed(QIODevice * inputstream,
             year->setText(currentDateTime.toString("yyyy"));
     }
 
-    setWindowIcon(QIcon(":/images/xivoicon-orange.png"));
+    setWindowIcon(QIcon(":/images/wazoicon-color.png"));
     QDesktopServices::setUrlHandler(QString("tel"), this, "dispurl");
 
     qDebug() << Q_FUNC_INFO << this << m_inputstream->bytesAvailable() << "bytes available";

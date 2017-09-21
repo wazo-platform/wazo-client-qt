@@ -71,7 +71,7 @@
         <file>images/wazo-logo-white.svg</file>
         <file>images/xivoicon-black.png</file>
         <file>images/wazoicon-green.svg</file>
-        <file>images/xivoicon-orange.png</file>
+        <file>images/wazoicon-color.png</file>
         <file>images/xivoicon-red.png</file>
     </qresource>
 </RCC>
