@@ -124,7 +124,7 @@ void MainWindow::setAppIcon(const QString & def)
     } else if (def == "xivo-green") { // agent_logged
         icon = QIcon(":/images/wazoicon-green.svg");
     } else { // disconnected
-        icon = QIcon(":/images/xivoicon-black.png");
+        icon = QIcon(":/images/wazoicon-black.png");
     }
     this->setWindowIcon(icon);
     m_tray_icon->setIcon(icon);
