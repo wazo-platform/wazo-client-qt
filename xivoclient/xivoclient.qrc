@@ -70,7 +70,7 @@
         <file>images/warning.png</file>
         <file>images/wazo-logo-white.svg</file>
         <file>images/xivoicon-black.png</file>
-        <file>images/xivoicon-green.png</file>
+        <file>images/wazoicon-green.svg</file>
         <file>images/xivoicon-orange.png</file>
         <file>images/xivoicon-red.png</file>
     </qresource>
