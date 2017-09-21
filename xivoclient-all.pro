@@ -43,7 +43,7 @@ tests {
                      packaging/resources/qt.conf \
                      packaging/resources/xivo.bmp \
                      packaging/resources/wazoclient.png \
-                     packaging/resources/xivoicon.ico \
+                     packaging/resources/wazoicon.ico \
                      packaging/xc-packaging-windows.sh
         pack.commands = packaging/xc-package-windows.sh
     }

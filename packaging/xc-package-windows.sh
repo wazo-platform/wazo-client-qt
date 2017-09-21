@@ -27,7 +27,7 @@ rm -rf $DEST_DIR
 mkdir $DEST_DIR
 
 # Resources
-cp -r ${RES_DIR}/{gpl.txt,xivoicon.ico,xivo.bmp} $DEST_DIR
+cp -r ${RES_DIR}/{gpl.txt,wazoicon.ico,xivo.bmp} $DEST_DIR
 
 # Qt libs
 rm -rf $DEST_DIR/qtlibs
