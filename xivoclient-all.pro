@@ -50,7 +50,7 @@ tests {
     linux-g++ {
         pack.target = pack
         pack.input = packaging/resources/wazoclient.png \
-                     packaging/resources/xivoclient.desktop
+                     packaging/resources/wazoclient.desktop
         pack.commands = packaging/xc-package-debian.sh
     }
     mac {

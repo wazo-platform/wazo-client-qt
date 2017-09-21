@@ -24,7 +24,7 @@ done
 
 shift $(( OPTIND-1 ))
 
-cd /opt/xivoclient
+cd /opt/wazoclient
 
 if [ "$DEBUG" = "yes" ]
 then

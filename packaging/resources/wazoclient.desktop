@@ -1,12 +1,12 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-GenericName=xivoclient
-Name=XiVO Client
-Comment=XiVO CTI Client
-Name[fr]=XiVO Client
-Comment[fr]=XiVO CTI Client
-Exec=xivoclient %U
+GenericName=wazoclient
+Name=Wazo Client
+Comment=Wazo CTI Client
+Name[fr]=Wazo Client
+Comment[fr]=Wazo CTI Client
+Exec=wazoclient %U
 Icon=wazoclient.png
 Type=Application
 Terminal=false
