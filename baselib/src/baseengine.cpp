@@ -215,7 +215,7 @@ void BaseEngine::loadSettings()
             m_settings->setValue("backup_server_encryption", true);
         }
 
-        m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.io").toString();
+        m_config["cti_address"] = m_settings->value("serverhost", "demo.wazo.community").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", true).toBool();
         m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();
