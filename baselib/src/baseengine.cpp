@@ -181,7 +181,7 @@ void BaseEngine::loadSettings()
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
 
-    m_config["logfilename"] = "XiVO_Client.log";
+    m_config["logfilename"] = "Wazo_Client.log";
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
     openLogFile ();
 
