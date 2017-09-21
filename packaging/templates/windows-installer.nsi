@@ -7,8 +7,8 @@ SetCompressor /FINAL /SOLID lzma
 !define MUI_ICON "wazoicon.ico"
 !define MUI_UNICON "wazoicon.ico"
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP xivo.bmp
-!define MUI_HEADERIMAGE_UNBITMAP xivo.bmp
+!define MUI_HEADERIMAGE_BITMAP wazo.bmp
+!define MUI_HEADERIMAGE_UNBITMAP wazo.bmp
 !include nsProcess.nsh
 
 Name "XiVO Client ${XC_VERSION}"

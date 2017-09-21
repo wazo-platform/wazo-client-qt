@@ -41,7 +41,7 @@ tests {
                      packaging/resources/libeay32.dll \
                      packaging/resources/ssleay32.dll \
                      packaging/resources/qt.conf \
-                     packaging/resources/xivo.bmp \
+                     packaging/resources/wazo.bmp \
                      packaging/resources/wazoclient.png \
                      packaging/resources/wazoicon.ico \
                      packaging/xc-packaging-windows.sh
