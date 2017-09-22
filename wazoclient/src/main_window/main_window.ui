@@ -17,7 +17,7 @@
    <string>Wazo Client</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../xivoclient.qrc">
+   <iconset resource="../../wazoclient.qrc">
     <normaloff>:/images/wazoicon-color.png</normaloff>:/images/wazoicon-color.png</iconset>
   </property>
   <property name="animated">
@@ -166,7 +166,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../../xivoclient.qrc"/>
+  <include location="../../wazoclient.qrc"/>
  </resources>
  <connections/>
 </ui>

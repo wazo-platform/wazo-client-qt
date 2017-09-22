@@ -20,7 +20,7 @@
    <string>Configuration</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../xivoclient.qrc">
+   <iconset resource="../../wazoclient.qrc">
     <normaloff>:/images/wazoicon-color.png</normaloff>:/images/wazoicon-color.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -80,7 +80,7 @@
             <string>You must restart the program for this setting to apply.</string>
            </property>
            <property name="pixmap">
-            <pixmap resource="../../xivoclient.qrc">:/images/warning.png</pixmap>
+            <pixmap resource="../../wazoclient.qrc">:/images/warning.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -155,7 +155,7 @@
             <string>Show window when calling from external application</string>
            </property>
            <property name="icon">
-            <iconset resource="../../xivoclient.qrc">
+            <iconset resource="../../wazoclient.qrc">
              <normaloff>:/images/warning.png</normaloff>:/images/warning.png</iconset>
            </property>
           </widget>
@@ -600,7 +600,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../xivoclient.qrc">
+            <iconset resource="../../wazoclient.qrc">
              <normaloff>:/images/padlock.png</normaloff>:/images/padlock.png</iconset>
            </property>
            <property name="iconSize">
@@ -647,7 +647,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../xivoclient.qrc">
+            <iconset resource="../../wazoclient.qrc">
              <normaloff>:/images/padlock.png</normaloff>:/images/padlock.png</iconset>
            </property>
            <property name="iconSize">
@@ -725,7 +725,7 @@
           <string>Allow multiple instances</string>
          </property>
          <property name="icon">
-          <iconset resource="../../xivoclient.qrc">
+          <iconset resource="../../wazoclient.qrc">
            <normaloff>:/images/warning.png</normaloff>:/images/warning.png</iconset>
          </property>
         </widget>
@@ -803,8 +803,8 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../xivoclient.qrc"/>
-  <include location="../../xivoclient.qrc"/>
+  <include location="../../wazoclient.qrc"/>
+  <include location="../../wazoclient.qrc"/>
  </resources>
  <connections/>
 </ui>

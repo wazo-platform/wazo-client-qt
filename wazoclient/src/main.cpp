@@ -71,7 +71,7 @@ bool renameConfigFile(const QString &old_org, const QString &old_app, const QStr
 }
 
 // argc has to be a reference, or QCoreApplication will segfault
-ExecObjects init_xivoclient(int & argc, char **argv)
+ExecObjects init_wazoclient(int & argc, char **argv)
 {
     ExecObjects ret;
     QCoreApplication::setOrganizationName("Wazo");
@@ -206,7 +206,7 @@ ExecObjects init_xivoclient(int & argc, char **argv)
     return ret;
 }
 
-int run_xivoclient(ExecObjects exec_obj)
+int run_wazoclient(ExecObjects exec_obj)
 {
     bool should_start = exec_obj.initOK == true && exec_obj.app != NULL;
     if (should_start) {
@@ -216,7 +216,7 @@ int run_xivoclient(ExecObjects exec_obj)
     }
 }
 
-void clean_xivoclient(ExecObjects exec_obj)
+void clean_wazoclient(ExecObjects exec_obj)
 {
 #ifdef FUNCTESTS
     delete exec_obj.rc;
@@ -232,9 +232,9 @@ void clean_xivoclient(ExecObjects exec_obj)
 
 int main(int argc, char **argv)
 {
-    ExecObjects exec_obj= init_xivoclient(argc, argv);
-    int ret = run_xivoclient(exec_obj);
+    ExecObjects exec_obj= init_wazoclient(argc, argv);
+    int ret = run_wazoclient(exec_obj);
     qDebug() << "Exiting";
-    clean_xivoclient(exec_obj);
+    clean_wazoclient(exec_obj);
     return ret;
 }

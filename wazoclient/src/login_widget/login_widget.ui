@@ -98,7 +98,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../xivoclient.qrc">:/images/wazo-logo-white.svg</pixmap>
+         <pixmap resource="../../wazoclient.qrc">:/images/wazo-logo-white.svg</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -554,7 +554,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../xivoclient.qrc"/>
+  <include location="../../wazoclient.qrc"/>
  </resources>
  <connections/>
 </ui>

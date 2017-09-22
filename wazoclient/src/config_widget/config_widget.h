@@ -54,9 +54,9 @@ class XletDispatcher;
 /*If you want to update the settings window, you need to look for every
  * setting wanted in the application.
  * First you can get every QSettings variable with a command like :
- *     grep -ron '[[:space:]]QSettings[^;]*;' xivoclient common baselib
+ *     grep -ron '[[:space:]]QSettings[^;]*;' wazoclient common baselib
  * Then you can get every setting by typing a command like :
- *     egrep -ron '(variables)->value\("[^)]*\)' xivoclient common baselib
+ *     egrep -ron '(variables)->value\("[^)]*\)' wazoclient common baselib
  * where variables stands for the list of the variables obtained by the
  * previous command, separated by |
  */

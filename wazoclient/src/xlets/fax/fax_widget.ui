@@ -228,7 +228,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
+           <iconset resource="../../../wazoclient.qrc">
             <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
           </property>
           <property name="iconSize">
@@ -344,7 +344,7 @@
   <tabstop>send_fax_button</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../xivoclient.qrc"/>
+  <include location="../../../wazoclient.qrc"/>
  </resources>
  <connections/>
 </ui>

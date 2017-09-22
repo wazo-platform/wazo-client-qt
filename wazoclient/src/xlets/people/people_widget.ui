@@ -247,7 +247,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../xivoclient.qrc"/>
+  <include location="../../../wazoclient.qrc"/>
  </resources>
  <connections/>
 </ui>

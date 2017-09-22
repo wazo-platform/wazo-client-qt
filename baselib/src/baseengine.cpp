@@ -1578,7 +1578,7 @@ void BaseEngine::setupTranslation()
     }
 
     QStringList translation_files = QStringList()
-        << QString(":/obj/xivoclient_%1").arg(m_locale)
+        << QString(":/obj/wazoclient_%1").arg(m_locale)
         << QString(":/obj/baselib_%1").arg(m_locale)
         << QString(":/obj/xletlib_%1").arg(m_locale)
         << QString("%1/qt_%2").arg(QLibraryInfo::location(QLibraryInfo::TranslationsPath), m_locale);

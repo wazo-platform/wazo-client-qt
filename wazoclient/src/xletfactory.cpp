@@ -75,7 +75,7 @@ static void init()
  * Find a plugins directory,
  * ./plugins
  * or
- * /usr/share/xivoclient/plugins
+ * /usr/share/wazoclient/plugins
  * and populate the xletList hash table.
  */
 static bool findPluginDir()
@@ -87,7 +87,7 @@ static bool findPluginDir()
         // if there is a plugins dir next to where the application remain
         pluginDirFound = true;
     } else {
-        if (pluginDir.cd(PLUGINDIR)) { // PLUGINDIR defined in common-xivoclient-bin.pri
+        if (pluginDir.cd(PLUGINDIR)) { // PLUGINDIR defined in common-wazoclient-bin.pri
             pluginDirFound = true;
         } else {
             qDebug() << Q_FUNC_INFO << "cannot find plugins directory";

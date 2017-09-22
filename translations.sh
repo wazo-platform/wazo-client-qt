@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script pulls translation files from Transifex
-# Files are stored there in two big files, one for xivoclient, one for baselib
+# Files are stored there in two big files, one for wazoclient, one for baselib
 # We duplicate the big files for every .ts file we need, then we use lupdate to
 # strip them down.
 
@@ -18,7 +18,7 @@ XIVO_CLIENT_RESOURCE=wazo.wazo-client-qt
 TRANSIFEX_URL=https://www.transifex.com
 TRANSIFEX_PROJECT_URL=https://www.transifex.com/projects/p/wazo/resource/wazo-client-qt
 TRANSIFEX_I18N_DIR="$XIVO_CLIENT_ROOT/translations/xivo.xivo-client"
-XIVO_CLIENT_I18N_DIR="$XIVO_CLIENT_ROOT/xivoclient/i18n"
+XIVO_CLIENT_I18N_DIR="$XIVO_CLIENT_ROOT/wazoclient/i18n"
 if [ -n "$QT_PATH" ]; then
     PATH="$PATH:$QT_PATH"
 fi
@@ -151,15 +151,15 @@ function unmerge_translations {
 
 function find_all_ts_files {
     locale="$1"
-    find baselib xivoclient -name "*_$locale.ts" -print
+    find baselib wazoclient -name "*_$locale.ts" -print
 }
 
 
 function lupdate_all {
     lupdate "baselib/baselib.pro" -no-obsolete
-    lupdate "xivoclient/xletlib.pro" -no-obsolete
-    lupdate "xivoclient/xivoclient.pro" -no-obsolete
-    lupdate "xivoclient/xlets.pro" -no-obsolete
+    lupdate "wazoclient/xletlib.pro" -no-obsolete
+    lupdate "wazoclient/wazoclient.pro" -no-obsolete
+    lupdate "wazoclient/xlets.pro" -no-obsolete
 }
 
 

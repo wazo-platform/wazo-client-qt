@@ -1,6 +1,6 @@
 include (../common.pri)
 
-ROOT_DIR = $${GIT_DIR}/xivoclient
+ROOT_DIR = $${GIT_DIR}/wazoclient
 BASELIB_DIR = $${GIT_DIR}/baselib
 BIN_DIR = $${GIT_DIR}/bin
 

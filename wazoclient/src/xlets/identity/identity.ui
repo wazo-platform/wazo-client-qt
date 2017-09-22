@@ -269,7 +269,7 @@ QToolButton::menu-indicator {
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../xivoclient.qrc">
+         <iconset resource="../../../wazoclient.qrc">
           <normaloff>:/images/agent-on.svg</normaloff>:/images/agent-on.svg</iconset>
         </property>
         <property name="iconSize">
@@ -545,7 +545,7 @@ QToolButton::menu-indicator {
  </widget>
  <resources>
   <include location="identity.qrc"/>
-  <include location="../../../xivoclient.qrc"/>
+  <include location="../../../wazoclient.qrc"/>
  </resources>
  <connections/>
 </ui>

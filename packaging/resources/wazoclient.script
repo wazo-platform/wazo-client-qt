@@ -28,7 +28,7 @@ cd /opt/wazoclient
 
 if [ "$DEBUG" = "yes" ]
 then
-    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./xivoclient $@
+    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./wazoclient $@
 else
-    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./xivoclient $@ >& /dev/null
+    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./wazoclient $@ >& /dev/null
 fi

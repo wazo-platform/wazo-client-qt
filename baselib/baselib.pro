@@ -4,7 +4,7 @@ TEMPLATE    = lib
 # hide_symbols avoids exporting all symbols from dll with gcc
 CONFIG      += dll hide_symbols
 
-TARGET      = xivoclient
+TARGET      = wazoclient
 
 # Library version
 VERSION      = $${XIVOVER}

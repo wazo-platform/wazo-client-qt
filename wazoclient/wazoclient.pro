@@ -4,12 +4,12 @@ include($${ROOT_DIR}/qt-solutions/qtsingleapplication/src/qtsingleapplication.pr
 TEMPLATE = app
 # CONFIG += console # uncomment to get console on Win32
 
-TARGET = xivoclient
+TARGET = wazoclient
 
-unix:LIBS += -lxivoclientxlets
+unix:LIBS += -lwazoclientxlets
 win32 {
-    debug:LIBS += -lxivoclientxletsd
-    release:LIBS += -lxivoclientxlets
+    debug:LIBS += -lwazoclientxletsd
+    release:LIBS += -lwazoclientxlets
 }
 mac {
     QMAKE_INFO_PLIST = ../packaging/resources/macos-info.plist
@@ -17,11 +17,11 @@ mac {
 
 QT += svg xml
 
-RESOURCES += xivoclient.qrc
+RESOURCES += wazoclient.qrc
 mac {
     ICON = ../packaging/resources/wazoicon-mac.icns
 } else {
-    RC_FILE = xivoclient.rc
+    RC_FILE = wazoclient.rc
 }
 
 FORMS += $${ROOT_DIR}/src/config_widget/config_widget.ui
@@ -30,16 +30,16 @@ FORMS += $${ROOT_DIR}/src/main_window/loading_dialog.ui
 FORMS += $${ROOT_DIR}/src/main_window/main_window.ui
 
 # this should just tell lrelease to compile these files
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_fr.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_nl.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_de.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_ja.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_en.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_es_CL.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_es_ES.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_pt_BR.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_hu.ts
-TRANSLATIONS += $$ROOT_DIR/i18n/xivoclient_it.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_fr.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_nl.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_de.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_ja.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_en.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_es_CL.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_es_ES.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_pt_BR.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_hu.ts
+TRANSLATIONS += $$ROOT_DIR/i18n/wazoclient_it.ts
 
 # Input
 INCLUDEPATH += $$BASELIB_DIR/src
@@ -64,6 +64,6 @@ DESTDIR  = $$BIN_DIR
 # Get the optional plugins dir from environment variable
 PLUGINDIR = $$(XIVOCLIENT_PLUGINDIR)
 isEmpty( PLUGINDIR ) {
-    PLUGINDIR = /usr/share/xivoclient/plugins
+    PLUGINDIR = /usr/share/wazoclient/plugins
 }
 DEFINES += PLUGINDIR=\"\\\"$${PLUGINDIR}\\\"\"

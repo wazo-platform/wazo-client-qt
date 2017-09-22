@@ -194,7 +194,7 @@
            <string notr="true"/>
           </property>
           <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
+           <iconset resource="../../../wazoclient.qrc">
             <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
           </property>
           <property name="qss_tags" stdset="0">
@@ -286,7 +286,7 @@
            <string notr="true"/>
           </property>
           <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
+           <iconset resource="../../../wazoclient.qrc">
             <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
           </property>
           <property name="qss_tags" stdset="0">
@@ -370,7 +370,7 @@
            <string notr="true"/>
           </property>
           <property name="icon">
-           <iconset resource="../../../xivoclient.qrc">
+           <iconset resource="../../../wazoclient.qrc">
             <normaloff>:/images/search-regular.svg</normaloff>:/images/search-regular.svg</iconset>
           </property>
           <property name="qss_tags" stdset="0">
@@ -479,7 +479,7 @@
   <tabstop>fwdbusy_button</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../xivoclient.qrc"/>
+  <include location="../../../wazoclient.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -61,9 +61,9 @@ struct ExecObjects {
     }
 };
 
-ExecObjects init_xivoclient(int &, char **);
-int run_xivoclient(ExecObjects);
-void clean_xivoclient(ExecObjects);
+ExecObjects init_wazoclient(int &, char **);
+int run_wazoclient(ExecObjects);
+void clean_wazoclient(ExecObjects);
 
 int main(int, char **);
 

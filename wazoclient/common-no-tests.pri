@@ -1,4 +1,4 @@
-include (common-xivoclient.pri)
+include (common-wazoclient.pri)
 
 # regenerate qm when needed
 
@@ -11,10 +11,10 @@ updateqm.commands = $$QMAKE_LRELEASE -silent ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_O
 updateqm.CONFIG += no_link target_predeps
 
 LIBS += -L$${BIN_DIR}
-unix:LIBS += -lxivoclient
+unix:LIBS += -lwazoclient
 win32 {
-    debug:LIBS += -lxivoclientd
-    release:LIBS += -lxivoclient
+    debug:LIBS += -lwazoclientd
+    release:LIBS += -lwazoclient
     LIBS += -lole32 -loleaut32 -luuid
 }
 

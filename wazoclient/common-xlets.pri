@@ -11,8 +11,8 @@ DESTDIR      = $${BIN_DIR}/plugins
 macx:DESTDIR = $${BIN_DIR}/wazoclient.app/Contents/PlugIns
 
 LIBS += -L$${BIN_DIR}
-unix:LIBS += -lxivoclientxlets
+unix:LIBS += -lwazoclientxlets
 win32 {
-    release:LIBS += -lxivoclientxlets
-    debug:LIBS += -lxivoclientxletsd
+    release:LIBS += -lwazoclientxlets
+    debug:LIBS += -lwazoclientxletsd
 }
