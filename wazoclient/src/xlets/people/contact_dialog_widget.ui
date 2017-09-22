@@ -93,7 +93,7 @@
      </property>
      <property name="qss_tags" stdset="0">
       <stringlist notr="true">
-       <string>orange</string>
+       <string>red</string>
        <string>styled</string>
       </stringlist>
      </property>

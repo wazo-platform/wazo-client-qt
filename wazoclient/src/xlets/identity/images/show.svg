@@ -13,7 +13,7 @@
    height="30.000841"
    id="svg3356"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.92.1 r15371"
    sodipodi:docname="show.svg">
   <defs
      id="defs3358" />
@@ -24,8 +24,8 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="19.956629"
+     inkscape:zoom="10.215625"
+     inkscape:cx="4.0006792"
      inkscape:cy="17.555994"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -34,10 +34,10 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1920"
-     inkscape:window-height="995"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata3361">
@@ -59,17 +59,17 @@
     <g
        transform="translate(212.69923,215.37919)"
        id="g143"
-       style="fill:#e77d39;fill-opacity:1">
+       style="fill:#ef3e42;fill-opacity:1">
       <path
          inkscape:connector-curvature="0"
          d="m 160.687,321.53 c 0.778,0.771 2.067,0.781 2.843,0.005 1.537,-1.536 3.073,-3.089 4.609,-4.625 1.836,-1.835 -1.008,-4.691 -2.843,-2.858 -1.064,1.065 -2.13,2.203 -3.194,3.249 -1.075,-1.046 -2.148,-2.184 -3.225,-3.249 -1.842,-1.825 -4.687,1.035 -2.844,2.861 1.551,1.535 3.104,3.08 4.654,4.617 z"
          id="path145"
-         style="fill:#e77d39;fill-opacity:1" />
+         style="fill:#ef3e42;fill-opacity:1" />
       <path
          inkscape:connector-curvature="0"
          d="m 156.413,330.789 c 5.571,2.398 12.036,1.088 16.396,-3.058 4.357,-4.145 5.641,-10.815 3.426,-16.346 -2.227,-5.555 -7.615,-9.155 -13.546,-9.391 -8.396,-0.336 -15.278,6.784 -15.388,15.001 0.082,5.979 3.594,11.419 9.112,13.794 z m 4.021,-26.256 c 6.139,-1.067 12.134,3.023 13.95,8.83 1.876,5.99 -1.227,12.34 -6.741,15.057 -5.602,2.759 -12.531,0.523 -15.902,-4.57 -1.348,-2.035 -1.993,-4.427 -2.024,-6.854 0.081,-6.26 4.575,-11.395 10.717,-12.463 z"
          id="path147"
-         style="fill:#e77d39;fill-opacity:1" />
+         style="fill:#ef3e42;fill-opacity:1" />
     </g>
   </g>
 </svg>

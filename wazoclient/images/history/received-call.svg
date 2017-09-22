@@ -14,8 +14,8 @@
    viewBox="0 0 12.000279 12.000152"
    id="svg3732"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="incalls.svg">
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="received-call.svg">
   <defs
      id="defs3734" />
   <sodipodi:namedview
@@ -25,15 +25,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.4"
-     inkscape:cx="6.3574441"
+     inkscape:zoom="81.725"
+     inkscape:cx="4.3629504"
      inkscape:cy="0.16776829"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1855"
      inkscape:window-height="1056"
-     inkscape:window-x="1985"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
      fit-margin-top="0"
@@ -61,6 +61,6 @@
        inkscape:connector-curvature="0"
        d="m 13.269971,31.159766 c -0.003,0.039 -0.046,0.079 -0.046,0.119 0,0.036 0,0.072 0,0.108 0,0.925 0.871,1.904 1.811,1.904 2.278,0 4.335,0 6.64,0 2.305,0 2.305,-3.289 0,-3.289 0,0 -1.153,0 -2.663,0 1.901,-2.024 3.804,-3.878 5.705,-5.757 1.569,-1.55 -0.86,-4.011 -2.429,-2.461 -1.852,1.829 -3.702,3.629 -5.554,5.458 -0.005,-0.891 -0.008,-1.797 -0.013,-2.679 -0.011,-2.189 -3.47,-2.219 -3.459,-0.028 0.01,2.186 -0.003,4.434 0.008,6.625 z"
        id="path3661"
-       style="fill:#e77d39;fill-opacity:1" />
+       style="fill:#ef3e42;fill-opacity:1" />
   </g>
 </svg>

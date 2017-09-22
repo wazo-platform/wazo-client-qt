@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #2C2927;</string>
+      <string notr="true">background-color: #233e99;</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
@@ -472,7 +472,7 @@
              </property>
              <property name="qss_tags" stdset="0">
               <stringlist notr="true">
-               <string>orange</string>
+               <string>red</string>
                <string>styled</string>
               </stringlist>
              </property>

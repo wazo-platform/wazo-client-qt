@@ -14,7 +14,7 @@
    viewBox="0 0 12.000409 11.999942"
    id="svg4568"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.1 r15371"
    sodipodi:docname="star-filled.svg">
   <defs
      id="defs4570" />
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="40.96"
-     inkscape:cx="9.5275882"
-     inkscape:cy="7.4621263"
+     inkscape:zoom="52.835019"
+     inkscape:cx="6.4425131"
+     inkscape:cy="6.3914625"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -35,10 +35,10 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1863"
-     inkscape:window-height="1059"
-     inkscape:window-x="1977"
-     inkscape:window-y="21"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata4573">
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -61,6 +61,6 @@
        inkscape:connector-curvature="0"
        d="m 648.35852,493.29409 c -1.132,-0.172 -2.264,-0.344 -3.396,-0.516 -0.033,-0.071 -0.066,-0.142 -0.101,-0.213 -0.178,-0.377 -0.355,-0.753 -0.533,-1.131 -0.29,-0.615 -0.58,-1.23 -0.87,-1.846 -0.138,-0.291 -0.371,-0.39 -0.601,-0.365 -0.23,-0.025 -0.464,0.074 -0.601,0.365 -0.502,1.064 -1.003,2.127 -1.505,3.19 -0.085,0.014 -0.17,0.026 -0.255,0.039 -0.398,0.061 -0.796,0.121 -1.193,0.182 -0.649,0.099 -1.298,0.197 -1.947,0.296 -0.532,0.081 -0.647,0.869 -0.307,1.217 0.802,0.817 1.604,1.635 2.404,2.453 -0.185,1.126 -0.369,2.251 -0.554,3.37699 -0.103,0.626 0.45,1.091 1.022,0.776 0.978,-0.538 1.955,-1.014 2.933,-1.627 0.979,0.614 1.956,1.089 2.934,1.627 0.573,0.315 1.125,-0.173 1.022,-0.799 -0.185,-1.12399 -0.369,-2.23999 -0.553,-3.36099 0.801,-0.816 1.603,-1.632 2.403,-2.45 0.346,-0.347 0.23,-1.133 -0.302,-1.214 z"
        id="path4374"
-       style="fill:#e77d39;fill-opacity:1" />
+       style="fill:#ef3e42;fill-opacity:1" />
   </g>
 </svg>

@@ -2,13 +2,13 @@
  * FONT STYLE
  */
 QLabel[qss_tags~="xlet_h1"] {
-    color: #E77D39;
+    color: #ef3e42;
     font: bold 36px "Dyno";
     padding-bottom: 20px;
 }
 
 QLabel[qss_tags~="xlet_h2"] {
-    color: #E77D39;
+    color: #ef3e42;
     font: bold 22pt "Dyno";
     padding-bottom: 10px;
 }
@@ -51,6 +51,12 @@ QPushButton[qss_tags~="styled"] {
 
 QPushButton[qss_tags~="orange"] {
     background-color: #E77D39;
+    color: #FFFFFF;
+    font: 12px "Dyno";
+}
+
+QPushButton[qss_tags~="red"] {
+    background-color: #ef3e42;
     color: #FFFFFF;
     font: 12px "Dyno";
 }

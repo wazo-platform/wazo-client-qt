@@ -14,8 +14,8 @@
    viewBox="0 0 11.999163 12.000745"
    id="svg3732"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="missedcalls.svg">
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="missed-call.svg">
   <defs
      id="defs3734" />
   <sodipodi:namedview
@@ -25,15 +25,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.4"
-     inkscape:cx="9.9909541"
+     inkscape:zoom="81.725"
+     inkscape:cx="7.9964604"
      inkscape:cy="4.6502837"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1855"
      inkscape:window-height="1056"
-     inkscape:window-x="1985"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
      fit-margin-top="0"
@@ -61,6 +61,6 @@
        inkscape:connector-curvature="0"
        d="m 18.038037,31.773111 c 1.014,-1.014 2.027,-2.028 3.041,-3.042 1.58,-1.58 -0.868,-4.028 -2.447,-2.448 -1.014,1.015 -2.027,2.028 -3.041,3.042 -1.015,-1.014 -2.028,-2.027 -3.042,-3.042 -1.58,-1.58 -4.0280005,0.868 -2.448,2.448 1.015,1.013 2.027,2.027 3.042,3.042 -1.015,1.014 -2.027,2.027 -3.042,3.042 -1.5800005,1.580001 0.868,4.027001 2.448,2.448001 1.014,-1.015 2.027,-2.028001 3.042,-3.042001 1.014,1.013 2.027,2.027001 3.041,3.041001 1.579,1.58 4.027,-0.868 2.447,-2.448001 -1.013,-1.014 -2.028,-2.028 -3.041,-3.041 z"
        id="path3663"
-       style="fill:#e77d39;fill-opacity:0.94117647" />
+       style="fill:#ef3e42;fill-opacity:0.94117647" />
   </g>
 </svg>
