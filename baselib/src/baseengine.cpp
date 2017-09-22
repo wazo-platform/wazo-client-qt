@@ -196,7 +196,7 @@ void BaseEngine::loadSettings()
     else
         m_profilename_read = "engine-" + m_config["profilename"].toString();
 
-    // passwords in XiVO <= 16.05 were stored in clear text in the config file
+    // passwords in version <= 16.05 were stored in clear text in the config file
     if (settingsversion <= "16.05") {
         foreach (const QString &key, m_settings->allKeys()) {
             if (key.endsWith("/password")) {
@@ -208,7 +208,7 @@ void BaseEngine::loadSettings()
 
     m_settings->beginGroup(m_profilename_read);
     {
-        // In XiVO 16.02 starttls has been enabled by default
+        // In version 16.02 starttls has been enabled by default
         if (settingsversion < "16.02") {
             qDebug() << "enabling starttls";
             m_settings->setValue("encryption", true);
@@ -512,7 +512,7 @@ void BaseEngine::clearInternalData()
 
 void BaseEngine::onCTIServerDisconnected()
 {
-    b_engine->emitMessage(tr("Connection lost with XiVO CTI server"));
+    b_engine->emitMessage(tr("Connection lost with Wazo CTI server"));
     b_engine->startTryAgainTimer();
     this->stop();
 }
@@ -590,14 +590,14 @@ void BaseEngine::updatePresence(const QString &user_xid)
     }
 }
 
-/*! \brief send command to XiVO CTI server */
+/*! \brief send command to the server */
 void BaseEngine::sendCommand(const QByteArray &command)
 {
     if (m_ctiserversocket->state() == QAbstractSocket::ConnectedState)
         m_ctiserversocket->write(command + "\n");
 }
 
-/*! \brief encode json and then send command to XiVO CTI server */
+/*! \brief encode json and then send command to the server */
 QString BaseEngine::sendJsonCommand(const QVariantMap & cticommand)
 {
     if (! cticommand.contains("class"))
@@ -1117,7 +1117,7 @@ void BaseEngine::popupError(const QString & errorid,
     if (errorid.toLower() == "user_not_found") {
         login_error = true;
         errormsg = tr("Your registration name <%1@%2> "
-                      "is not known by the XiVO CTI server on %3:%4.")
+                      "is not known by the Wazo CTI server on %3:%4.")
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "login_password") {
         login_error = true;
@@ -1170,14 +1170,14 @@ void BaseEngine::popupError(const QString & errorid,
 
     // socket errors - once connected
     } else if (errorid.toLower() == "socket_error_remotehostclosed") {
-        errormsg = tr("The XiVO CTI server on %1:%2 has just closed the connection.")
+        errormsg = tr("The server at %1:%2 has just closed the connection.")
             .arg(server_address).arg(server_port);
 
     } else if (errorid.toLower() == "server_stopped") {
-        errormsg = tr("The XiVO CTI server on %1:%2 has just been stopped.")
+        errormsg = tr("The server at %1:%2 has just been stopped.")
             .arg(server_address).arg(server_port);
     } else if (errorid.toLower() == "server_reloaded") {
-        errormsg = tr("The XiVO CTI server on %1:%2 has just been reloaded.")
+        errormsg = tr("The server at %1:%2 has just been reloaded.")
             .arg(server_address).arg(server_port);
     } else if (errorid.startsWith("already_connected:")) {
         QStringList ipinfo = errorid.split(":");
@@ -1186,7 +1186,7 @@ void BaseEngine::popupError(const QString & errorid,
         errormsg = tr("No capability allowed.");
     } else if (errorid.startsWith("toomuchusers:")) {
         QStringList userslist = errorid.split(":")[1].split(";");
-        errormsg = tr("Max number (%1) of XiVO Clients already reached.").arg(userslist[0]);
+        errormsg = tr("Max number (%1) of clients already reached.").arg(userslist[0]);
     } else if (errorid.startsWith("missing:")) {
         errormsg = tr("Missing Argument(s)");
     } else if (errorid.startsWith("xivoversion_client:")) {
