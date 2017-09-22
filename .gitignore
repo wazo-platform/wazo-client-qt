@@ -34,3 +34,4 @@ translations
 
 # Valgrind
 valgrind.supp
+.qmake.stash

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+DEBUG="no"
+
+while getopts ":dh" opt; do
+  case $opt in
+      d)
+          DEBUG="yes"
+          ;;
+      h)
+          echo "Usage : $0 [-dh] [profile]"
+          echo
+          echo "-d : Enable debug output"
+          echo "-h : Help"
+          echo "profile : Configuration profile"
+          echo
+          exit 0
+          ;;
+      ?)
+          echo "Invalid option: -$OPTARG" >&2
+          ;;
+  esac
+done
+
+shift $(( OPTIND-1 ))
+
+cd /opt/wazoclient
+
+if [ "$DEBUG" = "yes" ]
+then
+    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./wazoclient $@
+else
+    LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH" ./wazoclient $@ >& /dev/null
+fi

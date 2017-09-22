@@ -1,9 +1,9 @@
-# Test if we are in the xivoclient context
+# Test if we are in the wazoclient context
 exists(../common.pri) {
     include(../common.pri)
     # GIT_DIR defined in common.pri
     ROOT_DIR = $${GIT_DIR}/baselib
-    CONFIG += xivoclient
+    CONFIG += wazoclient
     BIN_DIR = $${GIT_DIR}/bin
 } else {
     clear(ROOT_DIR)

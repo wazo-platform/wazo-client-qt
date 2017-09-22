@@ -1,9 +1,7 @@
-/* XiVO Client
- * Copyright (C) 2007-2016 Avencall
+/*
+ * Copyright 2007-2017 The Wazo Authors  (see the AUTHORS file)
  *
- * This file is part of XiVO Client.
- *
- * XiVO Client is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version, with a Section 7 Additional
@@ -18,13 +16,13 @@
  *   licensed under a dual license: the OpenSSL License and the original
  *   SSLeay license.
  *
- * XiVO Client is distributed in the hope that it will be useful,
+ * This programm is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with XiVO Client.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <QApplication>
@@ -183,7 +181,7 @@ void BaseEngine::loadSettings()
     m_config["systrayed"] = m_settings->value("display/systrayed", false).toBool();
     m_config["uniqueinstance"] = m_settings->value("display/unique", true).toBool();
 
-    m_config["logfilename"] = "XiVO_Client.log";
+    m_config["logfilename"] = "Wazo_Client.log";
     m_config["activate_on_tel"] = m_settings->value("display/activate_on_tel", false).toBool();
     openLogFile ();
 
@@ -217,7 +215,7 @@ void BaseEngine::loadSettings()
             m_settings->setValue("backup_server_encryption", true);
         }
 
-        m_config["cti_address"] = m_settings->value("serverhost", "demo.xivo.io").toString();
+        m_config["cti_address"] = m_settings->value("serverhost", "demo.wazo.community").toString();
         m_config["cti_port"]    = m_settings->value("serverport", 5003).toUInt();
         m_config["cti_encrypt"] = m_settings->value("encryption", true).toBool();
         m_config["cti_backup_address"] = m_settings->value("backup_server_host", "").toString();
@@ -1580,7 +1578,7 @@ void BaseEngine::setupTranslation()
     }
 
     QStringList translation_files = QStringList()
-        << QString(":/obj/xivoclient_%1").arg(m_locale)
+        << QString(":/obj/wazoclient_%1").arg(m_locale)
         << QString(":/obj/baselib_%1").arg(m_locale)
         << QString(":/obj/xletlib_%1").arg(m_locale)
         << QString("%1/qt_%2").arg(QLibraryInfo::location(QLibraryInfo::TranslationsPath), m_locale);

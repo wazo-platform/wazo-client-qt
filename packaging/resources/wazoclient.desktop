@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+GenericName=wazoclient
+Name=Wazo Client
+Comment=Wazo CTI Client
+Name[fr]=Wazo Client
+Comment[fr]=Wazo CTI Client
+Exec=wazoclient %U
+Icon=wazoclient.png
+Type=Application
+Terminal=false
+Categories=Application;Network;ContactManagement;InstantMessaging;TelephonyTools;Qt
+MimeType=application/callto;x-scheme-handler/callto;application/tel;x-scheme-handler/tel

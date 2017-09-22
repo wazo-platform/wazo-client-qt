@@ -3,7 +3,7 @@
 set -e
 
 function usage {
-    echo $0 xivoclient_dir mingw_dir qt_dir
+    echo $0 wazoclient_dir mingw_dir qt_dir
 }
 
 if [ -r versions.mak ]
@@ -21,13 +21,13 @@ MINGW_DIR=${WIN_MINGW_PATH}
 QT_DIR=${WIN_QT_PATH}
 RES_DIR=${XC_DIR}/packaging/resources
 TEMPLATES_DIR=${XC_DIR}/packaging/templates
-DEST_DIR=/tmp/xivoclient-win
+DEST_DIR=/tmp/wazoclient-win
 
 rm -rf $DEST_DIR
 mkdir $DEST_DIR
 
 # Resources
-cp -r ${RES_DIR}/{gpl.txt,xivoicon.ico,xivo.bmp} $DEST_DIR
+cp -r ${RES_DIR}/{gpl.txt,wazoicon.ico,wazo.bmp} $DEST_DIR
 
 # Qt libs
 rm -rf $DEST_DIR/qtlibs
@@ -64,12 +64,12 @@ cp ${RES_DIR}/qt.conf $DEST_DIR/qtlibs
 cp ${RES_DIR}/libeay32.dll $DEST_DIR/qtlibs
 cp ${RES_DIR}/ssleay32.dll $DEST_DIR/qtlibs
 
-# XiVO Client binaries
-rm -rf $DEST_DIR/xivoclient
-mkdir $DEST_DIR/xivoclient
-cp -r $XC_DIR/bin/*.dll $XC_DIR/bin/*.exe $DEST_DIR/xivoclient
-mkdir $DEST_DIR/xivoclient/plugins
-cp -r $XC_DIR/bin/plugins/*.dll $DEST_DIR/xivoclient/plugins
+# Wazo Client binaries
+rm -rf $DEST_DIR/wazoclient
+mkdir $DEST_DIR/wazoclient
+cp -r $XC_DIR/bin/*.dll $XC_DIR/bin/*.exe $DEST_DIR/wazoclient
+mkdir $DEST_DIR/wazoclient/plugins
+cp -r $XC_DIR/bin/plugins/*.dll $DEST_DIR/wazoclient/plugins
 
 # Reset permissions in case they are broken by ACL
 find $DEST_DIR -type d -exec chmod 0755 {} \;
@@ -82,6 +82,6 @@ cp "${TEMPLATES_DIR}"/windows-installer.nsi "${DEST_DIR}"/installer.nsi
     /DGIT_DATE="${GIT_DATE}" \
     $(cygpath -w "${DEST_DIR}"/installer.nsi)
 
-mv "${DEST_DIR}"/xivoclient-*.exe "${XC_DIR}"
+mv "${DEST_DIR}"/wazoclient-*.exe "${XC_DIR}"
 
 rm -rf "${DEST_DIR}"

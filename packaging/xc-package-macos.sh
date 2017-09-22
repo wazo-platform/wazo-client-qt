@@ -12,8 +12,8 @@ fi
 
 XC_PATH="$(cd "$1" && pwd)"
 
-BUNDLE_NAME="xivoclient.app"
-DMG_NAME="xivoclient.dmg"
+BUNDLE_NAME="wazoclient.app"
+DMG_NAME="wazoclient.dmg"
 
 BUILD_PATH="${XC_PATH}/dmg"
 BUNDLE_PATH="${BUILD_PATH}/${BUNDLE_NAME}"
@@ -40,7 +40,7 @@ function set_version() {
 
 function build_package() {
 	macdeployqt ${BUNDLE_PATH} -dmg
-	mv ${BUILD_PATH}/${DMG_NAME} ${XC_PATH}/xivoclient-${XC_VERSION}.dmg
+	mv ${BUILD_PATH}/${DMG_NAME} ${XC_PATH}/wazoclient-${XC_VERSION}.dmg
 }
 
 function package {
