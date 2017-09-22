@@ -11,10 +11,10 @@ SetCompressor /FINAL /SOLID lzma
 !define MUI_HEADERIMAGE_UNBITMAP wazo.bmp
 !include nsProcess.nsh
 
-Name "XiVO Client ${XC_VERSION}"
-OutFile "xivoclient-${XC_VERSION}-x86.exe"
+Name "Wazo Client ${XC_VERSION}"
+OutFile "wazoclient-${XC_VERSION}-x86.exe"
 
-InstallDir $PROGRAMFILES\XiVO\
+InstallDir $PROGRAMFILES\Wazo\
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
@@ -22,7 +22,7 @@ ShowInstDetails show
 ShowUninstDetails show
 
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
-!define MUI_PAGE_HEADER_SUBTEXT $(XIVO_LICENSE_TEXT)
+!define MUI_PAGE_HEADER_SUBTEXT $(WAZO_LICENSE_TEXT)
 !insertmacro MUI_PAGE_LICENSE gpl.txt
 
 !insertmacro MUI_PAGE_COMPONENTS
@@ -74,17 +74,17 @@ Function .onInit
   !insertmacro MULTIUSER_INIT
   !insertmacro MUI_LANGDLL_DISPLAY
 
-  ${nsProcess::KillProcess} "xivoclient.exe" $R0
+  ${nsProcess::KillProcess} "wazoclient.exe" $R0
 FunctionEnd
 
 !macro RegisterProtocolSection EXT
   Section ${EXT}
     SectionIn 1 3
-    AppAssocReg::SetAppAsDefault "XiVO Client" "${EXT}" "protocol"
+    AppAssocReg::SetAppAsDefault "Wazo Client" "${EXT}" "protocol"
   SectionEnd
 !macroend
 
-!define REG_UNINST Software\Microsoft\Windows\CurrentVersion\Uninstall\xivoclient
+!define REG_UNINST Software\Microsoft\Windows\CurrentVersion\Uninstall\wazoclient
 
 ; The stuff to install
 Section "Qt libraries" QtLib ; components page
@@ -94,16 +94,16 @@ Section "Qt libraries" QtLib ; components page
   File /r qtlibs\*
 SectionEnd ; end the section
 
-Section "XiVO client executable" XivoclientExe ; components page
+Section "Wazo client executable" WazoclientExe ; components page
   SectionIn RO
   SetOutPath $INSTDIR
 
-  File /r xivoclient\*
+  File /r wazoclient\*
 
-  WriteRegStr HKLM "Software\XiVO\xivoclient" "Install_Dir" "$INSTDIR"
-  WriteRegStr HKLM "${REG_UNINST}" "DisplayName" "XiVO Client"
+  WriteRegStr HKLM "Software\Wazo\wazoclient" "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM "${REG_UNINST}" "DisplayName" "Wazo Client"
   WriteRegStr HKLM "${REG_UNINST}" "UninstallString" '"$INSTDIR\uninstall.exe"'
-  WriteRegStr HKLM "${REG_UNINST}" "Publisher" "Avencall"
+  WriteRegStr HKLM "${REG_UNINST}" "Publisher" "The Wazo Authors"
   WriteRegStr HKLM "${REG_UNINST}" "DisplayVersion" "${XC_VERSION}"
   WriteRegDWORD HKLM "${REG_UNINST}" "EstimatedSize" "102400"
   WriteRegDWORD HKLM "${REG_UNINST}" "NoModify" 1
@@ -112,31 +112,31 @@ Section "XiVO client executable" XivoclientExe ; components page
   # Associate with tel: and callto: protocol
   WriteRegStr HKCR "tel" "" "URL:tel Protocol"
   WriteRegStr HKCR "tel" "URL Protocol" ""
-  WriteRegStr HKCR "tel\shell\open\command" "" "$INSTDIR\xivoclient.exe %1"
+  WriteRegStr HKCR "tel\shell\open\command" "" "$INSTDIR\wazoclient.exe %1"
   WriteRegStr HKCR "callto" "" "URL:callto Protocol"
   WriteRegStr HKCR "callto" "URL Protocol" ""
-  WriteRegStr HKCR "callto\shell\open\command" "" "$INSTDIR\xivoclient.exe %1"
+  WriteRegStr HKCR "callto\shell\open\command" "" "$INSTDIR\wazoclient.exe %1"
 
   ${If} $CheckboxShortcutDesktopState == ${BST_CHECKED}
   ${OrIf} ${Silent}
-    CreateShortCut "$DESKTOP\XiVO Client.lnk" "$INSTDIR\xivoclient.exe"
+    CreateShortCut "$DESKTOP\Wazo Client.lnk" "$INSTDIR\wazoclient.exe"
   ${EndIf}
 
   ${If} $CheckboxShortcutStartState == ${BST_CHECKED}
   ${OrIf} ${Silent}
-     CreateDirectory "$SMPROGRAMS\XiVO"
-     CreateShortCut  "$SMPROGRAMS\XiVO\\$(START_XIVOCLIENT)"  "$INSTDIR\xivoclient.exe"
-     CreateShortCut  "$SMPROGRAMS\XiVO\\$(REMOVE_XIVOCLIENT)" "$INSTDIR\uninstall.exe"
+     CreateDirectory "$SMPROGRAMS\Wazo"
+     CreateShortCut  "$SMPROGRAMS\Wazo\\$(START_WAZOCLIENT)"  "$INSTDIR\wazoclient.exe"
+     CreateShortCut  "$SMPROGRAMS\Wazo\\$(REMOVE_WAZOCLIENT)" "$INSTDIR\uninstall.exe"
   ${EndIf}
 
-    WriteRegStr HKCR "XiVO Client" "" "XiVO Click2Call Protocol"
-    WriteRegStr HKCR "XiVO Client\DefaultIcon" "" "$INSTDIR\xivoclient.exe,0"
-    WriteRegStr HKCR "XiVO Client\shell\open\command" "" "$INSTDIR\xivoclient.exe %1"
-    WriteRegStr HKLM "Software\RegisteredApplications" "XiVO Client" "Software\Clients\Internet Call\XiVO Client\Capabilities"
-    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities" "ApplicationName" "XiVO Client"
-    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities" "ApplicationDescription" "Client for the XiVO ipbx (http://xivo.io)"
-    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities\UrlAssociations" "tel" "XiVO Client"
-    WriteRegStr HKLM "Software\Clients\Internet Call\XiVO Client\Capabilities\UrlAssociations" "callto" "XiVO Client"
+    WriteRegStr HKCR "Wazo Client" "" "Wazo Click2Call Protocol"
+    WriteRegStr HKCR "Wazo Client\DefaultIcon" "" "$INSTDIR\wazoclient.exe,0"
+    WriteRegStr HKCR "Wazo Client\shell\open\command" "" "$INSTDIR\wazoclient.exe %1"
+    WriteRegStr HKLM "Software\RegisteredApplications" "Wazo Client" "Software\Clients\Internet Call\Wazo Client\Capabilities"
+    WriteRegStr HKLM "Software\Clients\Internet Call\Wazo Client\Capabilities" "ApplicationName" "Wazo Client"
+    WriteRegStr HKLM "Software\Clients\Internet Call\Wazo Client\Capabilities" "ApplicationDescription" "Client for the Wazo ipbx (http://wazo.community)"
+    WriteRegStr HKLM "Software\Clients\Internet Call\Wazo Client\Capabilities\UrlAssociations" "tel" "Wazo Client"
+    WriteRegStr HKLM "Software\Clients\Internet Call\Wazo Client\Capabilities\UrlAssociations" "callto" "Wazo Client"
 SectionEnd ; end the section
 
 SectionGroup $(ProtocolAssociation)
@@ -147,15 +147,15 @@ SectionGroupEnd
 Section "Uninstall"
   SetShellVarContext all
   ; remove any shortcut
-  Delete "$DESKTOP\XiVO Client.lnk"
-  Delete "$SMPROGRAMS\XiVO\*"
-  RmDir "$SMPROGRAMS\XiVO"
+  Delete "$DESKTOP\Wazo Client.lnk"
+  Delete "$SMPROGRAMS\Wazo\*"
+  RmDir "$SMPROGRAMS\Wazo"
   ; remove the uri association
   DeleteRegKey HKLM ${REG_UNINST}
-  DeleteRegKey HKLM "Software\XiVO\xivoclient"
-  DeleteRegKey HKCR "XiVO Client"
-  DeleteRegValue HKLM "Software\RegisteredApplications" "XiVO Client"
-  DeleteRegKey HKLM "Software\Clients\Internet Call\XiVO Client"
+  DeleteRegKey HKLM "Software\Wazo\wazoclient"
+  DeleteRegKey HKCR "Wazo Client"
+  DeleteRegValue HKLM "Software\RegisteredApplications" "Wazo Client"
+  DeleteRegKey HKLM "Software\Clients\Internet Call\Wazo Client"
 
   ; remove the program dir
   RMDir /r $INSTDIR\imageformats
@@ -166,7 +166,7 @@ Section "Uninstall"
   Delete $INSTDIR\*.dll
   Delete $INSTDIR\qt.conf
   Delete $INSTDIR\uninstall.exe
-  Delete $INSTDIR\xivoclient.exe
+  Delete $INSTDIR\wazoclient.exe
 
   ; content present only in earlier versions
   RMDir /r $INSTDIR\Qt
@@ -180,25 +180,25 @@ Function un.onInit
   !insertmacro MUI_UNGETLANGUAGE
 FunctionEnd
 
-LangString SuccessInstall ${LANG_ENGLISH}  "The installation was successful, do you want to start the XiVO client right now ?"
-LangString SuccessInstall ${LANG_FRENCH}  "L'installation a réussi, voulez-vous lancer le XiVO client maintenant ?"
+LangString SuccessInstall ${LANG_ENGLISH}  "The installation was successful, do you want to start the Wazo client right now ?"
+LangString SuccessInstall ${LANG_FRENCH}  "L'installation a réussi, voulez-vous lancer le Wazo client maintenant ?"
 
 Function .onInstSuccess
   MessageBox MB_YESNO  $(SuccessInstall) /SD IDNO IDNO NoReadme
-  Exec '"$WINDIR\explorer.exe" "$INSTDIR\xivoclient.exe"'
+  Exec '"$WINDIR\explorer.exe" "$INSTDIR\wazoclient.exe"'
   NoReadme:
 FunctionEnd
 
 ;Language strings
 
-LangString XIVO_LICENSE_TEXT ${LANG_ENGLISH} "XiVO Client is licensed under the GNU GPLv3 with a special exception to allow the link with OpenSSL."
-LangString XIVO_LICENSE_TEXT ${LANG_FRENCH}  "XiVO Client est distribué sous licence GNU GPLv3 avec une exception particulière vous autorisant à le lier à OpenSSL."
+LangString WAZO_LICENSE_TEXT ${LANG_ENGLISH} "Wazo Client is licensed under the GNU GPLv3 with a special exception to allow the link with OpenSSL."
+LangString WAZO_LICENSE_TEXT ${LANG_FRENCH}  "Wazo Client est distribué sous licence GNU GPLv3 avec une exception particulière vous autorisant à le lier à OpenSSL."
 
 LangString DESC_QtLib ${LANG_ENGLISH} "Qt libraries (cross-platform application and UI framework)"
 LangString DESC_QtLib ${LANG_FRENCH}  "Bibliothèque Qt (framework multi plateforme gérant l'IHM, le réseau, ...) "
 
-LangString DESC_xivoclientExe ${LANG_ENGLISH} "XiVO client executable"
-LangString DESC_xivoclientExe ${LANG_FRENCH}  "Exécutable XiVO client"
+LangString DESC_wazoclientExe ${LANG_ENGLISH} "Wazo client executable"
+LangString DESC_wazoclientExe ${LANG_FRENCH}  "Exécutable Wazo client"
 
 LangString SHORTCUT_PAGE_TITLE ${LANG_ENGLISH} "Shortcuts"
 LangString SHORTCUT_PAGE_TITLE ${LANG_FRENCH}  "Raccourcis"
@@ -209,11 +209,11 @@ LangString SHORTCUT_DESKTOP ${LANG_FRENCH}  "Ajouter un raccourci sur le &Bureau
 LangString SHORTCUT_STARTMENU ${LANG_ENGLISH} "Add a Shortcut in Start &Menu"
 LangString SHORTCUT_STARTMENU ${LANG_FRENCH}  "Ajouter un raccourci dans le &Menu Démarrer"
 
-LangString START_XIVOCLIENT ${LANG_ENGLISH} "XiVO Client.lnk"
-LangString START_XIVOCLIENT ${LANG_FRENCH}  "XiVO Client.lnk"
+LangString START_WAZOCLIENT ${LANG_ENGLISH} "Wazo Client.lnk"
+LangString START_WAZOCLIENT ${LANG_FRENCH}  "Wazo Client.lnk"
 
-LangString REMOVE_XIVOCLIENT ${LANG_ENGLISH} "Uninstall XiVO Client.lnk"
-LangString REMOVE_XIVOCLIENT ${LANG_FRENCH}  "Désinstaller XiVO Client.lnk"
+LangString REMOVE_WAZOCLIENT ${LANG_ENGLISH} "Uninstall Wazo Client.lnk"
+LangString REMOVE_WAZOCLIENT ${LANG_FRENCH}  "Désinstaller Wazo Client.lnk"
 
 LangString ProtocolAssociation ${LANG_ENGLISH}  "Protocol Association"
 LangString ProtocolAssociation ${LANG_FRENCH}  "Association de protocoles"
@@ -221,13 +221,13 @@ LangString ProtocolAssociation ${LANG_FRENCH}  "Association de protocoles"
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${QtLib} $(DESC_QtLib)
-  !insertmacro MUI_DESCRIPTION_TEXT ${XivoclientExe} $(DESC_xivoclientExe)
+  !insertmacro MUI_DESCRIPTION_TEXT ${WazoclientExe} $(DESC_wazoclientExe)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 VIProductVersion "9.4.8.6"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "XiVO client"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Computer Telephony Integration (CTI) client for XiVO"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Avencall"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "XiVO client installer"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Wazo client"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Computer Telephony Integration (CTI) client for Wazo"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "The Wazo Authors"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Wazo client installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${XC_VERSION}-${GIT_HASH}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2007-2017 The Wazo authors"
