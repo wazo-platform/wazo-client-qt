@@ -19,7 +19,7 @@ QT += svg xml
 
 RESOURCES += xivoclient.qrc
 mac {
-    ICON = ../packaging/resources/xivoicon-mac.icns
+    ICON = ../packaging/resources/wazoicon-mac.icns
 } else {
     RC_FILE = xivoclient.rc
 }
