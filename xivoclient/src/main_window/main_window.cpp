@@ -120,7 +120,7 @@ void MainWindow::setAppIcon(const QString & def)
     if (def == "xivo-transp") { // connected
         icon = QIcon(":/images/wazoicon-color.png");
     } else if (def == "xivo-red") { // agent_paused
-        icon = QIcon(":/images/xivoicon-red.png");
+        icon = QIcon(":/images/wazoicon-red.png");
     } else if (def == "xivo-green") { // agent_logged
         icon = QIcon(":/images/wazoicon-green.svg");
     } else { // disconnected
