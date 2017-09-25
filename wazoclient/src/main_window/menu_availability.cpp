@@ -194,7 +194,7 @@ void MenuAvailability::setMenuAvailabilityEnabled(bool enabled)
 
 /*!
  * Update the presence of the current user
- * \param userxid The user's XiVO id
+ * \param userxid The user's id
  */
 void MenuAvailability::updateUserStatus(const QString & userxid)
 {

@@ -91,7 +91,7 @@ void PeoplePersonalMigration::noticeAndMigratePersonalContacts(QWidget *parent)
                                            parent);
     message->setDetailedText(tr("Your local contacts are currently stored on your machine in:\n"
                                 "%1\n"
-                                "They will be migrated to the XiVO server in your personal database.")
+                                "They will be migrated to the Wazo server in your personal database.")
                              .arg(PeoplePersonalMigration::contactsFileName()));
     message->setTextFormat(Qt::RichText);
     message->setAttribute(Qt::WA_DeleteOnClose);

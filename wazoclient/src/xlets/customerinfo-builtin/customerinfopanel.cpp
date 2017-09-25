@@ -75,7 +75,7 @@ void CustomerInfoPanel::showNewProfile(Popup * popup)
     if(popup->systraypopup())
         opt += "s";
     emit newPopup(popup->messagetitle(), popup->message(), opt);
-    // set this widget to be the current tab in XiVO Client
+    // set this widget to be the current tab in Wazo Client
     emit showWidgetOnTop(this);
 }
 

@@ -171,7 +171,7 @@ void MainWindow::minimizeWindow()
 
 void MainWindow::showMessageBox(const QString & message)
 {
-    QMessageBox::critical(NULL, tr("XiVO CTI Error"), message);
+    QMessageBox::critical(NULL, tr("Wazo CTI Error"), message);
 }
 
 void MainWindow::showConfDialog()

@@ -99,7 +99,7 @@ class BASELIB_EXPORT BaseEngine: public QObject
         const QString ipbxid() const { return m_ipbxid; };
 
         const QString & getFullId() const { return m_xuserid; };
-        UserInfo * getXivoClientUser();       //!< Return the user of the XiVO CTI Client
+        UserInfo * getXivoClientUser();       //!< Return the user of the Wazo CTI Client
 
         double timeDeltaServerClient() const;
         QString timeElapsed(double) const;
