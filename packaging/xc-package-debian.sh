@@ -71,6 +71,9 @@ Depends: libc6 (>= 2.14), libgcc1 (>= 1:4.1.1-21), libstdc++6 (>= 4.1.1-21)
 Section: graphics
 Priority: optional
 Homepage: http://wazo.community
+Conflicts: xivoclient
+Provides: xivoclient
+Replaces: xivoclient
 Description: CTI client for Wazo
  Wazo CTI (Computer Telephony Integration) client is the graphical
  front-end to the Wazo CTI services.
