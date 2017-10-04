@@ -4,7 +4,7 @@
 <context>
     <name>XletDatetime</name>
     <message>
-        <location filename="../src/xlets/datetime/datetime.cpp" line="42"/>
+        <location filename="../src/xlets/datetime/datetime.cpp" line="40"/>
         <source>Date and Time</source>
         <translation>Fecha y Hora</translation>
     </message>

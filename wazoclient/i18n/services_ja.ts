@@ -4,7 +4,7 @@
 <context>
     <name>ServicesPanel</name>
     <message>
-        <location filename="../src/xlets/services/servicespanel.cpp" line="41"/>
+        <location filename="../src/xlets/services/servicespanel.cpp" line="39"/>
         <source>Services</source>
         <translation type="unfinished"></translation>
     </message>

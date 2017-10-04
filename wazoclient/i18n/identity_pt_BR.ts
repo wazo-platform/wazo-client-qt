@@ -4,82 +4,82 @@
 <context>
     <name>IdentityDisplay</name>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="53"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="51"/>
         <source>Identity</source>
         <translation>Identidade</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="60"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="58"/>
         <source>Current User Panel</source>
         <translation>Painel do usuário</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="103"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="101"/>
         <source>Login</source>
         <translation>Entrar</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="107"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="105"/>
         <source>Logout</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="115"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="113"/>
         <source>Pause</source>
         <translation>Pausa</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="119"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="117"/>
         <source>Unpause</source>
         <translation>Tirar da pausa</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="381"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="379"/>
         <source>DND</source>
         <translation>DND</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="382"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="380"/>
         <source>Do Not Disturb</source>
         <translation>Não Pertube</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="384"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="382"/>
         <source>UNC %1</source>
         <translation>UNC %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="385"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="383"/>
         <source>Unconditional Forward towards %1</source>
         <translation>Encaminhamento incondicional para</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="387"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="385"/>
         <source>BUSY %1</source>
         <translation>OCUPADO %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="388"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="386"/>
         <source>Busy Forward towards %1</source>
         <translation>Encaminhar ocupado em direção a %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="390"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="388"/>
         <source>FNA %1</source>
         <translation>FNA %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="391"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="389"/>
         <source>Non-Answer Forward towards %1</source>
         <translation>Encaminhar não-Respondidas em direção a %1</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="393"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="391"/>
         <source>CALL FILTER</source>
         <translation>FILTRAR CHAMADAS</translation>
     </message>
     <message>
-        <location filename="../src/xlets/identity/identity.cpp" line="396"/>
+        <location filename="../src/xlets/identity/identity.cpp" line="394"/>
         <source>AVAILABLE</source>
         <translation>DISPONÍVEL</translation>
     </message>

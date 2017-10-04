@@ -4,72 +4,72 @@
 <context>
     <name>ConfigWidget</name>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="90"/>
         <source>System Language</source>
         <translation>Idioma do Sistema</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="91"/>
         <source>Dutch</source>
         <translation>Dutch</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="94"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="92"/>
         <source>English</source>
         <translation>Inglês</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="95"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="93"/>
         <source>French</source>
         <translation>Frances</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="94"/>
         <source>Italian</source>
         <translation>Italiano</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="95"/>
         <source>Portuguese</source>
         <translation>Português</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="96"/>
         <source>Spanish (Chile)</source>
         <translation>Spanish (Chile)</translation>
     </message>
     <message>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
         <location filename="../src/config_widget/config_widget.cpp" line="99"/>
         <location filename="../src/config_widget/config_widget.cpp" line="100"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
-        <location filename="../src/config_widget/config_widget.cpp" line="102"/>
         <source>incomplete</source>
         <translation>incompleto</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="97"/>
         <source>German</source>
         <translation>Alemão</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="98"/>
         <source>Hungarian</source>
         <translation>Hungarian</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="101"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="99"/>
         <source>Japanese</source>
         <translation>Japonês</translation>
     </message>
     <message>
-        <location filename="../src/config_widget/config_widget.cpp" line="102"/>
+        <location filename="../src/config_widget/config_widget.cpp" line="100"/>
         <source>Spanish</source>
         <translation>Spanish</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="20"/>
-        <source>XiVO Client Configuration</source>
-        <translation>Configuração do cliente XiVO</translation>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="37"/>
@@ -278,7 +278,7 @@
 <context>
     <name>CustomerInfoPanel</name>
     <message>
-        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="35"/>
+        <location filename="../src/xlets/customerinfo-builtin/customerinfopanel.cpp" line="34"/>
         <source>Sheets</source>
         <translation>Planilha</translation>
     </message>
@@ -297,8 +297,8 @@
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="271"/>
-        <source>XiVO is a unified communication system that connects phones inside an organization with public and mobile telephone networks.</source>
-        <translation>XiVO é um sistema de comunicação unificado que conecta telefones dentro de uma organização com redes telefônicas públicas e móveis.</translation>
+        <source>Wazo, a next generation unified communication solution for your business.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="306"/>
@@ -341,12 +341,12 @@
         <translation>CONECTADO</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.cpp" line="139"/>
+        <location filename="../src/login_widget/login_widget.cpp" line="137"/>
         <source>Connecting</source>
         <translation>Conectando</translation>
     </message>
     <message>
-        <location filename="../src/login_widget/login_widget.cpp" line="152"/>
+        <location filename="../src/login_widget/login_widget.cpp" line="150"/>
         <source>Failed</source>
         <translation>Falhou</translation>
     </message>
@@ -355,13 +355,13 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/main_window/main_window.ui" line="17"/>
-        <source>XiVO Client</source>
-        <translation>Cliente XiVO</translation>
+        <source>Wazo Client</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="53"/>
-        <source>&amp;XiVO Client</source>
-        <translation>Cliente &amp;XiVO</translation>
+        <source>&amp;Wazo Client</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="66"/>
@@ -435,8 +435,8 @@
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="154"/>
-        <source>&amp;About XiVO Client</source>
-        <translation>&amp;Sobre o Cliente XiVO</translation>
+        <source>&amp;About Wazo Client</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="159"/>
@@ -449,104 +449,99 @@
         <translation>&amp;Créditos</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="110"/>
-        <location filename="../src/main_window/main_window.cpp" line="212"/>
-        <location filename="../src/main_window/main_window.cpp" line="397"/>
+        <location filename="../src/main_window/main_window.cpp" line="108"/>
+        <location filename="../src/main_window/main_window.cpp" line="210"/>
+        <location filename="../src/main_window/main_window.cpp" line="395"/>
         <source>Client %1</source>
         <translation>Cliente %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="176"/>
-        <source>XiVO CTI Error</source>
-        <translation>Erro no XiVO CTI</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="194"/>
+        <location filename="../src/main_window/main_window.cpp" line="192"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Cliente %1 (Perfil %2)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="317"/>
+        <location filename="../src/main_window/main_window.cpp" line="315"/>
         <source>&amp;Availability</source>
         <translation>&amp;Disponibilidade</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="389"/>
+        <location filename="../src/main_window/main_window.cpp" line="387"/>
         <source>Fetch the last one</source>
         <translation>Achar pelo menos um</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="396"/>
-        <source>About XiVO Client</source>
-        <translation>Sobre o Cliente XiVO</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="398"/>
-        <source>The XiVO CTI applications, once connected to the proper server, complete the XiVO telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
-        <translation>As aplicações XiVO CTI, uma vez conectado ao servidor adequado, completam o sistema de telefonia XiVO, fornecendo ferramentas de computador, tais como visualização de informações de clientes, pesquisas de diretório ou vários supervisões &apos;X-permite&apos; para call centers.</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="403"/>
+        <location filename="../src/main_window/main_window.cpp" line="401"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Informação de versão&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="404"/>
-        <source>Major : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</source>
-        <translation>Maior : &lt;b&gt;%1&lt;/b&gt; (XiVO branch)</translation>
+        <location filename="../src/main_window/main_window.cpp" line="174"/>
+        <source>Wazo CTI Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="405"/>
+        <location filename="../src/main_window/main_window.cpp" line="394"/>
+        <source>About Wazo Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.cpp" line="396"/>
+        <source>The Wazo CTI applications, once connected to the proper server, complete the Wazo telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.cpp" line="402"/>
+        <source>Major : &lt;b&gt;%1&lt;/b&gt; (Wazo branch)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.cpp" line="403"/>
         <source>Minor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</source>
         <translation>Menor : git hash &lt;b&gt;%1&lt;/b&gt; from : %2</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="408"/>
+        <location filename="../src/main_window/main_window.cpp" line="406"/>
         <source>(Application Built on : %1)</source>
         <translation>(Construção da Aplicação em : %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="409"/>
+        <location filename="../src/main_window/main_window.cpp" line="407"/>
         <source>(Application Launched on : %1)</source>
         <translation>(Aplicação lançada em: %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="410"/>
+        <location filename="../src/main_window/main_window.cpp" line="408"/>
         <source>(Config File Location : %1)</source>
         <translation>(Localização do arquivo de configuração: %1)</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="413"/>
+        <location filename="../src/main_window/main_window.cpp" line="410"/>
         <source>E-mail : </source>
         <translation>E-mail : </translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="414"/>
-        <source>Phone : </source>
-        <translation>Telefone:</translation>
+        <location filename="../src/main_window/main_window.cpp" line="411"/>
+        <source>The Wazo authors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="415"/>
+        <location filename="../src/main_window/main_window.cpp" line="411"/>
         <source>Authors : </source>
         <translation>Autores:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="415"/>
-        <source>Avencall Development Team</source>
-        <translation>Avencall Development Team</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="417"/>
+        <location filename="../src/main_window/main_window.cpp" line="413"/>
         <source>License : </source>
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="419"/>
+        <location filename="../src/main_window/main_window.cpp" line="415"/>
         <source>with a special exception allowing you to link it with OpenSSL, under some conditions.</source>
         <translation>com uma exceção especial que lhe permite ligá-lo com o OpenSSL, sob algumas condições.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="425"/>
+        <location filename="../src/main_window/main_window.cpp" line="421"/>
         <source>Credits</source>
         <translation>Créditos</translation>
     </message>
@@ -554,12 +549,12 @@
 <context>
     <name>Statusbar</name>
     <message>
-        <location filename="../src/main_window/statusbar.cpp" line="78"/>
+        <location filename="../src/main_window/statusbar.cpp" line="76"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/main_window/statusbar.cpp" line="84"/>
+        <location filename="../src/main_window/statusbar.cpp" line="82"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>

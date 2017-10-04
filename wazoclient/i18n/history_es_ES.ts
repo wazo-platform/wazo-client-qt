@@ -4,27 +4,27 @@
 <context>
     <name>History</name>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="39"/>
+        <location filename="../src/xlets/history/history.cpp" line="37"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="52"/>
+        <location filename="../src/xlets/history/history.cpp" line="50"/>
         <source>All calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="53"/>
+        <location filename="../src/xlets/history/history.cpp" line="51"/>
         <source>Sent calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="54"/>
+        <location filename="../src/xlets/history/history.cpp" line="52"/>
         <source>Received calls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history.cpp" line="55"/>
+        <location filename="../src/xlets/history/history.cpp" line="53"/>
         <source>Missed calls</source>
         <translation type="unfinished"></translation>
     </message>
@@ -32,37 +32,37 @@
 <context>
     <name>HistoryModel</name>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="41"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="39"/>
         <source>Name</source>
         <translation type="unfinished">Nombre</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="42"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="40"/>
         <source>Number</source>
         <translation type="unfinished">Número</translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="43"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="41"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="44"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="42"/>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="160"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="158"/>
         <source>%1 hr %2 min %3 s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="162"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="160"/>
         <source>%1 min %2 s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/history/history_model.cpp" line="164"/>
+        <location filename="../src/xlets/history/history_model.cpp" line="162"/>
         <source>%1 s</source>
         <translation type="unfinished"></translation>
     </message>

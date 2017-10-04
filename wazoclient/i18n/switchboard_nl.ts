@@ -4,27 +4,27 @@
 <context>
     <name>CurrentCall</name>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="50"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="48"/>
         <source>Attended T</source>
         <translation>Aangekondigd D</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="51"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="49"/>
         <source>Call</source>
         <translation>Bel</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="52"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="50"/>
         <source>Complete T</source>
         <translation>Vervolledig D</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="53"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="51"/>
         <source>Hangup</source>
         <translation>Ophangen</translation>
     </message>
     <message>
-        <location filename="../src/xlets/switchboard/current_call.cpp" line="54"/>
+        <location filename="../src/xlets/switchboard/current_call.cpp" line="52"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -110,13 +110,13 @@
 <context>
     <name>Switchboard</name>
     <message>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="51"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="49"/>
         <source>Switchboard</source>
         <translation>Schakelbord</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="323"/>
-        <location filename="../src/xlets/switchboard/switchboard.cpp" line="333"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="321"/>
+        <location filename="../src/xlets/switchboard/switchboard.cpp" line="331"/>
         <source>%n call(s)</source>
         <translation>
             <numerusform>%n oproep</numerusform>

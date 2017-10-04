@@ -4,17 +4,17 @@
 <context>
     <name>Conference</name>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="42"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="40"/>
         <source>Conference</source>
         <translation>Conferenza</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="50"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="48"/>
         <source>Room list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference.cpp" line="145"/>
+        <location filename="../src/xlets/conference/conference.cpp" line="143"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -22,47 +22,47 @@
 <context>
     <name>ConferenceListModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="35"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="36"/>
         <source>Number</source>
         <translation>Numero</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="39"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="37"/>
         <source>PIN code</source>
         <translation>Codice pin</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="40"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="38"/>
         <source>Member count</source>
         <translation>Conteggio dei partecipanti</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="41"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="39"/>
         <source>Started since</source>
         <translation>Avviata da</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="107"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="105"/>
         <source>Yes</source>
         <translation>Si</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="109"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="107"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="137"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="135"/>
         <source>Not started</source>
         <translation>Non avviata</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_list_model.cpp" line="139"/>
+        <location filename="../src/xlets/conference/conference_list_model.cpp" line="137"/>
         <source>Unknown</source>
         <translation>Sconosciuto</translation>
     </message>
@@ -70,27 +70,27 @@
 <context>
     <name>ConferenceRoomModel</name>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="42"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="40"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="43"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="41"/>
         <source>Number</source>
         <translation>Numero</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="44"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="42"/>
         <source>Since</source>
         <translation>Da</translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="158"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="156"/>
         <source>Mute/UnMute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/xlets/conference/conference_room_model.cpp" line="174"/>
+        <location filename="../src/xlets/conference/conference_room_model.cpp" line="172"/>
         <source>Unknown</source>
         <translation>Sconosciuto</translation>
     </message>
