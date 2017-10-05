@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/xlets/people/people.cpp" line="60"/>
         <source>my contacts</source>
-        <translation>Meine Kontakte</translation>
+        <translation>meine Kontakte</translation>
     </message>
     <message>
         <location filename="../src/xlets/people/people.cpp" line="218"/>

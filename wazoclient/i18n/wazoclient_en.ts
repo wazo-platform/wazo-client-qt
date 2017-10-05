@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="20"/>
         <source>Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="37"/>
@@ -298,7 +298,7 @@
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="271"/>
         <source>Wazo, a next generation unified communication solution for your business.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wazo, a next generation unified communication solution for your business.</translation>
     </message>
     <message>
         <location filename="../src/login_widget/login_widget.ui" line="306"/>
@@ -356,12 +356,12 @@
     <message>
         <location filename="../src/main_window/main_window.ui" line="17"/>
         <source>Wazo Client</source>
-        <translation type="unfinished"></translation>
+        <translation>Wazo Client</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="53"/>
         <source>&amp;Wazo Client</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Wazo Client</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="66"/>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/main_window/main_window.ui" line="154"/>
         <source>&amp;About Wazo Client</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;About Wazo Client</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="159"/>
@@ -456,6 +456,11 @@
         <translation>Client %1</translation>
     </message>
     <message>
+        <location filename="../src/main_window/main_window.cpp" line="174"/>
+        <source>Wazo CTI Error</source>
+        <translation>Wazo CTI Error</translation>
+    </message>
+    <message>
         <location filename="../src/main_window/main_window.cpp" line="192"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (%2 profile)</translation>
@@ -471,29 +476,24 @@
         <translation>Fetch the last one</translation>
     </message>
     <message>
+        <location filename="../src/main_window/main_window.cpp" line="394"/>
+        <source>About Wazo Client</source>
+        <translation>About Wazo Client</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.cpp" line="396"/>
+        <source>The Wazo CTI applications, once connected to the proper server, complete the Wazo telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
+        <translation>The Wazo CTI applications, once connected to the proper server, complete the Wazo telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</translation>
+    </message>
+    <message>
         <location filename="../src/main_window/main_window.cpp" line="401"/>
         <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation>&lt;u&gt;Version Information&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="174"/>
-        <source>Wazo CTI Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="394"/>
-        <source>About Wazo Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="396"/>
-        <source>The Wazo CTI applications, once connected to the proper server, complete the Wazo telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/main_window/main_window.cpp" line="402"/>
         <source>Major : &lt;b&gt;%1&lt;/b&gt; (Wazo branch)</source>
-        <translation type="unfinished"></translation>
+        <translation>Major : &lt;b&gt;%1&lt;/b&gt; (Wazo branch)</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="403"/>
@@ -523,7 +523,7 @@
     <message>
         <location filename="../src/main_window/main_window.cpp" line="411"/>
         <source>The Wazo authors</source>
-        <translation type="unfinished"></translation>
+        <translation>The Wazo authors</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="411"/>

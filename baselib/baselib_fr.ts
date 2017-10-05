@@ -99,32 +99,32 @@
     <message>
         <location filename="src/baseengine.cpp" line="515"/>
         <source>Connection lost with Wazo CTI server</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion au server CTI interrompue</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1119"/>
         <source>Your registration name &lt;%1@%2&gt; is not known by the Wazo CTI server on %3:%4.</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre nom &lt;%1@%2&gt; est inconnu par le serveur CTI Wazo sur %3:%4. </translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1173"/>
         <source>The server at %1:%2 has just closed the connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le serveur sur %1:%2 vient de fermer la connexion. </translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1177"/>
         <source>The server at %1:%2 has just been stopped.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le serveur sur %1:%2 vient d&apos;être arrêté.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1180"/>
         <source>The server at %1:%2 has just been reloaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le serveur sur %1:%2 vient d&apos;être rechargé.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1189"/>
         <source>Max number (%1) of clients already reached.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nombre maximal de client connectés (%1) a été atteint.</translation>
     </message>
     <message>
         <location filename="src/baseengine.cpp" line="1191"/>

@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="54"/>
         <source>Queues</source>
-        <translation>Warteschleife</translation>
+        <translation>Warteschlangen</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="55"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="195"/>
         <source>on &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Un &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>auf &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/xlets/agentdetails/agentdetails.cpp" line="201"/>

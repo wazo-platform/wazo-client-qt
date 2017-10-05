@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="410"/>
         <source>Longest wait time thresholds</source>
-        <translation>Längste Wartezeitschwellenwerte</translation>
+        <translation>Schwellenwerte der längsten Wartezeit</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="437"/>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="620"/>
         <source>Backup server</source>
-        <translation>Datensicherungsserver</translation>
+        <translation>Sicherungsserver</translation>
     </message>
     <message>
         <location filename="../src/config_widget/config_widget.ui" line="709"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../src/main_window/main_window.ui" line="102"/>
         <source>Enter the system tray</source>
-        <translation>Infobereich eintragen</translation>
+        <translation>Benachrichtigungsfeld eintragen</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="107"/>
@@ -431,7 +431,7 @@
     <message>
         <location filename="../src/main_window/main_window.ui" line="146"/>
         <source>Leave the system tray</source>
-        <translation>Infobereich verlassen</translation>
+        <translation>Benachrichtigungsfeld verlassen</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.ui" line="154"/>
@@ -456,6 +456,11 @@
         <translation>Client %1</translation>
     </message>
     <message>
+        <location filename="../src/main_window/main_window.cpp" line="174"/>
+        <source>Wazo CTI Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/main_window/main_window.cpp" line="192"/>
         <source>Client %1 (%2 profile)</source>
         <translation>Client %1 (%2 Profil)</translation>
@@ -471,16 +476,6 @@
         <translation>Letzte abrufen</translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="401"/>
-        <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
-        <translation>&lt;u&gt;Versionsinformation&lt;/u&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="174"/>
-        <source>Wazo CTI Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/main_window/main_window.cpp" line="394"/>
         <source>About Wazo Client</source>
         <translation type="unfinished"></translation>
@@ -489,6 +484,11 @@
         <location filename="../src/main_window/main_window.cpp" line="396"/>
         <source>The Wazo CTI applications, once connected to the proper server, complete the Wazo telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.cpp" line="401"/>
+        <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
+        <translation>&lt;u&gt;Versionsinformation&lt;/u&gt;</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="402"/>
@@ -513,7 +513,7 @@
     <message>
         <location filename="../src/main_window/main_window.cpp" line="408"/>
         <source>(Config File Location : %1)</source>
-        <translation>(Konfigurationsdateiort : %1)</translation>
+        <translation>(Konfigurationsdateiadresse : %1)</translation>
     </message>
     <message>
         <location filename="../src/main_window/main_window.cpp" line="410"/>
@@ -569,7 +569,7 @@
     <message>
         <location filename="../src/main_window/loading_dialog.ui" line="34"/>
         <source>Loading...</source>
-        <translation>Ladevorgang...</translation>
+        <translation>Wird geladen...</translation>
     </message>
 </context>
 </TS>

@@ -201,7 +201,9 @@ Are you sure ?</source>
         <source>Your local contacts are currently stored on your machine in:
 %1
 They will be migrated to the Wazo server in your personal database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vos contacts locaux sont actuellement stockés sur votre machine, dans le fichier:
+%1
+Ils vont être migrés sur le serveur Wazo, dans votre base de données personnelle.</translation>
     </message>
 </context>
 <context>

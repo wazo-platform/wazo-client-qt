@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="65"/>
         <source>Maximum waiting time before getting an agent</source>
-        <translation>Maximale Wartezeit bevor man einen Agent bekommt</translation>
+        <translation>Maximale Wartezeit, bevor man einen Agent bekommt</translation>
     </message>
     <message>
         <location filename="../src/xlets/queues/queuesmodel.cpp" line="66"/>

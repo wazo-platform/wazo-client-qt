@@ -58,7 +58,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="266"/>
         <source>Agent ready to receive a call</source>
-        <translation>Agent bereit zum Annehmen eines Anrufs</translation>
+        <translation>Agent zum Annehmen eines Anrufs bereit</translation>
     </message>
     <message>
         <location filename="../src/xletlib/agents_model.cpp" line="268"/>
@@ -179,7 +179,7 @@ Warteschlangen</translation>
     <message>
         <location filename="../src/xletlib/directorypanel.cpp" line="129"/>
         <source>Double-click to send an E-mail to</source>
-        <translation>Doppelklicken Sie, um eine E-Mail zu senden</translation>
+        <translation>Zum Sender einer E-Mail doppelklicken</translation>
     </message>
     <message>
         <location filename="../src/xletlib/directorypanel.cpp" line="131"/>

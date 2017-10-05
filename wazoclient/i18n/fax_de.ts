@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/xlets/fax/fax.cpp" line="164"/>
         <source>Sending...</source>
-        <translation>Sendevorgang...</translation>
+        <translation>Wird gesendet...</translation>
     </message>
 </context>
 <context>

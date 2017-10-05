@@ -456,6 +456,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main_window/main_window.cpp" line="174"/>
+        <source>Wazo CTI Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/main_window/main_window.cpp" line="192"/>
         <source>Client %1 (%2 profile)</source>
         <translation type="unfinished"></translation>
@@ -471,16 +476,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/main_window.cpp" line="401"/>
-        <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/main_window.cpp" line="174"/>
-        <source>Wazo CTI Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/main_window/main_window.cpp" line="394"/>
         <source>About Wazo Client</source>
         <translation type="unfinished"></translation>
@@ -488,6 +483,11 @@
     <message>
         <location filename="../src/main_window/main_window.cpp" line="396"/>
         <source>The Wazo CTI applications, once connected to the proper server, complete the Wazo telephony system, by providing computer tools, such as customer information display, directory searches, or various supervision &apos;X-lets&apos; for call centers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/main_window.cpp" line="401"/>
+        <source>&lt;u&gt;Version Information&lt;/u&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
