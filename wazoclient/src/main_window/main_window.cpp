@@ -383,7 +383,7 @@ void MainWindow::about()
 {
     QString applicationVersion(XC_VERSION);
     QString fetchlastone = (QString("<a href=%1>%2</a>")
-                            .arg("http://mirror.wazo.community/iso/xivo-current")
+                            .arg("http://mirror.wazo.community/iso/wazo-current")
                             .arg(tr("Fetch the last one")));
     QString datebuild(QDateTime::fromString(__datebuild_client__, Qt::ISODate).toString());
     QString gitdate_qs(__git_date__);
