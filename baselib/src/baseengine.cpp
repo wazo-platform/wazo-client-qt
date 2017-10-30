@@ -1047,7 +1047,11 @@ void BaseEngine::configsLists(const QString & function, const QVariantMap & data
     } else if (function == "updateconfig") {
         QString id = datamap.value("tid").toString();
         this->handleGetlistUpdateConfig(listname, ipbxid, id, datamap);
-        this->requestStatus(listname, ipbxid, id);
+        if (id == this->m_userid) {
+            this->requestStatus(listname, ipbxid, id);
+        } else {
+            m_init_watcher.sawItem(listname, id);
+        }
     } else if (function == "updatestatus") {
         QString id = datamap.value("tid").toString();
         QVariantMap status = datamap.value("status").toMap();
