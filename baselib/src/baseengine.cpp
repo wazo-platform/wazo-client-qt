@@ -440,7 +440,7 @@ void BaseEngine::authenticate()
     command["userlogin"] = m_config["userloginsimple"].toString();
     command["company"] = "xivo";
     command["ident"] = m_osname;
-    command["xivoversion"] = __cti_protocol_version__;
+    command["wazoversion"] = __cti_protocol_version__;
 
     // for debuging purposes :
     command["lastlogout-stopper"] = m_settings->value("lastlogout/stopper").toString();
@@ -1193,7 +1193,7 @@ void BaseEngine::popupError(const QString & errorid,
         errormsg = tr("Max number (%1) of clients already reached.").arg(userslist[0]);
     } else if (errorid.startsWith("missing:")) {
         errormsg = tr("Missing Argument(s)");
-    } else if (errorid.startsWith("xivoversion_client:")) {
+    } else if (errorid.startsWith("wazoversion_client:")) {
         login_error = true;
         QStringList versionslist = errorid.split(":")[1].split(";");
         if (versionslist.size() >= 2)
