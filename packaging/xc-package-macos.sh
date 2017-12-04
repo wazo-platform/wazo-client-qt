@@ -29,17 +29,12 @@ function prepare_build() {
 	cp -r ${XC_PATH}/bin/* ${BUILD_PATH}
 }
 
-function move_resources() {
-	mkdir -p ${BUNDLE_PATH}/Contents/Frameworks/
-	mv ${BUILD_PATH}/*.dylib ${BUNDLE_PATH}/Contents/Frameworks/
-}
-
 function set_version() {
     /usr/libexec/PlistBuddy -c "Add CFBundleShortVersionString String ${XC_VERSION}" ${BUNDLE_PATH}/Contents/Info.plist
 }
 
 function build_package() {
-	macdeployqt ${BUNDLE_PATH} -dmg
+	macdeployqt ${BUNDLE_PATH} -dmg -libpath=${BUILD_PATH}
 	mv ${BUILD_PATH}/${DMG_NAME} ${XC_PATH}/wazoclient-${XC_VERSION}.dmg
 }
 
@@ -48,8 +43,6 @@ function package {
 	clean_build
 	echo "Preparing build ..."
 	prepare_build
-	echo "Moving resources ..."
-	move_resources
 	echo "Setting version ..."
 	set_version
 	echo "Building .dmg package ..."
