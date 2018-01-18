@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2017 The Wazo Authors  (see the AUTHORS file)
+ * Copyright 2007-2018 The Wazo Authors  (see the AUTHORS file)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1047,10 +1047,10 @@ void BaseEngine::configsLists(const QString & function, const QVariantMap & data
     } else if (function == "updateconfig") {
         QString id = datamap.value("tid").toString();
         this->handleGetlistUpdateConfig(listname, ipbxid, id, datamap);
-        if (id == this->m_userid) {
-            this->requestStatus(listname, ipbxid, id);
-        } else {
+        if (listname == "users" && id != this->m_userid) {
             m_init_watcher.sawItem(listname, id);
+        } else {
+            this->requestStatus(listname, ipbxid, id);
         }
     } else if (function == "updatestatus") {
         QString id = datamap.value("tid").toString();
