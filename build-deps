@@ -1,5 +1,5 @@
-WIN_MINGW_PATH=/cygdrive/c/qt5/5.5.0/Tools/mingw492_32
-WIN_QT_PATH=/cygdrive/c/qt5/5.5.0/5.5/mingw492_32
-WIN_NSIS_PATH="/cygdrive/c/Program files (x86)/nsis"
+WIN_MINGW_PATH=/usr/src/mxe/usr/i686-w64-mingw32.shared
+WIN_QT_PATH=/usr/src/mxe/usr/i686-w64-mingw32.shared/qt5
+WIN_NSIS_PATH=/usr/src/mxe/usr/i686-w64-mingw32.shared/bin
 
 DEBIAN_QT_PATH=/opt/qt5/5.5.0/5.5/gcc_64/

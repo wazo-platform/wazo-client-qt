@@ -1,0 +1,21 @@
+FROM wazopbx/windows-x86-qt:5.5.0
+MAINTAINER Wazo Maintainers <dev@wazo.community>
+
+RUN mkdir /usr/src/nsis-app-assoc-reg
+ADD http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip /usr/src/nsis-app-assoc-reg
+RUN unzip /usr/src/nsis-app-assoc-reg/AppAssocReg-0.4.zip -d /usr/src/nsis-app-assoc-reg
+RUN cp /usr/src/nsis-app-assoc-reg/Plugins/Unicode/AppAssocReg.dll /usr/src/mxe/usr/i686-w64-mingw32.shared/share/nsis/Plugins
+
+RUN mkdir /usr/src/nsis-nsprocess
+ADD http://nsis.sourceforge.net/mediawiki/images/1/18/NsProcess.zip /usr/src/nsis-nsprocess
+RUN 7z x -o/usr/src/nsis-nsprocess /usr/src/nsis-nsprocess/NsProcess.zip
+RUN cp /usr/src/nsis-nsprocess/Plugin/nsProcess.dll /usr/src/mxe/usr/i686-w64-mingw32.shared/share/nsis/Plugins
+RUN cp /usr/src/nsis-nsprocess/Include/nsProcess.nsh /usr/src/mxe/usr/i686-w64-mingw32.shared/share/nsis/Include
+
+CMD true && \
+    cp -r /usr/src/wazo-client-qt /usr/src/wazo-client-qt-build && \
+    cd /usr/src/wazo-client-qt-build && \
+    /usr/src/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake && \
+    make && \
+    make pack && \
+    true

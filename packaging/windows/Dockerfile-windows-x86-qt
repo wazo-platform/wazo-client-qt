@@ -1,0 +1,15 @@
+FROM dockcross/windows-x86
+MAINTAINER Wazo Maintainers <dev@wazo.community>
+
+# Qt 5.5.0
+ENV MXE_VERSION=1d6ea923
+
+WORKDIR /usr/src/mxe
+RUN git fetch
+RUN git checkout ${MXE_VERSION}
+RUN make MXE_TARGETS=i686-w64-mingw32.shared qtbase
+RUN make MXE_TARGETS=i686-w64-mingw32.shared qttools
+RUN make MXE_TARGETS=i686-w64-mingw32.shared nsis
+RUN make MXE_TARGETS=i686-w64-mingw32.shared qttranslations
+# For some reason, QtGui.dll is linked to libharfbuzz-1.dll
+RUN cp /usr/src/mxe/usr/i686-w64-mingw32.shared/bin/libharfbuzz-0.dll /usr/src/mxe/usr/i686-w64-mingw32.shared/bin/libharfbuzz-1.dll
